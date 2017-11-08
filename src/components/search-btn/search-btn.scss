@@ -1,14 +1,17 @@
+#search-button-div {
+  border-width: medium;
+  border-color: color($colors, foxprimary);
+  border-style: solid;
+}
+
 search-btn {
-  .toolbar-background {
-    background-color: white;
+
+  .toolbar-background, .input {
+    background-color: color($colors, foxclear);
   }
 
   .icon {
-    color: #ef4123;
-  }
-
-  .input {
-    background-color: white;
+    color: color($colors, foxprimary);
   }
 }
 
