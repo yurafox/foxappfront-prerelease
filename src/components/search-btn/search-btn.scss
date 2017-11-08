@@ -10,6 +10,11 @@ search-btn {
     background-color: color($colors, foxclear);
   }
 
+  .text-input:disabled::-webkit-input-placeholder {
+    color: black;
+  }
+
+
   .icon {
     color: color($colors, foxprimary);
   }
