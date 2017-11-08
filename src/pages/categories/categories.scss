@@ -1,0 +1,10 @@
+page-categories {
+  .cat-icon {
+    width: 55px; height: 55px;  padding: 6px 4px 2px;
+  }
+
+  .cat-item-caption {
+    color: color($colors, gray);
+    font-weight: bold;
+  }
+}

@@ -1,0 +1,13 @@
+<ion-navbar>
+  <button ion-button menuToggle>
+    <ion-icon name="menu"></ion-icon>
+  </button>
+  <img src="../../assets/imgs/foxlogo.png" id="button-logo" (click)="goToHome()" >
+  <ion-buttons end>
+    <button id="cart-button" ion-button (click)="goToCart()">
+      <ion-icon name="cart">
+        <ion-badge id="itemscount-badge" color="danger">2</ion-badge>
+      </ion-icon>
+    </button>
+  </ion-buttons>
+</ion-navbar>
