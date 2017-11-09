@@ -1,17 +1,25 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {Nav, Platform} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { HomePage } from '../pages/home/home';
 import {AbstractDataRepository} from "./service/index";
 
-import {CategoriesPage} from '../pages/categories/categories';
+import {
+  AboutPage,
+  AccountPage,
+  HomePage,
+  SupportPage,
+  LoginPage,
+  CategoriesPage,
+  MapPage,
+  MyOrderPage
+} from '../pages/index';
 
 export interface PageInterface {
   title: string;
-  name: string;
+  name?: string;
   component: any;
-  icon: string;
+  icon?: string;
   logsOut?: boolean;
   index?: number;
   tabName?: string;
@@ -22,16 +30,30 @@ export interface PageInterface {
   templateUrl: 'app.html'
 })
 export class FoxApp {
+  // the root nav is a child of the root app component
+  // @ViewChild(Nav) gets a reference to the app's root nav
   @ViewChild(Nav) nav: Nav;
 
-  appPages: PageInterface[] = [
-    { title: 'Home', name: 'HomePage', component: HomePage, icon: 'ios-home-outline'},
-    { title: 'Categories', name: 'CategoriesPage', component: CategoriesPage, icon: 'ios-list-box-outline' }
+  rootPage: any;
+
+  appPages = [
+    {title: 'Главная', name: 'Home', component: HomePage, index: 0, icon: 'home'},
+    {title: 'Категории', name: 'Categories', component: CategoriesPage, index: 1, icon: 'list'},
+    {title: 'Ваши Заказы', name: 'Orders', component: MyOrderPage, index: 2, icon: 'cart'},
+    {title: 'Ваш Аккаунт', name: 'Account', component: AccountPage, index: 3, icon: 'person'},
+  ];
+  infoPages = [
+    {title: 'Магазины на карте', name: 'Map', component: MapPage, index: 0, icon: 'ios-map-outline'},
+    {title: 'О нас', name: 'About', component: AboutPage, index: 1, icon: 'information-circle'},
+    {title: 'Поддержка', name: 'Support', component: SupportPage, index: 2, icon: 'text'}
   ];
 
-  rootPage: any = HomePage;
+  logged: boolean;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen , private repo: AbstractDataRepository) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
+              private repo: AbstractDataRepository) {
+    this.rootPage = HomePage;
+    this.logged = false;
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -41,31 +63,30 @@ export class FoxApp {
   }
 
   openPage(page: PageInterface) {
-    let params = {};
 
-    // the nav component was found using @ViewChild(Nav)
-    // setRoot on the nav to remove previous pages and only have this page
-    // we wouldn't want the back button to show in this scenario
-    if (page.index) {
-      params = { tabIndex: page.index };
-    }
-
-    // If we are already on tabs just change the selected tab
-    // don't setRoot again, this maintains the history stack of the
-    // tabs even if changing them from the menu
-    if (this.nav.getActiveChildNavs().length && page.index != undefined) {
-      this.nav.getActiveChildNavs()[0].select(page.index);
+    if ((this.logged === false) && (page.component === AccountPage)) {
+      this.nav.setRoot(LoginPage).catch((err: any) => {
+        console.log(`Didn't set nav root: ${err}`);
+      });
     } else {
-      // Set the root of the nav with params if it's a tab index
-      this.nav.setRoot(page.name, params).catch((err: any) => {
+      this.nav.setRoot(page.component).catch((err: any) => {
         console.log(`Didn't set nav root: ${err}`);
       });
     }
 
-    if (page.logsOut === true) {
+    /*if (page.logsOut === true) {
       // Give the menu time to close before changing to logged out
-      //this.userData.logout();
-    }
+      this.userData.logout();
+    }*/
+  }
+
+  // Just to check login status
+  // Delete later
+  toggleLogged() {
+    this.logged = !this.logged;
+    this.nav.setRoot(HomePage).catch((err: any) => {
+      console.log(`Didn't set nav root: ${err}`);
+    });
   }
 
 }
