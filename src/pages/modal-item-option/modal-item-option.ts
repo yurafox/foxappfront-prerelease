@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams, ViewController, ToastController} from 'ionic-angular';
 
-import {ItemService} from '../../services/mock-services/item-service';
-
 @Component({
   selector: 'page-modal-item-option',
   templateUrl: 'modal-item-option.html'
@@ -13,7 +11,7 @@ export class ModalItemOptionPage {
 
   quantity: number = 1;
 
-  constructor(public nav: NavController, public itemService: ItemService, public navParams: NavParams,
+  constructor(public nav: NavController, public navParams: NavParams,
               public viewCtrl: ViewController, public toastCtrl: ToastController) {
     this.item = navParams.get('item');
     this.item.option_price = 0;

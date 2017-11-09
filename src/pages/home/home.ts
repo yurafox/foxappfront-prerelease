@@ -2,9 +2,6 @@ import { Component } from '@angular/core';
 import { App, NavController } from 'ionic-angular';
 import {SearchBtnComponent} from '../../components/search-btn/search-btn'
 
-import {CategoryService} from "../../services/mock-services/category-service";
-import {ItemService} from "../../services/mock-services/item-service";
-
 import {CartPage, CategoriesPage, CategoryPage, ItemPage, SearchPage} from "../index";
 
 @Component({
@@ -31,10 +28,10 @@ export class HomePage {
   // list of items
   public items: any;
 
-  constructor(public app: App, public nav: NavController, public categoryService: CategoryService, public itemService: ItemService) {
-    this.categories = categoryService.getAll();
+  constructor(public app: App, public nav: NavController) {
+    this.categories = [];
 
-    this.items = itemService.getAll();
+    this.items = [];
   }
 
   // view categories

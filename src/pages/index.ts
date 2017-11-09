@@ -2,7 +2,6 @@ export * from "./about/about";
 export * from "./about-popover/about-popover";
 export * from "./account/account";
 export * from "./home/home";
-export * from "./orders/orders";
 export * from "./support/support";
 export * from "./login/login";
 export * from "./register/register";

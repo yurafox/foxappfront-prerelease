@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 
-import {CartService} from '../../services/mock-services/cart-service';
 import {HomePage} from "../index";
 
 @Component({
@@ -12,9 +11,9 @@ export class OrderConfirmPage {
   public cart: any;
 
 
-  constructor(public nav: NavController, public cartService: CartService) {
+  constructor(public nav: NavController) {
     // set cart data
-    this.cart = cartService.getAll();
+    this.cart = [];
   }
 
   // place order

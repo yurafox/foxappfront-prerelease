@@ -10,8 +10,6 @@ import {
   Marker
 } from '@ionic-native/google-maps';
 
-import { MapData } from '../../services/mock-services/map-data';
-
 import { Platform } from 'ionic-angular';
 
 
@@ -28,7 +26,7 @@ export class MapPage {
 
   map: GoogleMap;
 
-  constructor(public mapData: MapData, public platform: Platform, private googleMaps: GoogleMaps) {
+  constructor(public platform: Platform, private googleMaps: GoogleMaps) {
   }
 
   ionViewDidLoad() {
