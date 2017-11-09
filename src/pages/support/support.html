@@ -1,0 +1,32 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Поддержка</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <form #submitForm="ngForm" novalidate (ngSubmit)="submit(submitForm)">
+    <ion-list no-lines>
+      <ion-item>
+        <ion-label stacked color="fox">Укажите ваше сообщение ниже</ion-label>
+        <ion-textarea [(ngModel)]="supportMessage" name="supportQuestion" #supportQuestion="ngModel" rows="6"
+                      required></ion-textarea>
+      </ion-item>
+    </ion-list>
+
+    <p ion-text [hidden]="supportQuestion.valid || submitted === false" color="danger" padding-left>
+      Вы не ввели сообщение
+    </p>
+
+    <div padding>
+      <button ion-button block type="submit" color="fox">Отправить</button>
+    </div>
+  </form>
+</ion-content>

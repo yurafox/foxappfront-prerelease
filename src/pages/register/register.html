@@ -1,0 +1,38 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Регистрация</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding class="register">
+  <ion-list class="list-form">
+
+    <ion-item>
+      <ion-input type="text" placeholder="Почтовый адрес"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input type="text" placeholder="Имя"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input type="text" placeholder="Фамилия"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input type="password" placeholder="Пароль"></ion-input>
+    </ion-item>
+
+  </ion-list>
+
+  <button ion-button block color="fox" (click)="register()">Создать аккаунт</button>
+
+  <div class="align-bottom" padding text-center>
+    Уже имеете аккаунт? <span class="bold" (click)="login()">Войти</span>
+  </div>
+</ion-content>

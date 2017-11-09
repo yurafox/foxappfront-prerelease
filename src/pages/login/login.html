@@ -1,0 +1,42 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Вход</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding class="login">
+  <ion-list class="list-form">
+
+    <ion-item>
+      <ion-input type="text" placeholder="Электронная почта"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input type="password" placeholder="Пароль"></ion-input>
+    </ion-item>
+
+  </ion-list>
+
+  <button ion-button block color="fox" (click)="login()">Войти</button>
+
+  <div text-right margin-top margin-bottom (click)="forgotPwd()">Забыли пароль?</div>
+
+  <button ion-button icon-left block color="facebook" class="align-left">
+    <ion-icon name="logo-facebook"></ion-icon>
+    Войти через Facebook
+  </button>
+
+  <button ion-button icon-left block color="light" margin-top class="align-left card">
+    <ion-icon name="logo-google"></ion-icon>
+    <span>Войти через Google</span>
+  </button>
+
+  <div class="align-bottom" padding text-center>
+    Нет аккаунта? <span class="bold" (click)="register()">Зарегистрироваться</span>
+  </div>
+</ion-content>
