@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import {NavController, NavParams} from 'ionic-angular';
+import {HomePage} from '../../pages/home/home';
 
 /**
  * Generated class for the MainToolbarComponent component.
@@ -14,14 +16,15 @@ export class MainToolbarComponent {
 
   text: string;
 
-  constructor() {
-  }
+  constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   goToCart(): void {
     console.log('Go to cart');
   }
 
   goToHome(): void {
-    console.log('Go to home click');
+    if (!(this.navCtrl.getActive().name === 'HomePage')) {
+      this.navCtrl.setRoot(HomePage);
+    }
   }
 }

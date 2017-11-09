@@ -24,7 +24,7 @@ export class CategoriesPage {
   }
 
   onCategoryClick(): void {
-    this.navCtrl.setRoot(CategoryPage, 1, {animate: true, direction: 'forward', duration: 500});
+    this.navCtrl.setRoot(CategoryPage, 1); // {animate: true, direction: 'forward', duration: 500});
     console.log('Category item click');
   }
 
