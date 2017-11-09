@@ -2,18 +2,23 @@ import { NgModule } from '@angular/core';
 import { SearchBtnComponent } from './search-btn/search-btn';
 import {IonicModule} from 'ionic-angular';
 import { MainToolbarComponent } from './main-toolbar/main-toolbar';
+import { ItemComponent } from './item/item';
+import {PipesModule} from '../app/pipe/pipes.module';
 
 @NgModule({
 	declarations: [
 	  SearchBtnComponent,
-    MainToolbarComponent
+    MainToolbarComponent,
+    ItemComponent
   ],
 	imports: [
-    IonicModule
+    IonicModule/*,
+    PipesModule*/
   ],
 	exports: [
 	  SearchBtnComponent,
-    MainToolbarComponent
+    MainToolbarComponent,
+    ItemComponent
   ]
 })
 export class ComponentsModule {}

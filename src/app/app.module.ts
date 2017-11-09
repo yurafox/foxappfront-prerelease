@@ -23,11 +23,10 @@ import {
   CurrencyStore
 } from '../app/service/index';
 
-import {InMemoryWebApiModule} from "angular-in-memory-web-api";
-import {WebApiService} from "./service/webapi/web-api-service";
+import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
+import {WebApiService} from './service/webapi/web-api-service';
 import {RefInjector} from './core/app-core';
 import {ComponentsModule} from '../components/components.module';
-import {SearchBtnComponent} from '../components/search-btn/search-btn';
 import {CategoriesPage} from '../pages/categories/categories';
 import {CategoryPage} from '../pages/category/category';
 
