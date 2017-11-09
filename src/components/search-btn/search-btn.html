@@ -1,17 +1,14 @@
-<div style="border-width: medium; border-color: #ef4123; border-style: solid;">
-<!--
-<div>
--->
-  <ion-toolbar no-border >
+<div id="search-button-div">
+  <ion-toolbar no-border>
     <ion-buttons left>
       <button ion-button (click)="searchByText()">
-        <ion-icon name="search"></ion-icon>
+        <ion-icon name="ios-search"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-input placeholder="Что ищем?" (click)="searchByText()"></ion-input>
+    <ion-input placeholder="Что ищем?" disabled (click)="searchByText()"></ion-input>
     <ion-buttons right>
       <button ion-button icon-only (click)="searchByBarcode()">
-        <ion-icon name="barcode"></ion-icon>
+        <ion-icon name="ios-barcode-outline"></ion-icon>
       </button>
     </ion-buttons>
   </ion-toolbar>

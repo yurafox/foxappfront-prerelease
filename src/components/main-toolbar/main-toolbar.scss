@@ -1,21 +1,23 @@
 #cart-button {
   position: relative;
   width: 42px;
-  top:10px;
+  top:4px;
   right: 1px;
   overflow: visible;
 }
 
 #itemscount-badge {
-  background-color: color($colors, foxprimary);
+  background-color: color($colors, foxbadges);
   position: absolute;
-  top: -12px;
-  right: 9px;
-  border-radius: 0%;
+  top: -7px;
+  right: 0px;
+  border-radius: 100%;
 }
 
 #button-logo {
   position: relative;
   background-color: color($colors, foxprimary);
   top: 3px;
+  height: 14px;
+  width: 116px;
 }

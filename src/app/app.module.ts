@@ -49,21 +49,10 @@ import {
   CurrencyStore
 } from '../app/service/index';
 
-import {InMemoryWebApiModule} from "angular-in-memory-web-api";
-import {WebApiService} from "./service/webapi/web-api-service";
+import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
+import {WebApiService} from './service/webapi/web-api-service';
 import {RefInjector} from './core/app-core';
 import {ComponentsModule} from '../components/components.module';
-import {SearchBtnComponent} from '../components/search-btn/search-btn';
-
-// Previously mocked data
-import {CategoryService} from "../services/mock-services/category-service";
-import {ItemService} from "../services/mock-services/item-service";
-// import {UserService} from "../services/mock-services/user-service";
-import {StoreService} from "../services/mock-services/store-service";
-import {CartService} from "../services/mock-services/cart-service";
-import {OrderService} from "../services/mock-services/order-service";
-import {NewsService} from "../services/mock-services/news-service";
-import {MapData} from "../services/mock-services/map-data";
 
 @NgModule({
   declarations: [
@@ -126,14 +115,7 @@ import {MapData} from "../services/mock-services/map-data";
     StatusBar,
     SplashScreen,
     InAppBrowser,
-    CategoryService,
-    ItemService,
     UserService,
-    StoreService,
-    CartService,
-    OrderService,
-    NewsService,
-    MapData,
     GoogleMaps,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,

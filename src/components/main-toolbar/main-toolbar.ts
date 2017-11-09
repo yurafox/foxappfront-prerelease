@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {NavController} from "ionic-angular";
+import {NavController, NavParams} from "ionic-angular";
 import {CartPage, HomePage} from '../../pages/index';
 
 @Component({
@@ -10,16 +10,16 @@ export class MainToolbarComponent {
 
   text: string;
 
-  constructor(public nav: NavController) {
-  }
+  constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   goToCart(): void {
     console.log('Go to cart');
-    this.nav.setRoot(CartPage);
+    this.navCtrl.setRoot(CartPage);
   }
 
   goToHome(): void {
-    console.log('Go to home click');
-    this.nav.setRoot(HomePage);
+    if (!(this.navCtrl.getActive().name === 'HomePage')) {
+      this.navCtrl.setRoot(HomePage);
+    }
   }
 }
