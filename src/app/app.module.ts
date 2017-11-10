@@ -77,7 +77,18 @@ import {ComponentsModule} from '../components/components.module';
     BrowserModule,
     HttpModule,
     InMemoryWebApiModule.forRoot(WebApiService, {delay: 1000}),
-    IonicModule.forRoot(FoxApp, {}),
+    IonicModule.forRoot(FoxApp, {},{
+      links: [
+        { component: HomePage, name: 'HomePage', segment: 'home'},
+        { component: CategoriesPage, name: 'CategoriesPage', segment: 'categories'},
+        { component: CategoryPage, name: 'CategoryPage', segment: 'category/:categoryId'},
+        { component: MapPage, name: 'Map', segment: 'map' },
+        { component: AboutPage, name: 'About', segment: 'about' },
+        { component: SupportPage, name: 'SupportPage', segment: 'support' },
+        { component: LoginPage, name: 'LoginPage', segment: 'login' },
+        { component: AccountPage, name: 'AccountPage', segment: 'account' }
+      ]
+    }),
     ComponentsModule
   ],
   bootstrap: [IonicApp],
