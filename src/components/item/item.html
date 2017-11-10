@@ -1,18 +1,57 @@
-<div>
-  <div>
-    <img src="assets/imgs/p1.jpg">
-  </div>
-  <div>
-    <label class="name">{{product.name}}</label>
-    <br>
-    {{product.manufacturer.name}}
-    <br>
-    Props String Placeholder
-    <br>
-    Rating {{product.rating}} ({{product.recall}})
-    <br>
-    <b>{{product.price | localeCurrency:userService.currency}}</b>
-    <br>
- </div>
-
-</div>
+<hr>
+<ion-grid class="f-item-props-grid">
+ <ion-row>
+   <ion-col col-auto class="f-item-col-nopadding">
+     <span>Badge placeholder</span>
+     <br>
+     <div>
+       <img class="f-img-item" src="assets/imgs/p1.jpg">
+     </div>
+   </ion-col>
+   <ion-col class="f-item-col-nopadding">
+     <ion-grid class="f-item-props-grid f-item-pops-grid-lr">
+       <ion-row>
+         <ion-col class="f-item-col-padding-bottom">
+           <span>{{product.manufacturer.name}}</span>
+         </ion-col>
+       </ion-row>
+       <ion-row>
+         <ion-col class="f-item-col-padding-bottom">
+           <b>{{product.name}}</b>
+         </ion-col>
+       </ion-row>
+       <ion-row>
+         <ion-col class="f-item-col-padding-bottom">
+           <span>Props String Placeholder</span>
+         </ion-col>
+       </ion-row>
+       <ion-row>
+         <ion-col nowrap class="f-item-col-padding-bottom">
+           <ion-grid class="f-item-props-grid f-item-pops-grid-lr" >
+             <ion-row>
+               <ion-col col-auto class="f-item-col-nopadding">
+                 <rating [(ngModel)]="product.rating"
+                         readOnly="true">
+                 </rating>
+               </ion-col>
+               <ion-col class="f-item-col-nopadding">
+                <span>&nbsp;({{product.recall}})</span>
+               </ion-col>
+             </ion-row>
+          </ion-grid>
+         </ion-col>
+       </ion-row>
+       <ion-row>
+         <ion-col class="f-item-col-padding-bottom">
+           <b>{{product.price | localeCurrency:userService.currency}}</b>
+         </ion-col>
+       </ion-row>
+       <ion-row>
+         <ion-col class="f-item-col-nopadding">
+           <span>On stock placeholder</span>
+         </ion-col>
+       </ion-row>
+     </ion-grid>
+   </ion-col>
+ </ion-row>
+</ion-grid>
