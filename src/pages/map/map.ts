@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 
-import {
+/*import {
   GoogleMaps,
   GoogleMap,
   GoogleMapsEvent,
@@ -8,12 +8,13 @@ import {
   CameraPosition,
   MarkerOptions,
   Marker
-} from '@ionic-native/google-maps';
+} from '@ionic-native/google-maps';*/
 
 import { Platform } from 'ionic-angular';
+import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
 
 
-// declare var google: any;
+declare var google: any;
 
 
 @Component({
@@ -24,14 +25,15 @@ export class MapPage {
 
   @ViewChild('mapCanvas') mapElement: ElementRef;
 
-  map: GoogleMap;
+  // map: GoogleMap;
 
-  constructor(public platform: Platform, private googleMaps: GoogleMaps) {
+  constructor(public platform: Platform, /*private googleMaps: GoogleMaps,*/ private repo: AbstractDataRepository) {
   }
 
   ionViewDidLoad() {
-    this.loadMap();
+    // this.loadMap();
     // TODO: Handle map functionality
+    // TODO: Add cities and markers to repository. FIX IT!
     /*this.mapData.getMap().subscribe((mapData: any) => {
         let mapEle = this.mapElement.nativeElement;
 
@@ -63,7 +65,7 @@ export class MapPage {
       });*/
   }
 
-  loadMap() {
+  /*loadMap() {
 
     let mapOptions: GoogleMapOptions = {
       camera: {
@@ -101,5 +103,5 @@ export class MapPage {
           });
 
       });
-  }
+  }*/
 }

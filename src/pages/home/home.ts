@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { App, NavController } from 'ionic-angular';
 import {SearchBtnComponent} from '../../components/search-btn/search-btn'
 
-import {CartPage, CategoriesPage, CategoryPage, ItemPage} from "../index";
+import {CategoriesPage} from "../index";
 
 @Component({
   selector: 'page-home',
@@ -22,31 +22,13 @@ export class HomePage {
     }
   ];
 
-  // list categories
-  public categories: any;
-
-  // list of items
-  public items: any;
 
   constructor(public app: App, public nav: NavController) {
-    this.categories = [];
-
-    this.items = [];
   }
 
   // view categories
   viewCategories() {
     this.nav.push(CategoriesPage);
-  }
-
-  // view a category
-  viewCategory(catId) {
-    this.nav.push(CategoryPage, {id: catId});
-  }
-
-  // view a item
-  viewItem(itemId) {
-    this.nav.push(ItemPage, {id: itemId})
   }
 
 }
