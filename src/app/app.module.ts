@@ -30,6 +30,8 @@ import {ComponentsModule} from '../components/components.module';
 import {CategoriesPage} from '../pages/categories/categories';
 import {CategoryPage} from '../pages/category/category';
 
+
+
 @NgModule({
   declarations: [
     FoxApp,

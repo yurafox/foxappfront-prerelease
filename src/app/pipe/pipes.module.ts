@@ -12,4 +12,5 @@ import { LocaleCurrencyPipe } from './locale-currency-pipe/locale-currency.pipe'
     LocaleCurrencyPipe
   ]
 })
-export class PipesModule { }
+
+export class PipesModule {}

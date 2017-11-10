@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Product} from '../../app/model/product';
 import {ComponentBase} from '../component-extension/component-base';
 
+
 @Component({
   selector: 'item',
   templateUrl: 'item.html'
