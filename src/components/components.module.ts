@@ -5,6 +5,7 @@ import { MainToolbarComponent } from './main-toolbar/main-toolbar';
 import { ItemComponent } from './item/item';
 import {PipesModule} from '../app/pipe/pipes.module';
 
+
 @NgModule({
 	declarations: [
 	  SearchBtnComponent,
@@ -12,8 +13,8 @@ import {PipesModule} from '../app/pipe/pipes.module';
     ItemComponent
   ],
 	imports: [
-    IonicModule/*,
-    PipesModule*/
+    IonicModule,
+    PipesModule
   ],
 	exports: [
 	  SearchBtnComponent,

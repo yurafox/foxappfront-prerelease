@@ -7,11 +7,16 @@ import {CategoryPage} from '../category/category';
   selector: 'page-categories',
   templateUrl: 'categories.html',
 })
+<<<<<<< HEAD
 export class CategoriesPage {
   // list of categories
   public categories: any;
+=======
+export class CategoriesPage  {
+>>>>>>> fox-app/yurafox
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+
   }
 
   ionViewDidLoad() {

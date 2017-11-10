@@ -27,10 +27,7 @@ import {
   ModalFilterPage,
   ModalItemOptionPage,
   MyOrderPage,
-  OrderConfirmPage,
-  SearchPage,
-  TabAttributePage,
-  TabFilterPage
+  OrderConfirmPage
 } from '../pages/index';
 
 import {AppConstants} from './app-constants';
@@ -54,6 +51,8 @@ import {WebApiService} from './service/webapi/web-api-service';
 import {RefInjector} from './core/app-core';
 import {ComponentsModule} from '../components/components.module';
 
+
+
 @NgModule({
   declarations: [
     FoxApp,
@@ -74,10 +73,7 @@ import {ComponentsModule} from '../components/components.module';
     ModalFilterPage,
     ModalItemOptionPage,
     MyOrderPage,
-    OrderConfirmPage,
-    SearchPage,
-    TabAttributePage,
-    TabFilterPage
+    OrderConfirmPage
   ],
   imports: [
     BrowserModule,
@@ -106,10 +102,7 @@ import {ComponentsModule} from '../components/components.module';
     ModalFilterPage,
     ModalItemOptionPage,
     MyOrderPage,
-    OrderConfirmPage,
-    SearchPage,
-    TabAttributePage,
-    TabFilterPage
+    OrderConfirmPage
   ],
   providers: [
     StatusBar,
