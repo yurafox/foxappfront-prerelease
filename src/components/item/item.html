@@ -7,10 +7,9 @@
     <br>
     {{product.manufacturer.name}}
     <br>
+    Props String Placeholder
     <br>
-    {{product.rating}}
-    <br>
-    {{product.recall}}
+    Rating {{product.rating}} ({{product.recall}})
     <br>
     <b>{{product.price | localeCurrency:userService.currency}}</b>
     <br>
