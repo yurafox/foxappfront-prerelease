@@ -1,5 +1,4 @@
 import {IonicPage, NavController, NavParams, ActionSheetController, ModalController} from 'ionic-angular';
-import {TabFilterPage, TabAttributePage} from "../index";
 import {Component, OnInit} from '@angular/core';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {Product} from '../../app/model/product';

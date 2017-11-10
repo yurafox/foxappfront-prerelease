@@ -24,7 +24,6 @@ import {
   CategoryPage,
   ItemPage,
   MapPage,
-  ModalFilterPage,
   ModalItemOptionPage,
   MyOrderPage,
   OrderConfirmPage
@@ -70,7 +69,6 @@ import {ComponentsModule} from '../components/components.module';
     CategoryPage,
     ItemPage,
     MapPage,
-    ModalFilterPage,
     ModalItemOptionPage,
     MyOrderPage,
     OrderConfirmPage
@@ -99,7 +97,6 @@ import {ComponentsModule} from '../components/components.module';
     CategoryPage,
     ItemPage,
     MapPage,
-    ModalFilterPage,
     ModalItemOptionPage,
     MyOrderPage,
     OrderConfirmPage

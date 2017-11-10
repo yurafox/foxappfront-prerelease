@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { App, NavController } from 'ionic-angular';
 import {SearchBtnComponent} from '../../components/search-btn/search-btn'
 
-import {CartPage, CategoriesPage, CategoryPage, ItemPage, SearchPage} from "../index";
+import {CartPage, CategoriesPage, CategoryPage, ItemPage} from "../index";
 
 @Component({
   selector: 'page-home',
