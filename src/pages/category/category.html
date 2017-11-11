@@ -2,10 +2,11 @@
   <main-toolbar></main-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <ul>
-    <li class="col-xs-12 col-md-4" *ngFor="let productElement of baseProducts">
-      <item [product]="productElement">
+    <li *ngFor="let productElement of baseProducts">
+      <item
+        [product]="productElement">
       </item>
     </li>
   </ul>

@@ -3,6 +3,8 @@ import {Component, OnInit} from '@angular/core';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {Product} from '../../app/model/product';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {QuotationProduct} from "../../app/model/quotation-product";
+import {Manufacturer} from "../../app/model/manufacturer";
 
 /**
  * Generated class for the CategoryPage page.
@@ -29,6 +31,7 @@ export class CategoryPage extends ComponentBase implements OnInit {
   async ngOnInit() {
     super.ngOnInit();
     this.baseProducts = await this.repo.getProducts('mobilnye_telefony.html', true);
+
 
     /*    this.route.params.forEach((params: Params) => {
           let url = params['category'];

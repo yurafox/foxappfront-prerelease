@@ -2,8 +2,9 @@ import { QuotationProduct,
          Product,
          Quotation,
          Supplier,
-         Currency
-       } from '../../../model/index';
+         Currency,
+         Manufacturer
+} from '../../../model/index';
 
 export abstract class AbstractDataRepository {
   public async abstract getProducts(urlQuery: string, cacheForce: boolean): Promise<Product[]>;
@@ -15,5 +16,6 @@ export abstract class AbstractDataRepository {
   public async abstract getQuotationById(quotationId: number): Promise<Quotation>;
   public async abstract getSupplierById(supplierId: number): Promise<Supplier>;
   public async abstract getCurrencyById(currencyId: number): Promise<Currency>;
-
+  public async abstract getManufacturerById(manufacturerId: number): Promise<Manufacturer>;
+  public async abstract getManufacturers(cacheForce: boolean): Promise<Manufacturer[]>;
 }
