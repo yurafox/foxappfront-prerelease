@@ -1,57 +1,49 @@
 <hr>
-<ion-grid class="f-item-props-grid">
- <ion-row>
-   <ion-col col-auto class="f-item-col-nopadding">
-     <span>Badge placeholder</span>
-     <br>
+<ion-grid class="f-item-nopadding-tb" (click)="openItemDetails(product)">
+  <ion-row>
+    <ion-col col-auto no-padding>
+      <span class="f-size-small"></span> <!-- Badge placeholder -->
+    </ion-col>
+  </ion-row>
+  <ion-row>
+   <ion-col col-auto no-padding>
      <div>
-       <img class="f-img-item" src="assets/imgs/p1.jpg">
+       <img class="f-img-item" [src]="product.imageUrl">
      </div>
    </ion-col>
-   <ion-col class="f-item-col-nopadding">
-     <ion-grid class="f-item-props-grid f-item-pops-grid-lr">
+   <ion-col no-padding>
+     <ion-grid class="f-item-nopadding">
        <ion-row>
-         <ion-col class="f-item-col-padding-bottom">
-           <span>{{product.manufacturer.name}}</span>
+         <ion-col no-padding class="f-item-padding-bottom">
+           <span class="f-size-small f-color-secondary">{{product.manufacturer.name}}</span>
          </ion-col>
        </ion-row>
        <ion-row>
-         <ion-col class="f-item-col-padding-bottom">
-           <b>{{product.name}}</b>
+         <ion-col no-padding class="f-item-padding-bottom">
+           {{product.name}}
          </ion-col>
        </ion-row>
        <ion-row>
-         <ion-col class="f-item-col-padding-bottom">
-           <span>Props String Placeholder</span>
+         <ion-col no-padding class="f-item-padding-bottom">
+           <span class="f-size-small f-color-secondary">Props string placeholder</span>
          </ion-col>
        </ion-row>
        <ion-row>
-         <ion-col nowrap class="f-item-col-padding-bottom">
-           <ion-grid class="f-item-props-grid f-item-pops-grid-lr" >
-             <ion-row>
-               <ion-col col-auto class="f-item-col-nopadding">
-                 <rating [(ngModel)]="product.rating"
-                         readOnly="true">
-                 </rating>
-               </ion-col>
-               <ion-col class="f-item-col-nopadding">
-                <span>&nbsp;({{product.recall}})</span>
-               </ion-col>
-             </ion-row>
-          </ion-grid>
+         <ion-col nowrap no-padding class="f-item-padding-bottom">
+           <product-rating [product]=product></product-rating>
          </ion-col>
        </ion-row>
        <ion-row>
-         <ion-col class="f-item-col-padding-bottom">
+         <ion-col no-padding class="f-item-padding-bottom">
            <b>{{product.price | localeCurrency:userService.currency}}</b>
          </ion-col>
        </ion-row>
        <ion-row>
-         <ion-col class="f-item-col-nopadding">
-           <span>On stock placeholder</span>
+         <ion-col no-padding>
+           <span class="f-size-small f-color-secondary">On stock placeholder</span>
          </ion-col>
        </ion-row>
      </ion-grid>
    </ion-col>
- </ion-row>
+  </ion-row>
 </ion-grid>

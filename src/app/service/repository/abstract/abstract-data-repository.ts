@@ -4,8 +4,10 @@ import { QuotationProduct,
          Supplier,
          Currency
        } from '../../../model/index';
+import {ProductReview} from "../../../model/product-review";
 
 export abstract class AbstractDataRepository {
+  public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
   public async abstract getProducts(urlQuery: string, cacheForce: boolean): Promise<Product[]>;
   public async abstract getSuppliers(cacheForce: boolean): Promise<Supplier[]>;
   public async abstract getCurrencies(cacheForce: boolean): Promise<Currency[]>;

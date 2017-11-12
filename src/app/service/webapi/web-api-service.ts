@@ -1,6 +1,24 @@
 import {InMemoryDbService} from 'angular-in-memory-web-api';
 
 export class WebApiService implements InMemoryDbService {
+
+  productReviews = [
+    {id:1, idProduct: 6280637, user: 'Анастасия', reviewDate: new Date(2017, 11, 7), reviewText: 'Пользуюсь телефоном месяц, нареканий на работу нет - красивый, функциональный, быстрый. Но!!! Понадобилась функция NFC, а её не оказалось, хотя в описании на сайте производителя она есть. Как такое может быть?\n' +
+    '\n' +
+    '<b>Минусы:</b> Отсутствие NFC, заявленной производителем.', rating: 3},
+    {id:2, idProduct: 6280637, user: 'богдан зернов', reviewDate: new Date(2017, 4, 8), reviewText: 'Классный аппарат, учитывая его стоимость. Самсунг новинки штампует много и быстро, так что этот джей5 не такой и старый, а по характеристикам очень даже и отличный. Сборка отличная, симпатичный внешне и удобно лежит в руке. Из минусов – мало памяти и слабенькие камеры.\n' +
+    '\n' +
+    'Минусы: мало памяти, камеры так себе', rating: 4},
+    {id:3, idProduct: 6280637, user: 'максим', reviewDate: new Date(2017, 7, 23), reviewText: 'Покупал в начале весны такой аппарат для мамы. Поскольку смартфон для нее первый, то выбирал не сильно навороченный и дорогой. Она быстро со всем разобралась, научил ее как пользоваться. В принципе памяти хоть и ало, но можно карточку всегда поставить. У мамы не игр, не еще какого то хлама не установлено, так что у нее все работает стабильно и не глючит. Для звонков, смс и мессенджеров отличный вариант и батарея при такой нагрузке 2 дня выдерживает точно. А то и больше.\n' +
+    '\n' +
+    'Плюсы: цена, характеристики', rating: 5},
+    {id:4, idProduct: 6294898, user: 'Светлана', reviewDate: new Date(2017, 7, 8),  reviewText: 'Пришло время поменять телефон,был у меня Смартфон HUAWEI Y625 ,отличный телефон,сейчас юзает старший сын, себе же взяла Смартфон HUAWEI Y6 II Dual Sim, неделю он у меня, перед покупкой прочитала кучу отзывов, понравился, о самом телефоне, экран отзывчивый,удобный в руке.Звук как для меня достаточный, слышно даже в шумном автобусе и я и меня слышат хорошо, связь тоже не пропадает,wi-fi ловит быстро, камера делает хорошие снимки, у меня перед HUAWEI была Ленова так фото леновы ужасные, батареи мне хватает на два дня, это при том что говорю много и часто пользуюсь и wi-fi и передачей данных. Телефоном довольна,надеюсь проблем не будет.\n' +
+    '\n' +
+    'Плюсы: Отличный смартфон.\n' +
+    '\n' +
+    'Минусы: Не нашла.', rating: 4}
+  ];
+
   // <editor-fold desc="quotationProducts"
   quotationProducts = [
     {id: 1, idQuotation: 1, idProduct: 6280637, price: 5199.00, maxDeliveryDays: 3, stockQuant: 12},
@@ -106,7 +124,7 @@ export class WebApiService implements InMemoryDbService {
     {
       id: 6280637, name: 'smart/tel SAMSUNG SM-J510H Galaxy J5 Duos ZDD (gold)', price: 5031,
       manufacturer: this.mnf1, props: [this.productPropValue2, this.productPropValue5, this.productPropValue8],
-      imageUrl: '/assets/images/p1.jpg', rating: 1, recall: 1, supplOffers: 3, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p1.jpg', rating: 1, recall: 1, supplOffers: 3, url: 'mobilnye_telefony.html'
     },
     {
       id: 6293680,
@@ -114,7 +132,7 @@ export class WebApiService implements InMemoryDbService {
       price: 330,
       manufacturer: this.mnf2,
       props: [this.productPropValue1, this.productPropValue4, this.productPropValue7, this.productPropValue10],
-      imageUrl: '/assets/images/p2.jpg',
+      imageUrl: 'assets/imgs/p2.jpg',
       rating: 2,
       recall: 2,
       supplOffers: 2,
@@ -123,87 +141,87 @@ export class WebApiService implements InMemoryDbService {
     {
       id: 6294898, name: 'smart/tel HUAWEI Y6II Dual Sim (black)', price: 3899,
       manufacturer: this.mnf3, props: [this.productPropValue3, this.productPropValue6, this.productPropValue9],
-      imageUrl: '/assets/images/p3.jpg', rating: 4, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p3.jpg', rating: 4, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6325585, name: 'smart/tel HUAWEI P8 Lite 2017 Dual Sim (white)', price: 4299,
       manufacturer: this.mnf3, props: [this.productPropValue3, this.productPropValue6, this.productPropValue9],
-      imageUrl: '/assets/images/p4.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p4.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6324182, name: 'smart/tel HUAWEI GR5 2017 (BLN-L21) Dual Sim (grey)', price: 4199,
       manufacturer: this.mnf3, props: [this.productPropValue3, this.productPropValue6, this.productPropValue9],
-      imageUrl: '/assets/images/p5.jpg', rating: 2, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p5.jpg', rating: 2, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6252121, name: 'APPLE iPhone 6s 16GB Space Gray Demo', price: 4999,
       manufacturer: this.mnf4, props: [this.productPropValue1, this.productPropValue7, this.productPropValue9],
-      imageUrl: '/assets/images/p1.jpg', rating: 5, recall: 4, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p1.jpg', rating: 5, recall: 4, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6202929, name: 'smart/tel SAMSUNG SM-N915F Galaxy Note Edge ZWE (white)', price: 4999,
       manufacturer: this.mnf1, props: [this.productPropValue8, this.productPropValue3, this.productPropValue2],
-      imageUrl: '/assets/images/p2.jpg', rating: 5, recall: 5, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p2.jpg', rating: 5, recall: 5, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6324216, name: 'smart/tel SAMSUNG SM-A520F Galaxy A5 2017 Duos ZKD (black)', price: 3899,
       manufacturer: this.mnf1, props: [this.productPropValue9, this.productPropValue1, this.productPropValue4],
-      imageUrl: '/assets/images/p3.jpg', rating: 4, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p3.jpg', rating: 4, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6324213, name: 'smart/tel SAMSUNG SM-A720F Galaxy A7 2017 Duos ZDD (gold)', price: 5031,
       manufacturer: this.mnf1, props: [this.productPropValue6, this.productPropValue2, this.productPropValue4],
-      imageUrl: '/assets/images/p4.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p4.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6161537, name: 'APPLE iPhone 5S 16Gb Space grey', price: 3899,
       manufacturer: this.mnf4, props: [this.productPropValue5, this.productPropValue5, this.productPropValue1],
-      imageUrl: '/assets/images/p5.jpg', rating: 1, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p5.jpg', rating: 1, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6307814, name: 'APPLE iPhone 7 32GB Rose Gold', price: 3899,
       manufacturer: this.mnf4, props: [this.productPropValue4, this.productPropValue9, this.productPropValue5],
-      imageUrl: '/assets/images/p1.jpg', rating: 2, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p1.jpg', rating: 2, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6343804, name: 'smart/tel XIAOMI Redmi 4X 2G/16G (black)', price: 3899,
       manufacturer: this.mnf5, props: [this.productPropValue10, this.productPropValue3, this.productPropValue2],
-      imageUrl: '/assets/images/p2.jpg', rating: 3, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p2.jpg', rating: 3, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6337167, name: 'smart/tel XIAOMI Mi Mix 256GB Black', price: 3899,
       manufacturer: this.mnf5, props: [this.productPropValue7, this.productPropValue7, this.productPropValue10],
-      imageUrl: '/assets/images/p3.jpg', rating: 3, recall: 1, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p3.jpg', rating: 3, recall: 1, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6291460, name: 'smart/tel Lenovo C2 Power Dual Sim (black)', price: 3899,
       manufacturer: this.mnf6, props: [this.productPropValue5, this.productPropValue10, this.productPropValue3],
-      imageUrl: '/assets/images/p4.jpg', rating: 4, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p4.jpg', rating: 4, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6316576, name: 'smart/tel LENOVO K6 Power (K33a42) Dual Sim (grey)', price: 3899,
       manufacturer: this.mnf6, props: [this.productPropValue5, this.productPropValue2, this.productPropValue6],
-      imageUrl: '/assets/images/p5.jpg', rating: 5, recall: 4, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p5.jpg', rating: 5, recall: 4, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6310491, name: 'smart/tel WILEYFOX Swift 2 Plus Dual Sim (Champagne Gold)', price: 3899,
       manufacturer: this.mnf7, props: [this.productPropValue9, this.productPropValue10, this.productPropValue6],
-      imageUrl: '/assets/images/p1.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p1.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6312913, name: 'smart/tel WILEYFOX Swift 2X Dual Sim (Mid Night blue)', price: 3899,
       manufacturer: this.mnf7, props: [this.productPropValue5, this.productPropValue10, this.productPropValue8],
-      imageUrl: '/assets/images/p2.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p2.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6363302, name: 'Телевизор LIBERTON 32HL1HD', price: 4599,
       manufacturer: this.mnf7, props: [this.productPropValue5, this.productPropValue10, this.productPropValue8],
-      imageUrl: '/assets/images/p6.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'led_televizory.html'
+      imageUrl: 'assets/imgs/p6.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'led_televizory.html'
     },
     {
       id: 6322210, name: 'Телевизор BRAVIS LED-22F1000 Smart+T2 black', price: 4699,
       manufacturer: this.mnf7, props: [this.productPropValue5, this.productPropValue10, this.productPropValue8],
-      imageUrl: '/assets/images/p6.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'led_televizory.html'
+      imageUrl: 'assets/imgs/p6.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'led_televizory.html'
     }
   ];
   // </editor-fold>
@@ -236,6 +254,8 @@ export class WebApiService implements InMemoryDbService {
     {id: 6, name: 'Lenovo', paymentMethodId: 3, rating: 2}
   ];
 
+
+
   // </editor-fold>
 
   createDb() {
@@ -244,7 +264,8 @@ export class WebApiService implements InMemoryDbService {
     const mquotation = this.quotations;
     const mcurrencies = this.currencies;
     const msuppliers = this.suppliers;
+    const mproductReviews = this.productReviews;
 
-    return {mquotationProducts, mproducts, mquotation, mcurrencies, msuppliers};
+    return {mquotationProducts, mproducts, mquotation, mcurrencies, msuppliers, mproductReviews};
   }
 }

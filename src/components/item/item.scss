@@ -1,45 +1,29 @@
 item {
+  .f-color-secondary {
+    color: dimgrey;
+  }
+
+  .f-size-small {
+    font-size: 12px;
+  }
+
   .f-img-item {
     width: 100px; height: 100px;  padding: 6px 4px 2px;
   }
 
-  .f-item-col-nopadding {
-    padding-top: 0px;
-    padding-bottom: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
-
-  }
-
-  .f-item-col-padding-bottom {
-    padding-top: 0px;
-    padding-bottom: 5px;
-    padding-left: 0px;
-    padding-right: 0px;
-  }
-
-  .f-item-props-grid {
-    padding-top: 0px;
-    padding-bottom: 0px;
-  }
-
-  .f-item-pops-grid-lr {
-    padding-right: 0px;
-    padding-left: 0px;
-  }
-
-  ul {
+  .f-item-nopadding {
     padding: 0px;
-
-    &.rating li {
-      padding: 0px 0px !important;
-      background: none;
-      color: #ffb400;
-
-      ion-icon {
-        font-size: 12px;
-      }
-    }
   }
+
+  .f-item-padding-bottom {
+    padding-bottom: 2px;
+  }
+
+  .f-item-nopadding-tb {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
 
 }
+

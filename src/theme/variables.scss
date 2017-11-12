@@ -49,7 +49,8 @@ $colors: (
   gray: #999,
   orange: #F44336,
   foxclear: white,
-  foxbadges: coral
+  foxbadges: coral,
+  foxrating: #ffb400
 );
 
 
@@ -102,3 +103,4 @@ $toolbar-wp-active-color: color($colors, fox);
 
 @import "roboto";
 @import "noto-sans";
+

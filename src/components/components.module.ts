@@ -5,14 +5,15 @@ import { MainToolbarComponent } from './main-toolbar/main-toolbar';
 import { ItemComponent } from './item/item';
 import {PipesModule} from '../app/pipe/pipes.module';
 import { Ionic2RatingModule } from 'ionic2-rating';
-
+import { ProductRatingComponent } from './product-rating/product-rating';
 
 
 @NgModule({
 	declarations: [
 	  SearchBtnComponent,
     MainToolbarComponent,
-    ItemComponent
+    ItemComponent,
+    ProductRatingComponent
   ],
 	imports: [
     IonicModule,
@@ -22,7 +23,8 @@ import { Ionic2RatingModule } from 'ionic2-rating';
 	exports: [
 	  SearchBtnComponent,
     MainToolbarComponent,
-    ItemComponent
+    ItemComponent,
+    ProductRatingComponent
   ]
 })
 export class ComponentsModule {}

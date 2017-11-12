@@ -9,7 +9,9 @@ import {
   PropEnumList,
   Quotation,
   Supplier,
-  Currency
+  Currency,
+  ProductReview
+
 } from '../../../model/index';
 
 import {Http, URLSearchParams} from '@angular/http';
@@ -23,6 +25,7 @@ const productsUrl = '/api/mproducts';
 const quotationProductsUrl = '/api/mquotationProducts';
 const quotationsUrl = '/api/mquotation';
 const suppliersUrl = '/api/msuppliers';
+const productReviewsUrl = '/api/mproductReviews';
 
 // </editor-fold
 
@@ -32,6 +35,29 @@ export class AppDataRepository extends AbstractDataRepository {
 
   constructor(private http: Http) {
     super();
+  }
+
+  public async getProductReviewsByProductId(productId: number): Promise<ProductReview[]> {
+    try {
+
+      const response = await this.http.get(productReviewsUrl,
+        {search: this.createSearchParams([{key: 'idProduct', value: productId.toString()}])}).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error('server side status error');
+      }
+      const qProductsRevs = new Array<ProductReview>();
+      if (data != null) {
+        data.forEach((val) => qProductsRevs.push(new ProductReview(val.id, val.idProduct, val.user, val.reviewDate,
+          val.reviewText, val.rating)));
+      }
+      return qProductsRevs;
+
+    } catch (err) {
+      await this.handleError(err);
+    }
+
   }
 
   public async getProducts(urlQuery: string, cacheForce: boolean): Promise<Product[]> {
