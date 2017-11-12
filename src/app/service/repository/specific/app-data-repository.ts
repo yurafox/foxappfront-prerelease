@@ -82,7 +82,7 @@ export class AppDataRepository extends AbstractDataRepository {
             // create current product
             const productItem: Product = new Product(val.id, val.name, val.price,
               new Manufacturer(val.manufacturer.id, val.manufacturer.name),
-              props, val.imageUrl, val.rating, val.recall, val.supplOffers);
+              props, val.imageUrl, val.rating, val.recall, val.supplOffers, val.description);
 
             products.push(productItem);
 
@@ -160,6 +160,7 @@ export class AppDataRepository extends AbstractDataRepository {
           prod.rating = data.rating;
           prod.recall = data.recall;
           prod.supplOffers = data.supplOffers;
+          prod.description = data.description;
 
           // add to cache
           this.cache.Products.Add(id, prod);

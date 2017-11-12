@@ -10,6 +10,7 @@ export class Product {
               public imageUrl?: string,
               public rating: number = 0,
               public recall: number = 0,
-              public supplOffers: number = 1
+              public supplOffers: number = 1,
+              public description?: string
   ) {}
 }
