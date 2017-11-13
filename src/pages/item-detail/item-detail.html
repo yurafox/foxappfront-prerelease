@@ -61,51 +61,65 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-<hr>
-  <ion-grid class="f-item-nopadding-tb f-color-secondary">
-    <ion-row>
-      <ion-col>
-        <h6>About this item</h6>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="product.description">
-      <ion-col>
-        <b>Description</b>
-        <p></p>
-        <div [innerHTML]="product.description | truncate : 200"></div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-grid class="f-item-nopadding-tb f-color-secondary">
-    <ion-row>
-      <ion-col>
-        <b>Features & Details</b>
-        <p></p>
-        <ion-grid no-padding>
-          <ion-row *ngFor="let prop of product.Props">
-            <ion-col style="padding-left: 5px; border: 1px solid #EBEBEC; background-color: #EFEFF0" col-4>
-              {{prop.id_Prop.name}}
-            </ion-col>
-            <ion-col style="padding-left: 5px; border: 1px solid #EBEBEC;" col-8>
-              {{prop.value}}
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
   <hr>
 
-  <button ion-item>
-    Reviews
-  </button>
+
+
+  <ion-grid class="f-item-nopadding-tb f-color-secondary">
+    <ion-row>
+      <ion-col>
+        <span class="f-size-large">About this item</span>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="product.description" >
+      <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
+        <ion-item  detail-push text-wrap class="f-color-secondary">
+          <b class="f-size-larger">Description</b>
+          <div [innerHTML]="product.description | truncate : 250"></div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="product.Props">
+      <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
+        <ion-item  detail-push text-wrap class="f-color-secondary">
+
+          <b class="f-size-larger">Features & Details</b>
+          <p></p>
+          <ion-grid no-padding>
+            <ion-row *ngFor="let prop of product.Props; let i= index">
+              <ion-col style="padding: 5px; border: 1px solid #EBEBEC; background-color: #EFEFF0" col-4 *ngIf="i<3">
+                {{prop.id_Prop.name}}
+              </ion-col>
+              <ion-col style="padding: 5px; border: 1px solid #EBEBEC;" col-8 *ngIf="i<3">
+                {{prop.value}}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          ...
+        </ion-item>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <p></p>
 
   <ion-grid class="f-item-nopadding-tb f-color-secondary" *ngIf="reviews.length >0">
     <ion-row>
       <ion-col>
-        <h6>Reviews</h6>
-        <p></p>
+        <span class="f-size-large">Customer reviews</span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
+        <ion-item  detail-push text-wrap class="f-color-secondary">
+          <b class="f-size-larger">{{reviews.length}} customer reviews</b><br>
+          <rating  style="display: inline-block;" [(ngModel)]="product.rating"
+                   readOnly="true">
+          </rating>
+
+        </ion-item>
       </ion-col>
     </ion-row>
     <ion-row *ngFor="let rev of reviews">

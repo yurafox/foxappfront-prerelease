@@ -1,7 +1,18 @@
 page-item-detail {
 
+  .item-md.item-block .item-inner {
+    border-bottom: 0px;
+  }
+
   .f-color-secondary {
     color: dimgrey;
+  }
+
+  .f-size-large {
+    font-size: 18px;
+  }
+  .f-size-larger {
+    font-size: 16px;
   }
 
   .f-size-medium {
