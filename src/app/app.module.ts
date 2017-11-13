@@ -3,9 +3,10 @@ import { ErrorHandler, NgModule, Injector } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import {HttpModule} from "@angular/http";
-import {InAppBrowser} from "@ionic-native/in-app-browser";
-import {GoogleMaps} from "@ionic-native/google-maps";
+import {HttpModule} from '@angular/http';
+import {InAppBrowser} from '@ionic-native/in-app-browser';
+import {GoogleMaps} from '@ionic-native/google-maps';
+import { Ionic2RatingModule } from 'ionic2-rating';
 
 import { FoxApp } from './app.component';
 
@@ -26,7 +27,8 @@ import {
   MapPage,
   ModalItemOptionPage,
   MyOrderPage,
-  OrderConfirmPage
+  OrderConfirmPage,
+  ItemDetailPage
 } from '../pages/index';
 
 import {AppConstants} from './app-constants';
@@ -49,6 +51,7 @@ import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
 import {WebApiService} from './service/webapi/web-api-service';
 import {RefInjector} from './core/app-core';
 import {ComponentsModule} from '../components/components.module';
+import {PipesModule} from "./pipe/pipes.module";
 
 
 
@@ -71,14 +74,28 @@ import {ComponentsModule} from '../components/components.module';
     MapPage,
     ModalItemOptionPage,
     MyOrderPage,
-    OrderConfirmPage
+    OrderConfirmPage,
+    ItemDetailPage
   ],
   imports: [
     BrowserModule,
     HttpModule,
     InMemoryWebApiModule.forRoot(WebApiService, {delay: 1000}),
-    IonicModule.forRoot(FoxApp, {}),
-    ComponentsModule
+    IonicModule.forRoot(FoxApp, {},{
+      links: [
+        { component: HomePage, name: 'HomePage', segment: 'home'},
+        { component: CategoriesPage, name: 'CategoriesPage', segment: 'categories'},
+        { component: CategoryPage, name: 'CategoryPage', segment: 'category/:categoryId'},
+        { component: MapPage, name: 'Map', segment: 'map' },
+        { component: AboutPage, name: 'About', segment: 'about' },
+        { component: SupportPage, name: 'SupportPage', segment: 'support' },
+        { component: LoginPage, name: 'LoginPage', segment: 'login' },
+        { component: AccountPage, name: 'AccountPage', segment: 'account' }
+      ]
+    }),
+    ComponentsModule,
+    Ionic2RatingModule,
+    PipesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -95,6 +112,7 @@ import {ComponentsModule} from '../components/components.module';
     CartPage,
     CategoriesPage,
     CategoryPage,
+    ItemDetailPage,
     ItemPage,
     MapPage,
     ModalItemOptionPage,

@@ -1,0 +1,20 @@
+product-rating {
+
+
+  ul {
+    padding: 0px;
+    -webkit-margin-before: 0em;
+    -webkit-margin-after: 0em;
+
+    &.rating li {
+      padding: 0px 0px !important;
+      background: none;
+      color: color($colors, foxrating);
+
+      ion-icon {
+        font-size: 12px;
+      }
+    }
+  }
+
+}

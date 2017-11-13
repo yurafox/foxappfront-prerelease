@@ -9,7 +9,9 @@ import {
   PropEnumList,
   Quotation,
   Supplier,
-  Currency
+  Currency,
+  ProductReview
+
 } from '../../../model/index';
 
 import {Http, URLSearchParams} from '@angular/http';
@@ -23,7 +25,8 @@ const productsUrl = '/api/mproducts';
 const quotationProductsUrl = '/api/mquotationProducts';
 const quotationsUrl = '/api/mquotation';
 const suppliersUrl = '/api/msuppliers';
-
+const productReviewsUrl = '/api/mproductReviews';
+const manufacturersUrl = '/api/manufacturers';
 // </editor-fold
 
 @Injectable()
@@ -32,6 +35,29 @@ export class AppDataRepository extends AbstractDataRepository {
 
   constructor(private http: Http) {
     super();
+  }
+
+  public async getProductReviewsByProductId(productId: number): Promise<ProductReview[]> {
+    try {
+
+      const response = await this.http.get(productReviewsUrl,
+        {search: this.createSearchParams([{key: 'idProduct', value: productId.toString()}])}).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error('server side status error');
+      }
+      const qProductsRevs = new Array<ProductReview>();
+      if (data != null) {
+        data.forEach((val) => qProductsRevs.push(new ProductReview(val.id, val.idProduct, val.user, val.reviewDate,
+          val.reviewText, val.rating)));
+      }
+      return qProductsRevs;
+
+    } catch (err) {
+      await this.handleError(err);
+    }
+
   }
 
   public async getProducts(urlQuery: string, cacheForce: boolean): Promise<Product[]> {
@@ -54,9 +80,8 @@ export class AppDataRepository extends AbstractDataRepository {
             }
 
             // create current product
-            const productItem: Product = new Product(val.id, val.name, val.price,
-              new Manufacturer(val.manufacturer.id, val.manufacturer.name),
-              props, val.imageUrl, val.rating, val.recall, val.supplOffers);
+            const productItem: Product = new Product(val.id, val.name, val.price, val.manufacturerId,
+              props, val.imageUrl, val.rating, val.recall, val.supplOffers, val.description, val.slideImageUrls);
 
             products.push(productItem);
 
@@ -128,12 +153,14 @@ export class AppDataRepository extends AbstractDataRepository {
           prod.id = data.id;
           prod.name = data.name;
           prod.price = data.price;
-          prod.manufacturer = new Manufacturer(data.manufacturer.id, data.manufacturer.name);
+          prod.manufacturerId = data.manufacturerId;
           prod.Props = props;
           prod.imageUrl = data.imageUrl;
           prod.rating = data.rating;
           prod.recall = data.recall;
           prod.supplOffers = data.supplOffers;
+          prod.description = data.description;
+          prod.slideImageUrls = data.slideImageUrls;
 
           // add to cache
           this.cache.Products.Add(id, prod);
@@ -296,6 +323,70 @@ export class AppDataRepository extends AbstractDataRepository {
       // </editor-fold>
       else {
         return this.cache.Currency.Values();
+      }
+    } catch (err) {
+      await this.handleError(err);
+    }
+  }
+
+  public async getManufacturerById(manufacturerId: number): Promise<Manufacturer> {
+    try {
+      const manufacturer: Manufacturer = new Manufacturer();
+      const id: string = manufacturerId.toString();
+      // <editor-fold desc = "id in cache is empty"
+      if (this.isEmpty(this.cache.Manufacturer.Item(id))) {
+        this.cache.Manufacturer.Add(id, manufacturer);
+        const response = await this.http.get(manufacturersUrl + `/${id}`).toPromise();
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error('server side status error');
+        }
+
+        if (data != null) {
+          manufacturer.id = data.id;
+          manufacturer.name = data.name;
+          this.cache.Manufacturer.Add(id, manufacturer);
+        }
+        return manufacturer;
+      }
+      // </editor-fold>
+
+      else {
+        return this.cache.Manufacturer.Item(id);
+      }
+
+    } catch (err) {
+      await this.handleError(err);
+    }
+  }
+
+  public async getManufacturers(cacheForce: boolean): Promise<Manufacturer[]> {
+    try {
+      // <editor-fold desc = "cashe is empty or cache force active">
+      if (this.cache.Manufacturer.Count() === 0 || cacheForce === true) {
+        const response = await this.http.get(manufacturersUrl).toPromise();
+
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error('server side status error');
+        }
+        const manufacturers = new Array<Manufacturer>();
+        if (data != null) {
+          data.forEach((val) => {
+            // create current manufacturer
+            const manufacturerItem: Manufacturer = new Manufacturer(val.id, val.name);
+
+            manufacturers.push(manufacturerItem);
+
+            // add manufacturer to cashe
+            this.cache.Manufacturer.Add(manufacturerItem.id.toString(), manufacturerItem);
+          });
+        }
+        return manufacturers;
+      }
+      // </editor-fold>
+      else {
+        return this.cache.Manufacturer.Values();
       }
     } catch (err) {
       await this.handleError(err);

@@ -1,19 +1,49 @@
-<div>
-  <div>
-    <img src="assets/imgs/p1.jpg">
-  </div>
-  <div>
-    <label class="name">{{product.name}}</label>
-    <br>
-    {{product.manufacturer.name}}
-    <br>
-    <br>
-    {{product.rating}}
-    <br>
-    {{product.recall}}
-    <br>
-    <b>{{product.price | localeCurrency:userService.currency}}</b>
-    <br>
- </div>
-
-</div>
+<hr>
+<ion-grid class="f-item-nopadding-tb" (click)="openItemDetails(product)">
+  <ion-row>
+    <ion-col col-auto no-padding>
+      <span class="f-size-small"></span> <!-- Badge placeholder -->
+    </ion-col>
+  </ion-row>
+  <ion-row>
+   <ion-col col-auto no-padding>
+     <div>
+       <img class="f-img-item" [src]="product.imageUrl">
+     </div>
+   </ion-col>
+   <ion-col no-padding>
+     <ion-grid class="f-item-nopadding">
+       <ion-row>
+         <ion-col no-padding class="f-item-padding-bottom">
+           <span class="f-size-small f-color-secondary">{{product?.manufacturer?.name}}</span>
+         </ion-col>
+       </ion-row>
+       <ion-row>
+         <ion-col no-padding class="f-item-padding-bottom">
+           {{product.name}}
+         </ion-col>
+       </ion-row>
+       <ion-row>
+         <ion-col no-padding class="f-item-padding-bottom">
+           <span class="f-size-small f-color-secondary">Props string placeholder</span>
+         </ion-col>
+       </ion-row>
+       <ion-row>
+         <ion-col nowrap no-padding class="f-item-padding-bottom">
+           <product-rating [product]=product></product-rating>
+         </ion-col>
+       </ion-row>
+       <ion-row>
+         <ion-col no-padding class="f-item-padding-bottom">
+           <b>{{product.price | localeCurrency:userService.currency}}</b>
+         </ion-col>
+       </ion-row>
+       <ion-row>
+         <ion-col no-padding>
+           <span class="f-size-small f-color-secondary">On stock placeholder</span>
+         </ion-col>
+       </ion-row>
+     </ion-grid>
+   </ion-col>
+  </ion-row>
+</ion-grid>

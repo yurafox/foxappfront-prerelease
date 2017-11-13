@@ -1,6 +1,13 @@
-page-category,
-.category {
+page-category {
+
+  ion-slides {
+    height: auto;
+  }
+
   ul {
     list-style-type: none;
+    margin: 0;
+    padding: 0;
   }
+
 }

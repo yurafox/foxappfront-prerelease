@@ -2,10 +2,16 @@
   <main-toolbar></main-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
+  <ion-slides pager autoplay="3000" loop="true">
+    <ion-slide *ngFor="let slide of slides">
+      <img src="{{ slide.src }}" alt="">
+    </ion-slide>
+  </ion-slides>
   <ul>
-    <li class="col-xs-12 col-md-4" *ngFor="let productElement of baseProducts">
-      <item [product]="productElement">
+    <li *ngFor="let productElement of baseProducts">
+      <item
+        [product]="productElement">
       </item>
     </li>
   </ul>
