@@ -31,17 +31,20 @@ export class WebApiService implements InMemoryDbService {
   ];
   // </editor-fold>
 
-  // <editor-fold desc="products">
-  // <editor-fold desc='manufacturer'
-  private mnf1 = {id: 220, name: 'SAMSUNG'};
-  private mnf2 = {id: 109483, name: 'BRAVIS'};
-  private mnf3 = {id: 114733, name: 'HUAWEI'};
-  private mnf4 = {id: 5581, name: 'APPLE'};
-  private mnf5 = {id: 118920, name: 'XIAOMI'};
-  private mnf6 = {id: 107996, name: 'LENOVO'};
-  private mnf7 = {id: 120815, name: 'WILEYFOX'};
+  // <editor-fold desc="manufacturers"
+  manufacturers=[
+    {id: 220, name: 'SAMSUNG'},
+    {id: 109483, name: 'BRAVIS'},
+    {id: 114733, name: 'HUAWEI'},
+    {id: 5581, name: 'APPLE'},
+    {id: 118920, name: 'XIAOMI'},
+    {id: 107996, name: 'LENOVO'},
+    {id: 120815, name: 'WILEYFOX'}
+  ];
   // </editor-fold>
-  // <editor-fold desc='prop'>
+
+  // <editor-fold desc="products">
+    // <editor-fold desc='prop'>
   private prop1 = {id: 7, name: 'Количество SIM', prop_type: 2, is_Multi_Select: true, url: null, predestination: true};
   private prop2 = {
     id: 12,
@@ -68,7 +71,7 @@ export class WebApiService implements InMemoryDbService {
     predestination: false
   };
   // </editor-fold>
-  // <editor-fold desc='propEnumList'
+    // <editor-fold desc='propEnumList'
   private propEnumList1 = {id: 17, id_Prop: this.prop2, name: '16 Гб', list_Index: 100, bit_Index: null, url: null};
   private propEnumList2 = {id: 18, id_Prop: this.prop2, name: '32 Мб', list_Index: 50, bit_Index: null, url: null};
   private propEnumList3 = {id: 19, id_Prop: this.prop3, name: '1.8"', list_Index: 50, bit_Index: null, url: null};
@@ -78,7 +81,7 @@ export class WebApiService implements InMemoryDbService {
   private propEnumList7 = {id: 5, id_Prop: this.prop4, name: 'UK', list_Index: 0, bit_Index: null, url: null};
   private propEnumList8 = {id: 6, id_Prop: this.prop4, name: 'US', list_Index: 2, bit_Index: null, url: null};
   // </editor-fold>
-  // <editor-fold desc='productPropValue'
+    // <editor-fold desc='productPropValue'
   private productPropValue1 = {
     id: 1, id_Product: 6293680, id_Prop: this.prop2, prop_Value_Str: null,
     prop_Value_Number: null, prop_Value_Bool: null, prop_Value_Enum: this.propEnumList1, prop_Value_Long: null
@@ -123,7 +126,7 @@ export class WebApiService implements InMemoryDbService {
   products = [
     {
       id: 6280637, name: 'smart/tel SAMSUNG SM-J510H Galaxy J5 Duos ZDD (gold)', price: 5031,
-      manufacturer: this.mnf1, props: [this.productPropValue2, this.productPropValue5, this.productPropValue8],
+      manufacturer: 220, props: [this.productPropValue2, this.productPropValue5, this.productPropValue8],
       imageUrl: 'assets/imgs/p1.jpg', rating: 1, recall: 1, supplOffers: 3, url: 'mobilnye_telefony.html',
       description: 'Этот смартфон порадует обладателя своей функциональностью и стильным дизайном. Благодаря эргономичной конструкции модель <b>SAMSUNG SM-J510H Galaxy J5 Duos ZDD</b> комфортно лежит в ладони, а ее компактные габариты позволяют управлять устройством одной рукой. Смартфон оснащен большим сенсорным экраном <b>Super AMOLED</b> диагональю 5.2 дюйма, который способен передать до 16 миллионов цветов и оттенков.<br><br>Устройство с легкостью справиться с поставленными задачами благодаря мощному <b>4-ядерному процессору</b> с тактовой частотой 1.2 ГГц. Смартфон получил <b>2&nbsp;Гб оперативной памяти</b>, которой вполне достаточно для использования современных мультимедийных приложений. Встроенные <b>Wi-Fi и Bluetooth</b> модули обеспечат беспроводную передачу данных и подключение к сети Интернет. Стоит отметить, что модель комплектуется аккумулятором, ёмкость которого составляет <b>3100&nbsp;мАч</b>. Он обеспечит многочасовую, бесперебойную работу устройства без необходимости подзарядки. Для хранения музыки, фильмов, фотографий и других файлов предусмотрен накопитель объемом <b>16&nbsp;Гб</b>.\n' +
       '<p>Запечатлейте интересные моменты жизни в невероятном качестве с помощью камеры с разрешением матрицы <b>13 Мп</b> и объективом f/1.9. Для получения ярких селфи, групповых снимков и участия в видеочатах предусмотрена фронтальная камера с разрешением <b>5 Мп</b>. Функция автофокус и наличие вспышки обеспечат качественными фотографиями даже в условиях низкой освещенности.</p>',
@@ -137,7 +140,7 @@ export class WebApiService implements InMemoryDbService {
       id: 6293680,
       name: 'Mob/tel BRAVIS F181 BELL (black)',
       price: 330,
-      manufacturer: this.mnf2,
+      manufacturerId: 109483,
       props: [this.productPropValue1, this.productPropValue4, this.productPropValue7, this.productPropValue10],
       imageUrl: 'assets/imgs/p2.jpg',
       rating: 2,
@@ -147,7 +150,7 @@ export class WebApiService implements InMemoryDbService {
     },
     {
       id: 6294898, name: 'smart/tel HUAWEI Y6II Dual Sim (black)', price: 3899,
-      manufacturer: this.mnf3, props: [this.productPropValue3, this.productPropValue6, this.productPropValue9],
+      manufacturer: 114733, props: [this.productPropValue3, this.productPropValue6, this.productPropValue9],
       imageUrl: 'assets/imgs/p3.jpg', rating: 4, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html',
       description: '<h2>Описание HUAWEI Y6II Dual Sim (black)</h2>\n' +
       '<h3>Производительность и память</h3>\n' +
@@ -165,83 +168,83 @@ export class WebApiService implements InMemoryDbService {
     },
     {
       id: 6325585, name: 'smart/tel HUAWEI P8 Lite 2017 Dual Sim (white)', price: 4299,
-      manufacturer: this.mnf3, props: [this.productPropValue3, this.productPropValue6, this.productPropValue9],
-      imageUrl: 'assets/imgs/p4.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
+      manufacturerId: 114733, props: [this.productPropValue3, this.productPropValue6, this.productPropValue9],
+      imageUrl: '/assets/images/p4.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6324182, name: 'smart/tel HUAWEI GR5 2017 (BLN-L21) Dual Sim (grey)', price: 4199,
-      manufacturer: this.mnf3, props: [this.productPropValue3, this.productPropValue6, this.productPropValue9],
-      imageUrl: 'assets/imgs/p5.jpg', rating: 2, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      manufacturerId: 114733, props: [this.productPropValue3, this.productPropValue6, this.productPropValue9],
+      imageUrl: '/assets/images/p5.jpg', rating: 2, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6252121, name: 'APPLE iPhone 6s 16GB Space Gray Demo', price: 4999,
-      manufacturer: this.mnf4, props: [this.productPropValue1, this.productPropValue7, this.productPropValue9],
-      imageUrl: 'assets/imgs/p1.jpg', rating: 5, recall: 4, supplOffers: 2, url: 'mobilnye_telefony.html'
+      manufacturerId: 5581, props: [this.productPropValue1, this.productPropValue7, this.productPropValue9],
+      imageUrl: '/assets/images/p1.jpg', rating: 5, recall: 4, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6202929, name: 'smart/tel SAMSUNG SM-N915F Galaxy Note Edge ZWE (white)', price: 4999,
-      manufacturer: this.mnf1, props: [this.productPropValue8, this.productPropValue3, this.productPropValue2],
-      imageUrl: 'assets/imgs/p2.jpg', rating: 5, recall: 5, supplOffers: 2, url: 'mobilnye_telefony.html'
+      manufacturerId: 5581, props: [this.productPropValue8, this.productPropValue3, this.productPropValue2],
+      imageUrl: '/assets/images/p2.jpg', rating: 5, recall: 5, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6324216, name: 'smart/tel SAMSUNG SM-A520F Galaxy A5 2017 Duos ZKD (black)', price: 3899,
-      manufacturer: this.mnf1, props: [this.productPropValue9, this.productPropValue1, this.productPropValue4],
-      imageUrl: 'assets/imgs/p3.jpg', rating: 4, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      manufacturerId: 220, props: [this.productPropValue9, this.productPropValue1, this.productPropValue4],
+      imageUrl: '/assets/images/p3.jpg', rating: 4, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6324213, name: 'smart/tel SAMSUNG SM-A720F Galaxy A7 2017 Duos ZDD (gold)', price: 5031,
-      manufacturer: this.mnf1, props: [this.productPropValue6, this.productPropValue2, this.productPropValue4],
-      imageUrl: 'assets/imgs/p4.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
+      manufacturerId: 220, props: [this.productPropValue6, this.productPropValue2, this.productPropValue4],
+      imageUrl: '/assets/images/p4.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6161537, name: 'APPLE iPhone 5S 16Gb Space grey', price: 3899,
-      manufacturer: this.mnf4, props: [this.productPropValue5, this.productPropValue5, this.productPropValue1],
-      imageUrl: 'assets/imgs/p5.jpg', rating: 1, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      manufacturerId: 5581, props: [this.productPropValue5, this.productPropValue5, this.productPropValue1],
+      imageUrl: '/assets/images/p5.jpg', rating: 1, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6307814, name: 'APPLE iPhone 7 32GB Rose Gold', price: 3899,
-      manufacturer: this.mnf4, props: [this.productPropValue4, this.productPropValue9, this.productPropValue5],
-      imageUrl: 'assets/imgs/p1.jpg', rating: 2, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      manufacturerId: 5581, props: [this.productPropValue4, this.productPropValue9, this.productPropValue5],
+      imageUrl: '/assets/images/p1.jpg', rating: 2, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6343804, name: 'smart/tel XIAOMI Redmi 4X 2G/16G (black)', price: 3899,
-      manufacturer: this.mnf5, props: [this.productPropValue10, this.productPropValue3, this.productPropValue2],
-      imageUrl: 'assets/imgs/p2.jpg', rating: 3, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      manufacturerId: 118920, props: [this.productPropValue10, this.productPropValue3, this.productPropValue2],
+      imageUrl: '/assets/images/p2.jpg', rating: 3, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6337167, name: 'smart/tel XIAOMI Mi Mix 256GB Black', price: 3899,
-      manufacturer: this.mnf5, props: [this.productPropValue7, this.productPropValue7, this.productPropValue10],
-      imageUrl: 'assets/imgs/p3.jpg', rating: 3, recall: 1, supplOffers: 2, url: 'mobilnye_telefony.html'
+      manufacturerId: 118920, props: [this.productPropValue7, this.productPropValue7, this.productPropValue10],
+      imageUrl: '/assets/images/p3.jpg', rating: 3, recall: 1, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6291460, name: 'smart/tel Lenovo C2 Power Dual Sim (black)', price: 3899,
-      manufacturer: this.mnf6, props: [this.productPropValue5, this.productPropValue10, this.productPropValue3],
-      imageUrl: 'assets/imgs/p4.jpg', rating: 4, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      manufacturerId: 107996, props: [this.productPropValue5, this.productPropValue10, this.productPropValue3],
+      imageUrl: '/assets/images/p4.jpg', rating: 4, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6316576, name: 'smart/tel LENOVO K6 Power (K33a42) Dual Sim (grey)', price: 3899,
-      manufacturer: this.mnf6, props: [this.productPropValue5, this.productPropValue2, this.productPropValue6],
-      imageUrl: 'assets/imgs/p5.jpg', rating: 5, recall: 4, supplOffers: 2, url: 'mobilnye_telefony.html'
+      manufacturerId: 107996, props: [this.productPropValue5, this.productPropValue2, this.productPropValue6],
+      imageUrl: '/assets/images/p5.jpg', rating: 5, recall: 4, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6310491, name: 'smart/tel WILEYFOX Swift 2 Plus Dual Sim (Champagne Gold)', price: 3899,
-      manufacturer: this.mnf7, props: [this.productPropValue9, this.productPropValue10, this.productPropValue6],
-      imageUrl: 'assets/imgs/p1.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
+      manufacturerId: 120815, props: [this.productPropValue9, this.productPropValue10, this.productPropValue6],
+      imageUrl: '/assets/images/p1.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6312913, name: 'smart/tel WILEYFOX Swift 2X Dual Sim (Mid Night blue)', price: 3899,
-      manufacturer: this.mnf7, props: [this.productPropValue5, this.productPropValue10, this.productPropValue8],
-      imageUrl: 'assets/imgs/p2.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'mobilnye_telefony.html'
+      manufacturerId: 120815, props: [this.productPropValue5, this.productPropValue10, this.productPropValue8],
+      imageUrl: '/assets/images/p2.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6363302, name: 'Телевизор LIBERTON 32HL1HD', price: 4599,
-      manufacturer: this.mnf7, props: [this.productPropValue5, this.productPropValue10, this.productPropValue8],
-      imageUrl: 'assets/imgs/p6.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'led_televizory.html'
+      manufacturerId: 120815, props: [this.productPropValue5, this.productPropValue10, this.productPropValue8],
+      imageUrl: '/assets/images/p6.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'led_televizory.html'
     },
     {
       id: 6322210, name: 'Телевизор BRAVIS LED-22F1000 Smart+T2 black', price: 4699,
-      manufacturer: this.mnf7, props: [this.productPropValue5, this.productPropValue10, this.productPropValue8],
-      imageUrl: 'assets/imgs/p6.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'led_televizory.html'
+      manufacturerId: 120815, props: [this.productPropValue5, this.productPropValue10, this.productPropValue8],
+      imageUrl: '/assets/images/p6.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'led_televizory.html'
     }
   ];
   // </editor-fold>
@@ -285,7 +288,7 @@ export class WebApiService implements InMemoryDbService {
     const mcurrencies = this.currencies;
     const msuppliers = this.suppliers;
     const mproductReviews = this.productReviews;
-
-    return {mquotationProducts, mproducts, mquotation, mcurrencies, msuppliers, mproductReviews};
+    const manufacturers = this.manufacturers;
+    return {mquotationProducts, mproducts, mquotation, mcurrencies, msuppliers, mproductReviews,manufacturers};
   }
 }
