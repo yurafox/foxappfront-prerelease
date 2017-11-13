@@ -11,6 +11,7 @@ export class Product {
               public rating: number = 0,
               public recall: number = 0,
               public supplOffers: number = 1,
-              public description?: string
+              public description?: string,
+              public slideImageUrls?: string[]
   ) {}
 }

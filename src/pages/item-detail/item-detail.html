@@ -19,8 +19,16 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col text-center>
+
+      <ion-col text-center *ngIf="!product.slideImageUrls">
         <img class="f-img-item-lg" [src]="product.imageUrl">
+      </ion-col>
+      <ion-col text-center *ngIf="product.slideImageUrls">
+        <ion-slides pager >
+          <ion-slide *ngFor="let slide of product.slideImageUrls">
+            <img src="{{ slide }}" alt="">
+          </ion-slide>
+        </ion-slides>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -64,7 +72,7 @@
       <ion-col>
         <b>Description</b>
         <p></p>
-        <div [innerHTML]="product.description"></div>
+        <div [innerHTML]="product.description | truncate : 200"></div>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -88,7 +96,12 @@
     </ion-row>
   </ion-grid>
   <hr>
-  <ion-grid class="f-item-nopadding-tb f-color-secondary">
+
+  <button ion-item>
+    Reviews
+  </button>
+
+  <ion-grid class="f-item-nopadding-tb f-color-secondary" *ngIf="reviews.length >0">
     <ion-row>
       <ion-col>
         <h6>Reviews</h6>
