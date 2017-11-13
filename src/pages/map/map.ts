@@ -1,5 +1,6 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import {Component, ViewChild, ElementRef} from '@angular/core';
 
+// Native GMap imports
 /*import {
   GoogleMaps,
   GoogleMap,
@@ -10,61 +11,80 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
   Marker
 } from '@ionic-native/google-maps';*/
 
-import { Platform } from 'ionic-angular';
-import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
-
+import {Platform} from 'ionic-angular';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {MapMarker} from "../../app/model/index";
+import {ComponentBase} from "../../components/component-extension/component-base";
 
 declare var google: any;
-
 
 @Component({
   selector: 'page-map',
   templateUrl: 'map.html'
 })
-export class MapPage {
+export class MapPage extends ComponentBase {
 
   @ViewChild('mapCanvas') mapElement: ElementRef;
 
   // map: GoogleMap;
 
+  markersArr: Array<{ id: number, markers: MapMarker[] }>;
+
+  options: any;
+
   constructor(public platform: Platform, /*private googleMaps: GoogleMaps,*/ private repo: AbstractDataRepository) {
+    super();
   }
 
-  ionViewDidLoad() {
-    // this.loadMap();
-    // TODO: Handle map functionality
-    // TODO: Add cities and markers to repository. FIX IT!
-    /*this.mapData.getMap().subscribe((mapData: any) => {
-        let mapEle = this.mapElement.nativeElement;
+  async ionViewDidLoad() {
+    // this.loadMap(); // for Ionic Native GMap
 
-        let map = new google.maps.Map(mapEle, {
-          center: mapData.find((d: any) => d.center),
-          zoom: 10
+    this.markersArr = await this.repo.getFoxMapMarkers();
+
+    this.options = {
+      center: this.markersArr[22].markers[0].position,
+      zoom: 10
+    };
+
+    let mapEle = this.mapElement.nativeElement;
+
+    let map = new google.maps.Map(mapEle, this.options);
+
+    this.markersArr.forEach((markerArr) => {
+      markerArr.markers.forEach((markerData) => {
+        let infoWindow = new google.maps.InfoWindow({
+          content: `<h5>${markerData.title}</h5>`
         });
 
-        mapData.forEach((markerData: any) => {
-          let infoWindow = new google.maps.InfoWindow({
-            content: `<h5>${markerData.title}</h5>`
-          });
-
-          let marker = new google.maps.Marker({
-            position: markerData,
-            map: map,
-            title: markerData.title
-          });
-
-          marker.addListener('click', () => {
-            infoWindow.open(map, marker);
-          });
+        let marker = new google.maps.Marker({
+          position: markerData.position,
+          map: map,
+          title: markerData.title
         });
 
-        google.maps.event.addListenerOnce(map, 'idle', () => {
-          mapEle.classList.add('show-map');
+        // center to the marker and show info on click
+        marker.addListener('click', () => {
+          infoWindow.open(map, marker);
+          map.panTo(marker.getPosition());
+          setTimeout(() => { infoWindow.close(); }, 5000);
         });
 
-      });*/
+        // zoom to the marker on double click
+        marker.addListener('dblclick', () => {
+          infoWindow.open(map, marker);
+          map.panTo(marker.getPosition());
+          map.setZoom(17);
+          map.setCenter(marker.getPosition());
+        });
+      })
+    });
+
+    google.maps.event.addListenerOnce(map, 'idle', () => {
+      mapEle.classList.add('show-map');
+    });
   }
 
+  // Ionic Native GMap
   /*loadMap() {
 
     let mapOptions: GoogleMapOptions = {

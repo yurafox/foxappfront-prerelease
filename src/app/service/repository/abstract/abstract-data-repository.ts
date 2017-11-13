@@ -3,7 +3,9 @@ import { QuotationProduct,
          Quotation,
          Supplier,
          Currency,
-          Manufacturer
+         Manufacturer,
+         City,
+         MapMarker
        } from '../../../model/index';
 import {ProductReview} from "../../../model/product-review";
 
@@ -20,4 +22,7 @@ export abstract class AbstractDataRepository {
   public async abstract getCurrencyById(currencyId: number): Promise<Currency>;
   public async abstract getManufacturerById(manufacturerId: number): Promise<Manufacturer>;
   public async abstract getManufacturers(cacheForce: boolean): Promise<Manufacturer[]>;
+
+  public async abstract getCities(): Promise<City[]>;
+  public async abstract getFoxMapMarkers(): Promise<Array<{id: number, markers: MapMarker[]}>>;
 }
