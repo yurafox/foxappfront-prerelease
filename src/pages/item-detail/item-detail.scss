@@ -59,6 +59,7 @@ page-item-detail {
     border: 1px solid grey;
   }
 
+
   ul {
     padding: 0px;
     -webkit-margin-before: 0em;
@@ -73,5 +74,14 @@ page-item-detail {
         font-size: 12px;
       }
     }
+  }
+
+  #rating-large {
+    ul.rating li {
+        ion-icon {
+          font-size: 18px;
+        }
+    }
+
   }
 }

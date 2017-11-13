@@ -113,36 +113,33 @@
     </ion-row>
     <ion-row>
       <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
-        <ion-item  detail-push text-wrap class="f-color-secondary">
+        <ion-item detail-push text-wrap class="f-color-secondary">
           <b class="f-size-larger">{{reviews.length}} customer reviews</b><br>
-          <rating  style="display: inline-block;" [(ngModel)]="product.rating"
+          <rating id="rating-large" style="display: inline-block;" [(ngModel)]="product.rating"
                    readOnly="true">
           </rating>
-
         </ion-item>
       </ion-col>
     </ion-row>
-    <ion-row *ngFor="let rev of reviews">
-      <ion-col style="padding-left: 5px;">
-        <rating  style="display: inline-block;" [(ngModel)]="rev.rating"
-                 readOnly="true">
-        </rating>
-        <br>
-        <span [innerHTML]="rev.reviewText"></span>
-        <br>
-        <span>by </span><span style="color: darkslateblue;">{{rev.user}}</span>
+    <ion-row>
+      <ion-col>
+        <span class="f-size-large">Top reviews</span>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngFor="let rev of reviews; let i= index">
+      <ion-col style="padding-left: 5px; border: 1px solid #EBEBEC;" *ngIf="i<4">
+        <ion-item detail-push text-wrap class="f-color-secondary">
+          <rating  style="display: inline-block;" [(ngModel)]="rev.rating"
+                   readOnly="true">
+          </rating>
+          <br>
+          <span [innerHTML]="rev.reviewText | truncate : 200"></span>
+          <br>
+          <span>by </span><span style="color: darkslateblue;">{{rev.user}}</span>
+        </ion-item>
       </ion-col>
     </ion-row>
 
   </ion-grid>
 
-
-<!--
-  <ion-slides pager autoplay="3000" loop="true">
-    <ion-slide *ngFor="let slide of slides">
-      <img src="{{ slide.src }}" alt="">
-    </ion-slide>
-  </ion-slides>
-
--->
 </ion-content>
