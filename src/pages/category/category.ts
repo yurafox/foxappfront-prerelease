@@ -65,8 +65,4 @@ export class CategoryPage extends ComponentBase implements OnInit {
   }
 
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CategoryPage');
-  }
-
 }
