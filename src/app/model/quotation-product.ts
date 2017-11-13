@@ -3,8 +3,8 @@ import {AbstractDataRepository} from '../service/index';
 import {RefInjector, LazyLoad} from '../core/app-core';
 
 @LazyLoad([
-  {constructor: Quotation, action: 'getQuotationById', params: ['idQuotation']},
-  {constructor: Product, action: 'getProductById', params: ['idProduct']}
+  { options: {constructor: Quotation}, action: 'getQuotationById', params: ['idQuotation']},
+  { options: {constructor: Product}, action: 'getProductById', params: ['idProduct']}
 ])
 export class QuotationProduct {
   private _repo: AbstractDataRepository;

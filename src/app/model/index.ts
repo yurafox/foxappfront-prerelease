@@ -12,4 +12,5 @@ export * from './delivery-opt';
 export * from './quotation';
 export * from './quotation-product';
 export * from './quotation-service';
+export * from './product-review';
 
