@@ -46,44 +46,6 @@ ion-title {
   text-align: center;
 }
 
-ion-list ion-icon {
-  color: color($colors, fox);
-}
-
-.primary-bg {
-  background-color: color($colors, primary);
-}
-
-.secondary-bg {
-  background-color: color($colors, secondary);
-}
-
-.gray-bg {
-  background-color: color($colors, gray);
-}
-
-.light-bg {
-  background-color: color($colors, light);
-}
-
-.common-bg {
-  background-color: color($colors, bgColor);
-}
-
-.list-ios[no-margin],
-.list-md[no-margin],
-.list-wp[no-margin] {
-  margin: 0;
-}
-
-.bold {
-  font-weight: bold;
-}
-
-.text-decoration {
-  text-decoration: line-through;
-}
-
 // slide style
 .swiper-pagination-bullet {
   background: color($colors, light);
@@ -94,18 +56,11 @@ ion-list ion-icon {
   background: color($colors, fox);
 }
 
-// left menu
+// left menu bg
 .menu-bg {
   background: url("../assets/imgs/head-bg.png");
   background-size: 100% auto;
 }
-
-.profile-picture {
-  border-radius: 50%;
-  width: 64px;
-  height: 64px;
-}
-
 
 // fix slider bug
 ion-slides[pager] {

@@ -37,15 +37,15 @@ export class FoxApp {
   rootPage: any;
 
   appPages = [
-    {title: 'Главная', name: 'Home', component: HomePage, index: 0, icon: 'home'},
-    {title: 'Категории', name: 'Categories', component: CategoriesPage, index: 1, icon: 'list'},
-    {title: 'Ваши Заказы', name: 'Orders', component: MyOrderPage, index: 2, icon: 'cart'},
-    {title: 'Ваш Аккаунт', name: 'Account', component: AccountPage, index: 3, icon: 'person'},
+    {title: 'Главная', name: 'Home', component: HomePage, index: 0, icon: 'ios-home-outline'},
+    {title: 'Категории', name: 'Categories', component: CategoriesPage, index: 1, icon: 'ios-list-outline'},
+    {title: 'Ваши Заказы', name: 'Orders', component: MyOrderPage, index: 2, icon: 'ios-cart-outline'},
+    {title: 'Ваш Аккаунт', name: 'Account', component: AccountPage, index: 3, icon: 'ios-person-outline'},
   ];
   infoPages = [
     {title: 'Магазины на карте', name: 'Map', component: MapPage, index: 0, icon: 'ios-map-outline'},
-    {title: 'О нас', name: 'About', component: AboutPage, index: 1, icon: 'information-circle'},
-    {title: 'Поддержка', name: 'Support', component: SupportPage, index: 2, icon: 'text'}
+    {title: 'О нас', name: 'About', component: AboutPage, index: 1, icon: 'ios-information-circle-outline'},
+    {title: 'Поддержка', name: 'Support', component: SupportPage, index: 2, icon: 'ios-text-outline'}
   ];
 
   logged: boolean;
