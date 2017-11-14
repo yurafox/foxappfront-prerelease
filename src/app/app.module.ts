@@ -35,7 +35,7 @@ import {AppConstants} from './app-constants';
 import {
   EventService,
   AbstractAccountRepository,
-  MockAccountRepository,
+  AccountRepository,
   AbstractLocalizationRepository,
   MockLocalizationRepository,
   AbstractNewsSubscribeService,
@@ -127,7 +127,7 @@ import {PipesModule} from "./pipe/pipes.module";
     GoogleMaps,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
-    {provide: AbstractAccountRepository, useClass: MockAccountRepository},
+    {provide: AbstractAccountRepository, useClass: AccountRepository},
     {provide: AbstractLocalizationRepository, useClass: MockLocalizationRepository},
     {provide: AbstractNewsSubscribeService, useClass: MockNewsSubscribeService},
     {provide: AbstractDataRepository, useClass: AppDataRepository},

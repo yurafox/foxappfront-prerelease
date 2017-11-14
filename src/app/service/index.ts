@@ -2,7 +2,7 @@ export * from './event-service';
 export * from './repository/abstract/abstract-localization-repository';
 export * from './repository/specific/mock-localization-repository';
 export * from './repository/abstract/abstract-account-repository';
-export * from './repository/specific/mock-account-repository';
+export * from './repository/specific/account-repository';
 export * from './repository/specific/news-subscribe.service';
 export * from './repository/specific/user-service';
 export * from './repository/specific/currency-store.service';
