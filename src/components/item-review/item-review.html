@@ -1,0 +1,15 @@
+<rating  style="display: inline-block;" [(ngModel)]="review.rating"
+         readOnly="true">
+</rating>
+<br>
+<div *ngIf="fullMode">
+  <p></p>
+  <span>by </span><span style="color: darkslateblue;">{{review.user}}</span><span> on </span><span>{{review.reviewDate | date:'longDate'}}</span>
+</div>
+<p></p>
+<span [innerHTML]="review.reviewText | truncate : displayTextLength" *ngIf="!(displayTextLength === -1); else elseBlock"></span>
+<ng-template #elseBlock><span [innerHTML]="review.reviewText"></span></ng-template>
+<br>
+<div *ngIf="!fullMode">
+  <span>by </span><span style="color: darkslateblue;">{{review.user}}</span>
+</div>

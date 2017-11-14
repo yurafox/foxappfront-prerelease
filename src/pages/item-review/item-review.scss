@@ -1,0 +1,32 @@
+page-item-review {
+
+  .f-size-large {
+    font-size: 18px;
+  }
+
+  .f-color-secondary {
+    color: dimgrey;
+  }
+
+  .f-item-nopadding-tb {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  .f-item-padding-left {
+    padding-left: 5px;
+  }
+
+  .f-size-larger {
+    font-size: 16px;
+  }
+
+  #rating-large {
+    ul.rating li {
+      ion-icon {
+        font-size: 18px;
+      }
+    }
+  }
+
+}

@@ -8,9 +8,13 @@ import {Product} from '../../app/model/product';
 })
 export class ItemPropsComponent extends ComponentBase implements OnInit {
 
-  @Input() product: Product;
+  @Input()
+  product: Product;
+
   // Сколько свойств отображать в гриде. Если значение -1 - то все
-  @Input() displayPropCount: number;
+  @Input()
+  displayPropCount: number;
+
   showPeriod = false;
 
   constructor() {
@@ -19,9 +23,6 @@ export class ItemPropsComponent extends ComponentBase implements OnInit {
     }
 
     ngOnInit () {
-      if (!(this.displayPropCount == -1) && (this.product.Props.length > this.displayPropCount)) {
-        this.showPeriod = true;
-      }
-
+      this.showPeriod = (!(this.displayPropCount == -1) && (this.product.Props.length > this.displayPropCount));
     }
 }

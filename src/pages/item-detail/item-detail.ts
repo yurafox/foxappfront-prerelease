@@ -6,6 +6,7 @@ import {AbstractDataRepository} from '../../app/service/repository/abstract/abst
 import {ProductReview} from "../../app/model/product-review";
 import {ItemDescriptionPage} from '../item-description/item-description';
 import {ItemPropsPage} from '../item-props/item-props';
+import {ItemReviewPage} from '../item-review/item-review';
 
 @IonicPage()
 @Component({
@@ -48,4 +49,7 @@ export class ItemDetailPage extends ComponentBase implements OnInit {
     this.navCtrl.push(ItemPropsPage, this.product);
   }
 
+  onShowReviewClick(data: any): void {
+    this.navCtrl.push(ItemReviewPage, data);
+  }
 }

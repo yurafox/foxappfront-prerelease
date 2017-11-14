@@ -29,7 +29,8 @@ import {
   OrderConfirmPage,
   ItemDetailPage,
   ItemDescriptionPage,
-  ItemPropsPage
+  ItemPropsPage,
+  ItemReviewPage
 } from '../pages/index';
 
 import {AppConstants} from './app-constants';
@@ -76,7 +77,8 @@ import {PipesModule} from "./pipe/pipes.module";
     OrderConfirmPage,
     ItemDetailPage,
     ItemDescriptionPage,
-    ItemPropsPage
+    ItemPropsPage,
+    ItemReviewPage
   ],
   imports: [
     BrowserModule,
@@ -116,6 +118,7 @@ import {PipesModule} from "./pipe/pipes.module";
     ItemDetailPage,
     ItemDescriptionPage,
     ItemPropsPage,
+    ItemReviewPage,
     MapPage,
     ModalItemOptionPage,
     MyOrderPage,

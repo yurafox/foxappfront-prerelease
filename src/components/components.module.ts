@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { SearchBtnComponent } from './search-btn/search-btn';
 import {IonicModule} from 'ionic-angular';
 import { MainToolbarComponent } from './main-toolbar/main-toolbar';
@@ -8,6 +9,8 @@ import { Ionic2RatingModule } from 'ionic2-rating';
 import { ProductRatingComponent } from './product-rating/product-rating';
 import { ItemPropsComponent } from './item-props/item-props';
 import { ItemDescriptionComponent } from './item-description/item-description';
+import { ItemReviewComponent } from './item-review/item-review';
+
 
 
 @NgModule({
@@ -17,7 +20,8 @@ import { ItemDescriptionComponent } from './item-description/item-description';
     ItemComponent,
     ProductRatingComponent,
     ItemPropsComponent,
-    ItemDescriptionComponent
+    ItemDescriptionComponent,
+    ItemReviewComponent
   ],
 	imports: [
     IonicModule,
@@ -30,7 +34,8 @@ import { ItemDescriptionComponent } from './item-description/item-description';
     ItemComponent,
     ProductRatingComponent,
     ItemPropsComponent,
-    ItemDescriptionComponent
+    ItemDescriptionComponent,
+    ItemReviewComponent
   ]
 })
 export class ComponentsModule {}
