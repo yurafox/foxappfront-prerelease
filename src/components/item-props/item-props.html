@@ -1,0 +1,13 @@
+<b class="f-size-larger">Features & Details</b>
+<p></p>
+<ion-grid no-padding>
+  <ion-row  *ngFor="let prop of product.Props; let i = index">
+    <ion-col style="padding: 5px; border: 1px solid #EBEBEC; background-color: #EFEFF0" col-4 *ngIf="(i<displayPropCount) || (displayPropCount ==-1)">
+      {{prop.id_Prop.name}}
+    </ion-col>
+    <ion-col style="padding: 5px; border: 1px solid #EBEBEC;" col-8 *ngIf="(i<displayPropCount) || (displayPropCount ==-1) ">
+      {{prop.value}}
+    </ion-col>
+  </ion-row>
+</ion-grid>
+<span *ngIf="showPeriod == true">...</span>

@@ -3,27 +3,11 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid class="f-item-nopadding-tb f-color-secondary">
-
-    <ion-row>
-      <ion-col>
-        <div  detail-push text-wrap class="f-color-secondary">
-          <b class="f-size-larger">Features & Details</b>
-          <p></p>
-          <ion-grid no-padding>
-            <ion-row *ngFor="let prop of product.Props">
-              <ion-col style="padding: 5px; border: 1px solid #EBEBEC; background-color: #EFEFF0" col-4>
-                {{prop.id_Prop.name}}
-              </ion-col>
-              <ion-col style="padding: 5px; border: 1px solid #EBEBEC;" col-8>
-                {{prop.value}}
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </div>
-
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
+<ion-grid class="f-item-nopadding-tb f-color-secondary">
+  <ion-row>
+    <ion-col style="padding: 5px;">
+      <item-props [product]=product [displayPropCount]="-1"></item-props>
+    </ion-col>
+  </ion-row>
+</ion-grid>
 </ion-content>

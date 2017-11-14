@@ -6,6 +6,8 @@ import { ItemComponent } from './item/item';
 import {PipesModule} from '../app/pipe/pipes.module';
 import { Ionic2RatingModule } from 'ionic2-rating';
 import { ProductRatingComponent } from './product-rating/product-rating';
+import { ItemPropsComponent } from './item-props/item-props';
+import { ItemDescriptionComponent } from './item-description/item-description';
 
 
 @NgModule({
@@ -13,7 +15,9 @@ import { ProductRatingComponent } from './product-rating/product-rating';
 	  SearchBtnComponent,
     MainToolbarComponent,
     ItemComponent,
-    ProductRatingComponent
+    ProductRatingComponent,
+    ItemPropsComponent,
+    ItemDescriptionComponent
   ],
 	imports: [
     IonicModule,
@@ -24,7 +28,9 @@ import { ProductRatingComponent } from './product-rating/product-rating';
 	  SearchBtnComponent,
     MainToolbarComponent,
     ItemComponent,
-    ProductRatingComponent
+    ProductRatingComponent,
+    ItemPropsComponent,
+    ItemDescriptionComponent
   ]
 })
 export class ComponentsModule {}

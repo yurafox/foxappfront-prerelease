@@ -9,6 +9,7 @@ import {ComponentBase} from '../../components/component-extension/component-base
 })
 export class ItemDescriptionPage extends ComponentBase implements OnInit {
 
+  @Input()
   description: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
