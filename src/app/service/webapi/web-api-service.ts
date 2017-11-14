@@ -169,82 +169,82 @@ export class WebApiService implements InMemoryDbService {
     {
       id: 6325585, name: 'smart/tel HUAWEI P8 Lite 2017 Dual Sim (white)', price: 4299,
       manufacturerId: 114733, props: [this.productPropValue3, this.productPropValue6, this.productPropValue9],
-      imageUrl: '/assets/imgs/p4.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p4.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6324182, name: 'smart/tel HUAWEI GR5 2017 (BLN-L21) Dual Sim (grey)', price: 4199,
       manufacturerId: 114733, props: [this.productPropValue3, this.productPropValue6, this.productPropValue9],
-      imageUrl: '/assets/imgs/p5.jpg', rating: 2, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p5.jpg', rating: 2, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6252121, name: 'APPLE iPhone 6s 16GB Space Gray Demo', price: 4999,
       manufacturerId: 5581, props: [this.productPropValue1, this.productPropValue7, this.productPropValue9],
-      imageUrl: '/assets/imgs/p1.jpg', rating: 5, recall: 4, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p1.jpg', rating: 5, recall: 4, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6202929, name: 'smart/tel SAMSUNG SM-N915F Galaxy Note Edge ZWE (white)', price: 4999,
       manufacturerId: 5581, props: [this.productPropValue8, this.productPropValue3, this.productPropValue2],
-      imageUrl: '/assets/imgs/p2.jpg', rating: 5, recall: 5, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p2.jpg', rating: 5, recall: 5, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6324216, name: 'smart/tel SAMSUNG SM-A520F Galaxy A5 2017 Duos ZKD (black)', price: 3899,
       manufacturerId: 220, props: [this.productPropValue9, this.productPropValue1, this.productPropValue4],
-      imageUrl: '/assets/imgs/p3.jpg', rating: 4, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p3.jpg', rating: 4, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6324213, name: 'smart/tel SAMSUNG SM-A720F Galaxy A7 2017 Duos ZDD (gold)', price: 5031,
       manufacturerId: 220, props: [this.productPropValue6, this.productPropValue2, this.productPropValue4],
-      imageUrl: '/assets/imgs/p4.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p4.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6161537, name: 'APPLE iPhone 5S 16Gb Space grey', price: 3899,
       manufacturerId: 5581, props: [this.productPropValue5, this.productPropValue5, this.productPropValue1],
-      imageUrl: '/assets/imgs/p5.jpg', rating: 1, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p5.jpg', rating: 1, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6307814, name: 'APPLE iPhone 7 32GB Rose Gold', price: 3899,
       manufacturerId: 5581, props: [this.productPropValue4, this.productPropValue9, this.productPropValue5],
-      imageUrl: '/assets/imgs/p1.jpg', rating: 2, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p1.jpg', rating: 2, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6343804, name: 'smart/tel XIAOMI Redmi 4X 2G/16G (black)', price: 3899,
       manufacturerId: 118920, props: [this.productPropValue10, this.productPropValue3, this.productPropValue2],
-      imageUrl: '/assets/imgs/p2.jpg', rating: 3, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p2.jpg', rating: 3, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6337167, name: 'smart/tel XIAOMI Mi Mix 256GB Black', price: 3899,
       manufacturerId: 118920, props: [this.productPropValue7, this.productPropValue7, this.productPropValue10],
-      imageUrl: '/assets/imgs/p3.jpg', rating: 3, recall: 1, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p3.jpg', rating: 3, recall: 1, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6291460, name: 'smart/tel Lenovo C2 Power Dual Sim (black)', price: 3899,
       manufacturerId: 107996, props: [this.productPropValue5, this.productPropValue10, this.productPropValue3],
-      imageUrl: '/assets/imgs/p4.jpg', rating: 4, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p4.jpg', rating: 4, recall: 2, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6316576, name: 'smart/tel LENOVO K6 Power (K33a42) Dual Sim (grey)', price: 3899,
       manufacturerId: 107996, props: [this.productPropValue5, this.productPropValue2, this.productPropValue6],
-      imageUrl: '/assets/imgs/p5.jpg', rating: 5, recall: 4, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p5.jpg', rating: 5, recall: 4, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6310491, name: 'smart/tel WILEYFOX Swift 2 Plus Dual Sim (Champagne Gold)', price: 3899,
       manufacturerId: 120815, props: [this.productPropValue9, this.productPropValue10, this.productPropValue6],
-      imageUrl: '/assets/imgs/p1.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p1.jpg', rating: 3, recall: 3, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6312913, name: 'smart/tel WILEYFOX Swift 2X Dual Sim (Mid Night blue)', price: 3899,
       manufacturerId: 120815, props: [this.productPropValue5, this.productPropValue10, this.productPropValue8],
-      imageUrl: '/assets/imgs/p2.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'mobilnye_telefony.html'
+      imageUrl: 'assets/imgs/p2.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'mobilnye_telefony.html'
     },
     {
       id: 6363302, name: 'Телевизор LIBERTON 32HL1HD', price: 4599,
       manufacturerId: 120815, props: [this.productPropValue5, this.productPropValue10, this.productPropValue8],
-      imageUrl: '/assets/imgs/p6.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'led_televizory.html'
+      imageUrl: 'assets/imgs/p6.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'led_televizory.html'
     },
     {
       id: 6322210, name: 'Телевизор BRAVIS LED-22F1000 Smart+T2 black', price: 4699,
       manufacturerId: 120815, props: [this.productPropValue5, this.productPropValue10, this.productPropValue8],
-      imageUrl: '/assets/imgs/p6.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'led_televizory.html'
+      imageUrl: 'assets/imgs/p6.jpg', rating: 1, recall: 1, supplOffers: 2, url: 'led_televizory.html'
     }
   ];
   // </editor-fold>
