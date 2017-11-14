@@ -23,12 +23,13 @@ import {
   CartPage,
   CategoriesPage,
   CategoryPage,
-  ItemPage,
   MapPage,
   ModalItemOptionPage,
   MyOrderPage,
   OrderConfirmPage,
-  ItemDetailPage
+  ItemDetailPage,
+  ItemDescriptionPage,
+  ItemPropsPage
 } from '../pages/index';
 
 import {AppConstants} from './app-constants';
@@ -54,7 +55,6 @@ import {ComponentsModule} from '../components/components.module';
 import {PipesModule} from "./pipe/pipes.module";
 
 
-
 @NgModule({
   declarations: [
     FoxApp,
@@ -70,12 +70,13 @@ import {PipesModule} from "./pipe/pipes.module";
     CartPage,
     CategoriesPage,
     CategoryPage,
-    ItemPage,
     MapPage,
     ModalItemOptionPage,
     MyOrderPage,
     OrderConfirmPage,
-    ItemDetailPage
+    ItemDetailPage,
+    ItemDescriptionPage,
+    ItemPropsPage
   ],
   imports: [
     BrowserModule,
@@ -113,7 +114,8 @@ import {PipesModule} from "./pipe/pipes.module";
     CategoriesPage,
     CategoryPage,
     ItemDetailPage,
-    ItemPage,
+    ItemDescriptionPage,
+    ItemPropsPage,
     MapPage,
     ModalItemOptionPage,
     MyOrderPage,

@@ -4,6 +4,8 @@ import {ComponentBase} from '../../components/component-extension/component-base
 import {Product} from '../../app/model/product';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {ProductReview} from "../../app/model/product-review";
+import {ItemDescriptionPage} from '../item-description/item-description';
+import {ItemPropsPage} from '../item-props/item-props';
 
 @IonicPage()
 @Component({
@@ -36,6 +38,14 @@ export class ItemDetailPage extends ComponentBase implements OnInit {
   decQty(): void {
     if (this.qty >= 2)
       this.qty--;
+  }
+
+  onShowProductDescription(): void {
+    this.navCtrl.push(ItemDescriptionPage, this.product.description);
+  }
+
+  onShowProductProps(): void {
+    this.navCtrl.push(ItemPropsPage, this.product);
   }
 
 }

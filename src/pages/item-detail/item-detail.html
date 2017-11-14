@@ -71,7 +71,7 @@
         <span class="f-size-large">About this item</span>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="product.description" >
+    <ion-row *ngIf="product.description" (click)="onShowProductDescription()">
       <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
         <ion-item  detail-push text-wrap class="f-color-secondary">
           <b class="f-size-larger">Description</b>
@@ -80,7 +80,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="product.Props">
+    <ion-row *ngIf="product.Props" (click)="onShowProductProps()">
       <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
         <ion-item  detail-push text-wrap class="f-color-secondary">
 

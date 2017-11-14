@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { App, NavController } from 'ionic-angular';
 import {SearchBtnComponent} from '../../components/search-btn/search-btn'
 
-import {CartPage, CategoriesPage, CategoryPage, ItemPage} from "../index";
+import {CartPage, CategoriesPage, CategoryPage} from '../index';
 
 @Component({
   selector: 'page-home',
@@ -46,7 +46,7 @@ export class HomePage {
 
   // view a item
   viewItem(itemId) {
-    this.nav.push(ItemPage, {id: itemId})
+    this.nav.push(CategoryPage, {id: itemId})
   }
 
 }
