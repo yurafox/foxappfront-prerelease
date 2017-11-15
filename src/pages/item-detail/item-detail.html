@@ -95,11 +95,11 @@
         <span class="f-size-large">Customer reviews</span>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row (click)="onShowReviewsClick({reviews: reviews, product: product})">
       <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
         <ion-item detail-push text-wrap class="f-color-secondary">
           <b class="f-size-larger">{{reviews.length}} customer reviews</b><br>
-          <rating id="rating-large" style="display: inline-block;" [(ngModel)]="product.rating"
+          <rating id="rating-large" style="display: inline-block;" [ngModel]="product.rating"
                    readOnly="true">
           </rating>
         </ion-item>
@@ -113,7 +113,7 @@
     <ion-row *ngFor="let rev of reviews; let i= index" (click)="onShowReviewClick(rev)">
       <ion-col style="padding-left: 5px; border: 1px solid #EBEBEC;" *ngIf="i<4">
         <ion-item detail-push text-wrap class="f-color-secondary">
-          <item-review [review]=rev [displayTextLength]="200" [fullMode]="false"></item-review>
+          <item-review [review]=rev [displayTextLength]="200" [collapsibleMode]="false"></item-review>
         </ion-item>
       </ion-col>
     </ion-row>

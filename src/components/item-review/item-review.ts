@@ -11,7 +11,7 @@ export class ItemReviewComponent extends ComponentBase {
 
   @Input() review: ProductReview;
   @Input() displayTextLength: number;
-  @Input() fullMode = true;
+  @Input() collapsibleMode = false;
 
   constructor() {
     super();

@@ -1,0 +1,26 @@
+<ion-header>
+  <main-toolbar></main-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="f-color-secondary">
+    <ion-row>
+      <ion-col>
+        <span class="f-size-large">Customer reviews</span>
+        <br>
+        <rating id="rating-large" style="display: inline-block;" [ngModel]="product?.rating"
+                readOnly="true">
+        </rating>
+        &nbsp;<b class="f-size-larger">{{reviews?.length}}</b>
+        <br>
+        <span style="color: darkslateblue;">{{product?.rating}} of 5 stars</span>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngFor="let rev of reviews">
+      <p></p>
+      <ion-col>
+        <item-review [review]=rev [displayTextLength]="250" [collapsibleMode]="true"></item-review>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

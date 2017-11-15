@@ -1,5 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {Product} from '../../app/model/product';
+import {NavController} from 'ionic-angular';
+import {ItemReviewsPage} from '../../pages/item-reviews/item-reviews';
 
 @Component({
   selector: 'product-rating',
@@ -9,12 +11,12 @@ export class ProductRatingComponent {
 
   @Input() product: Product;
 
-  constructor() {
+  constructor(public navCtrl: NavController) {
   }
 
   openReviews(event: Event, data: Product): void {
     event.stopPropagation();
-    console.log('Review for product: '+ data.id );
+    this.navCtrl.push(ItemReviewsPage, {product:this.product});
   }
 
 

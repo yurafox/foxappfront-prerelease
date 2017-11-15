@@ -54,6 +54,7 @@ import {WebApiService} from './service/webapi/web-api-service';
 import {RefInjector} from './core/app-core';
 import {ComponentsModule} from '../components/components.module';
 import {PipesModule} from "./pipe/pipes.module";
+import {ItemReviewsPage} from '../pages/item-reviews/item-reviews';
 
 
 @NgModule({
@@ -78,7 +79,8 @@ import {PipesModule} from "./pipe/pipes.module";
     ItemDetailPage,
     ItemDescriptionPage,
     ItemPropsPage,
-    ItemReviewPage
+    ItemReviewPage,
+    ItemReviewsPage
   ],
   imports: [
     BrowserModule,
@@ -119,6 +121,7 @@ import {PipesModule} from "./pipe/pipes.module";
     ItemDescriptionPage,
     ItemPropsPage,
     ItemReviewPage,
+    ItemReviewsPage,
     MapPage,
     ModalItemOptionPage,
     MyOrderPage,

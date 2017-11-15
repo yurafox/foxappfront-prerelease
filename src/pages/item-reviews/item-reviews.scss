@@ -1,0 +1,49 @@
+page-item-reviews {
+
+  .f-size-large {
+    font-size: 18px;
+  }
+
+  .f-color-secondary {
+    color: dimgrey;
+  }
+
+  .f-item-nopadding-tb {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  .f-item-padding-left {
+    padding-left: 5px;
+  }
+
+  .f-size-larger {
+    font-size: 16px;
+  }
+
+  ul {
+    padding: 0px;
+    -webkit-margin-before: 0em;
+    -webkit-margin-after: 0em;
+
+    &.rating li {
+      padding: 0px 0px !important;
+      background: none;
+      color: color($colors, foxrating);
+
+      ion-icon {
+        font-size: 12px;
+      }
+    }
+  }
+
+  #rating-large {
+    ul.rating li {
+      ion-icon {
+        font-size: 18px;
+      }
+    }
+
+  }
+
+}

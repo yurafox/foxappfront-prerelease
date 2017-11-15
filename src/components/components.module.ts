@@ -10,6 +10,7 @@ import { ProductRatingComponent } from './product-rating/product-rating';
 import { ItemPropsComponent } from './item-props/item-props';
 import { ItemDescriptionComponent } from './item-description/item-description';
 import { ItemReviewComponent } from './item-review/item-review';
+import { ReadMoreComponent } from './read-more/read-more';
 
 
 
@@ -21,7 +22,8 @@ import { ItemReviewComponent } from './item-review/item-review';
     ProductRatingComponent,
     ItemPropsComponent,
     ItemDescriptionComponent,
-    ItemReviewComponent
+    ItemReviewComponent,
+    ReadMoreComponent
   ],
 	imports: [
     IonicModule,
@@ -35,7 +37,8 @@ import { ItemReviewComponent } from './item-review/item-review';
     ProductRatingComponent,
     ItemPropsComponent,
     ItemDescriptionComponent,
-    ItemReviewComponent
+    ItemReviewComponent,
+    ReadMoreComponent
   ]
 })
 export class ComponentsModule {}
