@@ -32,7 +32,8 @@ import {
   ItemPropsPage,
   ItemReviewPage,
   ItemReviewsPage,
-  ItemReviewWritePage
+  ItemReviewWritePage,
+  SearchPage
 } from '../pages/index';
 
 import {AppConstants} from './app-constants';
@@ -82,7 +83,8 @@ import {PipesModule} from "./pipe/pipes.module";
     ItemPropsPage,
     ItemReviewPage,
     ItemReviewsPage,
-    ItemReviewWritePage
+    ItemReviewWritePage,
+    SearchPage
   ],
   imports: [
     BrowserModule,
@@ -125,6 +127,7 @@ import {PipesModule} from "./pipe/pipes.module";
     ItemReviewPage,
     ItemReviewsPage,
     ItemReviewWritePage,
+    SearchPage,
     MapPage,
     ModalItemOptionPage,
     MyOrderPage,

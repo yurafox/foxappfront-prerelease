@@ -54,14 +54,6 @@ export class CategoryPage extends ComponentBase implements OnInit {
     super.ngOnInit();
     this.baseProducts = await this.repo.getProducts('mobilnye_telefony.html', true);
 
-
-    /*    this.route.params.forEach((params: Params) => {
-          let url = params['category'];
-          (async () => {
-            this.baseProducts = await this.repo.getProducts('/shop/mobilnye_telefony.html', true);
-            this.initData();
-          })();
-        });*/
   }
 
 

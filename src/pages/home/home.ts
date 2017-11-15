@@ -3,6 +3,7 @@ import { App, NavController } from 'ionic-angular';
 import {SearchBtnComponent} from '../../components/search-btn/search-btn'
 
 import {CartPage, CategoriesPage, CategoryPage} from '../index';
+import {SearchPage} from '../search/search';
 
 @Component({
   selector: 'page-home',
@@ -47,6 +48,10 @@ export class HomePage {
   // view a item
   viewItem(itemId) {
     this.nav.push(CategoryPage, {id: itemId})
+  }
+
+  onSearchClick() {
+    this.nav.setRoot(SearchPage);
   }
 
 }

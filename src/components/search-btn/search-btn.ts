@@ -1,16 +1,23 @@
-import { Component } from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
+import {ComponentBase} from '../component-extension/component-base';
+import {NavController, NavParams} from 'ionic-angular';
 
 @Component({
   selector: 'search-btn',
   templateUrl: 'search-btn.html'
 })
-export class SearchBtnComponent {
+export class SearchBtnComponent extends ComponentBase  {
 
-  text: string;
+  disabled = true;
+
+  @ViewChild('input') input;
 
   constructor() {
-    console.log('Hello SearchBtnComponent Component');
-    this.text = 'Hello World';
+    super();
+  }
+
+  setFocus(): void {
+    this.input.setFocus();
   }
 
   searchByText(): void {

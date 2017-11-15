@@ -11,6 +11,7 @@ import { ItemPropsComponent } from './item-props/item-props';
 import { ItemDescriptionComponent } from './item-description/item-description';
 import { ItemReviewComponent } from './item-review/item-review';
 import { ReadMoreComponent } from './read-more/read-more';
+import { ItemsListComponent } from './items-list/items-list';
 
 
 
@@ -23,7 +24,8 @@ import { ReadMoreComponent } from './read-more/read-more';
     ItemPropsComponent,
     ItemDescriptionComponent,
     ItemReviewComponent,
-    ReadMoreComponent
+    ReadMoreComponent,
+    ItemsListComponent
   ],
 	imports: [
     IonicModule,
@@ -38,7 +40,8 @@ import { ReadMoreComponent } from './read-more/read-more';
     ItemPropsComponent,
     ItemDescriptionComponent,
     ItemReviewComponent,
-    ReadMoreComponent
+    ReadMoreComponent,
+    ItemsListComponent
   ]
 })
 export class ComponentsModule {}
