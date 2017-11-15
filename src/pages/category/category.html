@@ -9,10 +9,21 @@
     </ion-slide>
   </ion-slides>
   <ul>
-    <li *ngFor="let productElement of baseProducts">
+    <li *ngFor="let productElement of baseProducts" col-lg-6 col-sm-12 col-xl-6>
       <item
         [product]="productElement">
       </item>
     </li>
   </ul>
+
+<!--  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let productElement of baseProducts" col-12>
+        <item
+          [product]="productElement">
+        </item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>-->
+
 </ion-content>

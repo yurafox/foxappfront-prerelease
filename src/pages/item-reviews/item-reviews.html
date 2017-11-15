@@ -5,7 +5,7 @@
 <ion-content>
   <ion-grid class="f-color-secondary">
     <ion-row>
-      <ion-col>
+      <ion-col class="f-item-nopadding-tb">
         <span class="f-size-large">Customer reviews</span>
         <br>
         <rating id="rating-large" style="display: inline-block;" [ngModel]="product?.rating"
@@ -13,11 +13,17 @@
         </rating>
         &nbsp;<b class="f-size-larger">{{reviews?.length}}</b>
         <br>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="f-item-nopadding-tb">
         <span style="color: darkslateblue;">{{product?.rating}} of 5 stars</span>
+      </ion-col>
+      <ion-col text-end class="f-item-nopadding-tb">
+        <span style="color: darkslateblue;" (click)="onWriteReviewClick(product)">Write a review</span>
       </ion-col>
     </ion-row>
     <ion-row *ngFor="let rev of reviews">
-      <p></p>
       <ion-col>
         <item-review [review]=rev [displayTextLength]="250" [collapsibleMode]="true"></item-review>
       </ion-col>

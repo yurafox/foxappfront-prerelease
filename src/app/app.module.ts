@@ -30,7 +30,9 @@ import {
   ItemDetailPage,
   ItemDescriptionPage,
   ItemPropsPage,
-  ItemReviewPage
+  ItemReviewPage,
+  ItemReviewsPage,
+  ItemReviewWritePage
 } from '../pages/index';
 
 import {AppConstants} from './app-constants';
@@ -54,7 +56,6 @@ import {WebApiService} from './service/webapi/web-api-service';
 import {RefInjector} from './core/app-core';
 import {ComponentsModule} from '../components/components.module';
 import {PipesModule} from "./pipe/pipes.module";
-import {ItemReviewsPage} from '../pages/item-reviews/item-reviews';
 
 
 @NgModule({
@@ -80,7 +81,8 @@ import {ItemReviewsPage} from '../pages/item-reviews/item-reviews';
     ItemDescriptionPage,
     ItemPropsPage,
     ItemReviewPage,
-    ItemReviewsPage
+    ItemReviewsPage,
+    ItemReviewWritePage
   ],
   imports: [
     BrowserModule,
@@ -122,6 +124,7 @@ import {ItemReviewsPage} from '../pages/item-reviews/item-reviews';
     ItemPropsPage,
     ItemReviewPage,
     ItemReviewsPage,
+    ItemReviewWritePage,
     MapPage,
     ModalItemOptionPage,
     MyOrderPage,

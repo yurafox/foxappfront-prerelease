@@ -8,6 +8,7 @@ import {ItemDescriptionPage} from '../item-description/item-description';
 import {ItemPropsPage} from '../item-props/item-props';
 import {ItemReviewPage} from '../item-review/item-review';
 import {ItemReviewsPage} from '../item-reviews/item-reviews';
+import {ItemReviewWritePage} from '../item-review-write/item-review-write';
 
 @IonicPage()
 @Component({
@@ -56,5 +57,9 @@ export class ItemDetailPage extends ComponentBase implements OnInit {
 
   onShowReviewsClick(data: any): void {
     this.navCtrl.push(ItemReviewsPage, data);
+  }
+
+  onWriteReview(data: any): void {
+    this.navCtrl.push(ItemReviewWritePage, this.product);
   }
 }

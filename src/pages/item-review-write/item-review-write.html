@@ -1,0 +1,53 @@
+<ion-header>
+  <main-toolbar></main-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid class="f-color-secondary">
+    <ion-row>
+      <ion-col>
+        <span class="f-size-large">Your review</span>
+        <hr>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-auto no-padding>
+        <div>
+          <img class="f-img-item" [src]="product?.imageUrl">
+        </div>
+      </ion-col>
+      <ion-col no-padding>
+        <ion-grid class="f-item-nopadding">
+          <ion-row>
+            <ion-col no-padding class="f-item-padding-bottom">
+              {{product?.name}}
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col no-padding class="f-item-padding-bottom">
+              <span class="f-size-small f-color-secondary">{{product?.manufacturer?.name}}</span>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col nowrap no-padding class="f-item-padding-bottom">
+              <rating id="rating" style="display: inline-block;">
+              </rating>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
+        <ion-textarea placeholder="Write your review here" rows="15"></ion-textarea>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button class="f-btn-add-cart" ion-button block (click)="onSubmitClick()">Submit</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

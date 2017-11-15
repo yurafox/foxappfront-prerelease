@@ -19,3 +19,4 @@ export * from './item-description/item-description';
 export * from './item-props/item-props';
 export * from './item-review/item-review';
 export * from './item-reviews/item-reviews';
+export * from './item-review-write/item-review-write';

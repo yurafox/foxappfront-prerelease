@@ -6,7 +6,6 @@
   <span>by </span><span style="color: darkslateblue;">{{review.user}}</span><span> on </span><span>{{review.reviewDate | date:'longDate'}}</span>
   <read-more [text]="review.reviewText" [maxLength]="displayTextLength"></read-more>
 </div>
-<br>
 <div *ngIf="!collapsibleMode">
   <span [innerHTML]="review.reviewText | truncate : displayTextLength" *ngIf="!(displayTextLength === -1); else elseBlock"></span>
   <ng-template #elseBlock><span [innerHTML]="review.reviewText"></span></ng-template>

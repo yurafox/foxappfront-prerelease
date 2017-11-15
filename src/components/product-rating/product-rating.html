@@ -2,5 +2,7 @@
   <rating  style="display: inline-block;" [(ngModel)]="product.rating"
                       readOnly="true">
 </rating>
-  <span class="f-size-small f-color-secondary" (click)="openReviews($event, product)">&nbsp;&nbsp;({{product.recall}})</span>
+  <span class="f-size-small f-color-secondary" (click)="openReviews($event, product)"
+        *ngIf="product.recall>0">&nbsp;&nbsp;({{product.recall}})
+  </span>
 </div>
