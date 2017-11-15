@@ -23,6 +23,12 @@
         <span style="color: darkslateblue;" (click)="onWriteReviewClick(product)">Write a review</span>
       </ion-col>
     </ion-row>
+    <ion-row>
+      <ion-col>
+        <p></p>
+      </ion-col>
+
+    </ion-row>
     <ion-row *ngFor="let rev of reviews">
       <ion-col>
         <item-review [review]=rev [displayTextLength]="250" [collapsibleMode]="true"></item-review>

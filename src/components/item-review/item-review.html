@@ -1,7 +1,7 @@
 <rating  style="display: inline-block;" [(ngModel)]="review.rating"
          readOnly="true">
 </rating>
-<br *ngIf="displayTextLength === -1"> <!-- фиксим баг верстки -->
+<p *ngIf="displayTextLength === -1"></p> <!-- фиксим баг верстки -->
 <div *ngIf="collapsibleMode">
   <span>by </span><span style="color: darkslateblue;">{{review.user}}</span><span> on </span><span>{{review.reviewDate | date:'longDate'}}</span>
   <read-more [text]="review.reviewText" [maxLength]="displayTextLength"></read-more>
