@@ -87,4 +87,5 @@
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyD9OPjQR5QQXqpo5t0V30ywkm7uXrVxZz4" />
         <variable name="API_KEY_FOR_IOS" value="AIzaSyD9OPjQR5QQXqpo5t0V30ywkm7uXrVxZz4" />
     </plugin>
+    <plugin name="phonegap-plugin-barcodescanner" spec="^7.0.0" />
 </widget>
