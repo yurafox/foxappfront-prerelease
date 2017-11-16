@@ -10,8 +10,7 @@ import {ComponentBase} from '../../components/component-extension/component-base
 
 export class SearchPage extends ComponentBase implements OnInit {
 
-  isDisabled = false;
-  @ViewChild('srch') input;
+  @ViewChild('srch') searchButtonControl;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
@@ -21,13 +20,18 @@ export class SearchPage extends ComponentBase implements OnInit {
 
   ngOnInit() {
     setTimeout(() =>
-        { this.input.setFocus(); },
+        {
+          this.searchButtonControl.setFocus();
+          this.searchButtonControl.disabled = false;
+        },
       150);
-    console.log(this.input.searchService.searchItems.length);
+
+//    console.log(this.searchButtonControl.searchService.searchItems.length);
+
   }
 
   deleteSearchItem(index: number) {
-    this.input.searchService.removeSearchItem(index);
+    this.searchButtonControl.removeSearchItem(index);
   }
 
 }
