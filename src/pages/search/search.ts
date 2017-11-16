@@ -13,6 +13,7 @@ export class SearchPage extends ComponentBase implements OnInit {
   isDisabled = false;
   @ViewChild('srch') input;
 
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     super();
   }
@@ -22,7 +23,12 @@ export class SearchPage extends ComponentBase implements OnInit {
     setTimeout(() =>
         { this.input.setFocus(); },
       150);
+    console.log(this.input.searchService.searchItems.length);
+
+
+
   }
+
 
 
 }

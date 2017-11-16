@@ -5,7 +5,8 @@
         <ion-icon name="ios-search"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-input #input placeholder="Что ищем?" [attr.disabled]="disabled?'':null" (click)="searchByText()"></ion-input>
+    <ion-input #input placeholder="What are you looking for?" [attr.disabled]="disabled?'':null"
+               (keyup.enter)="searchByText(input.value)"></ion-input>
     <ion-buttons right>
       <button ion-button icon-only (click)="searchByBarcode()">
         <ion-icon name="ios-barcode-outline"></ion-icon> <!-- noun_816149 -->

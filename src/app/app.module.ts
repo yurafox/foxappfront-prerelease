@@ -57,6 +57,7 @@ import {WebApiService} from './service/webapi/web-api-service';
 import {RefInjector} from './core/app-core';
 import {ComponentsModule} from '../components/components.module';
 import {PipesModule} from "./pipe/pipes.module";
+import {SearchService} from './service/search-service';
 
 
 @NgModule({
@@ -147,7 +148,8 @@ import {PipesModule} from "./pipe/pipes.module";
     {provide: AbstractDataRepository, useClass: AppDataRepository},
     NewsSubscribeService,
     AppConstants,
-    CurrencyStore
+    CurrencyStore,
+    SearchService
   ]
 })
 export class AppModule {
