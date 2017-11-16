@@ -23,7 +23,7 @@ export class SearchService {
   }
 
   removeSearchItem(itemIndex: number) {
-    this.searchItems.splice(itemIndex);
+    this.searchItems.splice(itemIndex, 1);
     localStorage.setItem(this.cKey, JSON.stringify(this.searchItems));
   }
 

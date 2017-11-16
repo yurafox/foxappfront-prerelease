@@ -24,11 +24,10 @@ export class SearchPage extends ComponentBase implements OnInit {
         { this.input.setFocus(); },
       150);
     console.log(this.input.searchService.searchItems.length);
-
-
-
   }
 
-
+  deleteSearchItem(index: number) {
+    this.input.searchService.removeSearchItem(index);
+  }
 
 }
