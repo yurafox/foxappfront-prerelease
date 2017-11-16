@@ -36,6 +36,8 @@ md, ios, wp,
   color: white;
 }
 
+@import "../theme/icons";
+
 ion-title {
   position: absolute;
   left: 50%;
@@ -124,6 +126,7 @@ ion-slides[pager] {
   .swiper-pagination {
     display: block !important;
   }
+
 }
 
 

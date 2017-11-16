@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 
@@ -8,7 +8,7 @@ import {ComponentBase} from '../../components/component-extension/component-base
   templateUrl: 'search.html',
 })
 
-export class SearchPage extends ComponentBase {
+export class SearchPage extends ComponentBase implements OnInit {
 
   isDisabled = false;
   @ViewChild('srch') input;
@@ -17,12 +17,12 @@ export class SearchPage extends ComponentBase {
     super();
   }
 
-  ionViewDidLoaded() {
 
-      setTimeout(() => {
-        this.input.setFocus();
-      },150);
-
+  ngOnInit() {
+    setTimeout(() =>
+        { this.input.setFocus(); },
+      150);
   }
+
 
 }
