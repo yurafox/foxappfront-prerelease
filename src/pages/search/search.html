@@ -26,9 +26,11 @@
 -->
 
 
-  <ion-item *ngFor="let sItem of searchButtonControl.tmpSearchArray; let i=index ">
-    <ion-icon name="md-close" item-left color="gray" (click)="deleteSearchItem(i)"></ion-icon>
-    <div>{{sItem}}</div>
+  <ion-item *ngFor="let sItem of searchButtonControl.tmpSearchArray; let i=index" (click)="search(sItem)">
+    <ion-icon name="md-close" item-left color="gray" (click)="deleteSearchItem($event, sItem)"></ion-icon>
+    <div>
+      {{sItem}}
+    </div>
     <ion-icon name="noun_816149" item-right color="gray"></ion-icon>
   </ion-item>
 

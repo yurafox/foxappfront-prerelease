@@ -2,6 +2,7 @@ import {AbstractControl} from '@angular/forms';
 import {Injector} from '@angular/core';
 import {Product, Supplier, Currency} from '../model/index';
 import {Manufacturer} from "../model/manufacturer";
+import {Observable} from 'rxjs/Observable';
 
 export interface IDictionary<T> {
   [k: string]: T;
@@ -191,6 +192,14 @@ export function LazyLoad(options: Array<{ options:ILazyOption,
               })();
             }
             return this[navProp];
+          }
+        });
+        Object.defineProperty(this, baseName+'_p', {
+          configurable: false,
+          get: () => {
+            const repo = this['_repo'];
+            this[navProp+'_p'] = repo[fnName].apply(repo, lazyParamToValue(this, value.params));
+            return this[navProp+'_p'];
           }
         });
       });

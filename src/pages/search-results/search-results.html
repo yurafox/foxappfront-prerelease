@@ -1,0 +1,10 @@
+<ion-header>
+  <main-toolbar></main-toolbar>
+  <search-btn #srch (click)="onSearchClick()"></search-btn>
+</ion-header>
+
+<ion-content>
+
+  <items-list [products]="sResults"></items-list>
+
+</ion-content>

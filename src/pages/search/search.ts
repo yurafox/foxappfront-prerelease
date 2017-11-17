@@ -12,11 +12,9 @@ export class SearchPage extends ComponentBase implements OnInit {
 
   @ViewChild('srch') searchButtonControl;
 
-
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     super();
   }
-
 
   ngOnInit() {
     setTimeout(() =>
@@ -25,13 +23,15 @@ export class SearchPage extends ComponentBase implements OnInit {
           this.searchButtonControl.disabled = false;
         },
       150);
-
-//    console.log(this.searchButtonControl.searchService.searchItems.length);
-
   }
 
-  deleteSearchItem(index: number) {
-    this.searchButtonControl.removeSearchItem(index);
+  deleteSearchItem(event, item: string) {
+    event.stopPropagation();
+    this.searchButtonControl.removeSearchItem(item);
+  }
+
+  search(item): void {
+    this.searchButtonControl.searchByText(item);
   }
 
 }

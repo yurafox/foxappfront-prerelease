@@ -33,7 +33,8 @@ import {
   ItemReviewPage,
   ItemReviewsPage,
   ItemReviewWritePage,
-  SearchPage
+  SearchPage,
+  SearchResultsPage
 } from '../pages/index';
 
 import {AppConstants} from './app-constants';
@@ -58,6 +59,7 @@ import {RefInjector} from './core/app-core';
 import {ComponentsModule} from '../components/components.module';
 import {PipesModule} from "./pipe/pipes.module";
 import {SearchService} from './service/search-service';
+
 
 
 @NgModule({
@@ -85,7 +87,8 @@ import {SearchService} from './service/search-service';
     ItemReviewPage,
     ItemReviewsPage,
     ItemReviewWritePage,
-    SearchPage
+    SearchPage,
+    SearchResultsPage
   ],
   imports: [
     BrowserModule,
@@ -129,6 +132,7 @@ import {SearchService} from './service/search-service';
     ItemReviewsPage,
     ItemReviewWritePage,
     SearchPage,
+    SearchResultsPage,
     MapPage,
     ModalItemOptionPage,
     MyOrderPage,

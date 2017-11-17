@@ -1,14 +1,19 @@
-import {Injectable, OnInit} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
+import {Product} from '../model/product';
+import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
+
 
 @Injectable()
 export class SearchService {
 
   private cKey = 'searchItems';
+  private cMaxSearchItemsCount = 15;
   public searchItems = new Array<string> ();
+  public lastSearch = '';
+  public searchResults = new Array<Product>();
 
-  constructor() {
-    let stor = JSON.parse(localStorage.getItem(this.cKey));
-    console.log(stor);
+  constructor(private repo: AbstractDataRepository) {
+    const stor = JSON.parse(localStorage.getItem(this.cKey));
     if (stor) {
       stor.forEach((val) => {
         this.searchItems.push(val);
@@ -16,12 +21,21 @@ export class SearchService {
     }
   }
 
+  searchStringUpdated = new EventEmitter<string>();
+
+  searchProducts(): Promise<Product[]> {
+    return this.repo.searchProducts(this.lastSearch);
+  }
+
   addSearchItem(value: string) {
+    this.lastSearch = value;
     const i = this.searchItems.indexOf(value);
     if (i > -1)
       this.searchItems.splice(i,1);
     this.searchItems.splice(0,0, value);
+    this.searchItems = this.searchItems.splice(0, this.cMaxSearchItemsCount);
     localStorage.setItem(this.cKey, JSON.stringify(this.searchItems));
+    this.searchStringUpdated.emit(value);
   }
 
   removeSearchItem(str: string) {

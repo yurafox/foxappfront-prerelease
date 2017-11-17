@@ -60,6 +60,84 @@ export class AppDataRepository extends AbstractDataRepository {
 
   }
 
+
+  /* async filterProduct(product: Product, srchVal: string) : Promise<boolean> {
+    //!(value.toLowerCase().indexOf(this.searchValue.toLowerCase()) == -1)
+       (<any>product).manufacturer_p.then
+
+       const mnfFound = !(a.name.toLowerCase().indexOf(srchVal) == -1);
+
+//    const mnfFound = (!((<any>product).manufacturer.name.toLowerCase().indexOf(srchVal) == -1));
+       const memoFound =  ((product.description) && !(product.description.toLowerCase().indexOf(srchVal) == -1));
+     return mnfFound || memoFound;
+  }*/
+
+  public async searchProducts(srchString: string): Promise<Product[]> {
+    try {
+        const response = await this.http.get(productsUrl).toPromise();
+
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error('server side status error');
+        }
+        const products = new Array<Product>();
+        const mnf = new Array<any>();
+
+        if (data != null) {
+          data.forEach((val) => {
+            let props = new Array<ProductPropValue>();
+            if (val.props && val.props.length !== 0) {
+              props = this.getPropValuefromProduct(val);
+            }
+
+            // create current product
+            const productItem: Product = new Product(val.id, val.name, val.price, val.manufacturerId,
+              props, val.imageUrl, val.rating, val.recall, val.supplOffers, val.description, val.slideImageUrls);
+
+
+            let a = (<any>productItem).manufacturer_p;
+            mnf.push(a);
+            products.push(productItem);
+
+/*
+            a.then((m)=>{
+              console.log(m);
+              const mnfFound = (!(m.name.toLowerCase().indexOf(srchString) == -1));
+              const memoFound =  ((productItem.description) && !(productItem.description.toLowerCase().indexOf(srchString) == -1));
+              if(mnfFound || memoFound) {
+                products.push(productItem);
+              }
+            });
+*/
+            //return products;
+          });
+          return Promise.all(mnf).then(item => {
+              const resolvedProducts = new Array<Product>();
+              products.forEach(i => {
+                console.log((<any>i).manufacturer_p);
+                console.log((<any>i).manufacturer_p.name);
+                console.log()
+
+/*
+                const mnfFound = (!((<any>i).manufacturer_p.name.toLowerCase().indexOf(srchString) == -1));
+                const memoFound =  ((i.description) && !(i.description.toLowerCase().indexOf(srchString) == -1));
+                if(mnfFound || memoFound) {
+                  resolvedProducts.push(i);
+                }
+*/
+              });
+              return resolvedProducts;
+            }
+          )
+        }
+      else
+        return null; //products;
+    } catch (err) {
+      await this.handleError(err);
+    }
+
+  }
+
   public async getProducts(urlQuery: string, cacheForce: boolean): Promise<Product[]> {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
