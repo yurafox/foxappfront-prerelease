@@ -99,7 +99,7 @@ export class AppDataRepository extends AbstractDataRepository {
               this.searchText(i.id.toString(), srchString)  ||
               this.searchText(i.name, srchString)) {
                 result_products.push(i);
-            }
+            };
           };
         };
         return result_products;
