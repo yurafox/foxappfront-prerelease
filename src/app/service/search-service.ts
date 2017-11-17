@@ -9,8 +9,18 @@ export class SearchService {
   private cKey = 'searchItems';
   private cMaxSearchItemsCount = 15;
   public searchItems = new Array<string> ();
-  public lastSearch = '';
   public searchResults: Promise<Product[]>;
+  private _ls: string = '';
+
+  public get lastSearch(): string {
+    return this._ls;
+  }
+
+  public set lastSearch(value: string) {
+    this._ls = value;
+    this.searchStringUpdated.emit(value);
+  }
+
 
   constructor(private repo: AbstractDataRepository) {
     const stor = JSON.parse(localStorage.getItem(this.cKey));
@@ -23,21 +33,23 @@ export class SearchService {
 
   searchStringUpdated = new EventEmitter<string>();
 
-  searchProducts(): Promise<Product[]> {
-    console.log('repo.searchProducts '+this.lastSearch);
-    this.searchResults = this.repo.searchProducts(this.lastSearch);
-    return this.searchResults;
-  }
+  searchProducts(srchString: string): Promise<Product[]> {
+    //console.log('repo.searchProducts '+this.lastSearch);
+    this.lastSearch = srchString;
 
-  addSearchItem(value: string) {
-    this.lastSearch = value;
-    const i = this.searchItems.indexOf(value);
-    if (i > -1)
+    // Если такая строка поиска уже есть в списке - переносим ее в верх списка и обрезаем список до макс длиньі
+    const i = this.searchItems.indexOf(srchString);
+    if (!(i == -1))
       this.searchItems.splice(i,1);
-    this.searchItems.splice(0,0, value);
+    this.searchItems.splice(0,0, srchString);
     this.searchItems = this.searchItems.splice(0, this.cMaxSearchItemsCount);
+
+    //Сохраняем массив в сторадже
     localStorage.setItem(this.cKey, JSON.stringify(this.searchItems));
-    this.searchStringUpdated.emit(value);
+
+    // Обращаемся за данньіми в бекенд
+    this.searchResults = this.repo.searchProducts(srchString);
+    return this.searchResults;
   }
 
   removeSearchItem(str: string) {
