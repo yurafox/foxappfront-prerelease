@@ -61,16 +61,9 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
 
-  /* async filterProduct(product: Product, srchVal: string) : Promise<boolean> {
-    //!(value.toLowerCase().indexOf(this.searchValue.toLowerCase()) == -1)
-       (<any>product).manufacturer_p.then
-
-       const mnfFound = !(a.name.toLowerCase().indexOf(srchVal) == -1);
-
-//    const mnfFound = (!((<any>product).manufacturer.name.toLowerCase().indexOf(srchVal) == -1));
-       const memoFound =  ((product.description) && !(product.description.toLowerCase().indexOf(srchVal) == -1));
-     return mnfFound || memoFound;
-  }*/
+  searchText(textToSearch: string, srchVal: string): boolean {
+    return ((textToSearch) && !(textToSearch.toLowerCase().indexOf(srchVal) == -1));
+  }
 
   public async searchProducts(srchString: string): Promise<Product[]> {
     try {
@@ -81,6 +74,7 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error('server side status error');
         }
         const products = new Array<Product>();
+        const result_products = new Array<Product>();
 
         if (data != null) {
           data.forEach((val) => {
@@ -93,27 +87,22 @@ export class AppDataRepository extends AbstractDataRepository {
             const productItem: Product = new Product(val.id, val.name, val.price, val.manufacturerId,
               props, val.imageUrl, val.rating, val.recall, val.supplOffers, val.description, val.slideImageUrls);
 
+            products.push(productItem);
 
-            let a = (<any>productItem).manufacturer_p;
-            let b = a.name;
-            //products.push(productItem);
-
-            a.then((m)=>{
-              console.log(m);
-              console.log(m.name);
-              if (m.name) {
-//                console.log(m.name);
-                const mnfFound = (!(m.name.toLowerCase().indexOf(srchString) == -1));
-                const memoFound =  ((productItem.description) && !(productItem.description.toLowerCase().indexOf(srchString) == -1));
-                if(mnfFound || memoFound) {
-                  products.push(productItem);
-                }
-              }
-            });
-            return products;
           });
-        }
-        return products;
+
+          for (let i of products) {
+            let mnf = await (<any>i).manufacturer_p;
+
+            if(this.searchText(mnf.name, srchString) ||
+              this.searchText(i.description, srchString) ||
+              this.searchText(i.id.toString(), srchString)  ||
+              this.searchText(i.name, srchString)) {
+                result_products.push(i);
+            }
+          };
+        };
+        return result_products;
     } catch (err) {
       await this.handleError(err);
     }
