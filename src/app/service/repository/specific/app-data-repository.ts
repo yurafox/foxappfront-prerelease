@@ -81,7 +81,6 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error('server side status error');
         }
         const products = new Array<Product>();
-        const mnf = new Array<any>();
 
         if (data != null) {
           data.forEach((val) => {
@@ -96,42 +95,25 @@ export class AppDataRepository extends AbstractDataRepository {
 
 
             let a = (<any>productItem).manufacturer_p;
-            mnf.push(a);
-            products.push(productItem);
+            let b = a.name;
+            //products.push(productItem);
 
-/*
             a.then((m)=>{
               console.log(m);
-              const mnfFound = (!(m.name.toLowerCase().indexOf(srchString) == -1));
-              const memoFound =  ((productItem.description) && !(productItem.description.toLowerCase().indexOf(srchString) == -1));
-              if(mnfFound || memoFound) {
-                products.push(productItem);
+              console.log(m.name);
+              if (m.name) {
+//                console.log(m.name);
+                const mnfFound = (!(m.name.toLowerCase().indexOf(srchString) == -1));
+                const memoFound =  ((productItem.description) && !(productItem.description.toLowerCase().indexOf(srchString) == -1));
+                if(mnfFound || memoFound) {
+                  products.push(productItem);
+                }
               }
             });
-*/
-            //return products;
+            return products;
           });
-          return Promise.all(mnf).then(item => {
-              const resolvedProducts = new Array<Product>();
-              products.forEach(i => {
-                console.log((<any>i).manufacturer_p);
-                console.log((<any>i).manufacturer_p.name);
-                console.log()
-
-/*
-                const mnfFound = (!((<any>i).manufacturer_p.name.toLowerCase().indexOf(srchString) == -1));
-                const memoFound =  ((i.description) && !(i.description.toLowerCase().indexOf(srchString) == -1));
-                if(mnfFound || memoFound) {
-                  resolvedProducts.push(i);
-                }
-*/
-              });
-              return resolvedProducts;
-            }
-          )
         }
-      else
-        return null; //products;
+        return products;
     } catch (err) {
       await this.handleError(err);
     }

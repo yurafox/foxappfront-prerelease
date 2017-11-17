@@ -10,7 +10,7 @@ export class SearchService {
   private cMaxSearchItemsCount = 15;
   public searchItems = new Array<string> ();
   public lastSearch = '';
-  public searchResults = new Array<Product>();
+  public searchResults: Promise<Product[]>;
 
   constructor(private repo: AbstractDataRepository) {
     const stor = JSON.parse(localStorage.getItem(this.cKey));
@@ -24,7 +24,9 @@ export class SearchService {
   searchStringUpdated = new EventEmitter<string>();
 
   searchProducts(): Promise<Product[]> {
-    return this.repo.searchProducts(this.lastSearch);
+    console.log('repo.searchProducts '+this.lastSearch);
+    this.searchResults = this.repo.searchProducts(this.lastSearch);
+    return this.searchResults;
   }
 
   addSearchItem(value: string) {

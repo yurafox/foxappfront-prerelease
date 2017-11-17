@@ -32,7 +32,8 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
     if (searchString) {
       this.searchValue = searchString;
       this.searchService.addSearchItem(searchString);
-      this.navCtrl.push(SearchResultsPage, this.searchService.searchProducts());
+      if (!this.disabled)
+        this.navCtrl.push(SearchResultsPage, this.searchService.searchProducts());
     }
   }
 
