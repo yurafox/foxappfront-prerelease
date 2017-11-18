@@ -7,18 +7,27 @@ import {CategoryPage} from '../category/category';
   selector: 'page-categories',
   templateUrl: 'categories.html',
 })
+
 export class CategoriesPage  {
+
+  categoriesArray = [
+    {categoryImg: 'assets/icon/phone.svg', caption: 'Cмартфоны и телефоны', url: 'mobilnye_telefony.html'},
+    {categoryImg: 'assets/icon/tv.svg', caption: 'Телевизоры', url: 'led_televizory.html'},
+    {categoryImg: 'assets/icon/computer.svg', caption: 'Ноутбуки', url: ''},
+    {categoryImg: 'assets/icon/fridge.svg', caption: 'Холодильники', url: ''},
+    {categoryImg: 'assets/icon/washer.svg', caption: 'Стиральные машины', url: ''},
+    {categoryImg: 'assets/icon/heater.svg', caption: 'Обогреватели', url: ''},
+    {categoryImg: 'assets/icon/vaccleaner.svg', caption: 'Пылесосы', url: ''},
+    {categoryImg: 'assets/icon/microwave.svg', caption: 'Микроволновки', url: ''}
+  ] ;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
 
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CategoriesPage');
-  }
-
-  onCategoryClick(): void {
-    this.navCtrl.setRoot(CategoryPage, 1); // {animate: true, direction: 'forward', duration: 500});
-    console.log('Category item click');
+  onCategoryClick(urlQueryString: string): void {
+    if (urlQueryString)
+      this.navCtrl.push(CategoryPage, urlQueryString); // {animate: true, direction: 'forward', duration: 500});
   }
 
 }

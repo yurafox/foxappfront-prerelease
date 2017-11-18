@@ -4,60 +4,11 @@
 <ion-content padding>
   <ion-grid>
     <ion-row wrap>
-      <ion-col col-6 col-md-6 col-lg-3 col-xl-3 class="product" (click)="onCategoryClick()">
+      <ion-col col-6 col-md-6 col-lg-3 col-xl-3 (click)="onCategoryClick(item.url)" *ngFor="let item of categoriesArray">
         <div text-center>
-          <img src="assets/icon/phone.svg" class="cat-icon">
+          <img [src]="item.categoryImg" class="cat-icon">
           <br>
-          <span class="cat-item-caption">Cмартфоны и телефоны</span>
-        </div>
-      </ion-col>
-      <ion-col col-6 col-md-6 col-lg-3 col-xl-3>
-        <div text-center>
-          <img src="assets/icon/tv.svg" class="cat-icon">
-          <br>
-          <span class="cat-item-caption">Телевизоры</span>
-        </div>
-      </ion-col>
-      <ion-col col-6 col-md-6 col-lg-3 col-xl-3>
-        <div text-center>
-          <img src="assets/icon/computer.svg" class="cat-icon">
-          <br>
-          <span class="cat-item-caption">Ноутбуки</span>
-        </div>
-      </ion-col>
-      <ion-col col-6 col-md-6 col-lg-3 col-xl-3>
-        <div text-center>
-          <img src="assets/icon/fridge.svg" class="cat-icon">
-          <br>
-          <span class="cat-item-caption">Холодильники</span>
-        </div>
-      </ion-col>
-      <ion-col col-6 col-md-6 col-lg-3 col-xl-3>
-        <div text-center>
-          <img src="assets/icon/washer.svg" class="cat-icon">
-          <br>
-          <span class="cat-item-caption">Стиральные машины</span>
-        </div>
-      </ion-col>
-      <ion-col col-6 col-md-6 col-lg-3 col-xl-3>
-        <div text-center>
-          <img src="assets/icon/heater.svg" class="cat-icon">
-          <br>
-          <span class="cat-item-caption">Обогреватели</span>
-        </div>
-      </ion-col>
-      <ion-col col-6 col-md-6 col-lg-3 col-xl-3>
-        <div text-center>
-          <img src="assets/icon/vaccleaner.svg" class="cat-icon">
-          <br>
-          <span class="cat-item-caption">Пылесосы</span>
-        </div>
-      </ion-col>
-      <ion-col col-6 col-md-6 col-lg-3 col-xl-3>
-        <div text-center>
-          <img src="assets/icon/microwave.svg" class="cat-icon">
-          <br>
-          <span class="cat-item-caption">Микроволновки</span>
+          <span class="cat-item-caption">{{item.caption}}</span>
         </div>
       </ion-col>
     </ion-row>

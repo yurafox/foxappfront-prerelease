@@ -25,13 +25,13 @@ export class SearchPage extends ComponentBase implements OnInit {
       150);
   }
 
-  deleteSearchItem(event, item: string) {
+  deleteSearchItem(event: any, item: string) {
     event.stopPropagation();
     this.searchButtonControl.removeSearchItem(item);
   }
 
-  search(item): void {
-    this.searchButtonControl.searchByText(item);
+  search(srchString: string): void {
+    this.searchButtonControl.searchByText(srchString);
   }
 
 }

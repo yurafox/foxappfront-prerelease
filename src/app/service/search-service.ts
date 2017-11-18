@@ -18,7 +18,7 @@ export class SearchService {
 
   public set lastSearch(value: string) {
     this._ls = value;
-    this.searchStringUpdated.emit(value);
+    this.lastSearchStringUpdated.emit(value);
   }
 
 
@@ -31,10 +31,9 @@ export class SearchService {
     }
   }
 
-  searchStringUpdated = new EventEmitter<string>();
+  lastSearchStringUpdated = new EventEmitter<string>();
 
   searchProducts(srchString: string): Promise<Product[]> {
-    //console.log('repo.searchProducts '+this.lastSearch);
     this.lastSearch = srchString;
 
     // Если такая строка поиска уже есть в списке - переносим ее в верх списка и обрезаем список до макс длиньі

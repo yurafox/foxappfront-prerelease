@@ -27,9 +27,7 @@ export class SearchResultsPage extends ComponentBase implements OnInit {
 
   async ngOnInit() {
     super.ngOnInit();
-    //this.sResults = await this.srchService.searchProducts();
     this.sResults = await this.srchService.searchResults;
-
   }
 
 

@@ -61,7 +61,7 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
 
-  searchText(textToSearch: string, srchVal: string): boolean {
+  search(textToSearch: string, srchVal: string): boolean {
     return ((textToSearch) && !(textToSearch.toLowerCase().indexOf(srchVal) == -1));
   }
 
@@ -74,10 +74,9 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error('server side status error');
         }
         const products = new Array<Product>();
-        const result_products = new Array<Product>();
 
         if (data != null) {
-          data.forEach((val) => {
+          for (let val of data) {
             let props = new Array<ProductPropValue>();
             if (val.props && val.props.length !== 0) {
               props = this.getPropValuefromProduct(val);
@@ -87,22 +86,17 @@ export class AppDataRepository extends AbstractDataRepository {
             const productItem: Product = new Product(val.id, val.name, val.price, val.manufacturerId,
               props, val.imageUrl, val.rating, val.recall, val.supplOffers, val.description, val.slideImageUrls);
 
-            products.push(productItem);
-
-          });
-
-          for (let i of products) {
-            let mnf = await (<any>i).manufacturer_p;
-
-            if(this.searchText(mnf.name, srchString) ||
-              this.searchText(i.description, srchString) ||
-              this.searchText(i.id.toString(), srchString)  ||
-              this.searchText(i.name, srchString)) {
-                result_products.push(i);
-            };
+            let mnf = await (<any>productItem).manufacturer_p;
+            if (this.search(mnf.name, srchString) ||
+                this.search(productItem.description, srchString) ||
+                this.search(productItem.id.toString(), srchString) ||
+                this.search(productItem.name, srchString))
+                {
+                  products.push(productItem);
+                };
           };
         };
-        return result_products;
+        return products;
     } catch (err) {
       await this.handleError(err);
     }

@@ -6,18 +6,12 @@ import {AbstractDataRepository} from '../../app/service/repository/abstract/abst
 import {QuotationProduct} from "../../app/model/quotation-product";
 import {Manufacturer} from "../../app/model/manufacturer";
 
-/**
- * Generated class for the CategoryPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-category',
   templateUrl: 'category.html',
 })
+
 export class CategoryPage extends ComponentBase implements OnInit {
 
   baseProducts: Product[];
@@ -47,12 +41,12 @@ export class CategoryPage extends ComponentBase implements OnInit {
   constructor(public navCtrl: NavController, public navParams: NavParams,
                 private repo: AbstractDataRepository) {
     super();
-    console.log(navParams.data);
   }
 
   async ngOnInit() {
     super.ngOnInit();
-    this.baseProducts = await this.repo.getProducts('mobilnye_telefony.html', true);
+
+    this.baseProducts = await this.repo.getProducts(this.navParams.data, true);
 
   }
 

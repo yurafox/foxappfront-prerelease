@@ -17,7 +17,7 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
 
   constructor(public searchService: SearchService, public navCtrl: NavController) {
     super();
-    searchService.searchStringUpdated.subscribe(
+    searchService.lastSearchStringUpdated.subscribe(
       (value:string) => {
         this.searchValue = value;
       }
@@ -31,7 +31,6 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
   searchByText(searchString: string): void {
     if (searchString) {
       this.searchValue = searchString;
-      //this.searchService.addSearchItem(searchString);
       if (!this.disabled)
         this.navCtrl.push(SearchResultsPage, this.searchService.searchProducts(searchString));
     }
@@ -57,7 +56,7 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
       this.tmpSearchArray = this.searchService.searchItems;
   }
 
-  removeSearchItem(item) {
+  removeSearchItem(item: string) {
     const i = this.tmpSearchArray.indexOf(item);
     if (!(i == -1))
       this.tmpSearchArray.splice(i, 1);
