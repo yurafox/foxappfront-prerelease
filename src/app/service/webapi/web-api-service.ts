@@ -26,8 +26,8 @@ export class WebApiService implements InMemoryDbService {
     {id: 6, idQuotation: 3, idProduct: 6280637, price: 167.70, maxDeliveryDays: 3, stockQuant: 45},
     {id: 2, idQuotation: 1, idProduct: 6293680, price: 349.00, maxDeliveryDays: 2, stockQuant: 102.00},
     {id: 4, idQuotation: 2, idProduct: 6293680, price: 330.00, maxDeliveryDays: 2, stockQuant: 85.00},
-    {id: 2, idQuotation: 1, idProduct: 6363302, price: 349.00, maxDeliveryDays: 2, stockQuant: 102.00},
-    {id: 4, idQuotation: 2, idProduct: 6322210, price: 330.00, maxDeliveryDays: 2, stockQuant: 85.00}
+    {id: 5, idQuotation: 1, idProduct: 6363302, price: 349.00, maxDeliveryDays: 2, stockQuant: 102.00},
+    {id: 7, idQuotation: 2, idProduct: 6322210, price: 330.00, maxDeliveryDays: 2, stockQuant: 85.00}
   ];
   // </editor-fold>
 

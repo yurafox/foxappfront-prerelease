@@ -15,7 +15,8 @@ export class MainToolbarComponent {
                 public cart: CartService) {}
 
   goToCart(): void {
-    this.navCtrl.push(CartPage);
+    if (!(this.navCtrl.getActive().name === 'CartPage'))
+      this.navCtrl.push(CartPage);
   }
 
   goToHome(): void {

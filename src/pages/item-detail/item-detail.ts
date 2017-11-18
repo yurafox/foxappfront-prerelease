@@ -69,6 +69,7 @@ export class ItemDetailPage extends ItemBase implements OnInit { //ComponentBase
   }
 
   onAddToCart() {
+    console.log(this.valueQuot);
     this.cart.addItem(this.valueQuot, this.qty, this.product.price);
   }
 }
