@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {NavController, NavParams} from "ionic-angular";
 import {CartPage, HomePage} from '../../pages/index';
+import {CartService} from '../../app/service/cart-service';
 
 @Component({
   selector: 'main-toolbar',
@@ -10,11 +11,11 @@ export class MainToolbarComponent {
 
   text: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+                public cart: CartService) {}
 
   goToCart(): void {
-    console.log('Go to cart');
-    this.navCtrl.setRoot(CartPage);
+    this.navCtrl.push(CartPage);
   }
 
   goToHome(): void {

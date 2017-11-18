@@ -1,20 +1,4 @@
-page-cart {
-
-  .delete-qty {
-    display: inline-block;
-    border-top: 2px solid color($colors, bgColor);
-    border-bottom: 2px solid color($colors, bgColor);
-
-    .btn-delete {
-      border-left: 1px solid color($colors, bgColor);
-      border-right: 1px solid color($colors, bgColor);
-      background-color: #c1c4c7;
-      color: black;
-      padding: 6px 12px;
-      float: left;
-    }
-
-  }
+page-item-quotes {
 
   .item-md.item-block .item-inner {
     border-bottom: 0px;
@@ -26,10 +10,6 @@ page-cart {
 
   .f-color-blue {
     color: darkslateblue;
-  }
-
-  .f-color-red {
-    color: red;
   }
 
   .f-color-green {
@@ -50,6 +30,11 @@ page-cart {
   .f-size-small {
     font-size: 12px;
   }
+
+  .f-size-smaller {
+    font-size: 10px;
+  }
+
 
   .f-img-item-lg {
     padding: 6px 4px 2px;
@@ -75,14 +60,6 @@ page-cart {
   .f-grid-feat-bkgrnd {
     background-color: #8e9093;
     color: black;
-  }
-
-  .f-btn-delete {
-    background: gray;
-    color: #000000;
-    text-transform: none;
-    font-size: 12px;
-    font-weight: 300;
   }
 
   .f-btn-add-cart, .f-btn-add-cart.activated {
@@ -120,6 +97,15 @@ page-cart {
         font-size: 12px;
       }
     }
+  }
+
+  #rating-large {
+    ul.rating li {
+      ion-icon {
+        font-size: 18px;
+      }
+    }
+
   }
 
 }

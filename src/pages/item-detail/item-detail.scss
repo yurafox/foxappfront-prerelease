@@ -8,6 +8,14 @@ page-item-detail {
     color: dimgrey;
   }
 
+  .f-color-blue {
+    color: darkslateblue;
+  }
+
+  .f-color-green {
+    color: color($colors, green);
+  }
+
   .f-size-large {
     font-size: 18px;
   }

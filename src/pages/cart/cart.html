@@ -1,103 +1,80 @@
-<<ion-header>
-
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Корзина</ion-title>
-  </ion-navbar>
-
+<ion-header>
+  <main-toolbar></main-toolbar>
 </ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col text-center class="f-item-padding-bottom">
+        <span class="f-size-medium f-color-secondary">Cart subtotal ({{cart.cartItemsCount}} items):</span>
+        <span class="f-size-large" style="color: red;">{{cart.orderTotal | localeCurrency:userService.currency}}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button class="f-btn-add-cart" ion-button block [attr.disabled]="(cart.orderProducts.length == 0)?'':null">Proceed to checkout</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <hr>
 
+  <div *ngFor="let item of cart.orderProducts; let i = index">
+    <ion-grid class="f-color-secondary f-item-nopadding-tb">
 
-<ion-content class="common-bg">
-  <div class="card" margin-top >
-    <div class="card-header" padding>
-      Поставщик:
-    </div>
-
-    <ion-list class="list-full-border" no-margin>
-      <ion-item class="product" >
-        <ion-thumbnail item-left>
-          <img src="assets/imgs/p1.jpg">
-        </ion-thumbnail>
-        <!--item's information-->
-        <div>
-          <div text-wrap></div>
-          <div class="text-sm">
-            <span ion-text color="gray"></span>
-          </div>
-          <div padding-bottom>
-            <span class="pull-right"></span>
-            <div class="clear"></div>
-          </div>
+      <ion-row>
+        <ion-col col-auto>
           <div>
-            <div class="input-qty">
-            <span class="btn">
+            <img class="f-img-item" width="60" height="60" [src]="item?.quotationproduct?.product?.imageUrl">
+          </div>
+        </ion-col>
+        <ion-col no-padding>
+          <ion-grid class="f-item-nopadding-tb">
+            <ion-row>
+              <ion-col no-padding class="f-item-padding-bottom">
+                <span class="f-size-medium"><b>{{item?.quotationproduct?.product?.name}}</b></span>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col no-padding class="f-item-padding-bottom">
+                <span class="f-size-medium f-color-red" >{{item.price | localeCurrency:userService.currency}}</span>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col no-padding class="f-item-padding-bottom">
+                <span class="f-size-small f-color-red">Only {{item?.quotationproduct?.stockQuant}} left. Order now</span>
+              </ion-col>
+            </ion-row>
+
+          </ion-grid>
+        </ion-col>
+
+      </ion-row>
+
+      <ion-row>
+        <ion-col col-auto class="f-item-padding-bottom" >
+          <div class="input-qty">
+            <span class="btn" (click)="decQty(item)">
               <ion-icon name="ios-remove"></ion-icon>
             </span>
-              <input type="text" >
-              <span class="btn">
+            <input readonly [(ngModel)]="item.qty">
+            <span class="btn" (click)="incQty(item)">
               <ion-icon name="ios-add"></ion-icon>
             </span>
-              <div class="clear"></div>
-            </div>
-            <div class="pull-right bottom-info text-lg trash-btn">
-              <ion-icon name="trash" color="gray" class="pull-right" (click)="remove()"></ion-icon>
-              <div class="clear"></div>
-            </div>
+            <div class="clear"></div>
           </div>
-        </div>
-      </ion-item>
-    </ion-list>
+        </ion-col>
+        <ion-col class="f-item-padding-left">
+          <div class="delete-qty">
+            <span class="btn-delete" (click)="onDeleteItem(i)">Delete</span>
+          </div>
+        </ion-col>
+      </ion-row>
 
 
-    <div class="card-footer" padding>
-      <div>
-        <span class="pull-left" ion-text color="gray">Стоимость</span>
-        <span class="pull-right" ion-text color="gray"></span>
-        <div class="clear"></div>
-      </div>
-      <div>
-        <span class="pull-left" ion-text color="gray">Доставка</span>
-        <span class="pull-right" ion-text color="gray"></span>
-        <div class="clear"></div>
-      </div>
-      <div>
-        <span class="pull-left" ion-text color="gray">Сумма</span>
-        <span class="pull-right bold" ion-text color="fox"></span>
-        <div class="clear"></div>
-      </div>
-    </div>
+    </ion-grid>
+    <hr>
   </div>
 
-  <!--Total price-->
-  <div class="card" margin-top>
-    <div class="card-footer" padding>
-      <div>
-        <span class="pull-left" ion-text color="gray">Итоговая сумма</span>
-        <span class="pull-right" ion-text color="gray"></span>
-        <div class="clear"></div>
-      </div>
-      <div>
-        <span class="pull-left" ion-text color="gray">Доставка</span>
-        <span class="pull-right" ion-text color="gray"></span>
-        <div class="clear"></div>
-      </div>
-    </div>
-  </div>
 
 </ion-content>
-
-<ion-footer class="cart-footer" padding>
-  <ion-title>
-    <span ion-text color="gray">Сумма</span>
-    <br/>
-    <span class="bold" ion-text color="fox"></span>
-  </ion-title>
-  <ion-buttons end>
-    <button ion-button (click)="buy()" color="fox">
-      Купить всё
-    </button>
-  </ion-buttons>
-</ion-footer>

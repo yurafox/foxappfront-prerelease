@@ -22,3 +22,4 @@ export * from './item-reviews/item-reviews';
 export * from './item-review-write/item-review-write';
 export * from './search/search';
 export * from './search-results/search-results';
+export * from './item-quotes/item-quotes';

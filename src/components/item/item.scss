@@ -3,9 +3,18 @@ item {
     color: dimgrey;
   }
 
+  .f-color-green {
+    color: color($colors, green);
+  }
+
   .f-size-small {
     font-size: 12px;
   }
+
+  .f-size-smaller {
+    font-size: 10px;
+  }
+
 
   .f-img-item {
     width: 100px; height: 100px;  padding: 6px 4px 2px;

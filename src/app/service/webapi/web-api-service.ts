@@ -269,12 +269,12 @@ export class WebApiService implements InMemoryDbService {
 
   // <editor-fold desc="Suppliers">
   suppliers = [
-    {id: 1, name: 'Фокстрот', paymentMethodId: 1, rating: 5},
-    {id: 2, name: 'ЮК', paymentMethodId: 1, rating: 4},
-    {id: 3, name: 'Samsung', paymentMethodId: 1, rating: 5},
-    {id: 4, name: 'LG', paymentMethodId: 3, rating: 5},
-    {id: 5, name: 'Алло', paymentMethodId: 1, rating: 3},
-    {id: 6, name: 'Lenovo', paymentMethodId: 3, rating: 2}
+    {id: 1, name: 'ТОВ "САВ-Дістрібюшн"', paymentMethodId: 1, rating: 5, positiveFeedbackPct: '98.3', refsCount: '14580'},
+    {id: 2, name: 'ТОВ "Інвестком"', paymentMethodId: 1, rating: 4, positiveFeedbackPct: '83.2', refsCount: '245'},
+    {id: 3, name: 'Samsung', paymentMethodId: 1, rating: 5, positiveFeedbackPct: '21', refsCount: '5548'},
+    {id: 4, name: 'LG', paymentMethodId: 3, rating: 5, positiveFeedbackPct: '14', refsCount: '5824'},
+    {id: 5, name: 'Алло', paymentMethodId: 1, rating: 3, positiveFeedbackPct: '35', refsCount: '254'},
+    {id: 6, name: 'Lenovo', paymentMethodId: 3, rating: 2, positiveFeedbackPct: '36.6', refsCount: '77'}
   ];
 
 

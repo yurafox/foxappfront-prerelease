@@ -1,7 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {ComponentBase} from '../../components/component-extension/component-base';
-import {Product} from '../../app/model/product';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {ProductReview} from "../../app/model/product-review";
 import {ItemDescriptionPage} from '../item-description/item-description';
@@ -9,22 +7,25 @@ import {ItemPropsPage} from '../item-props/item-props';
 import {ItemReviewPage} from '../item-review/item-review';
 import {ItemReviewsPage} from '../item-reviews/item-reviews';
 import {ItemReviewWritePage} from '../item-review-write/item-review-write';
+import {ItemBase} from '../../components/component-extension/item-base';
+import {ItemQuotesPage} from '../item-quotes/item-quotes';
+import {CartService} from '../../app/service/cart-service';
+import {QuotationProduct} from '../../app/model/quotation-product';
 
 @IonicPage()
 @Component({
   selector: 'page-item-detail',
   templateUrl: 'item-detail.html',
 })
-export class ItemDetailPage extends ComponentBase implements OnInit {
+export class ItemDetailPage extends ItemBase implements OnInit { //ComponentBase implements OnInit {
 
-  product: Product;
   qty = 1;
   reviews = new Array<ProductReview>() ;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public repo: AbstractDataRepository) {
-    super();
+              public repo: AbstractDataRepository, public cart: CartService) {
+    super(navCtrl, navParams, repo);
     this.product = this.navParams.data;
     console.log(this.product.name);
   }
@@ -61,5 +62,13 @@ export class ItemDetailPage extends ComponentBase implements OnInit {
 
   onWriteReview(data: any): void {
     this.navCtrl.push(ItemReviewWritePage, this.product);
+  }
+
+  onShowMoreQuotesClick(): void {
+    this.navCtrl.push(ItemQuotesPage, this.product);
+  }
+
+  onAddToCart() {
+    this.cart.addItem(this.valueQuot, this.qty, this.product.price);
   }
 }

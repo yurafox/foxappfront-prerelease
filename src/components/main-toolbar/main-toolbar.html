@@ -6,7 +6,7 @@
   <ion-buttons end>
     <button id="cart-button" ion-button (click)="goToCart()">
       <ion-icon name="cart">
-        <ion-badge id="itemscount-badge" color="danger">2</ion-badge>
+        <ion-badge id="itemscount-badge" *ngIf="cart.cartItemsCount>0">{{cart.cartItemsCount}}</ion-badge>
       </ion-icon>
     </button>
   </ion-buttons>

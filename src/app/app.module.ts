@@ -34,7 +34,8 @@ import {
   ItemReviewsPage,
   ItemReviewWritePage,
   SearchPage,
-  SearchResultsPage
+  SearchResultsPage,
+  ItemQuotesPage
 } from '../pages/index';
 
 import {AppConstants} from './app-constants';
@@ -50,7 +51,9 @@ import {
   AppDataRepository,
   NewsSubscribeService,
   UserService,
-  CurrencyStore
+  CurrencyStore,
+  CartService,
+  SearchService
 } from '../app/service/index';
 
 import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
@@ -58,7 +61,6 @@ import {WebApiService} from './service/webapi/web-api-service';
 import {RefInjector} from './core/app-core';
 import {ComponentsModule} from '../components/components.module';
 import {PipesModule} from "./pipe/pipes.module";
-import {SearchService} from './service/search-service';
 
 
 
@@ -88,7 +90,8 @@ import {SearchService} from './service/search-service';
     ItemReviewsPage,
     ItemReviewWritePage,
     SearchPage,
-    SearchResultsPage
+    SearchResultsPage,
+    ItemQuotesPage
   ],
   imports: [
     BrowserModule,
@@ -133,6 +136,7 @@ import {SearchService} from './service/search-service';
     ItemReviewWritePage,
     SearchPage,
     SearchResultsPage,
+    ItemQuotesPage,
     MapPage,
     ModalItemOptionPage,
     MyOrderPage,
@@ -153,7 +157,8 @@ import {SearchService} from './service/search-service';
     NewsSubscribeService,
     AppConstants,
     CurrencyStore,
-    SearchService
+    SearchService,
+    CartService
   ]
 })
 export class AppModule {

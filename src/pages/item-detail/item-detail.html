@@ -32,15 +32,21 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col class="f-item-nopadding f-item-padding-left">
+      <ion-col class="f-item-nopadding f-item-padding-left" >
         <h3>{{product.price | localeCurrency:userService.currency}}</h3>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row *ngIf="OnStock && resolved">
       <ion-col>
-        <span class="f-color-secondary f-item-nopadding">On stock placeholder</span>
+        <span class="f-color-green f-item-nopadding">In Stock</span>
       </ion-col>
     </ion-row>
+    <ion-row *ngIf="OnStock && resolved">
+      <ion-col>
+        <span class="f-color-secondary f-item-nopadding" >Sold by {{valueQuot?.quotation?.supplier?.name}}</span>
+      </ion-col>
+    </ion-row>
+
     <ion-row>
       <ion-col class="f-item-padding-bottom">
         <div class="input-qty">
@@ -57,12 +63,20 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <button class="f-btn-add-cart" ion-button block>Add to Cart</button>
+        <button class="f-btn-add-cart" ion-button block [attr.disabled]="!valueQuot?'':null"
+                (click)="onAddToCart()">Add to Cart</button>
       </ion-col>
     </ion-row>
   </ion-grid>
   <hr>
-
+  <ion-grid class="f-item-nopadding-tb" *ngIf="noOfQuotes>1" (click)="onShowMoreQuotesClick()">
+    <ion-row>
+      <ion-col>
+        <span class="f-color-blue">{{noOfQuotes}} more quotes from {{Price | localeCurrency:userService.currency}}</span>
+        <hr>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <ion-grid class="f-item-nopadding-tb f-color-secondary">
     <ion-row>
       <ion-col>

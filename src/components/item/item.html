@@ -40,10 +40,22 @@
          </ion-col>
        </ion-row>
        <ion-row>
-         <ion-col no-padding>
-           <span class="f-size-small f-color-secondary">On stock placeholder</span>
+         <ion-col no-padding class="f-item-padding-bottom f-size-smaller" *ngIf="(resolved) && (noOfQuotes > 1)">
+           {{noOfQuotes}} offers from <b>{{Price | localeCurrency:userService.currency}}</b>
          </ion-col>
        </ion-row>
+       <ion-row>
+         <ion-col no-padding>
+           <span class="f-size-small f-color-green" *ngIf="OnStock">In Stock</span>
+         </ion-col>
+       </ion-row>
+
+       <ion-row>
+         <ion-col no-padding>
+           <span class="f-size-small f-size-smaller f-color-secondary" *ngIf="(noOfQuotes > 1)">See more choices</span>
+         </ion-col>
+       </ion-row>
+
      </ion-grid>
    </ion-col>
   </ion-row>

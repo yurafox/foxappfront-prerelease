@@ -143,6 +143,26 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async getQuotationProductById(qpId: number): Promise<QuotationProduct> {
+    try {
+      const response = await this.http.get(quotationProductsUrl + `/${qpId}`).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error('server side status error');
+      }
+      let quotationProduct: QuotationProduct = null;
+      if (data != null) {
+        quotationProduct = new QuotationProduct(data.id, data.idQuotation, data.idProduct, data.price,
+          data.maxDeliveryDays, data.stockQuant);
+      }
+      return quotationProduct;
+
+    } catch (err) {
+      await this.handleError(err);
+    }
+  }
+
   public async getQuotationProductsByProductId(productId: number): Promise<QuotationProduct[]> {
     try {
 
@@ -260,6 +280,8 @@ export class AppDataRepository extends AbstractDataRepository {
           suppl.name = data.name;
           suppl.paymentMethodId = data.paymentMethodId;
           suppl.rating = data.rating;
+          suppl.positiveFeedbackPct = data.positiveFeedbackPct;
+          suppl.refsCount = data.refsCount;
           this.cache.Suppliers.Add(id, suppl);
         }
         return suppl;
@@ -321,7 +343,8 @@ export class AppDataRepository extends AbstractDataRepository {
         if (data != null) {
           data.forEach((val) => {
             // create current supplier
-            const supplierItem: Supplier = new Supplier(val.id, val.name, val.paymentMethodId, val.rating);
+            const supplierItem: Supplier = new Supplier(val.id, val.name, val.paymentMethodId, val.rating,
+              val.positiveFeedbackPct, val.refsCount);
 
             suppliers.push(supplierItem);
 

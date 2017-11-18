@@ -1,32 +1,31 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
+import {ComponentBase} from '../../components/component-extension/component-base';
+import {CartService} from '../../app/service/cart-service';
 
-import {OrderConfirmPage} from "../index";
 
-/*
- Generated class for the LoginPage page.
-
- See http://ionicframework.com/docs/v2/components/#navigation for more info on
- Ionic pages and navigation.
- */
 @Component({
   selector: 'page-cart',
   templateUrl: 'cart.html'
 })
-export class CartPage {
-  public cart: any;
 
-  constructor(public nav: NavController) {
-    // set cart data
-    this.cart = null;
+export class CartPage extends ComponentBase {
+
+  constructor(public cart: CartService) {
+    super();
   }
 
-  // remove item
-  remove() {
+  incQty(item): void {
+    item.qty++;
   }
 
-  // place order
-  buy() {
-    this.nav.setRoot(OrderConfirmPage);
+  decQty(item): void {
+    if (item.qty >= 2)
+      item.qty--;
   }
+
+  onDeleteItem(itemIndex: number) {
+    this.cart.orderProducts.splice(itemIndex, 1);
+  }
+
 }
