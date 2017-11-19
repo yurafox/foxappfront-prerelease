@@ -36,15 +36,38 @@
 
             <ion-row>
               <ion-col no-padding class="f-item-padding-bottom">
-                <span class="f-size-medium f-color-red" >{{item.price | localeCurrency:userService.currency}}</span>
+                <span class="f-size-medium f-color-red">{{item.price | localeCurrency:userService.currency}}</span>
               </ion-col>
             </ion-row>
 
-            <ion-row>
+            <ion-row *ngIf="item?.quotationproduct?.freeShipping">
+              <ion-col no-padding>
+                <b><span class="f-item-nopadding f-size-small">FREE shipping</span></b>
+              </ion-col>
+            </ion-row>
+
+
+            <ion-row *ngIf="item?.quotationproduct?.stockLow; else elseBlock1">
               <ion-col no-padding class="f-item-padding-bottom">
                 <span class="f-size-small f-color-red">Only {{item?.quotationproduct?.stockQuant}} left. Order now</span>
               </ion-col>
             </ion-row>
+            <ng-template #elseBlock1>
+              <ion-row>
+                <ion-col no-padding class="f-item-padding-bottom">
+                  <span class="f-size-small f-color-green">In Stock</span>
+                </ion-col>
+              </ion-row>
+            </ng-template>
+
+
+            <ion-row>
+              <ion-col no-padding>
+                <span class="f-item-nopadding f-size-small">Shipped by </span>
+                <span class="f-item-nopadding f-size-small f-color-blue">{{item?.quotationproduct?.quotation?.supplier?.name}}</span>
+              </ion-col>
+            </ion-row>
+
 
           </ion-grid>
         </ion-col>

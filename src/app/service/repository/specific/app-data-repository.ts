@@ -154,7 +154,7 @@ export class AppDataRepository extends AbstractDataRepository {
       let quotationProduct: QuotationProduct = null;
       if (data != null) {
         quotationProduct = new QuotationProduct(data.id, data.idQuotation, data.idProduct, data.price,
-          data.maxDeliveryDays, data.stockQuant);
+          data.maxDeliveryDays, data.stockQuant, data.stockLow, data.freeShipping);
       }
       return quotationProduct;
 
@@ -176,7 +176,7 @@ export class AppDataRepository extends AbstractDataRepository {
       const qProducts = new Array<QuotationProduct>();
       if (data != null) {
         data.forEach((val) => qProducts.push(new QuotationProduct(val.id, val.idQuotation, val.idProduct, val.price,
-          val.maxDeliveryDays, val.stockQuant)));
+          val.maxDeliveryDays, val.stockQuant, val.stockLow, val.freeShipping)));
       }
       return qProducts;
 

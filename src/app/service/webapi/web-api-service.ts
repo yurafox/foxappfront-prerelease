@@ -21,13 +21,13 @@ export class WebApiService implements InMemoryDbService {
 
   // <editor-fold desc="quotationProducts"
   quotationProducts = [
-    {id: 1, idQuotation: 1, idProduct: 6280637, price: 5199.00, maxDeliveryDays: 3, stockQuant: 12},
+    {id: 1, idQuotation: 1, idProduct: 6280637, price: 5199.00, maxDeliveryDays: 3, stockQuant: 12, freeShipping: true},
     {id: 3, idQuotation: 2, idProduct: 6280637, price: 5220.00, maxDeliveryDays: 5, stockQuant: 25},
     {id: 6, idQuotation: 3, idProduct: 6280637, price: 167.70, maxDeliveryDays: 3, stockQuant: 45},
     {id: 2, idQuotation: 1, idProduct: 6293680, price: 349.00, maxDeliveryDays: 2, stockQuant: 102.00},
     {id: 4, idQuotation: 2, idProduct: 6293680, price: 330.00, maxDeliveryDays: 2, stockQuant: 85.00},
     {id: 5, idQuotation: 1, idProduct: 6363302, price: 349.00, maxDeliveryDays: 2, stockQuant: 102.00},
-    {id: 7, idQuotation: 2, idProduct: 6322210, price: 330.00, maxDeliveryDays: 2, stockQuant: 85.00}
+    {id: 7, idQuotation: 2, idProduct: 6337781, price: 13999, maxDeliveryDays: 2, stockQuant: 5.00, stockLow: true, freeShipping: true}
   ];
   // </editor-fold>
 
@@ -242,9 +242,9 @@ export class WebApiService implements InMemoryDbService {
       imageUrl: 'assets/imgs/p6.jpg', rating: 1, recall: 0, supplOffers: 2, url: 'led_televizory.html'
     },
     {
-      id: 6322210, name: 'Телевизор BRAVIS LED-22F1000 Smart+T2 black', price: 4699,
-      manufacturerId: 120815, props: [this.productPropValue5, this.productPropValue10, this.productPropValue8],
-      imageUrl: 'assets/imgs/p6.jpg', rating: 1, recall: 0, supplOffers: 2, url: 'led_televizory.html'
+      id: 6337781, name: 'Телевизор SAMSUNG UE32M5500AUXUA', price: 13999,
+      manufacturerId: 220, props: [this.productPropValue5, this.productPropValue10, this.productPropValue8],
+      imageUrl: 'assets/imgs/6337781.jpg', rating: 1, recall: 0, supplOffers: 2, url: 'led_televizory.html'
     }
   ];
   // </editor-fold>
