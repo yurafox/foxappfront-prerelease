@@ -8,8 +8,8 @@ export abstract class ComponentBase implements OnDestroy, OnInit {
   protected _localeList: IDictionary<string> = {};
   // type class name
   protected _componentName: string;
-  // current LocaleID
-  private _localeID: number = -1;
+  /*// current LocaleID
+  private _localeID: number = -1;*/
   // info about current subscribers
   protected listenersObj: Array<any> = [];
   // userSetting service create
@@ -29,7 +29,7 @@ export abstract class ComponentBase implements OnDestroy, OnInit {
   }
 
   protected set localeID(id: number) {
-    this.userService.lang = id.toString();
+    this.userService.lang = id;
   }
 
   protected get currencyID(): number {

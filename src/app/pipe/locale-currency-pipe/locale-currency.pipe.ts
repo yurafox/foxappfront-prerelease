@@ -4,9 +4,10 @@ import {IDictionary} from '../../core/app-core';
 import {CurrencyStore} from '../../service/index';
 
 const map: IDictionary<{name: string, culture: string}> = {
-  '1': {name: 'UAH', culture: 'uk-UA'},
-  '2': {name: 'RUB', culture: 'ru-RU'},
-  '3': {name: 'USD', culture: 'en-US'}
+  '0': {name: 'UAH', culture: 'uk-UA'},
+  '1': {name: 'EUR', culture: 'en-US'},
+  '2': {name: 'USD', culture: 'en-US'},
+  '3': {name: 'MDL', culture: 'md-MD'}
 };
 
 @Pipe({
@@ -19,10 +20,10 @@ export class LocaleCurrencyPipe implements PipeTransform {
   }
 
   transform(value: any,
-            currencyCode: string,
+            currencyCode: number,
             nickDisplay: boolean = true,
             digits: string = null): any {
-    let currencyText: string = map[currencyCode].name;
+    let currencyText: string = map[currencyCode.toString()].name;
     let dataUpdate = this.currencyStore.changeCurrency(+value, +currencyCode);
     return new CurrencyPipe(currencyText).transform(dataUpdate, currencyText, nickDisplay, digits);
   }

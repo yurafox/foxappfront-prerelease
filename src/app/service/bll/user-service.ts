@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {User} from '../../model/index';
 import {AbstractAccountRepository} from "../index";
 import {AppConstants} from "../../app-constants";
+import {LoginTemplate} from "../../model/index";
 
 @Injectable()
 export class UserService {
@@ -20,7 +21,7 @@ export class UserService {
 
   // <editor-fold desc='getters'>
   public get token(): string {
-      return this._token;
+      return this._token || localStorage.getItem('token');
   }
 
   public get name(): string {
@@ -28,7 +29,7 @@ export class UserService {
   }
 
   public get uid(): number {
-    return this.user.uid;
+    return this.user.id;
   }
 
   public get lang(): number {
@@ -57,8 +58,8 @@ export class UserService {
     this.user.name = name;
   }
 
-  public set uid(uid: number) {
-    this.user.uid = uid;
+  public set uid(id: number) {
+    this.user.id = id;
   }
 
   public set email(email: string) {
@@ -80,8 +81,7 @@ export class UserService {
 
   // <editor-fold desc='methods'>
   public clear(): void {
-    localStorage.removeItem('uid'); // uid location in localeStorage for more fast connection
-    this._account.logOut();
+    this.removeDataFromStorage(['id','token','appKey']);
   }
 
   public logOut(): void {
@@ -90,28 +90,79 @@ export class UserService {
     this.callDefaultUser();
   }
 
+  // method for control signOut behavior
   public isNotSignOutSelf(): boolean {
     return this._account.isNotSignOutSelf();
   }
 
-  public async shortLogin(): Promise<void> {
-    const uid: string = localStorage.getItem('uid');
-    if (!uid)
-      return;
+  // get user fast by token and uid
+  public async shortLogin():Promise<boolean> {
+    try {
+    const id: string = localStorage.getItem('id');
+    if (!id)
+      return false;
 
-    await this._account.getUserById(+localStorage.getItem('uid'));
+    this.user = await this._account.getUserById(+id, this.token);
+      this.changeAuthStatus(['appKey']);
+      return true;
+
+    } catch (err) {
+      this.errorMessage = err.message;
+      return false;
+    }
+  }
+
+  public async register(user: User):Promise<boolean> {
+    try {
+      let returnUser: User = await this._account.register(user);
+      return (returnUser) ? true: false;
+
+    } catch (err) {
+      this.errorMessage = err.message;
+      return false;
+    }
+  }
+
+  public async edit(user: User):Promise<boolean> {
+    try {
+      if (this._auth) {
+        const resUser: User = await this._account.edit(user, this.token);
+        if (!resUser) return false;
+        this.user = resUser;
+        this.changeAuthStatus(['appKey']);
+        return true;
+     }
+    } catch (err) {
+      this.errorMessage = err.message;
+      return false;
+    }
+
+  }
+  public async login(email: string, password: string) {
+    try {
+      const loginModel: LoginTemplate = await this._account.logIn(email,password);
+      this.user = loginModel.user;
+      this._token = loginModel.token;
+      localStorage.setItem('token',loginModel.token);
+      this.changeAuthStatus(['id','appKey']);
+
+    } catch (err) {
+      this.errorMessage = err.message;
+    }
   }
   // </editor-fold>
 
   // <editor-fold desc='private behavior'>
+
+  // send fastswiching data
   private trySendSettings(): void {
     if (this._auth) {
-      this._account.edit(this.user)
+      this._account.edit(this.user, this.token)
         .then(user => {},error => this.errorMessage = error.message);
     }
   }
 
-  private firstOrDefaults(props: Array<string>): void {
+  private firstOrDefaults(props: Array<string>, defVals: Array<string>): void {
     if (props.length === 0) {
       return;
     }
@@ -119,7 +170,7 @@ export class UserService {
     for (let i = 0; i < props.length; i++) {
       let lStoreValue: string = localStorage.getItem(props[i]);
       if (!lStoreValue) {
-        lStoreValue = AppConstants.LOCALE_DEFAULT_VALUE.toString();
+        lStoreValue = defVals[i];
         localStorage.setItem(props[i], lStoreValue);
       }
 
@@ -128,10 +179,37 @@ export class UserService {
 
   }
 
+  // crete default user
   private callDefaultUser() {
     this.user = new User();
     this._auth = false;
-    this.firstOrDefaults(['lang', 'currency']);
+    const lang: string = AppConstants.LOCALE_DEFAULT_VALUE.toString();
+    const currency: string = AppConstants.CURRENCY_DEFAULT_VALUE.toString();
+    this.firstOrDefaults(['lang', 'currency'],[lang, currency]);
+  }
+
+  // add data to storage and check user status
+  private addImpotantDataToStorage(userFields: Array<string>) {
+    localStorage.setItem('currency',this.user.userSetting['currency']);
+    localStorage.setItem('lang', this.user.userSetting['lang']);
+
+    for(let i = 0; i < userFields.length; i++){
+      localStorage.setItem(userFields[i], this.user[userFields[i]]);
+    }
+
+  }
+
+  // change status method facade
+  private changeAuthStatus(userFields: Array<string>): void {
+    this.addImpotantDataToStorage(userFields);
+    this._auth = true;
+  }
+
+ // remove data from storage and check user status
+  private removeDataFromStorage(fields: Array<string>){
+    for(let i = 0; i < fields.length; i++) {
+      localStorage.removeItem(fields[i]);
+    }
   }
   // </editor-fold>
 }

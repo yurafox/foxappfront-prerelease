@@ -1,93 +1,134 @@
 import {Injectable} from '@angular/core';
 import {AbstractAccountRepository} from '../../index';
-import {ResponseOptions, Response, Headers} from '@angular/http';
+import {Headers, Http, RequestOptionsArgs} from '@angular/http';
 import {User} from '../../../model/index';
+import {LoginTemplate} from "../../../model/index";
+import {HttpHeaders} from "@angular/common/http";
+
+// <editor-fold desc="url const">
+const tokenUrl = '/api/mtoken';
+const userUrl = '/api/musers';
+// </editor-fold
 
 @Injectable()
 export class AccountRepository extends AbstractAccountRepository {
 
-  constructor() {
+  constructor(private http:Http) {
     super();
   }
 
-  public async logIn(email: string, password: string): Promise<string> {
-    let options: ResponseOptions = new ResponseOptions();
-    options.status = 200;
+  public async logIn(email: string, password: string): Promise<LoginTemplate> {
+    try {
+      const response = await this.http.post(tokenUrl,{ email, password }).toPromise();
 
-    if (this.checkLoginWithMockData(email, password)) {
-      options.body = {
-        token: 'tokenValid',
-        user: this.mockUserAuth
-          .filter((value) => value.email === email && value.password === password)
-      };
-      options.headers = new Headers({'Authorization': 'tokenValid'});
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error(`${response.status} ${response.statusText }`);
+      }
+
+      if(!data) {
+        throw new Error(`некорректные авторизационные данные`);
+      }
+
+      const currentUser: User = new User(data.user.name, data.user.email,null,data.user.id,
+                                         data.user.appKey,data.user.userSetting);
+
+      return new LoginTemplate(data.token, currentUser);
     }
 
-    return Observable.of(new Response(options))
-      .delay(1000)
-      .map(response => {
-        let body = response.json();
-        let tokenInHeader = response.headers;
-        let jwtResp: JwtTokenResponse = (body && body.token === 'tokenValid')
-        && (tokenInHeader && tokenInHeader.get('Authorization') === 'tokenValid')
-          ? new JwtTokenResponse(body.token, body.user[0], true)
-          : new JwtTokenResponse(null, null, false);
-
-        return jwtResp;
-      });
+    catch (err) {
+      return await this.errorHandler(err);
+    }
   }
-
 
   public async register(user: User): Promise<User> {
-    let respOpt: ResponseOptions = new ResponseOptions();
-    respOpt.status = 200;
-    respOpt.body = user;
-    return Observable.of(new Response(respOpt))
-      .map(response => {
-        let retUser: User = response.json() as User;
-        if (retUser) {
-          retUser.guid = this.makeGuid();
-          this.mockUserAuth.push(retUser);
-        }
+    try {
+      const response = await this.http.post(userUrl, user).toPromise();
 
-        return retUser;
-      }).delay(1000);
+      const data = response.json();
+
+      if (response.status !== 201) {
+        throw new Error(`${response.status} ${response.statusText }`);
+      }
+
+      if(!data) {
+        throw new Error(`некорректные пользовательские данные`);
+      }
+      const currentUser: User = new User(data.name, data.email,null,data.id,
+        data.appKey,data.userSetting);
+
+      return currentUser;
+    }
+
+    catch (err) {
+      return await this.errorHandler(err);
+    }
+
   }
 
-  public async edit(user: User): Promise<User> {
-    let resOpt: ResponseOptions = new ResponseOptions();
-    resOpt.headers = new Headers({'Authorization': 'tokenValid'});
-    resOpt.body = user
-    resOpt.status = 200;
+  public async edit(user: User, token: string): Promise<User> {
+     try {
+      const response = await this.http.put(userUrl, user, this.getAuthHeaderInRequest(token))
+                                                          .toPromise();
 
-    return Observable.of(new Response(resOpt))
-      .map(resp => {
-        let user: User = resp.json();
-        let token: string = (resp.headers) ? resp.headers.get('Authorization') : '';
+      const data = response.json();
+      if (response.status === 401) {
+        throw new Error(`${response.status} ${response.statusText }`);
+      }
 
-        if (resp.status === 200 && user && token === 'tokenValid') {
-          let editUsers: User[] = this.mockUserAuth
-            .filter((value) => value.guid === user.guid);
+      if(!data && response.status !== 200) {
+        throw new Error(`ошибка правки данных`);
+      }
+      const currentUser: User = new User(data.name, data.email,null,data.id,
+        data.appKey,data.userSetting);
 
-          if (editUsers.length !== 0) {
-             let edUser = editUsers[0];
-             edUser.userSetting['lang'] = user.userSetting['lang'];
-             edUser.userSetting['currency'] = user.userSetting['currency'];
-          }
-        }
-        return null;
-      }).delay(1000);
+      return currentUser;
+    }
+
+    catch (err) {
+      return await this.errorHandler(err);
+    }
   }
 
-  public async getUserById(id: number): Promise<User> {
-    return null;
-  }
+  public async getUserById(id: number , token: string): Promise<User> {
+    try {
+      const response = await this.http.get(`${userUrl}/${id}`,this.getAuthHeaderInRequest(token))
+        .toPromise();
 
-  public logOut(): void {
+      const data = response.json();
+      if (response.status === 401) {
+        throw new Error(`${response.status} ${response.statusText }`);
+      }
 
+      if(!data && response.status !== 200)  {
+        throw new Error(`некорректные пользовательские данные`);
+      }
+
+      const currentUser: User = new User(data.name, data.email,null,data.id,
+        data.appKey,data.userSetting);
+      return currentUser;
+    }
+
+    catch (err) {
+      return await this.errorHandler(err);
+    }
   }
 
   public isNotSignOutSelf(): boolean {
-    return !!(localStorage.getItem('uid'));
+    return !!(localStorage.getItem('id'));
   }
+
+  // <editor-fold desc="error handler">
+  private errorHandler(err: any): Promise<any> {
+    return Promise.reject((err.message) ? err : new Error(`${err.status} ${err.statusText }`));
+  }
+  // </editor-fold>
+
+  // <editor-fold desc="specific request"
+   private getAuthHeaderInRequest(token: string): RequestOptionsArgs {
+    const h = new Headers();
+    h.set('Authorization', `Bearer: ${token}`);
+     return { headers: h};
+   }
+  // </editor-fold>
 }

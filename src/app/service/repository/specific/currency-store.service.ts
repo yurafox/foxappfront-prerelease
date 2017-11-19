@@ -4,20 +4,24 @@ import {CurrencyConvert} from '../../../model/currency';
 @Injectable()
 export class CurrencyStore {
   private curStore: Array<CurrencyConvert> = [
-    new CurrencyConvert(1, 1, 1),
-    new CurrencyConvert(1, 2, 2.16),
-    new CurrencyConvert(1, 3, 27),
+    new CurrencyConvert(0, 1, 31),
+    new CurrencyConvert(0, 2, 27),
+    new CurrencyConvert(0, 3, 1.51)
   ];
 
   constructor() {
   }
 
   public changeCurrency(value: number, currencyCode: number): string {
+
+    if(currencyCode ===0 )
+      return value.toString();
+
     let currencyConvert: CurrencyConvert = this.curStore.filter((value, index, array) => {
       return value.cur2 === currencyCode;
     })[0];
 
-    let result: number = (currencyConvert.cur2 !== 2) ? (value / currencyConvert.rate) : value * currencyConvert.rate;
+    let result: number = (value / currencyConvert.rate);
     return result.toString();
   }
 }

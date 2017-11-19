@@ -80,7 +80,7 @@ import {PipesModule} from "./pipe/pipes.module";
   imports: [
     BrowserModule,
     HttpModule,
-    InMemoryWebApiModule.forRoot(WebApiService, {delay: 1000}),
+    InMemoryWebApiModule.forRoot(WebApiService, {delay: 1000,post204: false, put204: false}),
     IonicModule.forRoot(FoxApp, {},{
       links: [
         { component: HomePage, name: 'HomePage', segment: 'home'},

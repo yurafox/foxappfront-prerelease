@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {HomePage, RegisterPage, ForgotPasswordPage} from '../index';
+import {UserService} from "../../app/service/bll/user-service";
 
 /*
  Generated class for the LoginPage page.
@@ -14,7 +15,7 @@ import {HomePage, RegisterPage, ForgotPasswordPage} from '../index';
 })
 export class LoginPage {
 
-  constructor(public nav: NavController) {
+  constructor(public nav: NavController, private  account: UserService) {
   }
 
   // go to register page
@@ -23,8 +24,10 @@ export class LoginPage {
   }
 
   // go to home page
-  login() {
-    this.nav.setRoot(HomePage);
+  async login() {
+    // TODO: make validation
+      await this.account.login('sergce@fox.com','sergce');
+      if(this.account.isAuth) this.nav.setRoot(HomePage);
   }
 
   // go to forgot password page

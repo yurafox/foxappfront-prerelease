@@ -55,7 +55,7 @@ export class AppDataRepository extends AbstractDataRepository {
       return qProductsRevs;
 
     } catch (err) {
-      await this.handleError(err);
+      return await this.handleError(err);
     }
 
   }
@@ -96,7 +96,7 @@ export class AppDataRepository extends AbstractDataRepository {
         return this.cache.Products.Values();
       }
     } catch (err) {
-      await this.handleError(err);
+      return await this.handleError(err);
     }
   }
 
@@ -118,7 +118,7 @@ export class AppDataRepository extends AbstractDataRepository {
       return qProducts;
 
     } catch (err) {
-      await this.handleError(err);
+      return await this.handleError(err);
     }
   }
 
@@ -173,7 +173,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
 
     } catch (err) {
-      await this.handleError(err);
+      return await this.handleError(err);
     }
   }
 
@@ -192,7 +192,7 @@ export class AppDataRepository extends AbstractDataRepository {
       return quotation;
 
     } catch (err) {
-      await this.handleError(err);
+      return await this.handleError(err);
     }
   }
 
@@ -228,7 +228,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
 
     } catch (err) {
-      await this.handleError(err);
+      return await this.handleError(err);
     }
   }
 
@@ -260,7 +260,7 @@ export class AppDataRepository extends AbstractDataRepository {
         return this.cache.Currency.Item(id);
       }
     } catch (err) {
-      await this.handleError(err);
+      return await this.handleError(err);
     }
   }
 
@@ -293,7 +293,7 @@ export class AppDataRepository extends AbstractDataRepository {
         return this.cache.Suppliers.Values();
       }
     } catch (err) {
-      await this.handleError(err);
+     return  await this.handleError(err);
     }
   }
 
@@ -325,7 +325,7 @@ export class AppDataRepository extends AbstractDataRepository {
         return this.cache.Currency.Values();
       }
     } catch (err) {
-      await this.handleError(err);
+      return await this.handleError(err);
     }
   }
 
@@ -356,7 +356,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
 
     } catch (err) {
-      await this.handleError(err);
+      return await this.handleError(err);
     }
   }
 

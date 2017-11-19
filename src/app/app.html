@@ -4,10 +4,10 @@
 
     <ion-header>
       <!-- User profile -->
-      <div padding class="menu-left menu-bg" *ngIf="logged==true">
+      <div padding class="menu-left menu-bg" *ngIf="account.isAuth==true">
         <a menuClose>
           <img class="profile-picture" src="http://www.gravatar.com/avatar?d=mm&s=140">
-          <h4 ion-text color="light">Foxapp User</h4>
+          <h4 ion-text color="light">{{account.name}}</h4>
         </a>
       </div>
       <ion-navbar>
@@ -33,12 +33,9 @@
         </button>
       </ion-list>
 
-      <ion-list>
-        <ion-list-header>
-          Logged: {{logged}}
-        </ion-list-header>
-        <button ion-item (click)="toggleLogged($event)">
-          Toggle
+      <ion-list *ngIf="account.isAuth==true">
+        <button ion-item (click)="signOut($event)">
+          Выйти
         </button>
       </ion-list>
     </ion-content>
