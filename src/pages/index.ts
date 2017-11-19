@@ -23,3 +23,4 @@ export * from './item-review-write/item-review-write';
 export * from './search/search';
 export * from './search-results/search-results';
 export * from './item-quotes/item-quotes';
+export * from './filter-popover/filter-popover';

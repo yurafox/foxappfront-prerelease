@@ -1,0 +1,14 @@
+<ion-grid>
+  <ion-row>
+    <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
+      <span> {{filteredProducts?.length}} items</span>
+<!--
+      <input readonly [(ngModel)]="filteredProducts.length">
+-->
+    </ion-col>
+    <ion-col col-auto text-end style="padding: 5px; border: 1px solid #EBEBEC;">
+      <span (click)="showFilter($event)">Filter</span>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+<hr>
