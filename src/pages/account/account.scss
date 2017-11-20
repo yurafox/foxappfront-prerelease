@@ -1,5 +1,17 @@
-
 page-account img {
   max-width: 140px;
   border-radius: 50%;
+}
+
+.alertDanger{
+  color: #a94442;
+}
+
+.alertCustomCss {
+  text-align:center;
+  .alert-head {
+    background: #ffbc2e;
+    color: black;
+    margin-bottom: 10px;
+  }
 }

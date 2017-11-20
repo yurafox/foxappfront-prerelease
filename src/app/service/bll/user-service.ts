@@ -3,6 +3,7 @@ import {User} from '../../model/index';
 import {AbstractAccountRepository} from "../index";
 import {AppConstants} from "../../app-constants";
 import {LoginTemplate} from "../../model/index";
+import {IDictionary} from "../../core/app-core";
 
 @Injectable()
 export class UserService {
@@ -10,7 +11,13 @@ export class UserService {
   private _auth: boolean;
   private _token: string;
 
-  public errorMessage: string; // field for user service error log
+  public errorMessages:IDictionary<string> = {  // field for user service error log
+    'login':'',
+    'shortLogin':'',
+    'register':'',
+    'edit':''
+
+  }
 
   // <editor-fold desc='.ctor'>
   constructor(private _account: AbstractAccountRepository) {
@@ -20,6 +27,10 @@ export class UserService {
   // </editor-fold>
 
   // <editor-fold desc='getters'>
+  public get profile(): User {
+    return this.user;
+  }
+
   public get token(): string {
       return this._token || localStorage.getItem('token');
   }
@@ -104,10 +115,11 @@ export class UserService {
 
     this.user = await this._account.getUserById(+id, this.token);
       this.changeAuthStatus(['appKey']);
+      this.errorClear('shortLogin');
       return true;
 
     } catch (err) {
-      this.errorMessage = err.message;
+      this.errorMessages['shortLogin'] = err.message;
       return false;
     }
   }
@@ -115,10 +127,11 @@ export class UserService {
   public async register(user: User):Promise<boolean> {
     try {
       let returnUser: User = await this._account.register(user);
+      this.errorClear('register');
       return (returnUser) ? true: false;
 
     } catch (err) {
-      this.errorMessage = err.message;
+      this.errorMessages['register'] = err.message;
       return false;
     }
   }
@@ -130,10 +143,11 @@ export class UserService {
         if (!resUser) return false;
         this.user = resUser;
         this.changeAuthStatus(['appKey']);
+        this.errorClear('edit');
         return true;
      }
     } catch (err) {
-      this.errorMessage = err.message;
+      this.errorMessages['edit'] = err.message;
       return false;
     }
 
@@ -145,9 +159,10 @@ export class UserService {
       this._token = loginModel.token;
       localStorage.setItem('token',loginModel.token);
       this.changeAuthStatus(['id','appKey']);
+      this.errorClear('login');
 
     } catch (err) {
-      this.errorMessage = err.message;
+      this.errorMessages['login'] = err.message;
     }
   }
   // </editor-fold>
@@ -158,7 +173,7 @@ export class UserService {
   private trySendSettings(): void {
     if (this._auth) {
       this._account.edit(this.user, this.token)
-        .then(user => {},error => this.errorMessage = error.message);
+        .then(user => {},error => this.errorMessages['edit'] = error.message);
     }
   }
 
@@ -210,6 +225,12 @@ export class UserService {
     for(let i = 0; i < fields.length; i++) {
       localStorage.removeItem(fields[i]);
     }
+  }
+  // </editor-fold>
+
+// error clear
+  private errorClear(actionName: string){
+    this.errorMessages[actionName]='';
   }
   // </editor-fold>
 }

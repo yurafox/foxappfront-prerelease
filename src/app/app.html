@@ -4,7 +4,7 @@
 
     <ion-header>
       <!-- User profile -->
-      <div padding class="menu-left menu-bg" *ngIf="account.isAuth==true">
+      <div padding class="menu-left menu-bg" *ngIf="account.isAuth">
         <a menuClose>
           <img class="profile-picture" src="http://www.gravatar.com/avatar?d=mm&s=140">
           <h4 ion-text color="light">{{account.name}}</h4>
@@ -33,7 +33,7 @@
         </button>
       </ion-list>
 
-      <ion-list *ngIf="account.isAuth==true">
+      <ion-list *ngIf="account.isAuth">
         <button ion-item (click)="signOut($event)">
           Выйти
         </button>

@@ -10,29 +10,55 @@
 </ion-header>
 
 <ion-content padding class="register">
-  <ion-list class="list-form">
+  <ion-list class="list-form" *ngIf="onLoad">
+    <form [formGroup]='registerForm'>
+      <ion-item *ngIf='!!(account.errorMessages[register])' class='alertDanger'>
+        <span>{{account.errorMessages[register]}}</span>
+      </ion-item>
+
+      <ion-item>
+        <ion-input type="text" placeholder="Електронная почта" formControlName="email"></ion-input>
+      </ion-item>
+      <ion-item class='alertDanger' *ngIf="formErrors.email">
+        <span>{{formErrors.email}}</span>
+      </ion-item>
+
+      <ion-item>
+        <ion-input type="text" placeholder="Пароль" formControlName="password"></ion-input>
+      </ion-item>
+      <ion-item class='alertDanger' *ngIf="formErrors.password">
+        <span>{{formErrors.password}}</span>
+      </ion-item>
+
+      <ion-item>
+        <ion-input type="text" placeholder="Имя" formControlName="name"></ion-input>
+      </ion-item>
+      <ion-item class='alertDanger' *ngIf="formErrors.name">
+        <span>{{formErrors.name}}</span>
+      </ion-item>
 
     <ion-item>
-      <ion-input type="text" placeholder="Почтовый адрес"></ion-input>
+    <ion-label style="margin-left: 5px">Валюта</ion-label>
+    <ion-select formControlName="currency" multiple="false" cancelText="Отмена" okText="Выбрать">
+      <ion-option *ngFor="let currency of currencies;"
+                  value="{{currency.id}}">{{currency.shortName}}</ion-option>
+    </ion-select>
     </ion-item>
 
-    <ion-item>
-      <ion-input type="text" placeholder="Имя"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label style="margin-left: 5px">Локализация</ion-label>
+        <ion-select formControlName="lang" multiple="false" cancelText="Отмена" okText="Выбрать">
+          <ion-option  value="1">Рус</ion-option>
+          <ion-option  value="2">Укр</ion-option>
+          <ion-option  value="3">Анг</ion-option>
+        </ion-select>
+      </ion-item>
 
-    <ion-item>
-      <ion-input type="text" placeholder="Фамилия"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-input type="password" placeholder="Пароль"></ion-input>
-    </ion-item>
-
+      <button style="background: #ffbc2e" ion-button block color="fox" (click)="register()">Создать аккаунт</button>
+    </form>
   </ion-list>
 
-  <button ion-button block color="fox" (click)="register()">Создать аккаунт</button>
-
-  <div class="align-bottom" padding text-center>
+  <div *ngIf="onLoad" class="align-bottom" padding text-center>
     Уже имеете аккаунт? <span class="bold" (click)="login()">Войти</span>
   </div>
 </ion-content>

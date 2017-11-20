@@ -9,6 +9,8 @@ import {GoogleMaps} from '@ionic-native/google-maps';
 import { Ionic2RatingModule } from 'ionic2-rating';
 
 import { FoxApp } from './app.component';
+import {FormsModule} from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
 
 import {
   HomePage,
@@ -95,7 +97,9 @@ import {PipesModule} from "./pipe/pipes.module";
     }),
     ComponentsModule,
     Ionic2RatingModule,
-    PipesModule
+    PipesModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

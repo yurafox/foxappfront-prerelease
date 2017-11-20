@@ -1,8 +1,9 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import {Nav, Platform} from 'ionic-angular';
+import {Nav, Platform, MenuController} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {AbstractDataRepository} from "./service/index";
+
 
 import {
   AboutPage,
@@ -50,7 +51,8 @@ export class FoxApp implements OnInit{
   ];
 
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
+  constructor(platform: Platform, statusBar: StatusBar,
+              splashScreen: SplashScreen, public menuCtrl: MenuController,
               private repo: AbstractDataRepository, public account: UserService) {
     this.rootPage = HomePage;
     platform.ready().then(() => {
@@ -88,6 +90,8 @@ export class FoxApp implements OnInit{
 
   signOut() {
     this.account.logOut();
+    this.nav.setRoot(HomePage);
+    this.menuCtrl.close();
   }
 }
 

@@ -1,21 +1,47 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NavController} from 'ionic-angular';
-import {HomePage, RegisterPage, ForgotPasswordPage} from '../index';
+import {HomePage, RegisterPage} from '../index';
 import {UserService} from "../../app/service/bll/user-service";
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 
-/*
- Generated class for the LoginPage page.
-
- See http://ionicframework.com/docs/v2/components/#navigation for more info on
- Ionic pages and navigation.
- */
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
-export class LoginPage {
+export class LoginPage implements OnInit{
+  private _authError = false;
+  public loginForm: FormGroup;
+  public get authError() {
+    return this._authError;
+  }
 
-  constructor(public nav: NavController, private  account: UserService) {
+
+  public formErrors = {
+    'email': '',
+    'password': ''
+  };
+
+  public errorMessages = {
+    'email': {
+      'required': 'Обязательное поле',
+      'pattern': 'Не правильный формат email адреса'
+    },
+    'password': {
+      'required': 'Обязательное поле',
+      'minlength': 'Значение должно быть не менее 6ти символов',
+      'maxlength': 'Значение должно быть не более 12ти символов'
+    }
+  };
+
+  constructor(public nav: NavController,
+              private formBuilder: FormBuilder,
+              private  account: UserService) {
+  }
+
+  // application hook
+  ngOnInit(){
+    //super.ngOnInit();
+    this.buildForm();
   }
 
   // go to register page
@@ -25,14 +51,54 @@ export class LoginPage {
 
   // go to home page
   async login() {
-    // TODO: make validation
-      await this.account.login('sergce@fox.com','sergce');
-      if(this.account.isAuth) this.nav.setRoot(HomePage);
+    if (!this.loginForm.valid) {
+      return;
+    }
+
+    const data = this.loginForm.value;
+
+    await this.account.login(data.email,data.password);
+    if(this.account.isAuth) this.nav.setRoot(HomePage);
+    else this._authError = true;
   }
 
-  // go to forgot password page
-  forgotPwd() {
-    this.nav.push(ForgotPasswordPage);
-    console.log('ForgotPasswordPage redirect');
+  // <editor-fold desc="form builder">
+  private buildForm(): void {
+    this.loginForm = this.formBuilder.group({
+      'email': ['', [Validators.required,
+        Validators.pattern('^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]],
+
+      'password': ['', [Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(12)]]
+    });
+
+    this.loginForm.valueChanges
+      .subscribe(data => this.onValueChanged(data));
+    this.onValueChanged();
   }
+  // </editor-fold>
+
+  // <editor-fold desc="form value changing hook">
+  private onValueChanged(data?: any) {
+    if (!this.loginForm) {
+      return;
+    }
+    ;
+    let form = this.loginForm;
+
+    for (let err in this.formErrors) {
+      this.formErrors[err] = '';
+      this._authError = false;
+
+      let control = form.get(err);
+      if (control && control.dirty && !control.valid) {
+        let messages = this.errorMessages[err];
+        for (let key in control.errors) {
+          this.formErrors[err] += messages[key] + ' ';
+        }
+      }
+    }
+  }
+  // </editor-fold>
 }

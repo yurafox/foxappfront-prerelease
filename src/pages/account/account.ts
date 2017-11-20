@@ -1,76 +1,126 @@
-import {Component} from '@angular/core';
-
-import {AlertController, NavController} from 'ionic-angular';
-
-import {HomePage, SupportPage, ChangePasswordPage} from "../index"
-
+import {Component,OnInit} from '@angular/core';
+import {NavController} from 'ionic-angular';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {HomePage} from "../index"
+import {UserService} from "../../app/service/bll/user-service";
+import {Currency} from "../../app/model/index";
+import {AbstractDataRepository} from "../../app/service/index";
+import {User} from "../../app/model/index";
+import { AlertController } from 'ionic-angular';
 
 @Component({
   selector: 'page-account',
   templateUrl: 'account.html'
 })
-export class AccountPage {
-  username: string;
+export class AccountPage implements OnInit{
+  public currencies:Array<Currency>;
+  public editForm: FormGroup;
+  public onLoad = false;
 
-  constructor(public alertCtrl: AlertController, public nav: NavController) {
+  public formErrors = {
+    'email': '',
+    'password': '',
+    'name':'',
+    'appKey':''
+  };
 
+  public errorMessages = {
+    'email': {
+      'required': 'Обязательное поле',
+      'pattern': 'Не правильный формат email адреса'
+    },
+    'password': {
+      'minlength': 'Значение должно быть не менее 6ти символов',
+      'maxlength': 'Значение должно быть не более 12ти символов'
+    },
+    'name':{
+      'required': 'Обязательное поле',
+      'maxlength': 'Значение должно быть не более 20ти символов'
+    },
+    'appKey':{
+      'minlength': 'Значение должно быть не менее 6ти символов',
+      'maxlength': 'Значение должно быть не более 20ти символов'
+    },
+  };
+
+  constructor(public nav: NavController,
+              public account:UserService,
+              private alertCtrl: AlertController,
+              private repo: AbstractDataRepository,
+              private formBuilder: FormBuilder) {
+    this.buildForm();
   }
 
-  ngAfterViewInit() {
-    this.getUsername();
+  async ngOnInit(){
+    this.currencies = await this.repo.getCurrencies(true);
+    this.onLoad=true;
   }
 
-  updatePicture() {
-    console.log('Clicked to update picture');
-  }
+  edit(){
+    if (!this.editForm.valid) {
+      return;
+    }
 
-  // Present an alert with the current username populated
-  // clicking OK will update the username and display it
-  // clicking Cancel will close the alert and do nothing
-  changeUsername() {
-    let alert = this.alertCtrl.create({
-      title: 'Укажите новое имя',
-      buttons: [
-        'Отменить'
-      ]
-    });
-    alert.addInput({
-      name: 'username',
-      value: this.username,
-      placeholder: 'username'
-    });
-    alert.addButton({
-      text: 'Изменить',
-      handler: (data: any) => {
-        // this.userData.setUsername(data.username);
-        // this.getUsername();
-        this.username = data.username; // mock
-      }
-    });
+    const data = this.editForm.value;
+    const user: User= new User(data.name,data.email,
+      data.password,this.account.uid,data.appKey,{'currency':data.currency,'lang':data.lang});
 
-    alert.present();
-  }
-
-  getUsername() {
-    /*this.userData.getUsername().then((username) => {
-      this.username = username;
-    });*/
-    console.log('Clicked to get username');
-  }
-
-  // go to changing password page
-  changePassword() {
-    this.nav.push(ChangePasswordPage);
+    (async ()=>{
+      const result = await this.account.edit(user);
+      if(result) {
+          let alert = this.alertCtrl.create({
+            subTitle: 'профайл успешно изменен',
+            buttons: ['Ok'],
+            cssClass: 'alertCustomCss'
+          });
+          alert.present();
+        }
+    })();
   }
 
   logout() {
-    // this.userData.logout();
-    // this.nav.setRoot('Login');
-    console.log('Clicked to logout');
+    this.account.logOut();
     this.nav.setRoot(HomePage);
   }
 
-  support() {
-    this.nav.push(SupportPage);
+  // <editor-fold desc="form builder">
+  private buildForm(): void {
+    this.editForm = this.formBuilder.group({
+      'email': [this.account.email, [Validators.required,
+        Validators.pattern('^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]],
+
+      'password': ['', [Validators.minLength(6), Validators.maxLength(12)]],
+      'name':[this.account.name,[Validators.required, Validators.maxLength(20)]],
+      'currency':[this.account.currency, [Validators.required]],
+      'lang':[this.account.lang, [Validators.required]],
+      'appKey':[this.account.appKey,[Validators.minLength(6), Validators.maxLength(20)]]
+    });
+
+    this.editForm.valueChanges
+      .subscribe(data => this.onValueChanged(data));
+    this.onValueChanged();
   }
+  // </editor-fold>
+
+  // <editor-fold desc="form value changing hook">
+  private onValueChanged(data?: any) {
+    if (!this.editForm) {
+      return;
+    }
+    ;
+    let form = this.editForm;
+
+    for (let err in this.formErrors) {
+      this.formErrors[err] = '';
+
+      let control = form.get(err);
+      if (control && control.dirty && !control.valid) {
+        let messages = this.errorMessages[err];
+        for (let key in control.errors) {
+          this.formErrors[err] += messages[key] + ' ';
+        }
+      }
+    }
+  }
+  // </editor-fold>
 }
