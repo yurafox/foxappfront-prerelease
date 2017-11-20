@@ -1,5 +1,9 @@
 filter {
 
+  .f-grid-border {
+    border: 1px solid #EBEBEC;
+  }
+
   .item-md.item-block .item-inner {
     border-bottom: 0px;
   }

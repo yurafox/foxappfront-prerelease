@@ -6,7 +6,7 @@
     <ion-row>
       <ion-col text-center class="f-item-padding-bottom">
         <span class="f-size-medium f-color-secondary">Cart subtotal ({{cart.cartItemsCount}} items):</span>
-        <span class="f-size-large" style="color: red;">{{cart.orderTotal | localeCurrency:userService.currency}}</span>
+        <span class="f-size-large f-color-red">{{cart.orderTotal | localeCurrency:userService.currency}}</span>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -17,12 +17,12 @@
   </ion-grid>
   <hr>
 
-  <div *ngFor="let item of cart.orderProducts; let i = index">
-    <ion-grid class="f-color-secondary f-item-nopadding-tb">
+  <div *ngFor="let item of cart.orderProducts; let i = index" >
+    <ion-grid class="f-color-secondary f-item-nopadding-tb" >
 
       <ion-row>
         <ion-col col-auto>
-          <div>
+          <div *ngIf="item?.quotationproduct?.product">
             <img class="f-img-item" width="60" height="60" [src]="item?.quotationproduct?.product?.imageUrl">
           </div>
         </ion-col>
@@ -93,10 +93,8 @@
           </div>
         </ion-col>
       </ion-row>
-
-
+      <hr>
     </ion-grid>
-    <hr>
   </div>
 
 

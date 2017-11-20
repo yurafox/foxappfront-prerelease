@@ -10,14 +10,51 @@ import {FilterComponent} from '../../components/filter/filter';
 export class FilterPopoverPage {
 
   public filter: FilterComponent;
+  brandsSectionOpened = false;
+
+
+
+  toggleOpen(section: string, _index: number) {
+    if (section == 'brands') {
+      this.brandsSectionOpened = !this.brandsSectionOpened;
+
+      this.filter.filteredProps.forEach(i => {
+          i.isOpened = false;
+        }
+      );
+    }
+
+    if (section == 'props') {
+      this.brandsSectionOpened = false;
+      let i = 0;
+      for (let p of this.filter.filteredProps) {
+        if (i == _index)
+          p.isOpened = !p.isOpened
+        else
+          p.isOpened = false;
+        i++;
+      }
+
+    }
+
+    //this.sectionOpened = !this.sectionOpened;
+  }
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
     this.filter = navParams.get('filterControl');
+
+    this.brandsSectionOpened = false;
+    this.filter.filteredProps.forEach(i => {
+        i.isOpened = false;
+      }
+    );
 
   }
 
   close(): void {
     this.viewCtrl.dismiss();
   }
+
+
 
 }

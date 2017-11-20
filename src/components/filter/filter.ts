@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Product} from '../../app/model/product';
 import {ComponentBase} from '../component-extension/component-base';
 import {PopoverController} from 'ionic-angular';
@@ -19,7 +19,8 @@ class PropsFilterStruct {
               public count: number,
               public isChecked: boolean,
               public prevPropName?: string,
-              public listIndex?: number) {
+              public listIndex?: number,
+              public isOpened:boolean = false) {
   }
 }
 
@@ -52,6 +53,13 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     this.filterRun();
   }
 
+  resetFilter(): void {
+    this.initData();
+    this.parentComponent.products = [];
+    this.baseProducts.forEach(i => {
+      this.parentComponent.products.push(i);
+    });
+  }
 
   constructor(public popoverCtrl: PopoverController, public repo: AbstractDataRepository) {
     super();
@@ -126,7 +134,7 @@ export class FilterComponent extends  ComponentBase implements OnInit {
           this.filteredProducts.push(p);
       }
     );
-    this.parentComponent.baseProducts = this.filteredProducts;
+    this.parentComponent.products = this.filteredProducts;
     //<any>(this.parentComponent).baseProducts = this.filteredProducts;
   }
 

@@ -1,3 +1,5 @@
+<filter [filteredProducts]="products" [parentComponent]="this"></filter>
+
 <ul>
   <li *ngFor="let productElement of products, let i=index">
     <hr *ngIf="!(i == 0)">

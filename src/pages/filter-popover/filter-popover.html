@@ -1,18 +1,75 @@
-<div>
-  <hr>
-  <p><b>Производители</b></p>
-</div>
-<div *ngFor="let mnf of filter.filteredManufacturers">
-  <label>
-    <input type="checkbox" [(ngModel)]="mnf.isChecked" (click)="filter.onMnfClick(mnf)"> {{mnf.mnf.name}} <span> (</span>{{mnf.count}})
-  </label>
-</div>
-<div *ngFor="let p of filter?.filteredProps">
-  <div *ngIf="p.prop.name != p.prevPropName">
-    <hr>
-    <b>{{p.prop.name}}
-    </b>
-  </div>
-  <input type="checkbox" [(ngModel)]="p.isChecked" (click)="filter?.onPropsClick(p)"> {{p.value}} <span> (</span>{{p.count}})
+<div class="f-light-bkgrd f-grid-border">
+  <ion-grid>
+    <ion-row class="f-size-medium">
+      <ion-col >
+        <b>FILTER</b>
+      </ion-col>
+      <ion-col col-auto >
+        <span class="f-color-blue f-size-small" (click)="filter.resetFilter()">Clear all</span>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </div>
 
+<!-- Manufacturers -->
+
+<div (click)="toggleOpen('brands', -1)" class="f-grid-border">
+  <ion-grid>
+    <ion-row class="f-size-medium" >
+      <ion-col>
+        <b>Brand</b>
+      </ion-col>
+      <ion-col col-auto>
+        <ion-icon item-end name="ios-arrow-up" *ngIf="brandsSectionOpened"></ion-icon>
+        <ion-icon item-end name="ios-arrow-down" *ngIf="!brandsSectionOpened"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+
+<div class="f-light-bkgrd" *ngIf="brandsSectionOpened">
+  <div  class="f-grid-border" no-padding *ngFor="let mnf of filter.filteredManufacturers">
+   <ion-grid class="f-size-small">
+     <ion-row >
+       <ion-col padding-left>
+         {{mnf.mnf.name}} <span> (</span>{{mnf.count}})
+       </ion-col>
+       <ion-col col-auto>
+         <input type="checkbox" [(ngModel)]="mnf.isChecked" (click)="filter.onMnfClick(mnf)">
+       </ion-col>
+     </ion-row>
+   </ion-grid>
+  </div>
+</div>
+
+<!-- Props -->
+<div *ngFor="let p of filter?.filteredProps; let i = index">
+    <div *ngIf="p.prop.name != p.prevPropName" (click)="toggleOpen('props', i)" class="f-grid-border">
+      <ion-grid>
+        <ion-row class="f-size-medium" >
+          <ion-col>
+            <b>{{p.prop.name}}</b>
+          </ion-col>
+          <ion-col col-auto>
+            <ion-icon item-end name="ios-arrow-up" *ngIf="p.isOpened"></ion-icon>
+            <ion-icon item-end name="ios-arrow-down" *ngIf="!p.isOpened"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+  <div class="f-light-bkgrd" *ngIf="p.isOpened">
+    <div  class="f-grid-border" no-padding>
+      <ion-grid class="f-size-small">
+        <ion-row >
+          <ion-col padding-left>
+            {{p.value}} <span> (</span>{{p.count}})
+          </ion-col>
+          <ion-col col-auto>
+            <input type="checkbox" [(ngModel)]="p.isChecked" (click)="filter?.onPropsClick(p)">
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
+</div>
