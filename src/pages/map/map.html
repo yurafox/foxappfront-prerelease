@@ -8,12 +8,12 @@
 </ion-header>
 
 <ion-content>
-  <ion-select [(ngModel)]="selectedCity" (ionChange)="changeMarkers()" placeholder="Выберете город"
+  <ion-select [(ngModel)]="selectedCity" (ionChange)="changeMarkers()" placeholder="Выберите город"
               class="another-select">
     <ion-option *ngFor="let city of cities" [value]="city.name" checked="city.name === selectedCity">{{city.name}}
     </ion-option>
   </ion-select>
-  <ion-select [(ngModel)]="selectedMarker" (ionChange)="handleListSelect()" placeholder="Выберете адрес магазина"
+  <ion-select [(ngModel)]="selectedMarker" (ionChange)="handleListSelect()" placeholder="Выберите адрес магазина"
               class="another-select">
     <ion-option *ngFor="let shop of shopList" [value]="shop.value" checked="shop.label === selectedMarker.label">
       {{shop.label}}

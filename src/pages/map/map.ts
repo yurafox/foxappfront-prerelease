@@ -73,44 +73,57 @@ export class MapPage extends ComponentBase {
     }
 
     this.markersArr.forEach((markerArr) => {
-      markerArr.markers.forEach((markerData) => {
+      markerArr.markers.forEach((markerData, i) => {
+        let labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
         let infoWindow = new google.maps.InfoWindow({
-          content: `<h5>${markerData.title}</h5><h6>Время работы: 9:00 - 21:00</h6>${this.shopIsWorking(9, 21)}`
+          content: `<h5>${markerData.title}</h5><h6>Время работы: 9:00 - 21:00</h6>${this.shopIsWorking(9, 0, 21, 0)}`
         });
 
         let marker = new google.maps.Marker({
           position: markerData.position,
           map: this.map,
-          title: markerData.title
+          title: markerData.title,
+          animation: google.maps.Animation.DROP,
+          label: labels[i % labels.length]
         });
 
         let markerPosition = marker.getPosition();
 
+        // <editor-fold desc="Marker events"
+
         // center to the marker and show info on click
         marker.addListener('click', () => {
-          this.selectedMarker = null;
           infoWindow.open(this.map, marker);
           this.map.panTo(markerPosition);
-          setTimeout(() => {
-            infoWindow.close();
-          }, 5000);
+          if (14 >= this.map.zoom) {
+            setTimeout(() => {
+              infoWindow.close();
+            }, 5000);
+          }
         });
 
         // zoom to the marker on double click
         marker.addListener('dblclick', () => {
           infoWindow.open(this.map, marker);
-          this.map.panTo(marker.getPosition());
+          this.map.panTo(markerPosition);
           this.map.setZoom(17);
-          this.map.setCenter(marker.getPosition());
+          this.map.setCenter(markerPosition);
         });
-      })
+
+        this.map.addListener('zoom_changed', () => {
+          infoWindow.close();
+        });
+
+        // </editor-fold>
+      });
     });
 
     google.maps.event.addListenerOnce(this.map, 'idle', () => {
       mapEle.classList.add('show-map');
     });
 
+    // Making list of shops addresses
     for (let i = 0; i < this.cities.length; i++) {
       if (this.selectedCity === this.cities[i].name) {
         try {
@@ -236,12 +249,22 @@ export class MapPage extends ComponentBase {
     }
   }
 
-  shopIsWorking(shopOpens: number, shopCloses: number): string {
+  // Checking either shop is working now or not
+  shopIsWorking(shopOpensH: number, shopOpensM: number, shopClosesH: number, shopClosesM: number): string {
     const date = new Date();
-    if ((date.getHours() >= shopOpens) && (date.getHours() < shopCloses)) {
-      return 'Работает';
+
+    let myTime = date.getHours() * 100 + date.getMinutes();
+    let openTime = shopOpensH * 100 + shopOpensM;
+    let closeTime = shopClosesH * 100 + shopClosesM;
+
+    if ((openTime >= 0 && closeTime >= 0) && (openTime <= 2400 && closeTime <= 2400)) {
+      if ((myTime >= openTime) && (myTime <= closeTime)) {
+        return 'Работает';
+      } else {
+        return 'Не работает';
+      }
     } else {
-      return 'Не работает';
+      console.log('wrong time input');
     }
   }
 }
