@@ -13,7 +13,7 @@ import {ComponentBase} from '../../components/component-extension/component-base
 })
 export class SearchResultsPage extends ComponentBase implements OnInit {
 
-  public sResults = new Array<Product>();
+  public baseProducts = new Array<Product>();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public srchService: SearchService) {
@@ -27,7 +27,7 @@ export class SearchResultsPage extends ComponentBase implements OnInit {
 
   async ngOnInit() {
     super.ngOnInit();
-    this.sResults = await this.srchService.searchResults;
+    this.baseProducts = await this.srchService.searchResults;
   }
 
 

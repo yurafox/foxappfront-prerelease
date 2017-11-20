@@ -1,19 +1,18 @@
-Popover Content
-<hr>
-Popover Content
-<hr>
-Popover Content
-<hr>
-Popover Content
-<hr>
-Popover Content
-<hr>
-Popover Content
-<hr>
-Popover Content
-<hr>
-Popover Content
-<hr>
-Popover Content
-<hr>
-<button ion-item (click)="close()">Close</button>
+<div>
+  <hr>
+  <p><b>Производители</b></p>
+</div>
+<div *ngFor="let mnf of filter.filteredManufacturers">
+  <label>
+    <input type="checkbox" [(ngModel)]="mnf.isChecked" (click)="filter.onMnfClick(mnf)"> {{mnf.mnf.name}} <span> (</span>{{mnf.count}})
+  </label>
+</div>
+<div *ngFor="let p of filter?.filteredProps">
+  <div *ngIf="p.prop.name != p.prevPropName">
+    <hr>
+    <b>{{p.prop.name}}
+    </b>
+  </div>
+  <input type="checkbox" [(ngModel)]="p.isChecked" (click)="filter?.onPropsClick(p)"> {{p.value}} <span> (</span>{{p.count}})
+</div>
+

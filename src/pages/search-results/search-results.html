@@ -4,7 +4,7 @@
 </ion-header>
 
 <ion-content>
-
-  <items-list [products]="sResults"></items-list>
+  <filter [filteredProducts]="baseProducts" [parentComponent]="this"></filter>
+  <items-list [products]="baseProducts"></items-list>
 
 </ion-content>

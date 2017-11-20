@@ -14,7 +14,7 @@ import {Manufacturer} from "../../app/model/manufacturer";
 
 export class CategoryPage extends ComponentBase implements OnInit {
 
-  baseProducts: Product[];
+  public baseProducts: Product[];
 
   public slides = [
     {
