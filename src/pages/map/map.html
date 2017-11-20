@@ -14,7 +14,7 @@
     </ion-option>
   </ion-select>
   <ion-select [(ngModel)]="selectedMarker" (ionChange)="handleListSelect()" placeholder="Выберете адрес магазина"
-              class="another-select" #shopSelect>
+              class="another-select">
     <ion-option *ngFor="let shop of shopList" [value]="shop.value" checked="shop.label === selectedMarker.label">
       {{shop.label}}
     </ion-option>

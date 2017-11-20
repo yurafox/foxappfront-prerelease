@@ -30,7 +30,6 @@ interface SelectItem {
 export class MapPage extends ComponentBase {
 
   @ViewChild('mapCanvas') mapElement: ElementRef;
-  @ViewChild('shopSelect') selectElement: ElementRef;
 
   map: /*GoogleMap;*/ any;
 
@@ -64,7 +63,6 @@ export class MapPage extends ComponentBase {
     };
 
     let mapEle = this.mapElement.nativeElement;
-    let selEle = this.selectElement.nativeElement;
 
     this.map = new google.maps.Map(mapEle, this.options);
 
@@ -76,7 +74,6 @@ export class MapPage extends ComponentBase {
 
     this.markersArr.forEach((markerArr) => {
       markerArr.markers.forEach((markerData) => {
-        // let isWorking = 'nothing';
 
         let infoWindow = new google.maps.InfoWindow({
           content: `<h5>${markerData.title}</h5><h6>Время работы: 9:00 - 21:00</h6>${this.shopIsWorking(9, 21)}`
@@ -95,12 +92,9 @@ export class MapPage extends ComponentBase {
           this.selectedMarker = null;
           infoWindow.open(this.map, marker);
           this.map.panTo(markerPosition);
-          // isWorking = this.shopIsWorking(9, 10);
           setTimeout(() => {
             infoWindow.close();
           }, 5000);
-
-          console.log(selEle);
         });
 
         // zoom to the marker on double click
