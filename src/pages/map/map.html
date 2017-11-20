@@ -14,12 +14,15 @@
     </ion-option>
   </ion-select>
   <ion-select [(ngModel)]="selectedMarker" (ionChange)="handleListSelect()" placeholder="Выберете адрес магазина"
-              class="another-select">
+              class="another-select" #shopSelect>
     <ion-option *ngFor="let shop of shopList" [value]="shop.value" checked="shop.label === selectedMarker.label">
       {{shop.label}}
     </ion-option>
   </ion-select>
+
+  <!--GMap-->
   <div style="height: 80%; width: 100%" #mapCanvas id="map_canvas"></div>
+
   <ion-buttons *ngIf="selectedMarker !== null" align="center">
     <button ion-button icon-left clear (click)="addToFavorite()" [disabled]="selectedMarker === null" class="map-button">
       <ion-icon name="ios-star"></ion-icon>

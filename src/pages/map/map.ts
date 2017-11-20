@@ -30,13 +30,14 @@ interface SelectItem {
 export class MapPage extends ComponentBase {
 
   @ViewChild('mapCanvas') mapElement: ElementRef;
+  @ViewChild('shopSelect') selectElement: ElementRef;
 
   map: /*GoogleMap;*/ any;
 
   city: City;
   cities: Array<City>;
   selectedCity = 'Киев';
-  selectedMarker: SelectItem;
+  selectedMarker: any;
 
   markersArr: Array<{ id: number, markers: MapMarker[] }>;
   shopList: SelectItem[];
@@ -50,6 +51,7 @@ export class MapPage extends ComponentBase {
     this.markersArr = [];
   }
 
+  // TODO: Make Native Map
   async ionViewDidLoad() {
     this.markersArr = await this.repo.getFoxMapMarkers();
     this.cities = await this.repo.getCities();
@@ -62,6 +64,7 @@ export class MapPage extends ComponentBase {
     };
 
     let mapEle = this.mapElement.nativeElement;
+    let selEle = this.selectElement.nativeElement;
 
     this.map = new google.maps.Map(mapEle, this.options);
 
@@ -73,8 +76,10 @@ export class MapPage extends ComponentBase {
 
     this.markersArr.forEach((markerArr) => {
       markerArr.markers.forEach((markerData) => {
+        // let isWorking = 'nothing';
+
         let infoWindow = new google.maps.InfoWindow({
-          content: `<h5>${markerData.title}</h5>`
+          content: `<h5>${markerData.title}</h5><h6>Время работы: 9:00 - 21:00</h6>${this.shopIsWorking(9, 21)}`
         });
 
         let marker = new google.maps.Marker({
@@ -83,12 +88,19 @@ export class MapPage extends ComponentBase {
           title: markerData.title
         });
 
+        let markerPosition = marker.getPosition();
+
         // center to the marker and show info on click
         marker.addListener('click', () => {
+          this.selectedMarker = null;
           infoWindow.open(this.map, marker);
-          this.map.panTo(marker.getPosition());
-          // this.selectedMarker.value = marker.getPosition();
-          setTimeout(() => { infoWindow.close(); }, 5000);
+          this.map.panTo(markerPosition);
+          // isWorking = this.shopIsWorking(9, 10);
+          setTimeout(() => {
+            infoWindow.close();
+          }, 5000);
+
+          console.log(selEle);
         });
 
         // zoom to the marker on double click
@@ -227,6 +239,15 @@ export class MapPage extends ComponentBase {
   buildRoute() {
     if (this.selectedMarker !== null) {
       console.log('Route built to/from');
+    }
+  }
+
+  shopIsWorking(shopOpens: number, shopCloses: number): string {
+    const date = new Date();
+    if ((date.getHours() >= shopOpens) && (date.getHours() < shopCloses)) {
+      return 'Работает';
+    } else {
+      return 'Не работает';
     }
   }
 }
