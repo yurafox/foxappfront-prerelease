@@ -7,17 +7,68 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="outer-content">
-  <div padding-top text-center>
-    <img src="http://www.gravatar.com/avatar?d=mm&s=140" alt="avatar">
-    <h2>{{username}}</h2>
+  <ion-content padding class="outer-content">
+    <ion-list class="list-form" *ngIf="onLoad">
+      <form [formGroup]='editForm'>
+        <ion-item *ngIf='!!(account.errorMessages[edit])' class='alertDanger'>
+          <span>{{account.errorMessages[edit]}}</span>
+        </ion-item>
 
-    <ion-list inset>
-      <button ion-item (click)="updatePicture()">Обновить Фото</button>
-      <button ion-item (click)="changeUsername()">Изменить Имя</button>
-      <button ion-item (click)="changePassword()">Изменить Пароль</button>
-      <button ion-item (click)="support()">Поддержка</button>
-      <button ion-item (click)="logout()">Выход</button>
+        <ion-item>
+          <ion-label floating>изменить email</ion-label>
+          <ion-input type="text" formControlName="email"></ion-input>
+        </ion-item>
+        <ion-item class='alertDanger' *ngIf="formErrors.email">
+          <span>{{formErrors.email}}</span>
+        </ion-item>
+
+
+        <ion-item>
+          <ion-label floating>изменить пароль</ion-label>
+          <ion-input type="password"  formControlName="password"></ion-input>
+        </ion-item>
+        <ion-item class='alertDanger' *ngIf="formErrors.password">
+          <span>{{formErrors.password}}</span>
+        </ion-item>
+
+        <ion-item>
+          <ion-label floating>изменить имя</ion-label>
+          <ion-input type="text" formControlName="name"></ion-input>
+        </ion-item>
+        <ion-item class='alertDanger' *ngIf="formErrors.name">
+          <span>{{formErrors.name}}</span>
+        </ion-item>
+
+        <ion-item>
+          <ion-label floating>ключ приложения</ion-label>
+          <ion-input type="text" formControlName="appKey"></ion-input>
+        </ion-item>
+        <ion-item class='alertDanger' *ngIf="formErrors.appKey">
+          <span>{{formErrors.appKey}}</span>
+        </ion-item>
+
+        <ion-item style="margin-top: 15px">
+          <ion-label>изменить валюту</ion-label>
+          <ion-select formControlName="currency" multiple="false" cancelText="Отмена" okText="Выбрать">
+            <ion-option *ngFor="let currency of currencies;"
+                        value="{{currency.id}}">{{currency.shortName}}</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item style="margin-top: 15px">
+          <ion-label>изменить локализацию</ion-label>
+          <ion-select formControlName="lang" multiple="false" cancelText="Отмена" okText="Выбрать">
+            <ion-option  value="1">Рус</ion-option>
+            <ion-option  value="2">Укр</ion-option>
+            <ion-option  value="3">Анг</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <button style="background: #ffbc2e" ion-button block color="fox" (click)="edit()">Изменить</button>
+      </form>
     </ion-list>
-  </div>
-</ion-content>
+
+    <div *ngIf="onLoad" class="align-bottom" padding text-center>
+      <span class="bold" (click)="logout()">Выйти</span>
+    </div>
+  </ion-content>

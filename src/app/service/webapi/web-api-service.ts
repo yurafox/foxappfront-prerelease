@@ -1,22 +1,72 @@
-import {InMemoryDbService} from 'angular-in-memory-web-api';
+import {InMemoryDbService, RequestInfo} from 'angular-in-memory-web-api';
+import {ResponseOptions} from '@angular/http';
+import {Observable} from "rxjs/Observable";
+import {User} from '../../model/index';
+import {IDictionary} from "../../core/app-core";
 
 export class WebApiService implements InMemoryDbService {
+  post(info: RequestInfo) {
+    let response: Observable<any> | null;
+    if((response=this.apiController(info))!==null)
+      return response;
+
+  }
+
+  put(info: RequestInfo) {
+    let response: Observable<any> | null;
+    if((response=this.apiController(info))!==null)
+      return response;
+  }
+
+  get(info: RequestInfo) {
+    let response: Observable<any> | null;
+    if((response=this.apiController(info))!==null)
+      return response;
+  }
 
   productReviews = [
-    {id:1, idProduct: 6280637, user: 'Анастасия', reviewDate: new Date(2017, 11, 7), reviewText: 'Пользуюсь телефоном месяц, нареканий на работу нет - красивый, функциональный, быстрый. Но!!! Понадобилась функция NFC, а её не оказалось, хотя в описании на сайте производителя она есть. Как такое может быть?\n' +
-    '\n' +
-    '<b>Минусы:</b> Отсутствие NFC, заявленной производителем.', rating: 3},
-    {id:2, idProduct: 6280637, user: 'богдан зернов', reviewDate: new Date(2017, 4, 8), reviewText: 'Классный аппарат, учитывая его стоимость. Самсунг новинки штампует много и быстро, так что этот джей5 не такой и старый, а по характеристикам очень даже и отличный. Сборка отличная, симпатичный внешне и удобно лежит в руке. Из минусов – мало памяти и слабенькие камеры.\n' +
-    '\n' +
-    'Минусы: мало памяти, камеры так себе', rating: 4},
-    {id:3, idProduct: 6280637, user: 'максим', reviewDate: new Date(2017, 7, 23), reviewText: 'Покупал в начале весны такой аппарат для мамы. Поскольку смартфон для нее первый, то выбирал не сильно навороченный и дорогой. Она быстро со всем разобралась, научил ее как пользоваться. В принципе памяти хоть и ало, но можно карточку всегда поставить. У мамы не игр, не еще какого то хлама не установлено, так что у нее все работает стабильно и не глючит. Для звонков, смс и мессенджеров отличный вариант и батарея при такой нагрузке 2 дня выдерживает точно. А то и больше.\n' +
-    '\n' +
-    'Плюсы: цена, характеристики', rating: 5},
-    {id:4, idProduct: 6294898, user: 'Светлана', reviewDate: new Date(2017, 7, 8),  reviewText: 'Пришло время поменять телефон,был у меня Смартфон HUAWEI Y625 ,отличный телефон,сейчас юзает старший сын, себе же взяла Смартфон HUAWEI Y6 II Dual Sim, неделю он у меня, перед покупкой прочитала кучу отзывов, понравился, о самом телефоне, экран отзывчивый,удобный в руке.Звук как для меня достаточный, слышно даже в шумном автобусе и я и меня слышат хорошо, связь тоже не пропадает,wi-fi ловит быстро, камера делает хорошие снимки, у меня перед HUAWEI была Ленова так фото леновы ужасные, батареи мне хватает на два дня, это при том что говорю много и часто пользуюсь и wi-fi и передачей данных. Телефоном довольна,надеюсь проблем не будет.\n' +
-    '\n' +
-    'Плюсы: Отличный смартфон.\n' +
-    '\n' +
-    'Минусы: Не нашла.', rating: 4}
+    {
+      id: 1,
+      idProduct: 6280637,
+      user: 'Анастасия',
+      reviewDate: new Date(2017, 11, 7),
+      reviewText: 'Пользуюсь телефоном месяц, нареканий на работу нет - красивый, функциональный, быстрый. Но!!! Понадобилась функция NFC, а её не оказалось, хотя в описании на сайте производителя она есть. Как такое может быть?\n' +
+      '\n' +
+      '<b>Минусы:</b> Отсутствие NFC, заявленной производителем.',
+      rating: 3
+    },
+    {
+      id: 2,
+      idProduct: 6280637,
+      user: 'богдан зернов',
+      reviewDate: new Date(2017, 4, 8),
+      reviewText: 'Классный аппарат, учитывая его стоимость. Самсунг новинки штампует много и быстро, так что этот джей5 не такой и старый, а по характеристикам очень даже и отличный. Сборка отличная, симпатичный внешне и удобно лежит в руке. Из минусов – мало памяти и слабенькие камеры.\n' +
+      '\n' +
+      'Минусы: мало памяти, камеры так себе',
+      rating: 4
+    },
+    {
+      id: 3,
+      idProduct: 6280637,
+      user: 'максим',
+      reviewDate: new Date(2017, 7, 23),
+      reviewText: 'Покупал в начале весны такой аппарат для мамы. Поскольку смартфон для нее первый, то выбирал не сильно навороченный и дорогой. Она быстро со всем разобралась, научил ее как пользоваться. В принципе памяти хоть и ало, но можно карточку всегда поставить. У мамы не игр, не еще какого то хлама не установлено, так что у нее все работает стабильно и не глючит. Для звонков, смс и мессенджеров отличный вариант и батарея при такой нагрузке 2 дня выдерживает точно. А то и больше.\n' +
+      '\n' +
+      'Плюсы: цена, характеристики',
+      rating: 5
+    },
+    {
+      id: 4,
+      idProduct: 6294898,
+      user: 'Светлана',
+      reviewDate: new Date(2017, 7, 8),
+      reviewText: 'Пришло время поменять телефон,был у меня Смартфон HUAWEI Y625 ,отличный телефон,сейчас юзает старший сын, себе же взяла Смартфон HUAWEI Y6 II Dual Sim, неделю он у меня, перед покупкой прочитала кучу отзывов, понравился, о самом телефоне, экран отзывчивый,удобный в руке.Звук как для меня достаточный, слышно даже в шумном автобусе и я и меня слышат хорошо, связь тоже не пропадает,wi-fi ловит быстро, камера делает хорошие снимки, у меня перед HUAWEI была Ленова так фото леновы ужасные, батареи мне хватает на два дня, это при том что говорю много и часто пользуюсь и wi-fi и передачей данных. Телефоном довольна,надеюсь проблем не будет.\n' +
+      '\n' +
+      'Плюсы: Отличный смартфон.\n' +
+      '\n' +
+      'Минусы: Не нашла.',
+      rating: 4
+    }
   ];
 
   // <editor-fold desc="quotationProducts"
@@ -32,7 +82,7 @@ export class WebApiService implements InMemoryDbService {
   // </editor-fold>
 
   // <editor-fold desc="manufacturers"
-  manufacturers=[
+  manufacturers = [
     {id: 220, name: 'SAMSUNG'},
     {id: 109483, name: 'BRAVIS'},
     {id: 114733, name: 'HUAWEI'},
@@ -44,7 +94,7 @@ export class WebApiService implements InMemoryDbService {
   // </editor-fold>
 
   // <editor-fold desc="products">
-    // <editor-fold desc='prop'>
+  // <editor-fold desc='prop'>
   private prop1 = {id: 7, name: 'Количество SIM', prop_type: 2, is_Multi_Select: true, url: null, predestination: true};
   private prop2 = {
     id: 12,
@@ -71,7 +121,7 @@ export class WebApiService implements InMemoryDbService {
     predestination: false
   };
   // </editor-fold>
-    // <editor-fold desc='propEnumList'
+  // <editor-fold desc='propEnumList'
   private propEnumList1 = {id: 17, id_Prop: this.prop2, name: '16 Гб', list_Index: 100, bit_Index: null, url: null};
   private propEnumList2 = {id: 18, id_Prop: this.prop2, name: '32 Мб', list_Index: 50, bit_Index: null, url: null};
   private propEnumList3 = {id: 19, id_Prop: this.prop3, name: '1.8"', list_Index: 50, bit_Index: null, url: null};
@@ -81,7 +131,7 @@ export class WebApiService implements InMemoryDbService {
   private propEnumList7 = {id: 5, id_Prop: this.prop4, name: 'UK', list_Index: 0, bit_Index: null, url: null};
   private propEnumList8 = {id: 6, id_Prop: this.prop4, name: 'US', list_Index: 2, bit_Index: null, url: null};
   // </editor-fold>
-    // <editor-fold desc='productPropValue'
+  // <editor-fold desc='productPropValue'
   private productPropValue1 = {
     id: 1, id_Product: 6293680, id_Prop: this.prop2, prop_Value_Str: null,
     prop_Value_Number: null, prop_Value_Bool: null, prop_Value_Enum: this.propEnumList1, prop_Value_Long: null
@@ -135,7 +185,8 @@ export class WebApiService implements InMemoryDbService {
         'assets/imgs/product-images/medium/6280637-1.jpg',
         'assets/imgs/product-images/medium/6280637-2.jpg',
         'assets/imgs/product-images/medium/6280637-3.jpg'
-      ]},
+      ]
+    },
     {
       id: 6293680,
       name: 'Mob/tel BRAVIS F181 BELL (black)',
@@ -276,7 +327,6 @@ export class WebApiService implements InMemoryDbService {
     {id: 5, name: 'Алло', paymentMethodId: 1, rating: 3, positiveFeedbackPct: '35', refsCount: '254'},
     {id: 6, name: 'Lenovo', paymentMethodId: 3, rating: 2, positiveFeedbackPct: '36.6', refsCount: '77'}
   ];
-
   // </editor-fold>
 
   // <editor-fold desc="cities"
@@ -669,6 +719,44 @@ export class WebApiService implements InMemoryDbService {
   ];
   // </editor-fold>
 
+  //<editor-fold desc="Tokens">
+  tokens = [
+    {token: 'fdtefdetfdwytdfetfdtewyfdeyt'},
+    {token: 'cscstefdetfxscdcwytdfetfdtewyfdeysc'},
+    {token: 'nhnhnstefdetfxscdcwytdfetfdtewyfdehnhnh'}
+  ];
+  //</editor-fold>
+
+  //<editor-fold desc="Users">
+  users = [
+    {
+      name: 'sergey',
+      email: 'sergce@fox.com',
+      password: 'sergce',
+      id: 1,
+      appKey: '',
+      userSetting: {'currency': '0', 'lang': '1'}
+    },
+    {
+      name: 'vladimir',
+      email: 'dealio07@fox.com',
+      password: 'dealio07',
+      id: 2,
+      appKey: '',
+      userSetting: {'currency': '1', 'lang': '2'}
+    },
+    {
+      name: 'Yuri',
+      email: 'yurafox@fox.com',
+      password: 'yurafox',
+      id: 3,
+      appKey: '',
+      userSetting: {'currency': '2', 'lang': '3'}
+    },
+  ];
+
+  //</editor-fold>
+
   createDb() {
     const mquotationProducts = this.quotationProducts;
     const mproducts = this.products;
@@ -679,9 +767,115 @@ export class WebApiService implements InMemoryDbService {
     const manufacturers = this.manufacturers;
     const mcities = this.cities;
     const mfoxMapMarkers = this.foxMapMarkers;
+    const mtoken = this.tokens;
+    const musers = this.users;
     return {
       mquotationProducts, mproducts, mquotation, mcurrencies, msuppliers, mproductReviews, manufacturers, mcities,
-      mfoxMapMarkers
+      mfoxMapMarkers, mtoken, musers
+    }
+  }
+
+  // <editor-fold desc="monkey controller">
+  private apiController(info: RequestInfo) {
+    let resOpt: ResponseOptions = new ResponseOptions({
+      status : 200,
+      statusText: 'OK',
+      body: null
+    });
+
+    if (!info) {
+      return null;
+    }
+
+    switch (info.collectionName) {
+      case 'mtoken': {
+      var loginData = (<any>info.req)._body;
+       if (!loginData)
+         return info.utils.createResponse$(() => resOpt);
+
+        const loginModel: {token:string, user: {}}= this.getTokenBehavior(loginData.email,loginData.password);
+        resOpt.body = loginModel;
+        return info.utils.createResponse$(() => resOpt);
+      }
+
+      case 'musers': {
+          return this.userHandler[info.method](info,resOpt);
+      }
+
+      default :
+        return null;
+    }
+  }
+  // </editor-fold>
+
+  // <editor-fold desc="HTTP verbs override collections">
+  userHandler:IDictionary<(info:RequestInfo, resOpt?: ResponseOptions)=>any> = {
+    'post': (info) => null,
+    'get': (info) => {
+      let tokenStr = (<any>info).req.headers.get('Authorization');
+      if (!this.verifyToken(tokenStr)) {
+        return info.utils.createResponse$(() => new ResponseOptions({
+          status : 401,
+          statusText: 'Unauthorized',
+        }));
+      }
+      return null;
+    },
+    'put': (info,resOpt) => {
+      const user = (<any>info.req)._body;
+      let tokenStr = (<any>info).req.headers.get('Authorization');
+
+      if (!user || !this.verifyToken(tokenStr)) {
+        return info.utils.createResponse$(() => new ResponseOptions({
+          status : 401,
+          statusText: 'Unauthorized',
+        }));
+      }
+
+      const resultUser: User = this.getEditBehavior(user);
+      resOpt.body = resultUser;
+      return info.utils.createResponse$(() => resOpt);
+    }
+  };
+  // </editor-fold>
+
+  // <editor-fold desc="HTTP verbs helpers">
+  private getTokenBehavior(email: string, password: string): {token:string, user: {}} {
+     if(!email || !password)
+       return null;
+
+    const userResult = this.users.find((val)=> val.email=== email && val.password === password);
+    return (!userResult) ? null : {
+      token: this.tokens[Math.floor(Math.random() * this.tokens.length)].token,
+      user: userResult
     };
   }
+  private getEditBehavior(user: User): User {
+     for (let i=0; i<this.users.length; i++) {
+       if(this.users[i].id === user.id) {
+          for(let item in this.users[i]) {
+            if(item ==='password' || item ==='appKey'){
+              continue;
+            }
+
+            this.users[i][item] = user[item];
+          }
+          if (user.password)  this.users[i].password = user.password;
+          if (user.appKey) this.users[i].appKey = user.appKey;
+
+          return this.users[i];
+       }
+     }
+     return null;
+  }
+  private verifyToken(token: string) {
+    if(!token)
+      return false;
+
+    const tokenSplit = token.split(':');
+
+    return tokenSplit.length===2 && !!(this.tokens.find((value) =>
+      value.token === tokenSplit[1].trim()));
+  }
+  // </editor-fold>
 }

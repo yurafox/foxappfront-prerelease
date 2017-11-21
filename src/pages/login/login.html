@@ -9,32 +9,31 @@
 
 </ion-header>
 
-<ion-content padding class="login">
-  <ion-list class="list-form">
+<ion-content padding class="top20">
+  <ion-list>
+    <form [formGroup]='loginForm'>
+      <ion-item *ngIf='authError' class='alertDanger'>
+        <span>Неверный логин или пароль</span>
+      </ion-item>
 
-    <ion-item>
-      <ion-input type="text" placeholder="Электронная почта"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-input type="text" placeholder="Электронная почта" formControlName="email"></ion-input>
+      </ion-item>
+      <ion-item class='alertDanger' *ngIf="formErrors.email">
+        <span>{{formErrors.email}}</span>
+      </ion-item>
 
-    <ion-item>
-      <ion-input type="password" placeholder="Пароль"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-input  type="password" placeholder="Пароль" formControlName="password"></ion-input>
+      </ion-item>
+      <ion-item class='alertDanger' *ngIf="formErrors.password">
+         <span>{{formErrors.password}}</span>
+      </ion-item>
+
+      <button style="background: #ffbc2e" ion-button block (click)="login()">Войти</button>
+    </form>
 
   </ion-list>
-
-  <button ion-button block (click)="login()">Войти</button>
-
-  <div text-right margin-top margin-bottom (click)="forgotPwd()">Забыли пароль?</div>
-
-  <button ion-button icon-left block color="facebook" class="align-left">
-    <ion-icon name="logo-facebook"></ion-icon>
-    Войти через Facebook
-  </button>
-
-  <button ion-button icon-left block color="light" margin-top class="align-left card">
-    <ion-icon name="logo-google"></ion-icon>
-    <span>Войти через Google</span>
-  </button>
 
   <div class="align-bottom" padding text-center>
     Нет аккаунта? <span class="bold" (click)="register()">Зарегистрироваться</span>

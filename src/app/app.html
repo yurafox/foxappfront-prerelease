@@ -4,10 +4,10 @@
 
     <ion-header>
       <!-- User profile -->
-      <div padding class="menu-left menu-bg" *ngIf="logged==true">
+      <div padding class="menu-left menu-bg" *ngIf="account.isAuth">
         <a menuClose>
-          <img src="http://www.gravatar.com/avatar?d=mm&s=140">
-          <h4 ion-text color="light">Foxapp User</h4>
+          <img class="profile-picture" src="http://www.gravatar.com/avatar?d=mm&s=140">
+          <h4 ion-text color="light">{{account.name}}</h4>
         </a>
       </div>
       <ion-navbar>
@@ -17,10 +17,12 @@
 
     <ion-content class="outer-content">
       <ion-list>
-        <button ion-item menuClose *ngFor="let p of appPages" (click)="openPage(p)">
-          <ion-icon item-start [name]="p.icon"></ion-icon>
-          {{p.title}}
-        </button>
+        <div *ngFor="let p of appPages">
+          <button ion-item menuClose (click)="openPage(p)">
+            <ion-icon item-start [name]="p.icon"></ion-icon>
+            {{p.title}}
+          </button>
+        </div>
       </ion-list>
 
       <ion-list>
@@ -33,12 +35,9 @@
         </button>
       </ion-list>
 
-      <ion-list>
-        <ion-list-header>
-          Logged: {{logged}}
-        </ion-list-header>
-        <button ion-item (click)="toggleLogged($event)">
-          Toggle
+      <ion-list *ngIf="account.isAuth">
+        <button ion-item (click)="signOut($event)">
+          Выйти
         </button>
       </ion-list>
     </ion-content>

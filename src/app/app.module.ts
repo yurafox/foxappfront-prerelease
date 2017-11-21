@@ -10,6 +10,8 @@ import { Ionic2RatingModule } from 'ionic2-rating';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 import { FoxApp } from './app.component';
+import {FormsModule} from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
 
 import {
   HomePage,
@@ -44,7 +46,7 @@ import {AppConstants} from './app-constants';
 import {
   EventService,
   AbstractAccountRepository,
-  MockAccountRepository,
+  AccountRepository,
   AbstractLocalizationRepository,
   MockLocalizationRepository,
   AbstractNewsSubscribeService,
@@ -99,7 +101,7 @@ import {PipesModule} from "./pipe/pipes.module";
   imports: [
     BrowserModule,
     HttpModule,
-    InMemoryWebApiModule.forRoot(WebApiService, {delay: 1000}),
+    InMemoryWebApiModule.forRoot(WebApiService, {delay: 1000,post204: false, put204: false}),
     IonicModule.forRoot(FoxApp, {},{
       links: [
         { component: HomePage, name: 'HomePage', segment: 'home'},
@@ -114,7 +116,9 @@ import {PipesModule} from "./pipe/pipes.module";
     }),
     ComponentsModule,
     Ionic2RatingModule,
-    PipesModule
+    PipesModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -155,7 +159,7 @@ import {PipesModule} from "./pipe/pipes.module";
     BarcodeScanner,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
-    {provide: AbstractAccountRepository, useClass: MockAccountRepository},
+    {provide: AbstractAccountRepository, useClass: AccountRepository},
     {provide: AbstractLocalizationRepository, useClass: MockLocalizationRepository},
     {provide: AbstractNewsSubscribeService, useClass: MockNewsSubscribeService},
     {provide: AbstractDataRepository, useClass: AppDataRepository},

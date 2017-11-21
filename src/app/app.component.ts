@@ -1,8 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
-import {Nav, Platform} from 'ionic-angular';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import {Nav, Platform, MenuController} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {AbstractDataRepository} from "./service/index";
+
 
 import {
   AboutPage,
@@ -14,6 +15,7 @@ import {
   MapPage,
   MyOrderPage
 } from '../pages/index';
+import {UserService} from "./service/bll/user-service";
 
 export interface PageInterface {
   title: string;
@@ -29,7 +31,7 @@ export interface PageInterface {
 @Component({
   templateUrl: 'app.html'
 })
-export class FoxApp {
+export class FoxApp implements OnInit{
   // the root nav is a child of the root app component
   // @ViewChild(Nav) gets a reference to the app's root nav
   @ViewChild(Nav) nav: Nav;
@@ -39,8 +41,8 @@ export class FoxApp {
   appPages = [
     {title: 'Главная', name: 'Home', component: HomePage, index: 0, icon: 'ios-home-outline'},
     {title: 'Категории', name: 'Categories', component: CategoriesPage, index: 1, icon: 'ios-list-outline'},
-    {title: 'Ваши Заказы', name: 'Orders', component: MyOrderPage, index: 2, icon: 'ios-cart-outline'},
-    {title: 'Ваш Аккаунт', name: 'Account', component: AccountPage, index: 3, icon: 'ios-person-outline'},
+    /*{title: 'Ваши Заказы', name: 'Orders', component: MyOrderPage, index: 2, icon: 'ios-cart-outline'},*/
+    {title: 'Профиль', name: 'Account', component: AccountPage, index: 3, icon: 'ios-person-outline'},
   ];
   infoPages = [
     {title: 'Магазины на карте', name: 'Map', component: MapPage, index: 0, icon: 'ios-map-outline'},
@@ -48,12 +50,11 @@ export class FoxApp {
     {title: 'Поддержка', name: 'Support', component: SupportPage, index: 2, icon: 'ios-text-outline'}
   ];
 
-  logged: boolean;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
-              private repo: AbstractDataRepository) {
+  constructor(platform: Platform, statusBar: StatusBar,
+              splashScreen: SplashScreen, public menuCtrl: MenuController,
+              private repo: AbstractDataRepository, public account: UserService) {
     this.rootPage = HomePage;
-    this.logged = false;
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -62,9 +63,16 @@ export class FoxApp {
     });
   }
 
+  async ngOnInit() {
+    if(!this.account.isAuth && this.account.isNotSignOutSelf()){
+      await this.account.shortLogin();
+    }
+
+  }
+
   openPage(page: PageInterface) {
 
-    if ((this.logged === false) && (page.component === AccountPage)) {
+    if ((this.account.isAuth === false) && (page.component === AccountPage)) {
       this.nav.setRoot(LoginPage).catch((err: any) => {
         console.log(`Didn't set nav root: ${err}`);
       });
@@ -80,14 +88,10 @@ export class FoxApp {
     }*/
   }
 
-  // Just to check login status
-  // Delete later
-  toggleLogged() {
-    this.logged = !this.logged;
-    this.nav.setRoot(HomePage).catch((err: any) => {
-      console.log(`Didn't set nav root: ${err}`);
-    });
+  signOut() {
+    this.account.logOut();
+    this.nav.setRoot(HomePage);
+    this.menuCtrl.close();
   }
-
 }
 

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ClientOrder} from '../model/client-order';
 import {ClientOrderProducts} from '../model/client-order-products';
 import {QuotationProduct} from '../model/quotation-product';
-import {UserService} from './repository/specific/user-service';
+
 
 @Injectable()
 export class CartService {
@@ -10,7 +10,7 @@ export class CartService {
   public order: ClientOrder;
   public orderProducts = new Array <ClientOrderProducts>();
 
-  constructor(public userSvc: UserService ) {
+  constructor() {
 
   };
 
