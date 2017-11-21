@@ -7,6 +7,30 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="map-page">
-  <div style="height: 100%; width: 100%" #mapCanvas id="map_canvas"></div>
+<ion-content>
+  <ion-select [(ngModel)]="selectedCity" (ionChange)="changeMarkers()" placeholder="Выберите город"
+              class="another-select">
+    <ion-option *ngFor="let city of cities" [value]="city.name" checked="city.name === selectedCity">{{city.name}}
+    </ion-option>
+  </ion-select>
+  <ion-select [(ngModel)]="selectedMarker" (ionChange)="handleListSelect()" placeholder="Выберите адрес магазина"
+              class="another-select">
+    <ion-option *ngFor="let shop of shopList" [value]="shop.value" checked="shop.label === selectedMarker.label">
+      {{shop.label}}
+    </ion-option>
+  </ion-select>
+
+  <!--GMap-->
+  <div style="height: 80%; width: 100%" #mapCanvas id="map_canvas"></div>
+
+  <ion-buttons *ngIf="selectedMarker !== null" align="center">
+    <button ion-button icon-left clear (click)="addToFavorite()" [disabled]="selectedMarker === null" class="map-button">
+      <ion-icon name="ios-star"></ion-icon>
+      В избранное
+    </button>
+    <button ion-button icon-left clear (click)="buildRoute()" [disabled]="selectedMarker === null" class="map-button">
+      <ion-icon name="ios-arrow-round-up-outline"></ion-icon>
+      Проложить маршрут
+    </button>
+  </ion-buttons>
 </ion-content>

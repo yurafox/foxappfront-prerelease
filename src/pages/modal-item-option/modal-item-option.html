@@ -11,56 +11,5 @@
 
 
 <ion-content>
-  <!--item thumbnail-->
-  <ion-item class="no-border border-bottom">
-    <ion-thumbnail item-left>
-      <img src="{{ item.thumb }}">
-    </ion-thumbnail>
-    <div>
-      <h2 class="price" ion-text color="fox" margin-top *ngIf="item.sale_price">{{ item.sale_price + item.option_price |
-        currency:'USD':true }}</h2>
-      <h2 class="price" ion-text color="fox" margin-top *ngIf="!item.sale_price">{{ item.price + item.option_price |
-        currency:'USD':true }}</h2>
-      <span ion-text color="gray">{{ item.selectedOptions }}</span>
-    </div>
-  </ion-item>
-
-  <div class="border-bottom" padding *ngFor="let optionGroup of item.option_groups">
-    <div>
-      {{ optionGroup.name }}
-      <span padding-left>{{ optionGroup.currentOption ? optionGroup.currentOption.name : '' }}</span>
-    </div>
-    <div class="item-option" *ngFor="let option of optionGroup.options"
-         (click)="chooseOption(optionGroup, option)"
-         [ngClass]="{'active': option.active}">
-      {{ option.name }}
-    </div>
-  </div>
-
-  <div class="border-bottom" padding>
-    <div>Количество</div>
-    <div class="input-qty" margin-top>
-      <span class="btn" (click)="quantityRemoveOne()">
-        <ion-icon name="ios-remove"></ion-icon>
-      </span>
-      <input type="text" [value]="quantity">
-      <span class="btn" (click)="quantityAddOne()">
-        <ion-icon name="ios-add"></ion-icon>
-      </span>
-      <div class="clear"></div>
-    </div>
-  </div>
-
-  <!--add to cart-->
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <button ion-button block class="btn-add-cart" (click)="addCart(item)">Добавить в корзину</button>
-      </ion-col>
-      <ion-col>
-        <button ion-button color="fox" block (click)="buy(item)">Купить</button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
 
 </ion-content>

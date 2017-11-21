@@ -7,6 +7,7 @@ import {HttpModule} from '@angular/http';
 import {InAppBrowser} from '@ionic-native/in-app-browser';
 import {GoogleMaps} from '@ionic-native/google-maps';
 import { Ionic2RatingModule } from 'ionic2-rating';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 import { FoxApp } from './app.component';
 
@@ -151,6 +152,7 @@ import {PipesModule} from "./pipe/pipes.module";
     InAppBrowser,
     UserService,
     GoogleMaps,
+    BarcodeScanner,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
     {provide: AbstractAccountRepository, useClass: MockAccountRepository},

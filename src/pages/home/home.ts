@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { App, NavController } from 'ionic-angular';
-import {SearchBtnComponent} from '../../components/search-btn/search-btn'
 
-import {CartPage, CategoriesPage, CategoryPage} from '../index';
+import {CategoriesPage, CategoryPage} from '../index';
 import {SearchPage} from '../search/search';
 
 @Component({
@@ -23,16 +22,8 @@ export class HomePage {
     }
   ];
 
-  // list categories
-  public categories: any;
-
-  // list of items
-  public items: any;
 
   constructor(public app: App, public nav: NavController) {
-    this.categories = [];
-
-    this.items = [];
   }
 
   // view categories
@@ -53,5 +44,4 @@ export class HomePage {
   onSearchClick() {
     this.nav.setRoot(SearchPage);
   }
-
 }

@@ -277,8 +277,396 @@ export class WebApiService implements InMemoryDbService {
     {id: 6, name: 'Lenovo', paymentMethodId: 3, rating: 2, positiveFeedbackPct: '36.6', refsCount: '77'}
   ];
 
+  // </editor-fold>
 
+  // <editor-fold desc="cities"
+  cities = [{id: 1, name: 'Александрия'}, {id: 2, name: 'Бахмут'}, {id: 3, name: 'Белая Церковь'},
+    {id: 4, name: 'Белгород-Днестровский'}, {id: 5, name: 'Бердичев'}, {id: 6, name: 'Бердянск'},
+    {id: 7, name: 'Борисполь'}, {id: 8, name: 'Бровары'}, {id: 9, name: 'Васильков'}, {id: 10, name: 'Винница'},
+    {id: 11, name: 'Вознесенск'}, {id: 12, name: 'Днепр'}, {id: 13, name: 'Дрогобыч'}, {id: 14, name: 'Дубно'},
+    {id: 15, name: 'Житомир'}, {id: 16, name: 'Запорожье'}, {id: 17, name: 'Ивано-Франковск'}, {id: 18, name: 'Измаил'},
+    {id: 19, name: 'Ирпень'}, {id: 20, name: 'Калуш'}, {id: 21, name: 'Каменец-Подольский'},
+    {id: 22, name: 'Каменское'}, {id: 23, name: 'Киев'}, {id: 24, name: 'Ковель'}, {id: 25, name: 'Коломыя'},
+    {id: 26, name: 'Конотоп'}, {id: 27, name: 'Коростень'}, {id: 28, name: 'Краматорск'}, {id: 29, name: 'Кременчуг'},
+    {id: 30, name: 'Кривой Рог'}, {id: 31, name: 'Кропивницкий'}, {id: 32, name: 'Ладыжин'}, {id: 33, name: 'Лиман'},
+    {id: 34, name: 'Лисичанск'}, {id: 35, name: 'Лубны'}, {id: 36, name: 'Луцк'}, {id: 37, name: 'Львов'},
+    {id: 38, name: 'Мариуполь'}, {id: 39, name: 'Мелитополь'}, {id: 40, name: 'Миргород'}, {id: 41, name: 'Мукачево'},
+    {id: 42, name: 'Надвирна'}, {id: 43, name: 'Нежин'}, {id: 44, name: 'Нетешин'}, {id: 45, name: 'Николаев'},
+    {id: 46, name: 'Никополь'}, {id: 47, name: 'Новая Каховка'}, {id: 48, name: 'Новомосковск'},
+    {id: 49, name: 'Обухов'}, {id: 50, name: 'Одесса'}, {id: 51, name: 'Павлоград'}, {id: 52, name: 'Первомайск'},
+    {id: 53, name: 'Подольск'}, {id: 54, name: 'Покров'}, {id: 55, name: 'Покровск'}, {id: 56, name: 'Полтава'},
+    {id: 57, name: 'Прилуки'}, {id: 58, name: 'Ровно'}, {id: 59, name: 'Ромны'}, {id: 60, name: 'Рубежное'},
+    {id: 61, name: 'Самбор'}, {id: 62, name: 'Северодонецк'}, {id: 63, name: 'Славута'}, {id: 64, name: 'Славянск'},
+    {id: 65, name: 'Смела'}, {id: 66, name: 'Сокольники'}, {id: 67, name: 'Старобельск'}, {id: 68, name: 'Стрый'},
+    {id: 69, name: 'Сумы'}, {id: 70, name: 'Тернополь'}, {id: 71, name: 'Токмак'}, {id: 72, name: 'Ужгород'},
+    {id: 73, name: 'Умань'}, {id: 74, name: 'Фастов'}, {id: 75, name: 'Харьков'}, {id: 76, name: 'Херсон'},
+    {id: 77, name: 'Хмельницкий'}, {id: 78, name: 'Хуст'}, {id: 79, name: 'Червоноград'}, {id: 80, name: 'Черкассы'},
+    {id: 81, name: 'Чернигов'}, {id: 82, name: 'Черновцы'}, {id: 83, name: 'Черноморск'}, {id: 84, name: 'Шепетовка'},
+    {id: 85, name: 'Шостка'}, {id: 86, name: 'Энергодар'}, {id: 87, name: 'Южноукраинск'}, {id: 88, name: 'Южный'}];
+  // </editor-fold>
 
+  // <editor-fold desc="foxMapMarkers"
+  foxMapMarkers = [
+    // Александрия
+    {id: 1, markers: [{id: 1, position: {lat: 48.6805, lng: 33.1154}, title: 'просп. Соборний, 11'}]},
+    // Бахмут
+    {id: 2, markers: [{id: 1, position: {lat: 48.586815, lng: 38.004897}, title: 'вул. Незалежності, 81'}]},
+    // Белая Церковь
+    {
+      id: 3, markers: [
+      {id: 1, position: {lat: 49.8093, lng: 30.0949}, title: 'бульв. Олександрійський, 115'},
+      {id: 2, position: {lat: 49.797983, lng: 30.121724}, title: 'вул. Ярослава Мудрого, 40'}
+    ]
+    },
+    // Белгород-Днестровский
+    {id: 4, markers: [{id: 1, position: {lat: 46.1764, lng: 30.3537}, title: 'вул. Тімчішина, 8'}]},
+    // Бердичев
+    {id: 5, markers: [{id: 1, position: {lat: 49.8916, lng: 28.5843}, title: 'вул. Вінницька, 18'}]},
+    // Бердянск
+    {
+      id: 6, markers: [
+      {id: 1, position: {lat: 46.755478, lng: 36.7872}, title: 'вул. Университетская, 43/ просп. Праці, 37'},
+      {id: 2, position: {lat: 46.760454, lng: 36.80152}, title: 'вул. Комунарів, 75-З'}]
+    },
+    // Борисполь
+    {id: 7, markers: [{id: 1, position: {lat: 50.363245, lng: 30.929128}, title: 'вул. Київський шлях, 67'}]},
+    // Бровары
+    {id: 8, markers: [{id: 1, position: {lat: 50.52629, lng: 30.79642}, title: 'вул. Київська, 316'}]},
+    // Васильков
+    {id: 9, markers: [{id: 1, position: {lat: 50.1771, lng: 30.3171}, title: 'вул. Соборна, 60'}]},
+    // Винница
+    {
+      id: 10, markers: [
+      {id: 1, position: {lat: 49.2261, lng: 28.4134}, title: 'вул. Келецька, 80'},
+      {id: 2, position: {lat: 49.240307, lng: 28.505989}, title: 'вул. Євгена Пікуса, 1-А'}
+    ]
+    },
+    // Вознесенск
+    {id: 11, markers: [{id: 1, position: {lat: 47.564, lng: 31.3409}, title: 'вул. Київська, 16'}]},
+    // Днепр
+    {
+      id: 12, markers: [
+      {id: 1, position: {lat: 48.47593, lng: 35.0208}, title: 'вул. Пастера, 6-А'},
+      {id: 2, position: {lat: 48.4773, lng: 35.0139}, title: 'пл. Петрівського, 5'},
+      {id: 3, position: {lat: 48.4837, lng: 34.9236}, title: 'вул. Кондратюка, 8'},
+      {id: 4, position: {lat: 48.4291, lng: 35.0651}, title: 'вул. Набережна Перемоги, 86-А'}
+    ]
+    },
+    // Дрогобыч
+    {id: 13, markers: [{id: 1, position: {lat: 49.3626, lng: 23.5136}, title: 'вул. Пилипа Орлика, 18-Б'}]},
+    // Дубно
+    {id: 14, markers: [{id: 1, position: {lat: 50.417962, lng: 25.745615}, title: 'пл. Незалежності, 3'}]},
+    // Житомир
+    {
+      id: 15, markers: [
+      {id: 1, position: {lat: 50.2664, lng: 28.6851}, title: 'вул. Київська, 77'},
+      {id: 2, position: {lat: 50.2561, lng: 28.673}, title: 'пл. Житній Ринок, 1'}
+    ]
+    },
+    // Запорожье
+    {
+      id: 16, markers: [
+      {id: 1, position: {lat: 47.8179, lng: 35.1746}, title: 'просп. Соборний, 53'},
+      {id: 2, position: {lat: 47.8563, lng: 35.1067}, title: 'просп. Соборний, 175'},
+      {id: 3, position: {lat: 47.8208, lng: 35.0513}, title: 'просп. Ювілейний, 16-А'},
+      {id: 4, position: {lat: 47.835, lng: 35.122}, title: 'вул. Перемоги, 64'}
+    ]
+    },
+    // Ивано-Франковск
+    {
+      id: 17, markers: [
+      {id: 1, position: {lat: 48.9257, lng: 24.7134}, title: 'вул. Дністровська, 26'},
+      {id: 2, position: {lat: 48.907769, lng: 24.683458}, title: 'вул. Мазепи, 168-Б'},
+      {id: 3, position: {lat: 48.932875, lng: 24.746035}, title: 'вул. Миколайчука, 2'}
+    ]
+    },
+    // Измаил
+    {id: 18, markers: [{id: 1, position: {lat: 45.3573, lng: 28.8194}, title: 'просп. Леніна, 12'}]},
+    // Ирпень
+    {id: 19, markers: [{id: 1, position: {lat: 50.5197, lng: 30.2446}, title: 'вул. Шевченко, 4-Г'}]},
+    // Калуш
+    {id: 20, markers: [{id: 1, position: {lat: 49.041445, lng: 24.354076}, title: 'вул. Богдана Хмельницького, 50'}]},
+    // Каменец-Подольский
+    {id: 21, markers: [{id: 1, position: {lat: 48.679713, lng: 26.587617}, title: 'вул. Соборна, 25'}]},
+    // Каменское
+    {id: 22, markers: [{id: 1, position: {lat: 48.516057, lng: 34.606908}, title: 'просп. Тараса Шевченко, 9'}]},
+    // Киев
+    {
+      id: 23, markers: [
+      {id: 1, position: {lat: 50.4357, lng: 30.5164}, title: 'вул. В. Васильківська, 45'},
+      {id: 2, position: {lat: 50.4898, lng: 30.4927}, title: 'просп. Степана Бандери, 21'},
+      {id: 3, position: {lat: 50.4316, lng: 30.5131}, title: 'вул. Горького , 50'},
+      {id: 4, position: {lat: 50.5145, lng: 30.4986}, title: 'просп. Оболонський, 21Б'},
+      {id: 5, position: {lat: 50.381827, lng: 30.44093}, title: 'вул. Велика Кільцева, 110'},
+      {id: 6, position: {lat: 50.4605, lng: 30.3469}, title: 'вул. Чорнобильська, 16/80'},
+      {id: 7, position: {lat: 50.4083, lng: 30.6552}, title: 'вул. Вербицького, 18'},
+      {id: 8, position: {lat: 50.399, lng: 30.5107}, title: 'просп. Голосіївський, 68а'},
+      {id: 9, position: {lat: 50.4634, lng: 30.5992}, title: 'просп. Визволителів, 17'},
+      {id: 10, position: {lat: 50.454762, lng: 30.636051}, title: 'вул. Гната Хоткевича, 1-В'},
+      {id: 11, position: {lat: 50.4304, lng: 30.4552}, title: 'бульв. Чоколівський, 19'},
+      {id: 12, position: {lat: 50.4312, lng: 30.3836}, title: 'вул. Гната Юри, 20'},
+      {id: 13, position: {lat: 50.3976, lng: 30.6382}, title: 'вул. Олександра Мішуги, 4'},
+      {id: 14, position: {lat: 50.451, lng: 30.4416}, title: 'вул. Гетьмана, 6 (літери "Б,Б")'},
+      {id: 15, position: {lat: 50.4567, lng: 30.3832}, title: 'просп. Перемоги, 87'},
+      {id: 16, position: {lat: 50.49375, lng: 30.56128}, title: 'вул. Генерала Ватутіна, 2'},
+      {id: 17, position: {lat: 50.5198, lng: 30.4656}, title: 'вул. Калнишевського, 2'}
+    ]
+    },
+    // Ковель
+    {id: 24, markers: [{id: 1, position: {lat: 51.214107, lng: 24.707476}, title: 'вул. Незалежності, 83'}]},
+    // Коломыя
+    {id: 25, markers: [{id: 1, position: {lat: 48.5257, lng: 25.0359}, title: 'просп. Грушевського, 12'}]},
+    // Конотоп
+    {id: 26, markers: [{id: 1, position: {lat: 51.2278, lng: 33.1973}, title: 'просп. Миру, 61'}]},
+    // Коростень
+    {id: 27, markers: [{id: 1, position: {lat: 50.9506, lng: 28.6395}, title: 'вул. Красіна, 5'}]},
+    // Краматорск
+    {id: 28, markers: [{id: 1, position: {lat: 48.736715, lng: 37.587819}, title: 'вул. Василя Стуса, 49'}]},
+    // Кременчуг
+    {
+      id: 29, markers: [
+      {id: 1, position: {lat: 49.0658, lng: 33.4236}, title: 'вул. Першотравнева, 44'},
+      {id: 2, position: {lat: 49.091025, lng: 33.425882}, title: 'вул. Київська, 5-А'}
+    ]
+    },
+    // Кривой Рог
+    {
+      id: 30, markers: [
+      {id: 1, position: {lat: 47.9022, lng: 33.3941}, title: 'просп. Металургів, 35/3'},
+      {id: 2, position: {lat: 47.730983, lng: 33.250241}, title: 'вул. Неділіна, 43'},
+      {id: 3, position: {lat: 47.9024, lng: 33.3588}, title: 'вул. Лермонтова, 26-А'},
+      {id: 4, position: {lat: 47.935898, lng: 33.433841}, title: 'бульв. Вечірній, 31-А'},
+      {id: 5, position: {lat: 48.021463, lng: 33.473223}, title: 'вул. Ватутіна, 39'},
+      {id: 6, position: {lat: 47.9636, lng: 33.4369}, title: 'просп. 200-річчя Кривого Рогу, 7-Д'}
+    ]
+    },
+    // Кропивницкий
+    {
+      id: 31, markers: [
+      {id: 1, position: {lat: 48.507581, lng: 32.264394}, title: 'вул. Велика Перспективна, 48'},
+      {id: 2, position: {lat: 48.5015, lng: 32.2091}, title: 'вул. Юрія Коваленко, 6-А'}
+    ]
+    },
+    // Ладыжин
+    {id: 32, markers: [{id: 1, position: {lat: 48.683368, lng: 29.233181}, title: 'вул. Будівельників, 15'}]},
+    // Лиман
+    {id: 33, markers: [{id: 1, position: {lat: 48.964797, lng: 37.822462}, title: 'вул. Привокзальна, 19-В'}]},
+    // Лисичанск
+    {id: 34, markers: [{id: 1, position: {lat: 48.9121, lng: 38.4274}, title: 'вул. Гарибальді, 50'}]},
+    // Лубны
+    {id: 35, markers: [{id: 1, position: {lat: 50.0213, lng: 32.9835}, title: 'просп. Володимирський, 98'}]},
+    // Луцк
+    {
+      id: 36, markers: [
+      {id: 1, position: {lat: 50.745798, lng: 25.338923}, title: 'просп. Волі, 27'},
+      {id: 2, position: {lat: 50.75522, lng: 25.35552}, title: 'вул. Сухомлинського, 1'}
+    ]
+    },
+    // Львов
+    {
+      id: 37, markers: [
+      {id: 1, position: {lat: 49.8435, lng: 24.023}, title: 'вул. Городоцька, 16'},
+      {id: 2, position: {lat: 49.792, lng: 24.0576}, title: 'просп. Червоної Калини, 62'},
+      {id: 3, position: {lat: 49.856, lng: 24.0213}, title: 'просп. Чорновола, 57'},
+      {id: 4, position: {lat: 49.807337, lng: 23.978681}, title: 'вул. Кульпарковська, 226-А'},
+      {id: 5, position: {lat: 49.8092, lng: 23.9979}, title: 'вул. Княгині Ольги, 106'},
+      {id: 6, position: {lat: 49.8118, lng: 24.0615}, title: 'вул. Зелена, 147'}
+    ]
+    },
+    // Мариуполь
+    {
+      id: 38, markers: [
+      {id: 1, position: {lat: 47.1075, lng: 37.5521}, title: 'просп. Металургів, 100'},
+      {id: 2, position: {lat: 47.1007, lng: 37.5053}, title: 'просп. Миру, 149'}
+    ]
+    },
+    // Мелитополь
+    {id: 39, markers: [{id: 1, position: {lat: 46.8479, lng: 35.3756}, title: 'просп. Богдана Хмельницького, 10'}]},
+    // Миргород
+    {id: 40, markers: [{id: 1, position: {lat: 49.966, lng: 33.61}, title: 'вул. Миколи Гоголя, 98/6'}]},
+    // Мукачево
+    {id: 41, markers: [{id: 1, position: {lat: 48.441785, lng: 22.73166}, title: 'вул. Миру, 151-Г'}]},
+    // Надвирна
+    {id: 42, markers: [{id: 1, position: {lat: 48.63264, lng: 24.5687}, title: 'вул. Чорновола, 4'}]},
+    // Нежин
+    {id: 43, markers: [{id: 1, position: {lat: 51.051148, lng: 31.88917}, title: 'вул. Московська, 12'}]},
+    // Нетешин
+    {id: 44, markers: [{id: 1, position: {lat: 50.33518, lng: 26.64125}, title: 'просп. Незалежності, 11'}]},
+    // Николаев
+    {
+      id: 45, markers: [
+      {id: 1, position: {lat: 46.9636, lng: 32.0252}, title: 'просп. Центральний, 259/1'},
+      {id: 2, position: {lat: 46.9675, lng: 31.9744}, title: 'просп. Центральний, 27-ББ/1'},
+      {id: 3, position: {lat: 46.8558, lng: 32.014}, title: 'просп. Корабелів, 14'}
+    ]
+    },
+    // Никополь
+    {id: 46, markers: [{id: 1, position: {lat: 47.566237, lng: 34.393076}, title: 'вул. Електрометалургів, 42-Г'}]},
+    // Новая Каховка
+    {id: 47, markers: [{id: 1, position: {lat: 46.7579, lng: 33.3769}, title: 'вул. Французська, 26'}]},
+    // Новомосковск
+    {id: 48, markers: [{id: 1, position: {lat: 48.64049, lng: 35.25982}, title: 'вул. Гетьманська, 40-А'}]},
+    // Обухов
+    {id: 49, markers: [{id: 1, position: {lat: 50.126007, lng: 30.653335}, title: 'вул. Каштанова, 6/1'}]},
+    // Одесса
+    {
+      id: 50, markers: [
+      {id: 1, position: {lat: 46.4681, lng: 30.7356}, title: 'вул. Новощіпний Ряд, 2'},
+      {id: 2, position: {lat: 46.470605, lng: 30.730999}, title: 'вул. Пантелеймонівська, 88/1'},
+      {id: 3, position: {lat: 46.443, lng: 30.7048}, title: 'пл. Бориса Деревянко, 2'},
+      {id: 4, position: {lat: 46.3979, lng: 30.7186}, title: 'просп. Академіка Глушка, 19'},
+      {id: 5, position: {lat: 46.5827, lng: 30.8018}, title: 'вул. Дніпропетровська дорога, 125-Б'},
+      {id: 6, position: {lat: 46.4162, lng: 30.7125}, title: 'просп. Маршала Жукова, 2'}
+    ]
+    },
+    // Павлоград
+    {id: 51, markers: [{id: 1, position: {lat: 48.529933, lng: 35.870285}, title: 'вул. Тараса Шевченка, 118'}]},
+    // Первомайск
+    {id: 52, markers: [{id: 1, position: {lat: 48.041942, lng: 30.850899}, title: 'вул. Тараса Шевченка, 1'}]},
+    // Подольск
+    {id: 53, markers: [{id: 1, position: {lat: 47.748, lng: 29.5343}, title: 'вул. 50 років жовтня, 121-В'}]},
+    // Покров
+    {id: 54, markers: [{id: 1, position: {lat: 47.6561, lng: 34.1073}, title: 'вул. Центральна, 37'}]},
+    // Покровск
+    {
+      id: 55, markers: [
+      {id: 1, position: {lat: 48.265877, lng: 37.181286}, title: 'мікрорайон Південний, 41-А'},
+      {id: 2, position: {lat: 48.27321, lng: 37.176236}, title: 'вул. Європейська, 90'}
+    ]
+    },
+    // Полтава
+    {
+      id: 56, markers: [
+      {id: 1, position: {lat: 49.5842, lng: 34.5476}, title: 'вул. Тараса Шевченка, 44'},
+      {id: 2, position: {lat: 49.601398, lng: 34.53096}, title: 'вул. Зіньківська, 6/1-А'}
+    ]
+    },
+    // Прилуки
+    {id: 57, markers: [{id: 1, position: {lat: 50.6036, lng: 32.3856}, title: 'вул. Незалежності, 63'}]},
+    // Ровно
+    {
+      id: 58, markers: [
+      {id: 1, position: {lat: 50.626095, lng: 26.200207}, title: 'вул. Макарова, 23'},
+      {id: 2, position: {lat: 50.6245, lng: 26.2499}, title: 'просп. Миру, 10'},
+      {id: 3, position: {lat: 50.6162, lng: 26.2805}, title: 'вул. Київська, 67-А'}
+    ]
+    },
+    // Ромны
+    {id: 59, markers: [{id: 1, position: {lat: 50.751274, lng: 33.476734}, title: 'бульв. Свободи, 10-В'}]},
+    // Рубежное
+    {id: 60, markers: [{id: 1, position: {lat: 49.026339, lng: 38.376377}, title: 'вул. Менделєєва, 31'}]},
+    // Самбор
+    {id: 61, markers: [{id: 1, position: {lat: 49.515090, lng: 23.196048}, title: 'вул. Валова, 24/1'}]},
+    // Северодонецк
+    {id: 62, markers: [{id: 1, position: {lat: 48.941857, lng: 38.518090}, title: 'просп. Гвардійський, 38-Б'}]},
+    // Славута
+    {id: 63, markers: [{id: 1, position: {lat: 50.296555, lng: 26.857033}, title: 'вул. Площа Шевченка, 12'}]},
+    // Славянск
+    {id: 64, markers: [{id: 1, position: {lat: 48.852007, lng: 37.604062}, title: 'пл. Соборна, 3'}]},
+    // Смела
+    {id: 65, markers: [{id: 1, position: {lat: 49.228423, lng: 31.865693}, title: 'вул. Леніна, 70'}]},
+    // Сокольники
+    {id: 66, markers: [{id: 1, position: {lat: 49.772609, lng: 24.009539}, title: 'вул. Стрийська, 30'}]},
+    // Старобельск
+    {id: 67, markers: [{id: 1, position: {lat: 49.283316, lng: 38.908971}, title: 'вул. Комунарів, 39-А'}]},
+    // Стрый
+    {id: 68, markers: [{id: 1, position: {lat: 49.2607146, lng: 23.8539935}, title: 'вул. Тараса Шевченка, 72'}]},
+    // Сумы
+    {
+      id: 69, markers: [
+      {id: 1, position: {lat: 50.903244, lng: 34.812884}, title: 'вул. Харківська, 9'},
+      {id: 2, position: {lat: 50.904678, lng: 34.805757}, title: 'вул. Харківська, 2'}
+    ]
+    },
+    // Тернополь
+    {
+      id: 70, markers: [
+      {id: 1, position: {lat: 49.545749, lng: 25.589506}, title: 'вул. Живова, 15-А'},
+      {id: 2, position: {lat: 49.575467, lng: 25.639449}, title: 'вул. Текстильна, 28-Ч'}
+    ]
+    },
+    // Токмак
+    {id: 71, markers: [{id: 1, position: {lat: 47.264227, lng: 35.713658}, title: 'вул. Шевченка, 54'}]},
+    // Ужгород
+    {
+      id: 72, markers: [
+      {id: 1, position: {lat: 48.619844, lng: 22.294909}, title: 'вул. Капушанська, 2'},
+      {id: 2, position: {lat: 48.618344, lng: 22.289116}, title: 'просп. Свободи, 28'}
+    ]
+    },
+    // Умань
+    {id: 73, markers: [{id: 1, position: {lat: 48.756094, lng: 30.221755}, title: 'вул. Велика Фонтанна, 31'}]},
+    // Фастов
+    {id: 74, markers: [{id: 1, position: {lat: 50.077378, lng: 29.913310}, title: 'вул. Зигмунда Козара, 5'}]},
+    // Харьков
+    {
+      id: 75, markers: [
+      {id: 1, position: {lat: 49.943075, lng: 36.301864}, title: 'просп. Героїв Сталінграду, 136/8'},
+      {id: 2, position: {lat: 49.990327, lng: 36.290466}, title: 'вул. Академіка Павлова, 44-Б'},
+      {id: 3, position: {lat: 49.986365, lng: 36.259809}, title: 'майдан Захисників України, 7/8'},
+      {id: 4, position: {lat: 49.9822, lng: 36.2396}, title: 'вул. Вернадського, 2, літ. А-3'},
+      {id: 5, position: {lat: 49.956403, lng: 36.361966}, title: 'просп. Московський, 256-Б'},
+      {id: 6, position: {lat: 50.058932, lng: 36.204024}, title: 'просп. Перемоги, 62-З'},
+      {id: 7, position: {lat: 49.996009, lng: 36.339274}, title: 'просп. Тракторобудівників, 59/56'},
+      {id: 8, position: {lat: 49.9875, lng: 36.209}, title: 'вул. Полтавський Шлях, 56'}
+    ]
+    },
+    // Херсон
+    {
+      id: 76, markers: [
+      {id: 1, position: {lat: 46.639193, lng: 32.615326}, title: 'просп. Ушакова, 26'},
+      {id: 2, position: {lat: 46.672824, lng: 32.644061}, title: 'вул. Залаегерсег, 18'}
+    ]
+    },
+    // Хмельницкий
+    {
+      id: 77, markers: [
+      {id: 1, position: {lat: 49.404766, lng: 26.958422}, title: 'вул. Кам\'янецька, 122'},
+      {id: 2, position: {lat: 49.4204, lng: 26.9885}, title: 'вул. Свободи, 73'}
+    ]
+    },
+    // Хуст
+    {id: 78, markers: [{id: 1, position: {lat: 48.1776, lng: 23.2925}, title: 'вул. Духновича, 17-А/2'}]},
+    // Червоноград
+    {id: 79, markers: [{id: 1, position: {lat: 50.391774, lng: 24.247073}, title: 'просп. Шевченка, 25'}]},
+    // Черкассы
+    {
+      id: 80, markers: [
+      {id: 1, position: {lat: 49.441, lng: 32.0665}, title: 'бульв. Тараса Шевченка, 207'},
+      {id: 2, position: {lat: 49.424112, lng: 32.096021}, title: 'бульв. Тараса Шевченка, 385'},
+      {id: 3, position: {lat: 49.4248, lng: 32.0147}, title: 'вул. 30-річчя Перемоги, 29'}
+    ]
+    },
+    // Чернигов
+    {
+      id: 81, markers: [
+      {id: 1, position: {lat: 51.515306, lng: 31.306962}, title: 'вул. 77-ї Гвардійської Дивізії, 1'},
+      {id: 2, position: {lat: 51.513528, lng: 31.324022}, title: 'вул. Рокоссовського, 18-А'},
+      {id: 3, position: {lat: 51.495711, lng: 31.293263}, title: 'просп. Миру, 35'}
+    ]
+    },
+    // Черновцы
+    {
+      id: 82, markers: [
+      {id: 1, position: {lat: 48.319616, lng: 25.962154}, title: 'вул. Калинівська, 13-А'},
+      {id: 2, position: {lat: 48.2677, lng: 25.939}, title: 'просп. Незалежності, 80'},
+      {id: 3, position: {lat: 48.258779, lng: 25.956744}, title: 'вул. Головна, 265-А'},
+      {id: 4, position: {lat: 48.2928, lng: 25.9346}, title: 'вул. Університецька, 2'}
+    ]
+    },
+    // Черноморск
+    {id: 83, markers: [{id: 1, position: {lat: 46.301214, lng: 30.654565}, title: 'вул. 1-го Травня, 5'}]},
+    // Шепетовка
+    {id: 84, markers: [{id: 1, position: {lat: 50.179083, lng: 27.067428}, title: 'вул. Героїв Небесної Сотні, 48'}]},
+    // Шостка
+    {id: 85, markers: [{id: 1, position: {lat: 51.866299, lng: 33.481032}, title: 'вул. Свободи, 30'}]},
+    // Энергодар
+    {id: 86, markers: [{id: 1, position: {lat: 47.500765, lng: 34.655972}, title: 'просп. Будівельників, 27-А'}]},
+    // Южноукраинск
+    {id: 87, markers: [{id: 1, position: {lat: 47.826007, lng: 31.172942}, title: 'просп. Незалежності, 25'}]},
+    // Южный
+    {id: 88, markers: [{id: 1, position: {lat: 46.626595, lng: 31.100375}, title: 'просп. Григорівського Десанту, 34'}]}
+  ];
   // </editor-fold>
 
   createDb() {
@@ -289,6 +677,11 @@ export class WebApiService implements InMemoryDbService {
     const msuppliers = this.suppliers;
     const mproductReviews = this.productReviews;
     const manufacturers = this.manufacturers;
-    return {mquotationProducts, mproducts, mquotation, mcurrencies, msuppliers, mproductReviews, manufacturers};
+    const mcities = this.cities;
+    const mfoxMapMarkers = this.foxMapMarkers;
+    return {
+      mquotationProducts, mproducts, mquotation, mcurrencies, msuppliers, mproductReviews, manufacturers, mcities,
+      mfoxMapMarkers
+    };
   }
 }

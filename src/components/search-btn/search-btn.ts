@@ -3,6 +3,7 @@ import {ComponentBase} from '../component-extension/component-base';
 import {NavController, NavParams} from 'ionic-angular';
 import {SearchService} from '../../app/service/search-service';
 import {SearchResultsPage} from '../../pages/search-results/search-results';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 @Component({
   selector: 'search-btn',
@@ -14,11 +15,15 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
   disabled = true;
   searchValue = '';
   public tmpSearchArray = new Array<string>();
+  barcodeResult: string;
+  showFlipCameraButton = true;
 
-  constructor(public searchService: SearchService, public navCtrl: NavController) {
+  constructor(public searchService: SearchService,
+               public navCtrl: NavController,
+               private barcodeScanner: BarcodeScanner) {
     super();
     searchService.lastSearchStringUpdated.subscribe(
-      (value:string) => {
+      (value: string) => {
         this.searchValue = value;
       }
     );
@@ -38,6 +43,11 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
 
   searchByBarcode(): void {
     console.log('Search by barcode');
+    this.barcodeScanner.scan().then((barcodeData) => {
+      this.barcodeResult = barcodeData.text;
+    }, (err) => {
+      console.log('An error while scanning barcode occurred: ' + err);
+    });
   }
 
   initTmpSearchArray (): void {

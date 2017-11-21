@@ -10,8 +10,9 @@ import {
   Quotation,
   Supplier,
   Currency,
-  ProductReview
-
+  ProductReview,
+  City,
+  MapMarker
 } from '../../../model/index';
 
 import {Http, URLSearchParams} from '@angular/http';
@@ -27,6 +28,8 @@ const quotationsUrl = '/api/mquotation';
 const suppliersUrl = '/api/msuppliers';
 const productReviewsUrl = '/api/mproductReviews';
 const manufacturersUrl = '/api/manufacturers';
+const citiesUrl = '/api/mcities';
+const foxMapMarkersUrl = '/api/mfoxMapMarkers';
 // </editor-fold
 
 @Injectable()
@@ -507,4 +510,51 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   // </editor-fold>
+
+  public async getCities(): Promise<City[]> {
+    try {
+      const response = await this.http.get(citiesUrl).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error('server side status error');
+      }
+      const cities = new Array<City>();
+      if (data != null) {
+        data.forEach((val) => {
+          // create current city
+          const cityItem: City = new City(val.id, val.name);
+          cities.push(cityItem);
+        });
+      }
+      return cities;
+    } catch (err) {
+      await this.handleError(err);
+    }
+  };
+
+  public async getFoxMapMarkers(): Promise<Array<{id: number, markers: MapMarker[]}>> {
+    try {
+      const response = await this.http.get(foxMapMarkersUrl).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error('server side status error');
+      }
+      const markers = new Array<{id: number, markers: MapMarker[]}>();
+      if (data != null) {
+        data.forEach((val) => {
+          const markerArr = new Array<MapMarker>();
+          const arr: MapMarker[] = val.markers;
+          arr.forEach((marker) => {
+            markerArr.push(new MapMarker(marker.id, marker.position, marker.title));
+          });
+          markers.push({id: val.id, markers: markerArr});
+        });
+      }
+      return markers;
+    } catch (err) {
+      await this.handleError(err);
+    }
+  };
 }
