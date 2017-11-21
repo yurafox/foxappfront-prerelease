@@ -27,10 +27,11 @@ export class FilterPopoverPage {
     if (section == 'props') {
       this.brandsSectionOpened = false;
       let i = 0;
+      let propName = this.filter.filteredProps[_index].prop.name;
       for (let p of this.filter.filteredProps) {
-        if (i == _index)
-          p.isOpened = !p.isOpened
-        else
+        if ((i == _index) || (p.prop.name == propName)) {
+          p.isOpened = !p.isOpened;
+        } else
           p.isOpened = false;
         i++;
       }

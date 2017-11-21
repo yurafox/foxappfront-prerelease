@@ -24,6 +24,21 @@ class PropsFilterStruct {
   }
 }
 
+class FilterItem {
+  constructor(
+    public id: number,
+    public name: string,
+    public isChecked?: boolean
+  ){}
+
+}
+class FilterCategory {
+  constructor (public catName: string,
+                public catFilterExpr?: string,
+                public items?: FilterItem[],
+                public isOpened: boolean = false) {}
+}
+
 @Component({
   selector: 'filter',
   templateUrl: 'filter.html'
@@ -33,6 +48,8 @@ export class FilterComponent extends  ComponentBase implements OnInit {
   @Input() filteredProducts: Product[];
 
   @Input() parentComponent: any;
+
+  fCategories = new Array<FilterCategory>();
 
   baseProducts = new Array<Product>();
   //initialProducts = new Array<Product>();
@@ -63,7 +80,27 @@ export class FilterComponent extends  ComponentBase implements OnInit {
 
   constructor(public popoverCtrl: PopoverController, public repo: AbstractDataRepository) {
     super();
+  }
 
+  initFilter() {
+    let propsAr = null;
+    let fCat = null;
+    this.filteredProps.forEach(p => {
+        if (!(p.prop.name == p.prevPropName) || !(p.prevPropName)) {
+          fCat = new FilterCategory(p.prop.name);
+          propsAr = new Array<FilterItem>();
+        };
+
+        propsAr.push(new FilterItem(p.prop.id, p.value));
+
+        if (!(p.prop.name == p.prevPropName)) {
+          fCat.items = propsAr;
+          this.fCategories.push(fCat);
+        };
+
+      }
+    );
+    console.log(this.fCategories);
   }
 
   async ngOnInit() {
@@ -82,6 +119,14 @@ export class FilterComponent extends  ComponentBase implements OnInit {
       ;
     };
     this.filteredManufacturers.sort((a, b) => (a.mnf.name.localeCompare(b.mnf.name)));
+
+    ////////////////////////////
+    let mnfAr = new Array<FilterItem>();
+    for (let m of this.filteredManufacturers) {
+      mnfAr.push(new FilterItem(m.mnf.id, m.mnf.name));
+    }
+    this.fCategories.push(new FilterCategory('Brand', null, mnfAr));
+    ///////////////////
 
   }
 
@@ -183,13 +228,17 @@ export class FilterComponent extends  ComponentBase implements OnInit {
   }
 
   showFilter(event: any) {
+
     if (!this.dataInitialized) {
       this.filteredProducts.forEach(item => {
         this.baseProducts.push(item);
       });
       this.dataInitialized = true;
       this.initData();
+      this.initFilter();
     };
+
+
 
     let popover = this.popoverCtrl.create(FilterPopoverPage, {filterControl: this});
 //    (<any>popover).filter = this;
