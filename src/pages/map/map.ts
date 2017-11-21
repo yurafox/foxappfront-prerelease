@@ -72,6 +72,8 @@ export class MapPage extends ComponentBase {
       }
     }
 
+    let markerCluster: any;
+
     this.markersArr.forEach((markerArr) => {
       markerArr.markers.forEach((markerData, i) => {
         let labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -267,4 +269,5 @@ export class MapPage extends ComponentBase {
       console.log('wrong time input');
     }
   }
+
 }
