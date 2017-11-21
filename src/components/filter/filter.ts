@@ -28,10 +28,13 @@ class FilterItem {
   constructor(
     public id: number,
     public name: string,
-    public isChecked?: boolean
+    public isChecked?: boolean,
+    public count?: number,
+    public type?: string,
+    public item?: any
   ){}
-
 }
+
 class FilterCategory {
   constructor (public catName: string,
                 public catFilterExpr?: string,
@@ -65,8 +68,10 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     this.filteredProducts = [];
     this.filteredProps = [];
     this.filteredManufacturers = [];
+    this.fCategories = [];
     this.initFilterManufacturers();
     this.initFilterProps(this.baseProducts);
+    this.initFilter();
     this.filterRun();
   }
 
@@ -86,21 +91,18 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     let propsAr = null;
     let fCat = null;
     this.filteredProps.forEach(p => {
-        if (!(p.prop.name == p.prevPropName) || !(p.prevPropName)) {
-          fCat = new FilterCategory(p.prop.name);
-          propsAr = new Array<FilterItem>();
-        };
+      if (!(p.prop.name == p.prevPropName) || !(p.prevPropName)) {
+        fCat = new FilterCategory(p.prop.name);
+        propsAr = new Array<FilterItem>();
+      };
 
-        propsAr.push(new FilterItem(p.prop.id, p.value));
+      propsAr.push(new FilterItem(p.prop.id, p.value, false, p.count, 'prop', p));
 
-        if (!(p.prop.name == p.prevPropName)) {
-          fCat.items = propsAr;
-          this.fCategories.push(fCat);
-        };
-
-      }
-    );
-    console.log(this.fCategories);
+      if (!(p.prop.name == p.prevPropName)) {
+        fCat.items = propsAr;
+        this.fCategories.push(fCat);
+      };
+    });
   }
 
   async ngOnInit() {
@@ -120,14 +122,13 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     };
     this.filteredManufacturers.sort((a, b) => (a.mnf.name.localeCompare(b.mnf.name)));
 
-    ////////////////////////////
+    ////////////Заполняем модель формьі фильтра брендами////////////////
     let mnfAr = new Array<FilterItem>();
     for (let m of this.filteredManufacturers) {
-      mnfAr.push(new FilterItem(m.mnf.id, m.mnf.name));
+      mnfAr.push(new FilterItem(m.mnf.id, m.mnf.name, false, m.count, 'mnf', m));
     }
     this.fCategories.push(new FilterCategory('Brand', null, mnfAr));
-    ///////////////////
-
+    ////////////////////////////////////////////////////////////////////
   }
 
   initFilterProps(prodArray: Product[]) {
@@ -180,7 +181,6 @@ export class FilterComponent extends  ComponentBase implements OnInit {
       }
     );
     this.parentComponent.products = this.filteredProducts;
-    //<any>(this.parentComponent).baseProducts = this.filteredProducts;
   }
 
   onPropsClick(data) {
@@ -235,7 +235,6 @@ export class FilterComponent extends  ComponentBase implements OnInit {
       });
       this.dataInitialized = true;
       this.initData();
-      this.initFilter();
     };
 
 

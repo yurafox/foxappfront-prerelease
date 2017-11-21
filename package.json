@@ -48,8 +48,9 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.0.1",
-    "typescript": "2.3.4",
-    "angular-in-memory-web-api": "^0.5.0"
+    "@types/node": "8.0.19",
+    "angular-in-memory-web-api": "^0.5.0",
+    "typescript": "2.3.4"
   },
   "description": "An Ionic project",
   "cordova": {

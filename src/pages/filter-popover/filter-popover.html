@@ -11,21 +11,38 @@
   </ion-grid>
 </div>
 
-<!-- Manufacturers -->
 
-<div (click)="toggleOpen('brands', -1)" class="f-grid-border">
-  <ion-grid>
-    <ion-row class="f-size-medium" >
-      <ion-col>
-        <b>Brand</b>
+<div  class="f-grid-border" *ngFor="let cat of filter.fCategories; let i = index">
+  <ion-grid (click)="toggleOpen(i)">
+    <ion-row class="f-size-medium">
+      <ion-col >
+        <b>{{cat.catName}}</b>
       </ion-col>
       <ion-col col-auto>
-        <ion-icon item-end name="ios-arrow-up" *ngIf="brandsSectionOpened"></ion-icon>
-        <ion-icon item-end name="ios-arrow-down" *ngIf="!brandsSectionOpened"></ion-icon>
+        <ion-icon item-end name="ios-arrow-up" *ngIf="cat.isOpened"></ion-icon>
+        <ion-icon item-end name="ios-arrow-down" *ngIf="!cat.isOpened"></ion-icon>
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <div class="f-light-bkgrd" *ngIf="cat.isOpened">
+    <div  class="f-grid-border" no-padding *ngFor="let item of cat.items">
+      <ion-grid class="f-size-small">
+        <ion-row >
+          <ion-col padding-left>
+            {{item.name}} <span> (</span>{{item.count}})
+          </ion-col>
+          <ion-col col-auto>
+            <input type="checkbox" [(ngModel)]="item.isChecked" (click)="onFilterElementClick(item.id,item.type,item.item,item.isChecked)">
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
+
 </div>
+
+<!--
 
 <div class="f-light-bkgrd" *ngIf="brandsSectionOpened">
   <div  class="f-grid-border" no-padding *ngFor="let mnf of filter.filteredManufacturers">
@@ -42,7 +59,7 @@
   </div>
 </div>
 
-<!-- Props -->
+&lt;!&ndash; Props &ndash;&gt;
 <div *ngFor="let p of filter?.filteredProps; let i = index">
     <div *ngIf="p.prop.name != p.prevPropName" (click)="toggleOpen('props', i)" class="f-grid-border">
       <ion-grid>
@@ -73,3 +90,4 @@
     </div>
   </div>
 </div>
+-->

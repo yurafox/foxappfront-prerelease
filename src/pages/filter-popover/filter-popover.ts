@@ -12,9 +12,27 @@ export class FilterPopoverPage {
   public filter: FilterComponent;
   brandsSectionOpened = false;
 
+  toggleOpen(index: number) {
+    let curState = this.filter.fCategories[index].isOpened;
+    this.filter.fCategories.forEach( c => {
+        c.isOpened = false;
+      }
+    );
+    this.filter.fCategories[index].isOpened = !curState;
+  }
+
+  onFilterElementClick(_id: number, _type: string, obj: any, _isChecked: boolean) {
+    obj.isChecked = _isChecked;
+    if (_type === 'prop') {
+      this.filter.onPropsClick(obj);
+    };
+    if (_type === 'mnf') {
+      this.filter.onMnfClick(obj);
+    }
+  }
 
 
-  toggleOpen(section: string, _index: number) {
+/*  toggleOpen(section: string, _index: number) {
     if (section == 'brands') {
       this.brandsSectionOpened = !this.brandsSectionOpened;
 
@@ -38,8 +56,7 @@ export class FilterPopoverPage {
 
     }
 
-    //this.sectionOpened = !this.sectionOpened;
-  }
+  }*/
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
     this.filter = navParams.get('filterControl');
