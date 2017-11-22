@@ -3,8 +3,6 @@ import {Nav, Platform, MenuController} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {AbstractDataRepository} from "./service/index";
-
-
 import {
   AboutPage,
   AccountPage,
@@ -16,6 +14,7 @@ import {
   MyOrderPage
 } from '../pages/index';
 import {UserService} from "./service/bll/user-service";
+import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media';
 
 export interface PageInterface {
   title: string;
@@ -50,17 +49,27 @@ export class FoxApp implements OnInit{
     {title: 'Поддержка', name: 'Support', component: SupportPage, index: 2, icon: 'ios-text-outline'}
   ];
 
+  options: StreamingVideoOptions = {
+    successCallback: () => { console.log('Video played') },
+    errorCallback: (e) => { console.log('Error streaming') },
+    orientation: 'landscape'
+  };
 
   constructor(platform: Platform, statusBar: StatusBar,
-              splashScreen: SplashScreen, public menuCtrl: MenuController,
-              private repo: AbstractDataRepository, public account: UserService) {
+              private splashScreen: SplashScreen, public menuCtrl: MenuController,
+              private repo: AbstractDataRepository, public account: UserService,
+              private streamingMedia: StreamingMedia) {
     this.rootPage = HomePage;
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
-      splashScreen.hide();
     });
+  }
+
+  ionViewDidLoad() {
+    this.splashScreen.hide();
+    alert('splash screen is hidden');
   }
 
   async ngOnInit() {
@@ -92,6 +101,10 @@ export class FoxApp implements OnInit{
     this.account.logOut();
     this.nav.setRoot(HomePage);
     this.menuCtrl.close();
+  }
+
+  async showVideo() {
+    await this.streamingMedia.playVideo('https://youtu.be/R59TevgzN3k', this.options);
   }
 }
 

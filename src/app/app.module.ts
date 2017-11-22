@@ -65,8 +65,7 @@ import {WebApiService} from './service/webapi/web-api-service';
 import {RefInjector} from './core/app-core';
 import {ComponentsModule} from '../components/components.module';
 import {PipesModule} from "./pipe/pipes.module";
-
-
+import {StreamingMedia} from "@ionic-native/streaming-media";
 
 @NgModule({
   declarations: [
@@ -167,7 +166,8 @@ import {PipesModule} from "./pipe/pipes.module";
     AppConstants,
     CurrencyStore,
     SearchService,
-    CartService
+    CartService,
+    StreamingMedia
   ]
 })
 export class AppModule {

@@ -35,6 +35,12 @@
         </button>
       </ion-list>
 
+      <ion-list>
+        <button ion-item menuClose (click)="showVideo()">
+          Просмотреть видео
+        </button>
+      </ion-list>
+
       <ion-list *ngIf="account.isAuth">
         <button ion-item (click)="signOut($event)">
           Выйти
