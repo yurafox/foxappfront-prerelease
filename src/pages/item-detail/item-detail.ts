@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {ProductReview} from "../../app/model/product-review";
 import {ItemDescriptionPage} from '../item-description/item-description';
@@ -24,7 +24,8 @@ export class ItemDetailPage extends ItemBase implements OnInit { //ComponentBase
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public repo: AbstractDataRepository, public cart: CartService) {
+              public repo: AbstractDataRepository, public cart: CartService,
+              private toastCtrl: ToastController) {
     super(navCtrl, navParams, repo);
     this.product = this.navParams.data;
     console.log(this.product.name);
@@ -69,7 +70,24 @@ export class ItemDetailPage extends ItemBase implements OnInit { //ComponentBase
   }
 
   onAddToCart() {
-    console.log(this.valueQuot);
+    //console.log(this.valueQuot);
+
     this.cart.addItem(this.valueQuot, this.qty, this.product.price);
+    this.showAddToCartConfirmToast();
+  }
+
+  showAddToCartConfirmToast() {
+    let toast = this.toastCtrl.create({
+      message: 'Item added to cart',
+      duration: 2000,
+      position: 'middle',
+      cssClass: 'toast-message'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
   }
 }

@@ -21,14 +21,45 @@ export class FilterPopoverPage {
     this.filter.fCategories[index].isOpened = !curState;
   }
 
-  onFilterElementClick(_id: number, _type: string, obj: any, _isChecked: boolean) {
-    obj.isChecked = _isChecked;
-    if (_type === 'prop') {
-      this.filter.onPropsClick(obj);
+  onFilterElementClick(item: any, catItems: any, evt: any) {
+    //_id: number, _type: string, obj: any, _isChecked: boolean
+    //item.id,item.type,item.item,item.isChecked
+
+    if (item.type === 'prop') {
+      item.item.isChecked = item.isChecked;
+      this.filter.onPropsClick(item.item);
     };
-    if (_type === 'mnf') {
-      this.filter.onMnfClick(obj);
-    }
+    if (item.type === 'mnf') {
+      item.item.isChecked = item.isChecked;
+      this.filter.onMnfClick(item.item);
+    };
+
+    if (item.type === 'sort') {
+
+      let _isChecked = item.isChecked;
+      catItems.forEach(j => {
+          j.isChecked = false;
+        }
+      );
+      item.isChecked = !item.isChecked;
+
+      if (item.isChecked) {
+        if (item.id == -1)
+          this.filter.sortByRelevance();
+        if (item.id == 0)
+          this.filter.sortByPriceAsc();
+        if (item.id == 1)
+          this.filter.sortByPriceDesc();
+        if (item.id == 2)
+          this.filter.sortByRating();
+      };
+
+      ///// Prevent default checkbox behavior///
+      if (_isChecked)
+        return false;
+      //////////////////////////////////////////
+
+    };
   }
 
 

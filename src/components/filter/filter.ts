@@ -13,6 +13,13 @@ class MnfFilterStruct {
   }
 }
 
+/*class FilterObj {
+  constructor(
+    public isChecked: boolean = false,
+    public name: string
+  ){}
+}*/
+
 class PropsFilterStruct {
   constructor(public prop: Prop,
               public value: any,
@@ -37,9 +44,22 @@ class FilterItem {
 
 class FilterCategory {
   constructor (public catName: string,
-                public catFilterExpr?: string,
                 public items?: FilterItem[],
-                public isOpened: boolean = false) {}
+                public isOpened: boolean = false,
+                public sortOrder?: number) {}
+
+  public get filterExpr(): string {
+    let exp = '';
+    const delim = ', '
+
+    for (let item of this.items) {
+      if (item.isChecked)
+        exp = exp + item.name + delim;
+    };
+    if (!(exp === ''))
+      exp = exp.substr(0, exp.length-2);
+    return exp;
+  }
 }
 
 @Component({
@@ -64,23 +84,25 @@ export class FilterComponent extends  ComponentBase implements OnInit {
   propFilterCondition = [];
   mnfFilterCondition = [];
 
-  initData() {
+  async initData() {
     this.filteredProducts = [];
     this.filteredProps = [];
     this.filteredManufacturers = [];
     this.fCategories = [];
-    this.initFilterManufacturers();
     this.initFilterProps(this.baseProducts);
+
+    await this.initFilterManufacturers();
     this.initFilter();
+    this.fCategories.sort((a, b) => {return (a.sortOrder - b.sortOrder)});
     this.filterRun();
   }
 
-  resetFilter(): void {
-    this.initData();
+  async resetFilter() {
     this.parentComponent.products = [];
-    this.baseProducts.forEach(i => {
-      this.parentComponent.products.push(i);
-    });
+    for (let p of this.baseProducts) {
+      this.parentComponent.products.push(p);
+    };
+    await this.initData();
   }
 
   constructor(public popoverCtrl: PopoverController, public repo: AbstractDataRepository) {
@@ -88,21 +110,32 @@ export class FilterComponent extends  ComponentBase implements OnInit {
   }
 
   initFilter() {
-    let propsAr = null;
+    this.propFilterCondition = []
+    //////// Props ///////
+    let fItems = null;
     let fCat = null;
     this.filteredProps.forEach(p => {
       if (!(p.prop.name == p.prevPropName) || !(p.prevPropName)) {
         fCat = new FilterCategory(p.prop.name);
-        propsAr = new Array<FilterItem>();
+        fItems = new Array<FilterItem>();
       };
 
-      propsAr.push(new FilterItem(p.prop.id, p.value, false, p.count, 'prop', p));
+      fItems.push(new FilterItem(p.prop.id, p.value, false, p.count, 'prop', p));
 
       if (!(p.prop.name == p.prevPropName)) {
-        fCat.items = propsAr;
+        fCat.items = fItems;
+        fCat.sortOrder = 10;
         this.fCategories.push(fCat);
       };
     });
+    ///////// Sort ////////
+    fItems = new Array<FilterItem>();
+    fItems.push(new FilterItem(-1, 'Relevance', true, 0, 'sort', null));
+    fItems.push(new FilterItem(0, 'Price: Low to High', false, 0, 'sort', null));
+    fItems.push(new FilterItem(1, 'Price: High to Low', false, 0, 'sort', null));
+    fItems.push(new FilterItem(2, 'Rating', false, 0, 'sort', null));
+    fCat = new FilterCategory('Sort', fItems, false, 3);
+    this.fCategories.push(fCat);
   }
 
   async ngOnInit() {
@@ -110,6 +143,7 @@ export class FilterComponent extends  ComponentBase implements OnInit {
   }
 
   async initFilterManufacturers() {
+    this.mnfFilterCondition = [];
     for (let p of this.baseProducts) {
       const i = this.filteredManufacturers.findIndex(z => (z.mnf.id == p.manufacturerId));
       if (i !== -1)
@@ -127,7 +161,7 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     for (let m of this.filteredManufacturers) {
       mnfAr.push(new FilterItem(m.mnf.id, m.mnf.name, false, m.count, 'mnf', m));
     }
-    this.fCategories.push(new FilterCategory('Brand', null, mnfAr));
+    this.fCategories.push(new FilterCategory('Brand', mnfAr, false, 5));
     ////////////////////////////////////////////////////////////////////
   }
 
@@ -230,14 +264,16 @@ export class FilterComponent extends  ComponentBase implements OnInit {
   showFilter(event: any) {
 
     if (!this.dataInitialized) {
-      this.filteredProducts.forEach(item => {
-        this.baseProducts.push(item);
-      });
+      for (let p of this.filteredProducts) {
+        this.baseProducts.push(p);
+      };
       this.dataInitialized = true;
       this.initData();
     };
 
-
+    for (let i of this.fCategories) {
+      i.isOpened = false;
+    };
 
     let popover = this.popoverCtrl.create(FilterPopoverPage, {filterControl: this});
 //    (<any>popover).filter = this;
@@ -245,5 +281,28 @@ export class FilterComponent extends  ComponentBase implements OnInit {
       ev: event
     });
   }
+
+  sortByPriceAsc() {
+    this.filteredProducts.sort((a, b) =>
+      {return (a.price - b.price)}
+    );
+  };
+
+  sortByPriceDesc() {
+    this.filteredProducts.sort((a, b) =>
+      {return (b.price - a.price)}
+    );
+
+  };
+
+  sortByRating() {
+    this.filteredProducts.sort((a, b) =>
+      {return (b.rating - a.rating)}
+    );
+  };
+
+  sortByRelevance() {
+    this.filterRun();
+  };
 
 }

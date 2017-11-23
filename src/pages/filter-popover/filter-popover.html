@@ -11,12 +11,15 @@
   </ion-grid>
 </div>
 
+<!--<span class="f-size-small f-color-secondary">{{cat.filterExpr}}</span>-->
+
 
 <div  class="f-grid-border" *ngFor="let cat of filter.fCategories; let i = index">
   <ion-grid (click)="toggleOpen(i)">
     <ion-row class="f-size-medium">
-      <ion-col >
-        <b>{{cat.catName}}</b>
+      <ion-col>
+        <b>{{cat.catName}}</b><br>
+        <span class="f-size-smaller f-color-secondary">{{cat.filterExpr | truncate: 40}}</span>
       </ion-col>
       <ion-col col-auto>
         <ion-icon item-end name="ios-arrow-up" *ngIf="cat.isOpened"></ion-icon>
@@ -30,10 +33,10 @@
       <ion-grid class="f-size-small">
         <ion-row >
           <ion-col padding-left>
-            {{item.name}} <span> (</span>{{item.count}})
+            {{item.name}}
           </ion-col>
           <ion-col col-auto>
-            <input type="checkbox" [(ngModel)]="item.isChecked" (click)="onFilterElementClick(item.id,item.type,item.item,item.isChecked)">
+            <input type="checkbox" [(ngModel)]="item.isChecked" (click)="onFilterElementClick(item, cat.items, $event)">
           </ion-col>
         </ion-row>
       </ion-grid>
