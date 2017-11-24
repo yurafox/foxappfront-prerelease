@@ -35,10 +35,17 @@ page-map {
   }
 }
 
-.another-select {
-  max-width: 100%;
-  min-width: 100%;
+.f-another-select {
+  max-width: 99%;
+  min-width: 99%;
 }
-.map-button {
-  max-width: 45%;
+.f-map-button {
+  max-width: 48%;
+  font-size: 14px;
+}
+.f-div {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }

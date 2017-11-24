@@ -31,6 +31,10 @@ export class MapPage extends ComponentBase {
 
   @ViewChild('mapCanvas') mapElement: ElementRef;
 
+  windowHeight: any;
+  windowWidth: any;
+  public height: any;
+
   map: /*GoogleMap;*/ any;
 
   city: City;
@@ -48,6 +52,9 @@ export class MapPage extends ComponentBase {
     this.selectedMarker = null;
     this.shopList = [];
     this.markersArr = [];
+    this.windowHeight = this.platform.height() - 120;
+    this.windowWidth = this.platform.width() - 1;
+    this.height = this.platform.height() - 120;
   }
 
   // TODO: Make Native Map
@@ -199,6 +206,7 @@ export class MapPage extends ComponentBase {
 
     this.shopList = [];
     this.selectedMarker = null;
+    this.height = this.windowHeight;
 
     for (const city of this.cities) {
       if (city.name === this.selectedCity) {
@@ -232,6 +240,7 @@ export class MapPage extends ComponentBase {
   // On list select
   handleListSelect() {
     if (this.selectedMarker !== null) {
+      this.height = this.windowHeight - 55;
       this.map.setCenter(this.selectedMarker);
       this.map.setZoom(17);
     } else {
@@ -251,7 +260,7 @@ export class MapPage extends ComponentBase {
     }
   }
 
-  // Checking either shop is working now or not
+// Checking either shop is working now or not
   shopIsWorking(shopOpensH: number, shopOpensM: number, shopClosesH: number, shopClosesM: number): string {
     const date = new Date();
 
