@@ -261,14 +261,14 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     return false;
   }
 
-  showFilter(event: any) {
+  async showFilter(event: any) {
 
     if (!this.dataInitialized) {
       for (let p of this.filteredProducts) {
         this.baseProducts.push(p);
       };
       this.dataInitialized = true;
-      this.initData();
+      await this.initData();
     };
 
     for (let i of this.fCategories) {

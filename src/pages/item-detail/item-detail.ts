@@ -80,12 +80,12 @@ export class ItemDetailPage extends ItemBase implements OnInit { //ComponentBase
     let toast = this.toastCtrl.create({
       message: 'Item added to cart',
       duration: 2000,
-      position: 'middle',
+      position: 'bottom',
       cssClass: 'toast-message'
     });
 
     toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
+      //console.log('Dismissed toast');
     });
 
     toast.present();

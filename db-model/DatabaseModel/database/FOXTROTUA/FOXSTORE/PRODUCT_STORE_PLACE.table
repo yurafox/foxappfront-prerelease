@@ -18,7 +18,7 @@
       <notNull>true</notNull>
     </column>
     <column>
-      <name>ID_PRODUCT</name>
+      <name>ID_QUOTATION_PRODUCT</name>
       <dataTypeUsage>
         <attributeValues>
           <entry>
@@ -68,11 +68,37 @@
     </column>
   </columns>
   <constraints>
+    <constraint class="oracle.javatools.db.PKConstraint">
+      <name>PRODUCT_STORE_PLACE_PK</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.NameBasedID">
+          <name>ID</name>
+          <parent class="oracle.javatools.db.NameBasedID">
+            <name>PRODUCT_STORE_PLACE</name>
+            <schemaName>FOXSTORE</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>FOXSTORE</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <indexID class="oracle.javatools.db.NameBasedID">
+        <name>PRODUCT_STORE_PLACE_PK</name>
+        <parent class="oracle.javatools.db.NameBasedID">
+          <name>PRODUCT_STORE_PLACE</name>
+          <schemaName>FOXSTORE</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>FOXSTORE</schemaName>
+        <type>INDEX</type>
+      </indexID>
+    </constraint>
     <constraint class="oracle.javatools.db.FKConstraint">
       <name>PRODUCT_STORE_PLACE_FK1</name>
       <columnIDs>
         <columnID class="oracle.javatools.db.NameBasedID">
-          <name>ID_PRODUCT</name>
+          <name>ID_QUOTATION_PRODUCT</name>
           <parent class="oracle.javatools.db.NameBasedID">
             <name>PRODUCT_STORE_PLACE</name>
             <schemaName>FOXSTORE</schemaName>
@@ -84,9 +110,9 @@
       </columnIDs>
       <enabled>true</enabled>
       <referenceID class="oracle.javatools.db.NameBasedID">
-        <name>PRODUCT_PK</name>
+        <name>QUOTATION_PK</name>
         <parent class="oracle.javatools.db.NameBasedID">
-          <name>PRODUCTS</name>
+          <name>QUOTATIONS_PRODUCTS</name>
           <schemaName>FOXSTORE</schemaName>
           <type>TABLE</type>
         </parent>
@@ -119,32 +145,6 @@
         <schemaName>FOXSTORE</schemaName>
         <type>CONSTRAINT</type>
       </referenceID>
-    </constraint>
-    <constraint class="oracle.javatools.db.PKConstraint">
-      <name>PRODUCT_STORE_PLACE_PK</name>
-      <columnIDs>
-        <columnID class="oracle.javatools.db.NameBasedID">
-          <name>ID</name>
-          <parent class="oracle.javatools.db.NameBasedID">
-            <name>PRODUCT_STORE_PLACE</name>
-            <schemaName>FOXSTORE</schemaName>
-            <type>TABLE</type>
-          </parent>
-          <schemaName>FOXSTORE</schemaName>
-          <type>COLUMN</type>
-        </columnID>
-      </columnIDs>
-      <enabled>true</enabled>
-      <indexID class="oracle.javatools.db.NameBasedID">
-        <name>PRODUCT_STORE_PLACE_PK</name>
-        <parent class="oracle.javatools.db.NameBasedID">
-          <name>PRODUCT_STORE_PLACE</name>
-          <schemaName>FOXSTORE</schemaName>
-          <type>TABLE</type>
-        </parent>
-        <schemaName>FOXSTORE</schemaName>
-        <type>INDEX</type>
-      </indexID>
     </constraint>
   </constraints>
   <indexes>
