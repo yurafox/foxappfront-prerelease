@@ -19,6 +19,7 @@ import {Http, URLSearchParams} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {Providers} from '../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
+import {StorePlace} from '../../../model/store-place';
 
 // <editor-fold desc="url const">
 const currenciesUrl = '/api/mcurrencies';
@@ -30,6 +31,7 @@ const productReviewsUrl = '/api/mproductReviews';
 const manufacturersUrl = '/api/manufacturers';
 const citiesUrl = '/api/mcities';
 const foxMapMarkersUrl = '/api/mfoxMapMarkers';
+const storePlacesUrl = 'api/mstorePlaces';
 // </editor-fold
 
 @Injectable()
@@ -63,12 +65,94 @@ export class AppDataRepository extends AbstractDataRepository {
 
   }
 
+  public async  getStorePlaceById(id: number): Promise<StorePlace> {
+    try {
+      //const city: City = new City();
+      const _id: string = id.toString();
+      let storeplace = null;
+      if (this.isEmpty(this.cache.StorePlace.Item(_id))) {
+
+        // http request
+        const response = await this.http.get(storePlacesUrl,
+          {search: this.createSearchParams([{key: 'id', value: _id}])}).toPromise();
+
+        // response data binding
+        let data: any = response.json();
+        if (response.status !== 200) {
+          throw new Error('server side status error');
+        }
+
+        if (data != null && data.length !== 0) {
+          storeplace = new StorePlace();
+          storeplace.id = id;
+          storeplace.name = data.name;
+          storeplace.idSupplier = data.idSupplier;
+          storeplace.idCity = data.idCity;
+          storeplace.zip = data.zip;
+          storeplace.address_line = data.address_line;
+          storeplace.lat = data.lat;
+          storeplace.lng = data.lng;
+          storeplace.type = data.type;
+
+          // add to cache
+          this.cache.StorePlace.Add(_id, storeplace);
+        }
+        return storeplace;
+      }
+      // </editor-fold>
+      else {
+        return this.cache.StorePlace.Item(_id);
+      }
+
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getCityById(id: number): Promise<City> {
+    try {
+      //const city: City = new City();
+      const _id: string = id.toString();
+      let city = null;
+      if (this.isEmpty(this.cache.City.Item(_id))) {
+
+        // http request
+        const response = await this.http.get(citiesUrl,
+          {search: this.createSearchParams([{key: 'id', value: _id}])}).toPromise();
+
+        // response data binding
+        let data: any = response.json();
+        if (response.status !== 200) {
+          throw new Error('server side status error');
+        }
+
+        if (data != null && data.length !== 0) {
+          city = new City();
+          city.id = id;
+          city.name = data.name;
+
+          // add to cache
+          this.cache.City.Add(_id, city);
+        }
+          return city;
+      }
+      // </editor-fold>
+      else {
+        return this.cache.City.Item(_id);
+      }
+
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 
   search(textToSearch: string, srchVal: string): boolean {
     return ((textToSearch) && !(textToSearch.toLowerCase().indexOf(srchVal) == -1));
   }
 
   public async searchProducts(srchString: string): Promise<Product[]> {
+    //TODO This method should be implemented in back end in production mode!
     try {
         const response = await this.http.get(productsUrl).toPromise();
 

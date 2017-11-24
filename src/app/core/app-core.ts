@@ -3,6 +3,8 @@ import {Injector} from '@angular/core';
 import {Product, Supplier, Currency} from '../model/index';
 import {Manufacturer} from "../model/manufacturer";
 import {Observable} from 'rxjs/Observable';
+import {City} from '../model/city';
+import {StorePlace} from '../model/store-place';
 
 export interface IDictionary<T> {
   [k: string]: T;
@@ -123,6 +125,8 @@ export namespace Providers {
     private _cacheSupplier: IKeyedCollection<Supplier> = null;
     private _cacheCurrency: IKeyedCollection<Currency> = null;
     private _cacheManufacturer: IKeyedCollection<Manufacturer> = null;
+    private _cacheCity: IKeyedCollection<City> = null;
+    private _cacheStorePlace: IKeyedCollection<StorePlace> = null;
 
     public get Products(): IKeyedCollection<Product> {
       if (this._cacheProduct == null)
@@ -133,24 +137,40 @@ export namespace Providers {
 
     public get Suppliers(): IKeyedCollection<Supplier> {
       if (this._cacheSupplier == null)
-        this._cacheSupplier = new CacheItems<Supplier>();
+        this._cacheSupplier = new CacheItems<Supplier>(200);
 
       return this._cacheSupplier;
     }
 
     public get Currency(): IKeyedCollection<Currency> {
       if (this._cacheCurrency == null)
-        this._cacheCurrency = new CacheItems<Currency>();
+        this._cacheCurrency = new CacheItems<Currency>(10);
 
       return this._cacheCurrency;
     }
 
     public get Manufacturer(): IKeyedCollection<Manufacturer> {
       if (this._cacheManufacturer == null)
-        this._cacheManufacturer = new CacheItems<Manufacturer>();
+        this._cacheManufacturer = new CacheItems<Manufacturer>(500);
 
       return this._cacheManufacturer;
     }
+
+    public get City(): IKeyedCollection<City> {
+      if (this._cacheCity == null)
+        this._cacheCity = new CacheItems<City>(300);
+
+      return this._cacheCity;
+    }
+
+    public get StorePlace(): IKeyedCollection<StorePlace> {
+      if (this._cacheStorePlace == null)
+        this._cacheStorePlace = new CacheItems<StorePlace>(300);
+
+      return this._cacheStorePlace;
+    }
+
+
   }
 }
 

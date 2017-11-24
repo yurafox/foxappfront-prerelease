@@ -719,6 +719,15 @@ export class WebApiService implements InMemoryDbService {
   ];
   // </editor-fold>
 
+  stores = [
+    {id: 1, idSupplier: 1, name: 'Магазин "Фокстрот-Петрівка"', idCity: 23, zip: '00000', addressLine: 'просп. Степана Бандери, 21', lat: 50.489800, lng: 30.492700, type: 1},
+    {id: 2, idSupplier: 1, name: 'Магазин "Фокстрот-Бровари"', idCity: 8, zip: '07400', addressLine: 'вул. Київська, 316', lat: 50.526290, lng: 30.796420, type: 1},
+    {id: 3, idSupplier: 2, name: 'Магазин "F5"', idCity: 23, zip: '00000', addressLine: 'вул. Бальзака ул., 94', lat: null, lng: null, type: 1},
+    {id: 4, idSupplier: 1, name: 'Основний склад', idCity: 23, zip: '00000', addressLine: '', lat: null, lng: null, type: 2},
+    {id: 5, idSupplier: 2, name: 'Склад', idCity: 23, zip: '00000', addressLine: '', lat: null, lng: null, type: 2},
+    {id: 6, idSupplier: 2, name: 'Пункт видачі товару', idCity: 23, zip: '00000', addressLine: '', lat: null, lng: null, type: 3}
+  ];
+
   //<editor-fold desc="Tokens">
   tokens = [
     {token: 'fdtefdetfdwytdfetfdtewyfdeyt'},

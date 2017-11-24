@@ -10,14 +10,14 @@ export class StorePlace {
   private _repo: AbstractDataRepository;
 
   constructor (
-    public id: number,
-    public idSupplier: number,
-    public name: string,
-    public idCity: number,
-    public zip: string,
-    public address_line: string,
-    public lat: number,
-    public lng: number,
-    public type: number
+    public id?: number,
+    public idSupplier?: number,
+    public name?: string,
+    public idCity?: number,
+    public zip?: string,
+    public address_line?: string,
+    public lat?: number,
+    public lng?: number,
+    public type?: number
   ){this._repo = RefInjector.pull(AbstractDataRepository);}
 }
