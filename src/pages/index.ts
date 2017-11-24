@@ -1,5 +1,4 @@
 export * from './about/about';
-export * from './about-popover/about-popover';
 export * from './account/account';
 export * from './home/home';
 export * from './support/support';
@@ -10,9 +9,7 @@ export * from './forgot-password/forgot-password';
 export * from './categories/categories';
 export * from './category/category';
 export * from './cart/cart';
-export * from './order-confirm/order-confirm';
 export * from './my-order/my-order';
-export * from './modal-item-option/modal-item-option';
 export * from './map/map';
 export * from './item-detail/item-detail';
 export * from './item-description/item-description';

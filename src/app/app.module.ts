@@ -16,7 +16,6 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {
   HomePage,
   AboutPage,
-  PopoverPage,
   AccountPage,
   SupportPage,
   LoginPage,
@@ -27,9 +26,7 @@ import {
   CategoriesPage,
   CategoryPage,
   MapPage,
-  ModalItemOptionPage,
   MyOrderPage,
-  OrderConfirmPage,
   ItemDetailPage,
   ItemDescriptionPage,
   ItemPropsPage,
@@ -65,7 +62,7 @@ import {WebApiService} from './service/webapi/web-api-service';
 import {RefInjector} from './core/app-core';
 import {ComponentsModule} from '../components/components.module';
 import {PipesModule} from "./pipe/pipes.module";
-import {StreamingMedia} from "@ionic-native/streaming-media";
+import {VideoPlayer} from '@ionic-native/video-player';
 
 @NgModule({
   declarations: [
@@ -75,7 +72,6 @@ import {StreamingMedia} from "@ionic-native/streaming-media";
     HomePage,
     LoginPage,
     RegisterPage,
-    PopoverPage,
     SupportPage,
     ChangePasswordPage,
     ForgotPasswordPage,
@@ -83,9 +79,7 @@ import {StreamingMedia} from "@ionic-native/streaming-media";
     CategoriesPage,
     CategoryPage,
     MapPage,
-    ModalItemOptionPage,
     MyOrderPage,
-    OrderConfirmPage,
     ItemDetailPage,
     ItemDescriptionPage,
     ItemPropsPage,
@@ -107,10 +101,10 @@ import {StreamingMedia} from "@ionic-native/streaming-media";
         { component: CategoriesPage, name: 'CategoriesPage', segment: 'categories'},
         { component: CategoryPage, name: 'CategoryPage', segment: 'category/:categoryId'},
         { component: MapPage, name: 'Map', segment: 'map' },
-        { component: AboutPage, name: 'About', segment: 'about' },
         { component: SupportPage, name: 'SupportPage', segment: 'support' },
         { component: LoginPage, name: 'LoginPage', segment: 'login' },
-        { component: AccountPage, name: 'AccountPage', segment: 'account' }
+        { component: AccountPage, name: 'AccountPage', segment: 'account' },
+        { component: AboutPage, name: 'AboutPage', segment: 'about'}
       ]
     }),
     ComponentsModule,
@@ -127,7 +121,6 @@ import {StreamingMedia} from "@ionic-native/streaming-media";
     HomePage,
     LoginPage,
     RegisterPage,
-    PopoverPage,
     SupportPage,
     ChangePasswordPage,
     ForgotPasswordPage,
@@ -145,9 +138,7 @@ import {StreamingMedia} from "@ionic-native/streaming-media";
     ItemQuotesPage,
     FilterPopoverPage,
     MapPage,
-    ModalItemOptionPage,
     MyOrderPage,
-    OrderConfirmPage
   ],
   providers: [
     StatusBar,
@@ -156,6 +147,7 @@ import {StreamingMedia} from "@ionic-native/streaming-media";
     UserService,
     GoogleMaps,
     BarcodeScanner,
+    VideoPlayer,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
     {provide: AbstractAccountRepository, useClass: AccountRepository},
@@ -166,8 +158,7 @@ import {StreamingMedia} from "@ionic-native/streaming-media";
     AppConstants,
     CurrencyStore,
     SearchService,
-    CartService,
-    StreamingMedia
+    CartService
   ]
 })
 export class AppModule {

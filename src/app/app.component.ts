@@ -4,27 +4,24 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {AbstractDataRepository} from "./service/index";
 import {
-  AboutPage,
+  // AboutPage,
   AccountPage,
   HomePage,
   SupportPage,
   LoginPage,
   CategoriesPage,
   MapPage,
-  MyOrderPage
+  // MyOrderPage
 } from '../pages/index';
 import {UserService} from "./service/bll/user-service";
-import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media';
+import {VideoOptions, VideoPlayer} from '@ionic-native/video-player';
 
 export interface PageInterface {
   title: string;
   name?: string;
   component: any;
   icon?: string;
-  logsOut?: boolean;
   index?: number;
-  tabName?: string;
-  tabComponent?: any;
 }
 
 @Component({
@@ -45,31 +42,28 @@ export class FoxApp implements OnInit{
   ];
   infoPages = [
     {title: 'Магазины на карте', name: 'Map', component: MapPage, index: 0, icon: 'ios-map-outline'},
-    {title: 'О нас', name: 'About', component: AboutPage, index: 1, icon: 'ios-information-circle-outline'},
+    {title: 'О нас', name: 'About', /*component: AboutPage,*/ index: 1, icon: 'ios-information-circle-outline'},
     {title: 'Поддержка', name: 'Support', component: SupportPage, index: 2, icon: 'ios-text-outline'}
   ];
 
-  options: StreamingVideoOptions = {
-    successCallback: () => { console.log('Video played') },
-    errorCallback: (e) => { console.log('Error streaming') },
-    orientation: 'landscape'
-  };
+  videoOpts: VideoOptions;
+  localVideoUrl: string;
 
-  constructor(platform: Platform, statusBar: StatusBar,
+  constructor(private platform: Platform, statusBar: StatusBar,
               private splashScreen: SplashScreen, public menuCtrl: MenuController,
               private repo: AbstractDataRepository, public account: UserService,
-              private streamingMedia: StreamingMedia) {
+              private videoPlayer : VideoPlayer) {
     this.rootPage = HomePage;
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
     });
+    this.localVideoUrl = 'file:///android_asset/www/assets/video/promo.mp4';
   }
 
   ionViewDidLoad() {
     this.splashScreen.hide();
-    alert('splash screen is hidden');
   }
 
   async ngOnInit() {
@@ -91,10 +85,9 @@ export class FoxApp implements OnInit{
       });
     }
 
-    /*if (page.logsOut === true) {
-      // Give the menu time to close before changing to logged out
-      this.userData.logout();
-    }*/
+    if (page.name === 'About') {
+      this.showVideo();
+    }
   }
 
   signOut() {
@@ -103,8 +96,22 @@ export class FoxApp implements OnInit{
     this.menuCtrl.close();
   }
 
-  async showVideo() {
-    await this.streamingMedia.playVideo('https://youtu.be/R59TevgzN3k', this.options);
+  // Video Player
+  public showVideo(){
+    // ScalingMode: 1 - without cropping, 2 - with cropping
+    this.videoOpts = {
+      volume : 0.7,
+      scalingMode: 2
+    };
+    this.platform.ready().then(() =>
+    this.videoPlayer.play(this.localVideoUrl).then(() => {
+      console.log('video completed');
+    }).catch(err => {
+      console.log(err);
+    }));
+  }
+  public stopPlayingVideo(){
+    this.videoPlayer.close();
   }
 }
 
