@@ -11,7 +11,7 @@ export class StorePlace {
 
   constructor (
     public id: number,
-    public isSupplier: number,
+    public idSupplier: number,
     public name: string,
     public idCity: number,
     public zip: string,
