@@ -9,26 +9,28 @@ import {VideoOptions, VideoPlayer} from '@ionic-native/video-player';
 })
 export class AboutPage {
 
+  readonly LOCAL_VIDEO_URL = 'file:///android_asset/www/assets/video/';
+  videoOpts: VideoOptions;
+  videoFileName: string;
+
   constructor(private platform: Platform, public navCtrl: NavController, public navParams: NavParams,
               private videoPlayer: VideoPlayer) {
+    this.videoFileName = 'promo';
   }
 
   ionViewDidLoad() {
   }
 
   // <editor-fold desc="Streaming Media & old VideoPlayer"
-
-  videoOpts: VideoOptions;
-
   // Video Player
-  playVideo() {
-    console.log('started playing')
+  playVideo(){
+    // ScalingMode: 1 - without cropping, 2 - with cropping
     this.videoOpts = {
-      volume: 0.0
+      volume : 0.7,
+      scalingMode: 2
     };
-    let localVideoUrl = 'file:///android_asset/www/assets/video/promo.mp4';
     this.platform.ready().then(() =>
-      this.videoPlayer.play(localVideoUrl).then(() => {
+      this.videoPlayer.play(this.LOCAL_VIDEO_URL + this.videoFileName + '.mp4').then(() => {
         console.log('video completed');
       }).catch(err => {
         console.log(err);

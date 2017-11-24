@@ -90,5 +90,4 @@
     </plugin>
     <plugin name="phonegap-plugin-barcodescanner" spec="^7.0.0" />
     <plugin name="com.moust.cordova.videoplayer" spec="~1.0.1" />
-    <allow-navigation href="http://10.124.2.130:8100" />
 </widget>

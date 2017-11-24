@@ -34,6 +34,10 @@ export class FoxApp implements OnInit{
 
   rootPage: any;
 
+  readonly LOCAL_VIDEO_URL = 'file:///android_asset/www/assets/video/';
+  videoOpts: VideoOptions;
+  videoFileName: string;
+
   appPages = [
     {title: 'Главная', name: 'Home', component: HomePage, index: 0, icon: 'ios-home-outline'},
     {title: 'Категории', name: 'Categories', component: CategoriesPage, index: 1, icon: 'ios-list-outline'},
@@ -46,9 +50,6 @@ export class FoxApp implements OnInit{
     {title: 'Поддержка', name: 'Support', component: SupportPage, index: 2, icon: 'ios-text-outline'}
   ];
 
-  videoOpts: VideoOptions;
-  localVideoUrl: string;
-
   constructor(private platform: Platform, statusBar: StatusBar,
               private splashScreen: SplashScreen, public menuCtrl: MenuController,
               private repo: AbstractDataRepository, public account: UserService,
@@ -59,7 +60,8 @@ export class FoxApp implements OnInit{
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
     });
-    this.localVideoUrl = 'file:///android_asset/www/assets/video/promo.mp4';
+
+    this.videoFileName = 'promo';
   }
 
   ionViewDidLoad() {
@@ -86,7 +88,7 @@ export class FoxApp implements OnInit{
     }
 
     if (page.name === 'About') {
-      this.showVideo();
+      this.playVideo();
     }
   }
 
@@ -97,14 +99,14 @@ export class FoxApp implements OnInit{
   }
 
   // Video Player
-  public showVideo(){
+  playVideo(){
     // ScalingMode: 1 - without cropping, 2 - with cropping
     this.videoOpts = {
       volume : 0.7,
       scalingMode: 2
     };
     this.platform.ready().then(() =>
-    this.videoPlayer.play(this.localVideoUrl).then(() => {
+    this.videoPlayer.play(this.LOCAL_VIDEO_URL + this.videoFileName + '.mp4').then(() => {
       console.log('video completed');
     }).catch(err => {
       console.log(err);
