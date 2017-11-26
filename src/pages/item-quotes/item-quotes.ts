@@ -29,7 +29,7 @@ export class ItemQuotesPage extends ComponentBase implements OnInit {
   }
 
   onAddToCart(quote: QuotationProduct, price: number) {
-    this.cart.addItem(quote, 1, price);
+    this.cart.addItem(quote, 1, price, null);
   }
 
 }
