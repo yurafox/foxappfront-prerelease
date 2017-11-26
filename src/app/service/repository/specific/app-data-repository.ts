@@ -181,7 +181,18 @@ export class AppDataRepository extends AbstractDataRepository {
 
 
   search(textToSearch: string, srchVal: string): boolean {
-    return ((textToSearch) && !(textToSearch.toLowerCase().indexOf(srchVal) == -1));
+    if ((textToSearch) && (srchVal)) {
+      let ar = srchVal.toLowerCase().split(' ');
+      let i = 0;
+      ar.forEach(str => {
+        if (!(textToSearch.toLowerCase().indexOf(str) == -1)) {
+          i++;
+        }
+      });
+      if (i == ar.length)
+        return true;
+    } else return false;
+    //return ((textToSearch) && !(textToSearch.toLowerCase().indexOf(srchVal.toLowerCase()) == -1));
   }
 
   public async searchProducts(srchString: string): Promise<Product[]> {
