@@ -41,12 +41,25 @@
         <span class="f-color-green f-item-nopadding">In Stock</span>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="OnStock && resolved">
+    <ion-row *ngIf="valueQuot?.quotation?.supplier">
       <ion-col>
-        <span class="f-color-secondary f-item-nopadding" >Sold by {{valueQuot?.quotation?.supplier?.name}}</span>
+        <span class="f-color-secondary f-item-nopadding">Sold by {{valueQuot?.quotation?.supplier?.name}}</span>
       </ion-col>
     </ion-row>
-
+    <!-- Pickup places -->
+    <ion-row *ngIf="productStorePlaces?.length > 0" (click)="showLocationPopover()">
+      <ion-col>
+        <span class="f-color-blue f-item-nopadding">Available for FREE pickup on {{productStorePlaces.length}} places</span>
+      </ion-col>
+    </ion-row>
+    <!-- Selected pickup place -->
+    <ion-row *ngIf="selectedStorePlace">
+      <ion-col>
+        <span class="f-color-secondary f-item-nopadding">FREE Pickup at</span>
+        <span class="f-color-green f-item-nopadding">{{selectedStorePlace.name}}, {{selectedStorePlace.address_line}}
+          {{selectedStorePlace?.city?.name}} </span>
+      </ion-col>
+    </ion-row>
     <ion-row>
       <ion-col class="f-item-padding-bottom">
         <div class="input-qty">

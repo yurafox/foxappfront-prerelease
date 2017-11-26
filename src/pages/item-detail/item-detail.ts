@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams, PopoverController, ToastController} from 'ionic-angular';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {ProductReview} from "../../app/model/product-review";
 import {ItemDescriptionPage} from '../item-description/item-description';
@@ -11,6 +11,9 @@ import {ItemBase} from '../../components/component-extension/item-base';
 import {ItemQuotesPage} from '../item-quotes/item-quotes';
 import {CartService} from '../../app/service/cart-service';
 import {QuotationProduct} from '../../app/model/quotation-product';
+import {CustomPopupComponent} from '../../components/custom-popup/custom-popup';
+import {ProductStorePlace} from '../../app/model/product-store-place';
+import {StorePlace} from '../../app/model/store-place';
 
 @IonicPage()
 @Component({
@@ -20,20 +23,22 @@ import {QuotationProduct} from '../../app/model/quotation-product';
 export class ItemDetailPage extends ItemBase implements OnInit { //ComponentBase implements OnInit {
 
   qty = 1;
-  reviews = new Array<ProductReview>() ;
+  selectedStorePlace: StorePlace;
+  reviews = new Array<ProductReview>();
+
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
-              private toastCtrl: ToastController) {
+              private toastCtrl: ToastController, public modalCtrl: ModalController) {
     super(navCtrl, navParams, repo);
     this.product = this.navParams.data;
-    console.log(this.product.name);
   }
 
   async ngOnInit() {
     super.ngOnInit();
     this.reviews = await this.repo.getProductReviewsByProductId(this.product.id);
+
   }
 
   incQty(): void {
@@ -72,7 +77,7 @@ export class ItemDetailPage extends ItemBase implements OnInit { //ComponentBase
   onAddToCart() {
     //console.log(this.valueQuot);
 
-    this.cart.addItem(this.valueQuot, this.qty, this.product.price);
+    this.cart.addItem(this.valueQuot, this.qty, this.product.price, this.selectedStorePlace);
     this.showAddToCartConfirmToast();
   }
 
@@ -90,4 +95,11 @@ export class ItemDetailPage extends ItemBase implements OnInit { //ComponentBase
 
     toast.present();
   }
+
+  showLocationPopover() {
+    let modal = this.modalCtrl.create(CustomPopupComponent, {itemPage: this}, {showBackdrop:true, enableBackdropDismiss:true});
+    //(<any>modal).locations = this.productStorePlaces;
+    modal.present({});
+  }
+
 }

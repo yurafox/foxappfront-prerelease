@@ -19,4 +19,6 @@ export * from './city';
 export * from './map-marker';
 export * from './user';
 export * from './login-template';
+export * from './store-place';
+export * from './product-store-place';
 

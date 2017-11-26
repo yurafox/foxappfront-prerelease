@@ -68,6 +68,19 @@
               </ion-col>
             </ion-row>
 
+<!--
+{{selectedStorePlace.name}}, {{selectedStorePlace.address_line}}
+          {{selectedStorePlace?.city?.name}}
+-->
+
+            <ion-row *ngIf="item.idStorePlace">
+              <ion-col no-padding>
+                <span class="f-item-nopadding f-size-small">FREE pickup at </span>
+                <span class="f-item-nopadding f-size-small f-color-green">{{item?.storeplace?.name}}, {{item?.storeplace?.address_line}}
+                {{item?.storeplace?.city?.name}}</span>
+              </ion-col>
+            </ion-row>
+
 
           </ion-grid>
         </ion-col>

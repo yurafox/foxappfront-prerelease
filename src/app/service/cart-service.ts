@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {ClientOrder} from '../model/client-order';
 import {ClientOrderProducts} from '../model/client-order-products';
 import {QuotationProduct} from '../model/quotation-product';
+import {StorePlace} from '../model/store-place';
 
 
 @Injectable()
@@ -33,13 +34,14 @@ export class CartService {
     return _s;
   }
 
-  addItem(item: QuotationProduct, qty: number, price: number) {
+  addItem(item: QuotationProduct, qty: number, price: number, storePlace: StorePlace) {
     let orderItem = new ClientOrderProducts(
       100,
       1,
       item.id,
       price,
-      qty
+      qty,
+      storePlace ? storePlace.id : null
     );
 
     this.orderProducts.push(orderItem);

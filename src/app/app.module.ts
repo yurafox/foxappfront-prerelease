@@ -27,9 +27,6 @@ import {
   CategoriesPage,
   CategoryPage,
   MapPage,
-  ModalItemOptionPage,
-  MyOrderPage,
-  OrderConfirmPage,
   ItemDetailPage,
   ItemDescriptionPage,
   ItemPropsPage,
@@ -39,7 +36,8 @@ import {
   SearchPage,
   SearchResultsPage,
   ItemQuotesPage,
-  FilterPopoverPage
+  FilterPopoverPage,
+  CityPopoverPage
 } from '../pages/index';
 
 import {AppConstants} from './app-constants';
@@ -67,7 +65,6 @@ import {ComponentsModule} from '../components/components.module';
 import {PipesModule} from "./pipe/pipes.module";
 
 
-
 @NgModule({
   declarations: [
     FoxApp,
@@ -84,9 +81,6 @@ import {PipesModule} from "./pipe/pipes.module";
     CategoriesPage,
     CategoryPage,
     MapPage,
-    ModalItemOptionPage,
-    MyOrderPage,
-    OrderConfirmPage,
     ItemDetailPage,
     ItemDescriptionPage,
     ItemPropsPage,
@@ -96,7 +90,8 @@ import {PipesModule} from "./pipe/pipes.module";
     SearchPage,
     SearchResultsPage,
     ItemQuotesPage,
-    FilterPopoverPage
+    FilterPopoverPage,
+    CityPopoverPage
   ],
   imports: [
     BrowserModule,
@@ -145,10 +140,8 @@ import {PipesModule} from "./pipe/pipes.module";
     SearchResultsPage,
     ItemQuotesPage,
     FilterPopoverPage,
-    MapPage,
-    ModalItemOptionPage,
-    MyOrderPage,
-    OrderConfirmPage
+    CityPopoverPage,
+    MapPage
   ],
   providers: [
     StatusBar,

@@ -13,6 +13,7 @@ import { ItemReviewComponent } from './item-review/item-review';
 import { ReadMoreComponent } from './read-more/read-more';
 import { ItemsListComponent } from './items-list/items-list';
 import { FilterComponent } from './filter/filter';
+import { CustomPopupComponent } from './custom-popup/custom-popup';
 
 
 
@@ -27,7 +28,11 @@ import { FilterComponent } from './filter/filter';
     ItemReviewComponent,
     ReadMoreComponent,
     ItemsListComponent,
-    FilterComponent
+    FilterComponent,
+    CustomPopupComponent
+  ],
+  entryComponents: [
+    CustomPopupComponent
   ],
 	imports: [
     IonicModule,
@@ -44,7 +49,8 @@ import { FilterComponent } from './filter/filter';
     ItemReviewComponent,
     ReadMoreComponent,
     ItemsListComponent,
-    FilterComponent
+    FilterComponent,
+    CustomPopupComponent
   ]
 })
 export class ComponentsModule {}

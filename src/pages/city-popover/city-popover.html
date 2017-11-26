@@ -1,0 +1,20 @@
+<div class="f-light-bkgrd f-grid-border">
+  <ion-grid>
+    <ion-row class="f-size-medium">
+      <ion-col >
+        <b>FILTER BY CITY</b>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+
+<div *ngFor="let city of cityList">
+  <ion-grid (click)="filterByCity(city)">
+    <ion-row class="f-size-medium">
+      <ion-col>
+        <span class="f-color-secondary">{{city.name}}</span>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <hr>
+</div>

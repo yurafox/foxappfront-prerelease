@@ -1,0 +1,77 @@
+custom-popup {
+  .toolbar-background {
+    background-color: #DEDEDF !important;
+  }
+
+  .toolbar-title, .bar-button {
+    color: black;
+    font-size: 18px !important;
+  }
+
+  .f-color-secondary {
+    color: dimgrey;
+  }
+
+  .f-color-blue {
+    color: darkslateblue;
+  }
+
+  .f-color-green {
+    color: color($colors, green);
+  }
+
+  .f-size-large {
+    font-size: 18px;
+  }
+  .f-size-larger {
+    font-size: 16px;
+  }
+
+  .f-size-medium {
+    font-size: 14px;
+  }
+
+  .f-size-small {
+    font-size: 12px;
+  }
+
+  .f-img-item-lg {
+    padding: 6px 4px 2px;
+  }
+
+  .f-item-nopadding {
+    padding: 0px;
+  }
+
+  .f-item-padding-left {
+    padding-left: 5px;
+  }
+
+  .f-item-padding-bottom {
+    padding-bottom: 2px;
+  }
+
+  .f-item-nopadding-tb {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  .f-grid-feat-bkgrnd {
+    background-color: #8e9093;
+    color: black;
+  }
+
+}
+
+ion-modal.custom-popup ion-backdrop {
+  visibility: visible !important;
+  z-index:0;
+}
+ion-modal.custom-popup .modal-wrapper{
+  width: 90%;
+  height: 60%;
+  top: 20%;
+  left: 5%;
+  width: 90%;
+  position:absolute;
+}

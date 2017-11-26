@@ -73,7 +73,7 @@ export class WebApiService implements InMemoryDbService {
   quotationProducts = [
     {id: 1, idQuotation: 1, idProduct: 6280637, price: 5199.00, maxDeliveryDays: 3, stockQuant: 12, freeShipping: true},
     {id: 3, idQuotation: 2, idProduct: 6280637, price: 5220.00, maxDeliveryDays: 5, stockQuant: 25},
-    {id: 6, idQuotation: 3, idProduct: 6280637, price: 167.70, maxDeliveryDays: 3, stockQuant: 45},
+    {id: 6, idQuotation: 3, idProduct: 6280637, price: 167.70, maxDeliveryDays: 3, stockQuant: 28},
     {id: 2, idQuotation: 1, idProduct: 6293680, price: 349.00, maxDeliveryDays: 2, stockQuant: 102.00},
     {id: 4, idQuotation: 2, idProduct: 6293680, price: 330.00, maxDeliveryDays: 2, stockQuant: 85.00},
     {id: 5, idQuotation: 1, idProduct: 6363302, price: 349.00, maxDeliveryDays: 2, stockQuant: 102.00},
@@ -719,7 +719,7 @@ export class WebApiService implements InMemoryDbService {
   ];
   // </editor-fold>
 
-  stores = [
+  storePlaces = [
     {id: 1, idSupplier: 1, name: 'Магазин "Фокстрот-Петрівка"', idCity: 23, zip: '00000', address_line: 'просп. Степана Бандери, 21', lat: 50.489800, lng: 30.492700, type: 1},
     {id: 2, idSupplier: 1, name: 'Магазин "Фокстрот-Бровари"', idCity: 8, zip: '07400', address_line: 'вул. Київська, 316', lat: 50.526290, lng: 30.796420, type: 1},
     {id: 3, idSupplier: 2, name: 'Магазин "F5"', idCity: 23, zip: '00000', address_line: 'вул. Бальзака ул., 94', lat: null, lng: null, type: 1},
@@ -727,6 +727,73 @@ export class WebApiService implements InMemoryDbService {
     {id: 5, idSupplier: 2, name: 'Склад', idCity: 23, zip: '00000', address_line: '', lat: null, lng: null, type: 2},
     {id: 6, idSupplier: 2, name: 'Пункт видачі товару', idCity: 23, zip: '00000', address_line: '', lat: null, lng: null, type: 3}
   ];
+
+  productStorePlaces = [
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 4, idQuotationProduct: 2, idStorePlace: 5, qty: 12},
+    {id: 5, idQuotationProduct: 2, idStorePlace: 6, qty: 13}
+/*
+,
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
+    {id: 1, idQuotationProduct: 6, idStorePlace: 1, qty: 3},
+    {id: 2, idQuotationProduct: 6, idStorePlace: 2, qty: 10},
+    {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12}
+
+*/
+  ];
+
 
   //<editor-fold desc="Tokens">
   tokens = [
@@ -778,9 +845,11 @@ export class WebApiService implements InMemoryDbService {
     const mfoxMapMarkers = this.foxMapMarkers;
     const mtoken = this.tokens;
     const musers = this.users;
+    const mproductStorePlaces = this.productStorePlaces;
+    const mstorePlaces = this.storePlaces;
     return {
       mquotationProducts, mproducts, mquotation, mcurrencies, msuppliers, mproductReviews, manufacturers, mcities,
-      mfoxMapMarkers, mtoken, musers
+      mfoxMapMarkers, mtoken, musers, mproductStorePlaces, mstorePlaces
     }
   }
 

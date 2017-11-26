@@ -1,13 +1,20 @@
-.toast-message {
-  text-align: center;
-  //border-radius: 5px !important;
-}
+page-city-popover {
 
-page-item-detail {
-
+  hr {
+    border-bottom-width: 1px;
+    margin-bottom: 0px; margin-top: 0px;
+  }
 
   .item-md.item-block .item-inner {
     border-bottom: 0px;
+  }
+
+  .f-grid-border {
+    border: 1px solid #EBEBEC;
+  }
+
+  .f-light-bkgrd {
+    background-color: #EFEFF0;
   }
 
   .f-color-secondary {
@@ -35,6 +42,10 @@ page-item-detail {
 
   .f-size-small {
     font-size: 12px;
+  }
+
+  .f-size-smaller {
+    font-size: 10px;
   }
 
   .f-img-item-lg {
@@ -83,29 +94,4 @@ page-item-detail {
     border: 1px solid grey;
   }
 
-
-  ul {
-    padding: 0px;
-    -webkit-margin-before: 0em;
-    -webkit-margin-after: 0em;
-
-    &.rating li {
-      padding: 0px 0px !important;
-      background: none;
-      color: color($colors, foxrating);
-
-      ion-icon {
-        font-size: 12px;
-      }
-    }
-  }
-
-  #rating-large {
-    ul.rating li {
-        ion-icon {
-          font-size: 18px;
-        }
-    }
-
-  }
 }

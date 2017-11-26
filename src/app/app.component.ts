@@ -12,8 +12,7 @@ import {
   SupportPage,
   LoginPage,
   CategoriesPage,
-  MapPage,
-  MyOrderPage
+  MapPage
 } from '../pages/index';
 import {UserService} from "./service/bll/user-service";
 

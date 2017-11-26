@@ -1,9 +1,9 @@
-import {ComponentBase} from './component-base';
-import {Product} from '../../app/model/product';
 import {Input, OnInit} from '@angular/core';
-import {QuotationProduct} from '../../app/model/quotation-product';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {NavController, NavParams} from 'ionic-angular';
+import {ComponentBase} from './component-base';
+import {Product, ProductStorePlace, QuotationProduct} from '../../app/model/index';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+
 
 export class ItemBase extends ComponentBase implements OnInit {
 
@@ -12,6 +12,8 @@ export class ItemBase extends ComponentBase implements OnInit {
 
   quotes: QuotationProduct[];
   valueQuot: QuotationProduct;
+  productStorePlaces: ProductStorePlace[];
+  selectedPickupStorePlace: ProductStorePlace;
 
   noOfQuotes = 0;
   resolved = false;
@@ -38,9 +40,14 @@ export class ItemBase extends ComponentBase implements OnInit {
 
     // Определяем самое дешевое предложение и сохраняем его в св-во valueQuot
     this.quotes.forEach(val => {
-      if ((val.price < this.Price) || !(this.valueQuot))
+      if ((val.price < this.Price) || !(this.valueQuot)) {
           this.valueQuot = val;
+      }
     });
+    if (this.valueQuot) {
+      this.productStorePlaces = await this.repo.getProductStorePlacesByQuotId(this.valueQuot.id);
+    };
+
     this.resolved = true;
   }
 

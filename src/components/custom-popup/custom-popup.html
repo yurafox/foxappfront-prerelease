@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar position="top">
+    <ion-title left>Select pickup place</ion-title>
+    <ion-buttons end>
+      <button id="openCitySelector" ion-button (click)="showCitySelector($event)">
+        <ion-icon name="more_vert">
+        </ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+<!--
+  <ion-list>
+    <ion-item *ngFor="let item of itemPage.productStorePlaces" text-wrap>
+      {{item?.storeplace?.name}} {{item?.storeplace?.address_line}}
+    </ion-item>
+  </ion-list>
+-->
+<div *ngFor="let item of displayLocations" no-padding>
+  <div *ngIf="(item?.storeplace?.city)">
+    <ion-grid (click)="selectPickupStorePlace(item)">
+      <ion-row>
+        <ion-col>
+          {{item?.storeplace?.city?.name}}, {{item?.storeplace?.name}}, {{item?.storeplace?.address_line}}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <hr>
+  </div>
+</div>
+</ion-content>

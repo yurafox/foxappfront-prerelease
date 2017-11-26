@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
-import {AbstractDataRepository} from '../../index';
+import {Http, URLSearchParams} from '@angular/http';
+import 'rxjs/add/operator/toPromise';
+import CacheProvider = Providers.CacheProvider;
 import {
   QuotationProduct,
   Product,
@@ -12,14 +14,13 @@ import {
   Currency,
   ProductReview,
   City,
-  MapMarker
+  MapMarker,
+  ProductStorePlace,
+  StorePlace
 } from '../../../model/index';
-
-import {Http, URLSearchParams} from '@angular/http';
-import 'rxjs/add/operator/toPromise';
+import {AbstractDataRepository} from '../../index';
 import {Providers} from '../../../core/app-core';
-import CacheProvider = Providers.CacheProvider;
-import {StorePlace} from '../../../model/store-place';
+
 
 // <editor-fold desc="url const">
 const currenciesUrl = '/api/mcurrencies';
@@ -31,7 +32,8 @@ const productReviewsUrl = '/api/mproductReviews';
 const manufacturersUrl = '/api/manufacturers';
 const citiesUrl = '/api/mcities';
 const foxMapMarkersUrl = '/api/mfoxMapMarkers';
-const storePlacesUrl = 'api/mstorePlaces';
+const storePlacesUrl = '/api/mstorePlaces';
+const productStorePlacesUrl = '/api/mproductStorePlaces';
 // </editor-fold
 
 @Injectable()
@@ -65,16 +67,48 @@ export class AppDataRepository extends AbstractDataRepository {
 
   }
 
-  public async  getStorePlaceById(id: number): Promise<StorePlace> {
+  public async getProductStorePlacesByQuotId(quotId: number): Promise<ProductStorePlace[]> {
     try {
-      //const city: City = new City();
+
+      const response = await this.http.get(productStorePlacesUrl,
+        {search: this.createSearchParams([{key: 'idQuotationProduct', value: quotId.toString()}])}).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error('server side status error');
+      }
+      const qProductsStorePlaces = new Array<ProductStorePlace>();
+      if (data != null) {
+
+        for (let val of data) {
+          let psp = new ProductStorePlace(val.id, val.idQuotationProduct,
+            val.idStorePlace, val.qty);
+
+          let sp = await (<any>psp).storeplace_p;
+          if (sp.type == 1) //select only storeplaces with type of store
+            qProductsStorePlaces.push(psp);
+        }
+      }
+/*
+      return qProductsStorePlaces.sort((a, b) =>
+        {return ( (<any>a).idStorePlace.storeplace.city.name - (<any>b).idStorePlace.storeplace.city.name)});
+*/
+      return qProductsStorePlaces;
+
+    } catch (err) {
+      return await this.handleError(err);
+    }
+
+  }
+
+  public async getStorePlaceById(id: number): Promise<StorePlace> {
+    try {
       const _id: string = id.toString();
-      let storeplace = null;
+      let storeplace = new StorePlace();
       if (this.isEmpty(this.cache.StorePlace.Item(_id))) {
 
         // http request
-        const response = await this.http.get(storePlacesUrl,
-          {search: this.createSearchParams([{key: 'id', value: _id}])}).toPromise();
+        const response = await this.http.get(storePlacesUrl + `/${_id}`).toPromise();
 
         // response data binding
         let data: any = response.json();
@@ -82,8 +116,8 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error('server side status error');
         }
 
-        if (data != null && data.length !== 0) {
-          storeplace = new StorePlace();
+        if (data != null) {
+          //storeplace = new StorePlace();
           storeplace.id = id;
           storeplace.name = data.name;
           storeplace.idSupplier = data.idSupplier;
@@ -96,6 +130,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
           // add to cache
           this.cache.StorePlace.Add(_id, storeplace);
+
         }
         return storeplace;
       }
@@ -111,14 +146,12 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getCityById(id: number): Promise<City> {
     try {
-      //const city: City = new City();
+      const city: City = new City();
       const _id: string = id.toString();
-      let city = null;
+      //let city = null;
       if (this.isEmpty(this.cache.City.Item(_id))) {
-
         // http request
-        const response = await this.http.get(citiesUrl,
-          {search: this.createSearchParams([{key: 'id', value: _id}])}).toPromise();
+        const response = await this.http.get(citiesUrl + `/${_id}`).toPromise();
 
         // response data binding
         let data: any = response.json();
@@ -126,8 +159,8 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error('server side status error');
         }
 
-        if (data != null && data.length !== 0) {
-          city = new City();
+        if (data != null) {
+          //city = new City();
           city.id = id;
           city.name = data.name;
 
