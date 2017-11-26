@@ -52,12 +52,13 @@ export class FoxApp implements OnInit{
 
   constructor(platform: Platform, statusBar: StatusBar,
               splashScreen: SplashScreen, public menuCtrl: MenuController,
-              private repo: AbstractDataRepository, public account: UserService) {
+              private repo: AbstractDataRepository, public account: UserService,
+              ) {
     this.rootPage = HomePage;
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      statusBar.styleDefault();
+      //statusBar.styleLightContent();
       // temporary, for splash!!
       setTimeout(3000);
       splashScreen.hide();
