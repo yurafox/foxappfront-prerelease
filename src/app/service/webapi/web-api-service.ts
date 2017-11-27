@@ -198,7 +198,7 @@ export class WebApiService implements InMemoryDbService {
         'assets/imgs/product-images/medium/6280637-1.jpg',
         'assets/imgs/product-images/medium/6280637-2.jpg',
         'assets/imgs/product-images/medium/6280637-3.jpg'
-      ]
+      ], barcode: '706NTXR9Z586'
     },
     {
       id: 6293680,
@@ -210,7 +210,8 @@ export class WebApiService implements InMemoryDbService {
       rating: 2,
       recall: 0,
       supplOffers: 2,
-      url: 'mobilnye_telefony.html'
+      url: 'mobilnye_telefony.html',
+      barcode: '209894D226AA'
     },
     {
       id: 6294898, name: 'smart/tel HUAWEI Y6II Dual Sim (black)', price: 3899,

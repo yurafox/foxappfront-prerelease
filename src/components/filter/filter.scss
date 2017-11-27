@@ -4,6 +4,12 @@ filter {
     border: 1px solid #EBEBEC;
   }
 
+  .f-grid-nopadding-lr {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+
   .item-md.item-block .item-inner {
     border-bottom: 0px;
   }
@@ -51,9 +57,21 @@ filter {
     padding-bottom: 2px;
   }
 
+  .f-item-padding-bottom5 {
+    padding-bottom: 5px;
+  }
+
+  .f-item-padding-5 {
+    padding: 5px;
+  }
+
   .f-item-nopadding-tb {
     padding-top: 0px;
     padding-bottom: 0px;
+  }
+
+  .f-item-nopadding-top {
+    padding-top: 0px;
   }
 
   .f-grid-feat-bkgrnd {

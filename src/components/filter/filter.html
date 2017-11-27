@@ -1,9 +1,9 @@
-<ion-grid no-padding *ngIf="(filteredProducts?.length > 5) || (dataInitialized)">
-  <ion-row>
-    <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
+<ion-grid class="f-grid-nopadding-lr f-item-nopadding-top" *ngIf="(filteredProducts?.length > 5) || (dataInitialized)">
+  <ion-row >
+    <ion-col  class="f-item-padding-5 f-grid-border">
       <span> {{filteredProducts?.length}} items</span>
     </ion-col>
-    <ion-col col-auto text-end style="padding: 5px; border: 1px solid #EBEBEC;" (click)="showFilter($event)">
+    <ion-col col-auto text-end class="f-item-padding-5 f-grid-border" (click)="showFilter($event)">
       <span>&nbsp;&nbsp;Filter&nbsp;&nbsp;</span>
       <ion-icon item-end name="ios-arrow-down"></ion-icon>
     </ion-col>

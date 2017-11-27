@@ -221,7 +221,9 @@ export class AppDataRepository extends AbstractDataRepository {
             if (this.search(mnf.name, srchString) ||
                 this.search(productItem.description, srchString) ||
                 this.search(productItem.id.toString(), srchString) ||
-                this.search(productItem.name, srchString))
+                this.search(productItem.name, srchString) ||
+                this.search(productItem.barcode, srchString)
+                )
                 {
                   products.push(productItem);
                 };
@@ -255,7 +257,8 @@ export class AppDataRepository extends AbstractDataRepository {
 
             // create current product
             const productItem: Product = new Product(val.id, val.name, val.price, val.manufacturerId,
-              props, val.imageUrl, val.rating, val.recall, val.supplOffers, val.description, val.slideImageUrls);
+              props, val.imageUrl, val.rating, val.recall, val.supplOffers, val.description, val.slideImageUrls,
+              val.barcode);
 
             products.push(productItem);
 
@@ -355,6 +358,7 @@ export class AppDataRepository extends AbstractDataRepository {
           prod.supplOffers = data.supplOffers;
           prod.description = data.description;
           prod.slideImageUrls = data.slideImageUrls;
+          prod.barcode = data.barcode;
 
           // add to cache
           this.cache.Products.Add(id, prod);
