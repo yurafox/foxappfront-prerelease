@@ -100,6 +100,88 @@
       </dataTypeUsage>
       <notNull>false</notNull>
     </column>
+    <column>
+      <name>ID_LO_ENTITY</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">18</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
+    <column>
+      <name>LO_TRACK_TICKET</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">50</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>VARCHAR2</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
+    <column>
+      <name>LO_DELIVERY_COST</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">18</value>
+          </entry>
+          <entry>
+            <key>scale</key>
+            <value class="java.lang.Integer">2</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
+    <column>
+      <name>LO_DELIVERY_COMPLETED</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">1</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
+    <column>
+      <name>LO_ESTIMATED_DELIVERY_DATE</name>
+      <dataTypeUsage>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>DATE</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
+    <column>
+      <name>LO_DELIVERY_COMPLETED_DATE</name>
+      <dataTypeUsage>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>DATE</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
   </columns>
   <constraints>
     <constraint class="oracle.javatools.db.PKConstraint">
@@ -147,6 +229,32 @@
         <name>STORE_PLACES_PK</name>
         <parent class="oracle.javatools.db.NameBasedID">
           <name>STORE_PLACES</name>
+          <schemaName>FOXSTORE</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>FOXSTORE</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <name>ORDER_SPEC_PRODUCTS_FK2</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.NameBasedID">
+          <name>ID_LO_ENTITY</name>
+          <parent class="oracle.javatools.db.NameBasedID">
+            <name>ORDER_SPEC_PRODUCTS</name>
+            <schemaName>FOXSTORE</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>FOXSTORE</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <referenceID class="oracle.javatools.db.NameBasedID">
+        <name>LO_ENTITIES_PK</name>
+        <parent class="oracle.javatools.db.NameBasedID">
+          <name>LO_ENTITIES</name>
           <schemaName>FOXSTORE</schemaName>
           <type>TABLE</type>
         </parent>
