@@ -19,4 +19,5 @@ export * from './city';
 export * from './map-marker';
 export * from './user';
 export * from './login-template';
+export * from './lang';
 

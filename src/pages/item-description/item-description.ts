@@ -16,9 +16,4 @@ export class ItemDescriptionPage extends ComponentBase implements OnInit {
     super();
     this.description = this.navParams.data;
   }
-
-  async ngOnInit() {
-
-  }
-
 }

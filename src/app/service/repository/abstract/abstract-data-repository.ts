@@ -5,7 +5,8 @@ import { QuotationProduct,
          Currency,
          Manufacturer,
          City,
-         MapMarker
+         MapMarker,
+         Lang
        } from '../../../model/index';
 import {ProductReview} from "../../../model/product-review";
 
@@ -16,6 +17,7 @@ export abstract class AbstractDataRepository {
 
   public async abstract getSuppliers(cacheForce: boolean): Promise<Supplier[]>;
   public async abstract getCurrencies(cacheForce: boolean): Promise<Currency[]>;
+  public async abstract getLocale(cacheForce: boolean): Promise<Lang[]>;
 
   public async abstract getQuotationProductsByProductId(productId: number): Promise<QuotationProduct[]>;
   public async abstract getProductById(productId: number): Promise<Product>;

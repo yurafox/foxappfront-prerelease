@@ -2,7 +2,7 @@ import {AbstractControl} from '@angular/forms';
 import {Injector} from '@angular/core';
 import {Product, Supplier, Currency} from '../model/index';
 import {Manufacturer} from "../model/manufacturer";
-import {Observable} from 'rxjs/Observable';
+import {Lang} from "../model/lang";
 
 export interface IDictionary<T> {
   [k: string]: T;
@@ -122,6 +122,7 @@ export namespace Providers {
     private _cacheProduct: IKeyedCollection<Product> = null;
     private _cacheSupplier: IKeyedCollection<Supplier> = null;
     private _cacheCurrency: IKeyedCollection<Currency> = null;
+    private _cacheLang: IKeyedCollection<Lang> = null;
     private _cacheManufacturer: IKeyedCollection<Manufacturer> = null;
 
     public get Products(): IKeyedCollection<Product> {
@@ -143,6 +144,13 @@ export namespace Providers {
         this._cacheCurrency = new CacheItems<Currency>();
 
       return this._cacheCurrency;
+    }
+
+    public get Lang(): IKeyedCollection<Lang> {
+      if (this._cacheLang == null)
+        this._cacheLang = new CacheItems<Lang>();
+
+      return this._cacheLang;
     }
 
     public get Manufacturer(): IKeyedCollection<Manufacturer> {
@@ -233,4 +241,10 @@ function lazyParamToValue(pointer: any, params: string[]): any[] {
   return resultArr;
 }
 
+// </editor-fold>
+
+// <editor-fold desc="core object methods">
+export function Activator<T>(type:{new():T}):T {
+  return new type();
+}
 // </editor-fold>

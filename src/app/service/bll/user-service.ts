@@ -4,6 +4,7 @@ import {AbstractAccountRepository} from "../index";
 import {AppConstants} from "../../app-constants";
 import {LoginTemplate} from "../../model/index";
 import {IDictionary} from "../../core/app-core";
+import {EventService} from "../event-service";
 
 @Injectable()
 export class UserService {
@@ -20,7 +21,9 @@ export class UserService {
   }
 
   // <editor-fold desc='.ctor'>
-  constructor(private _account: AbstractAccountRepository) {
+  constructor(private _account: AbstractAccountRepository,
+              private evServ:EventService) {
+
     this.callDefaultUser();
   }
 
@@ -116,6 +119,7 @@ export class UserService {
     this.user = await this._account.getUserById(+id, this.token);
       this.changeAuthStatus(['appKey']);
       this.errorClear('shortLogin');
+      this.evServ.events['localeChangeEvent'].emit(this.lang);
       return true;
 
     } catch (err) {

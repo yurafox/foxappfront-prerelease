@@ -1,0 +1,51 @@
+dropdown-view {
+  .f-table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .f-table th,
+  .f-table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #eceeef;
+    color: black;
+  }
+
+  .f-table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #eceeef;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .f-table tbody + tbody {
+    border-top: 2px solid #eceeef;
+  }
+
+  .f-table .f-table {
+    background-color: #fff;
+  }
+
+
+  .f-table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .f-table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.095);
+  }
+
+  .popover-md .popover-content {
+    width: 125px !important;
+  }
+
+  .f-list-modal {
+    padding: 0px;
+    background-color: rgba(0, 0, 0, 0.05)
+  }
+
+  .f-active {
+    border-left: 1px solid #e59400
+  }
+}

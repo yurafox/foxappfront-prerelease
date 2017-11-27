@@ -13,6 +13,8 @@ import { ItemReviewComponent } from './item-review/item-review';
 import { ReadMoreComponent } from './read-more/read-more';
 import { ItemsListComponent } from './items-list/items-list';
 import { FilterComponent } from './filter/filter';
+import { DropdownViewComponent } from './dropdown-view/dropdown-view';
+import { DropdownListComponent } from './dropdown-list/dropdown-list';
 
 
 
@@ -27,7 +29,9 @@ import { FilterComponent } from './filter/filter';
     ItemReviewComponent,
     ReadMoreComponent,
     ItemsListComponent,
-    FilterComponent
+    FilterComponent,
+    DropdownViewComponent,
+    DropdownListComponent
   ],
 	imports: [
     IonicModule,
@@ -44,7 +48,10 @@ import { FilterComponent } from './filter/filter';
     ItemReviewComponent,
     ReadMoreComponent,
     ItemsListComponent,
-    FilterComponent
-  ]
+    FilterComponent,
+    DropdownListComponent,
+    DropdownViewComponent
+  ],
+  entryComponents:[DropdownViewComponent]
 })
 export class ComponentsModule {}

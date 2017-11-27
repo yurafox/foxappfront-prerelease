@@ -4,14 +4,16 @@
 
     <ion-header>
       <!-- User profile -->
-      <div padding class="menu-left menu-bg" *ngIf="account.isAuth">
+      <div padding class="menu-left menu-bg" *ngIf="userService.isAuth">
         <a menuClose>
           <img class="profile-picture" src="http://www.gravatar.com/avatar?d=mm&s=140">
-          <h4 ion-text color="light">{{account.name}}</h4>
+          <h4 ion-text color="light">{{userService.name}}</h4>
         </a>
       </div>
       <ion-navbar>
-        <ion-title>Меню</ion-title>
+        <ion-title>
+          <span loc="Меню" name="MainMenu">{{locale.MainMenu}}</span>
+        </ion-title>
       </ion-navbar>
     </ion-header>
 
@@ -20,24 +22,24 @@
         <div *ngFor="let p of appPages">
           <button ion-item menuClose (click)="openPage(p)">
             <ion-icon item-start [name]="p.icon"></ion-icon>
-            {{p.title}}
+            <span [loc]="p.title" [name]="p.name">{{locale[p.name]}}</span>
           </button>
         </div>
       </ion-list>
 
       <ion-list>
         <ion-list-header>
-          Информация
+          <span loc="Информация" name="InfoMenu">{{locale.InfoMenu}}</span>
         </ion-list-header>
         <button ion-item menuClose *ngFor="let p of infoPages" (click)="openPage(p)">
           <ion-icon item-start [name]="p.icon"></ion-icon>
-          {{p.title}}
+          <span [loc]="p.title" [name]="p.name">{{locale[p.name]}}</span>
         </button>
       </ion-list>
 
-      <ion-list *ngIf="account.isAuth">
+      <ion-list *ngIf="userService.isAuth">
         <button ion-item (click)="signOut($event)">
-          Выйти
+          <span loc="Выйти" name="OutApp">{{locale.OutApp}}</span>
         </button>
       </ion-list>
     </ion-content>
