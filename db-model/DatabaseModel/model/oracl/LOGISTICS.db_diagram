@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <xmi:XMI xmlns:xmi='http://www.omg.org/spec/XMI/20131001' xmlns:DI='http://xmlns.omg.org/DI/2.0'>
-  <documentation exporter='Oracle JDeveloper' exporterVersion='12.2.1.2.0'/>
+  <documentation exporter='Oracle JDeveloper' exporterVersion='12.2.1.0.0'/>
   <DI:Diagram xmi:type='DI:Diagram' xmi:id='idcbfb89c1-338e-4682-8b47-65a11519129e' zoom='0.0'>
     <contained xmi:type='DI:GraphNode' xmi:id='id286a6ab6-582f-4538-a4e0-4fef0ab52ebc'>
       <anchorage xmi:type='DI:GraphConnector' xmi:id='idf13d78a8-bc50-4589-a223-68cfe9b124a3' graphEdge='id581b2cb6-165b-48ff-bbbd-fca1a0d19fa3 idad3fa53b-8fe0-486d-b956-08f6eb00ffe2'/>
@@ -797,7 +797,7 @@
         <semanticModel xmi:type='DI:SimpleSemanticModelBridge' typeInfo='SYMBOLIC'/>
         <size xmi:type='DI:Dimension' height='199.9521484375' width='216.359375'/>
       </contained>
-      <position xmi:type='DI:Point' x='375.0' y='45.0'/>
+      <position xmi:type='DI:Point' x='375.0' y='-30.0'/>
       <property xmi:type='DI:Property' key='FilterColumnsByText' value=''/>
       <property xmi:type='DI:Property' key='ShowFKCols' value='true'/>
       <property xmi:type='DI:Property' key='UseTabularLayout' value='false'/>
@@ -1069,7 +1069,7 @@
       <property xmi:type='DI:Property' key='fontColor' value='#0'/>
       <property xmi:type='DI:Property' key='lineWidth' value='1.0'/>
       <semanticModel xmi:type='DI:CoreSemanticModelBridge' element='DB:N:CONSTRAINT:LO_SUPPL_ENTITY_FK1:N:TABLE:LO_SUPPL_ENTITY:SCHEMA:FOXSTORE:DBObjectName:LO_SUPPL_ENTITY_FK1:Provider:15aa056d-b74b-4796-9210-635620fa6dc1'/>
-      <waypoint xmi:type='DI:Point' x='468.5130920410156' y='45.0'/>
+      <waypoint xmi:type='DI:Point' x='468.5130920410156' y='-30.0'/>
       <waypoint xmi:type='DI:Point' x='468.5130920410156' y='-100.0478515625'/>
     </contained>
     <contained xmi:type='DI:GraphEdge' xmi:id='id2b7c44f1-f388-42fe-b14e-52ef073d3ad2' anchor='ideeab7fb9-53bd-4a88-a2c1-a745988e3da1 id95b4fc56-837e-4aed-a4c2-bb9fcf82e46e'>
@@ -1354,7 +1354,7 @@
         <semanticModel xmi:type='DI:SimpleSemanticModelBridge' typeInfo='SYMBOLIC'/>
         <size xmi:type='DI:Dimension' height='199.9521484375' width='333.359375'/>
       </contained>
-      <position xmi:type='DI:Point' x='375.0' y='300.0'/>
+      <position xmi:type='DI:Point' x='315.0' y='195.0'/>
       <property xmi:type='DI:Property' key='FilterColumnsByText' value=''/>
       <property xmi:type='DI:Property' key='ShowFKCols' value='true'/>
       <property xmi:type='DI:Property' key='UseTabularLayout' value='false'/>
@@ -1402,11 +1402,11 @@
         <semanticModel xmi:type='DI:SimpleSemanticModelBridge' typeInfo='sourcename'/>
       </contained>
       <contained xmi:type='DI:GraphNode' xmi:id='id4450c490-01b7-4090-84ef-f315c02d829d'>
-        <position xmi:type='DI:Point' x='4.0' y='4.0'/>
+        <position xmi:type='DI:Point' x='-14.5' y='-25.47607421875'/>
         <semanticModel xmi:type='DI:SimpleSemanticModelBridge' typeInfo='stereotype'/>
       </contained>
       <contained xmi:type='DI:GraphNode' xmi:id='id59a88b29-0b57-4f44-a819-23cc267cfa1d'>
-        <position xmi:type='DI:Point' x='-182.0' y='4.0'/>
+        <position xmi:type='DI:Point' x='-89.0' y='4.0'/>
         <semanticModel xmi:type='DI:SimpleSemanticModelBridge' typeInfo='name'/>
       </contained>
       <contained xmi:type='DI:GraphNode' xmi:id='id5956ca8d-ceae-4d9a-b5a3-99061375ea6d'>
@@ -1428,10 +1428,10 @@
       <property xmi:type='DI:Property' key='fontColor' value='#0'/>
       <property xmi:type='DI:Property' key='lineWidth' value='1.0'/>
       <semanticModel xmi:type='DI:CoreSemanticModelBridge' element='DB:N:CONSTRAINT:LO_ORDER_SPEC_TRACKING_FK1:N:TABLE:LO_ORDER_SPEC_TRACKING:SCHEMA:FOXSTORE:DBObjectName:LO_ORDER_SPEC_TRACKING_FK1:Provider:15aa056d-b74b-4796-9210-635620fa6dc1'/>
-      <waypoint xmi:type='DI:Point' x='67.5' y='232.55409240722656'/>
-      <waypoint xmi:type='DI:Point' x='230.4166717529297' y='232.55409240722656'/>
-      <waypoint xmi:type='DI:Point' x='230.4166717529297' y='333.66021728515625'/>
-      <waypoint xmi:type='DI:Point' x='375.0' y='333.66021728515625'/>
+      <waypoint xmi:type='DI:Point' x='67.5' y='228.55409240722656'/>
+      <waypoint xmi:type='DI:Point' x='230.4166717529297' y='228.55409240722656'/>
+      <waypoint xmi:type='DI:Point' x='230.4166717529297' y='228.66021728515625'/>
+      <waypoint xmi:type='DI:Point' x='315.0' y='228.66021728515625'/>
     </contained>
     <property xmi:type='DI:Property' key='alignmentRulersColor' value='#99d9ea'/>
     <property xmi:type='DI:Property' key='ForeignKeyNotation' value='0'/>
