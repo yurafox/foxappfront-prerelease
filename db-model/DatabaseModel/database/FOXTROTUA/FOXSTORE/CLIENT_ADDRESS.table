@@ -1,6 +1,6 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <table xmlns="http://xmlns.oracle.com/jdeveloper/1211/offlinedb">
-  <name>STORE_PLACES</name>
+  <name>CLIENT_ADDRESS</name>
   <columns>
     <column>
       <name>ID</name>
@@ -18,7 +18,7 @@
       <notNull>true</notNull>
     </column>
     <column>
-      <name>ID_SUPPLIER</name>
+      <name>ID_CLIENT</name>
       <dataTypeUsage>
         <attributeValues>
           <entry>
@@ -28,21 +28,6 @@
         </attributeValues>
         <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
           <typeName>NUMBER</typeName>
-        </dataTypeID>
-      </dataTypeUsage>
-      <notNull>true</notNull>
-    </column>
-    <column>
-      <name>NAME</name>
-      <dataTypeUsage>
-        <attributeValues>
-          <entry>
-            <key>size</key>
-            <value class="java.lang.Long">100</value>
-          </entry>
-        </attributeValues>
-        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
-          <typeName>VARCHAR2</typeName>
         </dataTypeID>
       </dataTypeUsage>
       <notNull>true</notNull>
@@ -93,12 +78,42 @@
       <notNull>false</notNull>
     </column>
     <column>
-      <name>ADDRESS_LINE</name>
+      <name>CITY</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">50</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>VARCHAR2</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
+    <column>
+      <name>STREET</name>
       <dataTypeUsage>
         <attributeValues>
           <entry>
             <key>size</key>
             <value class="java.lang.Long">100</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>VARCHAR2</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
+    <column>
+      <name>BLD_APP</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">20</value>
           </entry>
         </attributeValues>
         <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
@@ -146,7 +161,7 @@
       <notNull>false</notNull>
     </column>
     <column>
-      <name>TYPE</name>
+      <name>IS_PRIMARY</name>
       <dataTypeUsage>
         <attributeValues>
           <entry>
@@ -158,24 +173,17 @@
           <typeName>NUMBER</typeName>
         </dataTypeID>
       </dataTypeUsage>
-      <default class="java.lang.String">3</default>
       <notNull>false</notNull>
-      <properties>
-        <entry>
-          <key>Comment</key>
-          <value class="java.lang.String">Types: 1-store, 2-warehouse, 3-n/a</value>
-        </entry>
-      </properties>
     </column>
   </columns>
   <constraints>
     <constraint class="oracle.javatools.db.PKConstraint">
-      <name>STORE_PLACES_PK</name>
+      <name>CLIENT_ADDRESS_PK</name>
       <columnIDs>
         <columnID class="oracle.javatools.db.NameBasedID">
           <name>ID</name>
           <parent class="oracle.javatools.db.NameBasedID">
-            <name>STORE_PLACES</name>
+            <name>CLIENT_ADDRESS</name>
             <schemaName>FOXSTORE</schemaName>
             <type>TABLE</type>
           </parent>
@@ -185,9 +193,9 @@
       </columnIDs>
       <enabled>true</enabled>
       <indexID class="oracle.javatools.db.NameBasedID">
-        <name>STORE_PLACES_PK</name>
+        <name>CLIENT_ADDRESS_PK</name>
         <parent class="oracle.javatools.db.NameBasedID">
-          <name>STORE_PLACES</name>
+          <name>CLIENT_ADDRESS</name>
           <schemaName>FOXSTORE</schemaName>
           <type>TABLE</type>
         </parent>
@@ -196,38 +204,12 @@
       </indexID>
     </constraint>
     <constraint class="oracle.javatools.db.FKConstraint">
-      <name>STORE_PLACES_FK1</name>
-      <columnIDs>
-        <columnID class="oracle.javatools.db.NameBasedID">
-          <name>ID_SUPPLIER</name>
-          <parent class="oracle.javatools.db.NameBasedID">
-            <name>STORE_PLACES</name>
-            <schemaName>FOXSTORE</schemaName>
-            <type>TABLE</type>
-          </parent>
-          <schemaName>FOXSTORE</schemaName>
-          <type>COLUMN</type>
-        </columnID>
-      </columnIDs>
-      <enabled>true</enabled>
-      <referenceID class="oracle.javatools.db.NameBasedID">
-        <name>SUPPLIER_PK</name>
-        <parent class="oracle.javatools.db.NameBasedID">
-          <name>SUPPLIERS</name>
-          <schemaName>FOXSTORE</schemaName>
-          <type>TABLE</type>
-        </parent>
-        <schemaName>FOXSTORE</schemaName>
-        <type>CONSTRAINT</type>
-      </referenceID>
-    </constraint>
-    <constraint class="oracle.javatools.db.FKConstraint">
-      <name>STORE_PLACES_FK2</name>
+      <name>CLIENT_ADDRESS_FK1</name>
       <columnIDs>
         <columnID class="oracle.javatools.db.NameBasedID">
           <name>ID_CITY</name>
           <parent class="oracle.javatools.db.NameBasedID">
-            <name>STORE_PLACES</name>
+            <name>CLIENT_ADDRESS</name>
             <schemaName>FOXSTORE</schemaName>
             <type>TABLE</type>
           </parent>
@@ -248,12 +230,38 @@
       </referenceID>
     </constraint>
     <constraint class="oracle.javatools.db.FKConstraint">
-      <name>STORE_PLACES_FK3</name>
+      <name>CLIENT_ADDRESS_FK2</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.NameBasedID">
+          <name>ID_CLIENT</name>
+          <parent class="oracle.javatools.db.NameBasedID">
+            <name>CLIENT_ADDRESS</name>
+            <schemaName>FOXSTORE</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>FOXSTORE</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <referenceID class="oracle.javatools.db.NameBasedID">
+        <name>CLIENT_PK</name>
+        <parent class="oracle.javatools.db.NameBasedID">
+          <name>CLIENTS</name>
+          <schemaName>FOXSTORE</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>FOXSTORE</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <name>CLIENT_ADDRESS_FK3</name>
       <columnIDs>
         <columnID class="oracle.javatools.db.NameBasedID">
           <name>ID_COUNTRY</name>
           <parent class="oracle.javatools.db.NameBasedID">
-            <name>STORE_PLACES</name>
+            <name>CLIENT_ADDRESS</name>
             <schemaName>FOXSTORE</schemaName>
             <type>TABLE</type>
           </parent>
@@ -276,7 +284,7 @@
   </constraints>
   <indexes>
     <index>
-      <name>STORE_PLACES_PK</name>
+      <name>CLIENT_ADDRESS_PK</name>
       <columnExpressions>
         <columnExpression>
           <expressionSource>ID</expressionSource>

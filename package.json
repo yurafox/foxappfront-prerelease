@@ -37,7 +37,7 @@
     "cordova-android": "6.3.0",
     "cordova-browser": "~5.0.1",
     "cordova-plugin-device": "^1.1.7",
-    "cordova-plugin-geolocation": "~3.0.0",
+    "cordova-plugin-geolocation": "^3.0.0",
     "cordova-plugin-googlemaps": "^2.1.1",
     "cordova-plugin-ionic-webview": "^1.1.16",
     "cordova-plugin-screen-orientation": "^2.0.2",

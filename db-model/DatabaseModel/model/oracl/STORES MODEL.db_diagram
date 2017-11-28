@@ -360,7 +360,7 @@
         <semanticModel xmi:type='DI:SimpleSemanticModelBridge' typeInfo='SYMBOLIC'/>
         <size xmi:type='DI:Dimension' height='199.9521484375' width='216.359375'/>
       </contained>
-      <position xmi:type='DI:Point' x='2070.0' y='-315.0'/>
+      <position xmi:type='DI:Point' x='2055.0' y='-315.0'/>
       <property xmi:type='DI:Property' key='showPackage' value='true'/>
       <property xmi:type='DI:Property' key='alternatingRowColor' value='false'/>
       <property xmi:type='DI:Property' key='ShowConstraintsCompartment' value='true'/>
@@ -434,8 +434,8 @@
       <property xmi:type='DI:Property' key='showRoleNames' value='true'/>
       <property xmi:type='DI:Property' key='font' value='SansSerif,plain,11'/>
       <semanticModel xmi:type='DI:CoreSemanticModelBridge' element='DB:N:CONSTRAINT:STORE_PLACES_FK1:N:TABLE:STORE_PLACES:SCHEMA:FOXSTORE:DBObjectName:STORE_PLACES_FK1:Provider:15aa056d-b74b-4796-9210-635620fa6dc1'/>
-      <waypoint xmi:type='DI:Point' x='2147.015625' y='-315.0'/>
-      <waypoint xmi:type='DI:Point' x='2147.015625' y='-431.02392578125'/>
+      <waypoint xmi:type='DI:Point' x='2132.015625' y='-315.0'/>
+      <waypoint xmi:type='DI:Point' x='2132.015625' y='-431.02392578125'/>
       <waypoint xmi:type='DI:Point' x='2146.348876953125' y='-431.02392578125'/>
       <waypoint xmi:type='DI:Point' x='2146.348876953125' y='-457.0478515625'/>
     </contained>
