@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
-import {NavController, NavParams} from 'ionic-angular';
+import {AlertController, NavController, NavParams} from 'ionic-angular';
 import {SearchService} from '../../app/service/search-service';
 import {SearchResultsPage} from '../../pages/search-results/search-results';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
@@ -15,12 +15,13 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
   disabled = true;
   searchValue = '';
   public tmpSearchArray = new Array<string>();
-  barcodeResult: string;
-  showFlipCameraButton = true;
+  //barcodeResult: string;
+  //showFlipCameraButton = true;
 
   constructor(public searchService: SearchService,
                public navCtrl: NavController,
-               private barcodeScanner: BarcodeScanner) {
+               private barcodeScanner: BarcodeScanner,
+                private alertCtrl: AlertController) {
     super();
     searchService.lastSearchStringUpdated.subscribe(
       (value: string) => {
@@ -42,9 +43,20 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
   }
 
   searchByBarcode(): void {
-    console.log('Search by barcode');
     this.barcodeScanner.scan().then((barcodeData) => {
-      this.barcodeResult = barcodeData.text;
+      this.disabled = false;
+      this.searchValue = barcodeData.text;
+/*
+      let alert = this.alertCtrl.create({
+        title: 'Barcode result',
+        subTitle: barcodeData.text,
+        buttons: ['OK']
+      });
+      alert.present();
+
+*/
+      this.incSearch();
+      this.searchByText(this.searchValue);
     }, (err) => {
       console.log('An error while scanning barcode occurred: ' + err);
     });

@@ -215,7 +215,8 @@ export class AppDataRepository extends AbstractDataRepository {
 
             // create current product
             const productItem: Product = new Product(val.id, val.name, val.price, val.manufacturerId,
-              props, val.imageUrl, val.rating, val.recall, val.supplOffers, val.description, val.slideImageUrls);
+              props, val.imageUrl, val.rating, val.recall, val.supplOffers, val.description, val.slideImageUrls,
+              val.barcode);
 
             let mnf = await (<any>productItem).manufacturer_p;
             if (this.search(mnf.name, srchString) ||
