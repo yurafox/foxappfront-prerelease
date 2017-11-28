@@ -757,6 +757,39 @@ export class WebApiService implements InMemoryDbService {
     {id: 6, idQuotationProduct: 5, idStorePlace: 3, qty: 1}
   ];
 
+  countries = [
+    {id: 1, name: 'Ukraine'},
+    {id: 2, name: 'U.S.A.'},
+    {id: 3, name: 'Moldova'}
+  ];
+
+  clients = [
+    {id: 100, name: 'yurafox', phone: '+380504410081', login: 'yufafox@fox.com', email: 'yufafox@fox.com', fname: 'Yurii', lname: 'Ishchenko'},
+    {id: 101, name: 'sergce', phone: '+222', login: 'sergce@fox.com', email: 'sergce@fox.com', fname: 'Serhiy', lname: 'Moskalenko'},
+    {id: 102, name: 'dealio07', phone: '+3333', login: 'dealio07@fox.com', email: 'dealio07@fox.com', fname: 'Volodymyr', lname: 'Varha'}
+  ];
+
+  clientAddresses = [
+    {id: 1, idClient: 100, idCity: 8, zip: '07400', street: 'Незалежності', isPrimary: true, idCountry: 1, city: 'Brovary', bldApp: '25 app.17'},
+    {id: 2, idClient: 100, idCity: 23, zip: '', street: 'Дорогожицька', isPrimary: null, idCountry: 1, city: 'Kyiv', bldApp: '1'},
+    {id: 3, idClient: 101, idCity: 8, zip: '07400', street: 'Героїв Небесної Сотні', isPrimary: true, idCountry: 1, city: 'Brovary', bldApp: '20 app.7'},
+    {id: 4, idClient: 102, idCity: 23, zip: null, street: 'Дорогожицька', isPrimary: null, idCountry: 1, city: 'Kyiv', bldApp: '1'}
+  ];
+
+  loEntities = [
+    {id: 150, name: 'Nova Poshta'},
+    {id: 100, name: 'Foxtrot'},
+    {id: 101, name: 'In Time'},
+    {id: 102, name: 'Mist Express'}
+  ];
+
+  loSupplEntities = [
+    {id: 1, idSuppler: 1, idLoEntity: 150},
+    {id: 2, idSuppler: 1, idLoEntity: 100},
+    {id: 3, idSuppler: 2, idLoEntity: 102},
+    {id: 4, idSuppler: 2, idLoEntity: 150}
+  ];
+
 
   //<editor-fold desc="Tokens">
   tokens = [

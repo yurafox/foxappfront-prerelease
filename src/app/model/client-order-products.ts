@@ -18,6 +18,12 @@ export class ClientOrderProducts {
     public idQuotationProduct: number,
     public price: number,
     public qty: number,
-    public idStorePlace?: number
+    public idStorePlace?: number,
+    public idLoEntity?: number,
+    public loTrackTicket?: string,
+    public loDeliveryCost?: number,
+    public loDeliveryCompleted?: boolean,
+    public loEstimatedDeliveryDate?: Date,
+    public loDeliveryCompletedDate?: Date
   ){ this._repo = RefInjector.pull(AbstractDataRepository) }
 }
