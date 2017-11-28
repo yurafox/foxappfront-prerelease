@@ -1,5 +1,4 @@
 export * from './about/about';
-export * from './about-popover/about-popover';
 export * from './account/account';
 export * from './home/home';
 export * from './support/support';

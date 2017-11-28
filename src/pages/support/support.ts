@@ -22,11 +22,7 @@ export class SupportPage {
   }
 
   ionViewDidEnter() {
-    let toast = this.toastCtrl.create({
-      message: 'This does not actually send a support request.',
-      duration: 3000
-    });
-    toast.present();
+
   }
 
   submit(form: NgForm) {
@@ -41,6 +37,8 @@ export class SupportPage {
         duration: 3000
       });
       toast.present();
+
+      // Handle report message sending here
     }
   }
 
