@@ -4,7 +4,7 @@
 
     <ion-header>
       <!-- User profile -->
-      <div padding class="menu-left menu-bg" *ngIf="account.isAuth">
+      <div padding class="menu-bg" *ngIf="account.isAuth">
         <a menuClose>
           <img class="profile-picture" src="http://www.gravatar.com/avatar?d=mm&s=140">
           <h4 ion-text color="light">{{account.name}}</h4>
@@ -15,7 +15,7 @@
       </ion-navbar>
     </ion-header>
 
-    <ion-content class="outer-content">
+    <ion-content>
       <ion-list>
         <div *ngFor="let p of appPages">
           <button ion-item menuClose (click)="openPage(p)">

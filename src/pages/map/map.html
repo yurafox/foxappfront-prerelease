@@ -1,25 +1,27 @@
 <ion-header>
   <main-toolbar></main-toolbar>
+  <ion-select [(ngModel)]="selectedCity" (ionChange)="changeMarkers()" placeholder="Выберите город"
+              class="f-another-select">
+    <ion-option *ngFor="let city of cities" [value]="city.name" checked="city.name === selectedCity">{{city.name}}
+    </ion-option>
+  </ion-select>
+  <ion-select [(ngModel)]="selectedMarker" (ionChange)="handleListSelect()" placeholder="Выберите адрес магазина"
+              class="f-another-select">
+    <ion-option *ngFor="let shop of shopList" [value]="shop.value" checked="shop.label === selectedMarker.label">
+      {{shop.label}}
+    </ion-option>
+  </ion-select>
 </ion-header>
 
 <ion-content>
-  <div class="f-div">
-    <ion-select [(ngModel)]="selectedCity" (ionChange)="changeMarkers()" placeholder="Выберите город"
-                class="f-another-select">
-      <ion-option *ngFor="let city of cities" [value]="city.name" checked="city.name === selectedCity">{{city.name}}
-      </ion-option>
-    </ion-select>
-    <ion-select [(ngModel)]="selectedMarker" (ionChange)="handleListSelect()" placeholder="Выберите адрес магазина"
-                class="f-another-select">
-      <ion-option *ngFor="let shop of shopList" [value]="shop.value" checked="shop.label === selectedMarker.label">
-        {{shop.label}}
-      </ion-option>
-    </ion-select>
+  <!--GMap-->
+  <div  [ngStyle]="{'height': height + 'px'}" #mapCanvas id="map_canvas"></div>
+  <!--[ngStyle]="{'width': width + 'px', 'height': height + 'px'}"-->
+</ion-content>
 
-    <!--GMap-->
-    <div [ngStyle]="{'width': width, 'height': height + 'px'}" #mapCanvas id="map_canvas"></div>
-
-    <ion-buttons *ngIf="selectedMarker !== null" align="center">
+<div class="f-map-footer" *ngIf="selectedMarker !== null">
+  <ion-footer>
+    <ion-buttons align="center">
       <button ion-button icon-left clear (click)="addToFavorite()" [disabled]="selectedMarker === null"
               class="f-map-button">
         <ion-icon name="ios-star"></ion-icon>
@@ -31,5 +33,5 @@
         Проложить маршрут
       </button>
     </ion-buttons>
-  </div>
-</ion-content>
+  </ion-footer>
+</div>

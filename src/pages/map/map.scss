@@ -1,5 +1,23 @@
 
 page-map {
+  .f-another-select {
+    max-width: 99%;
+    min-width: 99%;
+  }
+  .f-map-button {
+    max-width: 48%;
+    font-size: 14px;
+  }
+  .f-map-page-div {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .f-map-footer {
+    background-color: white;
+  }
+
   ion-content {
     background: rgb(229, 227, 223);
   }
@@ -33,19 +51,4 @@ page-map {
       height: 25px !important;
     }
   }
-}
-
-.f-another-select {
-  max-width: 99%;
-  min-width: 99%;
-}
-.f-map-button {
-  max-width: 48%;
-  font-size: 14px;
-}
-.f-div {
-  display: inline-block;
-  position: relative;
-  width: 100%;
-  height: 100%;
 }

@@ -1,15 +1,15 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule, Injector } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { StatusBar } from '@ionic-native/status-bar';
+import {BrowserModule} from '@angular/platform-browser';
+import {ErrorHandler, NgModule, Injector} from '@angular/core';
+import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
+import {SplashScreen} from '@ionic-native/splash-screen';
+import {StatusBar} from '@ionic-native/status-bar';
 import {HttpModule} from '@angular/http';
 import {InAppBrowser} from '@ionic-native/in-app-browser';
 import {GoogleMaps} from '@ionic-native/google-maps';
-import { Ionic2RatingModule } from 'ionic2-rating';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import {Ionic2RatingModule} from 'ionic2-rating';
+import {BarcodeScanner} from '@ionic-native/barcode-scanner';
 
-import { FoxApp } from './app.component';
+import {FoxApp} from './app.component';
 import {FormsModule} from '@angular/forms';
 import {ReactiveFormsModule} from '@angular/forms';
 
@@ -63,6 +63,8 @@ import {RefInjector} from './core/app-core';
 import {ComponentsModule} from '../components/components.module';
 import {PipesModule} from "./pipe/pipes.module";
 import {VideoPlayer} from '@ionic-native/video-player';
+import {Geolocation} from '@ionic-native/geolocation';
+import {ScreenOrientation} from '@ionic-native/screen-orientation';
 
 @NgModule({
   declarations: [
@@ -94,17 +96,17 @@ import {VideoPlayer} from '@ionic-native/video-player';
   imports: [
     BrowserModule,
     HttpModule,
-    InMemoryWebApiModule.forRoot(WebApiService, {delay: 1000,post204: false, put204: false}),
-    IonicModule.forRoot(FoxApp, {},{
+    InMemoryWebApiModule.forRoot(WebApiService, {delay: 1000, post204: false, put204: false}),
+    IonicModule.forRoot(FoxApp, {}, {
       links: [
-        { component: HomePage, name: 'HomePage', segment: 'home'},
-        { component: CategoriesPage, name: 'CategoriesPage', segment: 'categories'},
-        { component: CategoryPage, name: 'CategoryPage', segment: 'category/:categoryId'},
-        { component: MapPage, name: 'Map', segment: 'map' },
-        { component: SupportPage, name: 'SupportPage', segment: 'support' },
-        { component: LoginPage, name: 'LoginPage', segment: 'login' },
-        { component: AccountPage, name: 'AccountPage', segment: 'account' },
-        { component: AboutPage, name: 'AboutPage', segment: 'about'}
+        {component: HomePage, name: 'HomePage', segment: 'home'},
+        {component: CategoriesPage, name: 'CategoriesPage', segment: 'categories'},
+        {component: CategoryPage, name: 'CategoryPage', segment: 'category/:categoryId'},
+        {component: MapPage, name: 'Map', segment: 'map'},
+        {component: SupportPage, name: 'SupportPage', segment: 'support'},
+        {component: LoginPage, name: 'LoginPage', segment: 'login'},
+        {component: AccountPage, name: 'AccountPage', segment: 'account'},
+        {component: AboutPage, name: 'AboutPage', segment: 'about'}
       ]
     }),
     ComponentsModule,
@@ -146,8 +148,10 @@ import {VideoPlayer} from '@ionic-native/video-player';
     InAppBrowser,
     UserService,
     GoogleMaps,
+    Geolocation,
     BarcodeScanner,
     VideoPlayer,
+    ScreenOrientation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
     {provide: AbstractAccountRepository, useClass: AccountRepository},
