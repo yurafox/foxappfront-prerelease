@@ -4,72 +4,70 @@ import {Injectable} from '@angular/core';
 
 @Injectable()
 export class MockLocalizationRepository extends AbstractLocalizationRepository {
-  private _mockLocalizationStore: IDictionary<Array<MockLocalization>> = {};
+  private _mockLocalizationStore: IDictionary<Array<ILocalization>> = {};
 
   constructor() {
     super();
     // Глобальные месседжи и проч. локализумые строки
     this._mockLocalizationStore['App'] = [
-      new MockLocalization('msgError', 1, 'Ошибка'),
-      new MockLocalization('msgError', 2, 'Помилка'),
-      new MockLocalization('msgErrorEncountered', 1, 'Возникла ошибка'),
-      new MockLocalization('msgErrorEncountered', 2, 'Сталася помилка')
+      { tagName:'msgError', lang:1, text:'Ошибка'},
+      { tagName:'msgError', lang:2, text:'Помилка'},
+      { tagName:'msgError', lang:3, text:'Error'},
+      { tagName:'msgErrorEncountered', lang:1, text:'Возникла ошибка'},
+      { tagName:'msgErrorEncountered', lang:2, text:'Сталася помилка'},
+      { tagName:'msgErrorEncountered', lang:3, text:'There was an error'}
     ];
 
-    this._mockLocalizationStore['HeaderComponent'] = [
-      new MockLocalization('actionHeader', 1, 'Акции'),
-      new MockLocalization('creditHeader', 1, 'Кредиты'),
-      new MockLocalization('loyaltyHeader', 1, 'Программа лояльности'),
-      new MockLocalization('deliveryHeader', 1, 'Доставка'),
-      new MockLocalization('paymentHeader', 1, 'Оплата'),
-      new MockLocalization('shopHeader', 1, 'Адресса магазинов'),
-      new MockLocalization('returnLinkHeader', 1, 'Обратная связь'),
-      new MockLocalization('watchOrderHeader', 1, 'Отследить заказ'),
-      new MockLocalization('personalAreaHeader', 1, 'Личный кабинет'),
-      new MockLocalization('actionHeader', 2, 'Акції'),
-      new MockLocalization('creditHeader', 2, 'Кредити'),
-      new MockLocalization('loyaltyHeader', 2, 'Програма лояльності'),
-      new MockLocalization('deliveryHeader', 2, 'Доставка'),
-      new MockLocalization('paymentHeader', 2, 'Оплата'),
-      new MockLocalization('shopHeader', 2, 'Адреса магазинів'),
-      new MockLocalization('returnLinkHeader', 2, 'Зворотній зв\'язок'),
-      new MockLocalization('watchOrderHeader', 2, 'Відстежити заказ'),
-      new MockLocalization('personalAreaHeader', 2, 'Особистий кабінет')
-    ];
+    this._mockLocalizationStore['FoxApp'] = [
+      { tagName:'MainMenu', lang:1, text:'Меню'},
+      { tagName:'MainMenu', lang:2, text:'Меню'},
+      { tagName:'MainMenu', lang:3, text:'Menu'},
+      { tagName:'InfoMenu', lang:1, text:'Информация'},
+      { tagName:'InfoMenu', lang:2, text:'Інформація'},
+      { tagName:'InfoMenu', lang:3, text:'Information'},
+      { tagName:'OutApp', lang:1, text:'Выйти'},
+      { tagName:'OutApp', lang:2, text:'Вийти'},
+      { tagName:'OutApp', lang:3, text:'Go out'},
 
-    this._mockLocalizationStore['ProductFilterComponent'] = [
-      new MockLocalization('manufacturesFilter', 1, 'Производители'),
-      new MockLocalization('manufacturesFilter', 2, 'Виробники')
-    ];
+      { tagName:'Home', lang:1, text:'Главная'},
+      { tagName:'Home', lang:2, text:'Головна'},
+      { tagName:'Home', lang:3, text:'Main Page'},
+      { tagName:'Categories', lang:1, text:'Категории'},
+      { tagName:'Categories', lang:2, text:'Категорії'},
+      { tagName:'Categories', lang:3, text:'Categories'},
+      { tagName:'Account', lang:1, text:'Профиль'},
+      { tagName:'Account', lang:2, text:'Профіль'},
+      { tagName:'Account', lang:3, text:'Profile'},
 
-    this._mockLocalizationStore['FooterComponent'] = [
-      new MockLocalization('btnSubscribe', 1, 'Подписаться'),
-      new MockLocalization('btnSubscribe', 2, 'Підписатися'),
-      new MockLocalization('subscribeToNewsMsgBoxCaption', 1, 'Подписка на рассылку'),
-      new MockLocalization('subscribeToNewsMsgBoxCaption', 2, 'Підписка на розсилку'),
-      new MockLocalization('subscribeToNewsMsgBoxSuccessText', 1, '<p>Спасибо за подписку! На Ваш почтовый ящик было отправлено письмо. Подтвердите подписку, перейдя по ссылке в письме.</p>'),
-      new MockLocalization('subscribeToNewsMsgBoxSuccessText', 2, '<p>Дякуємо за те, що підписалися! На Вашу поштову скриньку був відправлений лист. Для підтвердження підписки перейдіть за посиланням у листі</p>')
+      { tagName:'Map', lang:1, text:'Магазины на карте'},
+      { tagName:'Map', lang:2, text:'Магазини на мапі'},
+      { tagName:'Map', lang:3, text:'Shop on the map'},
+      { tagName:'About', lang:1, text:'О нас'},
+      { tagName:'About', lang:2, text:'Про нас'},
+      { tagName:'About', lang:3, text:'About us'},
+      { tagName:'Support', lang:1, text:'Поддержка'},
+      { tagName:'Support', lang:2, text:'Підтримка'},
+      { tagName:'Support', lang:3, text:'Support'}
     ];
   }
 
   public getLocalization(data: { componentName: string, lang: number }): Promise<IDictionary<string>> {
     let mockResult: IDictionary<string> = {};
-    let localeArray: MockLocalization[] = this._mockLocalizationStore[data.componentName];
+    let localeArray: ILocalization[] = this._mockLocalizationStore[data.componentName];
     if(localeArray) {
       localeArray = localeArray
         .filter((value) => {
           return value.lang === +data.lang;
         });
-      localeArray.forEach((value) => mockResult[value.tagname] = value.text);
+      localeArray.forEach((value) => mockResult[value.tagName] = value.text);
     }
     let promise = Promise.resolve(mockResult);
     return promise;
   }
 }
 
-class MockLocalization {
-  constructor(public tagname: string,
-              public lang: number,
-              public text: string) {
-  }
+interface ILocalization {
+  tagName: string;
+  lang: number;
+  text: string
 }

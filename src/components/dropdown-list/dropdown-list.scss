@@ -1,0 +1,35 @@
+dropdown-list {
+  button {
+    color: black !important;
+    background-color: #d8d8d8 !important;
+  }
+  button:hover {
+    -webkit-box-shadow: 0 0 5px 2px #e59400;
+    -moz-box-shadow: 0 0 5px 2px #e59400;
+    box-shadow: 0 0 5px 2px #e59400;
+  }
+
+  ion-icon {
+    color: black !important;
+  }
+
+  .f-top-negative {
+    margin-top: -10px;
+  }
+
+  .f-left-15 {
+    margin-left: 15px;
+  }
+
+  .backdropOpacityPopover {
+    ion-backdrop {
+      opacity: 0.4;
+    }
+    margin: 0px auto;
+  }
+
+  .popover-md .popover-content {
+    width: 125px !important;
+    padding: 0px !important;
+  }
+}

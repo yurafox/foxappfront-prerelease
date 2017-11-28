@@ -21,4 +21,5 @@ export * from './user';
 export * from './login-template';
 export * from './store-place';
 export * from './product-store-place';
+export * from './lang';
 

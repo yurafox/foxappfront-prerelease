@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {HomePage, RegisterPage} from '../index';
-import {UserService} from "../../app/service/bll/user-service";
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import {ComponentBase} from "../../components/component-extension/component-base";
 
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
-export class LoginPage implements OnInit{
+export class LoginPage extends ComponentBase{
   private _authError = false;
   public loginForm: FormGroup;
   public get authError() {
@@ -34,13 +34,13 @@ export class LoginPage implements OnInit{
   };
 
   constructor(public nav: NavController,
-              private formBuilder: FormBuilder,
-              private  account: UserService) {
+              private formBuilder: FormBuilder) {
+    super();
   }
 
   // application hook
   ngOnInit(){
-    //super.ngOnInit();
+    super.ngOnInit();
     this.buildForm();
   }
 
@@ -57,8 +57,11 @@ export class LoginPage implements OnInit{
 
     const data = this.loginForm.value;
 
-    await this.account.login(data.email,data.password);
-    if(this.account.isAuth) this.nav.setRoot(HomePage);
+    await this.userService.login(data.email,data.password);
+    if(this.userService.isAuth) {
+      this.evServ.events['localeChangeEvent'].emit(this.userService.lang);
+      this.nav.setRoot(HomePage);
+    }
     else this._authError = true;
   }
 

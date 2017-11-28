@@ -7,20 +7,20 @@ import {IDictionary} from "../../core/app-core";
 export class WebApiService implements InMemoryDbService {
   post(info: RequestInfo) {
     let response: Observable<any> | null;
-    if((response=this.apiController(info))!==null)
+    if ((response = this.apiController(info)) !== null)
       return response;
 
   }
 
   put(info: RequestInfo) {
     let response: Observable<any> | null;
-    if((response=this.apiController(info))!==null)
+    if ((response = this.apiController(info)) !== null)
       return response;
   }
 
   get(info: RequestInfo) {
     let response: Observable<any> | null;
-    if((response=this.apiController(info))!==null)
+    if ((response = this.apiController(info)) !== null)
       return response;
   }
 
@@ -90,7 +90,6 @@ export class WebApiService implements InMemoryDbService {
     {id: 17, idQuotation: 1, idProduct: 6324216, price: 4630, maxDeliveryDays: 3, stockQuant: 24},
     {id: 18, idQuotation: 3, idProduct: 6324213, price: 120, maxDeliveryDays: 2, stockQuant: 29},
     {id: 19, idQuotation: 1, idProduct: 6324213, price: 3270, maxDeliveryDays: 2, stockQuant: 15}
-
   ];
   // </editor-fold>
 
@@ -334,7 +333,14 @@ export class WebApiService implements InMemoryDbService {
 
   // <editor-fold desc="Suppliers">
   suppliers = [
-    {id: 1, name: 'ТОВ "САВ-Дістрібюшн"', paymentMethodId: 1, rating: 5, positiveFeedbackPct: '98.3', refsCount: '14580'},
+    {
+      id: 1,
+      name: 'ТОВ "САВ-Дістрібюшн"',
+      paymentMethodId: 1,
+      rating: 5,
+      positiveFeedbackPct: '98.3',
+      refsCount: '14580'
+    },
     {id: 2, name: 'ТОВ "Інвестком"', paymentMethodId: 1, rating: 4, positiveFeedbackPct: '83.2', refsCount: '245'},
     {id: 3, name: 'Samsung', paymentMethodId: 1, rating: 5, positiveFeedbackPct: '21', refsCount: '5548'},
     {id: 4, name: 'LG', paymentMethodId: 3, rating: 5, positiveFeedbackPct: '14', refsCount: '5824'},
@@ -790,6 +796,14 @@ export class WebApiService implements InMemoryDbService {
 
   //</editor-fold>
 
+  // <editor-fold desc="localization">
+  localization = [
+    {id:1,name:'RUS'},
+    {id:2,name:'UKR'},
+    {id:3,name:'ENG'}
+  ];
+
+  // </editor-fold>
   createDb() {
     const mquotationProducts = this.quotationProducts;
     const mproducts = this.products;
@@ -804,16 +818,16 @@ export class WebApiService implements InMemoryDbService {
     const musers = this.users;
     const mproductStorePlaces = this.productStorePlaces;
     const mstorePlaces = this.storePlaces;
+    const mlocalization = this.localization;
     return {
       mquotationProducts, mproducts, mquotation, mcurrencies, msuppliers, mproductReviews, manufacturers, mcities,
-      mfoxMapMarkers, mtoken, musers, mproductStorePlaces, mstorePlaces
+      mfoxMapMarkers, mtoken, musers, mproductStorePlaces, mstorePlaces, mlocalization
     }
   }
-
   // <editor-fold desc="monkey controller">
   private apiController(info: RequestInfo) {
     let resOpt: ResponseOptions = new ResponseOptions({
-      status : 200,
+      status: 200,
       statusText: 'OK',
       body: null
     });
@@ -824,45 +838,46 @@ export class WebApiService implements InMemoryDbService {
 
     switch (info.collectionName) {
       case 'mtoken': {
-      var loginData = (<any>info.req)._body;
-       if (!loginData)
-         return info.utils.createResponse$(() => resOpt);
+        var loginData = (<any>info.req)._body;
+        if (!loginData)
+          return info.utils.createResponse$(() => resOpt);
 
-        const loginModel: {token:string, user: {}}= this.getTokenBehavior(loginData.email,loginData.password);
+        const loginModel: { token: string, user: {} } = this.getTokenBehavior(loginData.email, loginData.password);
         resOpt.body = loginModel;
         return info.utils.createResponse$(() => resOpt);
       }
 
       case 'musers': {
-          return this.userHandler[info.method](info,resOpt);
+        return this.userHandler[info.method](info, resOpt);
       }
 
       default :
         return null;
     }
   }
+
   // </editor-fold>
 
   // <editor-fold desc="HTTP verbs override collections">
-  userHandler:IDictionary<(info:RequestInfo, resOpt?: ResponseOptions)=>any> = {
+  userHandler: IDictionary<(info: RequestInfo, resOpt?: ResponseOptions) => any> = {
     'post': (info) => null,
     'get': (info) => {
       let tokenStr = (<any>info).req.headers.get('Authorization');
       if (!this.verifyToken(tokenStr)) {
         return info.utils.createResponse$(() => new ResponseOptions({
-          status : 401,
+          status: 401,
           statusText: 'Unauthorized',
         }));
       }
       return null;
     },
-    'put': (info,resOpt) => {
+    'put': (info, resOpt) => {
       const user = (<any>info.req)._body;
       let tokenStr = (<any>info).req.headers.get('Authorization');
 
       if (!user || !this.verifyToken(tokenStr)) {
         return info.utils.createResponse$(() => new ResponseOptions({
-          status : 401,
+          status: 401,
           statusText: 'Unauthorized',
         }));
       }
@@ -875,42 +890,45 @@ export class WebApiService implements InMemoryDbService {
   // </editor-fold>
 
   // <editor-fold desc="HTTP verbs helpers">
-  private getTokenBehavior(email: string, password: string): {token:string, user: {}} {
-     if(!email || !password)
-       return null;
+  private getTokenBehavior(email: string, password: string): { token: string, user: {} } {
+    if (!email || !password)
+      return null;
 
-    const userResult = this.users.find((val)=> val.email=== email && val.password === password);
+    const userResult = this.users.find((val) => val.email === email && val.password === password);
     return (!userResult) ? null : {
       token: this.tokens[Math.floor(Math.random() * this.tokens.length)].token,
       user: userResult
     };
   }
+
   private getEditBehavior(user: User): User {
-     for (let i=0; i<this.users.length; i++) {
-       if(this.users[i].id === user.id) {
-          for(let item in this.users[i]) {
-            if(item ==='password' || item ==='appKey'){
-              continue;
-            }
-
-            this.users[i][item] = user[item];
+    for (let i = 0; i < this.users.length; i++) {
+      if (this.users[i].id === user.id) {
+        for (let item in this.users[i]) {
+          if (item === 'password' || item === 'appKey') {
+            continue;
           }
-          if (user.password)  this.users[i].password = user.password;
-          if (user.appKey) this.users[i].appKey = user.appKey;
 
-          return this.users[i];
-       }
-     }
-     return null;
+          this.users[i][item] = user[item];
+        }
+        if (user.password) this.users[i].password = user.password;
+        if (user.appKey) this.users[i].appKey = user.appKey;
+
+        return this.users[i];
+      }
+    }
+    return null;
   }
+
   private verifyToken(token: string) {
-    if(!token)
+    if (!token)
       return false;
 
     const tokenSplit = token.split(':');
 
-    return tokenSplit.length===2 && !!(this.tokens.find((value) =>
+    return tokenSplit.length === 2 && !!(this.tokens.find((value) =>
       value.token === tokenSplit[1].trim()));
   }
+
   // </editor-fold>
 }

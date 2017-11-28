@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {Nav, Platform, MenuController} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -14,7 +14,8 @@ import {
   CategoriesPage,
   MapPage
 } from '../pages/index';
-import {UserService} from "./service/bll/user-service";
+
+import {ComponentBase} from "../components/component-extension/component-base";
 
 export interface PageInterface {
   title: string;
@@ -30,7 +31,7 @@ export interface PageInterface {
 @Component({
   templateUrl: 'app.html'
 })
-export class FoxApp implements OnInit{
+export class FoxApp extends ComponentBase {
   // the root nav is a child of the root app component
   // @ViewChild(Nav) gets a reference to the app's root nav
   @ViewChild(Nav) nav: Nav;
@@ -52,8 +53,9 @@ export class FoxApp implements OnInit{
 
   constructor(platform: Platform, statusBar: StatusBar,
               splashScreen: SplashScreen, public menuCtrl: MenuController,
-              private repo: AbstractDataRepository, public account: UserService,
+              private repo: AbstractDataRepository,
               ) {
+    super();
     this.rootPage = HomePage;
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -66,15 +68,16 @@ export class FoxApp implements OnInit{
   }
 
   async ngOnInit() {
-    if(!this.account.isAuth && this.account.isNotSignOutSelf()){
-      await this.account.shortLogin();
+    super.ngOnInit();
+    if(!this.userService.isAuth && this.userService.isNotSignOutSelf()){
+      await this.userService.shortLogin();
     }
 
   }
 
   openPage(page: PageInterface) {
 
-    if ((this.account.isAuth === false) && (page.component === AccountPage)) {
+    if ((this.userService.isAuth === false) && (page.component === AccountPage)) {
       this.nav.setRoot(LoginPage).catch((err: any) => {
         console.log(`Didn't set nav root: ${err}`);
       });
@@ -91,7 +94,7 @@ export class FoxApp implements OnInit{
   }
 
   signOut() {
-    this.account.logOut();
+    this.userService.logOut();
     this.nav.setRoot(HomePage);
     this.menuCtrl.close();
   }

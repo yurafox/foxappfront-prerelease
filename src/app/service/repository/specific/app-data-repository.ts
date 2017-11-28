@@ -16,7 +16,8 @@ import {
   City,
   MapMarker,
   ProductStorePlace,
-  StorePlace
+  StorePlace,
+  Lang
 } from '../../../model/index';
 import {AbstractDataRepository} from '../../index';
 import {Providers} from '../../../core/app-core';
@@ -34,6 +35,7 @@ const citiesUrl = '/api/mcities';
 const foxMapMarkersUrl = '/api/mfoxMapMarkers';
 const storePlacesUrl = '/api/mstorePlaces';
 const productStorePlacesUrl = '/api/mproductStorePlaces';
+const LangUrl='/api/mlocalization';
 // </editor-fold
 
 @Injectable()
@@ -525,6 +527,38 @@ export class AppDataRepository extends AbstractDataRepository {
       // </editor-fold>
       else {
         return this.cache.Currency.Values();
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async  getLocale(cacheForce: boolean): Promise<Lang[]> {
+    try {
+      // <editor-fold desc = "cashe is empty or cache force active">
+      if (this.cache.Lang.Count() === 0 || cacheForce === true) {
+        const response = await this.http.get(LangUrl).toPromise();
+
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error('server side status error');
+        }
+        const languages = new Array<Lang>();
+        if (data != null) {
+          data.forEach((val) => {
+            // create current currency
+            const langItem: Currency = new Lang(val.id, val.name);
+            languages.push(langItem);
+
+            // add currency to cashe
+            this.cache.Currency.Add(langItem.id.toString(), langItem);
+          });
+        }
+        return languages;
+      }
+      // </editor-fold>
+      else {
+        return this.cache.Lang.Values();
       }
     } catch (err) {
       return await this.handleError(err);

@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { SearchBtnComponent } from './search-btn/search-btn';
 import {IonicModule} from 'ionic-angular';
 import { MainToolbarComponent } from './main-toolbar/main-toolbar';
@@ -14,7 +13,8 @@ import { ReadMoreComponent } from './read-more/read-more';
 import { ItemsListComponent } from './items-list/items-list';
 import { FilterComponent } from './filter/filter';
 import { CustomPopupComponent } from './custom-popup/custom-popup';
-
+import { DropdownViewComponent } from './dropdown-view/dropdown-view';
+import { DropdownListComponent } from './dropdown-list/dropdown-list';
 
 
 @NgModule({
@@ -29,10 +29,14 @@ import { CustomPopupComponent } from './custom-popup/custom-popup';
     ReadMoreComponent,
     ItemsListComponent,
     FilterComponent,
-    CustomPopupComponent
+    CustomPopupComponent,
+    DropdownListComponent,
+    DropdownViewComponent
   ],
   entryComponents: [
-    CustomPopupComponent
+    CustomPopupComponent,
+    DropdownViewComponent,
+    DropdownListComponent
   ],
 	imports: [
     IonicModule,
@@ -50,7 +54,9 @@ import { CustomPopupComponent } from './custom-popup/custom-popup';
     ReadMoreComponent,
     ItemsListComponent,
     FilterComponent,
-    CustomPopupComponent
+    CustomPopupComponent,
+    DropdownListComponent,
+    DropdownViewComponent
   ]
 })
 export class ComponentsModule {}
