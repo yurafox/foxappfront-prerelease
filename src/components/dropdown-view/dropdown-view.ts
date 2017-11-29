@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Renderer2, AfterViewInit, AfterViewChecked,ViewChild,ElementRef} from '@angular/core';
 import {NavController, NavParams, ViewController} from "ionic-angular"
 import {DropdownListComponent} from "../dropdown-list/dropdown-list";
 
@@ -6,14 +6,36 @@ import {DropdownListComponent} from "../dropdown-list/dropdown-list";
   selector: 'dropdown-view',
   templateUrl: 'dropdown-view.html'
 })
-export class DropdownViewComponent {
+export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
   private parent:DropdownListComponent;
+
+  @ViewChild('scroll') 
+  private scrollContainer: ElementRef;
+
 
   constructor(private nav: NavController,
               private navParam: NavParams,
-              private viewCtrl: ViewController) {
+              private viewCtrl: ViewController,
+              private _renderer: Renderer2) {
     this.parent = navParam.get('parent');
   }
+  
+  ngAfterViewInit(){
+    if(this.parent.customStyle){
+      const elements: NodeListOf<Element> = document.querySelectorAll('div.popover-content');
+      if (elements.length!=0) {
+         for (let i=0,max=elements.length;i<max;i++){
+          this._renderer.addClass(elements[i],this.parent.customStyle);
+         } 
+      }
+    }
+  }
+  
+  ngAfterViewChecked() {
+    let node:HTMLElement=document.getElementById(`${this.bindedObject[this.valueName]}`);
+    if(node)
+      node.scrollIntoView();
+ }
 
   public isActive(item: any): boolean {
     return item[this.valueName] === this.bindedObject[this.valueName];

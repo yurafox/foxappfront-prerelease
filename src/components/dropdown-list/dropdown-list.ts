@@ -1,13 +1,17 @@
 import {Component, Input, OnChanges} from '@angular/core';
 import {PopoverController} from "ionic-angular";
 import {DropdownViewComponent} from "../dropdown-view/dropdown-view";
-import { ViewContainerRef } from '@angular/core';
+import { ViewContainerRef} from '@angular/core';
 
 @Component({
   selector: 'dropdown-list',
   templateUrl: 'dropdown-list.html'
 })
 export class DropdownListComponent implements OnChanges{
+
+  @Input()
+  customStyle: string;
+
   @Input()
   param:{value:number,reference:any}
 
@@ -27,7 +31,9 @@ export class DropdownListComponent implements OnChanges{
 
   private verifyBehaviorList: Array<{fn:()=>boolean,errText:string}>=[];
 
-  constructor(public popoverCtrl: PopoverController, private _viewCtnr:ViewContainerRef) {
+  constructor(public popoverCtrl: PopoverController,
+              private _viewCtnr:ViewContainerRef) {
+
     // <editor-fold desc="check input behavior init list">
     this.verifyBehaviorList.push({fn:this.verifyParam, errText:'отсутствуют значения в input поле [param]'});
     this.verifyBehaviorList.push({fn:this.verifyStore, errText:'входящая коллекция [store] пустая'});
@@ -47,7 +53,7 @@ export class DropdownListComponent implements OnChanges{
   }
 
   public openView(event:any) {
-    const popUp = this.popoverCtrl.create(DropdownViewComponent,{parent: this},{cssClass:'backdropOpacityPopover'});
+    const popUp = this.popoverCtrl.create(DropdownViewComponent,{parent: this},{cssClass:'f-backdrop-opacity-popover'});
     if(popUp) popUp.present();
   }
 

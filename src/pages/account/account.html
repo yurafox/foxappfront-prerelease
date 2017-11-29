@@ -55,7 +55,8 @@
              <ion-label class="f-label-drop-field">изменить валюту</ion-label>
            </ion-col>
             <ion-col col-2>
-              <dropdown-list [param]="{value:currentCurrency.id,reference:currentCurrency}"
+              <dropdown-list [customStyle]="'f-small-dictionary'"
+                             [param]="{value:currentCurrency.id,reference:currentCurrency}"
                              [store]="currencies"
                              [map]="{valueName:'id',displayName:'shortName'}"
                              [afterUpdate]="currencyUpdate">
@@ -83,10 +84,26 @@
               <ion-label class="f-label-drop-field">изменить локализацию</ion-label>
             </ion-col>
             <ion-col col-2>
-              <dropdown-list [param]="{value:currentLang.id,reference:currentLang}"
+              <dropdown-list [customStyle]="'f-small-dictionary'"
+                             [param]="{value:currentLang.id,reference:currentLang}"
                              [store]="langs"
                              [map]="{valueName:'id',displayName:'name'}"
                              [afterUpdate]="langUpdate">
+              </dropdown-list>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        
+        <ion-grid class="f-top20">
+          <ion-row>
+            <ion-col col-9>
+              <ion-label class="f-label-drop-field">test</ion-label>
+            </ion-col>
+            <ion-col col-2>
+              <dropdown-list [customStyle]="'f-small-dictionary'"
+                             [param]="{value:currentTest.id,reference:currentTest}"
+                             [store]="test"
+                             [map]="{valueName:'id',displayName:'name'}">
               </dropdown-list>
             </ion-col>
           </ion-row>

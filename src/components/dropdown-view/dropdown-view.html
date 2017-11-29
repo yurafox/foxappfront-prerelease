@@ -3,14 +3,14 @@
     <ion-col col-12>
       <table class="f-table f-table-striped f-table-hover">
         <thead>
-        <tr>
-          <th>Список</th>
-        </tr>
+          <tr>
+            <th>Список</th>
+          </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let item of parent.store">
-            <td [class.f-active]='isActive(item)' (click)="onSelect(item)">{{item[displayName]}}</td>
-        </tr>
+          <tr *ngFor="let item of parent.store">
+            <td id='{{item[valueName]}}' [class.f-active]='isActive(item)' (click)="onSelect(item)">{{item[displayName]}}</td>
+          </tr>
         </tbody>
       </table>
     </ion-col>

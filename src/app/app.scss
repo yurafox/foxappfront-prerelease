@@ -15,6 +15,9 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+// sass variables
+$popup-small-dictionary-width:125px;
+
 md, ios, wp,
 .toolbar-background {
   background-color: color($colors, fox);
@@ -122,10 +125,32 @@ ion-list ion-icon {
 
 // fix slider bug
 ion-slides[pager] {
-
   .swiper-pagination {
     display: block !important;
   }
+}
 
+// custom drop down list styles
+.f-backdrop-opacity-popover {
+  ion-backdrop { opacity: 0.4; }
+}
 
+.f-small-dictionary {
+  tbody {
+    border-top: 2px solid #eceeef;
+    display: block;
+    height: 450px;
+    overflow: auto;
+  }
+
+  th,
+  td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #eceeef;
+    color: black;
+    width: $popup-small-dictionary-width;
+  }
+  width: $popup-small-dictionary-width !important;
+  padding: 0px !important;
 }

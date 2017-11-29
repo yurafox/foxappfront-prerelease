@@ -20,7 +20,8 @@ export class AccountPage extends ComponentBase {
   public currentLang:Lang;
   public editForm: FormGroup;
   public onLoad = false;
-
+  public test=[];
+  public currentTest:any;
   public formErrors = {
     'email': '',
     'password': '',
@@ -57,7 +58,11 @@ export class AccountPage extends ComponentBase {
 
   async ngOnInit(){
     super.ngOnInit();
-
+    
+    for(let i=0;i<50;i++){
+      this.test.push({id:i,name:`${i}`});
+    }
+    this.currentTest = {id:this.test[0].id,name:this.test[0].name};
     [this.currencies,this.langs] = await Promise.all([this.repo.getCurrencies(true),
                                                       this.repo.getLocale(true)]);
 

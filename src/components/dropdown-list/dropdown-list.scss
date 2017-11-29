@@ -20,14 +20,9 @@ dropdown-list {
   .f-left-15 {
     margin-left: 15px;
   }
-}
 
-.backdropOpacityPopover {
-  ion-backdrop { opacity: 0.4; }
-  margin: 0px auto;
-}
-
-.popover-md .popover-content {
-  width: 125px !important;
-  padding: 0px !important;
+  .backdropOpacityPopover {
+    ion-backdrop { opacity: 0.4; }
+    margin: 0px auto;
+  }
 }
