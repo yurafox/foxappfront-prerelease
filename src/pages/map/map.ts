@@ -7,6 +7,7 @@ import {ComponentBase} from "../../components/component-extension/component-base
 import {Geolocation} from '@ionic-native/geolocation';
 // import {ScreenOrientation} from '@ionic-native/screen-orientation';
 import {StatusBar} from "@ionic-native/status-bar";
+import {LaunchNavigator, LaunchNavigatorOptions} from "@ionic-native/launch-navigator";
 
 declare var google: any;
 
@@ -35,7 +36,7 @@ export class MapPage extends ComponentBase {
   city: City;
   cities: Array<City>;
   selectedCity = 'Киев';
-  selectedMarker: any;
+  selectedMarker: LatLng;
   markersArr: Array<{ id: number, markers: MapMarker[] }>;
   shopList: SelectItem[];
   options: any;
@@ -52,8 +53,11 @@ export class MapPage extends ComponentBase {
   landscapePrimary = this.screenOrientation.ORIENTATIONS.LANDSCAPE_PRIMARY;
   landscapeSecondary = this.screenOrientation.ORIENTATIONS.LANDSCAPE_SECONDARY;*/
 
+  launchNavigatorOptions: LaunchNavigatorOptions;
+
   constructor(public platform: Platform, private repo: AbstractDataRepository, private geolocation: Geolocation,
-              /*private screenOrientation: ScreenOrientation,*/ private statusBar: StatusBar) {
+              /*private screenOrientation: ScreenOrientation,*/ private statusBar: StatusBar,
+              private launchNavigator: LaunchNavigator) {
     super();
     this.selectedMarker = null;
     this.shopList = [];
@@ -82,11 +86,13 @@ export class MapPage extends ComponentBase {
 
     this.userPos = new LatLng(0, 0);
 
-    this.getLocation().then(res => {
-      this.userPos.lat = res.coords.latitude;
-      this.userPos.lng = res.coords.longitude;
-    }).catch(err => {
-      console.log('Error while getting user\'s location ' + err);
+    platform.ready().then(() => {
+      this.getLocation().then(res => {
+        this.userPos.lat = res.coords.latitude;
+        this.userPos.lng = res.coords.longitude;
+      }).catch(err => {
+        console.log('Error while getting user\'s location ' + err);
+      });
     });
 
     // Subscribing on screen orientation change
@@ -378,7 +384,15 @@ export class MapPage extends ComponentBase {
           this.directionsDisplay.setDirections(response);
           // console.log('Duration: ' + (response.routes[0].legs[0].duration.value / 60).toFixed());
         } else {
-          window.alert('Directions request failed due to ' + status);
+          // When we can't determine user's location - use Google Maps instead
+          this.platform.ready().then(() => {
+            this.launchNavigator.navigate([this.selectedMarker.lat,this.selectedMarker.lng], {app: this.launchNavigator.APP.GOOGLE_MAPS})
+              .then(
+                success => console.log('Launched navigator'),
+                error => console.log('Error launching navigator', error)
+              );
+          });
+          // window.alert('Directions request failed due to ' + status);
         }
       });
     } catch (err) {

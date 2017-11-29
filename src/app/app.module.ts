@@ -66,6 +66,7 @@ import {DirectivesModule} from './directive/directives.module';
 import {VideoPlayer} from '@ionic-native/video-player';
 import {Geolocation} from '@ionic-native/geolocation';
 import {ScreenOrientation} from '@ionic-native/screen-orientation';
+import {LaunchNavigator} from "@ionic-native/launch-navigator";
 
 @NgModule({
   declarations: [
@@ -154,6 +155,7 @@ import {ScreenOrientation} from '@ionic-native/screen-orientation';
     BarcodeScanner,
     VideoPlayer,
     ScreenOrientation,
+    LaunchNavigator,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
     {provide: AbstractAccountRepository, useClass: AccountRepository},
