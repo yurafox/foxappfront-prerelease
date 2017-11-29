@@ -9,8 +9,10 @@ import { QuotationProduct,
          StorePlace,
          ProductReview,
          ProductStorePlace,
-         Lang
+         Lang,
+         Client
        } from '../../../model/index';
+import {ClientAddress} from '../../../model/client-address';
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
@@ -30,6 +32,9 @@ export abstract class AbstractDataRepository {
   public async abstract getCurrencyById(currencyId: number): Promise<Currency>;
   public async abstract getManufacturerById(manufacturerId: number): Promise<Manufacturer>;
   public async abstract getManufacturers(cacheForce: boolean): Promise<Manufacturer[]>;
+
+  public async abstract getClientByEmail(email: string): Promise<Client>;
+  public async abstract getClientAddressesByClientId(id: number): Promise<ClientAddress[]>;
 
   public async abstract getCities(): Promise<City[]>;
   public async abstract getFoxMapMarkers(): Promise<Array<{id: number, markers: MapMarker[]}>>;

@@ -22,4 +22,9 @@ export * from './login-template';
 export * from './store-place';
 export * from './product-store-place';
 export * from './lang';
+export * from './lo-entity';
+export * from './country';
+export * from './lo-suppl-entity';
+export * from './client-address';
+export * from './client';
 

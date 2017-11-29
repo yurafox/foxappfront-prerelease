@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {CartService} from '../../app/service/cart-service';
+import {SelectShipAddressPage} from '../select-ship-address/select-ship-address';
 
 
 @Component({
@@ -11,7 +12,7 @@ import {CartService} from '../../app/service/cart-service';
 
 export class CartPage extends ComponentBase {
 
-  constructor(public cart: CartService) {
+  constructor(public cart: CartService, private navCtrl: NavController) {
     super();
   }
 
@@ -26,6 +27,10 @@ export class CartPage extends ComponentBase {
 
   onDeleteItem(itemIndex: number) {
     this.cart.orderProducts.splice(itemIndex, 1);
+  }
+
+  checkout() {
+    this.navCtrl.push(SelectShipAddressPage);
   }
 
 }

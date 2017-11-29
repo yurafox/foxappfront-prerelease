@@ -19,6 +19,7 @@ export class WebApiService implements InMemoryDbService {
   }
 
   get(info: RequestInfo) {
+    console.log( info);
     let response: Observable<any> | null;
     if ((response = this.apiController(info)) !== null)
       return response;
@@ -764,9 +765,9 @@ export class WebApiService implements InMemoryDbService {
   ];
 
   clients = [
-    {id: 100, name: 'yurafox', phone: '+380504410081', login: 'yufafox@fox.com', email: 'yufafox@fox.com', fname: 'Yurii', lname: 'Ishchenko'},
+    {id: 100, name: 'yurafox', phone: '+0800300353', login: 'yurafox@fox.com', email: 'yurafox@fox.com', fname: 'Yurii', lname: 'Ishchenko'}/*,
     {id: 101, name: 'sergce', phone: '+222', login: 'sergce@fox.com', email: 'sergce@fox.com', fname: 'Serhiy', lname: 'Moskalenko'},
-    {id: 102, name: 'dealio07', phone: '+3333', login: 'dealio07@fox.com', email: 'dealio07@fox.com', fname: 'Volodymyr', lname: 'Varha'}
+    {id: 102, name: 'dealio07', phone: '+3333', login: 'dealio07@fox.com', email: 'dealio07@fox.com', fname: 'Volodymyr', lname: 'Varha'}*/
   ];
 
   clientAddresses = [
@@ -852,9 +853,15 @@ export class WebApiService implements InMemoryDbService {
     const mproductStorePlaces = this.productStorePlaces;
     const mstorePlaces = this.storePlaces;
     const mlocalization = this.localization;
+    const mclients = this.clients;
+    const mcountries = this.countries;
+    const mclientAddresses = this.clientAddresses;
+    const mloEntities = this.loEntities;
+    const mloSupplEntities = this.loSupplEntities;
     return {
       mquotationProducts, mproducts, mquotation, mcurrencies, msuppliers, mproductReviews, manufacturers, mcities,
-      mfoxMapMarkers, mtoken, musers, mproductStorePlaces, mstorePlaces, mlocalization
+      mfoxMapMarkers, mtoken, musers, mproductStorePlaces, mstorePlaces, mlocalization, mclients, mcountries,
+      mclientAddresses, mloEntities, mloSupplEntities
     }
   }
   // <editor-fold desc="monkey controller">
@@ -947,7 +954,7 @@ export class WebApiService implements InMemoryDbService {
         if (user.password) this.users[i].password = user.password;
         if (user.appKey) this.users[i].appKey = user.appKey;
 
-        return this.users[i];
+        return (<any>this).users[i];
       }
     }
     return null;

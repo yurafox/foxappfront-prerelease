@@ -36,7 +36,8 @@ import {
   SearchResultsPage,
   ItemQuotesPage,
   FilterPopoverPage,
-  CityPopoverPage
+  CityPopoverPage,
+  SelectShipAddressPage
 } from '../pages/index';
 
 import {AppConstants} from './app-constants';
@@ -92,6 +93,7 @@ import {ScreenOrientation} from '@ionic-native/screen-orientation';
     SearchResultsPage,
     ItemQuotesPage,
     FilterPopoverPage,
+    SelectShipAddressPage,
     CityPopoverPage
   ],
   imports: [
@@ -142,6 +144,7 @@ import {ScreenOrientation} from '@ionic-native/screen-orientation';
     ItemQuotesPage,
     FilterPopoverPage,
     CityPopoverPage,
+    SelectShipAddressPage,
     MapPage
   ],
   providers: [

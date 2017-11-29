@@ -21,3 +21,4 @@ export * from './search-results/search-results';
 export * from './item-quotes/item-quotes';
 export * from './filter-popover/filter-popover';
 export * from './city-popover/city-popover';
+export * from './select-ship-address/select-ship-address';

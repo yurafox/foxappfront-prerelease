@@ -21,6 +21,8 @@ import {
 } from '../../../model/index';
 import {AbstractDataRepository} from '../../index';
 import {Providers} from '../../../core/app-core';
+import {Client} from '../../../model/client';
+import {ClientAddress} from '../../../model/client-address';
 
 
 // <editor-fold desc="url const">
@@ -36,6 +38,9 @@ const foxMapMarkersUrl = '/api/mfoxMapMarkers';
 const storePlacesUrl = '/api/mstorePlaces';
 const productStorePlacesUrl = '/api/mproductStorePlaces';
 const LangUrl='/api/mlocalization';
+const clientsUrl = '/api/mclients';
+const clientAddressesUrl = '/api/clientAddresses';
+
 // </editor-fold
 
 @Injectable()
@@ -102,6 +107,70 @@ export class AppDataRepository extends AbstractDataRepository {
     }
 
   }
+
+  public async getClientByEmail(email: string): Promise<Client> {
+    try {
+      let client = new Client();
+      const response = await this.http.get(clientsUrl,
+        {search: this.createSearchParams([{key: 'email', value: email}])}).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error('server side status error');
+      }
+
+      if (data != null) {
+        data = data[0];
+        console.log(data);
+        client.id = data.id;
+        client.name = data.name;
+        client.phone = data.phone;
+        client.login = data.login;
+        client.email = email;
+        client.fname = data.fname;
+        client.lname = data.lname;
+        return client;
+      }
+
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getClientAddressesByClientId(id: number): Promise<ClientAddress[]> {
+    try {
+      let _id = id.toString();
+      let clientAdresses = new Array<ClientAddress>();
+
+      const response = await this.http.get(clientAddressesUrl+ `/${_id}`).toPromise();
+
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error('server side status error');
+      }
+
+      if (data != null) {
+        for (let i of data) {
+          let clientAddress = new ClientAddress();
+          clientAddress.id = i.id;
+          clientAddress.idClient = i.idClient;
+          clientAddress.idCity = i.idCity;
+          clientAddress.zip = i.zip;
+          clientAddress.street = i.street;
+          clientAddress.lat = i.lat;
+          clientAddress.lng = i.lng;
+          clientAddress.isPrimary = i.isPrimary;
+          clientAddress.idCountry = i.idCountry;
+          clientAddress.city = i.city;
+          clientAdresses.push(clientAddress);
+        }
+        return clientAdresses;
+      }
+
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 
   public async getStorePlaceById(id: number): Promise<StorePlace> {
     try {
