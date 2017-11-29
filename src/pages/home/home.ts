@@ -42,6 +42,6 @@ export class HomePage {
   }
 
   onSearchClick() {
-    this.nav.setRoot(SearchPage);
+    this.nav.push(SearchPage);
   }
 }

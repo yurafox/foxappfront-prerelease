@@ -13,23 +13,23 @@
   </ion-select>
 </ion-header>
 
-<ion-content>
+<ion-content no-bounce>
   <!--GMap-->
-  <div  [ngStyle]="{'height': height + 'px'}" #mapCanvas id="map_canvas"></div>
+  <div [ngStyle]="{'height': 100 + '%'}" #mapCanvas id="map_canvas"></div>
   <!--[ngStyle]="{'width': width + 'px', 'height': height + 'px'}"-->
 </ion-content>
 
-<div class="f-map-footer" *ngIf="selectedMarker !== null">
-  <ion-footer>
+<div *ngIf="selectedMarker !== null">
+  <ion-footer class="f-map-footer" no-bounce>
     <ion-buttons align="center">
       <button ion-button icon-left clear (click)="addToFavorite()" [disabled]="selectedMarker === null"
               class="f-map-button">
-        <ion-icon name="ios-star"></ion-icon>
+        <ion-icon name="md-star-outline"></ion-icon>
         В избранное
       </button>
       <button ion-button icon-left clear (click)="buildRoute()" [disabled]="selectedMarker === null"
               class="f-map-button">
-        <ion-icon name="ios-arrow-round-up-outline"></ion-icon>
+        <ion-icon name="ios-navigate-outline"></ion-icon>
         Проложить маршрут
       </button>
     </ion-buttons>

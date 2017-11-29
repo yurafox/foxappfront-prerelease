@@ -1,7 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {Nav, Platform, MenuController} from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import {StatusBar} from '@ionic-native/status-bar';
+import {SplashScreen} from '@ionic-native/splash-screen';
 import {AbstractDataRepository} from "./service/index";
 import {
   // AboutPage,
@@ -31,7 +31,7 @@ export class FoxApp extends ComponentBase {
   // @ViewChild(Nav) gets a reference to the app's root nav
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any;
+  rootPage = HomePage;
 
   readonly LOCAL_VIDEO_URL = 'file:///android_asset/www/assets/video/';
   videoOpts: VideoOptions;
@@ -51,45 +51,65 @@ export class FoxApp extends ComponentBase {
 
   constructor(private platform: Platform, statusBar: StatusBar,
               private splashScreen: SplashScreen, public menuCtrl: MenuController,
-              private repo: AbstractDataRepository, private videoPlayer : VideoPlayer
-              ) {
+              private repo: AbstractDataRepository, private videoPlayer: VideoPlayer) {
     super();
-    this.rootPage = HomePage;
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
+      this.splashScreen.hide();
+      // ScalingMode: 1 - without cropping, 2 - with cropping
+      this.videoOpts = {
+        volume: 0.7,
+        scalingMode: 2
+      };
     });
-
+    // Indicate video file name that should be played
     this.videoFileName = 'promo';
   }
 
   ionViewDidLoad() {
-    this.splashScreen.hide();
   }
 
   async ngOnInit() {
     super.ngOnInit();
-    if(!this.userService.isAuth && this.userService.isNotSignOutSelf()){
+    if (!this.userService.isAuth && this.userService.isNotSignOutSelf()) {
       await this.userService.shortLogin();
     }
-
   }
 
   openPage(page: PageInterface) {
 
     if ((this.userService.isAuth === false) && (page.component === AccountPage)) {
-      this.nav.setRoot(LoginPage).catch((err: any) => {
+      this.nav.push(LoginPage).catch((err: any) => {
         console.log(`Didn't set nav root: ${err}`);
       });
     } else {
-      this.nav.setRoot(page.component).catch((err: any) => {
+      switch (page.name) {
+        case 'Home': {
+          this.nav.setRoot(HomePage).catch((err: any) => {
+            console.log(`Didn't set nav root: ${err}`);
+          });
+          break;
+        }
+        case 'About': {
+          this.playVideo();
+          break;
+        }
+        default: {
+          this.nav.push(page.component).catch((err: any) => {
+            console.log(`Didn't set nav root: ${err}`);
+          });
+          break;
+        }
+      }
+      /*this.nav.push(page.component).catch((err: any) => {
         console.log(`Didn't set nav root: ${err}`);
-      });
+      });*/
     }
 
-    if (page.name === 'About') {
+    /*if (page.name === 'About') {
       this.playVideo();
-    }
+    }*/
   }
 
   signOut() {
@@ -99,21 +119,13 @@ export class FoxApp extends ComponentBase {
   }
 
   // Video Player
-  playVideo(){
-    // ScalingMode: 1 - without cropping, 2 - with cropping
-    this.videoOpts = {
-      volume : 0.7,
-      scalingMode: 2
-    };
+  playVideo() {
     this.platform.ready().then(() =>
-    this.videoPlayer.play(this.LOCAL_VIDEO_URL + this.videoFileName + '.mp4').then(() => {
-      console.log('video completed');
-    }).catch(err => {
-      console.log(err);
-    }));
-  }
-  public stopPlayingVideo(){
-    this.videoPlayer.close();
+      this.videoPlayer.play(this.LOCAL_VIDEO_URL + this.videoFileName + '.mp4', this.videoOpts).then(() => {
+        console.log('video completed');
+      }).catch(err => {
+        console.log(err);
+      }));
   }
 }
 
