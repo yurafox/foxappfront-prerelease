@@ -4,7 +4,7 @@ import {IDictionary, LazyLoad, RefInjector} from '../core/app-core';
 
 
 @LazyLoad([
-  { options:{constructor: Client}, action: 'getClientByEmail', params: ['email']}
+  { options:{constructor: Client}, action: 'getClientById', params: ['idClient']}
 ])
 export class User {
   private _repo: AbstractDataRepository;
@@ -13,7 +13,8 @@ export class User {
               public password?: string,
               public id?: number,
               public appKey?: string, // private application key
-              public userSetting: IDictionary<string> = {}) {
+              public userSetting: IDictionary<string> = {},
+              public idClient?: number) {
     this._repo = RefInjector.pull(AbstractDataRepository);
   }
 }

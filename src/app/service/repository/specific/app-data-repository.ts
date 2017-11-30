@@ -39,7 +39,7 @@ const storePlacesUrl = '/api/mstorePlaces';
 const productStorePlacesUrl = '/api/mproductStorePlaces';
 const LangUrl='/api/mlocalization';
 const clientsUrl = '/api/mclients';
-const clientAddressesUrl = '/api/clientAddresses';
+const clientAddressesUrl = '/api/mclientAddresses';
 
 // </editor-fold
 
@@ -108,6 +108,32 @@ export class AppDataRepository extends AbstractDataRepository {
 
   }
 
+  public async getClientById(id: number): Promise<Client> {
+    try {
+      const _id = id.toString();
+      let client = new Client();
+      const response = await this.http.get(clientsUrl+ `/${_id}`).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error('server side status error');
+      }
+
+      if (data != null) {
+        client.id = data.id;
+        client.name = data.name;
+        client.phone = data.phone;
+        client.login = data.login;
+        client.email = data.email;
+        client.fname = data.fname;
+        client.lname = data.lname;
+        return client;
+      }
+
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
   public async getClientByEmail(email: string): Promise<Client> {
     try {
       let client = new Client();
@@ -141,13 +167,13 @@ export class AppDataRepository extends AbstractDataRepository {
       let _id = id.toString();
       let clientAdresses = new Array<ClientAddress>();
 
-      const response = await this.http.get(clientAddressesUrl+ `/${_id}`).toPromise();
+      const response = await this.http.get(clientAddressesUrl,
+        {search: this.createSearchParams([{key: 'idClient', value: _id}])}).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
         throw new Error('server side status error');
       }
-
       if (data != null) {
         for (let i of data) {
           let clientAddress = new ClientAddress();

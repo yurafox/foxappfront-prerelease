@@ -33,6 +33,7 @@ export abstract class AbstractDataRepository {
   public async abstract getManufacturerById(manufacturerId: number): Promise<Manufacturer>;
   public async abstract getManufacturers(cacheForce: boolean): Promise<Manufacturer[]>;
 
+  public async abstract getClientById(id: number): Promise<Client>;
   public async abstract getClientByEmail(email: string): Promise<Client>;
   public async abstract getClientAddressesByClientId(id: number): Promise<ClientAddress[]>;
 

@@ -1,9 +1,9 @@
 import {City} from './city';
 import {LazyLoad} from '../core/app-core';
 
-@LazyLoad([
+/*@LazyLoad([
   { options: {constructor: City}, action: 'getCityById', params: ['idCity']}
-])
+])*/
 export class ClientAddress {
   constructor (
     public id?: number,

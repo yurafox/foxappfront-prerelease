@@ -19,7 +19,7 @@ export class WebApiService implements InMemoryDbService {
   }
 
   get(info: RequestInfo) {
-    console.log( info);
+    // console.log( info);
     let response: Observable<any> | null;
     if ((response = this.apiController(info)) !== null)
       return response;
@@ -765,9 +765,9 @@ export class WebApiService implements InMemoryDbService {
   ];
 
   clients = [
-    {id: 100, name: 'yurafox', phone: '+0800300353', login: 'yurafox@fox.com', email: 'yurafox@fox.com', fname: 'Yurii', lname: 'Ishchenko'}/*,
+    {id: 100, name: 'yurafox', phone: '+0800300353', login: 'yurafox@fox.com', email: 'yurafox@fox.com', fname: 'Yurii', lname: 'Ishchenko'},
     {id: 101, name: 'sergce', phone: '+222', login: 'sergce@fox.com', email: 'sergce@fox.com', fname: 'Serhiy', lname: 'Moskalenko'},
-    {id: 102, name: 'dealio07', phone: '+3333', login: 'dealio07@fox.com', email: 'dealio07@fox.com', fname: 'Volodymyr', lname: 'Varha'}*/
+    {id: 102, name: 'dealio07', phone: '+3333', login: 'dealio07@fox.com', email: 'dealio07@fox.com', fname: 'Volodymyr', lname: 'Varha'}
   ];
 
   clientAddresses = [
@@ -808,7 +808,8 @@ export class WebApiService implements InMemoryDbService {
       password: 'sergce',
       id: 1,
       appKey: '',
-      userSetting: {'currency': '0', 'lang': '1'}
+      userSetting: {'currency': '0', 'lang': '1'},
+      idClient: 101
     },
     {
       name: 'vladimir',
@@ -816,7 +817,8 @@ export class WebApiService implements InMemoryDbService {
       password: 'dealio07',
       id: 2,
       appKey: '',
-      userSetting: {'currency': '1', 'lang': '2'}
+      userSetting: {'currency': '1', 'lang': '2'},
+      idClient: 102
     },
     {
       name: 'Yuri',
@@ -824,7 +826,8 @@ export class WebApiService implements InMemoryDbService {
       password: 'yurafox',
       id: 3,
       appKey: '',
-      userSetting: {'currency': '2', 'lang': '3'}
+      userSetting: {'currency': '2', 'lang': '3'},
+      idClient: 100
     },
   ];
 
