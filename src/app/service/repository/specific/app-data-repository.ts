@@ -23,6 +23,7 @@ import {AbstractDataRepository} from '../../index';
 import {Providers} from '../../../core/app-core';
 import {Client} from '../../../model/client';
 import {ClientAddress} from '../../../model/client-address';
+import {Country} from '../../../model/country';
 
 
 // <editor-fold desc="url const">
@@ -40,6 +41,7 @@ const productStorePlacesUrl = '/api/mproductStorePlaces';
 const LangUrl='/api/mlocalization';
 const clientsUrl = '/api/mclients';
 const clientAddressesUrl = '/api/mclientAddresses';
+const countriesUrl = '/api/mcountries';
 
 // </editor-fold
 
@@ -107,6 +109,29 @@ export class AppDataRepository extends AbstractDataRepository {
     }
 
   }
+
+  public async getCountryById(id: number): Promise<Country> {
+    try {
+      const _id = id.toString();
+      let country = new Country();
+      const response = await this.http.get(countriesUrl+ `/${_id}`).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error('server side status error');
+      }
+
+      if (data != null) {
+        country.id = data.id;
+        country.name = data.name;
+        return country;
+      }
+
+    } catch (err) {
+      return await this.handleError(err);
+    }
+
+  }
+
 
   public async getClientById(id: number): Promise<Client> {
     try {
@@ -187,6 +212,7 @@ export class AppDataRepository extends AbstractDataRepository {
           clientAddress.isPrimary = i.isPrimary;
           clientAddress.idCountry = i.idCountry;
           clientAddress.city = i.city;
+          clientAddress.bldApp = i.bldApp;
           clientAdresses.push(clientAddress);
         }
         return clientAdresses;

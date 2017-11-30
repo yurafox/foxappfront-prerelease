@@ -17,6 +17,7 @@ export * from './client-order-products';
 export * from './client-order';
 export * from './city';
 export * from './map-marker';
+export * from './client';
 export * from './user';
 export * from './login-template';
 export * from './store-place';
@@ -26,5 +27,4 @@ export * from './lo-entity';
 export * from './country';
 export * from './lo-suppl-entity';
 export * from './client-address';
-export * from './client';
 

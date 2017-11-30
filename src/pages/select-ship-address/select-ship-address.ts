@@ -18,20 +18,31 @@ export class SelectShipAddressPage extends ComponentBase {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public uService: UserService) {
     super();
-    this.getDefaultShipAddress(); //.then(data => this.defaultShippingAddress = data );
+    this.getDefaultShipAddress().then(data => this.defaultShippingAddress = data );
   }
 
-  async getDefaultShipAddress() {
+  async getDefaultShipAddress(): Promise<ClientAddress>  {
+    let res = null;
     let client = await (<any>this.uService).profile.client_p;
     let clientAddresses = await client.clientaddress_p;
     console.log(client);
     console.log(clientAddresses);
     for (let ca of clientAddresses) {
       if ((<any>ca).isPrimary)
-        this.defaultShippingAddress = ca;
+        res = ca;
     };
-    //console.log(uService.profile.client_p?.fname);
+    return res;
+  }
+
+  deliverToThisAddress() {
 
   }
 
+  editAddress() {
+
+  }
+
+  deleteAddress() {
+
+  }
 }
