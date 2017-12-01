@@ -465,7 +465,7 @@ export class WebApiService implements InMemoryDbService {
       id: 23, markers: [
       {id: 1, position: {lat: 50.4357, lng: 30.5164}, title: 'вул. В. Васильківська, 45', openTime: '9:00', closeTime: '21:00'},
       {id: 2, position: {lat: 50.4898, lng: 30.4927}, title: 'просп. Степана Бандери, 21', openTime: '9:00', closeTime: '21:00'},
-      {id: 3, position: {lat: 50.4316, lng: 30.5131}, title: 'вул. Горького , 50', openTime: '9:00', closeTime: '21:00'},
+      {id: 3, position: {lat: 50.4316, lng: 30.5131}, title: 'вул. Антоновича, 52', openTime: '9:00', closeTime: '21:00'},
       {id: 4, position: {lat: 50.5145, lng: 30.4986}, title: 'просп. Оболонський, 21Б', openTime: '9:00', closeTime: '21:00'},
       {id: 5, position: {lat: 50.381827, lng: 30.44093}, title: 'вул. Велика Кільцева, 110', openTime: '9:00', closeTime: '21:00'},
       {id: 6, position: {lat: 50.4605, lng: 30.3469}, title: 'вул. Чорнобильська, 16/80', openTime: '9:00', closeTime: '21:00'},

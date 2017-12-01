@@ -41,6 +41,7 @@ export class MapPage extends ComponentBase {
   shopList: SelectItem[];
   options: any;
   userPos: LatLng;
+  userPosIsKnown: boolean;
   // Setting up direction service
   directionsService: any;
   directionsDisplay: any;
@@ -53,7 +54,7 @@ export class MapPage extends ComponentBase {
   landscapePrimary = this.screenOrientation.ORIENTATIONS.LANDSCAPE_PRIMARY;
   landscapeSecondary = this.screenOrientation.ORIENTATIONS.LANDSCAPE_SECONDARY;*/
 
-  launchNavigatorOptions: LaunchNavigatorOptions;
+  // launchNavigatorOptions: LaunchNavigatorOptions;
 
   constructor(public platform: Platform, private repo: AbstractDataRepository, private geolocation: Geolocation,
               /*private screenOrientation: ScreenOrientation,*/ private statusBar: StatusBar,
@@ -90,8 +91,10 @@ export class MapPage extends ComponentBase {
       this.getLocation().then(res => {
         this.userPos.lat = res.coords.latitude;
         this.userPos.lng = res.coords.longitude;
+        this.userPosIsKnown = true;
       }).catch(err => {
-        console.log('Error while getting user\'s location ' + err);
+        // console.log('Error while getting user\'s location ' + err);
+        this.userPosIsKnown = false;
       });
     });
 
@@ -362,8 +365,10 @@ export class MapPage extends ComponentBase {
   }
 
   buildRoute() {
-    if (this.userPos !== null && this.selectedMarker !== null) {
+    if (this.userPosIsKnown === true && this.selectedMarker !== null) {
       this.calculateAndDisplayRoute(this.userPos, this.selectedMarker);
+    } else {
+      return;
     }
   }
 
@@ -384,14 +389,8 @@ export class MapPage extends ComponentBase {
           this.directionsDisplay.setDirections(response);
           // console.log('Duration: ' + (response.routes[0].legs[0].duration.value / 60).toFixed());
         } else {
-          // When we can't determine user's location - use Google Maps instead
-          this.platform.ready().then(() => {
-            this.launchNavigator.navigate([this.selectedMarker.lat,this.selectedMarker.lng], {app: this.launchNavigator.APP.GOOGLE_MAPS})
-              .then(
-                success => console.log('Launched navigator'),
-                error => console.log('Error launching navigator', error)
-              );
-          });
+          // When we can't determine user's location - use another navigator instead
+          this.useExternalNavigator(end);
           // window.alert('Directions request failed due to ' + status);
         }
       });
@@ -400,9 +399,19 @@ export class MapPage extends ComponentBase {
     }
   }
 
-  // Checking either shop is working now or not
-  // shopOpensH - hour when shop opens, shopClosesH - when closes
-  // shopOpensM, shopClosesM - same with minutes
+  useExternalNavigator(endpoint) {
+    this.platform.ready().then(() => {
+      this.launchNavigator.navigate([endpoint.lat, endpoint.lng], {app: this.launchNavigator.APP.USER_SELECT})
+        .then(
+          success => console.log('Launched navigator'),
+          error => window.alert('Error launching navigator: ' + error)
+        );
+    });
+  }
+
+// Checking either shop is working now or not
+  // opensTime - time when shop opens
+  // closesTime - time when shop closes
   shopIsWorking(opensTime, closesTime) {
     const date = new Date();
 

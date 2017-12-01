@@ -27,10 +27,20 @@
         <ion-icon name="md-star-outline"></ion-icon>
         В избранное
       </button>
-      <button ion-button icon-left clear (click)="buildRoute()" [disabled]="selectedMarker === null"
-              class="f-map-button">
+      <button ion-button icon-left clear (click)="useExternalNavigator(selectedMarker)" [disabled]="selectedMarker === null"
+              class="f-map-button" *ngIf="userPosIsKnown === false">
         <ion-icon name="ios-navigate-outline"></ion-icon>
         Проложить маршрут
+      </button>
+      <button ion-button icon-left clear (click)="buildRoute()" [disabled]="selectedMarker === null"
+              class="f-map-button" *ngIf="userPosIsKnown === true">
+        <ion-icon name="ios-navigate-outline"></ion-icon>
+        Посмотреть маршрут
+      </button>
+      <button ion-button icon-left clear (click)="useExternalNavigator(selectedMarker)" [disabled]="selectedMarker === null"
+              class="f-map-button" *ngIf="userPosIsKnown === true">
+        <ion-icon name="ios-navigate-outline"></ion-icon>
+        Проложить маршрут в навигаторе
       </button>
     </ion-buttons>
   </ion-footer>

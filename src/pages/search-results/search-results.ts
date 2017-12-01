@@ -22,7 +22,9 @@ export class SearchResultsPage extends ComponentBase implements OnInit {
 
 
   onSearchClick() {
-    this.navCtrl.setRoot(SearchPage);
+    this.navCtrl.push(SearchPage).catch((err: any) => {
+      console.log(`Didn't set nav root: ${err}`);
+    });
   }
 
   async ngOnInit() {

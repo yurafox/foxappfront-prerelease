@@ -13,7 +13,7 @@ import {
   MapPage
 } from '../pages/index';
 import {ComponentBase} from "../components/component-extension/component-base";
-import {VideoOptions, VideoPlayer} from '@ionic-native/video-player';
+// import {ScreenOrientation} from "@ionic-native/screen-orientation";
 
 export interface PageInterface {
   title: string;
@@ -22,6 +22,8 @@ export interface PageInterface {
   icon?: string;
   index?: number;
 }
+
+declare var ExoPlayer: any;
 
 @Component({
   templateUrl: 'app.html'
@@ -33,9 +35,8 @@ export class FoxApp extends ComponentBase {
 
   rootPage = HomePage;
 
-  readonly LOCAL_VIDEO_URL = 'file:///android_asset/www/assets/video/';
-  videoOpts: VideoOptions;
-  videoFileName: string;
+  readonly LOCAL_VIDEO_URL = 'file:///android_asset/www/assets/video/'; // Default path if file located in assets/video
+  videoFileName = 'promo';  // Set the name of video file
 
   appPages = [
     {title: 'Главная', name: 'Home', component: HomePage, index: 0, icon: 'ios-home-outline'},
@@ -51,20 +52,13 @@ export class FoxApp extends ComponentBase {
 
   constructor(private platform: Platform, statusBar: StatusBar,
               private splashScreen: SplashScreen, public menuCtrl: MenuController,
-              private repo: AbstractDataRepository, private videoPlayer: VideoPlayer) {
+              private repo: AbstractDataRepository/*, private screenOrientation: ScreenOrientation*/) {
     super();
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.splashScreen.hide();
-      // ScalingMode: 1 - without cropping, 2 - with cropping
-      this.videoOpts = {
-        volume: 0.7,
-        scalingMode: 2
-      };
     });
-    // Indicate video file name that should be played
-    this.videoFileName = 'promo';
   }
 
   ionViewDidLoad() {
@@ -92,7 +86,11 @@ export class FoxApp extends ComponentBase {
           break;
         }
         case 'About': {
-          this.playVideo();
+          try {
+            this.playVideo();
+          } catch(err) {
+            console.log(err);
+          }
           break;
         }
         default: {
@@ -118,14 +116,78 @@ export class FoxApp extends ComponentBase {
     this.menuCtrl.close();
   }
 
-  // Video Player
+  // To play video when device is ready
   playVideo() {
-    this.platform.ready().then(() =>
-      this.videoPlayer.play(this.LOCAL_VIDEO_URL + this.videoFileName + '.mp4', this.videoOpts).then(() => {
-        console.log('video completed');
-      }).catch(err => {
-        console.log(err);
-      }));
+    this.platform.ready().then(() => {
+      // Locking screen orientation
+      /*this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT_PRIMARY).then(() => {
+        console.log('locked');
+      }).catch(e => {
+        console.log('error locking: ' + e);
+      });*/
+      // ExoPlayer
+      this.playExoPlayer();
+    }).catch(err => {
+      console.log('Error occurred: ' + err);
+    });
+  }
+
+  // Function to play Google's ExoPlayer
+  playExoPlayer() {
+    let successCallback = json => {
+      // console.log(json.eventType);
+      /*if (json.eventType === 'KEY_EVENT') {
+        console.log('action: ' + json.eventAction);
+        console.log('keycode: ' + json.eventKeycode);
+      }*/
+      // Exit player on phones BACK button
+      if (json.eventType === 'KEY_EVENT' && json.eventKeycode === 'KEYCODE_BACK') {
+        ExoPlayer.close();
+      };
+      // Show controls on tap on the screen
+      if (json.eventType === 'TOUCH_EVENT' && json.eventAction === 'ACTION_UP') {
+        ExoPlayer.showController();
+      };
+      // Play video again (from 0 ms) if it ended
+      if (json.eventType === 'STATE_CHANGED_EVENT') {
+        // console.log('state: ' + JSON.stringify(json));
+        if (/*json.playbackState === 'STATE_ENDED'*/ json.position >= (json.duration - 1)) {
+          ExoPlayer.seekTo(0);
+        }
+      }
+    };
+    let errorCallback = error => {
+      console.log(error);
+    };
+    // Parameters for player
+    let params = {
+      url: this.LOCAL_VIDEO_URL + this.videoFileName + '.mp4',
+      userAgent: 'FoxPlayer', // default is 'ExoPlayerPlugin'
+      aspectRatio: 'FIT_SCREEN', // default is FIT_SCREEN
+      hideTimeout: 3000, // Hide controls after this many milliseconds, default is 5 sec
+      autoPlay: true, // When set to false stream will not automatically start
+      // seekTo: 10 * 60 * 60 * 1000, // Start playback 10 minutes into video specified in ms, default is 0
+      forwardTime: 60 * 1000, // Amount of time in ms to use when skipping forward, default is 1 min
+      rewindTime: 60 * 1000, // Amount of time in ms to use when skipping backward, default is 1 min
+      // audioOnly: true, // Only play audio in the backgroud, default is false.
+      // subtitleUrl: 'http://url.to/subtitle.srt', // Optional subtitle url
+      // connectTimeout: 1000, // okhttp connect timeout in ms (default is 0)
+      // readTimeout: 1000, // okhttp read timeout in ms (default is 0)
+      // writeTimeout: 1000, // okhttp write timeout in ms (default is 0)
+      // pingInterval: 1000, // okhttp socket ping interval in ms (default is 0 or disabled)
+      // retryCount: 5, // number of times datasource will retry the stream before giving up (default is 3)
+      controller: { // If this object is not present controller will not be visible
+        // streamImage: 'http://url.to/channel.png',
+        // streamTitle: 'Cool channel / movie',
+        // streamDescription: '2nd line you can use to display whatever you want like current program epg or movie description',
+        hideProgress: false, // Hide entire progress timebar
+        hidePosition: false, // If timebar is visible hide current position from it
+        hideDuration: false, // If timebar is visible Hide stream duration from it
+        controlIcons: {}
+      }
+    };
+    // Start player
+    ExoPlayer.show(params, successCallback, errorCallback);
   }
 }
 
