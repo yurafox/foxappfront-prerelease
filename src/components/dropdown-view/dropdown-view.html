@@ -4,12 +4,12 @@
       <table class="f-table f-table-striped f-table-hover">
         <thead>
           <tr>
-            <th>Список</th>
+            <th>{{displayHeader}}</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody [ngStyle]="getImportantStyle()">
           <tr *ngFor="let item of parent.store">
-            <td id='{{item[valueName]}}' [class.f-active]='isActive(item)' (click)="onSelect(item)">{{item[displayName]}}</td>
+            <td id={{uniqueIdentifier(item)}} [class.f-active]='isActive(item)' (click)="onSelect(item)">{{item[displayName]}}</td>
           </tr>
         </tbody>
       </table>

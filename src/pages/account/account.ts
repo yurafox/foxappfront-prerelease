@@ -1,3 +1,4 @@
+import { System } from './../../app/core/app-core';
 import {Component, OnInit, Type} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -21,7 +22,7 @@ export class AccountPage extends ComponentBase {
   public editForm: FormGroup;
   public onLoad = false;
   public test=[];
-  public currentTest:any;
+  public currentTest:System.FoxNumber;
   public formErrors = {
     'email': '',
     'password': '',
@@ -59,10 +60,7 @@ export class AccountPage extends ComponentBase {
   async ngOnInit(){
     super.ngOnInit();
     
-    for(let i=0;i<50;i++){
-      this.test.push({id:i,name:`${i}`});
-    }
-    this.currentTest = {id:this.test[0].id,name:this.test[0].name};
+    this.currentTest = new System.FoxNumber(); 
     [this.currencies,this.langs] = await Promise.all([this.repo.getCurrencies(true),
                                                       this.repo.getLocale(true)]);
 
@@ -91,7 +89,7 @@ export class AccountPage extends ComponentBase {
     if (!this.editForm.valid) {
       return;
     }
-
+    
     const data = this.editForm.value;
     const user: User= new User(data.name,data.email,
       data.password,this.userService.uid,data.appKey,{'currency': `${this.currentCurrency.id}`, 'lang': `${this.currentLang.id}`});
