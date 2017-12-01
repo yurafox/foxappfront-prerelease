@@ -111,6 +111,8 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async getCountryById(id: number): Promise<Country> {
+    if (!id)
+      return null;
     try {
       const _id = id.toString();
       let country = new Country();
@@ -270,6 +272,8 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async getCityById(id: number): Promise<City> {
+    if (!id)
+      return null;
     try {
       const city: City = new City();
       const _id: string = id.toString();

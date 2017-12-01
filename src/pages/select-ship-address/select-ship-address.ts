@@ -40,10 +40,14 @@ export class SelectShipAddressPage extends ComponentBase {
   }
 
   editAddress(item: ClientAddress) {
-    this.navCtrl.push(EditShipAddressPage, {item});
+    this.navCtrl.push(EditShipAddressPage, {data: item, mode: 'edit', page: this});
   }
 
-  deleteAddress() {
+  addNewAddress() {
+    this.navCtrl.push(EditShipAddressPage, {data: null, mode: 'create', page: this});
+  }
+
+  deleteAddress(item: ClientAddress) {
 
   }
 }
