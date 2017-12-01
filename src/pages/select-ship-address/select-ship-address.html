@@ -3,7 +3,7 @@
 </ion-header>
 
 <ion-content>
-
+<div *ngIf="shippingAddresses && (shippingAddresses.length>0)">
   <ion-grid class="f-item-nopadding-tb f-color-secondary">
     <ion-row>
       <ion-col>
@@ -52,15 +52,15 @@
         </ion-grid>
     </ion-row>
   </ion-grid>
+</div>
 
   <ion-grid class="f-item-nopadding-tb f-color-secondary" (click)="addNewAddress()">
     <ion-row>
       <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
         <ion-item  detail-push text-wrap class="f-color-secondary">
-          <b class="f-size-larger">Add a New Address</b>
+          <b class="f-size-larger">Add a New Shipping Address</b>
         </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>

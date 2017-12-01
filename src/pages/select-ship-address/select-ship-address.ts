@@ -19,7 +19,10 @@ export class SelectShipAddressPage extends ComponentBase {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public uService: UserService, public alertCtrl: AlertController) {
     super();
-    this.getDefaultShipAddress().then(data => this.shippingAddresses = data);
+    this.getDefaultShipAddress().then(data => {
+      this.shippingAddresses = data;
+      }
+    );
   }
 
   async getDefaultShipAddress(): Promise<ClientAddress[]>  {
