@@ -213,6 +213,8 @@ export class AppDataRepository extends AbstractDataRepository {
           clientAddress.idCountry = i.idCountry;
           clientAddress.city = i.city;
           clientAddress.bldApp = i.bldApp;
+          clientAddress.recName = i.recName;
+          clientAddress.phone = i.phone;
           clientAdresses.push(clientAddress);
         }
         return clientAdresses;

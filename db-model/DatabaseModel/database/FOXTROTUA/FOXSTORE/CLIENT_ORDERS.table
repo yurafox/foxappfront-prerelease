@@ -142,6 +142,21 @@
       </dataTypeUsage>
       <notNull>false</notNull>
     </column>
+    <column>
+      <name>LO_ID_CLIENT_ADDRESS</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">18</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
   </columns>
   <constraints>
     <constraint class="oracle.javatools.db.PKConstraint">
@@ -189,6 +204,32 @@
         <name>LO_ENTITIES_PK</name>
         <parent class="oracle.javatools.db.NameBasedID">
           <name>LO_ENTITIES</name>
+          <schemaName>FOXSTORE</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>FOXSTORE</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <name>CLIENT_ORDERS_FK2</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.NameBasedID">
+          <name>LO_ID_CLIENT_ADDRESS</name>
+          <parent class="oracle.javatools.db.NameBasedID">
+            <name>CLIENT_ORDERS</name>
+            <schemaName>FOXSTORE</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>FOXSTORE</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <referenceID class="oracle.javatools.db.NameBasedID">
+        <name>CLIENT_ADDRESS_PK</name>
+        <parent class="oracle.javatools.db.NameBasedID">
+          <name>CLIENT_ADDRESS</name>
           <schemaName>FOXSTORE</schemaName>
           <type>TABLE</type>
         </parent>

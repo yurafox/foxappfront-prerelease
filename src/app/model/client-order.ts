@@ -10,6 +10,7 @@ export class ClientOrder {
     public idPaymentMethod?: number,
     public idPaymentStatus?: number,
     public idStatus?: number,
-    public orderProducts?: ClientOrderProducts[]
+    public orderProducts?: ClientOrderProducts[],
+    public loIdClientAddress?: number
   ){}
 }

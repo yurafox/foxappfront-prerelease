@@ -3,53 +3,64 @@
 </ion-header>
 
 <ion-content>
-<div *ngIf="(defaultShippingAddress) && (defaultShippingAddress.country) && (uService.profile.client)">
-  <ion-grid style="padding: 15px;" class="f-item-nopadding-tb f-color-secondary">
+
+  <ion-grid class="f-item-nopadding-tb f-color-secondary">
     <ion-row>
       <ion-col>
         <b><span class="f-size-large">Select a shipping address</span></b>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col col-2 text-center>
-          <input type="radio" id="radioButton" checked>
-      </ion-col>
-      <ion-col style="padding-bottom: 30px;" class="f-size-larger">
-        <b>{{uService.profile.client?.fname}} {{uService.profile.client?.lname}}</b>
-        <br>
-        {{defaultShippingAddress?.street}}
-        <br>
-        {{defaultShippingAddress?.bldApp}}
-        <br>
-        {{defaultShippingAddress?.city}}, {{defaultShippingAddress?.zip}}
-        <br>
-        {{defaultShippingAddress?.country?.name}}
-        <br>
-        Phone: {{uService.profile.client?.phone}}
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col style="padding-left: 0px; padding-right: 0px;">
-        <button class="f-btn-add-cart" ion-button block (click)="deliverToThisAddress()">Deliver to this address</button>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-6 style="padding-left: 0px; padding-bottom: 15px;">
-        <button class="f-btn-secondary"  ion-button block (click)="editAddress()">Edit</button>
-      </ion-col>
-      <ion-col col-6 style="padding-right: 0px; padding-bottom: 15px;">
-        <button class="f-btn-secondary"  ion-button block (click)="deleteAddress()">Delete</button>
-      </ion-col>
-    </ion-row>
 
-    <ion-row >
+    <ion-row *ngFor="let sa of shippingAddresses">
+
+        <ion-grid style="border: 1px solid #EBEBEC;" >
+
+            <ion-row>
+              <ion-col col-2 text-center>
+                  <input type="radio" id="radioButton" [checked]="sa.isPrimary" (click)="onIsPrimaryClick(sa)">
+              </ion-col>
+              <ion-col style="padding-bottom: 10px;" class="f-size-larger">
+                <b>{{sa?.recName}}</b>
+                <br>
+                {{sa?.street}}
+                <br>
+                {{sa?.bldApp}}
+                <br>
+                {{sa?.city}}, {{sa?.zip}}
+                <br>
+                {{sa?.country?.name}}
+                <br>
+                Phone: {{sa?.phone}}
+              </ion-col>
+            </ion-row>
+            <div *ngIf="sa.isPrimary">
+              <ion-row>
+                <ion-col style="padding-left: 10px; padding-right: 10px;">
+                  <button class="f-btn-add-cart" ion-button block (click)="deliverToThisAddress(sa)">Deliver to this address</button>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col col-6 style="padding-left: 10px; padding-bottom: 15px;  padding-right: 10px;">
+                  <button class="f-btn-secondary"  ion-button block (click)="editAddress(sa)">Edit</button>
+                </ion-col>
+                <ion-col col-6 style="padding-right: 10px; padding-bottom: 15px; padding-left: 10px;">
+                  <button class="f-btn-secondary"  ion-button block (click)="deleteAddress()">Delete</button>
+                </ion-col>
+              </ion-row>
+            </div>
+
+        </ion-grid>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="f-item-nopadding-tb f-color-secondary">
+    <ion-row>
       <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
         <ion-item  detail-push text-wrap class="f-color-secondary">
           <b class="f-size-larger">Add a New Address</b>
         </ion-item>
       </ion-col>
     </ion-row>
-
   </ion-grid>
-</div>
+
 </ion-content>

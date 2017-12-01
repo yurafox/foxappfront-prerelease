@@ -20,6 +20,8 @@ export class ClientAddress {
     public isPrimary?: boolean,
     public idCountry?: number,
     public city?: string,
-    public bldApp?: string
+    public bldApp?: string,
+    public recName?: string,
+    public phone?: string
   ) {this._repo = RefInjector.pull(AbstractDataRepository);}
 }

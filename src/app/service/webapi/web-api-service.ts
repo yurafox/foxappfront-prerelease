@@ -771,10 +771,10 @@ export class WebApiService implements InMemoryDbService {
   ];
 
   clientAddresses = [
-    {id: 1, idClient: 100, idCity: 8, zip: '07400', street: 'Незалежності', isPrimary: true, idCountry: 1, city: 'Brovary', bldApp: '25 app.17'},
-    {id: 2, idClient: 100, idCity: 23, zip: '', street: 'Дорогожицька', isPrimary: null, idCountry: 1, city: 'Kyiv', bldApp: '1'},
-    {id: 3, idClient: 101, idCity: 8, zip: '07400', street: 'Героїв Небесної Сотні', isPrimary: true, idCountry: 1, city: 'Brovary', bldApp: '20 app.7'},
-    {id: 4, idClient: 102, idCity: 23, zip: null, street: 'Дорогожицька', isPrimary: null, idCountry: 1, city: 'Kyiv', bldApp: '1'}
+    {id: 1, idClient: 100, idCity: 8, zip: '07400', street: 'Незалежності', isPrimary: false, idCountry: 1, city: 'Brovary', bldApp: '25 app.17', recName:'Yurii Ishchenko', phone: '+380505245745'},
+    {id: 2, idClient: 100, idCity: 23, zip: '', street: 'Дорогожицька', isPrimary: true, idCountry: 1, city: 'Kyiv', bldApp: '1', recName:'Ivan Romaniv', phone: '+380996548754'},
+    {id: 3, idClient: 101, idCity: 8, zip: '07400', street: 'Героїв Небесної Сотні', isPrimary: true, idCountry: 1, city: 'Brovary', bldApp: '20 app.7', recName:'Serhiy Moskalenko', phone: '+380978885745'},
+    {id: 4, idClient: 102, idCity: 23, zip: null, street: 'Дорогожицька', isPrimary: null, idCountry: 1, city: 'Kyiv', bldApp: '1', recName:'Volodymyr Varha', phone: '+380934587788'}
   ];
 
   loEntities = [

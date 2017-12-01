@@ -67,6 +67,7 @@ import {DirectivesModule} from './directive/directives.module';
 import {VideoPlayer} from '@ionic-native/video-player';
 import {Geolocation} from '@ionic-native/geolocation';
 import {ScreenOrientation} from '@ionic-native/screen-orientation';
+import {EditShipAddressPage} from '../pages/edit-ship-address/edit-ship-address';
 
 @NgModule({
   declarations: [
@@ -94,7 +95,8 @@ import {ScreenOrientation} from '@ionic-native/screen-orientation';
     ItemQuotesPage,
     FilterPopoverPage,
     SelectShipAddressPage,
-    CityPopoverPage
+    CityPopoverPage,
+    EditShipAddressPage
   ],
   imports: [
     BrowserModule,
@@ -145,6 +147,7 @@ import {ScreenOrientation} from '@ionic-native/screen-orientation';
     FilterPopoverPage,
     CityPopoverPage,
     SelectShipAddressPage,
+    EditShipAddressPage,
     MapPage
   ],
   providers: [

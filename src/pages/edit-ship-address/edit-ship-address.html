@@ -1,0 +1,27 @@
+<ion-header>
+  <main-toolbar></main-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid style="padding: 10px;" class="f-size-larger">
+    <ion-row>
+      <ion-col style="padding-bottom: 10px;">
+        <input [(ngModel)]="shippingAddress.recName" placeholder="First and last name" required>
+        <br>
+        <input [(ngModel)]="shippingAddress.street" placeholder="Street" required>
+        <br>
+        <input [(ngModel)]="shippingAddress.bldApp" placeholder="Building and apartment" required>
+        <br>
+        <input [(ngModel)]="shippingAddress.city" placeholder="City" required>
+        <br>
+        <input [(ngModel)]="shippingAddress.zip" placeholder="Zip">
+        <br>
+        <input [(ngModel)]="shippingAddress.phone" placeholder="Phone" required>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button class="f-btn-add-cart" ion-button block (click)="deliverToThisAddress()">Deliver to this address</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
