@@ -2,26 +2,40 @@
   <main-toolbar></main-toolbar>
 </ion-header>
 <ion-content>
-  <ion-grid style="padding: 10px;" class="f-size-larger">
-    <ion-row>
-      <ion-col style="padding-bottom: 10px;">
-        <input [(ngModel)]="shippingAddress.recName" placeholder="First and last name" required>
-        <br>
-        <input [(ngModel)]="shippingAddress.street" placeholder="Street" required>
-        <br>
-        <input [(ngModel)]="shippingAddress.bldApp" placeholder="Building and apartment" required>
-        <br>
-        <input [(ngModel)]="shippingAddress.city" placeholder="City" required>
-        <br>
-        <input [(ngModel)]="shippingAddress.zip" placeholder="Zip">
-        <br>
-        <input [(ngModel)]="shippingAddress.phone" placeholder="Phone" required>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <button class="f-btn-add-cart" ion-button block (click)="deliverToThisAddress()">Deliver to this address</button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <form #f="ngForm">
+    <ion-grid style="padding: 10px;" class="f-size-larger">
+      <ion-row>
+        <ion-col style="padding-bottom: 10px;">
+          <input [(ngModel)]="shippingAddress.recName" name="recName"
+                 placeholder="First and last name" required #recName="ngModel">
+          <span *ngIf="!recName.valid && recName.touched" style="color: red;">Please enter your first and last name</span>
+          <br>
+          <input [(ngModel)]="shippingAddress.street" name="street"
+                 placeholder="Street" required #street="ngModel">
+          <span *ngIf="!street.valid && street.touched" style="color: red;">Please enter your street</span>
+          <br>
+          <input [(ngModel)]="shippingAddress.bldApp" name="bldApp"
+                 placeholder="Building and apartment" required #bldApp="ngModel">
+          <span *ngIf="!bldApp.valid && bldApp.touched" style="color: red;">Please enter your building and apartment</span>
+          <br>
+          <input [(ngModel)]="shippingAddress.city" name="city"
+                 placeholder="City" required #city="ngModel">
+          <span *ngIf="!city.valid && city.touched" style="color: red;">Please enter your city</span>
+          <br>
+          <input [(ngModel)]="shippingAddress.zip" name="zip"
+                 placeholder="Zip" #zip="ngModel">
+          <span *ngIf="!zip.valid && zip.touched" style="color: red;">Please enter your zip</span>
+          <br>
+          <input [(ngModel)]="shippingAddress.phone" name="phone"
+                 placeholder="Phone" required #phone="ngModel">
+          <span *ngIf="!phone.valid && phone.touched" style="color: red;">Please enter your phone</span>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button class="f-btn-add-cart" ion-button block (click)="deliverToThisAddress()">Deliver to this address</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>

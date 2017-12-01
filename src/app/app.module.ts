@@ -4,13 +4,14 @@ import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {StatusBar} from '@ionic-native/status-bar';
 import {HttpModule} from '@angular/http';
+import {FormsModule} from '@angular/forms';
 import {InAppBrowser} from '@ionic-native/in-app-browser';
 import {GoogleMaps} from '@ionic-native/google-maps';
 import {Ionic2RatingModule} from 'ionic2-rating';
 import {BarcodeScanner} from '@ionic-native/barcode-scanner';
 
 import {FoxApp} from './app.component';
-import {FormsModule} from '@angular/forms';
+
 import {ReactiveFormsModule} from '@angular/forms';
 
 import {

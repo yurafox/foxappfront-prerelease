@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {UserService} from '../../app/service/bll/user-service';
 import {ClientAddress} from '../../app/model/client-address';
@@ -17,7 +17,7 @@ export class SelectShipAddressPage extends ComponentBase {
   qty: number = 10;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public uService: UserService) {
+              public uService: UserService, public alertCtrl: AlertController) {
     super();
     this.getDefaultShipAddress().then(data => this.shippingAddresses = data);
   }
@@ -48,6 +48,25 @@ export class SelectShipAddressPage extends ComponentBase {
   }
 
   deleteAddress(item: ClientAddress) {
-
+    let alert = this.alertCtrl.create({
+      title: 'Confirmation',
+      message: 'Are you sure you want ot delete this address for your address book?',
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.shippingAddresses.splice(this.shippingAddresses.indexOf(item),1);
+            if (this.shippingAddresses.length > 0) {
+              this.shippingAddresses[0].isPrimary = true;
+            }
+          }
+        },
+        {
+          text: 'Cancel',
+          handler: () => {}
+        }
+      ]
+    });
+    alert.present();
   }
 }
