@@ -102,6 +102,7 @@ export class UserService {
     // clear storage data (localeStorage and other stores)
     this.clear();
     this.callDefaultUser();
+    this.evServ.events['logOffEvent'].emit();
   }
 
   // method for control signOut behavior
@@ -222,6 +223,7 @@ export class UserService {
   private changeAuthStatus(userFields: Array<string>): void {
     this.addImpotantDataToStorage(userFields);
     this._auth = true;
+    this.evServ.events['logonEvent'].emit();
   }
 
  // remove data from storage and check user status

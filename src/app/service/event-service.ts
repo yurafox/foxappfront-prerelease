@@ -5,6 +5,10 @@ import {IDictionary} from '../core/app-core';
 export class EventService {
   public events: IDictionary<EventEmitter<any>>;
   constructor() {
-     this.events = {'localeChangeEvent': new EventEmitter<any>()};
+     this.events = {
+       'localeChangeEvent': new EventEmitter<any>(),
+       'logonEvent': new EventEmitter<any>(),
+       'logOffEvent': new EventEmitter<any>()
+     };
   }
 }

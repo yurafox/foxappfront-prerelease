@@ -26,7 +26,7 @@ export class CartPage extends ComponentBase {
   }
 
   onDeleteItem(itemIndex: number) {
-    this.cart.orderProducts.splice(itemIndex, 1);
+    this.cart.removeItem(itemIndex);
   }
 
   checkout() {

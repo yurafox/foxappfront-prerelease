@@ -765,8 +765,8 @@ export class WebApiService implements InMemoryDbService {
   ];
 
   clients = [
-    {id: 100, name: 'yurafox', phone: '+0800300353', login: 'yurafox@fox.com', email: 'yurafox@fox.com', fname: 'Yurii', lname: 'Ishchenko'},
-    {id: 101, name: 'sergce', phone: '+222', login: 'sergce@fox.com', email: 'sergce@fox.com', fname: 'Serhiy', lname: 'Moskalenko'},
+    {id: 100, name: 'yurafox', phone: '+0800300353', login: 'yurafox@fox.com', email: 'yurafox@fox.com', fname: 'Yurii', lname: 'Ishchenko', barcode: '+11000002680'},
+    {id: 101, name: 'sergce', phone: '+222', login: 'sergce@fox.com', email: 'sergce@fox.com', fname: 'Serhiy', lname: 'Moskalenko', barcode: '+11000002681'},
     {id: 102, name: 'dealio07', phone: '+3333', login: 'dealio07@fox.com', email: 'dealio07@fox.com', fname: 'Volodymyr', lname: 'Varha'}
   ];
 
@@ -789,6 +789,26 @@ export class WebApiService implements InMemoryDbService {
     {id: 2, idSuppler: 1, idLoEntity: 100},
     {id: 3, idSuppler: 2, idLoEntity: 102},
     {id: 4, idSuppler: 2, idLoEntity: 150}
+  ];
+
+  clientOrders = [
+    {id: 1, orderDate: '29/10/2017', idCur: 1, idClient: 100, total: 11117, idPaymentMethod: 1, idPaymentStatus: 1, idStatus: 0, loIdEntity: null, loIdClientAddress: null},
+    {id: 2, orderDate: '19/10/2017', idCur: 0, idClient: 101, total: 497.70, idPaymentMethod: 2, idPaymentStatus: 1, idStatus: 2, loIdEntity: null, loIdClientAddress: null},
+    {id: 3, orderDate: '30/10/2017', idCur: 0, idClient: 100, total: 120, idPaymentMethod: 2, idPaymentStatus: 1, idStatus: 1, loIdEntity: null, loIdClientAddress: null}
+  ];
+
+  clientOrderSpecProducts = [
+    {id: 1, idOrder: 2, idQuotationProduct: 1, price: 5199.00, qty: 1, idStorePlace: null, idLoEntity: null, loTrackTicket: null, loDeliveryCost: null, loDeliveryCompleted: null, loEstimatedDeliveryDate: null, loDeliveryCompletedDate: null, errorMessage: null},
+    {id: 2, idOrder: 2, idQuotationProduct: 3, price: 5220.00, qty: 1, idStorePlace: null, idLoEntity: null, loTrackTicket: null, loDeliveryCost: null, loDeliveryCompleted: null, loEstimatedDeliveryDate: null, loDeliveryCompletedDate: null, errorMessage: null},
+    {id: 3, idOrder: 2, idQuotationProduct: 2, price: 349.00, qty: 2, idStorePlace: null, idLoEntity: null, loTrackTicket: null, loDeliveryCost: null, loDeliveryCompleted: null, loEstimatedDeliveryDate: null, loDeliveryCompletedDate: null, errorMessage: null},
+    {id: 4, idOrder: 1, idQuotationProduct: 4, price: 330.00, qty: 1, idStorePlace: null, idLoEntity: null, loTrackTicket: null, loDeliveryCost: null, loDeliveryCompleted: null, loEstimatedDeliveryDate: null, loDeliveryCompletedDate: null, errorMessage: 'This item currently out of stock'},
+    {id: 5, idOrder: 1, idQuotationProduct: 6, price: 167.70, qty: 1, idStorePlace: null, idLoEntity: null, loTrackTicket: null, loDeliveryCost: null, loDeliveryCompleted: null, loEstimatedDeliveryDate: null, loDeliveryCompletedDate: null, errorMessage: 'Price for this item has changed'},
+    {id: 6, idOrder: 3, idQuotationProduct: 7, price: 120.00, qty: 1, idStorePlace: null, idLoEntity: null, loTrackTicket: null, loDeliveryCost: null, loDeliveryCompleted: null, loEstimatedDeliveryDate: null, loDeliveryCompletedDate: null, errorMessage: null}
+  ];
+
+  cartProducts = [
+    {id: 4, idOrder: 1, idQuotationProduct: 4, price: 330.00, qty: 1, idStorePlace: null, idLoEntity: null, loTrackTicket: null, loDeliveryCost: null, loDeliveryCompleted: null, loEstimatedDeliveryDate: null, loDeliveryCompletedDate: null, errorMessage: 'This item currently out of stock'},
+    {id: 5, idOrder: 1, idQuotationProduct: 6, price: 167.70, qty: 1, idStorePlace: null, idLoEntity: null, loTrackTicket: null, loDeliveryCost: null, loDeliveryCompleted: null, loEstimatedDeliveryDate: null, loDeliveryCompletedDate: null, errorMessage: 'Price for this item has changed'}
   ];
 
 
@@ -861,10 +881,13 @@ export class WebApiService implements InMemoryDbService {
     const mclientAddresses = this.clientAddresses;
     const mloEntities = this.loEntities;
     const mloSupplEntities = this.loSupplEntities;
+    const mclientOrders = this.clientOrders;
+    const mclientOrderSpecProducts = this.clientOrderSpecProducts;
+    const mcartProducts = this.cartProducts;
     return {
       mquotationProducts, mproducts, mquotation, mcurrencies, msuppliers, mproductReviews, manufacturers, mcities,
       mfoxMapMarkers, mtoken, musers, mproductStorePlaces, mstorePlaces, mlocalization, mclients, mcountries,
-      mclientAddresses, mloEntities, mloSupplEntities
+      mclientAddresses, mloEntities, mloSupplEntities, mclientOrders, mclientOrderSpecProducts, mcartProducts
     }
   }
   // <editor-fold desc="monkey controller">

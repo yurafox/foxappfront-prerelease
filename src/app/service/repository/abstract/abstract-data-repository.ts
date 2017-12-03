@@ -14,6 +14,8 @@ import { QuotationProduct,
        } from '../../../model/index';
 import {ClientAddress} from '../../../model/client-address';
 import {Country} from '../../../model/country';
+import {ClientOrder} from '../../../model/client-order';
+import {ClientOrderProducts} from '../../../model/client-order-products';
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
@@ -33,6 +35,17 @@ export abstract class AbstractDataRepository {
   public async abstract getCurrencyById(currencyId: number): Promise<Currency>;
   public async abstract getManufacturerById(manufacturerId: number): Promise<Manufacturer>;
   public async abstract getManufacturers(cacheForce: boolean): Promise<Manufacturer[]>;
+
+  public async abstract getClientDraftOrder(): Promise<ClientOrder>;
+  public async abstract getClientOrders(): Promise<ClientOrder[]>;
+  public async abstract getClientOrderById(id: number): Promise<ClientOrder>;
+
+  public async abstract getCartProducts(): Promise<ClientOrderProducts[]>;
+  public async abstract saveCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
+  public async abstract updateCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
+  public async abstract deleteCartProduct(prod: ClientOrderProducts);
+
+  public async abstract getClientDraftOrderSpecProductsById(id: number): Promise<ClientOrderProducts>;
 
   public async abstract getCountryById(id: number): Promise<Country>;
   public async abstract getClientById(id: number): Promise<Client>;

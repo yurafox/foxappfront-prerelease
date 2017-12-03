@@ -128,7 +128,7 @@
       </properties>
     </column>
     <column>
-      <name>ID_LO_ENTITY</name>
+      <name>LO_ID_ENTITY</name>
       <dataTypeUsage>
         <attributeValues>
           <entry>
@@ -159,37 +159,11 @@
     </column>
   </columns>
   <constraints>
-    <constraint class="oracle.javatools.db.PKConstraint">
-      <name>CLIENT_ORDER_PK</name>
-      <columnIDs>
-        <columnID class="oracle.javatools.db.NameBasedID">
-          <name>ID</name>
-          <parent class="oracle.javatools.db.NameBasedID">
-            <name>CLIENT_ORDERS</name>
-            <schemaName>FOXSTORE</schemaName>
-            <type>TABLE</type>
-          </parent>
-          <schemaName>FOXSTORE</schemaName>
-          <type>COLUMN</type>
-        </columnID>
-      </columnIDs>
-      <enabled>true</enabled>
-      <indexID class="oracle.javatools.db.NameBasedID">
-        <name>CLIENT_ORDER_PK</name>
-        <parent class="oracle.javatools.db.NameBasedID">
-          <name>CLIENT_ORDERS</name>
-          <schemaName>FOXSTORE</schemaName>
-          <type>TABLE</type>
-        </parent>
-        <schemaName>FOXSTORE</schemaName>
-        <type>INDEX</type>
-      </indexID>
-    </constraint>
     <constraint class="oracle.javatools.db.FKConstraint">
       <name>CLIENT_ORDERS_FK1</name>
       <columnIDs>
         <columnID class="oracle.javatools.db.NameBasedID">
-          <name>ID_LO_ENTITY</name>
+          <name>LO_ID_ENTITY</name>
           <parent class="oracle.javatools.db.NameBasedID">
             <name>CLIENT_ORDERS</name>
             <schemaName>FOXSTORE</schemaName>
@@ -340,6 +314,32 @@
         <schemaName>FOXSTORE</schemaName>
         <type>CONSTRAINT</type>
       </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.PKConstraint">
+      <name>CLIENT_ORDER_PK</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.NameBasedID">
+          <name>ID</name>
+          <parent class="oracle.javatools.db.NameBasedID">
+            <name>CLIENT_ORDERS</name>
+            <schemaName>FOXSTORE</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>FOXSTORE</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <indexID class="oracle.javatools.db.NameBasedID">
+        <name>CLIENT_ORDER_PK</name>
+        <parent class="oracle.javatools.db.NameBasedID">
+          <name>CLIENT_ORDERS</name>
+          <schemaName>FOXSTORE</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>FOXSTORE</schemaName>
+        <type>INDEX</type>
+      </indexID>
     </constraint>
   </constraints>
   <indexes>

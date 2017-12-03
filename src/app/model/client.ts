@@ -15,6 +15,7 @@ export class Client {
     public login?: string,
     public email?: string,
     public fname?: string,
-    public lname?: string
+    public lname?: string,
+    public barcode?: string
   ){this._repo = RefInjector.pull(AbstractDataRepository);}
 }

@@ -24,6 +24,10 @@ import {Providers} from '../../../core/app-core';
 import {Client} from '../../../model/client';
 import {ClientAddress} from '../../../model/client-address';
 import {Country} from '../../../model/country';
+import {ClientOrder} from '../../../model/client-order';
+import {ClientOrderProducts} from '../../../model/client-order-products';
+import {observeOn} from 'rxjs/operator/observeOn';
+import {Observable} from 'rxjs/Observable';
 
 
 // <editor-fold desc="url const">
@@ -42,6 +46,10 @@ const LangUrl='/api/mlocalization';
 const clientsUrl = '/api/mclients';
 const clientAddressesUrl = '/api/mclientAddresses';
 const countriesUrl = '/api/mcountries';
+const clientOrdersUrl = '/api/mclientOrders';
+const clientOrderSpecProductsUrl = '/api/mclientOrderSpecProducts';
+const cartProductsUrl = '/api/mcartProducts';
+
 
 // </editor-fold
 
@@ -53,9 +61,148 @@ export class AppDataRepository extends AbstractDataRepository {
     super();
   }
 
+  public async getClientDraftOrder(): Promise<ClientOrder> {
+    return null;
+  };
+
+  public async getClientOrders(): Promise<ClientOrder[]> {
+    try {
+      const response = await this.http.get(clientOrdersUrl,
+        {search: this.createSearchParams([{key: 'idStatus', value: '1'}, {key: 'idStatus', value: '2'}])}
+
+        ).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error('server side status error');
+      }
+      const cClientOrders = new Array<ClientOrder>();
+      if (data != null) {
+        data.forEach((val) => cClientOrders.push(new ClientOrder(val.id, val.orderDate, val.idCur, val.idClient,
+          val.total, val.idPaymentMethod, val.idPaymentStatus, val.idStatus, val.loIdEntity, val.loIdClientAddress)));
+      }
+      return cClientOrders;
+
+  } catch (err) {
+    return await this.handleError(err);
+  }
+
+};
+
+  public async getClientOrderById(id: number): Promise<ClientOrder>{
+    try {
+      const response = await this.http.get(clientOrdersUrl,
+        {search: this.createSearchParams([{key: 'idStatus', value: id.toString()}])}
+
+      ).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error('server side status error');
+      }
+      return new ClientOrder(data.id, data.orderDate, data.idCur, data.idClient,
+          data.total, data.idPaymentMethod, data.idPaymentStatus, data.idStatus, data.loIdEntity, data.loIdClientAddress);
+
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  };
+
+/*
+  public async abstract saveClientDraftOrderSpecProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
+  public async abstract updateClientDraftOrderSpecProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
+  public async abstract deleteClientDraftOrderSpecProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
+
+*/
+
+  public async updateCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
+    //TODO
+    return null;
+  }
+
+
+  public async saveCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
+    //TODO define DTO objects
+    console.log('add ' + prod );
+
+    try {
+      let obj = {idQuotationProduct: prod.idQuotationProduct,
+        price: prod.price, qty: prod.qty, idStorePlace: prod.idStorePlace}
+
+      const response = await this.http.post(clientOrderSpecProductsUrl, obj/*prod.dto*/).toPromise();
+      console.log(response);
+
+      const val = response.json();
+      if (response.status !== 201) {
+        throw new Error('server side status error');
+      }
+      return new ClientOrderProducts(val.id, val.idOrder, val.idQuotationProduct,
+        val.price, val.qty, val.idStorePlace, val.idLoEntity, val.loTrackTicket, val.loDeliveryCost, val.loDeliveryCompleted,
+        val.loEstimatedDeliveryDate, val.loDeliveryCompletedDate, val.errorMessage);
+    } catch (err) {
+      return await this.handleError(err);
+    }
+
+  }
+
+  public async deleteCartProduct(prod: ClientOrderProducts) {
+    console.log('delete ' + prod );
+    try {
+      const response = await this.http.delete(clientOrderSpecProductsUrl+ `/${prod.id}`).toPromise();
+      if (response.status !== 204) {
+        throw new Error('server side status error');
+      }
+    }
+    catch (err) {
+      await this.handleError(err);
+    }
+  }
+
+
+  public async getCartProducts(): Promise<ClientOrderProducts[]>{
+    try {
+      const response = await this.http.get(cartProductsUrl).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error('server side status error');
+      }
+      const cClientOrderProducts = new Array<ClientOrderProducts>();
+      if (data != null) {
+        data.forEach((val) => cClientOrderProducts.push(new ClientOrderProducts(val.id, val.idOrder, val.idQuotationProduct,
+          val.price, val.qty, val.idStorePlace, val.idLoEntity, val.loTrackTicket, val.loDeliveryCost, val.loDeliveryCompleted,
+          val.loEstimatedDeliveryDate, val.loDeliveryCompletedDate, val.errorMessage)));
+      }
+      return cClientOrderProducts;
+
+    } catch (err) {
+      return await this.handleError(err);
+    }
+
+  };
+
+  public async getClientDraftOrderSpecProductsById(id: number): Promise<ClientOrderProducts>{
+    try {
+      const _id = id.toString();
+      const response = await this.http.get(clientOrderSpecProductsUrl+ `/${_id}`).toPromise();
+
+      const val = response.json();
+      if (response.status !== 200) {
+        throw new Error('server side status error');
+      }
+      return new ClientOrderProducts(val.id, val.idOrder, val.idQuotationProduct,
+          val.price, val.qty, val.idStorePlace, val.idLoEntity, val.loTrackTicket, val.loDeliveryCost, val.loDeliveryCompleted,
+          val.loEstimatedDeliveryDate, val.loDeliveryCompletedDate, val.errorMessage);
+
+    } catch (err) {
+      return await this.handleError(err);
+    }
+
+  };
+
+
   public async getProductReviewsByProductId(productId: number): Promise<ProductReview[]> {
     try {
-
       const response = await this.http.get(productReviewsUrl,
         {search: this.createSearchParams([{key: 'idProduct', value: productId.toString()}])}).toPromise();
 
@@ -153,6 +300,7 @@ export class AppDataRepository extends AbstractDataRepository {
         client.email = data.email;
         client.fname = data.fname;
         client.lname = data.lname;
+        client.barcode = data.barcode;
         return client;
       }
 

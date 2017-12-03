@@ -16,6 +16,10 @@ interface ILazyOption {
   navName?: string;
 }
 
+export interface IDTO {
+  dto: any;
+}
+
 export class CustomValidators {
   public static compare(control: AbstractControl): { [k: string]: any } {
     const data = control.value;

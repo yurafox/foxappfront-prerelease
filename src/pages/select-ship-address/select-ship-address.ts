@@ -14,13 +14,15 @@ import {EditShipAddressPage} from '../edit-ship-address/edit-ship-address';
 export class SelectShipAddressPage extends ComponentBase {
 
   shippingAddresses: ClientAddress[];
-  qty: number = 10;
+  dataLoaded = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public uService: UserService, public alertCtrl: AlertController) {
     super();
+
     this.getDefaultShipAddress().then(data => {
       this.shippingAddresses = data;
+      this.dataLoaded = true;
       }
     );
   }

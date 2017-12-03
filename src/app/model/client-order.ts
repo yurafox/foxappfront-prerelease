@@ -11,6 +11,7 @@ export class ClientOrder {
     public idPaymentStatus?: number,
     public idStatus?: number,
     public orderProducts?: ClientOrderProducts[],
+    public loIdEntity?: number,
     public loIdClientAddress?: number
   ){}
 }
