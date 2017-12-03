@@ -16,9 +16,9 @@
 // automatically applied to the <body> element in the app.
 
 // sass variables
-$popup-small-dictionary-width:125px;
-$popup-middle-dictionary-width:250px;
-$popup-large-dictionary-width:400px;
+$small-dictionary-width:150px;
+$middle-dictionary-width:250px;
+$large-dictionary-width:380px;
 
 md, ios, wp,
 .toolbar-background {
@@ -151,46 +151,52 @@ ion-slides[pager] {
     vertical-align: top;
     border-top: 1px solid #eceeef;
     color: black;
-    width: $popup-small-dictionary-width;
+    width: $small-dictionary-width;
   }
-  width: $popup-small-dictionary-width !important;
+  width: $small-dictionary-width !important;
   padding: 0px !important;
 }
-
-.f-small-dictionary {
-  tbody {
-    border-top: 2px solid #eceeef;
-    display: block;
-    height: 450px;
-    overflow: auto;
-  }
-
-  th,
-  td {
-    padding: 0.75rem;
-    vertical-align: top;
-    border-top: 1px solid #eceeef;
-    color: black;
-    width: $popup-small-dictionary-width;
-  }
-  width: $popup-small-dictionary-width !important;
-  padding: 0px !important;
-}
-
 .f-middle-dictionary {
   @extend.f-small-dictionary;
   td {
-    width: $popup-middle-dictionary-width;
+    width: $middle-dictionary-width;
   }
 
-  width: $popup-middle-dictionary-width !important;
+  width: $middle-dictionary-width !important;
 }
-
-.f-middle-dictionary {
+.f-large-dictionary {
   @extend.f-small-dictionary;
   td {
-    width: $popup-large-dictionary-width;
+    width: $large-dictionary-width;
   }
 
-  width: $popup-large-dictionary-width !important;
+  width: $large-dictionary-width !important;
+}
+
+.f-drop-button-small {
+  button {
+    color: black !important;
+    background-color: #d8d8d8 !important;
+    width: $small-dictionary-width;
+    height: 36px;
+  }
+  button:hover  {
+    -webkit-box-shadow: 0 0 5px 2px #e59400;
+    -moz-box-shadow: 0 0 5px 2px #e59400;
+    box-shadow: 0 0 5px 2px #e59400;
+  }
+}
+
+.f-drop-button-middle {
+   @extend.f-drop-button-small;
+  button {
+    width: $middle-dictionary-width;
+  }
+}
+
+.f-drop-button-large {
+  @extend.f-drop-button-small;
+  button {
+    width: $large-dictionary-width;
+  }
 }

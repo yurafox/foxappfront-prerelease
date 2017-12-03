@@ -1,10 +1,17 @@
 <ion-grid class="f-list-modal">
   <ion-row>
+    <div>
+      <button class="f-close">
+        <span>X</span>
+      </button>
+    </div>
+  </ion-row>
+  <ion-row>
     <ion-col col-12>
       <table class="f-table f-table-striped f-table-hover">
         <thead>
           <tr>
-            <th>{{displayHeader}}</th>
+            <th (click)="close()">{{displayHeader}}</th>
           </tr>
         </thead>
         <tbody [ngStyle]="getImportantStyle()">

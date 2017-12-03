@@ -7,7 +7,7 @@ import {DropdownListComponent} from "../dropdown-list/dropdown-list";
   templateUrl: 'dropdown-view.html'
 })
 export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
-  private parent:DropdownListComponent;
+  public parent:DropdownListComponent;
 
   constructor(private nav: NavController,
               private navParam: NavParams,
