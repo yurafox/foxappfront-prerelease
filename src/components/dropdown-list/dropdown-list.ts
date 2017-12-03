@@ -115,12 +115,8 @@ export class DropdownListComponent implements OnChanges {
     if (!this.options)
       this.options={};
 
-    this.options.popupClass = (this.options.popupClass) ? `${popupDefaultClass} ${this.options.popupClass}` 
-                                                        : popupDefaultClass;
-
-    this.options.buttonClass = (this.options.buttonClass) ? `${buttonDefaultClass} ${this.options.buttonClass}` 
-                                                          : buttonDefaultClass;
-                                                          
+    this.options.popupClass = this.options.popupClass || popupDefaultClass;
+    this.options.buttonClass = this.options.buttonClass || buttonDefaultClass;
     this.options.popupHeader = this.options.popupHeader || popupDefaultHeader;
     this.options.buttonHeader = this.options.buttonHeader || buttonDefaultHeader;                                                       
   } 

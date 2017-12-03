@@ -17,6 +17,8 @@
 
 // sass variables
 $popup-small-dictionary-width:125px;
+$popup-middle-dictionary-width:250px;
+$popup-large-dictionary-width:400px;
 
 md, ios, wp,
 .toolbar-background {
@@ -153,4 +155,42 @@ ion-slides[pager] {
   }
   width: $popup-small-dictionary-width !important;
   padding: 0px !important;
+}
+
+.f-small-dictionary {
+  tbody {
+    border-top: 2px solid #eceeef;
+    display: block;
+    height: 450px;
+    overflow: auto;
+  }
+
+  th,
+  td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #eceeef;
+    color: black;
+    width: $popup-small-dictionary-width;
+  }
+  width: $popup-small-dictionary-width !important;
+  padding: 0px !important;
+}
+
+.f-middle-dictionary {
+  @extend.f-small-dictionary;
+  td {
+    width: $popup-middle-dictionary-width;
+  }
+
+  width: $popup-middle-dictionary-width !important;
+}
+
+.f-middle-dictionary {
+  @extend.f-small-dictionary;
+  td {
+    width: $popup-large-dictionary-width;
+  }
+
+  width: $popup-large-dictionary-width !important;
 }

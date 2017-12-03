@@ -22,7 +22,6 @@ export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
       const elements: NodeListOf<Element> = document.querySelectorAll('div.popover-content');
       if (elements.length!=0) {
          for (let i=0,max=elements.length;i<max;i++){
-           console.log(this.parent.options.popupClass);
           this._renderer.addClass(elements[i],this.parent.options.popupClass);
          } 
       }
