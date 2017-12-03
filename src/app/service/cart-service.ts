@@ -113,6 +113,7 @@ export class CartService {
   }
 
   async updateItem(itemIndex: number) {
+    //TODO implement update method
 
   }
 
