@@ -31,7 +31,7 @@ export class FoxApp extends ComponentBase {
   // @ViewChild(Nav) gets a reference to the app's root nav
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any;
+  rootPage: any = 'HomePage';
 
   readonly LOCAL_VIDEO_URL = 'file:///android_asset/www/assets/video/';
   videoOpts: VideoOptions;
@@ -54,7 +54,7 @@ export class FoxApp extends ComponentBase {
               private repo: AbstractDataRepository, private videoPlayer : VideoPlayer
               ) {
     super();
-    this.rootPage = HomePage;
+    //this.rootPage = HomePage;
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.

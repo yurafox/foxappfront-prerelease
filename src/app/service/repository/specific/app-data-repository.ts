@@ -28,6 +28,7 @@ import {ClientOrder} from '../../../model/client-order';
 import {ClientOrderProducts} from '../../../model/client-order-products';
 import {observeOn} from 'rxjs/operator/observeOn';
 import {Observable} from 'rxjs/Observable';
+import {ClientOrderProductsDTO} from '../../../model/DTO/client-order-products-dto';
 
 
 // <editor-fold desc="url const">
@@ -123,22 +124,22 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async saveCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
     //TODO define DTO objects
-    console.log('add ' + prod );
-
     try {
       let obj = {idQuotationProduct: prod.idQuotationProduct,
         price: prod.price, qty: prod.qty, idStorePlace: prod.idStorePlace}
 
-      const response = await this.http.post(clientOrderSpecProductsUrl, obj/*prod.dto*/).toPromise();
-      console.log(response);
-
+      const response = await this.http.post(clientOrderSpecProductsUrl, obj).toPromise();
       const val = response.json();
       if (response.status !== 201) {
         throw new Error('server side status error');
       }
-      return new ClientOrderProducts(val.id, val.idOrder, val.idQuotationProduct,
-        val.price, val.qty, val.idStorePlace, val.idLoEntity, val.loTrackTicket, val.loDeliveryCost, val.loDeliveryCompleted,
-        val.loEstimatedDeliveryDate, val.loDeliveryCompletedDate, val.errorMessage);
+      let p = new ClientOrderProducts();
+      p.id = val.id; p.idOrder = val.idOrder; p.idQuotationProduct = val.idQuotationProduct;
+      p.price = val.price; p.qty = val.qty; p.idStorePlace = val.idStorePlace; p.idLoEntity = val.idLoEntity;
+      p.loTrackTicket = val.loTrackTicket; p.loDeliveryCost = val.loDeliveryCost;
+      p.loDeliveryCompleted = val.loDeliveryCompleted; p.loEstimatedDeliveryDate = val.loEstimatedDeliveryDate;
+      p.loDeliveryCompletedDate = val.loDeliveryCompletedDate; p.errorMessage = val.errorMessage;
+      return p;
     } catch (err) {
       return await this.handleError(err);
     }
@@ -169,9 +170,18 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const cClientOrderProducts = new Array<ClientOrderProducts>();
       if (data != null) {
-        data.forEach((val) => cClientOrderProducts.push(new ClientOrderProducts(val.id, val.idOrder, val.idQuotationProduct,
-          val.price, val.qty, val.idStorePlace, val.idLoEntity, val.loTrackTicket, val.loDeliveryCost, val.loDeliveryCompleted,
-          val.loEstimatedDeliveryDate, val.loDeliveryCompletedDate, val.errorMessage)));
+        data.forEach((val) => {
+
+          let p = new ClientOrderProducts();
+          p.id = val.id; p.idOrder = val.idOrder; p.idQuotationProduct = val.idQuotationProduct;
+          p.price = val.price; p.qty = val.qty; p.idStorePlace = val.idStorePlace; p.idLoEntity = val.idLoEntity;
+          p.loTrackTicket = val.loTrackTicket; p.loDeliveryCost = val.loDeliveryCost;
+          p.loDeliveryCompleted = val.loDeliveryCompleted; p.loEstimatedDeliveryDate = val.loEstimatedDeliveryDate;
+          p.loDeliveryCompletedDate = val.loDeliveryCompletedDate; p.errorMessage = val.errorMessage;
+
+          cClientOrderProducts.push(p);
+          }
+        );
       }
       return cClientOrderProducts;
 
@@ -190,10 +200,13 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 200) {
         throw new Error('server side status error');
       }
-      return new ClientOrderProducts(val.id, val.idOrder, val.idQuotationProduct,
-          val.price, val.qty, val.idStorePlace, val.idLoEntity, val.loTrackTicket, val.loDeliveryCost, val.loDeliveryCompleted,
-          val.loEstimatedDeliveryDate, val.loDeliveryCompletedDate, val.errorMessage);
-
+      let p = new ClientOrderProducts();
+      p.id = val.id; p.idOrder = val.idOrder; p.idQuotationProduct = val.idQuotationProduct;
+      p.price = val.price; p.qty = val.qty; p.idStorePlace = val.idStorePlace; p.idLoEntity = val.idLoEntity;
+      p.loTrackTicket = val.loTrackTicket; p.loDeliveryCost = val.loDeliveryCost;
+      p.loDeliveryCompleted = val.loDeliveryCompleted; p.loEstimatedDeliveryDate = val.loEstimatedDeliveryDate;
+      p.loDeliveryCompletedDate = val.loDeliveryCompletedDate; p.errorMessage = val.errorMessage;
+      return p;
     } catch (err) {
       return await this.handleError(err);
     }
@@ -281,6 +294,35 @@ export class AppDataRepository extends AbstractDataRepository {
 
   }
 
+  public async  getClientByUserId (id: number): Promise<Client> {
+    try {
+      const _id = id.toString();
+      let client = new Client();
+      const response = await this.http.get(clientsUrl,
+        {search: this.createSearchParams([{key: 'userId', value: _id}])}).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error('server side status error');
+      }
+
+      if (data != null) {
+        data = data[0];
+        client.id = data.id;
+        client.name = data.name;
+        client.phone = data.phone;
+        client.login = data.login;
+        client.email = data.email;
+        client.fname = data.fname;
+        client.lname = data.lname;
+        client.barcode = data.barcode;
+        return client;
+      }
+
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 
   public async getClientById(id: number): Promise<Client> {
     try {
@@ -321,7 +363,6 @@ export class AppDataRepository extends AbstractDataRepository {
 
       if (data != null) {
         data = data[0];
-        console.log(data);
         client.id = data.id;
         client.name = data.name;
         client.phone = data.phone;

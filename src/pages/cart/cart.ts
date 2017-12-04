@@ -3,6 +3,8 @@ import {NavController} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {CartService} from '../../app/service/cart-service';
 import {SelectShipAddressPage} from '../select-ship-address/select-ship-address';
+import {UserService} from '../../app/service/bll/user-service';
+import {LoginPage} from '../login/login';
 
 
 @Component({
@@ -12,7 +14,8 @@ import {SelectShipAddressPage} from '../select-ship-address/select-ship-address'
 
 export class CartPage extends ComponentBase {
 
-  constructor(public cart: CartService, private navCtrl: NavController) {
+  constructor(public cart: CartService, private navCtrl: NavController,
+              private uService: UserService) {
     super();
   }
 
@@ -30,7 +33,11 @@ export class CartPage extends ComponentBase {
   }
 
   checkout() {
-    this.navCtrl.push(SelectShipAddressPage);
+    if (!this.uService.isAuth) {
+      this.navCtrl.push(LoginPage, {continuePage: SelectShipAddressPage});
+    }
+    else
+      this.navCtrl.push(SelectShipAddressPage);
   }
 
 }

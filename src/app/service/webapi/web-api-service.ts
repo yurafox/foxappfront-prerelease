@@ -755,7 +755,7 @@ export class WebApiService implements InMemoryDbService {
     {id: 3, idQuotationProduct: 6, idStorePlace: 4, qty: 12},
     {id: 4, idQuotationProduct: 5, idStorePlace: 5, qty: 4},
     {id: 5, idQuotationProduct: 9, idStorePlace: 3, qty: 54},
-    {id: 6, idQuotationProduct: 5, idStorePlace: 3, qty: 1}
+    {id: 6, idQuotationProduct: 5, idStorePlace: 3, qty: 1},
   ];
 
   countries = [
@@ -765,9 +765,9 @@ export class WebApiService implements InMemoryDbService {
   ];
 
   clients = [
-    {id: 100, name: 'yurafox', phone: '+0800300353', login: 'yurafox@fox.com', email: 'yurafox@fox.com', fname: 'Yurii', lname: 'Ishchenko', barcode: '+11000002680'},
-    {id: 101, name: 'sergce', phone: '+222', login: 'sergce@fox.com', email: 'sergce@fox.com', fname: 'Serhiy', lname: 'Moskalenko', barcode: '+11000002681'},
-    {id: 102, name: 'dealio07', phone: '+3333', login: 'dealio07@fox.com', email: 'dealio07@fox.com', fname: 'Volodymyr', lname: 'Varha'}
+    {id: 100, userId: 3, name: 'yurafox', phone: '+0800300353', login: 'yurafox@fox.com', email: 'yurafox@fox.com', fname: 'Yurii', lname: 'Ishchenko', barcode: '+11000002680'},
+    {id: 101, userId: 1, name: 'sergce', phone: '+222', login: 'sergce@fox.com', email: 'sergce@fox.com', fname: 'Serhiy', lname: 'Moskalenko', barcode: '+11000002681'},
+    {id: 102, userId: 2, name: 'dealio07', phone: '+3333', login: 'dealio07@fox.com', email: 'dealio07@fox.com', fname: 'Volodymyr', lname: 'Varha'}
   ];
 
   clientAddresses = [
@@ -828,8 +828,7 @@ export class WebApiService implements InMemoryDbService {
       password: 'sergce',
       id: 1,
       appKey: '',
-      userSetting: {'currency': '0', 'lang': '1'},
-      idClient: 101
+      userSetting: {'currency': '0', 'lang': '1'}
     },
     {
       name: 'vladimir',
@@ -837,8 +836,7 @@ export class WebApiService implements InMemoryDbService {
       password: 'dealio07',
       id: 2,
       appKey: '',
-      userSetting: {'currency': '1', 'lang': '2'},
-      idClient: 102
+      userSetting: {'currency': '1', 'lang': '2'}
     },
     {
       name: 'Yuri',
@@ -846,8 +844,7 @@ export class WebApiService implements InMemoryDbService {
       password: 'yurafox',
       id: 3,
       appKey: '',
-      userSetting: {'currency': '2', 'lang': '3'},
-      idClient: 100
+      userSetting: {'currency': '2', 'lang': '3'}
     },
   ];
 

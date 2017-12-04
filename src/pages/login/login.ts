@@ -1,16 +1,19 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController} from 'ionic-angular';
+import {NavController, NavParams} from 'ionic-angular';
 import {HomePage, RegisterPage} from '../index';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {ComponentBase} from "../../components/component-extension/component-base";
+import {SelectShipAddressPage} from '../select-ship-address/select-ship-address';
 
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
 export class LoginPage extends ComponentBase{
+
   private _authError = false;
   public loginForm: FormGroup;
+
   public get authError() {
     return this._authError;
   }
@@ -33,7 +36,7 @@ export class LoginPage extends ComponentBase{
     }
   };
 
-  constructor(public nav: NavController,
+  constructor(public nav: NavController, public navParams: NavParams,
               private formBuilder: FormBuilder) {
     super();
   }
@@ -60,7 +63,11 @@ export class LoginPage extends ComponentBase{
     await this.userService.login(data.email,data.password);
     if(this.userService.isAuth) {
       this.evServ.events['localeChangeEvent'].emit(this.userService.lang);
-      this.nav.setRoot(HomePage);
+      if (this.navParams.data.continuePage)
+        //this.nav.push('SelectShipAddressPage')
+        this.nav.push(this.navParams.data.continuePage)
+      else
+        this.nav.setRoot(HomePage);
     }
     else this._authError = true;
   }
