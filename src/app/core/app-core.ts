@@ -227,6 +227,7 @@ export function LazyLoad(options: Array<{ options:ILazyOption,
       // </editor-fold>
     };
     // return function constructor name
+    (<any>OverCtor).prototype = target.prototype;
     Object.defineProperty(OverCtor, 'name', {value: target.name, writable: false});
     return OverCtor;
   };
