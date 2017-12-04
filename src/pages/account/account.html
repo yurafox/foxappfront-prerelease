@@ -54,7 +54,6 @@
            </ion-col>
             <ion-col col-4>
               <dropdown-list [reference]="currentCurrency"
-                             [options]="{popupClass:'f-middle-dictionary'}"
                              [store]="currencies"
                              [map]="{valueName:'id',displayName:'shortName'}"
                              [afterUpdate]="currencyUpdate">
@@ -70,7 +69,6 @@
             </ion-col>
             <ion-col col-4>
               <dropdown-list [reference]="currentLang"
-                             [options]="{popupClass:'f-middle-dictionary'}"
                              [store]="langs"
                              [map]="{valueName:'id',displayName:'name'}"
                              [afterUpdate]="langUpdate">

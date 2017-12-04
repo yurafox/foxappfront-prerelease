@@ -21,8 +21,7 @@ export class AccountPage extends ComponentBase {
   public currentLang:Lang;
   public editForm: FormGroup;
   public onLoad = false;
-  public test=[];
-  public currentTest:System.FoxNumber;
+
   public formErrors = {
     'email': '',
     'password': '',
@@ -60,7 +59,6 @@ export class AccountPage extends ComponentBase {
   async ngOnInit(){
     super.ngOnInit();
     
-    this.currentTest = new System.FoxNumber(); 
     [this.currencies,this.langs] = await Promise.all([this.repo.getCurrencies(true),
                                                       this.repo.getLocale(true)]);
 

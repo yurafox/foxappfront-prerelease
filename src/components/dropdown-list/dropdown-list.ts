@@ -22,7 +22,7 @@
      Значение по умолчанию если не задан класс - f-drop-button-small
 
     options.popupHeader? - имя заголовка pop up окна
-    Значение по умолчанию Список, для qty- QTY
+    Значение по умолчанию Список
     
     options.buttonHeader? - заголовок кнопки
     Значение по умолчанию только для qty - QTY
@@ -153,9 +153,9 @@ export class DropdownListComponent implements OnChanges {
 
   public get displayValue(): any {
     if(this.options.buttonHeader)
-       return `${this.options.buttonHeader}:${this.reference[this.map.displayName]}`;
+       return `${this.options.buttonHeader}: ${this.reference[this.map.displayName]}`;
 
-    return (!this.isQty) ? this.reference[this.map.displayName] : `Qty:${this.reference[this.map.displayName]}`;
+    return (!this.isQty) ? this.reference[this.map.displayName] : `Qty: ${this.reference[this.map.displayName]}`;
   }
 
   public openView(event: any) {

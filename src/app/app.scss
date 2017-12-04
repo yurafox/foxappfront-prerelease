@@ -16,9 +16,9 @@
 // automatically applied to the <body> element in the app.
 
 // sass variables
-$small-dictionary-width:150px;
-$middle-dictionary-width:250px;
-$large-dictionary-width:380px;
+$small-dictionary-width:30vw;
+$middle-dictionary-width:50vw;
+$large-dictionary-width:90vw;
 
 md, ios, wp,
 .toolbar-background {
@@ -141,7 +141,7 @@ ion-slides[pager] {
   tbody {
     border-top: 2px solid #eceeef;
     display: block;
-    height: 450px;
+    height: 61vh;
     overflow: auto;
   }
 
