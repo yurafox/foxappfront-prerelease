@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { CategoryPage } from './category';
+import { CityPopoverPage } from './city-popover';
 import {ComponentsModule} from "../../components/components.module";
 
 @NgModule({
   declarations: [
-    CategoryPage,
+    CityPopoverPage,
   ],
   imports: [
-    IonicPageModule.forChild(CategoryPage),
+    IonicPageModule.forChild(CityPopoverPage),
     ComponentsModule
   ],
   exports: [
-    CategoryPage
+    CityPopoverPage
   ]
 })
-export class CategoryPageModule {}
+export class CityPopoverPageModule {}

@@ -6,7 +6,7 @@ import {AbstractDataRepository} from '../../app/service/repository/abstract/abst
 import {QuotationProduct} from "../../app/model/quotation-product";
 import {Manufacturer} from "../../app/model/manufacturer";
 
-@IonicPage()
+@IonicPage({name: 'CategoryPage', segment: 'category/:categoryId'})
 @Component({
   selector: 'page-category',
   templateUrl: 'category.html',

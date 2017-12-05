@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import { SearchBtnComponent } from './search-btn/search-btn';
 import {IonicModule} from 'ionic-angular';
 import { MainToolbarComponent } from './main-toolbar/main-toolbar';
@@ -15,7 +15,6 @@ import { FilterComponent } from './filter/filter';
 import { CustomPopupComponent } from './custom-popup/custom-popup';
 import { DropdownViewComponent } from './dropdown-view/dropdown-view';
 import { DropdownListComponent } from './dropdown-list/dropdown-list';
-
 
 @NgModule({
 	declarations: [
@@ -57,6 +56,9 @@ import { DropdownListComponent } from './dropdown-list/dropdown-list';
     CustomPopupComponent,
     DropdownListComponent,
     DropdownViewComponent
+  ],
+  schemas: [
+  CUSTOM_ELEMENTS_SCHEMA
   ]
 })
 export class ComponentsModule {}

@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {ErrorHandler, NgModule, Injector} from '@angular/core';
-import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
+import {IonicApp, IonicErrorHandler, IonicModule, IonicPageModule} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {StatusBar} from '@ionic-native/status-bar';
 import {HttpModule} from '@angular/http';
@@ -13,31 +13,7 @@ import {FoxApp} from './app.component';
 import {FormsModule} from '@angular/forms';
 import {ReactiveFormsModule} from '@angular/forms';
 
-import {
-  HomePage,
-  AboutPage,
-  AccountPage,
-  SupportPage,
-  LoginPage,
-  RegisterPage,
-  ChangePasswordPage,
-  ForgotPasswordPage,
-  CartPage,
-  CategoriesPage,
-  CategoryPage,
-  MapPage,
-  ItemDetailPage,
-  ItemDescriptionPage,
-  ItemPropsPage,
-  ItemReviewPage,
-  ItemReviewsPage,
-  ItemReviewWritePage,
-  SearchPage,
-  SearchResultsPage,
-  ItemQuotesPage,
-  FilterPopoverPage,
-  CityPopoverPage
-} from '../pages/index';
+import {HomePage} from '../pages/index';
 
 import {AppConstants} from './app-constants';
 import {
@@ -68,82 +44,76 @@ import {Geolocation} from '@ionic-native/geolocation';
 import {ScreenOrientation} from '@ionic-native/screen-orientation';
 import {LaunchNavigator} from "@ionic-native/launch-navigator";
 
+import {
+  AboutPageModule,
+  AccountPageModule,
+  CartPageModule,
+  CategoriesPageModule,
+  CategoryPageModule,
+  ChangePasswordPageModule,
+  CityPopoverPageModule,
+  FilterPopoverPageModule,
+  ForgotPasswordPageModule,
+  HomePageModule,
+  ItemDescriptionPageModule,
+  ItemDetailPageModule,
+  ItemPropsPageModule,
+  ItemQuotesPageModule,
+  ItemReviewPageModule,
+  ItemReviewWritePageModule,
+  ItemReviewsPageModule,
+  LoginPageModule,
+  MapPageModule,
+  RegisterPageModule,
+  SearchPageModule,
+  SearchResultsPageModule,
+  SupportPageModule
+} from "../pages/index-modules";
+
 @NgModule({
   declarations: [
-    FoxApp,
-    AboutPage,
-    AccountPage,
-    HomePage,
-    LoginPage,
-    RegisterPage,
-    SupportPage,
-    ChangePasswordPage,
-    ForgotPasswordPage,
-    CartPage,
-    CategoriesPage,
-    CategoryPage,
-    MapPage,
-    ItemDetailPage,
-    ItemDescriptionPage,
-    ItemPropsPage,
-    ItemReviewPage,
-    ItemReviewsPage,
-    ItemReviewWritePage,
-    SearchPage,
-    SearchResultsPage,
-    ItemQuotesPage,
-    FilterPopoverPage,
-    CityPopoverPage
+    FoxApp
   ],
   imports: [
     BrowserModule,
     HttpModule,
     InMemoryWebApiModule.forRoot(WebApiService, {delay: 1000, post204: false, put204: false}),
-    IonicModule.forRoot(FoxApp, {}, {
-      links: [
-        {component: HomePage, name: 'HomePage', segment: 'home'},
-        {component: CategoriesPage, name: 'CategoriesPage', segment: 'categories'},
-        {component: CategoryPage, name: 'CategoryPage', segment: 'category/:categoryId'},
-        {component: MapPage, name: 'Map', segment: 'map'},
-        {component: SupportPage, name: 'SupportPage', segment: 'support'},
-        {component: LoginPage, name: 'LoginPage', segment: 'login'},
-        {component: AccountPage, name: 'AccountPage', segment: 'account'},
-        {component: AboutPage, name: 'AboutPage', segment: 'about'}
-      ]
-    }),
+    IonicModule.forRoot(FoxApp),
+    IonicPageModule.forChild(HomePage),
     ComponentsModule,
     Ionic2RatingModule,
     PipesModule,
     FormsModule,
     ReactiveFormsModule,
-    DirectivesModule
+    DirectivesModule,
+    AboutPageModule,
+    AccountPageModule,
+    CartPageModule,
+    CategoriesPageModule,
+    CategoryPageModule,
+    ChangePasswordPageModule,
+    CityPopoverPageModule,
+    FilterPopoverPageModule,
+    ForgotPasswordPageModule,
+    HomePageModule,
+    ItemDescriptionPageModule,
+    ItemDetailPageModule,
+    ItemPropsPageModule,
+    ItemQuotesPageModule,
+    ItemReviewPageModule,
+    ItemReviewWritePageModule,
+    ItemReviewsPageModule,
+    LoginPageModule,
+    MapPageModule,
+    RegisterPageModule,
+    SearchPageModule,
+    SearchResultsPageModule,
+    SupportPageModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     FoxApp,
-    AboutPage,
-    AccountPage,
-    HomePage,
-    LoginPage,
-    RegisterPage,
-    SupportPage,
-    ChangePasswordPage,
-    ForgotPasswordPage,
-    CartPage,
-    CategoriesPage,
-    CategoryPage,
-    ItemDetailPage,
-    ItemDescriptionPage,
-    ItemPropsPage,
-    ItemReviewPage,
-    ItemReviewsPage,
-    ItemReviewWritePage,
-    SearchPage,
-    SearchResultsPage,
-    ItemQuotesPage,
-    FilterPopoverPage,
-    CityPopoverPage,
-    MapPage
+    HomePage
   ],
   providers: [
     StatusBar,

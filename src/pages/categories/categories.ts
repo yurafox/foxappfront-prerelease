@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {CategoryPage} from '../category/category';
+import {ComponentBase} from "../../components/component-extension/component-base";
 
-@IonicPage()
+@IonicPage({name: 'CategoriesPage', segment: 'categories'})
 @Component({
   selector: 'page-categories',
   templateUrl: 'categories.html',
 })
 
-export class CategoriesPage  {
+export class CategoriesPage extends ComponentBase   {
 
   categoriesArray = [
     {categoryImg: 'assets/icon/phone.svg', caption: 'Cмартфоны и телефоны', url: 'mobilnye_telefony.html'},
@@ -22,12 +22,12 @@ export class CategoriesPage  {
   ] ;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-
+    super();
   }
 
   onCategoryClick(urlQueryString: string): void {
     if (urlQueryString)
-      this.navCtrl.push(CategoryPage, urlQueryString); // {animate: true, direction: 'forward', duration: 500});
+      this.navCtrl.push('CategoryPage', urlQueryString); // {animate: true, direction: 'forward', duration: 500});
   }
 
 }

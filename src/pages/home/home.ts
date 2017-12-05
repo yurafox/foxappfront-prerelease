@@ -1,14 +1,13 @@
-import { Component } from '@angular/core';
-import { App, NavController } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {App, NavController, IonicPage} from 'ionic-angular';
+import {ComponentBase} from "../../components/component-extension/component-base";
 
-import {CategoriesPage, CategoryPage} from '../index';
-import {SearchPage} from '../search/search';
-
+@IonicPage({name: 'HomePage', segment: 'home'})
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage {
+export class HomePage extends ComponentBase {
   // list slides for slider
   public slides = [
     {
@@ -24,24 +23,25 @@ export class HomePage {
 
 
   constructor(public app: App, public nav: NavController) {
+    super();
   }
 
   // view categories
   viewCategories() {
-    this.nav.push(CategoriesPage);
+    this.nav.push('CategoriesPage');
   }
 
   // view a category
   viewCategory(catId) {
-    this.nav.push(CategoryPage, {id: catId});
+    this.nav.push('CategoryPage', {id: catId});
   }
 
   // view a item
   viewItem(itemId) {
-    this.nav.push(CategoryPage, {id: itemId})
+    this.nav.push('CategoryPage', {id: itemId})
   }
 
   onSearchClick() {
-    this.nav.push(SearchPage);
+    this.nav.push('SearchPage');
   }
 }

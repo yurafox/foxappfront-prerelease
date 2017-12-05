@@ -1,13 +1,12 @@
 import {Component, ViewChild, ElementRef} from '@angular/core';
-import {Platform} from 'ionic-angular';
+import {Platform, IonicPage} from 'ionic-angular';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {LatLng} from '@ionic-native/google-maps';
 import {City, MapMarker} from "../../app/model/index";
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {Geolocation} from '@ionic-native/geolocation';
-// import {ScreenOrientation} from '@ionic-native/screen-orientation';
 import {StatusBar} from "@ionic-native/status-bar";
-import {LaunchNavigator, LaunchNavigatorOptions} from "@ionic-native/launch-navigator";
+import {LaunchNavigator/*, LaunchNavigatorOptions*/} from "@ionic-native/launch-navigator";
 
 declare var google: any;
 
@@ -16,6 +15,7 @@ interface SelectItem {
   value: any;
 }
 
+@IonicPage({name: 'MapPage', segment: 'map'})
 @Component({
   selector: 'page-map',
   templateUrl: 'map.html'
@@ -54,11 +54,8 @@ export class MapPage extends ComponentBase {
   landscapePrimary = this.screenOrientation.ORIENTATIONS.LANDSCAPE_PRIMARY;
   landscapeSecondary = this.screenOrientation.ORIENTATIONS.LANDSCAPE_SECONDARY;*/
 
-  // launchNavigatorOptions: LaunchNavigatorOptions;
-
   constructor(public platform: Platform, private repo: AbstractDataRepository, private geolocation: Geolocation,
-              /*private screenOrientation: ScreenOrientation,*/ private statusBar: StatusBar,
-              private launchNavigator: LaunchNavigator) {
+              private statusBar: StatusBar, private launchNavigator: LaunchNavigator) {
     super();
     this.selectedMarker = null;
     this.shopList = [];
@@ -97,31 +94,6 @@ export class MapPage extends ComponentBase {
         this.userPosIsKnown = false;
       });
     });
-
-    // Subscribing on screen orientation change
-    /*this.screenOrientation.onChange().subscribe(
-      () => {
-        // this.windowHeight = this.platform.width() - this.headerHeight;
-        // this.windowWidth = this.platform.height();
-        if (this.screenOrientation.type === this.portrait ||
-          this.screenOrientation.type === this.portraitPrimary ||
-          this.screenOrientation.type === this.portraitSecondary) {
-          if (this.selectedMarker !== null) {
-            this.height = this.windowHeight - this.footerHeight;
-          } else {
-            this.height = this.windowHeight;
-          }
-        } else if (this.screenOrientation.type === this.landscape ||
-          this.screenOrientation.type === this.landscapePrimary ||
-          this.screenOrientation.type === this.landscapeSecondary) {
-          if (this.selectedMarker !== null) {
-            this.height = this.windowWidth - this.headerHeight - this.footerHeight;
-          } else {
-            this.height = this.windowWidth - this.headerHeight;
-          }
-        }
-      }
-    );*/
   }
 
   async ionViewDidLoad() {
@@ -340,17 +312,6 @@ export class MapPage extends ComponentBase {
   // On list select
   handleListSelect() {
     if (this.selectedMarker !== null) {
-      // this.height = this.windowHeight - this.footerHeight;
-      // Screen orientation
-      /*if (this.screenOrientation.type === this.portrait ||
-        this.screenOrientation.type === this.portraitPrimary ||
-        this.screenOrientation.type === this.portraitSecondary) {
-        this.height = this.windowHeight - this.footerHeight;
-      } else if (this.screenOrientation.type === this.landscape ||
-        this.screenOrientation.type === this.landscapePrimary ||
-        this.screenOrientation.type === this.landscapeSecondary) {
-        this.height = this.windowWidth - this.headerHeight - this.footerHeight;
-      }*/
       this.map.setCenter(this.selectedMarker);
       this.map.setZoom(17);
     } else {

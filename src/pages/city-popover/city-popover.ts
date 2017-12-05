@@ -4,19 +4,21 @@ import {CustomPopupComponent} from '../../components/custom-popup/custom-popup';
 import {City} from '../../app/model/city';
 import {StorePlace} from '../../app/model/store-place';
 import {ProductStorePlace} from '../../app/model/product-store-place';
+import {ComponentBase} from "../../components/component-extension/component-base";
 
 @IonicPage()
 @Component({
   selector: 'page-city-popover',
   templateUrl: 'city-popover.html',
 })
-export class CityPopoverPage {
+export class CityPopoverPage extends ComponentBase  {
 
   caller: CustomPopupComponent;
   cityList: City[] = new Array<City>();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController) {
+    super();
     this.caller = navParams.get('caller');
     this.createCityList();
   }

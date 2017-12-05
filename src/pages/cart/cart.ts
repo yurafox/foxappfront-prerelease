@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
-import {NavController} from 'ionic-angular';
+import {NavController, IonicPage} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {CartService} from '../../app/service/cart-service';
 
-
+@IonicPage()
 @Component({
   selector: 'page-cart',
   templateUrl: 'cart.html'

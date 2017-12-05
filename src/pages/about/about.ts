@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, Platform} from 'ionic-angular';
 import {VideoOptions, VideoPlayer} from '@ionic-native/video-player';
 
-@IonicPage()
+@IonicPage({name: 'AboutPage', segment: 'about'})
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html',
