@@ -39,7 +39,6 @@ import {RefInjector} from './core/app-core';
 import {ComponentsModule} from '../components/components.module';
 import {PipesModule} from "./pipe/pipes.module";
 import {DirectivesModule} from './directive/directives.module';
-import {VideoPlayer} from '@ionic-native/video-player';
 import {Geolocation} from '@ionic-native/geolocation';
 import {ScreenOrientation} from '@ionic-native/screen-orientation';
 import {LaunchNavigator} from "@ionic-native/launch-navigator";
@@ -123,7 +122,6 @@ import {
     GoogleMaps,
     Geolocation,
     BarcodeScanner,
-    VideoPlayer,
     ScreenOrientation,
     LaunchNavigator,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
