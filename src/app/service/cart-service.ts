@@ -50,7 +50,6 @@ export class CartService {
 
   // после успешного логона переносим корзину из локалстораджа в бекенд
   async addCartItemsFromStorage() {
-    console.log('Logon');
     let op = await this.repo.getCartProducts();
     for (let i of this.orderProducts) {
       await this.repo.saveCartProduct(i);
