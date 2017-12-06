@@ -1,16 +1,12 @@
 import {Component, ViewChild, ElementRef} from '@angular/core';
-
-// Native GMap imports
-import {
-  LatLng
-} from '@ionic-native/google-maps';
-
-import {Platform} from 'ionic-angular';
+import {Platform, IonicPage} from 'ionic-angular';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {LatLng} from '@ionic-native/google-maps';
 import {City, MapMarker} from "../../app/model/index";
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {Geolocation} from '@ionic-native/geolocation';
-import {ScreenOrientation} from '@ionic-native/screen-orientation';
+import {StatusBar} from "@ionic-native/status-bar";
+import {LaunchNavigator/*, LaunchNavigatorOptions*/} from "@ionic-native/launch-navigator";
 
 declare var google: any;
 
@@ -19,6 +15,7 @@ interface SelectItem {
   value: any;
 }
 
+@IonicPage({name: 'MapPage', segment: 'map'})
 @Component({
   selector: 'page-map',
   templateUrl: 'map.html'
@@ -27,47 +24,45 @@ export class MapPage extends ComponentBase {
 
   @ViewChild('mapCanvas') mapElement: ElementRef;
 
-  headerHeight: number; // Height of header on map page
+  // Page sizes
+  /*headerHeight: number; // Height of header on map page
   footerHeight: number; // Height of footer on map page
   windowHeight: number;
   windowWidth: number;
   height: number;       // Dynamical height of the map
-  // width: number;        // Dynamical width of the map
+  // width: number;        // Dynamical width of the map*/
 
   map: /*GoogleMap;*/ any;
-
   city: City;
   cities: Array<City>;
   selectedCity = 'Киев';
-  selectedMarker: any;
-
+  selectedMarker: LatLng;
   markersArr: Array<{ id: number, markers: MapMarker[] }>;
   shopList: SelectItem[];
-
   options: any;
-
   userPos: LatLng;
-
+  userPosIsKnown: boolean;
   // Setting up direction service
   directionsService: any;
   directionsDisplay: any;
 
-  portrait = this.screenOrientation.ORIENTATIONS.PORTRAIT;
+  // Screen orientation constants
+  /*portrait = this.screenOrientation.ORIENTATIONS.PORTRAIT;
   portraitPrimary = this.screenOrientation.ORIENTATIONS.PORTRAIT_PRIMARY;
   portraitSecondary = this.screenOrientation.ORIENTATIONS.PORTRAIT_SECONDARY;
   landscape = this.screenOrientation.ORIENTATIONS.LANDSCAPE;
   landscapePrimary = this.screenOrientation.ORIENTATIONS.LANDSCAPE_PRIMARY;
-  landscapeSecondary = this.screenOrientation.ORIENTATIONS.LANDSCAPE_SECONDARY;
+  landscapeSecondary = this.screenOrientation.ORIENTATIONS.LANDSCAPE_SECONDARY;*/
 
   constructor(public platform: Platform, private repo: AbstractDataRepository, private geolocation: Geolocation,
-              private screenOrientation: ScreenOrientation) {
+              private statusBar: StatusBar, private launchNavigator: LaunchNavigator) {
     super();
     this.selectedMarker = null;
     this.shopList = [];
     this.markersArr = [];
 
     // Set up window sizes for map
-    this.headerHeight = 120;
+    /*this.headerHeight = 120;
     this.footerHeight = 45;
     if (this.screenOrientation.type === this.portrait ||
       this.screenOrientation.type === this.portraitPrimary ||
@@ -85,59 +80,49 @@ export class MapPage extends ComponentBase {
       this.windowWidth = this.platform.height();
       this.height = this.windowWidth - this.headerHeight;
 
-    }
-    // this.width = this.windowWidth;
+    }*/
 
     this.userPos = new LatLng(0, 0);
 
-    // Subscribing on screen orientation change
-    this.screenOrientation.onChange().subscribe(
-      () => {
-        console.log("Orientation Changed to " + this.screenOrientation.type);
-        // this.windowHeight = this.platform.width() - this.headerHeight;
-        // this.windowWidth = this.platform.height();
-        if (this.screenOrientation.type === this.portrait ||
-          this.screenOrientation.type === this.portraitPrimary ||
-          this.screenOrientation.type === this.portraitSecondary) {
-          if (this.selectedMarker !== null) {
-            this.height = this.windowHeight - this.footerHeight;
-          } else {
-            this.height = this.windowHeight;
-          }
-        } else if (this.screenOrientation.type === this.landscape ||
-          this.screenOrientation.type === this.landscapePrimary ||
-          this.screenOrientation.type === this.landscapeSecondary) {
-          if (this.selectedMarker !== null) {
-            this.height = this.windowWidth - this.headerHeight - this.footerHeight;
-          } else {
-            this.height = this.windowWidth - this.headerHeight;
-          }
-        }
-      }
-    );
+    platform.ready().then(() => {
+      this.getLocation().then(res => {
+        this.userPos.lat = res.coords.latitude;
+        this.userPos.lng = res.coords.longitude;
+        this.userPosIsKnown = true;
+      }).catch(err => {
+        // console.log('Error while getting user\'s location ' + err);
+        this.userPosIsKnown = false;
+      });
+    });
   }
 
   async ionViewDidLoad() {
-    // await this.loadMap(); // for Ionic Native GMap
+    // await this.loadMap(); // For Ionic Native GMap
 
     this.markersArr = await this.repo.getFoxMapMarkers();
     this.cities = await this.repo.getCities();
 
-    this.options = {
-      center: this.markersArr[22].markers[0].position,
-      zoom: 10
-    };
+    // 22 is array index of 'Киев' in cities. Index, not id
+    if (this.userPos !== null && this.userPos.lat !== 0 && this.userPos.lng !== 0) {
+      this.options = {
+        center: this.userPos,
+        zoom: 10
+      };
+    } else {
+      this.options = {
+        center: this.markersArr[22].markers[0].position,
+        zoom: 10
+      };
+    }
     let mapEle = this.mapElement.nativeElement;
     this.map = new google.maps.Map(mapEle, this.options);
 
+    // Direction Service
     this.directionsService = new google.maps.DirectionsService;
-    this.directionsDisplay = new google.maps.DirectionsRenderer;
-
-    this.getLocation().then(res => {
-      this.userPos.lat = res.coords.latitude;
-      this.userPos.lng = res.coords.longitude;
-    }).catch(err => {
-      console.log('Error while getting user\'s location ' + err);
+    this.directionsDisplay = new google.maps.DirectionsRenderer({
+      polylineOptions: {
+        strokeColor: 'orangered'
+      }
     });
 
     for (const city of this.cities) {
@@ -146,18 +131,26 @@ export class MapPage extends ComponentBase {
       }
     }
 
-    this.directionsDisplay.setMap(this.map);
+    try {
+      this.directionsDisplay.setMap(this.map);
+    } catch (err) {
+      console.log(err);
+    }
 
     // Iterating through all shops positions
-    this.markersArr.forEach((markerArr) => {
+    await this.markersArr.forEach((markerArr) => {
       markerArr.markers.forEach((markerData, i) => {
         let labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        let shopOpensTime = markerData.openTime;
+        let shopClosesTime = markerData.closeTime;
+        // let isWorking = this.shopIsWorking(shopOpensTime, shopClosesTime);
 
         let infoWindow = new google.maps.InfoWindow({
           content: `<h5>Фокстрот</h5>` +
           `<h6>${markerData.title}</h6>` +
-          `<p>Время работы: 9:00 - 21:00</p>` +
-          `<p>${this.shopIsWorking(9, 0, 21, 0)}</p>`
+          `<p>Время работы: ${shopOpensTime} - ${shopClosesTime}</p>` +
+          `<p>${this.shopIsWorking(shopOpensTime, shopClosesTime)}</p>`
         });
 
         let marker = new google.maps.Marker({
@@ -276,7 +269,8 @@ export class MapPage extends ComponentBase {
     this.shopList = [];
     this.selectedMarker = null;
     //this.height = this.windowHeight;
-    if (this.screenOrientation.type === this.portrait ||
+    // Screen orientation
+    /*if (this.screenOrientation.type === this.portrait ||
       this.screenOrientation.type === this.portraitPrimary ||
       this.screenOrientation.type === this.portraitSecondary) {
       this.height = this.windowHeight;
@@ -284,7 +278,7 @@ export class MapPage extends ComponentBase {
       this.screenOrientation.type === this.landscapePrimary ||
       this.screenOrientation.type === this.landscapeSecondary) {
       this.height = this.windowWidth - this.headerHeight;
-    }
+    }*/
 
     for (const city of this.cities) {
       if (city.name === this.selectedCity) {
@@ -318,16 +312,6 @@ export class MapPage extends ComponentBase {
   // On list select
   handleListSelect() {
     if (this.selectedMarker !== null) {
-      // this.height = this.windowHeight - this.footerHeight;
-      if (this.screenOrientation.type === this.portrait ||
-        this.screenOrientation.type === this.portraitPrimary ||
-        this.screenOrientation.type === this.portraitSecondary) {
-        this.height = this.windowHeight - this.footerHeight;
-      } else if (this.screenOrientation.type === this.landscape ||
-        this.screenOrientation.type === this.landscapePrimary ||
-        this.screenOrientation.type === this.landscapeSecondary) {
-        this.height = this.windowWidth - this.headerHeight - this.footerHeight;
-      }
       this.map.setCenter(this.selectedMarker);
       this.map.setZoom(17);
     } else {
@@ -342,8 +326,10 @@ export class MapPage extends ComponentBase {
   }
 
   buildRoute() {
-    if (this.userPos !== null && this.selectedMarker !== null) {
+    if (this.userPosIsKnown === true && this.selectedMarker !== null) {
       this.calculateAndDisplayRoute(this.userPos, this.selectedMarker);
+    } else {
+      return;
     }
   }
 
@@ -352,41 +338,54 @@ export class MapPage extends ComponentBase {
   }
 
   calculateAndDisplayRoute(start, end) {
-    if (this.userPos !== null && this.selectedMarker !== null) {
-      try {
-        this.directionsService.route({
-          origin: start,
-          destination: end,
-          provideRouteAlternatives: true,
-          travelMode: google.maps.TravelMode.DRIVING,
-          unitSystem: google.maps.UnitSystem.METRIC
-        }, (response, status) => {
-          if (status === 'OK') {
-            this.directionsDisplay.setDirections(response);
-            // console.log('Duration: ' + (response.routes[0].legs[0].duration.value / 60).toFixed());
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    } else {
-      console.log('User position or selected position are undefined')
-      return;
+    try {
+      this.directionsService.route({
+        origin: start,
+        destination: end,
+        provideRouteAlternatives: true,
+        travelMode: google.maps.TravelMode.DRIVING,
+        unitSystem: google.maps.UnitSystem.METRIC
+      }, (response, status) => {
+        if (status === 'OK') {
+          this.directionsDisplay.setDirections(response);
+          // console.log('Duration: ' + (response.routes[0].legs[0].duration.value / 60).toFixed());
+        } else {
+          // When we can't determine user's location - use another navigator instead
+          this.useExternalNavigator(end);
+          // window.alert('Directions request failed due to ' + status);
+        }
+      });
+    } catch (err) {
+      console.log(err);
     }
   }
 
-  // Checking either shop is working now or not
-  // shopOpensH - hour when shop opens, shopClosesH - when closes
-  // shopOpensM, shopClosesM - same with minutes
-  // TODO: Rework time management
-  shopIsWorking(shopOpensH: number, shopOpensM: number, shopClosesH: number, shopClosesM: number): string {
+  useExternalNavigator(endpoint) {
+    this.platform.ready().then(() => {
+      this.launchNavigator.navigate([endpoint.lat, endpoint.lng], {app: this.launchNavigator.APP.USER_SELECT})
+        .then(
+          success => console.log('Launched navigator'),
+          error => window.alert('Error launching navigator: ' + error)
+        );
+    });
+  }
+
+// Checking either shop is working now or not
+  // opensTime - time when shop opens
+  // closesTime - time when shop closes
+  shopIsWorking(opensTime, closesTime) {
     const date = new Date();
 
+    let substrings1 = opensTime.split(':');
+    let substring11 = substrings1[0].slice(0, substrings1[0].length);
+    let substring12 = substrings1[1].slice(0, substrings1[1].length - 1);
+    let substrings2 = closesTime.split(':');
+    let substring21 = substrings2[0].slice(0, substrings2[0].length);
+    let substring22 = substrings2[1].slice(0, substrings2[1].length - 1);
+
     let myTime = date.getHours() * 100 + date.getMinutes();
-    let openTime = shopOpensH * 100 + shopOpensM;
-    let closeTime = shopClosesH * 100 + shopClosesM;
+    let openTime = +substring11 * 100 + +substring12;
+    let closeTime = +substring21 * 100 + +substring22;
 
     if ((openTime >= 0 && closeTime >= 0) && (openTime <= 2400 && closeTime <= 2400)) {
       if ((myTime >= openTime) && (myTime <= closeTime)) {

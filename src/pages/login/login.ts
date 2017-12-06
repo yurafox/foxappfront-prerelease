@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
-import {HomePage, RegisterPage} from '../index';
+import {NavController, NavParams, IonicPage} from 'ionic-angular';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {SelectShipAddressPage} from '../select-ship-address/select-ship-address';
 
+@IonicPage({name: 'LoginPage', segment: 'login'})
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
@@ -49,7 +49,7 @@ export class LoginPage extends ComponentBase{
 
   // go to register page
   register() {
-    this.nav.push(RegisterPage);
+    this.nav.push('RegisterPage');
   }
 
   // go to home page
@@ -64,10 +64,10 @@ export class LoginPage extends ComponentBase{
     if(this.userService.isAuth) {
       this.evServ.events['localeChangeEvent'].emit(this.userService.lang);
       if (this.navParams.data.continuePage)
-        //this.nav.push('SelectShipAddressPage')
-        this.nav.push(this.navParams.data.continuePage)
+        this.nav.push('SelectShipAddressPage')
+        // this.nav.push(this.navParams.data.continuePage)
       else
-        this.nav.setRoot(HomePage);
+        this.nav.setRoot('HomePage');
     }
     else this._authError = true;
   }

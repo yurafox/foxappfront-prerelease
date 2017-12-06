@@ -1,20 +1,22 @@
 import {Component} from '@angular/core';
-import {NavController} from 'ionic-angular';
-import {LoginPage} from "../index";
+import {NavController, IonicPage} from 'ionic-angular';
+import {ComponentBase} from "../../components/component-extension/component-base";
 
+@IonicPage()
 @Component({
   selector: 'page-forgot-password',
   templateUrl: 'forgot-password.html'
 })
-export class ForgotPasswordPage {
+export class ForgotPasswordPage  extends ComponentBase {
 
   constructor(public nav: NavController) {
+    super();
   }
 
   // submit email
   send() {
     // enter your code here
     // back to login page
-    this.nav.setRoot(LoginPage);
+    this.nav.setRoot('LoginPage');
   }
 }

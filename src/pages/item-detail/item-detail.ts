@@ -2,13 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams, PopoverController, ToastController} from 'ionic-angular';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {ProductReview} from "../../app/model/product-review";
-import {ItemDescriptionPage} from '../item-description/item-description';
-import {ItemPropsPage} from '../item-props/item-props';
-import {ItemReviewPage} from '../item-review/item-review';
-import {ItemReviewsPage} from '../item-reviews/item-reviews';
-import {ItemReviewWritePage} from '../item-review-write/item-review-write';
 import {ItemBase} from '../../components/component-extension/item-base';
-import {ItemQuotesPage} from '../item-quotes/item-quotes';
 import {CartService} from '../../app/service/cart-service';
 import {QuotationProduct} from '../../app/model/quotation-product';
 import {CustomPopupComponent} from '../../components/custom-popup/custom-popup';
@@ -51,27 +45,27 @@ export class ItemDetailPage extends ItemBase implements OnInit { //ComponentBase
   }
 
   onShowProductDescription(): void {
-    this.navCtrl.push(ItemDescriptionPage, this.product.description);
+    this.navCtrl.push('ItemDescriptionPage', this.product.description);
   }
 
   onShowProductProps(): void {
-    this.navCtrl.push(ItemPropsPage, this.product);
+    this.navCtrl.push('ItemPropsPage', this.product);
   }
 
   onShowReviewClick(data: any): void {
-    this.navCtrl.push(ItemReviewPage, data);
+    this.navCtrl.push('ItemReviewPage', data);
   }
 
   onShowReviewsClick(data: any): void {
-    this.navCtrl.push(ItemReviewsPage, data);
+    this.navCtrl.push('ItemReviewsPage', data);
   }
 
   onWriteReview(data: any): void {
-    this.navCtrl.push(ItemReviewWritePage, this.product);
+    this.navCtrl.push('ItemReviewWritePage', this.product);
   }
 
   onShowMoreQuotesClick(): void {
-    this.navCtrl.push(ItemQuotesPage, this.product);
+    this.navCtrl.push('ItemQuotesPage', this.product);
   }
 
   onAddToCart() {

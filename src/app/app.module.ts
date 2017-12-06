@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {ErrorHandler, NgModule, Injector} from '@angular/core';
-import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
+import {IonicApp, IonicErrorHandler, IonicModule, IonicPageModule} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {StatusBar} from '@ionic-native/status-bar';
 import {HttpModule} from '@angular/http';
@@ -14,32 +14,7 @@ import {FoxApp} from './app.component';
 
 import {ReactiveFormsModule} from '@angular/forms';
 
-import {
-  HomePage,
-  AboutPage,
-  AccountPage,
-  SupportPage,
-  LoginPage,
-  RegisterPage,
-  ChangePasswordPage,
-  ForgotPasswordPage,
-  CartPage,
-  CategoriesPage,
-  CategoryPage,
-  MapPage,
-  ItemDetailPage,
-  ItemDescriptionPage,
-  ItemPropsPage,
-  ItemReviewPage,
-  ItemReviewsPage,
-  ItemReviewWritePage,
-  SearchPage,
-  SearchResultsPage,
-  ItemQuotesPage,
-  FilterPopoverPage,
-  CityPopoverPage,
-  SelectShipAddressPage
-} from '../pages/index';
+import {HomePage} from '../pages/index';
 
 import {AppConstants} from './app-constants';
 import {
@@ -65,91 +40,84 @@ import {RefInjector} from './core/app-core';
 import {ComponentsModule} from '../components/components.module';
 import {PipesModule} from "./pipe/pipes.module";
 import {DirectivesModule} from './directive/directives.module';
-import {VideoPlayer} from '@ionic-native/video-player';
 import {Geolocation} from '@ionic-native/geolocation';
 import {ScreenOrientation} from '@ionic-native/screen-orientation';
-import {EditShipAddressPage} from '../pages/edit-ship-address/edit-ship-address';
+import {LaunchNavigator} from '@ionic-native/launch-navigator';
+
+import {
+  AboutPageModule,
+  AccountPageModule,
+  CartPageModule,
+  CategoriesPageModule,
+  CategoryPageModule,
+  ChangePasswordPageModule,
+  CityPopoverPageModule,
+  EditShipAddressPageModule,
+  FilterPopoverPageModule,
+  ForgotPasswordPageModule,
+  HomePageModule,
+  ItemDescriptionPageModule,
+  ItemDetailPageModule,
+  ItemPropsPageModule,
+  ItemQuotesPageModule,
+  ItemReviewPageModule,
+  ItemReviewWritePageModule,
+  ItemReviewsPageModule,
+  LoginPageModule,
+  MapPageModule,
+  RegisterPageModule,
+  SearchPageModule,
+  SearchResultsPageModule,
+  SelectShipAddressPageModule,
+  SupportPageModule
+} from "../pages/index-modules";
 
 @NgModule({
   declarations: [
-    FoxApp,
-    AboutPage,
-    AccountPage,
-    HomePage,
-    LoginPage,
-    RegisterPage,
-    SupportPage,
-    ChangePasswordPage,
-    ForgotPasswordPage,
-    CartPage,
-    CategoriesPage,
-    CategoryPage,
-    MapPage,
-    ItemDetailPage,
-    ItemDescriptionPage,
-    ItemPropsPage,
-    ItemReviewPage,
-    ItemReviewsPage,
-    ItemReviewWritePage,
-    SearchPage,
-    SearchResultsPage,
-    ItemQuotesPage,
-    FilterPopoverPage,
-    SelectShipAddressPage,
-    CityPopoverPage,
-    EditShipAddressPage
+    FoxApp
   ],
   imports: [
     BrowserModule,
     HttpModule,
     InMemoryWebApiModule.forRoot(WebApiService, {delay: 1000, post204: false, put204: false}),
-    IonicModule.forRoot(FoxApp, {}, {
-      links: [
-        {component: HomePage, name: 'HomePage', segment: 'home'},
-        {component: CategoriesPage, name: 'CategoriesPage', segment: 'categories'},
-        {component: CategoryPage, name: 'CategoryPage', segment: 'category/:categoryId'},
-        {component: MapPage, name: 'Map', segment: 'map'},
-        {component: SupportPage, name: 'SupportPage', segment: 'support'},
-        {component: LoginPage, name: 'LoginPage', segment: 'login'},
-        {component: AccountPage, name: 'AccountPage', segment: 'account'},
-        {component: AboutPage, name: 'AboutPage', segment: 'about'}
-      ]
-    }),
+    IonicModule.forRoot(FoxApp),
+    IonicPageModule.forChild(HomePage),
     ComponentsModule,
     Ionic2RatingModule,
     PipesModule,
     FormsModule,
     ReactiveFormsModule,
-    DirectivesModule
+    DirectivesModule,
+    AboutPageModule,
+    AccountPageModule,
+    CartPageModule,
+    CategoriesPageModule,
+    CategoryPageModule,
+    ChangePasswordPageModule,
+    CityPopoverPageModule,
+    EditShipAddressPageModule,
+    FilterPopoverPageModule,
+    ForgotPasswordPageModule,
+    HomePageModule,
+    ItemDescriptionPageModule,
+    ItemDetailPageModule,
+    ItemPropsPageModule,
+    ItemQuotesPageModule,
+    ItemReviewPageModule,
+    ItemReviewWritePageModule,
+    ItemReviewsPageModule,
+    LoginPageModule,
+    MapPageModule,
+    RegisterPageModule,
+    SearchPageModule,
+    SearchResultsPageModule,
+    SelectShipAddressPageModule,
+    SupportPageModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     FoxApp,
-    AboutPage,
-    AccountPage,
-    HomePage,
-    LoginPage,
-    RegisterPage,
-    SupportPage,
-    ChangePasswordPage,
-    ForgotPasswordPage,
-    CartPage,
-    CategoriesPage,
-    CategoryPage,
-    ItemDetailPage,
-    ItemDescriptionPage,
-    ItemPropsPage,
-    ItemReviewPage,
-    ItemReviewsPage,
-    ItemReviewWritePage,
-    SearchPage,
-    SearchResultsPage,
-    ItemQuotesPage,
-    FilterPopoverPage,
-    CityPopoverPage,
-    SelectShipAddressPage,
-    EditShipAddressPage,
-    MapPage
+    HomePage
   ],
   providers: [
     StatusBar,
@@ -159,8 +127,8 @@ import {EditShipAddressPage} from '../pages/edit-ship-address/edit-ship-address'
     GoogleMaps,
     Geolocation,
     BarcodeScanner,
-    VideoPlayer,
     ScreenOrientation,
+    LaunchNavigator,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
     {provide: AbstractAccountRepository, useClass: AccountRepository},

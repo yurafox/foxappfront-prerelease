@@ -1,15 +1,14 @@
 import { System } from './../../app/core/app-core';
 import {Component, OnInit, Type} from '@angular/core';
-import {NavController} from 'ionic-angular';
+import {NavController, IonicPage} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {HomePage} from "../index"
-import {Currency} from "../../app/model/index";
+import {Currency, User, Lang} from "../../app/model/index";
 import {AbstractDataRepository} from "../../app/service/index";
-import {User, Lang} from "../../app/model/index";
 import { AlertController } from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {Activator} from "../../app/core/app-core";
 
+@IonicPage({name: 'AccountPage', segment: 'account'})
 @Component({
   selector: 'page-account',
   templateUrl: 'account.html'
@@ -108,7 +107,7 @@ export class AccountPage extends ComponentBase {
 
   logout() {
     this.userService.logOut();
-    this.nav.setRoot(HomePage);
+    this.nav.setRoot('HomePage');
   }
 
   // <editor-fold desc="form builder">

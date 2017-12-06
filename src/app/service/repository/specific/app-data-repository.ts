@@ -1030,7 +1030,7 @@ export class AppDataRepository extends AbstractDataRepository {
           const markerArr = new Array<MapMarker>();
           const arr: MapMarker[] = val.markers;
           arr.forEach((marker) => {
-            markerArr.push(new MapMarker(marker.id, marker.position, marker.title));
+            markerArr.push(new MapMarker(marker.id, marker.position, marker.title, marker.openTime, marker.closeTime));
           });
           markers.push({id: val.id, markers: markerArr});
         });

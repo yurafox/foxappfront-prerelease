@@ -4,7 +4,6 @@ import {ComponentBase} from '../../components/component-extension/component-base
 import {ProductReview} from '../../app/model/product-review';
 import {Product} from '../../app/model/product';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
-import {ItemReviewWritePage} from '../item-review-write/item-review-write';
 
 @IonicPage()
 @Component({
@@ -28,6 +27,6 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
   }
 
   onWriteReviewClick(data: Product): void {
-    this.navCtrl.push(ItemReviewWritePage, this.product);
+    this.navCtrl.push('ItemReviewWritePage', this.product);
   }
 }

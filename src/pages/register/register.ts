@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController} from 'ionic-angular';
-import {LoginPage} from '../index';
+import {NavController, IonicPage} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Currency} from "../../app/model/index";
 import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
 import {UserService} from "../../app/service/bll/user-service";
 import {User} from "../../app/model/index";
 
+@IonicPage()
 @Component({
   selector: 'page-register',
   templateUrl: 'register.html'
@@ -54,7 +54,7 @@ export class RegisterPage implements OnInit{
 
   // go to login page
   login() {
-    this.nav.push(LoginPage);
+    this.nav.push('LoginPage');
   }
 
   // go to home page

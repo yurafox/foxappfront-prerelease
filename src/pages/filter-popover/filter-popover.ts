@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {FilterComponent} from '../../components/filter/filter';
+import {ComponentBase} from "../../components/component-extension/component-base";
 
 @IonicPage()
 @Component({
   selector: 'page-filter-popover',
   templateUrl: 'filter-popover.html',
 })
-export class FilterPopoverPage {
+export class FilterPopoverPage extends ComponentBase {
 
   public filter: FilterComponent;
   brandsSectionOpened = false;
@@ -90,6 +91,7 @@ export class FilterPopoverPage {
   }*/
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
+    super();
     this.filter = navParams.get('filterControl');
 
     this.brandsSectionOpened = false;
