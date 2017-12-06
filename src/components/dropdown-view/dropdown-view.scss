@@ -5,22 +5,10 @@ dropdown-view {
     margin-bottom: 1rem;
   }
 
-  .f-table th,
-  .f-table td {
-    padding: 0.75rem;
-    vertical-align: top;
-    border-top: 1px solid #eceeef;
-    color: black;
-  }
-
   .f-table thead th {
     vertical-align: bottom;
     border-bottom: 2px solid #eceeef;
     background-color: rgba(0, 0, 0, 0.2);
-  }
-
-  .f-table tbody + tbody {
-    border-top: 2px solid #eceeef;
   }
 
   .f-table .f-table {
@@ -35,6 +23,7 @@ dropdown-view {
   .f-table-hover tbody tr:hover {
     background-color: rgba(0, 0, 0, 0.095);
   }
+
   .popover-md .popover-content {
     width: 125px !important;
     padding: 0px !important;
@@ -46,6 +35,14 @@ dropdown-view {
   }
 
   .f-active {
-    border-left: 1px solid #e59400
+    border-left: 3px solid #e59400
+  }
+
+  .f-close {
+    position: absolute;
+    top: 9px;
+    right: 11px;
+    outline: none;
+    font-size: 22px;
   }
 }

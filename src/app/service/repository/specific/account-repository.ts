@@ -124,7 +124,7 @@ export class AccountRepository extends AbstractAccountRepository {
   }
   // </editor-fold>
 
-  // <editor-fold desc="specific request"
+  // <editor-fold desc="specific request>"
    private getAuthHeaderInRequest(token: string): RequestOptionsArgs {
     const h = new Headers();
     h.set('Authorization', `Bearer: ${token}`);

@@ -1,16 +1,21 @@
 <ion-grid class="f-list-modal">
   <ion-row>
+    <div>
+      <ion-icon class="f-close" name='close'></ion-icon>
+    </div>
+  </ion-row>
+  <ion-row>
     <ion-col col-12>
       <table class="f-table f-table-striped f-table-hover">
         <thead>
-        <tr>
-          <th>Список</th>
-        </tr>
+          <tr>
+            <th (click)="close()">{{displayHeader}}</th>
+          </tr>
         </thead>
-        <tbody>
-        <tr *ngFor="let item of parent.store">
-            <td [class.f-active]='isActive(item)' (click)="onSelect(item)">{{item[displayName]}}</td>
-        </tr>
+        <tbody [ngStyle]="getImportantStyle()">
+          <tr *ngFor="let item of parent.store">
+            <td id={{uniqueIdentifier(item)}} [class.f-active]='isActive(item)' (click)="onSelect(item)">{{item[displayName]}}</td>
+          </tr>
         </tbody>
       </table>
     </ion-col>

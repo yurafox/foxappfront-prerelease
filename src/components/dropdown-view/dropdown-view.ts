@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Renderer2, AfterViewInit, AfterViewChecked,ElementRef} from '@angular/core';
 import {NavController, NavParams, ViewController} from "ionic-angular"
 import {DropdownListComponent} from "../dropdown-list/dropdown-list";
 
@@ -6,14 +6,33 @@ import {DropdownListComponent} from "../dropdown-list/dropdown-list";
   selector: 'dropdown-view',
   templateUrl: 'dropdown-view.html'
 })
-export class DropdownViewComponent {
-  private parent:DropdownListComponent;
+export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
+  public parent:DropdownListComponent;
 
   constructor(private nav: NavController,
               private navParam: NavParams,
-              private viewCtrl: ViewController) {
+              private viewCtrl: ViewController,
+              private _renderer: Renderer2) {
+
     this.parent = navParam.get('parent');
   }
+  
+  ngAfterViewInit(){
+    if(this.parent.options.popupClass){
+      const elements: NodeListOf<Element> = document.querySelectorAll('div.popover-content');
+      if (elements.length!=0) {
+         for (let i=0,max=elements.length;i<max;i++){
+          this._renderer.addClass(elements[i],this.parent.options.popupClass);
+         } 
+      }
+    }
+  }
+  
+  ngAfterViewChecked() {
+    let node:HTMLElement=document.getElementById(this.currentIdentifier);
+    if(node)
+      node.scrollIntoView();
+ }
 
   public isActive(item: any): boolean {
     return item[this.valueName] === this.bindedObject[this.valueName];
@@ -61,13 +80,33 @@ export class DropdownViewComponent {
     return this.parent.map.displayName;
   }
 
+  public get displayHeader(): string {
+    return this.parent.options.popupHeader;
+  }
+
   // get target object reference
   public get bindedObject(): any {
-    return this.parent.param.reference;
+    return this.parent.reference;
+  }
+  
+  public get currentIdentifier():string {
+    return `drop-${this.bindedObject[this.valueName]}-${this.bindedObject[this.displayName]}`;
+  }
+  
+  public get bindedStore():Array<any> {
+    return this.parent.store;
+  }
+
+  public  uniqueIdentifier(item:any):string {
+    return `drop-${item[this.valueName]}-${item[this.displayName]}`;
   }
 
   private makeChange(item:any){
-    this.parent.param.reference[this.parent.map.valueName] = item[this.parent.map.valueName];
-    this.parent.param.reference[this.parent.map.displayName] = item[this.parent.map.displayName];
+    this.parent.reference[this.parent.map.valueName] = item[this.parent.map.valueName];
+    this.parent.reference[this.parent.map.displayName] = item[this.parent.map.displayName];
+  }
+
+  public getImportantStyle(){
+    return (this.bindedStore.length < 10) ? {'height':'auto'}: null;
   }
 }

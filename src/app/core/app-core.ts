@@ -251,6 +251,7 @@ export function LazyLoad(options: Array<{ options:ILazyOption,
       // </editor-fold>
     };
     // return function constructor name
+    (<any>OverCtor).prototype = target.prototype;
     Object.defineProperty(OverCtor, 'name', {value: target.name, writable: false});
     return OverCtor;
   };
@@ -272,3 +273,24 @@ export function Activator<T>(type:{new():T}):T {
   return new type();
 }
 // </editor-fold>
+
+// core system type
+export namespace System {
+  export interface IRange {
+    min:number;
+    max:number;
+  }
+  // custome number 
+  export class FoxNumber {
+    public value:number;
+    private _range:IRange; 
+    constructor(value: number = 1) {
+         this.value = value;
+         this._range = {min:1,max:30};
+    }
+    
+    public get range(): IRange {
+      return this._range;
+    } 
+  }
+}

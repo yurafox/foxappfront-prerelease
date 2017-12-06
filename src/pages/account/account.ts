@@ -1,3 +1,4 @@
+import { System } from './../../app/core/app-core';
 import {Component, OnInit, Type} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -57,7 +58,7 @@ export class AccountPage extends ComponentBase {
 
   async ngOnInit(){
     super.ngOnInit();
-
+    
     [this.currencies,this.langs] = await Promise.all([this.repo.getCurrencies(true),
                                                       this.repo.getLocale(true)]);
 
@@ -86,7 +87,7 @@ export class AccountPage extends ComponentBase {
     if (!this.editForm.valid) {
       return;
     }
-
+    
     const data = this.editForm.value;
     const user: User= new User(data.name,data.email,
       data.password,this.userService.uid,data.appKey,{'currency': `${this.currentCurrency.id}`, 'lang': `${this.currentLang.id}`});
