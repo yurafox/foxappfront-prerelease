@@ -19,6 +19,7 @@
 $small-dictionary-width:35vw;
 $middle-dictionary-width:50vw;
 $large-dictionary-width:90vw;
+$full-dictionary-width:99vw;
 
 md, ios, wp,
 .toolbar-background {
@@ -202,8 +203,8 @@ ion-slides[pager] {
 .f-drop-button-middle {
    @extend.f-drop-button-small;
   button {
-    width: $middle-dictionary-width;
-  }
+        width: $middle-dictionary-width;
+      }
 }
 
 .f-drop-button-large {
@@ -212,3 +213,11 @@ ion-slides[pager] {
     width: $large-dictionary-width;
   }
 }
+
+.f-drop-button-full {
+  @extend.f-drop-button-small;
+  button {
+    width: $full-dictionary-width;
+  }
+}
+

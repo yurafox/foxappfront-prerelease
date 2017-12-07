@@ -14,6 +14,7 @@ export interface PageInterface {
 }
 
 declare var ExoPlayer: any;
+declare var appAvailability: any;
 
 @Component({
   templateUrl: 'app.html'
@@ -28,6 +29,11 @@ export class FoxApp extends ComponentBase {
   readonly LOCAL_VIDEO_URL = 'file:///android_asset/www/assets/video/'; // Default path if file located in assets/video
   videoFileName = 'video';  // Set the name of video file
 
+  // Parameters of the external app
+  scheme: string;
+  appUrl: string;
+  userToken: string;
+
   appPages = [
     {title: 'Главная', name: 'Home', component: 'HomePage', index: 0, icon: 'ios-home-outline'},
     {title: 'Категории', name: 'Categories', component: 'CategoriesPage', index: 1, icon: 'ios-list-outline'},
@@ -36,7 +42,7 @@ export class FoxApp extends ComponentBase {
   ];
   infoPages = [
     {title: 'Магазины на карте', name: 'Map', component: 'MapPage', index: 0, icon: 'ios-map-outline'},
-    {title: 'О нас', name: 'About', /*component: 'AboutPage',*/ index: 1, icon: 'ios-information-circle-outline'},
+    {title: 'О нас', name: 'About', index: 1, icon: 'ios-information-circle-outline'},
     {title: 'Поддержка', name: 'Support', component: 'SupportPage', index: 2, icon: 'ios-text-outline'}
   ];
 
@@ -49,6 +55,10 @@ export class FoxApp extends ComponentBase {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
     });
+    // Setting up external app params
+    this.scheme = 'com.facebook.katana';
+    this.appUrl = 'fb://page/';
+    this.userToken = '192385130800097';
   }
 
   ionViewDidLoad() {
@@ -81,6 +91,14 @@ export class FoxApp extends ComponentBase {
         case 'About': {
           try {
             this.playVideo();
+          } catch(err) {
+            console.log(err);
+          }
+          break;
+        }
+        case 'Game': {
+          try {
+            this.openExternalApp();
           } catch(err) {
             console.log(err);
           }
@@ -159,6 +177,27 @@ export class FoxApp extends ComponentBase {
     };
     // Start player
     ExoPlayer.show(params, successCallback, errorCallback);
+  }
+
+  // Opens external application
+  openExternalApp() {
+    let scheme = this.scheme;
+    let appUrl = this.appUrl;
+    let userToken = this.userToken;
+    this.platform.ready().then(() => {
+      appAvailability.check(scheme,// URI Scheme
+        function() {  // Success callback
+          window.open(appUrl + userToken, '_system', 'location=no');
+          console.log('App is available');
+        },
+        function() {  // Error callback
+          window.alert('App is not installed');
+          return;
+        })
+    }).catch((err) => {
+      console.log(`Error occurred while opening external app: ${err}`);
+      return;
+    });
   }
 }
 

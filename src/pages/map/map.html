@@ -1,25 +1,14 @@
 <ion-header>
   <main-toolbar></main-toolbar>
-  <!--<ion-select [(ngModel)]="selectedCity" (ionChange)="changeMarkers()" placeholder="Выберите город"
-              class="f-another-select">
-    <ion-option *ngFor="let city of cities" [value]="city.name" checked="city.name === selectedCity">{{city.name}}
-    </ion-option>
-  </ion-select>
-  <ion-select [(ngModel)]="selectedMarker" (ionChange)="handleListSelect()" placeholder="Выберите адрес магазина"
-              class="f-another-select">
-    <ion-option *ngFor="let shop of shopList" [value]="shop.value" checked="shop.label === selectedMarker.label">
-      {{shop.label}}
-    </ion-option>
-  </ion-select>-->
   <dropdown-list
-    [options]="{popupClass: 'f-middle-dictionary', buttonClass: 'f-drop-button-large', popupHeader: 'Город', buttonHeader: 'Выберите город'}"
+    [options]="{popupClass: 'f-middle-dictionary', buttonClass: 'f-drop-button-full', popupHeader: 'Город', buttonHeader: 'Город'}"
     [reference]="selectedCity"
     [store]="cities"
     [map]="{valueName:'name',displayName:'name'}"
     [afterUpdate]="changeMarkers">
   </dropdown-list>
   <dropdown-list
-    [options]="{popupClass: 'f-large-dictionary', buttonClass: 'f-drop-button-large', popupHeader: 'Адрес магазина', buttonHeader: 'Выберите адрес'}"
+    [options]="{popupClass: 'f-large-dictionary', buttonClass: 'f-drop-button-full', popupHeader: 'Адрес магазина', buttonHeader: 'Адрес'}"
     [reference]="selectedMarker"
     [store]="shopList"
     [map]="{valueName:'value',displayName:'label'}"
