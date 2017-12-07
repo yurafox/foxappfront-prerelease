@@ -112,7 +112,10 @@ export class DropdownListComponent implements OnChanges {
   };
 
   @Input()
-   reference: any;
+  reference?: any;
+
+  @Input()
+  param?: number;
 
   @Input()
   store?: Array<any>;
@@ -131,13 +134,16 @@ export class DropdownListComponent implements OnChanges {
 
   public sourceContext: any;
 
+  // проверка приоритета работы со сылкой
+  private referencePriority:boolean;
+
   private verifyBehaviorList: Array<{ fn: () => boolean, errText: string }> = [];
 
   constructor(public popoverCtrl: PopoverController,
     private _viewCtnr: ViewContainerRef) {
 
     // <editor-fold desc="check input behavior init list">
-    this.verifyBehaviorList.push({ fn: this.verifyParam, errText: 'отсутствуют значения в input поле [param]' });
+    //this.verifyBehaviorList.push({ fn: this.verifyReference, errText: 'отсутствуют значения для binding поле' });
     this.verifyBehaviorList.push({ fn: this.verifyMap, errText: 'несоответствие имен полей привязки с целевым обьектом' });
     this.verifyBehaviorList.push({ fn: this.verifyStore, errText: 'входящая коллекция [store] пустая' });
     // </editor-fold>
@@ -146,6 +152,7 @@ export class DropdownListComponent implements OnChanges {
 
   // hook on input fields binding
   ngOnChanges() {
+    this.referencePriority=!this.isNullOrUndefined(this.reference);
     this.checkInputValues();
     this.verifyOptions();
   }
@@ -155,12 +162,18 @@ export class DropdownListComponent implements OnChanges {
     if (!this.options)
       return '';
 
-    if(this.options.buttonHeader)
-       return `${this.options.buttonHeader}: ${this.reference[this.map.displayName]}`;
+    const dataValue:any=(this.referencePriority) ? (this.reference[this.map.displayName] || '')
+                                                 :(this.param || '');
 
-    return (!this.isQty) ? this.reference[this.map.displayName] : `Qty: ${this.reference[this.map.displayName]}`;
+    if(this.options.buttonHeader)
+       return `${this.options.buttonHeader}: ${dataValue}`;
+
+    return (!this.isQty) ? dataValue : `Qty: ${dataValue}`;
   }
 
+  public get referenceBoot():boolean {
+    return this.referencePriority;
+  }
   public openView(event: any) {
     const popUp = this.popoverCtrl.create(DropdownViewComponent, { parent: this }, { cssClass: 'f-backdrop-opacity-popover' });
     if (popUp) popUp.present();
@@ -174,19 +187,20 @@ export class DropdownListComponent implements OnChanges {
       }
     }
   }
-  private verifyParam(): boolean {
-    return true;
-    //return (!this.isNullOrUndefined(this.reference));
-  }
+  // private verifyReference(): boolean {
+  //   return (!this.isNullOrUndefined(this.reference) || !this.referencePriority);
+  // }
   private verifyStore(): boolean {
+    const me = this;
     if(this.isQty){
-      const range:System.IRange = this.reference['range'];
+      const range:System.IRange = {min:1,max:30}; //this.reference['range'];
       this.store = function(){
         const array:Array<any>=[];
         for(let i = range.min, max= range.max; i< max;i++) {
-           array.push(new System.FoxNumber(i));
+          let obj={};
+          obj[me.map.valueName]=i;
+           array.push(obj);
         }
-
         return array;
       }.call(this);
     }
@@ -200,8 +214,8 @@ export class DropdownListComponent implements OnChanges {
       if (!this.map) {return false;}
     }
 
-    return (this.reference.hasOwnProperty(this.map.valueName) &&
-    this.reference.hasOwnProperty(this.map.displayName));
+    return (!this.referenceBoot) || (this.reference.hasOwnProperty(this.map.valueName)
+                                        && this.reference.hasOwnProperty(this.map.displayName));
   }
   private verifyOptions(): void {
     if (!this.options)

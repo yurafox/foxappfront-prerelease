@@ -89,7 +89,7 @@
 
       <ion-row>
         <ion-col col-auto class="f-item-padding-bottom" >
-          <dropdown-list id="btnQty" [reference]="item.qty"
+          <dropdown-list id="btnQty" [param]="item.qty.value"
                          [options]="{popupHeader:'Quantity', buttonHeader:'Qty'}"
                          [isQty]="true">
           </dropdown-list>

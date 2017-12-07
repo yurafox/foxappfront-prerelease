@@ -30,7 +30,7 @@
                  placeholder="Phone" required #phone="ngModel">
           <span *ngIf="!phone.valid && phone.touched" style="color: red;">Please enter your phone</span>
           <br>
-
+          <h1>Test</h1>
           <dropdown-list [reference]="shippingAddress.country"
                          [store]="countries"
                          [map]="{valueName:'id', displayName:'name'}" >

@@ -8,26 +8,36 @@ import {DropdownListComponent} from "../dropdown-list/dropdown-list";
 })
 export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
   public parent:DropdownListComponent;
-
+  private proxyObj:any;
   constructor(private nav: NavController,
               private navParam: NavParams,
               private viewCtrl: ViewController,
               private _renderer: Renderer2) {
 
     this.parent = navParam.get('parent');
+    this.proxyObj = {};
+
+    if(!this.parent.referenceBoot){
+      const filtered = this.bindedStore.filter((value)=>{
+        return value[this.valueName]===this.parent.param;
+      });
+
+     this.proxyObj[this.valueName] = (filtered) ? filtered[this.valueName] : null;
+     this.proxyObj[this.displayName] = (filtered) ? filtered[this.displayName] : '';
+    }
   }
-  
+
   ngAfterViewInit(){
     if(this.parent.options.popupClass){
       const elements: NodeListOf<Element> = document.querySelectorAll('div.popover-content');
       if (elements.length!=0) {
          for (let i=0,max=elements.length;i<max;i++){
           this._renderer.addClass(elements[i],this.parent.options.popupClass);
-         } 
+         }
       }
     }
   }
-  
+
   ngAfterViewChecked() {
     let node:HTMLElement=document.getElementById(this.currentIdentifier);
     if(node)
@@ -35,6 +45,9 @@ export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
  }
 
   public isActive(item: any): boolean {
+    console.log(item[this.valueName] === this.bindedObject[this.valueName]);
+    console.log(item);
+    console.log(this.bindedObject);
     return item[this.valueName] === this.bindedObject[this.valueName];
   }
 
@@ -86,13 +99,13 @@ export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
 
   // get target object reference
   public get bindedObject(): any {
-    return this.parent.reference;
+    return (this.parent.referenceBoot) ? this.parent.reference : this.proxyObj;
   }
-  
+
   public get currentIdentifier():string {
     return `drop-${this.bindedObject[this.valueName]}-${this.bindedObject[this.displayName]}`;
   }
-  
+
   public get bindedStore():Array<any> {
     return this.parent.store;
   }
@@ -102,8 +115,16 @@ export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
   }
 
   private makeChange(item:any){
-    this.parent.reference[this.parent.map.valueName] = item[this.parent.map.valueName];
-    this.parent.reference[this.parent.map.displayName] = item[this.parent.map.displayName];
+    if(this.parent.referenceBoot) {
+      this.parent.reference[this.parent.map.valueName] = item[this.parent.map.valueName];
+      this.parent.reference[this.parent.map.displayName] = item[this.parent.map.displayName];
+    }
+    else{
+      this.proxyObj[this.parent.map.valueName] = item[this.parent.map.valueName];;
+      this.proxyObj[this.parent.map.displayName] = item[this.parent.map.displayName];
+
+      this.parent.param = item[this.parent.map.valueName];
+    }
   }
 
   public getImportantStyle(){
