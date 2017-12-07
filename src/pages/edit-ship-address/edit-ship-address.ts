@@ -4,6 +4,10 @@ import {ComponentBase} from '../../components/component-extension/component-base
 import {ClientAddress} from '../../app/model/client-address';
 import {SelectShipAddressPage} from '../select-ship-address/select-ship-address';
 import {NgForm} from '@angular/forms';
+import {Country} from '../../app/model/country';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {System} from '../../app/core/app-core';
+import FoxNumber = System.FoxNumber;
 
 
 @IonicPage()
@@ -15,15 +19,23 @@ export class EditShipAddressPage extends ComponentBase  {
   @ViewChild('f') addressEditForm: NgForm;
   shippingAddress = new ClientAddress();
   originalAddr: ClientAddress;
+  countries: Array<Country>;
+  currentCountry: Country = new Country(new FoxNumber(1), 'Ukraine');
+
   mode: string;
   addressSelectorPage: SelectShipAddressPage;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public alertCtrl: AlertController) {
+              public alertCtrl: AlertController, public repo: AbstractDataRepository) {
     super();
-    this.mode = navParams.data.mode;
-    this.addressSelectorPage = navParams.data.page;
-    this.originalAddr = navParams.data.data;
+    this.initPage();
+  }
+
+  async initPage() {
+    this.countries = await this.repo.getCountries();
+    this.mode = this.navParams.data.mode;
+    this.addressSelectorPage = this.navParams.data.page;
+    this.originalAddr = this.navParams.data.data;
 
     if (this.mode === 'edit') {
       this.shippingAddress.recName = this.originalAddr.recName;
@@ -32,6 +44,7 @@ export class EditShipAddressPage extends ComponentBase  {
       this.shippingAddress.city = this.originalAddr.city;
       this.shippingAddress.zip = this.originalAddr.zip;
       this.shippingAddress.phone = this.originalAddr.phone;
+      this.shippingAddress.idCountry = this.originalAddr.idCountry;
     };
   }
 
@@ -62,6 +75,7 @@ export class EditShipAddressPage extends ComponentBase  {
       this.originalAddr.city = this.shippingAddress.city;
       this.originalAddr.zip = this.shippingAddress.zip;
       this.originalAddr.phone = this.shippingAddress.phone;
+      this.originalAddr.idCountry = this.shippingAddress.idCountry;
     };
 
   }

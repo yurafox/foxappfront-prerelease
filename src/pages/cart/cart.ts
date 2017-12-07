@@ -34,7 +34,7 @@ export class CartPage extends ComponentBase {
 
   checkout() {
     if (!this.uService.isAuth) {
-      this.navCtrl.push(LoginPage, {continuePage: SelectShipAddressPage});
+      this.navCtrl.push(LoginPage, {continuePage: 'SelectShipAddressPage'});
     }
     else
       this.navCtrl.push(SelectShipAddressPage);

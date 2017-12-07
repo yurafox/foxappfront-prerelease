@@ -5,7 +5,6 @@
 
 page-item-detail {
 
-
   .item-md.item-block .item-inner {
     border-bottom: 0px;
   }
@@ -61,6 +60,11 @@ page-item-detail {
   .f-grid-feat-bkgrnd {
     background-color: #8e9093;
     color: black;
+  }
+
+  #btnQty button {
+    width: 90px;
+    height: 32px;
   }
 
   .f-btn-add-cart, .f-btn-add-cart.activated {

@@ -20,15 +20,14 @@ import {
   Lang
 } from '../../../model/index';
 import {AbstractDataRepository} from '../../index';
-import {Providers} from '../../../core/app-core';
+import {Providers, System} from '../../../core/app-core';
 import {Client} from '../../../model/client';
 import {ClientAddress} from '../../../model/client-address';
 import {Country} from '../../../model/country';
 import {ClientOrder} from '../../../model/client-order';
 import {ClientOrderProducts} from '../../../model/client-order-products';
-import {observeOn} from 'rxjs/operator/observeOn';
-import {Observable} from 'rxjs/Observable';
-import {ClientOrderProductsDTO} from '../../../model/DTO/client-order-products-dto';
+import FoxNumber = System.FoxNumber;
+
 
 
 // <editor-fold desc="url const">
@@ -109,13 +108,6 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   };
 
-/*
-  public async abstract saveClientDraftOrderSpecProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
-  public async abstract updateClientDraftOrderSpecProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
-  public async abstract deleteClientDraftOrderSpecProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
-
-*/
-
   public async updateCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
     //TODO
     return null;
@@ -123,19 +115,15 @@ export class AppDataRepository extends AbstractDataRepository {
 
 
   public async saveCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
-    //TODO define DTO objects
     try {
-      let obj = {idQuotationProduct: prod.idQuotationProduct,
-        price: prod.price, qty: prod.qty, idStorePlace: prod.idStorePlace}
-
-      const response = await this.http.post(clientOrderSpecProductsUrl, obj).toPromise();
+      const response = await this.http.post(clientOrderSpecProductsUrl, prod.dto/*obj*/).toPromise();
       const val = response.json();
       if (response.status !== 201) {
         throw new Error('server side status error');
       }
       let p = new ClientOrderProducts();
       p.id = val.id; p.idOrder = val.idOrder; p.idQuotationProduct = val.idQuotationProduct;
-      p.price = val.price; p.qty = val.qty; p.idStorePlace = val.idStorePlace; p.idLoEntity = val.idLoEntity;
+      p.price = val.price; p.qty = new FoxNumber(val.qty); p.idStorePlace = val.idStorePlace; p.idLoEntity = val.idLoEntity;
       p.loTrackTicket = val.loTrackTicket; p.loDeliveryCost = val.loDeliveryCost;
       p.loDeliveryCompleted = val.loDeliveryCompleted; p.loEstimatedDeliveryDate = val.loEstimatedDeliveryDate;
       p.loDeliveryCompletedDate = val.loDeliveryCompletedDate; p.errorMessage = val.errorMessage;
@@ -174,7 +162,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
           let p = new ClientOrderProducts();
           p.id = val.id; p.idOrder = val.idOrder; p.idQuotationProduct = val.idQuotationProduct;
-          p.price = val.price; p.qty = val.qty; p.idStorePlace = val.idStorePlace; p.idLoEntity = val.idLoEntity;
+          p.price = val.price; p.qty = new FoxNumber(val.qty); p.idStorePlace = val.idStorePlace; p.idLoEntity = val.idLoEntity;
           p.loTrackTicket = val.loTrackTicket; p.loDeliveryCost = val.loDeliveryCost;
           p.loDeliveryCompleted = val.loDeliveryCompleted; p.loEstimatedDeliveryDate = val.loEstimatedDeliveryDate;
           p.loDeliveryCompletedDate = val.loDeliveryCompletedDate; p.errorMessage = val.errorMessage;
@@ -202,7 +190,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       let p = new ClientOrderProducts();
       p.id = val.id; p.idOrder = val.idOrder; p.idQuotationProduct = val.idQuotationProduct;
-      p.price = val.price; p.qty = val.qty; p.idStorePlace = val.idStorePlace; p.idLoEntity = val.idLoEntity;
+      p.price = val.price; p.qty = new FoxNumber(val.qty); p.idStorePlace = val.idStorePlace; p.idLoEntity = val.idLoEntity;
       p.loTrackTicket = val.loTrackTicket; p.loDeliveryCost = val.loDeliveryCost;
       p.loDeliveryCompleted = val.loDeliveryCompleted; p.loEstimatedDeliveryDate = val.loEstimatedDeliveryDate;
       p.loDeliveryCompletedDate = val.loDeliveryCompletedDate; p.errorMessage = val.errorMessage;
@@ -270,6 +258,34 @@ export class AppDataRepository extends AbstractDataRepository {
 
   }
 
+  public async getCountries(): Promise<Country[]> {
+    try {
+      const response = await this.http.get(countriesUrl).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error('server side status error');
+      }
+      const cCountries = new Array<Country>();
+      if (data != null) {
+        data.forEach((val) => {
+
+            let p = new Country();
+            p.id = new FoxNumber(val.id);
+            p.name = val.name;
+
+          cCountries.push(p);
+          }
+        );
+      }
+      return cCountries;
+
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+
   public async getCountryById(id: number): Promise<Country> {
     if (!id)
       return null;
@@ -283,7 +299,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
 
       if (data != null) {
-        country.id = data.id;
+        country.id = new FoxNumber(data.id);
         country.name = data.name;
         return country;
       }
@@ -401,7 +417,7 @@ export class AppDataRepository extends AbstractDataRepository {
           clientAddress.lat = i.lat;
           clientAddress.lng = i.lng;
           clientAddress.isPrimary = i.isPrimary;
-          clientAddress.idCountry = i.idCountry;
+          clientAddress.idCountry = new FoxNumber(i.idCountry);
           clientAddress.city = i.city;
           clientAddress.bldApp = i.bldApp;
           clientAddress.recName = i.recName;

@@ -6,6 +6,8 @@ import {StorePlace} from '../model/store-place';
 import {UserService} from './bll/user-service';
 import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
 import {EventService} from './event-service';
+import {System} from '../core/app-core';
+import FoxNumber = System.FoxNumber;
 
 
 @Injectable()
@@ -40,7 +42,7 @@ export class CartService {
           let spec = new ClientOrderProducts();
           spec.idQuotationProduct = val.idQuotationProduct;
           spec.price = val.price;
-          spec.qty = val.qty;
+          spec.qty = new FoxNumber(val.qty);
           spec.idStorePlace = val.storePlace;
           this.orderProducts.push(spec);
         });
@@ -67,7 +69,7 @@ export class CartService {
       let _q = 0;
       if (this.orderProducts)
         this.orderProducts.forEach(item => {
-          _q = _q + item.qty;
+          _q = _q + item.qty.value;
         });
       return _q;
   }
@@ -76,7 +78,7 @@ export class CartService {
     let _s = 0;
     if (this.orderProducts) {
       this.orderProducts.forEach(item => {
-        _s = _s + item.price*item.qty;
+        _s = _s + item.price*item.qty.value;
       });
     };
     return _s;
@@ -86,7 +88,7 @@ export class CartService {
     let orderItem = new ClientOrderProducts();
     orderItem.idQuotationProduct = item.id;
     orderItem.price = price;
-    orderItem.qty = qty;
+    orderItem.qty = new FoxNumber(qty);
     orderItem.idStorePlace = (storePlace ? storePlace.id : null);
 
     if (this.userService.isAuth) {
@@ -99,12 +101,15 @@ export class CartService {
 
   saveToLocalStorage() {
     if (!this.userService.isAuth) {
+
       let saveArr = new Array<any>();
       this.orderProducts.forEach(i => {
           // TODO переписать на DTO после того, как пофиксим баг с удалением методов декоратором LazyLoading
+/*
           let saveObj = {idQuotationProduct: i.idQuotationProduct,
             price: i.price, qty: i.qty, idStorePlace: i.idStorePlace};
-          saveArr.push(saveObj);
+*/
+          saveArr.push(i.dto);
         }
       );
       localStorage.setItem(this.cKey, JSON.stringify(saveArr));

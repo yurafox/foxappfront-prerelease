@@ -29,6 +29,13 @@
           <input [(ngModel)]="shippingAddress.phone" name="phone"
                  placeholder="Phone" required #phone="ngModel">
           <span *ngIf="!phone.valid && phone.touched" style="color: red;">Please enter your phone</span>
+          <br>
+
+          <dropdown-list [reference]="shippingAddress.country"
+                         [store]="countries"
+                         [map]="{valueName:'id', displayName:'name'}" >
+          </dropdown-list>
+
         </ion-col>
       </ion-row>
       <ion-row>

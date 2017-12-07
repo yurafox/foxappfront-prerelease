@@ -23,7 +23,7 @@
 
     options.popupHeader? - имя заголовка pop up окна
     Значение по умолчанию Список
-    
+
     options.buttonHeader? - заголовок кнопки
     Значение по умолчанию только для qty - QTY
 
@@ -42,7 +42,7 @@
     true - qty компонент,
     false - обычный словарь
     Значение по умолчанию false
-    @param 
+    @param
     Необязательный параметр (клиентский обработчик)
     beforeUpdate: (oldItem: any, newItem: any) => boolean - метод для клиентского кода, который срабатывает до
     момента обновления целевого обьекта, метод получает старое и новое значение выбранное пользователем.
@@ -52,9 +52,9 @@
     afterUpdate: (item: any) => void -  метод для клиентского кода, который срабатывает после обновления целевого обьекта.
     Метод принимает новое (выбранное пользователем значение).
 
-    Условные примеры: Для компонента Account 
+    Условные примеры: Для компонента Account
      Код - async ngOnInit(){
-            this.qtyTest = new System.FoxNumber(); 
+            this.qtyTest = new System.FoxNumber();
             this.currentCurrency = new Currency(1,''EUR'');
             this.currentLang = new Lang(2,''UKR'');
 
@@ -62,14 +62,14 @@
             [this.currencies,this.langs] = await Promise.all([this.repo.getCurrencies(true),
                                                              this.repo.getLocale(true)]);
          }
-     
+
      @Вариант изменения валюты
      Разметка - <dropdown-list [reference]="currentCurrency"
                                [store]="currencies"
                                [map]="{valueName:'id',displayName:'shortName'}"
                                [afterUpdate]="currencyUpdate">
                 </dropdown-list>
-    
+
     @Вариант изменения языка
      Разметка -  <dropdown-list [reference]="currentLang"
                              [options]="{popupClass:'f-middle-dictionary'}"
@@ -78,7 +78,7 @@
                              [afterUpdate]="langUpdate">
                 </dropdown-list>
       Изменили popupClass
-     
+
     @Вариант работы с QTY
     Разметка -  <dropdown-list [options]="{popupHeader:'Qty',popupClass:'f-large-dictionary'}"
                                [reference]="currentTest"
@@ -152,6 +152,9 @@ export class DropdownListComponent implements OnChanges {
 
 
   public get displayValue(): any {
+    if (!this.options)
+      return '';
+
     if(this.options.buttonHeader)
        return `${this.options.buttonHeader}: ${this.reference[this.map.displayName]}`;
 
@@ -172,11 +175,12 @@ export class DropdownListComponent implements OnChanges {
     }
   }
   private verifyParam(): boolean {
-    return (!this.isNullOrUndefined(this.reference));
+    return true;
+    //return (!this.isNullOrUndefined(this.reference));
   }
   private verifyStore(): boolean {
     if(this.isQty){
-      const range:System.IRange = this.reference['range'];                           
+      const range:System.IRange = this.reference['range'];
       this.store = function(){
         const array:Array<any>=[];
         for(let i = range.min, max= range.max; i< max;i++) {
@@ -206,8 +210,8 @@ export class DropdownListComponent implements OnChanges {
     this.options.popupClass = this.options.popupClass || popupDefaultClass;
     this.options.buttonClass = this.options.buttonClass || buttonDefaultClass;
     this.options.popupHeader = this.options.popupHeader || popupDefaultHeader;
-    this.options.buttonHeader = this.options.buttonHeader || buttonDefaultHeader;                                                       
-  } 
+    this.options.buttonHeader = this.options.buttonHeader || buttonDefaultHeader;
+  }
 
   private isNullOrUndefined(value: any): boolean {
     return (value === null || value === undefined);

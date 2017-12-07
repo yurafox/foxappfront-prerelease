@@ -1,4 +1,17 @@
 page-cart {
+
+  #btnQty button {
+    width: 90px;
+    height: 32px;
+  }
+
+  .action-button {
+    color: black;
+    background-color: #d8d8d8;
+    text-transform: none;
+    height: 32px;
+  }
+
   .delete-qty {
     display: inline-block;
     border-top: 2px solid color($colors, bgColor);

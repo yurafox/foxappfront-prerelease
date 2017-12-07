@@ -8,6 +8,7 @@ import {QuotationProduct} from '../../app/model/quotation-product';
 import {CustomPopupComponent} from '../../components/custom-popup/custom-popup';
 import {ProductStorePlace} from '../../app/model/product-store-place';
 import {StorePlace} from '../../app/model/store-place';
+import {System} from '../../app/core/app-core';
 
 @IonicPage()
 @Component({
@@ -16,7 +17,7 @@ import {StorePlace} from '../../app/model/store-place';
 })
 export class ItemDetailPage extends ItemBase implements OnInit { //ComponentBase implements OnInit {
 
-  qty = 1;
+  qty = new System.FoxNumber();
   selectedStorePlace: StorePlace;
   reviews = new Array<ProductReview>();
 
@@ -27,6 +28,7 @@ export class ItemDetailPage extends ItemBase implements OnInit { //ComponentBase
               private toastCtrl: ToastController, public modalCtrl: ModalController) {
     super(navCtrl, navParams, repo);
     this.product = this.navParams.data;
+    this.qty.value = 1;
   }
 
   async ngOnInit() {
@@ -36,12 +38,12 @@ export class ItemDetailPage extends ItemBase implements OnInit { //ComponentBase
   }
 
   incQty(): void {
-    this.qty++;
+    this.qty.value++;
   }
 
   decQty(): void {
-    if (this.qty >= 2)
-      this.qty--;
+    if (this.qty.value >= 2)
+      this.qty.value--;
   }
 
   onShowProductDescription(): void {
@@ -71,7 +73,7 @@ export class ItemDetailPage extends ItemBase implements OnInit { //ComponentBase
   onAddToCart() {
     //console.log(this.valueQuot);
 
-    this.cart.addItem(this.valueQuot, this.qty, this.product.price, this.selectedStorePlace);
+    this.cart.addItem(this.valueQuot, this.qty.value, this.product.price, this.selectedStorePlace);
     this.showAddToCartConfirmToast();
   }
 
