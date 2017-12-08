@@ -26,7 +26,6 @@ import {ClientAddress} from '../../../model/client-address';
 import {Country} from '../../../model/country';
 import {ClientOrder} from '../../../model/client-order';
 import {ClientOrderProducts} from '../../../model/client-order-products';
-import FoxNumber = System.FoxNumber;
 
 
 
@@ -123,7 +122,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       let p = new ClientOrderProducts();
       p.id = val.id; p.idOrder = val.idOrder; p.idQuotationProduct = val.idQuotationProduct;
-      p.price = val.price; p.qty = new FoxNumber(val.qty); p.idStorePlace = val.idStorePlace; p.idLoEntity = val.idLoEntity;
+      p.price = val.price; p.qty = val.qty; p.idStorePlace = val.idStorePlace; p.idLoEntity = val.idLoEntity;
       p.loTrackTicket = val.loTrackTicket; p.loDeliveryCost = val.loDeliveryCost;
       p.loDeliveryCompleted = val.loDeliveryCompleted; p.loEstimatedDeliveryDate = val.loEstimatedDeliveryDate;
       p.loDeliveryCompletedDate = val.loDeliveryCompletedDate; p.errorMessage = val.errorMessage;
@@ -162,7 +161,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
           let p = new ClientOrderProducts();
           p.id = val.id; p.idOrder = val.idOrder; p.idQuotationProduct = val.idQuotationProduct;
-          p.price = val.price; p.qty = new FoxNumber(val.qty); p.idStorePlace = val.idStorePlace; p.idLoEntity = val.idLoEntity;
+          p.price = val.price; p.qty = val.qty; p.idStorePlace = val.idStorePlace; p.idLoEntity = val.idLoEntity;
           p.loTrackTicket = val.loTrackTicket; p.loDeliveryCost = val.loDeliveryCost;
           p.loDeliveryCompleted = val.loDeliveryCompleted; p.loEstimatedDeliveryDate = val.loEstimatedDeliveryDate;
           p.loDeliveryCompletedDate = val.loDeliveryCompletedDate; p.errorMessage = val.errorMessage;
@@ -190,7 +189,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       let p = new ClientOrderProducts();
       p.id = val.id; p.idOrder = val.idOrder; p.idQuotationProduct = val.idQuotationProduct;
-      p.price = val.price; p.qty = new FoxNumber(val.qty); p.idStorePlace = val.idStorePlace; p.idLoEntity = val.idLoEntity;
+      p.price = val.price; p.qty = val.qty; p.idStorePlace = val.idStorePlace; p.idLoEntity = val.idLoEntity;
       p.loTrackTicket = val.loTrackTicket; p.loDeliveryCost = val.loDeliveryCost;
       p.loDeliveryCompleted = val.loDeliveryCompleted; p.loEstimatedDeliveryDate = val.loEstimatedDeliveryDate;
       p.loDeliveryCompletedDate = val.loDeliveryCompletedDate; p.errorMessage = val.errorMessage;
@@ -271,7 +270,7 @@ export class AppDataRepository extends AbstractDataRepository {
         data.forEach((val) => {
 
             let p = new Country();
-            p.id = new FoxNumber(val.id);
+            p.id = val.id;
             p.name = val.name;
 
           cCountries.push(p);
@@ -299,7 +298,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
 
       if (data != null) {
-        country.id = new FoxNumber(data.id);
+        country.id = data.id;
         country.name = data.name;
         return country;
       }
@@ -417,7 +416,7 @@ export class AppDataRepository extends AbstractDataRepository {
           clientAddress.lat = i.lat;
           clientAddress.lng = i.lng;
           clientAddress.isPrimary = i.isPrimary;
-          clientAddress.idCountry = new FoxNumber(i.idCountry);
+          clientAddress.idCountry = i.idCountry;
           clientAddress.city = i.city;
           clientAddress.bldApp = i.bldApp;
           clientAddress.recName = i.recName;

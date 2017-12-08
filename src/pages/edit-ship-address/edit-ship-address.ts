@@ -7,7 +7,7 @@ import {NgForm} from '@angular/forms';
 import {Country} from '../../app/model/country';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {System} from '../../app/core/app-core';
-import FoxNumber = System.FoxNumber;
+
 
 
 @IonicPage()
@@ -20,7 +20,7 @@ export class EditShipAddressPage extends ComponentBase  {
   shippingAddress = new ClientAddress();
   originalAddr: ClientAddress;
   countries: Array<Country>;
-  currentCountry: Country = new Country(new FoxNumber(1), 'Ukraine');
+  currentCountry: Country = new Country(1, 'Ukraine');
 
   mode: string;
   addressSelectorPage: SelectShipAddressPage;
