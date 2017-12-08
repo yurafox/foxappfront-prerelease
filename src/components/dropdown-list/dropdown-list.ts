@@ -163,7 +163,7 @@ export class DropdownListComponent implements OnChanges {
       return '';
 
     const dataValue:any=(this.referencePriority) ? (this.reference[this.map.displayName] || '')
-                                                 :(this.param || '');
+                                                 :(this.displayParam);
 
     if(this.options.buttonHeader)
        return `${this.options.buttonHeader}: ${dataValue}`;
@@ -171,6 +171,13 @@ export class DropdownListComponent implements OnChanges {
     return (!this.isQty) ? dataValue : `Qty: ${dataValue}`;
   }
 
+  public get displayParam():string {
+     let dValues = this.store.filter((value)=>{
+       return (value[this.map.valueName]==this.param)
+     });
+
+     return (dValues.length === 0) ? '': dValues[0][this.map.displayName];
+  }
   public get referenceBoot():boolean {
     return this.referencePriority;
   }

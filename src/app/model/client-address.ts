@@ -13,7 +13,7 @@ export class ClientAddress {
   private _repo: AbstractDataRepository;
 
   public get idC(): number {
-    return this.idCountry.value;
+    return this.idCountry;
   }
 
   constructor (
@@ -25,7 +25,7 @@ export class ClientAddress {
     public lat?: number,
     public lng?: number,
     public isPrimary?: boolean,
-    public idCountry?: FoxNumber,
+    public idCountry?: number,
     public city?: string,
     public bldApp?: string,
     public recName?: string,

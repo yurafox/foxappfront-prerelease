@@ -1,3 +1,4 @@
+import { DropdownListComponent } from './../../components/dropdown-list/dropdown-list';
 import {Component, ViewChild} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
@@ -7,7 +8,6 @@ import {NgForm} from '@angular/forms';
 import {Country} from '../../app/model/country';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {System} from '../../app/core/app-core';
-
 
 
 @IonicPage()
@@ -28,9 +28,10 @@ export class EditShipAddressPage extends ComponentBase  {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public alertCtrl: AlertController, public repo: AbstractDataRepository) {
     super();
+    this.initPage();
   }
 
-  async ngOnInit() {
+  async initPage() {
     this.countries = await this.repo.getCountries();
     this.mode = this.navParams.data.mode;
     this.addressSelectorPage = this.navParams.data.page;
@@ -78,7 +79,4 @@ export class EditShipAddressPage extends ComponentBase  {
     };
 
   }
-
-
-
 }
