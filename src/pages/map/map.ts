@@ -118,12 +118,14 @@ export class MapPage extends ComponentBase implements OnInit {
       if (this.userPosIsKnown === true) {
         this.options = {
           center: this.userPos,
-          zoom: 10
+          zoom: 10,
+          disableDefaultUI: true
         };
       } else {
         this.options = {
           center: this.markersArr[this.defaultCityId - 1].markers[0].position,
-          zoom: 10
+          zoom: 10,
+          disableDefaultUI: true
         };
       }
 
