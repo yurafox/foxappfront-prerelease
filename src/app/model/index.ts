@@ -16,7 +16,7 @@ export * from './product-review';
 export * from './client-order-products';
 export * from './client-order';
 export * from './city';
-export * from './map-marker';
+export * from './store';
 export * from './client';
 export * from './user';
 export * from './login-template';
