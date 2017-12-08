@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {ClientAddress} from '../../app/model/client-address';
@@ -15,7 +15,7 @@ import {System} from '../../app/core/app-core';
   selector: 'page-edit-ship-address',
   templateUrl: 'edit-ship-address.html',
 })
-export class EditShipAddressPage extends ComponentBase  {
+export class EditShipAddressPage extends ComponentBase {
   @ViewChild('f') addressEditForm: NgForm;
   shippingAddress = new ClientAddress();
   originalAddr: ClientAddress;
@@ -28,10 +28,10 @@ export class EditShipAddressPage extends ComponentBase  {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public alertCtrl: AlertController, public repo: AbstractDataRepository) {
     super();
-    this.initPage();
+    //this.initPage();
   }
 
-  async initPage() {
+  async ngOnInit() {
     this.countries = await this.repo.getCountries();
     this.mode = this.navParams.data.mode;
     this.addressSelectorPage = this.navParams.data.page;
@@ -47,6 +47,7 @@ export class EditShipAddressPage extends ComponentBase  {
       this.shippingAddress.idCountry = this.originalAddr.idCountry;
     };
   }
+
 
   deliverToThisAddress() {
     if (!this.addressEditForm.valid) {
