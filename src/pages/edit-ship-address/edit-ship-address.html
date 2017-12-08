@@ -30,10 +30,11 @@
                  placeholder="Phone" required #phone="ngModel">
           <span *ngIf="!phone.valid && phone.touched" style="color: red;">Please enter your phone</span>
           <br>
+
           <dropdown-list [param]="shippingAddress.idCountry"
                          [store]="countries"
                          [map]="{valueName:'id', displayName:'name'}" >
-          </dropdown-list>
+          </dropdown-list>-->
 
         </ion-col>
       </ion-row>

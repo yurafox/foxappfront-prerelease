@@ -2,7 +2,6 @@ import {AbstractDataRepository} from '../service/index';
 import {RefInjector, LazyLoad, IDTO, System} from '../core/app-core';
 import {QuotationProduct} from './quotation-product';
 import {StorePlace} from './store-place';
-import FoxNumber = System.FoxNumber;
 
 @LazyLoad([
   { options: {constructor: QuotationProduct}, action: 'getQuotationProductById', params: ['idQuotationProduct']},
@@ -28,7 +27,7 @@ export class ClientOrderProducts implements IDTO {
   private _repo: AbstractDataRepository;
 
   get dto(): any {
-    return  {id: this.id, idOrder: this.idOrder, idQuotationProduct: this.idQuotationProduct, qty: this.qty.value, price: this.price,
+    return  {id: this.id, idOrder: this.idOrder, idQuotationProduct: this.idQuotationProduct, qty: this.qty, price: this.price,
       idStorePlace: this.idStorePlace, idLoEntity: this.idLoEntity, loTrackTicket: this.loTrackTicket,
       loDeliveryCost: this.loDeliveryCost, loDeliveryCompleted: this.loDeliveryCompleted,
       loEstimatedDeliveryDate: this.loEstimatedDeliveryDate, loDeliveryCompletedDate: this.loDeliveryCompletedDate,
@@ -41,7 +40,7 @@ export class ClientOrderProducts implements IDTO {
     public idOrder?: number,
     public idQuotationProduct?: number,
     public price?: number,
-    public qty?: FoxNumber,
+    public qty?: number,
     public idStorePlace?: number,
     public idLoEntity?: number,
     public loTrackTicket?: string,

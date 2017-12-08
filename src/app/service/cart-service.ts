@@ -7,7 +7,6 @@ import {UserService} from './bll/user-service';
 import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
 import {EventService} from './event-service';
 import {System} from '../core/app-core';
-import FoxNumber = System.FoxNumber;
 
 
 @Injectable()
@@ -42,7 +41,7 @@ export class CartService {
           let spec = new ClientOrderProducts();
           spec.idQuotationProduct = val.idQuotationProduct;
           spec.price = val.price;
-          spec.qty = new FoxNumber(val.qty);
+          spec.qty = val.qty;
           spec.idStorePlace = val.storePlace;
           this.orderProducts.push(spec);
         });
@@ -69,7 +68,7 @@ export class CartService {
       let _q = 0;
       if (this.orderProducts)
         this.orderProducts.forEach(item => {
-          _q = _q + item.qty.value;
+          _q = _q + item.qty;
         });
       return _q;
   }
@@ -78,7 +77,7 @@ export class CartService {
     let _s = 0;
     if (this.orderProducts) {
       this.orderProducts.forEach(item => {
-        _s = _s + item.price*item.qty.value;
+        _s = _s + item.price*item.qty;
       });
     };
     return _s;
@@ -88,7 +87,7 @@ export class CartService {
     let orderItem = new ClientOrderProducts();
     orderItem.idQuotationProduct = item.id;
     orderItem.price = price;
-    orderItem.qty = new FoxNumber(qty);
+    orderItem.qty = qty;
     orderItem.idStorePlace = (storePlace ? storePlace.id : null);
 
     if (this.userService.isAuth) {
