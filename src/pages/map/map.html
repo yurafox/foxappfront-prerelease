@@ -7,41 +7,43 @@
     [map]="{valueName:'name',displayName:'name'}"
     [afterUpdate]="changeMarkers">
   </dropdown-list>
-  <dropdown-list
-    [options]="{popupClass: 'f-large-dictionary', buttonClass: 'f-drop-button-full', popupHeader: 'Адрес магазина', buttonHeader: 'Адрес'}"
-    [reference]="selectedMarker"
-    [store]="shopList"
-    [map]="{valueName:'value',displayName:'label'}"
-    [afterUpdate]="handleListSelect">
-  </dropdown-list>
+  <div *ngIf="(shopList[0].value !== null) && (shopList !== [])">
+    <dropdown-list
+      [options]="{popupClass: 'f-large-dictionary', buttonClass: 'f-drop-button-full', popupHeader: 'Адрес магазина', buttonHeader: 'Адрес'}"
+      [reference]="selectedMarker"
+      [store]="shopList"
+      [map]="{valueName:'value',displayName:'label'}"
+      [afterUpdate]="handleListSelect">
+    </dropdown-list>
+  </div>
 </ion-header>
 
-<ion-content no-bounce>
+<ion-content>
   <!--GMap-->
   <div [ngStyle]="{'height': 100 + '%'}" #mapCanvas id="map_canvas"></div>
   <!--[ngStyle]="{'width': width + 'px', 'height': height + 'px'}"-->
 </ion-content>
 
 <div *ngIf="selectedMarker.value !== null">
-  <ion-footer class="f-map-footer" no-bounce>
+  <ion-footer class="f-map-footer">
     <ion-buttons align="center">
-      <button ion-button icon-left clear (click)="addToFavorite()" [disabled]="selectedMarker.value === null"
+      <button ion-button icon-left (click)="addToFavorite()" [disabled]="selectedMarker.value === null"
               class="f-map-button">
         <ion-icon name="md-star-outline"></ion-icon>
         В избранное
       </button>
-      <button ion-button icon-left clear (click)="useExternalNavigator(selectedMarker)"
+      <button ion-button icon-left (click)="useExternalNavigator(selectedMarker)"
               [disabled]="selectedMarker.value === null"
               class="f-map-button" *ngIf="userPosIsKnown === false">
         <ion-icon name="ios-navigate-outline"></ion-icon>
         Проложить маршрут
       </button>
-      <button ion-button icon-left clear (click)="buildRoute()" [disabled]="selectedMarker.value === null"
+      <button ion-button icon-left (click)="buildRoute()" [disabled]="selectedMarker.value === null"
               class="f-map-button" *ngIf="userPosIsKnown === true">
         <ion-icon name="ios-navigate-outline"></ion-icon>
         Посмотреть маршрут
       </button>
-      <button ion-button icon-left clear (click)="useExternalNavigator(selectedMarker)"
+      <button ion-button icon-left (click)="useExternalNavigator(selectedMarker)"
               [disabled]="selectedMarker.value === null"
               class="f-map-button" *ngIf="userPosIsKnown === true">
         <ion-icon name="ios-navigate-outline"></ion-icon>
