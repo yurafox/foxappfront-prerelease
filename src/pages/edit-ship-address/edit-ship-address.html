@@ -32,6 +32,7 @@
           <br>
 
           <dropdown-list *ngIf="countries" [param]="shippingAddress.idCountry"
+                         [placeholder]="'Please select ...'"
                          [store]="countries"
                          [map]="{valueName:'id', displayName:'name'}" >
           </dropdown-list>
