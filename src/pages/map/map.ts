@@ -1,5 +1,5 @@
-import {Component, ViewChild, ElementRef} from '@angular/core';
-import {Platform, IonicPage} from 'ionic-angular';
+import {Component, ViewChild, ElementRef, OnInit, ChangeDetectorRef} from '@angular/core';
+import {Platform, IonicPage, NavController} from 'ionic-angular';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {LatLng} from '@ionic-native/google-maps';
 import {City, MapMarker} from "../../app/model/index";
@@ -20,7 +20,7 @@ interface SelectItem {
   selector: 'page-map',
   templateUrl: 'map.html'
 })
-export class MapPage extends ComponentBase {
+export class MapPage extends ComponentBase implements OnInit {
 
   @ViewChild('mapCanvas') mapElement: ElementRef;
 
@@ -34,15 +34,18 @@ export class MapPage extends ComponentBase {
 
   map: /*GoogleMap;*/ any;
   city: City;
+  defaultCityId: number;  // Used to set position when map just opened and user's location is unknown.
   cities: Array<City>;
-  selectedCity = 'Киев';
-  selectedMarker: LatLng;
+  selectedCity: City  = {id: 0, name: ''};
+  selectedMarker: SelectItem;
   markersArr: Array<{ id: number, markers: MapMarker[] }>;
-  shopList: SelectItem[];
+  shopList: Array<SelectItem>;
   options: any;
   userPos: LatLng;
   userPosIsKnown: boolean;
-  // Setting up direction service
+  /**
+   * Setting up direction service
+   */
   directionsService: any;
   directionsDisplay: any;
 
@@ -54,12 +57,16 @@ export class MapPage extends ComponentBase {
   landscapePrimary = this.screenOrientation.ORIENTATIONS.LANDSCAPE_PRIMARY;
   landscapeSecondary = this.screenOrientation.ORIENTATIONS.LANDSCAPE_SECONDARY;*/
 
-  constructor(public platform: Platform, private repo: AbstractDataRepository, private geolocation: Geolocation,
-              private statusBar: StatusBar, private launchNavigator: LaunchNavigator) {
+  constructor(private nav: NavController, private platform: Platform, private repo: AbstractDataRepository,
+              private geolocation: Geolocation, private statusBar: StatusBar,
+              private launchNavigator: LaunchNavigator, private changeDetector: ChangeDetectorRef) {
     super();
-    this.selectedMarker = null;
-    this.shopList = [];
+    this.defaultCityId = 0;
+    this.shopList = [{label: '', value: null}];
     this.markersArr = [];
+    this.cities = [{id: 0, name: ''}];
+    this.selectedMarker = {label: '', value: null};
+    this.userPos = new LatLng(0, 0);
 
     // Set up window sizes for map
     /*this.headerHeight = 120;
@@ -82,142 +89,197 @@ export class MapPage extends ComponentBase {
 
     }*/
 
-    this.userPos = new LatLng(0, 0);
-
     platform.ready().then(() => {
       this.getLocation().then(res => {
         this.userPos.lat = res.coords.latitude;
         this.userPos.lng = res.coords.longitude;
         this.userPosIsKnown = true;
       }).catch(err => {
-        // console.log('Error while getting user\'s location ' + err);
+        // console.log(`Error while getting user's location ${err}`);
         this.userPosIsKnown = false;
       });
     });
   }
 
-  async ionViewDidLoad() {
-    // await this.loadMap(); // For Ionic Native GMap
-
-    this.markersArr = await this.repo.getFoxMapMarkers();
-    this.cities = await this.repo.getCities();
-
-    // 22 is array index of 'Киев' in cities. Index, not id
-    if (this.userPos !== null && this.userPos.lat !== 0 && this.userPos.lng !== 0) {
-      this.options = {
-        center: this.userPos,
-        zoom: 10
-      };
-    } else {
-      this.options = {
-        center: this.markersArr[22].markers[0].position,
-        zoom: 10
-      };
-    }
-    let mapEle = this.mapElement.nativeElement;
-    this.map = new google.maps.Map(mapEle, this.options);
-
-    // Direction Service
-    this.directionsService = new google.maps.DirectionsService;
-    this.directionsDisplay = new google.maps.DirectionsRenderer({
-      polylineOptions: {
-        strokeColor: 'orangered'
-      }
-    });
-
-    for (const city of this.cities) {
-      if (city.name === this.selectedCity) {
-        this.city = city;
-      }
-    }
-
+  async ngOnInit() {
+    super.ngOnInit();
     try {
-      this.directionsDisplay.setMap(this.map);
-    } catch (err) {
-      console.log(err);
-    }
+      [this.markersArr, this.cities] = await Promise.all([this.repo.getFoxMapMarkers(), this.repo.getCities()]);
 
-    // Iterating through all shops positions
-    await this.markersArr.forEach((markerArr) => {
-      markerArr.markers.forEach((markerData, i) => {
-        let labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-        let shopOpensTime = markerData.openTime;
-        let shopClosesTime = markerData.closeTime;
-        // let isWorking = this.shopIsWorking(shopOpensTime, shopClosesTime);
-
-        let infoWindow = new google.maps.InfoWindow({
-          content: `<h5>Фокстрот</h5>` +
-          `<h6>${markerData.title}</h6>` +
-          `<p>Время работы: ${shopOpensTime} - ${shopClosesTime}</p>` +
-          `<p>${this.shopIsWorking(shopOpensTime, shopClosesTime)}</p>`
-        });
-
-        let marker = new google.maps.Marker({
-          position: markerData.position,
-          map: this.map,
-          title: markerData.title,
-          animation: google.maps.Animation.DROP,
-          label: labels[i % labels.length]
-        });
-
-        let markerPosition = marker.getPosition();
-
-        // <editor-fold desc="Marker events"
-
-        // center to the marker and show info on click
-        marker.addListener('click', () => {
-          infoWindow.open(this.map, marker);
-          this.map.panTo(markerPosition);
-          if (14 >= this.map.zoom) {
-            setTimeout(() => {
-              infoWindow.close();
-            }, 5000);
-          }
-        });
-
-        // zoom to the marker on double click
-        marker.addListener('dblclick', () => {
-          infoWindow.open(this.map, marker);
-          this.map.panTo(markerPosition);
-          this.map.setZoom(17);
-          this.map.setCenter(markerPosition);
-        });
-
-        this.map.addListener('zoom_changed', () => {
-          infoWindow.close();
-        });
-
-        // </editor-fold>
+      /**
+       * Set defaultCityId to id of the city with name 'Киев'
+       */
+      this.cities.forEach((city) => {
+        if (city.name === 'Киев') {
+          this.defaultCityId = city.id;
+        }
       });
-    });
 
-    google.maps.event.addListenerOnce(this.map, 'idle', () => {
-      mapEle.classList.add('show-map');
-    });
+      if (this.userPosIsKnown === true) {
+        this.options = {
+          center: this.userPos,
+          zoom: 10
+        };
+      } else {
+        this.options = {
+          center: this.markersArr[this.defaultCityId - 1].markers[0].position,
+          zoom: 10
+        };
+      }
 
-    // Making list of shops addresses
-    for (let i = 0; i < this.cities.length; i++) {
-      if (this.selectedCity === this.cities[i].name) {
-        try {
-          for (let j = 0; j < this.markersArr[i].markers.length; j++) {
-            try {
-              this.shopList.push({
-                label: this.markersArr[i].markers[j].title,
-                value: this.markersArr[i].markers[j].position
-              });
-            } catch (error) {
-              console.log('In-view shops push error: ' + error);
+      /**
+       * Making list of shops addresses
+       */
+      for (let i = 0; i < this.cities.length; i++) {
+        if (this.selectedCity.name === this.cities[i].name) {
+          try {
+            for (let j = 0; j < this.markersArr[i].markers.length; j++) {
+              try {
+                this.shopList = [];
+                this.shopList.push({
+                  label: this.markersArr[i].markers[j].title,
+                  value: this.markersArr[i].markers[j].position
+                });
+              } catch (error) {
+                console.log('In-view shops push error: ' + error);
+              }
             }
+          } catch (error) {
+            console.log('View error: ' + error);
           }
-        } catch (error) {
-          console.log('View error: ' + error);
         }
       }
+
+      let mapEle = this.mapElement.nativeElement;
+      this.map = new google.maps.Map(mapEle, this.options);
+
+      /**
+       * Direction Service
+       * @type {google.maps.DirectionsService}
+       */
+      this.directionsService = new google.maps.DirectionsService;
+      this.directionsDisplay = new google.maps.DirectionsRenderer;
+
+      for (const city of this.cities) {
+        if (city.name === this.selectedCity.name) {
+          this.city = city;
+        }
+      }
+
+      try {
+        this.directionsDisplay.setMap(this.map);
+      } catch (err) {
+        console.log(err);
+      }
+
+      /**
+       * Iterating through all shops positions
+       */
+      await this.markersArr.forEach((markerArr) => {
+        markerArr.markers.forEach((markerData, i) => {
+          let labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+          let shopOpensTime = markerData.openTime;
+          let shopClosesTime = markerData.closeTime;
+
+          let infoWindow = new google.maps.InfoWindow({
+            content: `<h6>Фокстрот</h6>` +
+            `<p>${markerData.title}</p>` +
+            `<p>Время работы: ${shopOpensTime} - ${shopClosesTime}</p>` +
+            `<p>${this.shopIsWorking(shopOpensTime, shopClosesTime)}</p>`
+          });
+
+          let marker = new google.maps.Marker({
+            position: markerData.position,
+            map: this.map,
+            title: markerData.title,
+            animation: google.maps.Animation.DROP,
+            label: labels[i % labels.length]
+          });
+
+          let markerPosition = marker.getPosition();
+
+          // <editor-fold desc="Marker events"
+
+          /**
+           * Center to the marker and show info on click
+           */
+          marker.addListener('click', () => {
+
+            this.map.panTo(markerPosition);
+            if (14 >= this.map.zoom) {
+              setTimeout(() => {
+                infoWindow.close();
+              }, 5000);
+            }
+            this.selectedMarker = {label: markerData.title, value: markerPosition};
+            if (markerArr.id !== this.selectedCity.id) {
+              this.selectedCity = {id: this.cities[markerArr.id - 1].id, name: this.cities[markerArr.id - 1].name};
+              {
+                this.shopList = [];
+                for (const city of this.cities) {
+                  if (city.name === this.selectedCity.name) {
+                    this.city = city;
+                  }
+                }
+                for (let i = 0; i < this.cities.length; i++) {
+                  if (this.selectedCity.name === this.cities[i].name) {
+                    try {
+                      for (let j = 0; j < this.markersArr[i].markers.length; j++) {
+                        try {
+                          this.shopList.push({
+                            label: this.markersArr[i].markers[j].title,
+                            value: this.markersArr[i].markers[j].position
+                          });
+                        } catch (error) {
+                          console.log('In-changeMarkers shops push error: ' + error);
+                        }
+                      }
+                    } catch (error) {
+                      console.log('Markers change error: ' + error);
+                    }
+                  }
+                }
+              }
+            }
+            // this.changeDetector.markForCheck();
+            this.changeDetector.detectChanges();
+            infoWindow.open(this.map, marker);
+          });
+
+          /**
+           * Zoom to the marker on double click
+           */
+          marker.addListener('dblclick', () => {
+            infoWindow.open(this.map, marker);
+            this.map.panTo(markerPosition);
+            this.map.setZoom(17);
+            this.map.setCenter(markerPosition);
+          });
+
+          this.map.addListener('zoom_changed', () => {
+            infoWindow.close();
+          });
+
+          // </editor-fold>
+        });
+      });
+
+      google.maps.event.addListenerOnce(this.map, 'idle', () => {
+        mapEle.classList.add('show-map');
+      });
+    } catch(err) {
+      window.alert('Error occurred: ' + err);
     }
   }
 
-  // Ionic Native GMap
+  async ionViewDidLoad() {
+    // await this.loadMap(); // For Ionic Native GMap
+  }
+
+  /**
+   * Ionic Native GMap
+   */
   /*loadMap() {
 
     let mapOptions: GoogleMapOptions = {
@@ -264,30 +326,21 @@ export class MapPage extends ComponentBase {
       });
   }*/
 
-  // Updating markers every time city changes
+  /**
+   * Updating markers every time city changes
+   */
   changeMarkers() {
     this.shopList = [];
-    this.selectedMarker = null;
-    //this.height = this.windowHeight;
-    // Screen orientation
-    /*if (this.screenOrientation.type === this.portrait ||
-      this.screenOrientation.type === this.portraitPrimary ||
-      this.screenOrientation.type === this.portraitSecondary) {
-      this.height = this.windowHeight;
-    } else if (this.screenOrientation.type === this.landscape ||
-      this.screenOrientation.type === this.landscapePrimary ||
-      this.screenOrientation.type === this.landscapeSecondary) {
-      this.height = this.windowWidth - this.headerHeight;
-    }*/
+    this.selectedMarker = {label: '', value: null};
 
     for (const city of this.cities) {
-      if (city.name === this.selectedCity) {
+      if (city.name === this.selectedCity.name) {
         this.city = city;
       }
     }
 
     for (let i = 0; i < this.cities.length; i++) {
-      if (this.selectedCity === this.cities[i].name) {
+      if (this.selectedCity.name === this.cities[i].name) {
         try {
           this.map.panTo(this.markersArr[this.city.id - 1].markers[0].position);
           this.map.setZoom(10);
@@ -309,34 +362,48 @@ export class MapPage extends ComponentBase {
     }
   }
 
-  // On list select
+  /**
+   * Actions on list select
+   */
   handleListSelect() {
-    if (this.selectedMarker !== null) {
-      this.map.setCenter(this.selectedMarker);
+    if (this.selectedMarker.value !== null) {
+      this.map.setCenter(this.selectedMarker.value);
       this.map.setZoom(17);
     } else {
       return;
     }
   }
 
+  /**
+   * Adding shop address to favorite
+   */
   addToFavorite() {
-    if (this.selectedMarker !== null) {
+    if (this.selectedMarker.value !== null) {
       console.log('Added to favorite');
     }
   }
 
   buildRoute() {
-    if (this.userPosIsKnown === true && this.selectedMarker !== null) {
-      this.calculateAndDisplayRoute(this.userPos, this.selectedMarker);
+    if (this.userPosIsKnown === true && this.selectedMarker.value !== null) {
+      this.calculateAndDisplayRoute(this.userPos, this.selectedMarker.value);
     } else {
       return;
     }
   }
 
+  /**
+   * Receive user's location
+   * @returns {Promise<Geoposition>}
+   */
   getLocation() {
     return this.geolocation.getCurrentPosition();
   }
 
+  /**
+   * Show route to the selected shop position
+   * @param start
+   * @param end
+   */
   calculateAndDisplayRoute(start, end) {
     try {
       this.directionsService.route({
@@ -350,7 +417,9 @@ export class MapPage extends ComponentBase {
           this.directionsDisplay.setDirections(response);
           // console.log('Duration: ' + (response.routes[0].legs[0].duration.value / 60).toFixed());
         } else {
-          // When we can't determine user's location - use another navigator instead
+          /**
+           * When we can't determine user's location - use another navigator instead
+           */
           this.useExternalNavigator(end);
           // window.alert('Directions request failed due to ' + status);
         }
@@ -360,6 +429,10 @@ export class MapPage extends ComponentBase {
     }
   }
 
+  /**
+   * Open external navigator (by user's choice) with endpoint as parameter
+   * @param endpoint
+   */
   useExternalNavigator(endpoint) {
     this.platform.ready().then(() => {
       this.launchNavigator.navigate([endpoint.lat, endpoint.lng], {app: this.launchNavigator.APP.USER_SELECT})
@@ -370,9 +443,12 @@ export class MapPage extends ComponentBase {
     });
   }
 
-// Checking either shop is working now or not
-  // opensTime - time when shop opens
-  // closesTime - time when shop closes
+  /**
+   * Checking either shop is working now or not
+   * @param opensTime   - time when shop opens
+   * @param closesTime  - time when shop closes
+   * @returns {string}
+   */
   shopIsWorking(opensTime, closesTime) {
     const date = new Date();
 
