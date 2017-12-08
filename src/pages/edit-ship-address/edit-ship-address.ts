@@ -28,7 +28,9 @@ export class EditShipAddressPage extends ComponentBase  {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public alertCtrl: AlertController, public repo: AbstractDataRepository) {
     super();
-    this.initPage();
+    (async ()=>{
+      await this.initPage();
+    })();
   }
 
   async initPage() {

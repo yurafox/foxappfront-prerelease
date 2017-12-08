@@ -20,7 +20,7 @@ export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
     if(!this.parent.referenceBoot){
       const filtered = this.bindedStore.filter((value)=>{
         return value[this.valueName]===this.parent.param;
-      });
+      })[0];
 
      this.proxyObj[this.valueName] = (filtered) ? filtered[this.valueName] : null;
      this.proxyObj[this.displayName] = (filtered) ? filtered[this.displayName] : '';
@@ -45,9 +45,6 @@ export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
  }
 
   public isActive(item: any): boolean {
-    console.log(item[this.valueName] === this.bindedObject[this.valueName]);
-    console.log(item);
-    console.log(this.bindedObject);
     return item[this.valueName] === this.bindedObject[this.valueName];
   }
 
