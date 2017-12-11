@@ -19,7 +19,10 @@ dropdown-list {
   }
 
   .f-left-15 {
-    margin-left: 15px;
+    //margin-left: 15px;
+    text-align: right;
+    margin: 0 !important;
+    width: 100%;
   }
 
   .backdropOpacityPopover {
