@@ -31,6 +31,9 @@
           <span *ngIf="!phone.valid && phone.touched" style="color: red;">Please enter your phone</span>
           <br>
           <dropdown-list id="btnCountry" *ngIf="countries" [param]="shippingAddress.idCountry"
+
+          <dropdown-list *ngIf="countries" [param]="shippingAddress.idCountry"
+                         [placeholder]="'Please select country'"
                          [store]="countries"
                          [options]="{popupClass: 'f-large-dictionary', popupHeader: 'Select country'}"
                          [map]="{valueName:'id', displayName:'name'}" >

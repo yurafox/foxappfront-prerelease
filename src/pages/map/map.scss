@@ -5,8 +5,12 @@ page-map {
     min-width: 99%;
   }
   .f-map-button {
-    /*max-width: 50%;*/
+    width: 99%;
     font-size: 15px;
+    background: #ffbc2e;
+    color: #000000;
+    text-transform: none;
+    font-weight: 400;
   }
   .f-map-page-div {
     display: inline-block;
@@ -18,11 +22,17 @@ page-map {
     background-color: white;
   }
   .f-left-15 {
-    margin-left: 0;
+    text-align: right;
+    margin: 0 !important;
+    width: 100%;
   }
 
   ion-content {
     background: rgb(229, 227, 223);
+  }
+
+  ion-header {
+    background: white;
   }
 
   page-map {

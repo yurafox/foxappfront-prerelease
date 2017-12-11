@@ -28,7 +28,9 @@
     Значение по умолчанию только для qty - QTY
 
     @param
-    Обязательный параметр reference:any - ссылочный тип для байдинга обьекта
+    Необязательный параметр reference:any - ссылочный тип для байдинга обьекта
+    @param
+    Необязательный параметр param:any - id для байдинга обьекта
     @param
     Параметр store?:Array<any> - список ключ-значение, необязателбный для QTY. Для остальных словарей
     параметр обязательный.
@@ -127,6 +129,9 @@ export class DropdownListComponent implements OnChanges {
   isQty?: boolean = false;
 
   @Input()
+  placeholder:string = '';
+
+  @Input()
   beforeUpdate: (oldItem: any, newItem: any) => boolean;
 
   @Input()
@@ -162,13 +167,13 @@ export class DropdownListComponent implements OnChanges {
     if (!this.options)
       return '';
 
-    const dataValue:any=(this.referencePriority) ? (this.reference[this.map.displayName] || '')
+    const dataValue:any=(this.referencePriority) ? (this.reference[this.map.displayName])
                                                  :(this.displayParam);
 
     if(this.options.buttonHeader)
        return `${this.options.buttonHeader}: ${dataValue}`;
 
-    return (!this.isQty) ? dataValue : `Qty: ${dataValue}`;
+    return (!this.isQty) ? dataValue || this.placeholder : `Qty: ${dataValue}`;
   }
 
   public get displayParam():string {
