@@ -108,7 +108,7 @@ export class MapPage extends ComponentBase implements OnInit {
        * Set defaultCityId to id of the city with name 'Киев'
        */
       this.cities.forEach((city) => {
-        if (city.name === 'Киев') {
+        if (city.name === 'Киев' || city.name === 'Київ') {
           this.defaultCityId = city.id;
         }
       });
