@@ -5,7 +5,7 @@ import { QuotationProduct,
          Currency,
          Manufacturer,
          City,
-         MapMarker,
+         Store,
          StorePlace,
          ProductReview,
          ProductStorePlace,
@@ -55,7 +55,7 @@ export abstract class AbstractDataRepository {
   public async abstract getClientAddressesByClientId(id: number): Promise<ClientAddress[]>;
 
   public async abstract getCities(): Promise<City[]>;
-  public async abstract getFoxMapMarkers(): Promise<Array<{id: number, markers: MapMarker[]}>>;
+  public async abstract getFoxStores(): Promise<Array<{id: number, stores: Store[]}>>;
   public async abstract getCityById(id: number): Promise<City>;
 
 }

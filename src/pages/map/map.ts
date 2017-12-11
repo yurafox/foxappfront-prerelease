@@ -2,7 +2,7 @@ import {Component, ViewChild, ElementRef, OnInit, ChangeDetectorRef} from '@angu
 import {Platform, IonicPage, NavController} from 'ionic-angular';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {LatLng} from '@ionic-native/google-maps';
-import {City, MapMarker} from "../../app/model/index";
+import {City, Store} from "../../app/model/index";
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {Geolocation} from '@ionic-native/geolocation';
 import {StatusBar} from "@ionic-native/status-bar";
@@ -38,14 +38,12 @@ export class MapPage extends ComponentBase implements OnInit {
   cities: Array<City>;
   selectedCity: City  = {id: 0, name: ''};
   selectedMarker: SelectItem;
-  markersArr: Array<{ id: number, markers: MapMarker[] }>;
+  markersArr: Array<{ id: number, stores: Store[] }>;
   shopList: Array<SelectItem>;
   options: any;
   userPos: LatLng;
   userPosIsKnown: boolean;
-  /**
-   * Setting up direction service
-   */
+  // Setting up direction service
   directionsService: any;
   directionsDisplay: any;
 
@@ -104,13 +102,13 @@ export class MapPage extends ComponentBase implements OnInit {
   async ngOnInit() {
     super.ngOnInit();
     try {
-      [this.markersArr, this.cities] = await Promise.all([this.repo.getFoxMapMarkers(), this.repo.getCities()]);
+      [this.markersArr, this.cities] = await Promise.all([this.repo.getFoxStores(), this.repo.getCities()]);
 
       /**
        * Set defaultCityId to id of the city with name 'Киев'
        */
       this.cities.forEach((city) => {
-        if (city.name === 'Киев') {
+        if (city.name === 'Киев' || city.name === 'Київ') {
           this.defaultCityId = city.id;
         }
       });
@@ -123,7 +121,7 @@ export class MapPage extends ComponentBase implements OnInit {
         };
       } else {
         this.options = {
-          center: this.markersArr[this.defaultCityId - 1].markers[0].position,
+          center: this.markersArr[this.defaultCityId - 1].stores[0].position,
           zoom: 10,
           disableDefaultUI: true
         };
@@ -135,12 +133,12 @@ export class MapPage extends ComponentBase implements OnInit {
       for (let i = 0; i < this.cities.length; i++) {
         if (this.selectedCity.name === this.cities[i].name) {
           try {
-            for (let j = 0; j < this.markersArr[i].markers.length; j++) {
+            for (let j = 0; j < this.markersArr[i].stores.length; j++) {
               try {
                 this.shopList = [];
                 this.shopList.push({
-                  label: this.markersArr[i].markers[j].title,
-                  value: this.markersArr[i].markers[j].position
+                  label: this.markersArr[i].stores[j].address,
+                  value: this.markersArr[i].stores[j].position
                 });
               } catch (error) {
                 console.log('In-view shops push error: ' + error);
@@ -178,7 +176,7 @@ export class MapPage extends ComponentBase implements OnInit {
        * Iterating through all shops positions
        */
       await this.markersArr.forEach((markerArr) => {
-        markerArr.markers.forEach((markerData, i) => {
+        markerArr.stores.forEach((markerData, i) => {
           let labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
           let shopOpensTime = markerData.openTime;
@@ -186,7 +184,7 @@ export class MapPage extends ComponentBase implements OnInit {
 
           let infoWindow = new google.maps.InfoWindow({
             content: `<h6>Фокстрот</h6>` +
-            `<p>${markerData.title}</p>` +
+            `<p>${markerData.address}</p>` +
             `<p>Время работы: ${shopOpensTime} - ${shopClosesTime}</p>` +
             `<p>${this.shopIsWorking(shopOpensTime, shopClosesTime)}</p>`
           });
@@ -194,7 +192,7 @@ export class MapPage extends ComponentBase implements OnInit {
           let marker = new google.maps.Marker({
             position: markerData.position,
             map: this.map,
-            title: markerData.title,
+            title: markerData.address,
             animation: google.maps.Animation.DROP,
             label: labels[i % labels.length]
           });
@@ -214,7 +212,7 @@ export class MapPage extends ComponentBase implements OnInit {
                 infoWindow.close();
               }, 5000);
             }
-            this.selectedMarker = {label: markerData.title, value: markerPosition};
+            this.selectedMarker = {label: markerData.address, value: markerPosition};
             if (markerArr.id !== this.selectedCity.id) {
               this.selectedCity = {id: this.cities[markerArr.id - 1].id, name: this.cities[markerArr.id - 1].name};
               {
@@ -227,11 +225,11 @@ export class MapPage extends ComponentBase implements OnInit {
                 for (let i = 0; i < this.cities.length; i++) {
                   if (this.selectedCity.name === this.cities[i].name) {
                     try {
-                      for (let j = 0; j < this.markersArr[i].markers.length; j++) {
+                      for (let j = 0; j < this.markersArr[i].stores.length; j++) {
                         try {
                           this.shopList.push({
-                            label: this.markersArr[i].markers[j].title,
-                            value: this.markersArr[i].markers[j].position
+                            label: this.markersArr[i].stores[j].address,
+                            value: this.markersArr[i].stores[j].position
                           });
                         } catch (error) {
                           console.log('In-changeMarkers shops push error: ' + error);
@@ -286,7 +284,7 @@ export class MapPage extends ComponentBase implements OnInit {
 
     let mapOptions: GoogleMapOptions = {
       camera: {
-        target: this.markersArr[22].markers[0].position,
+        target: this.markersArr[22].stores[0].position,
         zoom: 10,
         tilt: 90
       }
@@ -302,7 +300,7 @@ export class MapPage extends ComponentBase implements OnInit {
         this.map.setMyLocationEnabled(true);
 
         this.markersArr.forEach((markerArr) => {
-          markerArr.markers.forEach((markerData) => {
+          markerArr.stores.forEach((markerData) => {
             // Now you can use all methods safely.
             this.map.addMarker({
               title: markerData.title,
@@ -329,7 +327,7 @@ export class MapPage extends ComponentBase implements OnInit {
   }*/
 
   /**
-   * Updating markers every time city changes
+   * Updating stores every time city changes
    */
   changeMarkers() {
     this.shopList = [];
@@ -344,14 +342,14 @@ export class MapPage extends ComponentBase implements OnInit {
     for (let i = 0; i < this.cities.length; i++) {
       if (this.selectedCity.name === this.cities[i].name) {
         try {
-          this.map.panTo(this.markersArr[this.city.id - 1].markers[0].position);
+          this.map.panTo(this.markersArr[this.city.id - 1].stores[0].position);
           this.map.setZoom(10);
 
-          for (let j = 0; j < this.markersArr[i].markers.length; j++) {
+          for (let j = 0; j < this.markersArr[i].stores.length; j++) {
             try {
               this.shopList.push({
-                label: this.markersArr[i].markers[j].title,
-                value: this.markersArr[i].markers[j].position
+                label: this.markersArr[i].stores[j].address,
+                value: this.markersArr[i].stores[j].position
               });
             } catch (error) {
               console.log('In-changeMarkers shops push error: ' + error);

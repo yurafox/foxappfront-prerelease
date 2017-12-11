@@ -14,7 +14,7 @@ import {
   Currency,
   ProductReview,
   City,
-  MapMarker,
+  Store,
   ProductStorePlace,
   StorePlace,
   Lang
@@ -38,7 +38,7 @@ const suppliersUrl = '/api/msuppliers';
 const productReviewsUrl = '/api/mproductReviews';
 const manufacturersUrl = '/api/manufacturers';
 const citiesUrl = '/api/mcities';
-const foxMapMarkersUrl = '/api/mfoxMapMarkers';
+const foxStoresUrl = '/api/mfoxStores';
 const storePlacesUrl = '/api/mstorePlaces';
 const productStorePlacesUrl = '/api/mproductStorePlaces';
 const LangUrl='/api/mlocalization';
@@ -1031,26 +1031,39 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   };
 
-  public async getFoxMapMarkers(): Promise<Array<{id: number, markers: MapMarker[]}>> {
+  public async getFoxStores(): Promise<Array<{id: number, stores: Store[]}>> {
     try {
-      const response = await this.http.get(foxMapMarkersUrl).toPromise();
+      const response = await this.http.get(foxStoresUrl).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
         throw new Error('server side status error');
       }
-      const markers = new Array<{id: number, markers: MapMarker[]}>();
+      const stores = new Array<{id: number, stores: Store[]}>();
       if (data != null) {
         data.forEach((val) => {
-          const markerArr = new Array<MapMarker>();
-          const arr: MapMarker[] = val.markers;
-          arr.forEach((marker) => {
-            markerArr.push(new MapMarker(marker.id, marker.position, marker.title, marker.openTime, marker.closeTime));
+          const storeArr = new Array<Store>();
+          const arr: Store[] = val.stores;
+          arr.forEach((store) => {
+            if (store.openTime !== null && store.closeTime !== null && store.rating === null && store.feedbacks === null) {
+              storeArr.push(new Store(store.id, store.position, store.address, store.openTime, store.closeTime));
+            }
+            else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.feedbacks === null) {
+              storeArr.push(new Store(store.id, store.position, store.address, store.openTime, store.closeTime,
+                store.rating));
+            }
+            else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.feedbacks !== null) {
+              storeArr.push(new Store(store.id, store.position, store.address, store.openTime, store.closeTime,
+                store.rating, store.feedbacks));
+            }
+            else {
+              storeArr.push(new Store(store.id, store.position, store.address));
+            }
           });
-          markers.push({id: val.id, markers: markerArr});
+          stores.push({id: val.id, stores: storeArr});
         });
       }
-      return markers;
+      return stores;
     } catch (err) {
       await this.handleError(err);
     }
