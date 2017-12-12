@@ -32,6 +32,7 @@
           <br>
 
           <dropdown-list id="btnCountry" *ngIf="countries" [param]="shippingAddress.idCountry"
+                         [ref]="{bindRef:shippingAddress,bindName:'idCountry'}"
                          [placeholder]="'Please select country'"
                          [store]="countries"
                          [options]="{popupClass: 'f-large-dictionary', popupHeader: 'Select country'}"

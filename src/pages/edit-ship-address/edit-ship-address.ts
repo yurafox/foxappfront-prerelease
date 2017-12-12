@@ -77,6 +77,5 @@ export class EditShipAddressPage extends ComponentBase  {
       this.originalAddr.phone = this.shippingAddress.phone;
       this.originalAddr.idCountry = this.shippingAddress.idCountry;
     };
-
   }
 }

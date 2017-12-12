@@ -121,10 +121,17 @@ export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
       this.proxyObj[this.parent.map.displayName] = item[this.parent.map.displayName];
 
       this.parent.param = item[this.parent.map.valueName];
+      if(this.refBind && this.refBind['bindRef']){
+        this.refBind.bindRef[this.refBind.bindName] = this.proxyObj[this.parent.map.valueName];
+      }
     }
   }
 
   public getImportantStyle(){
     return (this.bindedStore.length < 10) ? {'height':'auto'}: null;
+  }
+
+  public get refBind(){
+    return this.parent.ref;
   }
 }
