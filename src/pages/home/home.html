@@ -4,7 +4,10 @@
 </ion-header>
 
 <ion-content class="common-bg">
-  <!-- slider on top-->
+  <div *ngIf=content>
+      <html-outlet [html]="content" [context]="this"></html-outlet>
+  </div>
+  <!-- slider on top
   <ion-slides pager autoplay="2000">
 
     <ion-slide *ngFor="let slide of slides">
@@ -14,7 +17,7 @@
   </ion-slides>
 
   <!--list categories-->
-  <ion-card>
+  <!-- <ion-card>
     <ion-list class="cat-list">
       <ion-row>
         <ion-col text-center (click)="viewCategories()">
@@ -24,6 +27,10 @@
       </ion-row>
     </ion-list>
   </ion-card>
-
+ <div>
+    <action-sketch [innerId]=1></action-sketch>
+ </div>
+ <div>
+    <action-sketch [innerId]=5></action-sketch>
+ </div> -->
 </ion-content>
-

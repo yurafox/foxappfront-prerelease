@@ -1,3 +1,4 @@
+import { ActionPage } from './action/action';
 export * from './about/about.module';
 export * from './account/account.module';
 export * from './home/home.module';
@@ -23,3 +24,4 @@ export * from './filter-popover/filter-popover.module';
 export * from './city-popover/city-popover.module';
 export * from './select-ship-address/select-ship-address.module';
 export * from './edit-ship-address/edit-ship-address.module';
+export * from './action/action.module';

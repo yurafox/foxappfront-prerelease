@@ -1,13 +1,15 @@
-import {Component} from '@angular/core';
+import { Component} from '@angular/core';
 import {App, NavController, IonicPage} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
+import {AbstractDataRepository} from "../../app/service/index";
 
 @IonicPage({name: 'HomePage', segment: 'home'})
 @Component({
   selector: 'page-home',
-  templateUrl: 'home.html'
+  templateUrl: 'home.html',
 })
 export class HomePage extends ComponentBase {
+
   // list slides for slider
   public slides = [
     {
@@ -21,8 +23,10 @@ export class HomePage extends ComponentBase {
     }
   ];
 
+  public content:string='';
 
-  constructor(public app: App, public nav: NavController) {
+  constructor(public app: App, public nav: NavController,
+              private _repo:AbstractDataRepository) {
     super();
   }
 
@@ -43,5 +47,10 @@ export class HomePage extends ComponentBase {
 
   onSearchClick() {
     this.nav.push('SearchPage');
+  }
+
+  async ngOnInit() {
+    super.ngOnInit();
+    this.content = await this._repo.getContent(1);
   }
 }

@@ -69,7 +69,8 @@ import {
   SearchPageModule,
   SearchResultsPageModule,
   SelectShipAddressPageModule,
-  SupportPageModule
+  SupportPageModule,
+  ActionPageModule
 } from "../pages/index-modules";
 
 @NgModule({
@@ -113,6 +114,7 @@ import {
     SearchResultsPageModule,
     SelectShipAddressPageModule,
     SupportPageModule,
+    ActionPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

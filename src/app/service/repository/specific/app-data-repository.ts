@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import {Injectable} from '@angular/core';
 import {Http, URLSearchParams} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
@@ -1068,4 +1069,32 @@ export class AppDataRepository extends AbstractDataRepository {
       await this.handleError(err);
     }
   };
+
+  public async getContent(id:number):Promise<string> {
+    const data:string= `<ion-slides pager autoplay="2000">
+      <ion-slide *ngFor="let slide of slides">
+        <img src="{{ slide.src }}" alt="">
+      </ion-slide>
+
+    </ion-slides>
+    <!--list categories-->
+    <ion-card>
+      <ion-list class="cat-list">
+        <ion-row>
+          <ion-col text-center (click)="viewCategories()">
+            <img src="assets/icon/allcategories.svg" alt="" height="100px" padding="0.5em">
+            <div text-center>Все категории</div>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+    </ion-card>
+   <div>
+      <action-sketch [innerId]=1></action-sketch>
+   </div>
+   <div>
+      <action-sketch [innerId]=5></action-sketch>
+   </div>`;
+
+   return Observable.of(data).delay(1000).toPromise();
+  }
 }
