@@ -1,14 +1,9 @@
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>action</ion-title>
-  </ion-navbar>
-
+  <main-toolbar></main-toolbar>
 </ion-header>
 
-
-<ion-content padding>
- <div>
-   <h1>Action Page - {{actionId}}</h1>
- </div>
+<ion-content class="common-bg">
+  <div *ngIf=content>
+      <html-outlet [html]="content" [context]="this"></html-outlet>
+  </div>
 </ion-content>

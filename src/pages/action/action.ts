@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AbstractDataRepository } from '../../app/service/index';
 
 @IonicPage()
 @Component({
@@ -8,8 +9,14 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ActionPage {
   public actionId:number;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  public content:string='';
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private _repo:AbstractDataRepository) {
     this.actionId = this.navParams.data;
+  }
+
+  async ngOnInit() {
+    this.content = await this._repo.getFullAction();
   }
 
 }

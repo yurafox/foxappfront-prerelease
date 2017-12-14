@@ -1,6 +1,7 @@
 import { ActionPage } from './../../pages/action/action';
 import { Component, Input } from '@angular/core';
 import {NavController} from "ionic-angular";
+import { AbstractDataRepository } from '../../app/service/index';
 
 @Component({
   selector: 'action-sketch',
@@ -8,8 +9,14 @@ import {NavController} from "ionic-angular";
 })
 export class ActionSketchComponent {
   @Input()
-  public innerId:number
-  constructor(public navCtrl: NavController) {
+  public innerId:number;
+  public content:string='';
+
+  constructor(public navCtrl: NavController, private _repo:AbstractDataRepository) {
+  }
+
+  async ngOnInit() {
+    this.content = await this._repo.getAction(1);
   }
 
   public openAction() {
