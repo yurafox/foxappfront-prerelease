@@ -1,0 +1,592 @@
+[33mcommit 2b04545e2f8eb8f322e630e57012779c6c194da2[m[33m ([m[1;36mHEAD -> [m[1;32mfox-app/sergce[m[33m)[m
+Author: sergce <sergceinfo@gmail.com>
+Date:   Thu Dec 14 11:52:56 2017 +0200
+
+    prototype dynamic page logic
+
+[33mcommit 1ca89e661dbdb51ab6d62343c8c0a3fbdc632ea3[m
+Author: sergce <sergceinfo@gmail.com>
+Date:   Wed Dec 13 18:29:49 2017 +0200
+
+    get logic for dynamic content
+
+[33mcommit eeadacf1ca1b3a804c9326d943214641c37cf24c[m[33m ([m[1;31morigin/fox-app/sergce[m[33m)[m
+Author: sergce <sergceinfo@gmail.com>
+Date:   Tue Dec 12 12:40:50 2017 +0200
+
+    add ref data in drop list
+
+[33mcommit 9d004914ea1d776d7259652c0ab16d262368f2b7[m[33m ([m[1;32mmaster[m[33m)[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Mon Dec 11 14:21:10 2017 +0200
+
+    merge with all branchs 11_12_2017
+
+[33mcommit daedd64c1644637e027ed028f1b218d73c68f781[m
+Merge: ba06492 53b3a4f
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Mon Dec 11 14:02:15 2017 +0200
+
+    Merge branch 'fox-app/dealio07' of https://github.com/yurafox/foxapp-new into fox-app/yurafox
+
+[33mcommit ba064922b15aabb405e2d6c0e1f2bae98506a467[m
+Merge: ff2be5f ea959dd
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Mon Dec 11 14:01:15 2017 +0200
+
+    merge with sergce 11_12_2017
+
+[33mcommit ff2be5ffc9fbbcdf59e86d30dc09cf0161fda084[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Mon Dec 11 13:52:52 2017 +0200
+
+    init
+
+[33mcommit 53b3a4f2d65a14f5156ee7a36d0c7bbdf2102c03[m[33m ([m[1;31morigin/fox-app/dealio07[m[33m)[m
+Author: vargav <dealio07@gmail.com>
+Date:   Mon Dec 11 13:25:47 2017 +0200
+
+    misc
+
+[33mcommit 56ba3dee682fb99a5a1901ad49f1d57666c25e32[m
+Author: vargav <dealio07@gmail.com>
+Date:   Fri Dec 8 17:36:43 2017 +0200
+
+    change marker in app/model to store, MapMarker to Store, getFoxMapMarkers() to getFoxStores()
+
+[33mcommit ea959dd9379c85fa1fb4ed3f09de1941f6213b28[m
+Merge: 76b8fc2 50c4318
+Author: sergce <sergceinfo@gmail.com>
+Date:   Fri Dec 8 15:21:25 2017 +0200
+
+    merge with dealio07 map styles
+
+[33mcommit 76b8fc259a34a27cb3a980376fdf00fc760c41c6[m
+Author: sergce <sergceinfo@gmail.com>
+Date:   Fri Dec 8 15:16:03 2017 +0200
+
+    add placeholder to drop component
+
+[33mcommit f3cff5139ad2c89acea2417bd9d9212e6b344153[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Fri Dec 8 13:49:01 2017 +0200
+
+    init
+
+[33mcommit 50c4318350c75732ab76b9bad2e7e944f385469e[m
+Author: vargav <dealio07@gmail.com>
+Date:   Fri Dec 8 13:47:38 2017 +0200
+
+    minor style changes on map
+
+[33mcommit 32cb6dec435dacf588acac02462497e37eeaacb6[m
+Author: vargav <dealio07@gmail.com>
+Date:   Fri Dec 8 12:19:54 2017 +0200
+
+    map dropdown-list button style fix
+
+[33mcommit bee6f96b55d76c43559c342446823aeb1c2d6747[m
+Author: sergce <sergceinfo@gmail.com>
+Date:   Fri Dec 8 11:37:03 2017 +0200
+
+    доработка drop component
+
+[33mcommit b5066844f8e47bb92e9c4de3be7a3dfcaa8463fe[m
+Merge: fdb22ca b8c681d
+Author: sergce <sergceinfo@gmail.com>
+Date:   Fri Dec 8 10:49:44 2017 +0200
+
+    Merge branch 'fox-app/dealio07' of https://github.com/yurafox/foxapp-new into fox-app/sergce
+
+[33mcommit fdb22ca40eb9cc2c9304d0772de56bf519b6d0c1[m
+Merge: 67ebbdd b5776f0
+Author: sergce <sergceinfo@gmail.com>
+Date:   Fri Dec 8 10:23:31 2017 +0200
+
+    08_12_2017 merge with yurafox
+
+[33mcommit 67ebbdd049097d4c8b45030924dfd4452c7aca68[m
+Author: sergce <sergceinfo@gmail.com>
+Date:   Fri Dec 8 10:04:15 2017 +0200
+
+    work commit
+
+[33mcommit b5776f02802ffffe4b6f0e4d22af925a5b7c4bca[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Fri Dec 8 09:59:41 2017 +0200
+
+    init
+
+[33mcommit 54b93199ff9e17046e448c3ded293b425c4e28ff[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Fri Dec 8 09:56:01 2017 +0200
+
+    init
+
+[33mcommit 479ecac2a4fc57eee9c9e258b9d2ec916db892b5[m
+Author: sergce <sergceinfo@gmail.com>
+Date:   Thu Dec 7 19:03:53 2017 +0200
+
+    drop component testing
+
+[33mcommit b8c681d3d9018c5d8bdef39309b1828079d6b336[m
+Author: vargav <dealio07@gmail.com>
+Date:   Thu Dec 7 17:58:16 2017 +0200
+
+    add ability to open external app. add minor functionality to maps
+
+[33mcommit c27bee62f4ea682afbfe2d3db8cd9b427b392611[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Thu Dec 7 10:13:49 2017 +0200
+
+    init
+
+[33mcommit e13d98d7820743aa709e4be2df886fb650fe5eb3[m
+Author: vargav <dealio07@gmail.com>
+Date:   Wed Dec 6 17:47:36 2017 +0200
+
+    change ion-select to dropdown-list for maps
+
+[33mcommit b5000ac8f8ad0323bbc83bf0f87ea0f0cfe9ee92[m[33m ([m[1;31morigin/master[m[33m)[m
+Merge: 6c3d07f 202f3d0
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Wed Dec 6 10:49:54 2017 +0200
+
+    merge with fox-app/sergce+fox-app/dealio07 6_12_17
+
+[33mcommit 6c3d07f10a95f13e96f3f3d743f8534ce4db8e74[m
+Merge: d28b156 8462ff7
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Wed Dec 6 10:21:54 2017 +0200
+
+    merge with fox-app/dealio07 6_12_17
+
+[33mcommit d28b1565f36a6cc8993f1ed80dd10360dde671ac[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Wed Dec 6 10:10:26 2017 +0200
+
+    init
+
+[33mcommit 202f3d04c143af03c79722a6e795506fa93f6d07[m
+Author: vargav <dealio07@gmail.com>
+Date:   Tue Dec 5 16:48:43 2017 +0200
+
+    misc
+
+[33mcommit a85bd0166fa8aec31bb11bc38e1a7a095da6f6e6[m
+Author: vargav <dealio07@gmail.com>
+Date:   Tue Dec 5 11:46:46 2017 +0200
+
+    lazy load for pages. misc
+
+[33mcommit 8462ff706cc3a243b6ba4fbbb7569fe7bd254f11[m
+Author: sergce <sergceinfo@gmail.com>
+Date:   Mon Dec 4 18:47:56 2017 +0200
+
+    fix lazyLoad decorator prototype
+
+[33mcommit 052b05ce2a5244b4c4ebfd5be0f3a55315201ba8[m
+Author: sergce <sergceinfo@gmail.com>
+Date:   Mon Dec 4 17:53:33 2017 +0200
+
+    cosmetics for drop-list
+
+[33mcommit b01ecffeb1abcffeebcf611eb32750453bb68269[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Mon Dec 4 15:20:35 2017 +0200
+
+    init
+
+[33mcommit 3632b22f9c3b65cbd115813643b0db14162ce947[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Sun Dec 3 20:39:34 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit c462111107ebc505168c9cb315bf7b713367ae6f[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Sun Dec 3 20:37:38 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit fe6b0d1671bef54805d93a89f75c69c30eb0a79a[m
+Author: sergce <sergceinfo@gmail.com>
+Date:   Sun Dec 3 20:16:24 2017 +0200
+
+    add component drop-list
+
+[33mcommit 3fe8201fdd4bd7af22aa25eafba2cd34df6a2f99[m
+Author: sergce <sergceinfo@gmail.com>
+Date:   Sun Dec 3 15:47:01 2017 +0200
+
+    first change drop component issue
+
+[33mcommit d5ca577db08e4f68b598c8766e9064ab73749c69[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Fri Dec 1 21:00:38 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit f6b8c1a811dbc3be4d92684f7f0e08c8d344dabd[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Fri Dec 1 20:33:34 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit 9a6a5b2a0b1a489d64e6812422e9436c0426ac46[m
+Author: Москаленко Сергій Семенович <Moskalenko-Se@mc.gcf>
+Date:   Fri Dec 1 19:01:11 2017 +0200
+
+    dropPopup with issue
+
+[33mcommit b437e8f54d4559884d594082615e8d5520c7bcf9[m
+Author: vargav <dealio07@gmail.com>
+Date:   Fri Dec 1 17:04:52 2017 +0200
+
+    map. video player. change setRoot to push
+
+[33mcommit ca9248b011a0e96f89ecaf0acb7b70da26a7bcb5[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Fri Dec 1 15:08:38 2017 +0200
+
+    init
+
+[33mcommit d4d6f510ae06b66ece9a9ffa0f6cac5840fab649[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Fri Dec 1 13:12:49 2017 +0200
+
+    init
+
+[33mcommit 8ad4fc7d4ddfe3ea1085902fe06f3a44aea84d6d[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Thu Nov 30 20:50:06 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit 10f96cc070bbb45bea9bb5076a3c8953e684709e[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Thu Nov 30 16:06:48 2017 +0200
+
+    init
+
+[33mcommit 6a9fa6f2eb1c862feaab1e8b77f65c44d1c2a79c[m
+Author: Москаленко Сергій Семенович <Moskalenko-Se@mc.gcf>
+Date:   Wed Nov 29 20:16:59 2017 +0200
+
+    add dictionary popup component style 29_11_2017
+
+[33mcommit 038d832fff3dbd0e61b0cdfd87b0fe4fd411794c[m
+Author: vargav <dealio07@gmail.com>
+Date:   Wed Nov 29 17:31:23 2017 +0200
+
+    add ability to launch external navigator
+
+[33mcommit 160de75d6c8c98fad6204cf9ddb4141316c72d75[m
+Author: vargav <dealio07@gmail.com>
+Date:   Wed Nov 29 16:23:42 2017 +0200
+
+    add open and close time to shop model in db. fixed routing between pages. misc
+
+[33mcommit 9aa5d9931151223a06918febfc6e4e4cda0dd208[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Wed Nov 29 16:09:43 2017 +0200
+
+    init
+
+[33mcommit cdd620b664dd4c8dc4aaec0f9ef0ca6bdac0becd[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Tue Nov 28 20:22:03 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit e01ecbf8a134dd94c423432b3be449435e1bea60[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Tue Nov 28 19:37:29 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit 21fb94fdfa2bf487344cf0e217a58e8aa86ae143[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Tue Nov 28 16:08:23 2017 +0200
+
+    init
+
+[33mcommit fc5f9e0461381946fceb12dfcf0a071a027dd80d[m
+Merge: d8585f2 bca7468
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Tue Nov 28 15:11:24 2017 +0200
+
+    merge with fox-app/dealio07 28_11_2017
+
+[33mcommit d8585f29ebdae7b52082efaa5c3fcaffaaf4dbbc[m
+Merge: d6d2d21 81d7d75
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Tue Nov 28 14:06:21 2017 +0200
+
+    merge with fox-app/sergce 28_11_2017
+
+[33mcommit d6d2d21ee997d187ac71e8b536b9502510be4b22[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Tue Nov 28 12:36:36 2017 +0200
+
+    init
+
+[33mcommit bca74683ce362c43d2ac1fea89e6107bbdbb7939[m
+Author: vargav <dealio07@gmail.com>
+Date:   Tue Nov 28 11:43:47 2017 +0200
+
+    add geolocation, screen orientation detection and simple route builder
+
+[33mcommit 4ee8828d700043570f8ca68992c315294f5492ca[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Tue Nov 28 08:46:15 2017 +0200
+
+    init
+
+[33mcommit 256b9f806d4e63af8b0e9b0f8a0bd8c787fcc4b2[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Mon Nov 27 18:55:36 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit 81d7d7531cc2f067374baf3f304ec71c8c4a4d9f[m
+Author: sergce <sergceinfo@gmail.com>
+Date:   Mon Nov 27 18:18:59 2017 +0200
+
+    was created drop... component
+
+[33mcommit 4d458362eba930560836033e2cc5f1fa0cdbf460[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Mon Nov 27 11:18:34 2017 +0200
+
+    init
+
+[33mcommit 66bacbdfadd98ecc99f532a5db87dded94e77c33[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Mon Nov 27 08:24:24 2017 +0200
+
+    init
+
+[33mcommit 44c8ede02fa0fcd629732bb897519a5322adc7ec[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Sun Nov 26 20:17:04 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit 8c5a9890a7be15b12185c7058414ad393f867df2[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Sun Nov 26 18:49:43 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit 888175c13b7e419855a5dee8d0eb2fec092a92b6[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Sun Nov 26 15:43:22 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit 9a608d0507bffb56b2c793add59eaf6755cec39c[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Sun Nov 26 14:40:33 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit 2e6bdff113679ca84e91653c87a9b31d9430b463[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Sun Nov 26 14:36:55 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit 6bd9cbaa1078e968c84d2f97ba904a228f177e90[m
+Author: vargav <dealio07@gmail.com>
+Date:   Fri Nov 24 16:55:30 2017 +0200
+
+    add responsive map size
+
+[33mcommit a9d0ec28895fccfc6136e1ab9e07bccbfdc59f36[m
+Author: vargav <dealio07@gmail.com>
+Date:   Fri Nov 24 15:28:34 2017 +0200
+
+    misc
+
+[33mcommit 99690071a20d32dd2ca61b5e7c1907f7451ee38d[m
+Author: vargav <dealio07@gmail.com>
+Date:   Fri Nov 24 14:51:03 2017 +0200
+
+    workable video player
+
+[33mcommit 05ddf42d19e34d9b61905afb229c61dfd2d124b2[m
+Author: vargav <dealio07@gmail.com>
+Date:   Fri Nov 24 14:49:15 2017 +0200
+
+    workable video player
+
+[33mcommit 5b49f90164c7fb828dfde75c9f56ac7b14684c76[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Fri Nov 24 13:53:40 2017 +0200
+
+    init
+
+[33mcommit b1bf0c7eadfca1fb019225f8fa8497ef1206adc9[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Fri Nov 24 13:51:36 2017 +0200
+
+    init
+
+[33mcommit 6ec08b5324b51c154ec2f9387a4e577f594d983c[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Fri Nov 24 11:43:57 2017 +0200
+
+    init
+
+[33mcommit ee969f02e82e5d5eb56bbe9e408a8c550d80cb86[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Fri Nov 24 11:43:02 2017 +0200
+
+    init
+
+[33mcommit b05c044f98f5a598948316a6179ac9c9f3b1ff2d[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Fri Nov 24 09:40:59 2017 +0200
+
+    init
+
+[33mcommit ad4bdc529c23cb9c4cfc22c5755f03b2e1468d2a[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Fri Nov 24 09:11:06 2017 +0200
+
+    init
+
+[33mcommit d17520d9673a7eaded693bf42f4b6ceeb9ef48f9[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Thu Nov 23 14:10:29 2017 +0200
+
+    init
+
+[33mcommit d0914e34efbb73300b18db74e40a6e3756e90487[m
+Author: vargav <dealio07@gmail.com>
+Date:   Wed Nov 22 17:08:16 2017 +0200
+
+    changed icon from square to round. added video player. increased splash screen loading time.
+
+[33mcommit 51451c3e95903e6d893861fee5f62ade00e259d1[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Tue Nov 21 20:57:09 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit 052773af01be834c63bba40755b7cc7f59fc63f4[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Tue Nov 21 16:43:54 2017 +0200
+
+    init
+
+[33mcommit 63989b402fcdb2f208b75a21744d988197136220[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Tue Nov 21 12:38:10 2017 +0200
+
+    merge 21_11_2017_12_38
+
+[33mcommit 264542d64e4276ccbaa3fa67db025cf5060c4965[m
+Merge: 417de94 c13b879
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Tue Nov 21 12:26:27 2017 +0200
+
+    merge 21_11_2017_12_26
+
+[33mcommit 417de94cdd5b26e132b1d4e1a599452e531ac091[m
+Merge: 2fe1d50 7d6b806
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Tue Nov 21 11:34:28 2017 +0200
+
+    merge 21_11_2017
+
+[33mcommit 7d6b806a06a93e834ffe21699575ac635883d896[m
+Author: dealio07 <dealio07@gmail.com>
+Date:   Tue Nov 21 11:12:12 2017 +0200
+
+    little fixes. do npm update
+
+[33mcommit 2fe1d5032e0ab533b9b88ebeb243369dd0e45b51[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Tue Nov 21 11:07:45 2017 +0200
+
+    init
+
+[33mcommit c13b8791bbc2688918464d6905360de0b6fd3ef2[m
+Author: sergce <sergceinfo@gmail.com>
+Date:   Mon Nov 20 21:36:13 2017 +0200
+
+    accout logic created
+
+[33mcommit f4f254256dfc4a423c099c3232fdcbea1ed46b69[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Mon Nov 20 20:01:41 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit 36d1d62f0302e4677e360e56eba5c2fa1589352d[m
+Author: vargav <dealio07@gmail.com>
+Date:   Mon Nov 20 17:57:17 2017 +0200
+
+    misc in maps
+
+[33mcommit d16bca03936079e049e7a02e5dd85588ca0f9751[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Mon Nov 20 11:42:20 2017 +0200
+
+    init
+
+[33mcommit 37ab36eddf122171edbe225534ebad5238fddb9f[m
+Author: vargav <dealio07@gmail.com>
+Date:   Mon Nov 20 11:03:11 2017 +0200
+
+    misc
+
+[33mcommit b6bdc14350922f4cf46983c93776d98f53d241a3[m
+Author: vargav <dealio07@gmail.com>
+Date:   Mon Nov 20 10:37:52 2017 +0200
+
+    working time and status added to shops
+
+[33mcommit 5feca1dc5705b9efff755e5b2fea88595af6aa53[m
+Author: sergce <sergceinfo@gmail.com>
+Date:   Sun Nov 19 22:10:56 2017 +0200
+
+    make logic for account without ui
+
+[33mcommit e56c57fd931710884ee5852a84bdca5b6fd7ad5a[m
+Author: sergce <sergceinfo@gmail.com>
+Date:   Sun Nov 19 22:10:35 2017 +0200
+
+    make logic for account without ui
+
+[33mcommit 0ff2b03255817d520ad53b59cc6810e8545c7461[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Sun Nov 19 20:07:32 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit 26907fb02d7d42774fb47e7e71b7e5447d888239[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Sun Nov 19 09:57:51 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit 80e324752b43f04c7991ab82d446829c9cb6c8de[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Sat Nov 18 22:20:14 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit 637e62e520d5350f874559f4af7d548154f142f3[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Sat Nov 18 21:23:17 2017 +0200
+
+    item, item-detail, productReview
+
+[33mcommit 22e8e3c6d6ae718f6cb9592f50dcabf6317b63c5[m
+Author: yurafox <y_p_i@yahoo.com>
+Date:   Sat Nov 18 12:05:09 2017 +0200
+
+    item, item-detail, productReview

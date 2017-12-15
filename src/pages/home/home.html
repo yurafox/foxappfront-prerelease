@@ -4,7 +4,70 @@
 </ion-header>
 
 <ion-content class="common-bg">
-  <div *ngIf=content>
+  <!-- <div *ngIf=content>
       <html-outlet [html]="content" [context]="this"></html-outlet>
-  </div>
+  </div> -->
+  <ion-slides pager autoplay="2000">
+    <ion-slide *ngFor="let slide of slides">
+      <img src="{{ slide.src }}" alt="">
+    </ion-slide>
+
+  </ion-slides>
+  <!--list categories-->
+  <ion-card>
+    <ion-list class="cat-list">
+      <ion-row>
+        <ion-col text-center (click)="viewCategories()">
+          <img src="assets/icon/allcategories.svg" alt="" height="100px" padding="0.5em">
+          <div text-center>Все категории</div>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+  </ion-card>
+  <!--actions list-->
+  <h2 style="text-align: center">Акции</h2>
+  <ion-card>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+            <div style="border-radius: 1px;box-shadow: 0px 0px 0px 2px rgba(0,0,0,0.2)">
+                <img src="assets/imgs/actions/partspay.jpg" height="214px" >
+                <div><span>Оплата частями</span></div>
+                <div><span>Осталось 4 дня</span></div>
+              </div>
+        </ion-col>
+        <ion-col>
+            <div style="border-radius: 1px;box-shadow: 0px 0px 0px 2px rgba(0,0,0,0.2)">
+            <img src="assets/imgs/actions/gift.jpg" height="214px" >
+              <div><span>Оплата частями</span></div>
+              <div><span>Осталось 4 дня</span></div>
+          </div>
+          </ion-col>
+      </ion-row>
+      <ion-row>
+          <ion-col>
+              <div style="border-radius: 1px;box-shadow: 0px 0px 0px 2px rgba(0,0,0,0.2)">
+                  <img src="assets/imgs/actions/uber.jpg" height="214px" >
+                  <div><span>Оплата частями</span></div>
+                  <div><span>Осталось 4 дня</span></div>
+                </div>
+          </ion-col>
+          <ion-col>
+              <div style="border-radius: 1px;box-shadow: 0px 0px 0px 2px rgba(0,0,0,0.2)">
+              <img src="assets/imgs/actions/credit24.jpg" height="214px" >
+                <div><span>Оплата частями</span></div>
+                <div><span>Осталось 4 дня</span></div>
+            </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+  </ion-card>
+
+
+ <!-- <div>
+    <action-sketch [innerId]=1></action-sketch>
+ </div>
+ <div>
+    <action-sketch [innerId]=5></action-sketch>
+ </div> -->
 </ion-content>
