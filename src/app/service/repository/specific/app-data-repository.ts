@@ -48,6 +48,7 @@ const clientOrdersUrl = "/api/mclientOrders";
 const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
 const cartProductsUrl = "/api/mcartProducts";
 const pagesDynamicUrl="/api/mpages";
+const actionDynamicUrl="/api/mactions";
 // </editor-fold
 
 @Injectable()
@@ -1289,18 +1290,17 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async getAction(id: number): Promise<string> {
-    const data: string = `<div><h1 (click)="openAction()">{{innerId}}</h1></div>`;
-    return Observable.of(data)
-      .delay(1000)
-      .toPromise();
-  }
+    try {
+      const response = await this.http.get(`${actionDynamicUrl}/${id}`)
+        .toPromise();
 
-  public async getFullAction(): Promise<string> {
-    const data: string = `<div>
-       <h1>Actions Page - {{actionId}}</h1>
-     </div>`;
-    return Observable.of(data)
-      .delay(1000)
-      .toPromise();
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      return data['content'];
+    } catch (err) {
+      return await this.handleError(err);
+    }
   }
 }

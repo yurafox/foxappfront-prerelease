@@ -59,5 +59,4 @@ export abstract class AbstractDataRepository {
   public async abstract getCityById(id: number): Promise<City>;
   public async abstract getPageContent(id:number):Promise<string>;
   public async abstract getAction(id:number):Promise<string>;
-  public async abstract getFullAction():Promise<string>;
 }
