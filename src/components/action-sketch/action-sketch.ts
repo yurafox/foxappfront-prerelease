@@ -16,7 +16,7 @@ export class ActionSketchComponent {
   }
 
   async ngOnInit() {
-    this.content = await this._repo.getAction(1);
+    this.content = await this._repo.getAction(this.innerId);
   }
 
   public openAction() {

@@ -51,6 +51,6 @@ export class HomePage extends ComponentBase {
 
   async ngOnInit() {
     super.ngOnInit();
-    this.content = await this._repo.getContent(1);
+    this.content = await this._repo.getPageContent(1);
   }
 }

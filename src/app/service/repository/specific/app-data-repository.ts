@@ -47,7 +47,7 @@ const countriesUrl = "/api/mcountries";
 const clientOrdersUrl = "/api/mclientOrders";
 const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
 const cartProductsUrl = "/api/mcartProducts";
-
+const pagesDynamicUrl="/api/mpages";
 // </editor-fold
 
 @Injectable()
@@ -1273,34 +1273,19 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getContent(id: number): Promise<string> {
-    const data: string = `<ion-slides pager autoplay="2000">
-      <ion-slide *ngFor="let slide of slides">
-        <img src="{{ slide.src }}" alt="">
-      </ion-slide>
+  public async getPageContent(id: number): Promise<string> {
+    try {
+      const response = await this.http.get(`${pagesDynamicUrl}/${id}`)
+        .toPromise();
 
-    </ion-slides>
-    <!--list categories-->
-    <ion-card>
-      <ion-list class="cat-list">
-        <ion-row>
-          <ion-col text-center (click)="viewCategories()">
-            <img src="assets/icon/allcategories.svg" alt="" height="100px" padding="0.5em">
-            <div text-center>Все категории</div>
-          </ion-col>
-        </ion-row>
-      </ion-list>
-    </ion-card>
-   <div>
-      <action-sketch [innerId]=1></action-sketch>
-   </div>
-   <div>
-      <action-sketch [innerId]=5></action-sketch>
-   </div>`;
-
-    return Observable.of(data)
-      .delay(1000)
-      .toPromise();
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      return data['content'];
+    } catch (err) {
+      return await this.handleError(err);
+    }
   }
 
   public async getAction(id: number): Promise<string> {
