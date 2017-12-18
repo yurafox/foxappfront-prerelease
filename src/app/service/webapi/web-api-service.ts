@@ -3036,7 +3036,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       priority:10,
       img_url:'assets/imgs/actions/partspay.jpg',
       sketch_content: this.dynamicContent['ACTION'],
-      action_content:''
+      action_content:this.dynamicContent['PARTSPAY']
     },
     {
       id:2,
@@ -3046,7 +3046,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       priority:20,
       img_url:'assets/imgs/actions/gift.jpg',
       sketch_content:this.dynamicContent['ACTION'],
-      action_content:''
+      action_content:this.dynamicContent['ROUTERGIFT']
     }
   ];
   // </editor-fold>

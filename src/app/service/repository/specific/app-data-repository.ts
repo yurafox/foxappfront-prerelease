@@ -18,7 +18,8 @@ import {
   Store,
   ProductStorePlace,
   StorePlace,
-  Lang
+  Lang,
+  Action
 } from "../../../model/index";
 import { AbstractDataRepository } from "../../index";
 import { Providers, System } from "../../../core/app-core";
@@ -1289,7 +1290,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getAction(id: number): Promise<string> {
+  public async getAction(id: number): Promise<Action> {
     try {
       const response = await this.http.get(`${actionDynamicUrl}/${id}`)
         .toPromise();
@@ -1298,7 +1299,20 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      return data['content'];
+      let action: Action = null;
+      if (data != null) {
+        action = new Action(
+          data.id,
+          data.name,
+          new Date(data.dateStart),
+          new Date(data.dateEnd),
+          data.img_url,
+          data.priority,
+          data.sketch_content,
+          data.action_content
+        );
+      }
+      return action;
     } catch (err) {
       return await this.handleError(err);
     }

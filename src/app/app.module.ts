@@ -1,4 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ErrorHandler, NgModule, Injector} from '@angular/core';
 import {IonicApp, IonicErrorHandler, IonicModule, IonicPageModule} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
@@ -79,6 +80,7 @@ import {
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpModule,
     InMemoryWebApiModule.forRoot(WebApiService, {delay: 1000, post204: false, put204: false}),
     IonicModule.forRoot(FoxApp),
