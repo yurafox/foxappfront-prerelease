@@ -38,16 +38,16 @@
       </ion-list>
 
       <ion-list *ngIf="userService.isAuth">
-        <button ion-item (click)="signOut($event)">
+        <button ion-item menuClose (click)="signOut($event)">
           <ion-icon item-start name="ios-exit-outline"></ion-icon>
           <span loc="Выйти" name="OutApp">{{locale.OutApp}}</span>
         </button>
       </ion-list>
 
       <ion-list>
-        <button ion-item (click)="openExternalApp()">
+        <button ion-item menuClose (click)="openExternalApp()">
           <ion-icon style="color: #3B5999" item-start name="logo-facebook"></ion-icon>
-          We on Facebook
+          Foxtrot on Facebook
         </button>
       </ion-list>
     </ion-content>

@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {App, NavController, IonicPage} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
+import {AbstractDataRepository} from "../../app/service";
 
 @IonicPage({name: 'HomePage', segment: 'home'})
 @Component({
@@ -22,7 +23,7 @@ export class HomePage extends ComponentBase {
   ];
 
 
-  constructor(public app: App, public nav: NavController) {
+  constructor(public app: App, public nav: NavController, private repo: AbstractDataRepository) {
     super();
   }
 
@@ -44,4 +45,5 @@ export class HomePage extends ComponentBase {
   onSearchClick() {
     this.nav.push('SearchPage');
   }
+
 }

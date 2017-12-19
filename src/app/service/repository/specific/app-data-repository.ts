@@ -1068,4 +1068,49 @@ export class AppDataRepository extends AbstractDataRepository {
       await this.handleError(err);
     }
   };
+
+  public async getFoxStoreById(id: number): Promise<Store> {
+    try {
+      const response = await this.http.get(foxStoresUrl).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error('server side status error');
+      }
+      const stores = new Array<{id: number, stores: Store[]}>();
+      if (data != null) {
+        data.forEach((val) => {
+          const storeArr = new Array<Store>();
+          const arr: Store[] = val.stores;
+          arr.forEach((store) => {
+            if (store.openTime !== null && store.closeTime !== null && store.rating === null && store.feedbacks === null) {
+              storeArr.push(new Store(store.id, store.position, store.address, store.openTime, store.closeTime));
+            }
+            else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.feedbacks === null) {
+              storeArr.push(new Store(store.id, store.position, store.address, store.openTime, store.closeTime,
+                store.rating));
+            }
+            else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.feedbacks !== null) {
+              storeArr.push(new Store(store.id, store.position, store.address, store.openTime, store.closeTime,
+                store.rating, store.feedbacks));
+            }
+            else {
+              storeArr.push(new Store(store.id, store.position, store.address));
+            }
+          });
+          stores.push({id: val.id, stores: storeArr});
+        });
+      }
+      for (let i = 0; i < stores.length; i++) {
+        for (let j =0; j < stores[i].stores.length; j++) {
+          if (stores[i].stores[j].id === id) {
+            return stores[i].stores[j];
+          }
+        }
+      }
+
+    } catch (err) {
+      await this.handleError(err);
+    }
+  };
 }

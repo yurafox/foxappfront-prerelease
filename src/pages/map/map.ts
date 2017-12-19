@@ -105,7 +105,7 @@ export class MapPage extends ComponentBase implements OnInit {
       [this.markersArr, this.cities] = await Promise.all([this.repo.getFoxStores(), this.repo.getCities()]);
 
       /**
-       * Set defaultCityId to id of the city with name 'Киев'
+       * Set defaultCityId to id of the city with name 'Киев' or 'Київ'
        */
       this.cities.forEach((city) => {
         if (city.name === 'Киев' || city.name === 'Київ') {
@@ -181,11 +181,13 @@ export class MapPage extends ComponentBase implements OnInit {
 
           let shopOpensTime = markerData.openTime;
           let shopClosesTime = markerData.closeTime;
+          const shopRating = markerData.rating;
 
           let infoWindow = new google.maps.InfoWindow({
-            content: `<h6>Фокстрот</h6>` +
-            `<p>${markerData.address}</p>` +
-            `<p>Время работы: ${shopOpensTime} - ${shopClosesTime}</p>` +
+            content: `<h6>Фокстрот</h6>`+
+            `<p>Рейтинг: ${shopRating}</p>`+
+            `<p>${markerData.address}</p>`+
+            `<p>Години роботи: ${shopOpensTime} - ${shopClosesTime}</p>`+
             `<p>${this.shopIsWorking(shopOpensTime, shopClosesTime)}</p>`
           });
 
@@ -465,9 +467,9 @@ export class MapPage extends ComponentBase implements OnInit {
 
     if ((openTime >= 0 && closeTime >= 0) && (openTime <= 2400 && closeTime <= 2400)) {
       if ((myTime >= openTime) && (myTime <= closeTime)) {
-        return 'Работает';
+        return 'Open';
       } else {
-        return 'Не работает';
+        return 'Closed';
       }
     } else {
       console.log('wrong time input');

@@ -1,0 +1,17 @@
+<ion-header>
+  <main-toolbar></main-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <p>Favorite shops page</p>
+  <div *ngIf="dataLoaded && stores">
+    <ion-grid>
+      <div *ngFor="let store of stores">
+        <ion-row>
+          {{store?.address}}
+        </ion-row>
+      </div>
+    </ion-grid>
+  </div>
+</ion-content>

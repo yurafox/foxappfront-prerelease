@@ -105,7 +105,7 @@ export class AccountRepository extends AbstractAccountRepository {
       }
 
       const currentUser: User = new User(data.name, data.email,null,data.id,
-        data.appKey,data.userSetting, data.idClient);
+        data.appKey,data.userSetting, data.idClient, data.favoriteStoresId);
       return currentUser;
     }
 

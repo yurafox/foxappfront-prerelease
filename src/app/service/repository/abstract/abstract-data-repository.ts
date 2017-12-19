@@ -56,6 +56,7 @@ export abstract class AbstractDataRepository {
 
   public async abstract getCities(): Promise<City[]>;
   public async abstract getFoxStores(): Promise<Array<{id: number, stores: Store[]}>>;
+  public async abstract getFoxStoreById(id: number): Promise<Store>;
   public async abstract getCityById(id: number): Promise<City>;
 
 }

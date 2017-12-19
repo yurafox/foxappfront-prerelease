@@ -362,7 +362,7 @@ export class WebApiService implements InMemoryDbService {
     {id: 30, name: 'Кривой Рог'}, {id: 31, name: 'Кропивницкий'}, {id: 32, name: 'Ладыжин'}, {id: 33, name: 'Лиман'},
     {id: 34, name: 'Лисичанск'}, {id: 35, name: 'Лубны'}, {id: 36, name: 'Луцк'}, {id: 37, name: 'Львов'},
     {id: 38, name: 'Мариуполь'}, {id: 39, name: 'Мелитополь'}, {id: 40, name: 'Миргород'}, {id: 41, name: 'Мукачево'},
-    {id: 42, name: 'Надвирна'}, {id: 43, name: 'Нежин'}, {id: 44, name: 'Нетешин'}, {id: 45, name: 'Николаев'},
+    {id: 42, name: 'Николаев'}, {id: 43, name: 'Надвирна'}, {id: 44, name: 'Нежин'}, {id: 45, name: 'Нетешин'},
     {id: 46, name: 'Никополь'}, {id: 47, name: 'Новая Каховка'}, {id: 48, name: 'Новомосковск'},
     {id: 49, name: 'Обухов'}, {id: 50, name: 'Одесса'}, {id: 51, name: 'Павлоград'}, {id: 52, name: 'Первомайск'},
     {id: 53, name: 'Подольск'}, {id: 54, name: 'Покров'}, {id: 55, name: 'Покровск'}, {id: 56, name: 'Полтава'},
@@ -381,362 +381,362 @@ export class WebApiService implements InMemoryDbService {
     // Александрия
     {id: 1, stores: [{id: 1, position: {lat: 48.6805, lng: 33.1154}, address: 'просп. Соборний, 11', openTime: '9:00', closeTime: '21:00'}]},
     // Бахмут
-    {id: 2, stores: [{id: 1, position: {lat: 48.586815, lng: 38.004897}, address: 'вул. Незалежності, 81', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 2, stores: [{id: 2, position: {lat: 48.586815, lng: 38.004897}, address: 'вул. Незалежності, 81', openTime: '9:00', closeTime: '21:00'}]},
     // Белая Церковь
     {
       id: 3, stores: [
-      {id: 1, position: {lat: 49.8093, lng: 30.0949}, address: 'бульв. Олександрійський, 115', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 49.797983, lng: 30.121724}, address: 'вул. Ярослава Мудрого, 40', openTime: '9:00', closeTime: '21:00'}
+      {id: 3, position: {lat: 49.8093, lng: 30.0949}, address: 'бульв. Олександрійський, 115', openTime: '9:00', closeTime: '21:00'},
+      {id: 4, position: {lat: 49.797983, lng: 30.121724}, address: 'вул. Ярослава Мудрого, 40', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Белгород-Днестровский
-    {id: 4, stores: [{id: 1, position: {lat: 46.1764, lng: 30.3537}, address: 'вул. Тімчішина, 8', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 4, stores: [{id: 5, position: {lat: 46.1764, lng: 30.3537}, address: 'вул. Тімчішина, 8', openTime: '9:00', closeTime: '21:00'}]},
     // Бердичев
-    {id: 5, stores: [{id: 1, position: {lat: 49.8916, lng: 28.5843}, address: 'вул. Вінницька, 18', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 5, stores: [{id: 6, position: {lat: 49.8916, lng: 28.5843}, address: 'вул. Вінницька, 18', openTime: '9:00', closeTime: '21:00'}]},
     // Бердянск
     {
       id: 6, stores: [
-      {id: 1, position: {lat: 46.755478, lng: 36.7872}, address: 'вул. Университетская, 43/ просп. Праці, 37', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 46.760454, lng: 36.80152}, address: 'вул. Комунарів, 75-З', openTime: '9:00', closeTime: '21:00'}]
+      {id: 7, position: {lat: 46.755478, lng: 36.7872}, address: 'вул. Университетская, 43/ просп. Праці, 37', openTime: '9:00', closeTime: '21:00'},
+      {id: 8, position: {lat: 46.760454, lng: 36.80152}, address: 'вул. Комунарів, 75-З', openTime: '9:00', closeTime: '21:00'}]
     },
     // Борисполь
-    {id: 7, stores: [{id: 1, position: {lat: 50.363245, lng: 30.929128}, address: 'вул. Київський шлях, 67', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 7, stores: [{id: 9, position: {lat: 50.363245, lng: 30.929128}, address: 'вул. Київський шлях, 67', openTime: '9:00', closeTime: '21:00'}]},
     // Бровары
-    {id: 8, stores: [{id: 1, position: {lat: 50.52629, lng: 30.79642}, address: 'вул. Київська, 316', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 8, stores: [{id: 10, position: {lat: 50.52629, lng: 30.79642}, address: 'вул. Київська, 316', openTime: '9:00', closeTime: '21:00'}]},
     // Васильков
-    {id: 9, stores: [{id: 1, position: {lat: 50.1771, lng: 30.3171}, address: 'вул. Соборна, 60', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 9, stores: [{id: 11, position: {lat: 50.1771, lng: 30.3171}, address: 'вул. Соборна, 60', openTime: '9:00', closeTime: '21:00'}]},
     // Винница
     {
       id: 10, stores: [
-      {id: 1, position: {lat: 49.2261, lng: 28.4134}, address: 'вул. Келецька, 80', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 49.240307, lng: 28.505989}, address: 'вул. Євгена Пікуса, 1-А', openTime: '9:00', closeTime: '21:00'}
+      {id: 12, position: {lat: 49.2261, lng: 28.4134}, address: 'вул. Келецька, 80', openTime: '9:00', closeTime: '21:00'},
+      {id: 13, position: {lat: 49.240307, lng: 28.505989}, address: 'вул. Євгена Пікуса, 1-А', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Вознесенск
-    {id: 11, stores: [{id: 1, position: {lat: 47.564, lng: 31.3409}, address: 'вул. Київська, 16', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 11, stores: [{id: 14, position: {lat: 47.564, lng: 31.3409}, address: 'вул. Київська, 16', openTime: '9:00', closeTime: '21:00'}]},
     // Днепр
     {
       id: 12, stores: [
-      {id: 1, position: {lat: 48.47593, lng: 35.0208}, address: 'вул. Пастера, 6-А', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 48.4773, lng: 35.0139}, address: 'пл. Петрівського, 5', openTime: '9:00', closeTime: '21:00'},
-      {id: 3, position: {lat: 48.4837, lng: 34.9236}, address: 'вул. Кондратюка, 8', openTime: '9:00', closeTime: '21:00'},
-      {id: 4, position: {lat: 48.4291, lng: 35.0651}, address: 'вул. Набережна Перемоги, 86-А', openTime: '9:00', closeTime: '21:00'}
+      {id: 15, position: {lat: 48.47593, lng: 35.0208}, address: 'вул. Пастера, 6-А', openTime: '9:00', closeTime: '21:00'},
+      {id: 16, position: {lat: 48.4773, lng: 35.0139}, address: 'пл. Петрівського, 5', openTime: '9:00', closeTime: '21:00'},
+      {id: 17, position: {lat: 48.4837, lng: 34.9236}, address: 'вул. Кондратюка, 8', openTime: '9:00', closeTime: '21:00'},
+      {id: 18, position: {lat: 48.4291, lng: 35.0651}, address: 'вул. Набережна Перемоги, 86-А', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Дрогобыч
-    {id: 13, stores: [{id: 1, position: {lat: 49.3626, lng: 23.5136}, address: 'вул. Пилипа Орлика, 18-Б', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 13, stores: [{id: 19, position: {lat: 49.3626, lng: 23.5136}, address: 'вул. Пилипа Орлика, 18-Б', openTime: '9:00', closeTime: '21:00'}]},
     // Дубно
-    {id: 14, stores: [{id: 1, position: {lat: 50.417962, lng: 25.745615}, address: 'пл. Незалежності, 3', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 14, stores: [{id: 20, position: {lat: 50.417962, lng: 25.745615}, address: 'пл. Незалежності, 3', openTime: '9:00', closeTime: '21:00'}]},
     // Житомир
     {
       id: 15, stores: [
-      {id: 1, position: {lat: 50.2664, lng: 28.6851}, address: 'вул. Київська, 77', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 50.2561, lng: 28.673}, address: 'пл. Житній Ринок, 1', openTime: '9:00', closeTime: '21:00'}
+      {id: 21, position: {lat: 50.2664, lng: 28.6851}, address: 'вул. Київська, 77', openTime: '9:00', closeTime: '21:00'},
+      {id: 22, position: {lat: 50.2561, lng: 28.673}, address: 'пл. Житній Ринок, 1', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Запорожье
     {
       id: 16, stores: [
-      {id: 1, position: {lat: 47.8179, lng: 35.1746}, address: 'просп. Соборний, 53', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 47.8563, lng: 35.1067}, address: 'просп. Соборний, 175', openTime: '9:00', closeTime: '21:00'},
-      {id: 3, position: {lat: 47.8208, lng: 35.0513}, address: 'просп. Ювілейний, 16-А', openTime: '9:00', closeTime: '21:00'},
-      {id: 4, position: {lat: 47.835, lng: 35.122}, address: 'вул. Перемоги, 64', openTime: '9:00', closeTime: '21:00'}
+      {id: 23, position: {lat: 47.8179, lng: 35.1746}, address: 'просп. Соборний, 53', openTime: '9:00', closeTime: '21:00'},
+      {id: 24, position: {lat: 47.8563, lng: 35.1067}, address: 'просп. Соборний, 175', openTime: '9:00', closeTime: '21:00'},
+      {id: 25, position: {lat: 47.8208, lng: 35.0513}, address: 'просп. Ювілейний, 16-А', openTime: '9:00', closeTime: '21:00'},
+      {id: 26, position: {lat: 47.835, lng: 35.122}, address: 'вул. Перемоги, 64', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Ивано-Франковск
     {
       id: 17, stores: [
-      {id: 1, position: {lat: 48.9257, lng: 24.7134}, address: 'вул. Дністровська, 26', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 48.907769, lng: 24.683458}, address: 'вул. Мазепи, 168-Б', openTime: '9:00', closeTime: '21:00'},
-      {id: 3, position: {lat: 48.932875, lng: 24.746035}, address: 'вул. Миколайчука, 2', openTime: '9:00', closeTime: '21:00'}
+      {id: 27, position: {lat: 48.9257, lng: 24.7134}, address: 'вул. Дністровська, 26', openTime: '9:00', closeTime: '21:00'},
+      {id: 28, position: {lat: 48.907769, lng: 24.683458}, address: 'вул. Мазепи, 168-Б', openTime: '9:00', closeTime: '21:00'},
+      {id: 29, position: {lat: 48.932875, lng: 24.746035}, address: 'вул. Миколайчука, 2', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Измаил
-    {id: 18, stores: [{id: 1, position: {lat: 45.3573, lng: 28.8194}, address: 'просп. Леніна, 12', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 18, stores: [{id: 30, position: {lat: 45.3573, lng: 28.8194}, address: 'просп. Леніна, 12', openTime: '9:00', closeTime: '21:00'}]},
     // Ирпень
-    {id: 19, stores: [{id: 1, position: {lat: 50.5197, lng: 30.2446}, address: 'вул. Шевченко, 4-Г', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 19, stores: [{id: 31, position: {lat: 50.5197, lng: 30.2446}, address: 'вул. Шевченко, 4-Г', openTime: '9:00', closeTime: '21:00'}]},
     // Калуш
-    {id: 20, stores: [{id: 1, position: {lat: 49.041445, lng: 24.354076}, address: 'вул. Богдана Хмельницького, 50', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 20, stores: [{id: 32, position: {lat: 49.041445, lng: 24.354076}, address: 'вул. Богдана Хмельницького, 50', openTime: '9:00', closeTime: '21:00'}]},
     // Каменец-Подольский
-    {id: 21, stores: [{id: 1, position: {lat: 48.679713, lng: 26.587617}, address: 'вул. Соборна, 25', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 21, stores: [{id: 33, position: {lat: 48.679713, lng: 26.587617}, address: 'вул. Соборна, 25', openTime: '9:00', closeTime: '21:00'}]},
     // Каменское
-    {id: 22, stores: [{id: 1, position: {lat: 48.516057, lng: 34.606908}, address: 'просп. Тараса Шевченко, 9', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 22, stores: [{id: 34, position: {lat: 48.516057, lng: 34.606908}, address: 'просп. Тараса Шевченко, 9', openTime: '9:00', closeTime: '21:00'}]},
     // Киев
     {
       id: 23, stores: [
-      {id: 1, position: {lat: 50.4357, lng: 30.5164}, address: 'вул. В. Васильківська, 45', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 50.4898, lng: 30.4927}, address: 'просп. Степана Бандери, 21', openTime: '9:00', closeTime: '21:00'},
-      {id: 3, position: {lat: 50.4316, lng: 30.5131}, address: 'вул. Антоновича, 52', openTime: '9:00', closeTime: '21:00'},
-      {id: 4, position: {lat: 50.5145, lng: 30.4986}, address: 'просп. Оболонський, 21Б', openTime: '9:00', closeTime: '21:00'},
-      {id: 5, position: {lat: 50.381827, lng: 30.44093}, address: 'вул. Велика Кільцева, 110', openTime: '9:00', closeTime: '21:00'},
-      {id: 6, position: {lat: 50.4605, lng: 30.3469}, address: 'вул. Чорнобильська, 16/80', openTime: '9:00', closeTime: '21:00'},
-      {id: 7, position: {lat: 50.4083, lng: 30.6552}, address: 'вул. Вербицького, 18', openTime: '9:00', closeTime: '21:00'},
-      {id: 8, position: {lat: 50.399, lng: 30.5107}, address: 'просп. Голосіївський, 68а', openTime: '9:00', closeTime: '21:00'},
-      {id: 9, position: {lat: 50.4634, lng: 30.5992}, address: 'просп. Визволителів, 17', openTime: '9:00', closeTime: '21:00'},
-      {id: 10, position: {lat: 50.454762, lng: 30.636051}, address: 'вул. Гната Хоткевича, 1-В', openTime: '9:00', closeTime: '21:00'},
-      {id: 11, position: {lat: 50.4304, lng: 30.4552}, address: 'бульв. Чоколівський, 19', openTime: '9:00', closeTime: '21:00'},
-      {id: 12, position: {lat: 50.4312, lng: 30.3836}, address: 'вул. Гната Юри, 20', openTime: '9:00', closeTime: '21:00'},
-      {id: 13, position: {lat: 50.3976, lng: 30.6382}, address: 'вул. Олександра Мішуги, 4', openTime: '9:00', closeTime: '21:00'},
-      {id: 14, position: {lat: 50.451, lng: 30.4416}, address: 'вул. Гетьмана, 6 (літери "Б,Б")', openTime: '9:00', closeTime: '21:00'},
-      {id: 15, position: {lat: 50.4567, lng: 30.3832}, address: 'просп. Перемоги, 87', openTime: '9:00', closeTime: '21:00'},
-      {id: 16, position: {lat: 50.49375, lng: 30.56128}, address: 'вул. Генерала Ватутіна, 2', openTime: '9:00', closeTime: '21:00'},
-      {id: 17, position: {lat: 50.5198, lng: 30.4656}, address: 'вул. Калнишевського, 2', openTime: '9:00', closeTime: '21:00'}
+      {id: 35, position: {lat: 50.4357, lng: 30.5164}, address: 'вул. В. Васильківська, 45', openTime: '9:00', closeTime: '21:00'},
+      {id: 36, position: {lat: 50.4898, lng: 30.4927}, address: 'просп. Степана Бандери, 21', openTime: '9:00', closeTime: '21:00', rating: 4, feedbacks: [{feedback: 'Отличный магазин. Персонал работает хорошо', rating: 5}, {feedback: 'Всё устроило, персонал приветливый. Но сложно разобраться где что.', rating: 3}]},
+      {id: 37, position: {lat: 50.4316, lng: 30.5131}, address: 'вул. Антоновича, 52', openTime: '9:00', closeTime: '21:00'},
+      {id: 38, position: {lat: 50.5145, lng: 30.4986}, address: 'просп. Оболонський, 21Б', openTime: '9:00', closeTime: '21:00'},
+      {id: 39, position: {lat: 50.381827, lng: 30.44093}, address: 'вул. Велика Кільцева, 110', openTime: '9:00', closeTime: '21:00'},
+      {id: 40, position: {lat: 50.4605, lng: 30.3469}, address: 'вул. Чорнобильська, 16/80', openTime: '9:00', closeTime: '21:00'},
+      {id: 41, position: {lat: 50.4083, lng: 30.6552}, address: 'вул. Вербицького, 18', openTime: '9:00', closeTime: '21:00'},
+      {id: 42, position: {lat: 50.399, lng: 30.5107}, address: 'просп. Голосіївський, 68а', openTime: '9:00', closeTime: '21:00'},
+      {id: 43, position: {lat: 50.4634, lng: 30.5992}, address: 'просп. Визволителів, 17', openTime: '9:00', closeTime: '21:00'},
+      {id: 44, position: {lat: 50.454762, lng: 30.636051}, address: 'вул. Гната Хоткевича, 1-В', openTime: '9:00', closeTime: '21:00'},
+      {id: 45, position: {lat: 50.4304, lng: 30.4552}, address: 'бульв. Чоколівський, 19', openTime: '9:00', closeTime: '21:00'},
+      {id: 46, position: {lat: 50.4312, lng: 30.3836}, address: 'вул. Гната Юри, 20', openTime: '9:00', closeTime: '21:00'},
+      {id: 47, position: {lat: 50.3976, lng: 30.6382}, address: 'вул. Олександра Мішуги, 4', openTime: '9:00', closeTime: '21:00'},
+      {id: 48, position: {lat: 50.451, lng: 30.4416}, address: 'вул. Гетьмана, 6 (літери "Б,Б")', openTime: '9:00', closeTime: '21:00'},
+      {id: 49, position: {lat: 50.4567, lng: 30.3832}, address: 'просп. Перемоги, 87', openTime: '9:00', closeTime: '21:00'},
+      {id: 50, position: {lat: 50.49375, lng: 30.56128}, address: 'вул. Генерала Ватутіна, 2', openTime: '9:00', closeTime: '21:00'},
+      {id: 51, position: {lat: 50.5198, lng: 30.4656}, address: 'вул. Калнишевського, 2', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Ковель
-    {id: 24, stores: [{id: 1, position: {lat: 51.214107, lng: 24.707476}, address: 'вул. Незалежності, 83', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 24, stores: [{id: 52, position: {lat: 51.214107, lng: 24.707476}, address: 'вул. Незалежності, 83', openTime: '9:00', closeTime: '21:00'}]},
     // Коломыя
-    {id: 25, stores: [{id: 1, position: {lat: 48.5257, lng: 25.0359}, address: 'просп. Грушевського, 12', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 25, stores: [{id: 53, position: {lat: 48.5257, lng: 25.0359}, address: 'просп. Грушевського, 12', openTime: '9:00', closeTime: '21:00'}]},
     // Конотоп
-    {id: 26, stores: [{id: 1, position: {lat: 51.2278, lng: 33.1973}, address: 'просп. Миру, 61', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 26, stores: [{id: 54, position: {lat: 51.2278, lng: 33.1973}, address: 'просп. Миру, 61', openTime: '9:00', closeTime: '21:00'}]},
     // Коростень
-    {id: 27, stores: [{id: 1, position: {lat: 50.9506, lng: 28.6395}, address: 'вул. Красіна, 5', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 27, stores: [{id: 55, position: {lat: 50.9506, lng: 28.6395}, address: 'вул. Красіна, 5', openTime: '9:00', closeTime: '21:00'}]},
     // Краматорск
-    {id: 28, stores: [{id: 1, position: {lat: 48.736715, lng: 37.587819}, address: 'вул. Василя Стуса, 49', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 28, stores: [{id: 56, position: {lat: 48.736715, lng: 37.587819}, address: 'вул. Василя Стуса, 49', openTime: '9:00', closeTime: '21:00'}]},
     // Кременчуг
     {
       id: 29, stores: [
-      {id: 1, position: {lat: 49.0658, lng: 33.4236}, address: 'вул. Першотравнева, 44', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 49.091025, lng: 33.425882}, address: 'вул. Київська, 5-А', openTime: '9:00', closeTime: '21:00'}
+      {id: 57, position: {lat: 49.0658, lng: 33.4236}, address: 'вул. Першотравнева, 44', openTime: '9:00', closeTime: '21:00'},
+      {id: 58, position: {lat: 49.091025, lng: 33.425882}, address: 'вул. Київська, 5-А', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Кривой Рог
     {
       id: 30, stores: [
-      {id: 1, position: {lat: 47.9022, lng: 33.3941}, address: 'просп. Металургів, 35/3', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 47.730983, lng: 33.250241}, address: 'вул. Неділіна, 43', openTime: '9:00', closeTime: '21:00'},
-      {id: 3, position: {lat: 47.9024, lng: 33.3588}, address: 'вул. Лермонтова, 26-А', openTime: '9:00', closeTime: '21:00'},
-      {id: 4, position: {lat: 47.935898, lng: 33.433841}, address: 'бульв. Вечірній, 31-А', openTime: '9:00', closeTime: '21:00'},
-      {id: 5, position: {lat: 48.021463, lng: 33.473223}, address: 'вул. Ватутіна, 39', openTime: '9:00', closeTime: '21:00'},
-      {id: 6, position: {lat: 47.9636, lng: 33.4369}, address: 'просп. 200-річчя Кривого Рогу, 7-Д', openTime: '9:00', closeTime: '21:00'}
+      {id: 59, position: {lat: 47.9022, lng: 33.3941}, address: 'просп. Металургів, 35/3', openTime: '9:00', closeTime: '21:00'},
+      {id: 60, position: {lat: 47.730983, lng: 33.250241}, address: 'вул. Неділіна, 43', openTime: '9:00', closeTime: '21:00'},
+      {id: 61, position: {lat: 47.9024, lng: 33.3588}, address: 'вул. Лермонтова, 26-А', openTime: '9:00', closeTime: '21:00'},
+      {id: 62, position: {lat: 47.935898, lng: 33.433841}, address: 'бульв. Вечірній, 31-А', openTime: '9:00', closeTime: '21:00'},
+      {id: 63, position: {lat: 48.021463, lng: 33.473223}, address: 'вул. Ватутіна, 39', openTime: '9:00', closeTime: '21:00'},
+      {id: 64, position: {lat: 47.9636, lng: 33.4369}, address: 'просп. 200-річчя Кривого Рогу, 7-Д', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Кропивницкий
     {
       id: 31, stores: [
-      {id: 1, position: {lat: 48.507581, lng: 32.264394}, address: 'вул. Велика Перспективна, 48', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 48.5015, lng: 32.2091}, address: 'вул. Юрія Коваленко, 6-А', openTime: '9:00', closeTime: '21:00'}
+      {id: 65, position: {lat: 48.507581, lng: 32.264394}, address: 'вул. Велика Перспективна, 48', openTime: '9:00', closeTime: '21:00'},
+      {id: 66, position: {lat: 48.5015, lng: 32.2091}, address: 'вул. Юрія Коваленко, 6-А', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Ладыжин
-    {id: 32, stores: [{id: 1, position: {lat: 48.683368, lng: 29.233181}, address: 'вул. Будівельників, 15', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 32, stores: [{id: 67, position: {lat: 48.683368, lng: 29.233181}, address: 'вул. Будівельників, 15', openTime: '9:00', closeTime: '21:00'}]},
     // Лиман
-    {id: 33, stores: [{id: 1, position: {lat: 48.964797, lng: 37.822462}, address: 'вул. Привокзальна, 19-В', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 33, stores: [{id: 68, position: {lat: 48.964797, lng: 37.822462}, address: 'вул. Привокзальна, 19-В', openTime: '9:00', closeTime: '21:00'}]},
     // Лисичанск
-    {id: 34, stores: [{id: 1, position: {lat: 48.9121, lng: 38.4274}, address: 'вул. Гарибальді, 50', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 34, stores: [{id: 69, position: {lat: 48.9121, lng: 38.4274}, address: 'вул. Гарибальді, 50', openTime: '9:00', closeTime: '21:00'}]},
     // Лубны
-    {id: 35, stores: [{id: 1, position: {lat: 50.0213, lng: 32.9835}, address: 'просп. Володимирський, 98', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 35, stores: [{id: 70, position: {lat: 50.0213, lng: 32.9835}, address: 'просп. Володимирський, 98', openTime: '9:00', closeTime: '21:00'}]},
     // Луцк
     {
       id: 36, stores: [
-      {id: 1, position: {lat: 50.745798, lng: 25.338923}, address: 'просп. Волі, 27', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 50.75522, lng: 25.35552}, address: 'вул. Сухомлинського, 1', openTime: '9:00', closeTime: '21:00'}
+      {id: 71, position: {lat: 50.745798, lng: 25.338923}, address: 'просп. Волі, 27', openTime: '9:00', closeTime: '21:00'},
+      {id: 72, position: {lat: 50.75522, lng: 25.35552}, address: 'вул. Сухомлинського, 1', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Львов
     {
       id: 37, stores: [
-      {id: 1, position: {lat: 49.8435, lng: 24.023}, address: 'вул. Городоцька, 16', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 49.792, lng: 24.0576}, address: 'просп. Червоної Калини, 62', openTime: '9:00', closeTime: '21:00'},
-      {id: 3, position: {lat: 49.856, lng: 24.0213}, address: 'просп. Чорновола, 57', openTime: '9:00', closeTime: '21:00'},
-      {id: 4, position: {lat: 49.807337, lng: 23.978681}, address: 'вул. Кульпарковська, 226-А', openTime: '9:00', closeTime: '21:00'},
-      {id: 5, position: {lat: 49.8092, lng: 23.9979}, address: 'вул. Княгині Ольги, 106', openTime: '9:00', closeTime: '21:00'},
-      {id: 6, position: {lat: 49.8118, lng: 24.0615}, address: 'вул. Зелена, 147', openTime: '9:00', closeTime: '21:00'}
+      {id: 73, position: {lat: 49.8435, lng: 24.023}, address: 'вул. Городоцька, 16', openTime: '9:00', closeTime: '21:00'},
+      {id: 74, position: {lat: 49.792, lng: 24.0576}, address: 'просп. Червоної Калини, 62', openTime: '9:00', closeTime: '21:00'},
+      {id: 75, position: {lat: 49.856, lng: 24.0213}, address: 'просп. Чорновола, 57', openTime: '9:00', closeTime: '21:00'},
+      {id: 76, position: {lat: 49.807337, lng: 23.978681}, address: 'вул. Кульпарковська, 226-А', openTime: '9:00', closeTime: '21:00'},
+      {id: 77, position: {lat: 49.8092, lng: 23.9979}, address: 'вул. Княгині Ольги, 106', openTime: '9:00', closeTime: '21:00'},
+      {id: 78, position: {lat: 49.8118, lng: 24.0615}, address: 'вул. Зелена, 147', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Мариуполь
     {
       id: 38, stores: [
-      {id: 1, position: {lat: 47.1075, lng: 37.5521}, address: 'просп. Металургів, 100', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 47.1007, lng: 37.5053}, address: 'просп. Миру, 149', openTime: '9:00', closeTime: '21:00'}
+      {id: 79, position: {lat: 47.1075, lng: 37.5521}, address: 'просп. Металургів, 100', openTime: '9:00', closeTime: '21:00'},
+      {id: 80, position: {lat: 47.1007, lng: 37.5053}, address: 'просп. Миру, 149', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Мелитополь
-    {id: 39, stores: [{id: 1, position: {lat: 46.8479, lng: 35.3756}, address: 'просп. Богдана Хмельницького, 10', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 39, stores: [{id: 81, position: {lat: 46.8479, lng: 35.3756}, address: 'просп. Богдана Хмельницького, 10', openTime: '9:00', closeTime: '21:00'}]},
     // Миргород
-    {id: 40, stores: [{id: 1, position: {lat: 49.966, lng: 33.61}, address: 'вул. Миколи Гоголя, 98/6', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 40, stores: [{id: 82, position: {lat: 49.966, lng: 33.61}, address: 'вул. Миколи Гоголя, 98/6', openTime: '9:00', closeTime: '21:00'}]},
     // Мукачево
-    {id: 41, stores: [{id: 1, position: {lat: 48.441785, lng: 22.73166}, address: 'вул. Миру, 151-Г', openTime: '9:00', closeTime: '21:00'}]},
-    // Надвирна
-    {id: 42, stores: [{id: 1, position: {lat: 48.63264, lng: 24.5687}, address: 'вул. Чорновола, 4', openTime: '9:00', closeTime: '21:00'}]},
-    // Нежин
-    {id: 43, stores: [{id: 1, position: {lat: 51.051148, lng: 31.88917}, address: 'вул. Московська, 12', openTime: '9:00', closeTime: '21:00'}]},
-    // Нетешин
-    {id: 44, stores: [{id: 1, position: {lat: 50.33518, lng: 26.64125}, address: 'просп. Незалежності, 11', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 41, stores: [{id: 83, position: {lat: 48.441785, lng: 22.73166}, address: 'вул. Миру, 151-Г', openTime: '9:00', closeTime: '21:00'}]},
     // Николаев
     {
-      id: 45, stores: [
-      {id: 1, position: {lat: 46.9636, lng: 32.0252}, address: 'просп. Центральний, 259/1', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 46.9675, lng: 31.9744}, address: 'просп. Центральний, 27-ББ/1', openTime: '9:00', closeTime: '21:00'},
-      {id: 3, position: {lat: 46.8558, lng: 32.014}, address: 'просп. Корабелів, 14', openTime: '9:00', closeTime: '21:00'}
-    ]
+      id: 42, stores: [
+        {id: 84, position: {lat: 46.9636, lng: 32.0252}, address: 'просп. Центральний, 259/1', openTime: '9:00', closeTime: '21:00'},
+        {id: 85, position: {lat: 46.9675, lng: 31.9744}, address: 'просп. Центральний, 27-ББ/1', openTime: '9:00', closeTime: '21:00'},
+        {id: 86, position: {lat: 46.8558, lng: 32.014}, address: 'просп. Корабелів, 14', openTime: '9:00', closeTime: '21:00'}
+      ]
     },
+    // Надвирна
+    {id: 43, stores: [{id: 87, position: {lat: 48.63264, lng: 24.5687}, address: 'вул. Чорновола, 4', openTime: '9:00', closeTime: '21:00'}]},
+    // Нежин
+    {id: 44, stores: [{id: 88, position: {lat: 51.051148, lng: 31.88917}, address: 'вул. Московська, 12', openTime: '9:00', closeTime: '21:00'}]},
+    // Нетешин
+    {id: 45, stores: [{id: 89, position: {lat: 50.33518, lng: 26.64125}, address: 'просп. Незалежності, 11', openTime: '9:00', closeTime: '21:00'}]},
     // Никополь
-    {id: 46, stores: [{id: 1, position: {lat: 47.566237, lng: 34.393076}, address: 'вул. Електрометалургів, 42-Г', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 46, stores: [{id: 90, position: {lat: 47.566237, lng: 34.393076}, address: 'вул. Електрометалургів, 42-Г', openTime: '9:00', closeTime: '21:00'}]},
     // Новая Каховка
-    {id: 47, stores: [{id: 1, position: {lat: 46.7579, lng: 33.3769}, address: 'вул. Французська, 26', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 47, stores: [{id: 91, position: {lat: 46.7579, lng: 33.3769}, address: 'вул. Французська, 26', openTime: '9:00', closeTime: '21:00'}]},
     // Новомосковск
-    {id: 48, stores: [{id: 1, position: {lat: 48.64049, lng: 35.25982}, address: 'вул. Гетьманська, 40-А', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 48, stores: [{id: 92, position: {lat: 48.64049, lng: 35.25982}, address: 'вул. Гетьманська, 40-А', openTime: '9:00', closeTime: '21:00'}]},
     // Обухов
-    {id: 49, stores: [{id: 1, position: {lat: 50.126007, lng: 30.653335}, address: 'вул. Каштанова, 6/1', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 49, stores: [{id: 93, position: {lat: 50.126007, lng: 30.653335}, address: 'вул. Каштанова, 6/1', openTime: '9:00', closeTime: '21:00'}]},
     // Одесса
     {
       id: 50, stores: [
-      {id: 1, position: {lat: 46.4681, lng: 30.7356}, address: 'вул. Новощіпний Ряд, 2', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 46.470605, lng: 30.730999}, address: 'вул. Пантелеймонівська, 88/1', openTime: '9:00', closeTime: '21:00'},
-      {id: 3, position: {lat: 46.443, lng: 30.7048}, address: 'пл. Бориса Деревянко, 2', openTime: '9:00', closeTime: '21:00'},
-      {id: 4, position: {lat: 46.3979, lng: 30.7186}, address: 'просп. Академіка Глушка, 19', openTime: '9:00', closeTime: '21:00'},
-      {id: 5, position: {lat: 46.5827, lng: 30.8018}, address: 'вул. Дніпропетровська дорога, 125-Б', openTime: '9:00', closeTime: '21:00'},
-      {id: 6, position: {lat: 46.4162, lng: 30.7125}, address: 'просп. Маршала Жукова, 2', openTime: '9:00', closeTime: '21:00'}
+      {id: 94, position: {lat: 46.4681, lng: 30.7356}, address: 'вул. Новощіпний Ряд, 2', openTime: '9:00', closeTime: '21:00'},
+      {id: 95, position: {lat: 46.470605, lng: 30.730999}, address: 'вул. Пантелеймонівська, 88/1', openTime: '9:00', closeTime: '21:00'},
+      {id: 96, position: {lat: 46.443, lng: 30.7048}, address: 'пл. Бориса Деревянко, 2', openTime: '9:00', closeTime: '21:00'},
+      {id: 97, position: {lat: 46.3979, lng: 30.7186}, address: 'просп. Академіка Глушка, 19', openTime: '9:00', closeTime: '21:00'},
+      {id: 98, position: {lat: 46.5827, lng: 30.8018}, address: 'вул. Дніпропетровська дорога, 125-Б', openTime: '9:00', closeTime: '21:00'},
+      {id: 99, position: {lat: 46.4162, lng: 30.7125}, address: 'просп. Маршала Жукова, 2', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Павлоград
-    {id: 51, stores: [{id: 1, position: {lat: 48.529933, lng: 35.870285}, address: 'вул. Тараса Шевченка, 118', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 51, stores: [{id: 100, position: {lat: 48.529933, lng: 35.870285}, address: 'вул. Тараса Шевченка, 118', openTime: '9:00', closeTime: '21:00'}]},
     // Первомайск
-    {id: 52, stores: [{id: 1, position: {lat: 48.041942, lng: 30.850899}, address: 'вул. Тараса Шевченка, 1', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 52, stores: [{id: 101, position: {lat: 48.041942, lng: 30.850899}, address: 'вул. Тараса Шевченка, 1', openTime: '9:00', closeTime: '21:00'}]},
     // Подольск
-    {id: 53, stores: [{id: 1, position: {lat: 47.748, lng: 29.5343}, address: 'вул. 50 років жовтня, 121-В', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 53, stores: [{id: 102, position: {lat: 47.748, lng: 29.5343}, address: 'вул. 50 років жовтня, 121-В', openTime: '9:00', closeTime: '21:00'}]},
     // Покров
-    {id: 54, stores: [{id: 1, position: {lat: 47.6561, lng: 34.1073}, address: 'вул. Центральна, 37', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 54, stores: [{id: 103, position: {lat: 47.6561, lng: 34.1073}, address: 'вул. Центральна, 37', openTime: '9:00', closeTime: '21:00'}]},
     // Покровск
     {
       id: 55, stores: [
-      {id: 1, position: {lat: 48.265877, lng: 37.181286}, address: 'мікрорайон Південний, 41-А', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 48.27321, lng: 37.176236}, address: 'вул. Європейська, 90', openTime: '9:00', closeTime: '21:00'}
+      {id: 104, position: {lat: 48.265877, lng: 37.181286}, address: 'мікрорайон Південний, 41-А', openTime: '9:00', closeTime: '21:00'},
+      {id: 105, position: {lat: 48.27321, lng: 37.176236}, address: 'вул. Європейська, 90', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Полтава
     {
       id: 56, stores: [
-      {id: 1, position: {lat: 49.5842, lng: 34.5476}, address: 'вул. Тараса Шевченка, 44', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 49.601398, lng: 34.53096}, address: 'вул. Зіньківська, 6/1-А', openTime: '9:00', closeTime: '21:00'}
+      {id: 106, position: {lat: 49.5842, lng: 34.5476}, address: 'вул. Тараса Шевченка, 44', openTime: '9:00', closeTime: '21:00'},
+      {id: 107, position: {lat: 49.601398, lng: 34.53096}, address: 'вул. Зіньківська, 6/1-А', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Прилуки
-    {id: 57, stores: [{id: 1, position: {lat: 50.6036, lng: 32.3856}, address: 'вул. Незалежності, 63', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 57, stores: [{id: 108, position: {lat: 50.6036, lng: 32.3856}, address: 'вул. Незалежності, 63', openTime: '9:00', closeTime: '21:00'}]},
     // Ровно
     {
       id: 58, stores: [
-      {id: 1, position: {lat: 50.626095, lng: 26.200207}, address: 'вул. Макарова, 23', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 50.6245, lng: 26.2499}, address: 'просп. Миру, 10', openTime: '9:00', closeTime: '21:00'},
-      {id: 3, position: {lat: 50.6162, lng: 26.2805}, address: 'вул. Київська, 67-А', openTime: '9:00', closeTime: '21:00'}
+      {id: 109, position: {lat: 50.626095, lng: 26.200207}, address: 'вул. Макарова, 23', openTime: '9:00', closeTime: '21:00'},
+      {id: 110, position: {lat: 50.6245, lng: 26.2499}, address: 'просп. Миру, 10', openTime: '9:00', closeTime: '21:00'},
+      {id: 111, position: {lat: 50.6162, lng: 26.2805}, address: 'вул. Київська, 67-А', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Ромны
-    {id: 59, stores: [{id: 1, position: {lat: 50.751274, lng: 33.476734}, address: 'бульв. Свободи, 10-В', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 59, stores: [{id: 112, position: {lat: 50.751274, lng: 33.476734}, address: 'бульв. Свободи, 10-В', openTime: '9:00', closeTime: '21:00'}]},
     // Рубежное
-    {id: 60, stores: [{id: 1, position: {lat: 49.026339, lng: 38.376377}, address: 'вул. Менделєєва, 31', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 60, stores: [{id: 113, position: {lat: 49.026339, lng: 38.376377}, address: 'вул. Менделєєва, 31', openTime: '9:00', closeTime: '21:00'}]},
     // Самбор
-    {id: 61, stores: [{id: 1, position: {lat: 49.515090, lng: 23.196048}, address: 'вул. Валова, 24/1', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 61, stores: [{id: 114, position: {lat: 49.515090, lng: 23.196048}, address: 'вул. Валова, 24/1', openTime: '9:00', closeTime: '21:00'}]},
     // Северодонецк
-    {id: 62, stores: [{id: 1, position: {lat: 48.941857, lng: 38.518090}, address: 'просп. Гвардійський, 38-Б', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 62, stores: [{id: 115, position: {lat: 48.941857, lng: 38.518090}, address: 'просп. Гвардійський, 38-Б', openTime: '9:00', closeTime: '21:00'}]},
     // Славута
-    {id: 63, stores: [{id: 1, position: {lat: 50.296555, lng: 26.857033}, address: 'вул. Площа Шевченка, 12', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 63, stores: [{id: 116, position: {lat: 50.296555, lng: 26.857033}, address: 'вул. Площа Шевченка, 12', openTime: '9:00', closeTime: '21:00'}]},
     // Славянск
-    {id: 64, stores: [{id: 1, position: {lat: 48.852007, lng: 37.604062}, address: 'пл. Соборна, 3', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 64, stores: [{id: 117, position: {lat: 48.852007, lng: 37.604062}, address: 'пл. Соборна, 3', openTime: '9:00', closeTime: '21:00'}]},
     // Смела
-    {id: 65, stores: [{id: 1, position: {lat: 49.228423, lng: 31.865693}, address: 'вул. Леніна, 70', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 65, stores: [{id: 118, position: {lat: 49.228423, lng: 31.865693}, address: 'вул. Леніна, 70', openTime: '9:00', closeTime: '21:00'}]},
     // Сокольники
-    {id: 66, stores: [{id: 1, position: {lat: 49.772609, lng: 24.009539}, address: 'вул. Стрийська, 30', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 66, stores: [{id: 119, position: {lat: 49.772609, lng: 24.009539}, address: 'вул. Стрийська, 30', openTime: '9:00', closeTime: '21:00'}]},
     // Старобельск
-    {id: 67, stores: [{id: 1, position: {lat: 49.283316, lng: 38.908971}, address: 'вул. Комунарів, 39-А', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 67, stores: [{id: 120, position: {lat: 49.283316, lng: 38.908971}, address: 'вул. Комунарів, 39-А', openTime: '9:00', closeTime: '21:00'}]},
     // Стрый
-    {id: 68, stores: [{id: 1, position: {lat: 49.2607146, lng: 23.8539935}, address: 'вул. Тараса Шевченка, 72', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 68, stores: [{id: 121, position: {lat: 49.2607146, lng: 23.8539935}, address: 'вул. Тараса Шевченка, 72', openTime: '9:00', closeTime: '21:00'}]},
     // Сумы
     {
       id: 69, stores: [
-      {id: 1, position: {lat: 50.903244, lng: 34.812884}, address: 'вул. Харківська, 9', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 50.904678, lng: 34.805757}, address: 'вул. Харківська, 2', openTime: '9:00', closeTime: '21:00'}
+      {id: 122, position: {lat: 50.903244, lng: 34.812884}, address: 'вул. Харківська, 9', openTime: '9:00', closeTime: '21:00'},
+      {id: 123, position: {lat: 50.904678, lng: 34.805757}, address: 'вул. Харківська, 2', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Тернополь
     {
       id: 70, stores: [
-      {id: 1, position: {lat: 49.545749, lng: 25.589506}, address: 'вул. Живова, 15-А', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 49.575467, lng: 25.639449}, address: 'вул. Текстильна, 28-Ч', openTime: '9:00', closeTime: '21:00'}
+      {id: 124, position: {lat: 49.545749, lng: 25.589506}, address: 'вул. Живова, 15-А', openTime: '9:00', closeTime: '21:00'},
+      {id: 125, position: {lat: 49.575467, lng: 25.639449}, address: 'вул. Текстильна, 28-Ч', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Токмак
-    {id: 71, stores: [{id: 1, position: {lat: 47.264227, lng: 35.713658}, address: 'вул. Шевченка, 54', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 71, stores: [{id: 126, position: {lat: 47.264227, lng: 35.713658}, address: 'вул. Шевченка, 54', openTime: '9:00', closeTime: '21:00'}]},
     // Ужгород
     {
       id: 72, stores: [
-      {id: 1, position: {lat: 48.619844, lng: 22.294909}, address: 'вул. Капушанська, 2', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 48.618344, lng: 22.289116}, address: 'просп. Свободи, 28', openTime: '9:00', closeTime: '21:00'}
+      {id: 127, position: {lat: 48.619844, lng: 22.294909}, address: 'вул. Капушанська, 2', openTime: '9:00', closeTime: '21:00'},
+      {id: 128, position: {lat: 48.618344, lng: 22.289116}, address: 'просп. Свободи, 28', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Умань
-    {id: 73, stores: [{id: 1, position: {lat: 48.756094, lng: 30.221755}, address: 'вул. Велика Фонтанна, 31', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 73, stores: [{id: 129, position: {lat: 48.756094, lng: 30.221755}, address: 'вул. Велика Фонтанна, 31', openTime: '9:00', closeTime: '21:00'}]},
     // Фастов
-    {id: 74, stores: [{id: 1, position: {lat: 50.077378, lng: 29.913310}, address: 'вул. Зигмунда Козара, 5', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 74, stores: [{id: 130, position: {lat: 50.077378, lng: 29.913310}, address: 'вул. Зигмунда Козара, 5', openTime: '9:00', closeTime: '21:00'}]},
     // Харьков
     {
       id: 75, stores: [
-      {id: 1, position: {lat: 49.943075, lng: 36.301864}, address: 'просп. Героїв Сталінграду, 136/8', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 49.990327, lng: 36.290466}, address: 'вул. Академіка Павлова, 44-Б', openTime: '9:00', closeTime: '21:00'},
-      {id: 3, position: {lat: 49.986365, lng: 36.259809}, address: 'майдан Захисників України, 7/8', openTime: '9:00', closeTime: '21:00'},
-      {id: 4, position: {lat: 49.9822, lng: 36.2396}, address: 'вул. Вернадського, 2, літ. А-3', openTime: '9:00', closeTime: '21:00'},
-      {id: 5, position: {lat: 49.956403, lng: 36.361966}, address: 'просп. Московський, 256-Б', openTime: '9:00', closeTime: '21:00'},
-      {id: 6, position: {lat: 50.058932, lng: 36.204024}, address: 'просп. Перемоги, 62-З', openTime: '9:00', closeTime: '21:00'},
-      {id: 7, position: {lat: 49.996009, lng: 36.339274}, address: 'просп. Тракторобудівників, 59/56', openTime: '9:00', closeTime: '21:00'},
-      {id: 8, position: {lat: 49.9875, lng: 36.209}, address: 'вул. Полтавський Шлях, 56', openTime: '9:00', closeTime: '21:00'}
+      {id: 131, position: {lat: 49.943075, lng: 36.301864}, address: 'просп. Героїв Сталінграду, 136/8', openTime: '9:00', closeTime: '21:00'},
+      {id: 132, position: {lat: 49.990327, lng: 36.290466}, address: 'вул. Академіка Павлова, 44-Б', openTime: '9:00', closeTime: '21:00'},
+      {id: 133, position: {lat: 49.986365, lng: 36.259809}, address: 'майдан Захисників України, 7/8', openTime: '9:00', closeTime: '21:00'},
+      {id: 134, position: {lat: 49.9822, lng: 36.2396}, address: 'вул. Вернадського, 2, літ. А-3', openTime: '9:00', closeTime: '21:00'},
+      {id: 135, position: {lat: 49.956403, lng: 36.361966}, address: 'просп. Московський, 256-Б', openTime: '9:00', closeTime: '21:00'},
+      {id: 136, position: {lat: 50.058932, lng: 36.204024}, address: 'просп. Перемоги, 62-З', openTime: '9:00', closeTime: '21:00'},
+      {id: 137, position: {lat: 49.996009, lng: 36.339274}, address: 'просп. Тракторобудівників, 59/56', openTime: '9:00', closeTime: '21:00'},
+      {id: 138, position: {lat: 49.9875, lng: 36.209}, address: 'вул. Полтавський Шлях, 56', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Херсон
     {
       id: 76, stores: [
-      {id: 1, position: {lat: 46.639193, lng: 32.615326}, address: 'просп. Ушакова, 26', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 46.672824, lng: 32.644061}, address: 'вул. Залаегерсег, 18', openTime: '9:00', closeTime: '21:00'}
+      {id: 139, position: {lat: 46.639193, lng: 32.615326}, address: 'просп. Ушакова, 26', openTime: '9:00', closeTime: '21:00'},
+      {id: 140, position: {lat: 46.672824, lng: 32.644061}, address: 'вул. Залаегерсег, 18', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Хмельницкий
     {
       id: 77, stores: [
-      {id: 1, position: {lat: 49.404766, lng: 26.958422}, address: 'вул. Кам\'янецька, 122', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 49.4204, lng: 26.9885}, address: 'вул. Свободи, 73', openTime: '9:00', closeTime: '21:00'}
+      {id: 141, position: {lat: 49.404766, lng: 26.958422}, address: 'вул. Кам\'янецька, 122', openTime: '9:00', closeTime: '21:00'},
+      {id: 142, position: {lat: 49.4204, lng: 26.9885}, address: 'вул. Свободи, 73', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Хуст
-    {id: 78, stores: [{id: 1, position: {lat: 48.1776, lng: 23.2925}, address: 'вул. Духновича, 17-А/2', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 78, stores: [{id: 143, position: {lat: 48.1776, lng: 23.2925}, address: 'вул. Духновича, 17-А/2', openTime: '9:00', closeTime: '21:00'}]},
     // Червоноград
-    {id: 79, stores: [{id: 1, position: {lat: 50.391774, lng: 24.247073}, address: 'просп. Шевченка, 25', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 79, stores: [{id: 144, position: {lat: 50.391774, lng: 24.247073}, address: 'просп. Шевченка, 25', openTime: '9:00', closeTime: '21:00'}]},
     // Черкассы
     {
       id: 80, stores: [
-      {id: 1, position: {lat: 49.441, lng: 32.0665}, address: 'бульв. Тараса Шевченка, 207', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 49.424112, lng: 32.096021}, address: 'бульв. Тараса Шевченка, 385', openTime: '9:00', closeTime: '21:00'},
-      {id: 3, position: {lat: 49.4248, lng: 32.0147}, address: 'вул. 30-річчя Перемоги, 29', openTime: '9:00', closeTime: '21:00'}
+      {id: 145, position: {lat: 49.441, lng: 32.0665}, address: 'бульв. Тараса Шевченка, 207', openTime: '9:00', closeTime: '21:00'},
+      {id: 146, position: {lat: 49.424112, lng: 32.096021}, address: 'бульв. Тараса Шевченка, 385', openTime: '9:00', closeTime: '21:00'},
+      {id: 147, position: {lat: 49.4248, lng: 32.0147}, address: 'вул. 30-річчя Перемоги, 29', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Чернигов
     {
       id: 81, stores: [
-      {id: 1, position: {lat: 51.515306, lng: 31.306962}, address: 'вул. 77-ї Гвардійської Дивізії, 1', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 51.513528, lng: 31.324022}, address: 'вул. Рокоссовського, 18-А', openTime: '9:00', closeTime: '21:00'},
-      {id: 3, position: {lat: 51.495711, lng: 31.293263}, address: 'просп. Миру, 35', openTime: '9:00', closeTime: '21:00'}
+      {id: 148, position: {lat: 51.515306, lng: 31.306962}, address: 'вул. 77-ї Гвардійської Дивізії, 1', openTime: '9:00', closeTime: '21:00'},
+      {id: 149, position: {lat: 51.513528, lng: 31.324022}, address: 'вул. Рокоссовського, 18-А', openTime: '9:00', closeTime: '21:00'},
+      {id: 150, position: {lat: 51.495711, lng: 31.293263}, address: 'просп. Миру, 35', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Черновцы
     {
       id: 82, stores: [
-      {id: 1, position: {lat: 48.319616, lng: 25.962154}, address: 'вул. Калинівська, 13-А', openTime: '9:00', closeTime: '21:00'},
-      {id: 2, position: {lat: 48.2677, lng: 25.939}, address: 'просп. Незалежності, 80', openTime: '9:00', closeTime: '21:00'},
-      {id: 3, position: {lat: 48.258779, lng: 25.956744}, address: 'вул. Головна, 265-А', openTime: '9:00', closeTime: '21:00'},
-      {id: 4, position: {lat: 48.2928, lng: 25.9346}, address: 'вул. Університецька, 2', openTime: '9:00', closeTime: '21:00'}
+      {id: 151, position: {lat: 48.319616, lng: 25.962154}, address: 'вул. Калинівська, 13-А', openTime: '9:00', closeTime: '21:00'},
+      {id: 152, position: {lat: 48.2677, lng: 25.939}, address: 'просп. Незалежності, 80', openTime: '9:00', closeTime: '21:00'},
+      {id: 153, position: {lat: 48.258779, lng: 25.956744}, address: 'вул. Головна, 265-А', openTime: '9:00', closeTime: '21:00'},
+      {id: 154, position: {lat: 48.2928, lng: 25.9346}, address: 'вул. Університецька, 2', openTime: '9:00', closeTime: '21:00'}
     ]
     },
     // Черноморск
-    {id: 83, stores: [{id: 1, position: {lat: 46.301214, lng: 30.654565}, address: 'вул. 1-го Травня, 5', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 83, stores: [{id: 155, position: {lat: 46.301214, lng: 30.654565}, address: 'вул. 1-го Травня, 5', openTime: '9:00', closeTime: '21:00'}]},
     // Шепетовка
-    {id: 84, stores: [{id: 1, position: {lat: 50.179083, lng: 27.067428}, address: 'вул. Героїв Небесної Сотні, 48', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 84, stores: [{id: 156, position: {lat: 50.179083, lng: 27.067428}, address: 'вул. Героїв Небесної Сотні, 48', openTime: '9:00', closeTime: '21:00'}]},
     // Шостка
-    {id: 85, stores: [{id: 1, position: {lat: 51.866299, lng: 33.481032}, address: 'вул. Свободи, 30', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 85, stores: [{id: 157, position: {lat: 51.866299, lng: 33.481032}, address: 'вул. Свободи, 30', openTime: '9:00', closeTime: '21:00'}]},
     // Энергодар
-    {id: 86, stores: [{id: 1, position: {lat: 47.500765, lng: 34.655972}, address: 'просп. Будівельників, 27-А', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 86, stores: [{id: 158, position: {lat: 47.500765, lng: 34.655972}, address: 'просп. Будівельників, 27-А', openTime: '9:00', closeTime: '21:00'}]},
     // Южноукраинск
-    {id: 87, stores: [{id: 1, position: {lat: 47.826007, lng: 31.172942}, address: 'просп. Незалежності, 25', openTime: '9:00', closeTime: '21:00'}]},
+    {id: 87, stores: [{id: 159, position: {lat: 47.826007, lng: 31.172942}, address: 'просп. Незалежності, 25', openTime: '9:00', closeTime: '21:00'}]},
     // Южный
-    {id: 88, stores: [{id: 1, position: {lat: 46.626595, lng: 31.100375}, address: 'просп. Григорівського Десанту, 34', openTime: '9:00', closeTime: '21:00'}]}
+    {id: 88, stores: [{id: 160, position: {lat: 46.626595, lng: 31.100375}, address: 'просп. Григорівського Десанту, 34', openTime: '9:00', closeTime: '21:00'}]}
   ];
   // </editor-fold>
 
@@ -767,7 +767,7 @@ export class WebApiService implements InMemoryDbService {
   clients = [
     {id: 100, userId: 3, name: 'yurafox', phone: '+0800300353', login: 'yurafox@fox.com', email: 'yurafox@fox.com', fname: 'Yurii', lname: 'Ishchenko', barcode: '+11000002680'},
     {id: 101, userId: 1, name: 'sergce', phone: '+222', login: 'sergce@fox.com', email: 'sergce@fox.com', fname: 'Serhiy', lname: 'Moskalenko', barcode: '+11000002681'},
-    {id: 102, userId: 2, name: 'dealio07', phone: '+3333', login: 'dealio07@fox.com', email: 'dealio07@fox.com', fname: 'Volodymyr', lname: 'Varha'}
+    {id: 102, userId: 2, name: 'dealio07', phone: '+3333', login: 'dealio07@fox.com', email: 'dealio07@fox.com', fname: 'Volodymyr', lname: 'Varha', barcode: '+11000002682'}
   ];
 
   clientAddresses = [
@@ -828,7 +828,8 @@ export class WebApiService implements InMemoryDbService {
       password: 'sergce',
       id: 1,
       appKey: '',
-      userSetting: {'currency': '0', 'lang': '1'}
+      userSetting: {'currency': '0', 'lang': '1'},
+      favoriteStoresId: [35, 41]
     },
     {
       name: 'vladimir',
@@ -836,7 +837,8 @@ export class WebApiService implements InMemoryDbService {
       password: 'dealio07',
       id: 2,
       appKey: '',
-      userSetting: {'currency': '1', 'lang': '2'}
+      userSetting: {'currency': '1', 'lang': '2'},
+      favoriteStoresId: [36, 44]
     },
     {
       name: 'Yuri',
@@ -844,7 +846,8 @@ export class WebApiService implements InMemoryDbService {
       password: 'yurafox',
       id: 3,
       appKey: '',
-      userSetting: {'currency': '2', 'lang': '3'}
+      userSetting: {'currency': '2', 'lang': '3'},
+      favoriteStoresId: [37, 39]
     },
   ];
 
