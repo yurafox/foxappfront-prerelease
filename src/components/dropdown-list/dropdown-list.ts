@@ -28,7 +28,21 @@
     Значение по умолчанию только для qty - QTY
 
     @param
-    Обязательный параметр reference:any - ссылочный тип для байдинга обьекта
+    Необязательный параметр reference:any - ссылочный тип для байдинга обьекта
+    @param
+    Необязательный параметр param:any - id для байдинга обьекта
+    @param
+    Необязательный параметр ref?:{bindRef: any, bindName:string} - глубокое связывание обьекта для байдинга.
+    bindRef - ссылочный обьект содержащий поле для байдинга.
+    bindName - имя поля для байдинга.
+    Example:
+    <dropdown-list [param]="shippingAddress.idCountry"
+                   [ref]="{bindRef:shippingAddress,bindName:'idCountry'}"
+                   [placeholder]="'Please select country'"
+                   [store]="countries"
+                   [options]="{popupClass: 'f-large-dictionary', popupHeader: 'Select country'}"
+                   [map]="{valueName:'id', displayName:'name'}" >
+    </dropdown-list>
     @param
     Параметр store?:Array<any> - список ключ-значение, необязателбный для QTY. Для остальных словарей
     параметр обязательный.
@@ -85,6 +99,15 @@
                                [isQty]="true">
               </dropdown-list>
      Обязательные только три параметра.
+
+     @Вариант работы с Edit Ship Address Page
+     <dropdown-list [param]="shippingAddress.idCountry"
+                    [ref]="{bindRef:shippingAddress,bindName:'idCountry'}"
+                    [placeholder]="'Please select country'"
+                    [store]="countries"
+                    [options]="{popupClass: 'f-large-dictionary', popupHeader: 'Select country'}"
+                    [map]="{valueName:'id', displayName:'name'}" >
+    </dropdown-list>
      **/
 import { System} from './../../app/core/app-core';
 import { Component, Input, OnChanges } from '@angular/core';
@@ -127,6 +150,12 @@ export class DropdownListComponent implements OnChanges {
   isQty?: boolean = false;
 
   @Input()
+  placeholder:string = '';
+
+  @Input()
+  ref?:{bindRef: any,bindName:string}
+
+  @Input()
   beforeUpdate: (oldItem: any, newItem: any) => boolean;
 
   @Input()
@@ -162,13 +191,13 @@ export class DropdownListComponent implements OnChanges {
     if (!this.options)
       return '';
 
-    const dataValue:any=(this.referencePriority) ? (this.reference[this.map.displayName] || '')
+    const dataValue:any=(this.referencePriority) ? (this.reference[this.map.displayName])
                                                  :(this.displayParam);
 
     if(this.options.buttonHeader)
        return `${this.options.buttonHeader}: ${dataValue}`;
 
-    return (!this.isQty) ? dataValue : `Qty: ${dataValue}`;
+    return (!this.isQty) ? dataValue || this.placeholder : `Qty: ${dataValue}`;
   }
 
   public get displayParam():string {

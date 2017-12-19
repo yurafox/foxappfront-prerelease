@@ -5,6 +5,7 @@ import {AbstractDataRepository} from "../../app/service";
 
 @IonicPage({name: 'BarcodePage'})
 @Component({
+  selector: 'page-barcode',
   templateUrl: 'barcode.html'
 })
 export class BarcodePage extends ComponentBase {

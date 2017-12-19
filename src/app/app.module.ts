@@ -1,4 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ErrorHandler, NgModule, Injector} from '@angular/core';
 import {IonicApp, IonicErrorHandler, IonicModule, IonicPageModule} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
@@ -75,7 +76,8 @@ import {
   SearchResultsPageModule,
   SelectShipAddressPageModule,
   ShipAddressesPageModule,
-  SupportPageModule
+  SupportPageModule,
+  ActionPageModule
 } from "../pages/index-modules";
 import {NgxQRCodeModule} from "ngx-qrcode2";
 
@@ -85,6 +87,7 @@ import {NgxQRCodeModule} from "ngx-qrcode2";
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpModule,
     InMemoryWebApiModule.forRoot(WebApiService, {delay: 1000, post204: false, put204: false}),
     IonicModule.forRoot(FoxApp),
@@ -127,6 +130,7 @@ import {NgxQRCodeModule} from "ngx-qrcode2";
     SelectShipAddressPageModule,
     ShipAddressesPageModule,
     SupportPageModule,
+    ActionPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

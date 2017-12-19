@@ -15,6 +15,8 @@ import { FilterComponent } from './filter/filter';
 import { CustomPopupComponent } from './custom-popup/custom-popup';
 import { DropdownViewComponent } from './dropdown-view/dropdown-view';
 import { DropdownListComponent } from './dropdown-list/dropdown-list';
+import { ActionSketchComponent } from './action-sketch/action-sketch';
+import {HtmlOutlet} from './html-outlet/html-outlet';
 
 @NgModule({
 	declarations: [
@@ -30,13 +32,16 @@ import { DropdownListComponent } from './dropdown-list/dropdown-list';
     FilterComponent,
     CustomPopupComponent,
     DropdownListComponent,
-    DropdownViewComponent
+    DropdownViewComponent,
+    ActionSketchComponent,
+    HtmlOutlet
   ],
   entryComponents: [
     CustomPopupComponent,
     DropdownViewComponent,
     DropdownListComponent
   ],
+
 	imports: [
     IonicModule,
     PipesModule,
@@ -55,7 +60,9 @@ import { DropdownListComponent } from './dropdown-list/dropdown-list';
     FilterComponent,
     CustomPopupComponent,
     DropdownListComponent,
-    DropdownViewComponent
+    DropdownViewComponent,
+    ActionSketchComponent,
+    HtmlOutlet
   ],
   schemas: [
   CUSTOM_ELEMENTS_SCHEMA

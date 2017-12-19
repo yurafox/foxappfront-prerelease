@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {Store, User} from "../../app/model";
 import {AbstractAccountRepository, AbstractDataRepository} from "../../app/service";
@@ -16,7 +16,7 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
   stores: Store[];
 
   constructor(private navCtrl: NavController, private navParams: NavParams, private repo: AbstractDataRepository,
-              private accrepo: AbstractAccountRepository) {
+              private accrepo: AbstractAccountRepository, private alertCtrl: AlertController) {
     super();
     this.stores = [];
   }
@@ -59,6 +59,37 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
 
   async getStore(id: number): Promise<Store> {
     return await this.repo.getFoxStoreById(id);
+  }
+
+  onIsPrimaryClick(item: any) {
+    this.stores.forEach(i => {
+        i.isPrimary = false;
+      }
+    );
+    item.isPrimary = true;
+  }
+
+  deleteStore(item: Store) {
+    let alert = this.alertCtrl.create({
+      title: 'Confirmation',
+      message: 'Are you sure you want ot delete this address for your address book?',
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.stores.splice(this.stores.indexOf(item),1);
+            if (this.stores.length > 0) {
+              this.stores[0].isPrimary = true;
+            }
+          }
+        },
+        {
+          text: 'Cancel',
+          handler: () => {}
+        }
+      ]
+    });
+    alert.present();
   }
 
 }

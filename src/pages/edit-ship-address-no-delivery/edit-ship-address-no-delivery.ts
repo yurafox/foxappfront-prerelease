@@ -65,6 +65,9 @@ export class EditShipAddressNoDeliveryPage extends ComponentBase {
       this.addressSelectorPage.shippingAddresses.forEach(i => i.isPrimary = false);
       this.shippingAddress.isPrimary = true;
       this.addressSelectorPage.shippingAddresses.push(this.shippingAddress);
+      this.navCtrl.pop().catch(err => {
+        console.log(`Error while going back: ${err}`)
+      });
     } else if (this.mode === 'edit') {
       this.originalAddr.recName = this.shippingAddress.recName;
       this.originalAddr.street = this.shippingAddress.street;
@@ -73,6 +76,9 @@ export class EditShipAddressNoDeliveryPage extends ComponentBase {
       this.originalAddr.zip = this.shippingAddress.zip;
       this.originalAddr.phone = this.shippingAddress.phone;
       this.originalAddr.idCountry = this.shippingAddress.idCountry;
+      this.navCtrl.pop().catch(err => {
+        console.log(`Error while going back: ${err}`)
+      });
     };
 
   }

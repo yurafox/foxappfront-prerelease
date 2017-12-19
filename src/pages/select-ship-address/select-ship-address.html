@@ -16,9 +16,9 @@
 
           <ion-grid style="border: 1px solid #EBEBEC;" >
 
-              <ion-row>
+              <ion-row (click)="onIsPrimaryClick(sa)">
                 <ion-col col-2 text-center>
-                    <input type="radio" id="radioButton" [checked]="sa.isPrimary" (click)="onIsPrimaryClick(sa)">
+                    <input type="radio" id="radioButton" [checked]="sa.isPrimary">
                 </ion-col>
                 <ion-col style="padding-bottom: 10px;" class="f-size-larger">
                   <b>{{sa?.recName}}</b>

@@ -182,13 +182,17 @@ export class MapPage extends ComponentBase implements OnInit {
           let shopOpensTime = markerData.openTime;
           let shopClosesTime = markerData.closeTime;
           const shopRating = markerData.rating;
+          let hidden = '';
+          if (!markerData.rating || 0 >= markerData.rating) {
+            hidden = 'hidden';
+          }
 
           let infoWindow = new google.maps.InfoWindow({
-            content: `<h6>Фокстрот</h6>`+
-            `<p>Рейтинг: ${shopRating}</p>`+
+            content: `<h6 style="color: #ef4123;">Фокстрот</h6>`+
+            `<p>${shopRating > 0 ? ('Рейтинг:  ' + shopRating) : ''}</p>`+
             `<p>${markerData.address}</p>`+
             `<p>Години роботи: ${shopOpensTime} - ${shopClosesTime}</p>`+
-            `<p>${this.shopIsWorking(shopOpensTime, shopClosesTime)}</p>`
+            `<p style="color: ${(this.shopIsWorking(shopOpensTime, shopClosesTime) === 'Open') ? 'green' : 'red'}">${this.shopIsWorking(shopOpensTime, shopClosesTime)}</p>`
           });
 
           let marker = new google.maps.Marker({
@@ -381,7 +385,19 @@ export class MapPage extends ComponentBase implements OnInit {
    */
   addToFavorite() {
     if (this.selectedMarker.value !== null) {
-      console.log('Added to favorite');
+      console.log(`Added to favorite: ${this.selectedMarker.label}`);
+      for (let markerArr of this.markersArr) {
+        for (let store of markerArr.stores) {
+          if (store.address === this.selectedMarker.label) {
+            try {
+              this.userService.profile.favoriteStoresId.push();
+            } catch(err) {
+              console.log(`Error while adding to favorite: ${err}`);
+              return;
+            }
+          }
+        }
+      }
     }
   }
 
