@@ -105,10 +105,10 @@ export class MapPage extends ComponentBase implements OnInit {
       [this.markersArr, this.cities] = await Promise.all([this.repo.getFoxStores(), this.repo.getCities()]);
 
       /**
-       * Set defaultCityId to id of the city with name 'Киев' or 'Київ'
+       * Set defaultCityId to id of the city with name 'Киев'/'Київ'/'Kiev'/'Kyiv'
        */
       this.cities.forEach((city) => {
-        if (city.name === 'Киев' || city.name === 'Київ') {
+        if (city.name === 'Киев' || city.name === 'Київ' || city.name === 'Kiev' || city.name === 'Kyiv') {
           this.defaultCityId = city.id;
         }
       });
@@ -173,7 +173,7 @@ export class MapPage extends ComponentBase implements OnInit {
       }
 
       /**
-       * Iterating through all shops positions
+       * Iterating through all stores positions. Setting up info windows and marker event listeners
        */
       await this.markersArr.forEach((markerArr) => {
         markerArr.stores.forEach((markerData, i) => {
@@ -390,7 +390,7 @@ export class MapPage extends ComponentBase implements OnInit {
         for (let store of markerArr.stores) {
           if (store.address === this.selectedMarker.label) {
             try {
-              this.userService.profile.favoriteStoresId.push();
+              this.userService.addFavoriteStoresId(store.id);
             } catch(err) {
               console.log(`Error while adding to favorite: ${err}`);
               return;

@@ -91,6 +91,17 @@ export class UserService {
     localStorage.setItem('currency', currency.toString());
     this.trySendSettings();
   }
+
+  public addFavoriteStoresId(id:number) {
+    this.user.favoriteStoresId.push(id);
+    this.trySendSettings();
+  }
+
+  public removeFavoriteStoresId(id:number) {
+    let indx: number = this.user.favoriteStoresId.indexOf(id);
+    this.user.favoriteStoresId.splice(indx,1);
+    this.trySendSettings();
+  }
   // </editor-fold>
 
   // <editor-fold desc='methods'>

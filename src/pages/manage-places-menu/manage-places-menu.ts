@@ -18,7 +18,7 @@ export class ManagePlacesMenuPage extends ComponentBase {
 
   places: PageInterface[] = [
     {title: 'Shipping addresses', name: 'ShipAddresses', component: 'ShipAddressesPage', icon: 'ios-home-outline', index: 0},
-    {title: 'Favorite shops', name: 'FavoriteShops', component: 'FavoriteStoresPage', icon: 'md-star-outline', index: 1}
+    {title: 'Favorite stores', name: 'FavoriteStores', component: 'FavoriteStoresPage', icon: 'md-star-outline', index: 1}
   ]
 
   constructor(private platform: Platform, private nav: Nav,

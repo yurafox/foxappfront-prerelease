@@ -54,7 +54,7 @@ export class SelectShipAddressPage extends ComponentBase {
   deleteAddress(item: ClientAddress) {
     let alert = this.alertCtrl.create({
       title: 'Confirmation',
-      message: 'Are you sure you want ot delete this address for your address book?',
+      message: 'Are you sure you want to delete this address from your address book?',
       buttons: [
         {
           text: 'OK',

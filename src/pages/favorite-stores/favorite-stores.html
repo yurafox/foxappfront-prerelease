@@ -4,41 +4,33 @@
 
 
 <ion-content padding>
-  <div *ngIf="dataLoaded && stores">
-
-    <!--<ion-grid>
-      <div *ngFor="let store of stores">
-        <ion-row>
-          {{store?.address}}
-        </ion-row>
-      </div>
-    </ion-grid>-->
-
+  <div *ngIf="(dataLoaded === true) && stores && (stores.length > 0)">
     <ion-grid class="f-item-nopadding-tb f-color-secondary">
       <ion-row>
         <ion-col>
           <b><span class="f-size-large">Select a favorite store</span></b>
         </ion-col>
       </ion-row>
-
       <ion-row *ngFor="let store of stores">
 
-        <ion-grid style="border: 1px solid #EBEBEC;" >
-
-          <ion-row (click)="onIsPrimaryClick(store)">
+        <ion-grid style="border: 1px solid #EBEBEC;">
+          <ion-row (click)="onIsPrimaryClick(store.store)">
             <ion-col col-2 text-center>
-              <input type="radio" id="radioButton" [checked]="store.isPrimary" >
+              <input type="radio" id="radioButton" [checked]="store.store.isPrimary">
             </ion-col>
             <ion-col style="padding-bottom: 10px;" class="f-size-larger">
-              <span *ngIf="store?.address">
-                  {{store?.address}}
-              </span>
+                <span *ngIf="store?.store.address">
+                  {{store?.store.address}}
+                </span><br/>
+                <span *ngIf="store?.city.name">
+                  {{store?.city.name}}
+                </span>
             </ion-col>
           </ion-row>
-          <div *ngIf="store.isPrimary">
+          <div *ngIf="store.store.isPrimary">
             <ion-row>
               <ion-col col-6 style="padding-right: 10px; padding-bottom: 15px; padding-left: 10px;">
-                <button class="f-btn-secondary"  ion-button block (click)="deleteStore(store)">Delete</button>
+                <button class="f-btn-secondary" ion-button block (click)="deleteStore(store)">Delete</button>
               </ion-col>
             </ion-row>
           </div>
@@ -46,5 +38,8 @@
         </ion-grid>
       </ion-row>
     </ion-grid>
+  </div>
+  <div *ngIf="(dataLoaded === false) || (stores.length === 0) || !stores">
+    <span class="f-size-large">You have no favorite stores yet<br/>Or they are loading</span>
   </div>
 </ion-content>
