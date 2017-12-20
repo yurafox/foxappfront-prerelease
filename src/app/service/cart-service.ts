@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {ClientOrder} from '../model/client-order';
 import {ClientOrderProducts} from '../model/client-order-products';
 import {QuotationProduct} from '../model/quotation-product';
@@ -6,11 +6,10 @@ import {StorePlace} from '../model/store-place';
 import {UserService} from './bll/user-service';
 import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
 import {EventService} from './event-service';
-import {System} from '../core/app-core';
 
 
 @Injectable()
-export class CartService {
+export class CartService  {
 
   private cKey = 'cartItems';
   public order: ClientOrder;
@@ -103,11 +102,6 @@ export class CartService {
 
       let saveArr = new Array<any>();
       this.orderProducts.forEach(i => {
-          // TODO переписать на DTO после того, как пофиксим баг с удалением методов декоратором LazyLoading
-/*
-          let saveObj = {idQuotationProduct: i.idQuotationProduct,
-            price: i.price, qty: i.qty, idStorePlace: i.idStorePlace};
-*/
           saveArr.push(i.dto);
         }
       );
