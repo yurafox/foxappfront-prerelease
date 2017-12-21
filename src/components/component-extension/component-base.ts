@@ -29,7 +29,7 @@ export abstract class ComponentBase implements OnDestroy, OnInit {
   }
 
   protected set localeID(id: number) {
-    this.userService.lang = id;
+    this.userService.profile.userSetting['lang'] = id.toString();
   }
 
   protected get currencyID(): number {
@@ -78,8 +78,8 @@ export abstract class ComponentBase implements OnDestroy, OnInit {
   // add subscribers
   protected toEventSubscribe() {
     let subEv: any = this.evServ.events['localeChangeEvent']
-      .subscribe(data =>
-        this.setLocaleFromSource({componentName: this._componentName, lang: data}));
+      .subscribe(data => {
+        this.setLocaleFromSource({componentName: this._componentName, lang: data})});
 
     this.listenersObj.push(subEv);
   }
