@@ -48,8 +48,14 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
               console.log(`Didn't load: ${err}`)
             });*/
           }
+          if (this.stores === []) {
+            this.dataLoaded = false;
+          }
         } else {
           console.log(`Didn't load favoriteStoresId from storage`);
+          if (this.stores === []) {
+            this.dataLoaded = false;
+          }
           this.navCtrl.pop().catch(err => console.log(`Couldn't go back: ${err}`));
         }
       }
@@ -58,9 +64,6 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
       this.navCtrl.pop().catch(err => console.log(`Couldn't go back: ${err}`));
       return;
     });
-    if (this.stores === []) {
-      this.dataLoaded = false;
-    }
   }
 
   ngOnInit() {

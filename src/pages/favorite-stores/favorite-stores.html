@@ -4,25 +4,23 @@
 
 
 <ion-content padding>
-  <div *ngIf="(dataLoaded === true) && stores && (stores.length > 0)">
-    <ion-grid class="f-item-nopadding-tb f-color-secondary">
-      <ion-row>
-        <ion-col>
-          <b><span class="f-size-large">Select a favorite store</span></b>
-        </ion-col>
-      </ion-row>
+
+  <ion-grid class="f-item-nopadding-tb f-color-secondary">
+    <ion-row>
+      <ion-col>
+        <b><span class="f-size-large">Select a favorite store</span></b>
+      </ion-col>
+    </ion-row>
+    <div *ngIf="(dataLoaded === true) && stores && (stores.length > 0)">
       <ion-row *ngFor="let store of stores">
 
         <ion-grid style="border: 1px solid #EBEBEC;">
           <ion-row (click)="onIsPrimaryClick(store.store)">
-            <ion-col col-2 text-center>
-              <input type="radio" id="radioButton" [checked]="store.store.isPrimary">
-            </ion-col>
             <ion-col style="padding-bottom: 10px;" class="f-size-larger">
                 <span *ngIf="store?.store.address">
                   {{store?.store.address}}
                 </span><br/>
-                <span *ngIf="store?.city.name">
+              <span *ngIf="store?.city.name">
                   {{store?.city.name}}
                 </span>
             </ion-col>
@@ -37,8 +35,8 @@
 
         </ion-grid>
       </ion-row>
-    </ion-grid>
-  </div>
+    </div>
+  </ion-grid>
   <div *ngIf="(dataLoaded === false) || (stores.length === 0) || !stores">
     <span class="f-size-large">You have no favorite stores yet<br/>Or they are loading</span>
   </div>

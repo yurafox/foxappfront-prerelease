@@ -80,6 +80,7 @@ import {
   ActionPageModule
 } from "../pages/index-modules";
 import {NgxQRCodeModule} from "ngx-qrcode2";
+import {AppAvailability} from "@ionic-native/app-availability";
 
 @NgModule({
   declarations: [
@@ -147,6 +148,7 @@ import {NgxQRCodeModule} from "ngx-qrcode2";
     BarcodeScanner,
     ScreenOrientation,
     LaunchNavigator,
+    AppAvailability,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
     {provide: AbstractAccountRepository, useClass: AccountRepository},
