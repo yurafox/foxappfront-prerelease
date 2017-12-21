@@ -1,0 +1,10 @@
+<ion-header>
+  <main-toolbar></main-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngIf="createdCode">
+    <h1 text-center class="h1">Карта комфорту</h1>
+    <ngx-qrcode [qrc-value]="createdCode"></ngx-qrcode>
+  </ion-card>
+</ion-content>

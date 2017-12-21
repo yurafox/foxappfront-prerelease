@@ -8,7 +8,7 @@ import {ComponentBase} from "../components/component-extension/component-base";
 export interface PageInterface {
   title: string;
   name?: string;
-  component: any;
+  component?: any;
   icon?: string;
   index?: number;
 }
@@ -34,13 +34,13 @@ export class FoxApp extends ComponentBase {
   appUrl: string;
   userToken: string;
 
-  appPages = [
+  appPages: PageInterface[] = [
     {title: 'Главная', name: 'Home', component: 'HomePage', index: 0, icon: 'ios-home-outline'},
     {title: 'Категории', name: 'Categories', component: 'CategoriesPage', index: 1, icon: 'ios-list-outline'},
     /*{title: 'Ваши Заказы', name: 'Orders', component: 'MyOrderPage', index: 2, icon: 'ios-cart-outline'},*/
-    {title: 'Профиль', name: 'Account', component: 'AccountPage', index: 3, icon: 'ios-person-outline'},
+    {title: 'Профиль', name: 'Account', component: 'AccountMenuPage', index: 3, icon: 'ios-person-outline'},
   ];
-  infoPages = [
+  infoPages: PageInterface[] = [
     {title: 'Магазины на карте', name: 'Map', component: 'MapPage', index: 0, icon: 'ios-map-outline'},
     {title: 'О нас', name: 'About', index: 1, icon: 'ios-information-circle-outline'},
     {title: 'Поддержка', name: 'Support', component: 'SupportPage', index: 2, icon: 'ios-text-outline'}
@@ -76,7 +76,7 @@ export class FoxApp extends ComponentBase {
 
   openPage(page: PageInterface) {
 
-    if ((this.userService.isAuth === false) && (page.component === 'AccountPage')) {
+    if ((this.userService.isAuth === false) && (page.component === 'AccountMenuPage')) {
       this.nav.push('LoginPage').catch((err: any) => {
         console.log(`Didn't set nav root: ${err}`);
       });

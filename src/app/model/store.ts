@@ -9,6 +9,7 @@ export class Store {
     public openTime?: string,
     public closeTime?: string,
     public rating?: number,
-    public feedbacks?: Array<string>
+    public feedbacks?: Array<string>,
+    public isPrimary?: boolean
   ) {}
 }

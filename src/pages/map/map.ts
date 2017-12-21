@@ -105,10 +105,10 @@ export class MapPage extends ComponentBase implements OnInit {
       [this.markersArr, this.cities] = await Promise.all([this.repo.getFoxStores(), this.repo.getCities()]);
 
       /**
-       * Set defaultCityId to id of the city with name 'Киев'
+       * Set defaultCityId to id of the city with name 'Киев'/'Київ'/'Kiev'/'Kyiv'
        */
       this.cities.forEach((city) => {
-        if (city.name === 'Киев' || city.name === 'Київ') {
+        if (city.name === 'Киев' || city.name === 'Київ' || city.name === 'Kiev' || city.name === 'Kyiv') {
           this.defaultCityId = city.id;
         }
       });
@@ -173,7 +173,7 @@ export class MapPage extends ComponentBase implements OnInit {
       }
 
       /**
-       * Iterating through all shops positions
+       * Iterating through all stores positions. Setting up info windows and marker event listeners
        */
       await this.markersArr.forEach((markerArr) => {
         markerArr.stores.forEach((markerData, i) => {
@@ -181,12 +181,18 @@ export class MapPage extends ComponentBase implements OnInit {
 
           let shopOpensTime = markerData.openTime;
           let shopClosesTime = markerData.closeTime;
+          const shopRating = markerData.rating;
+          let hidden = '';
+          if (!markerData.rating || 0 >= markerData.rating) {
+            hidden = 'hidden';
+          }
 
           let infoWindow = new google.maps.InfoWindow({
-            content: `<h6>Фокстрот</h6>` +
-            `<p>${markerData.address}</p>` +
-            `<p>Время работы: ${shopOpensTime} - ${shopClosesTime}</p>` +
-            `<p>${this.shopIsWorking(shopOpensTime, shopClosesTime)}</p>`
+            content: `<h6 style="color: #ef4123;">Фокстрот</h6>`+
+            `<p>${shopRating > 0 ? ('Рейтинг:  ' + shopRating) : ''}</p>`+
+            `<p>${markerData.address}</p>`+
+            `<p>Години роботи: ${shopOpensTime} - ${shopClosesTime}</p>`+
+            `<p style="color: ${(this.shopIsWorking(shopOpensTime, shopClosesTime) === 'Open') ? 'green' : 'red'}">${this.shopIsWorking(shopOpensTime, shopClosesTime)}</p>`
           });
 
           let marker = new google.maps.Marker({
@@ -379,7 +385,19 @@ export class MapPage extends ComponentBase implements OnInit {
    */
   addToFavorite() {
     if (this.selectedMarker.value !== null) {
-      console.log('Added to favorite');
+      console.log(`Added to favorite: ${this.selectedMarker.label}`);
+      for (let markerArr of this.markersArr) {
+        for (let store of markerArr.stores) {
+          if (store.address === this.selectedMarker.label) {
+            try {
+              this.userService.addFavoriteStoresId(store.id);
+            } catch(err) {
+              console.log(`Error while adding to favorite: ${err}`);
+              return;
+            }
+          }
+        }
+      }
     }
   }
 
@@ -465,9 +483,9 @@ export class MapPage extends ComponentBase implements OnInit {
 
     if ((openTime >= 0 && closeTime >= 0) && (openTime <= 2400 && closeTime <= 2400)) {
       if ((myTime >= openTime) && (myTime <= closeTime)) {
-        return 'Работает';
+        return 'Open';
       } else {
-        return 'Не работает';
+        return 'Closed';
       }
     } else {
       console.log('wrong time input');

@@ -1,21 +1,18 @@
-import { DropdownListComponent } from './../../components/dropdown-list/dropdown-list';
 import {Component, ViewChild} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
-import {ComponentBase} from '../../components/component-extension/component-base';
-import {ClientAddress} from '../../app/model/client-address';
-import {SelectShipAddressPage} from '../select-ship-address/select-ship-address';
-import {NgForm} from '@angular/forms';
-import {Country} from '../../app/model/country';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
-import {System} from '../../app/core/app-core';
-
+import {NgForm} from "@angular/forms";
+import {ClientAddress} from "../../app/model/client-address";
+import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
+import {Country} from "../../app/model/country";
+import {ShipAddressesPage} from "../ship-addresses/ship-addresses";
+import {ComponentBase} from "../../components/component-extension/component-base";
 
 @IonicPage()
 @Component({
-  selector: 'page-edit-ship-address',
-  templateUrl: 'edit-ship-address.html',
+  selector: 'page-edit-ship-address-no-delivery',
+  templateUrl: 'edit-ship-address-no-delivery.html',
 })
-export class EditShipAddressPage extends ComponentBase  {
+export class EditShipAddressNoDeliveryPage extends ComponentBase {
   @ViewChild('f') addressEditForm: NgForm;
   shippingAddress = new ClientAddress();
   originalAddr: ClientAddress;
@@ -23,7 +20,7 @@ export class EditShipAddressPage extends ComponentBase  {
   currentCountry: Country = new Country(1, 'Ukraine');
 
   mode: string;
-  addressSelectorPage: SelectShipAddressPage;
+  addressSelectorPage: ShipAddressesPage;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public alertCtrl: AlertController, public repo: AbstractDataRepository) {
@@ -48,7 +45,7 @@ export class EditShipAddressPage extends ComponentBase  {
     };
   }
 
-  deliverToThisAddress() {
+  saveThisAddress() {
     if (!this.addressEditForm.valid) {
       let alert = this.alertCtrl.create({
         title: 'Error',
@@ -83,5 +80,6 @@ export class EditShipAddressPage extends ComponentBase  {
         console.log(`Error while going back: ${err}`)
       });
     };
+
   }
 }

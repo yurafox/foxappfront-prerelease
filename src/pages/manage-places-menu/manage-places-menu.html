@@ -1,0 +1,13 @@
+<ion-header>
+  <main-toolbar></main-toolbar>
+</ion-header>
+
+<ion-content padding class="menu-content">
+  <ion-list>
+      <button ion-item detail-push *ngFor="let p of places" (click)="openPage(p)">
+        <ion-icon item-left [name]="p.icon"></ion-icon>
+        <ion-label>{{p.title}}</ion-label>
+      </button>
+  </ion-list>
+
+</ion-content>

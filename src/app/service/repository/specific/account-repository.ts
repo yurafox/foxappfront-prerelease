@@ -20,7 +20,6 @@ export class AccountRepository extends AbstractAccountRepository {
   public async logIn(email: string, password: string): Promise<LoginTemplate> {
     try {
       const response = await this.http.post(tokenUrl,{ email, password }).toPromise();
-
       const data = response.json();
       if (response.status !== 200) {
         throw new Error(`${response.status} ${response.statusText }`);
@@ -31,7 +30,7 @@ export class AccountRepository extends AbstractAccountRepository {
       }
 
       const currentUser: User = new User(data.user.name, data.user.email,null,data.user.id,
-                                         data.user.appKey,data.user.userSetting);
+                                         data.user.appKey,data.user.userSetting,data.user.idClient,data.user.favoriteStoresId);
 
       return new LoginTemplate(data.token, currentUser);
     }
@@ -105,7 +104,7 @@ export class AccountRepository extends AbstractAccountRepository {
       }
 
       const currentUser: User = new User(data.name, data.email,null,data.id,
-        data.appKey,data.userSetting, data.idClient);
+        data.appKey,data.userSetting, data.idClient, data.favoriteStoresId);
       return currentUser;
     }
 
