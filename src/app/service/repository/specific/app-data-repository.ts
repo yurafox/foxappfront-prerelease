@@ -150,7 +150,8 @@ export class AppDataRepository extends AbstractDataRepository {
         .post(clientOrderSpecProductsUrl, prod.dto /*obj*/)
         .toPromise();
       const val = response.json();
-      if (response.status !== 201) {
+
+      if (response.status !== 201 && response.status !== 200 ) {
         throw new Error("server side status error");
       }
       let p = new ClientOrderProducts();
