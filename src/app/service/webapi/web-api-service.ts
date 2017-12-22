@@ -2896,7 +2896,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       dateStart: new Date(2017, 11, 16),
       dateEnd: new Date(2017, 11, 31),
       priority: 10,
-      img_url: 'assets/imgs/actions/partspay.jpg',
+      img_url: 'assets/imgs/actions/partspay',
       sketch_content: this.dynamicContent['ACTION'],
       action_content: this.dynamicContent['PARTSPAY']
     },
@@ -2906,7 +2906,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       dateStart: new Date(2017, 11, 16),
       dateEnd: new Date(2017, 11, 30),
       priority: 20,
-      img_url: 'assets/imgs/actions/gift.jpg',
+      img_url: 'assets/imgs/actions/gift',
       sketch_content: this.dynamicContent['ACTION'],
       action_content: this.dynamicContent['ROUTERGIFT']
     }

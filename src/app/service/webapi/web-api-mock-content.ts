@@ -29,7 +29,7 @@ const PAGEHOME:string = `<ion-slides pager autoplay="2000">
 //#region ACTION
   const ACTION = `<div style="text-align: center">
   <div style="width: 214px;margin:0px auto">
-   <img style="margin-top:10px;width: auto;max-width: 100%;height: auto;max-height: 100%" src="{{img_url}}">
+   <img style="margin-top:10px;width: auto;max-width: 100%;height: auto;max-height: 100%" src='{{img_url}}.jpg'>
    <div style="margin-top:10px"><span style="font-size: 20px;color:dimgrey">{{name}}</span></div>
    <div style="margin-top:10px;margin-bottom:10px"><span style="font-size: 14px"><b>Осталось <font size='5'>{{actionActiveRange}}</font> дн.</b></span></div>
   </div>
