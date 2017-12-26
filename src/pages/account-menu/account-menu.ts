@@ -60,11 +60,11 @@ export class AccountMenuPage extends ComponentBase {
   openPage(page: PageInterface) {
     if ((this.userService.isAuth === false) && (page.component === 'AccountPage')) {
       this.nav.push('LoginPage').catch((err: any) => {
-        console.log(`Didn't set nav root: ${err}`);
+        console.log(`Couldn't navigate to LoginPage: ${err}`);
       });
     } else {
       this.nav.push(page.component).catch((err: any) => {
-        console.log(`Didn't set nav root: ${err}`);
+        console.log(`Couldn't push this page: ${page.component.toString()}: ${err}`);
       });
     }
   }

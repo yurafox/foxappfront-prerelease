@@ -16,7 +16,7 @@
 
         <ion-grid style="border: 1px solid #EBEBEC;">
           <ion-row (click)="onIsPrimaryClick(store.store)">
-            <ion-col style="padding-bottom: 10px;" class="f-size-larger">
+            <ion-col style="padding: 10px 5px;" class="f-size-larger">
                 <span *ngIf="store?.store.address">
                   {{store?.store.address}}
                 </span><br/>
@@ -24,20 +24,26 @@
                   {{store?.city.name}}
                 </span>
             </ion-col>
+            <div *ngIf="store.store.isPrimary">
+              <ion-col col-10 style="padding: 10px 10px">
+                <button style="font-size: 26px; position: relative;" ion-button clear (click)="deleteStore(store)">
+                  <ion-icon name="ios-trash-outline"></ion-icon>
+                </button>
+              </ion-col>
+            </div>
           </ion-row>
           <div *ngIf="store.store.isPrimary">
             <ion-row>
-              <ion-col col-6 style="padding-right: 10px; padding-bottom: 15px; padding-left: 10px;">
-                <button class="f-btn-secondary" ion-button block (click)="deleteStore(store)">Delete</button>
+              <ion-col>
+                <button class="f-btn-add-cart" ion-button block (click)="toMapAndNavigate(store.store, store.city)">Navigate to this store</button>
               </ion-col>
             </ion-row>
           </div>
-
         </ion-grid>
       </ion-row>
     </div>
   </ion-grid>
-  <div *ngIf="(dataLoaded === false) || (stores.length === 0) || !stores">
+  <div *ngIf="(dataLoaded === false) || !stores">
     <span class="f-size-large">You have no favorite stores yet<br/>Or they are loading</span>
   </div>
 </ion-content>
