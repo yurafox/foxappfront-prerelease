@@ -8,7 +8,7 @@ import {HttpModule} from '@angular/http';
 import {FormsModule} from '@angular/forms';
 import {InAppBrowser} from '@ionic-native/in-app-browser';
 import {GoogleMaps} from '@ionic-native/google-maps';
-import {Ionic2RatingModule} from 'ionic2-rating';
+import {Ionic2Rating, Ionic2RatingModule} from 'ionic2-rating';
 import {BarcodeScanner} from '@ionic-native/barcode-scanner';
 
 import {FoxApp} from './app.component';
@@ -149,6 +149,7 @@ import {AppAvailability} from "@ionic-native/app-availability";
     ScreenOrientation,
     LaunchNavigator,
     AppAvailability,
+    Ionic2Rating,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
     {provide: AbstractAccountRepository, useClass: AccountRepository},

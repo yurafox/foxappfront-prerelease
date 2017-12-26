@@ -129,7 +129,7 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
     alert.present();
   }
 
-  toMapAndNavigate(store: Store, city: City) {
+  navToMap(store: Store, city: City) {
     this.navCtrl.push('MapPage', {store: store, city: city, page: this}).catch(err => {
       console.log(`Couldn't navigate to MapPage with selected params: ${err}`);
     });

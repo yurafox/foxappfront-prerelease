@@ -64,4 +64,8 @@ page-map {
       height: 25px !important;
     }
   }
+
+  .checked {
+    color: color($colors, foxrating);
+  }
 }

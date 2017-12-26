@@ -1312,7 +1312,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
           position: {lat: 50.4357, lng: 30.5164},
           address: 'вул. В. Васильківська, 45',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 3
         },
         {
           id: 36,
@@ -1331,91 +1332,104 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
           position: {lat: 50.4316, lng: 30.5131},
           address: 'вул. Антоновича, 52',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 4
         },
         {
           id: 38,
           position: {lat: 50.5145, lng: 30.4986},
           address: 'просп. Оболонський, 21Б',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 5
         },
         {
           id: 39,
           position: {lat: 50.381827, lng: 30.44093},
           address: 'вул. Велика Кільцева, 110',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 3
         },
         {
           id: 40,
           position: {lat: 50.4605, lng: 30.3469},
           address: 'вул. Чорнобильська, 16/80',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 4
         },
         {
           id: 41,
           position: {lat: 50.4083, lng: 30.6552},
           address: 'вул. Вербицького, 18',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 4
         },
         {
           id: 42,
           position: {lat: 50.399, lng: 30.5107},
           address: 'просп. Голосіївський, 68а',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 5
         },
         {
           id: 43,
           position: {lat: 50.4634, lng: 30.5992},
           address: 'просп. Визволителів, 17',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 2
         },
         {
           id: 44,
           position: {lat: 50.454762, lng: 30.636051},
           address: 'вул. Гната Хоткевича, 1-В',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 5
         },
         {
           id: 45,
           position: {lat: 50.4304, lng: 30.4552},
           address: 'бульв. Чоколівський, 19',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 4
         },
         {
           id: 46,
           position: {lat: 50.4312, lng: 30.3836},
           address: 'вул. Гната Юри, 20',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 3
         },
         {
           id: 47,
           position: {lat: 50.3976, lng: 30.6382},
           address: 'вул. Олександра Мішуги, 4',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 2
         },
         {
           id: 48,
           position: {lat: 50.451, lng: 30.4416},
           address: 'вул. Гетьмана, 6 (літери "Б,Б")',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 5
         },
         {
           id: 49,
           position: {lat: 50.4567, lng: 30.3832},
           address: 'просп. Перемоги, 87',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 4
         },
         {
           id: 50,
@@ -1429,7 +1443,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
           position: {lat: 50.5198, lng: 30.4656},
           address: 'вул. Калнишевського, 2',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 3
         }
       ]
     },

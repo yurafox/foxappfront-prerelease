@@ -132,14 +132,15 @@ export class MapPage extends ComponentBase implements OnInit {
           let shopOpensTime = markerData.openTime;
           let shopClosesTime = markerData.closeTime;
           const shopRating = markerData.rating;
-          let hidden = '';
-          if (!markerData.rating || 0 >= markerData.rating) {
-            hidden = 'hidden';
+          let rating = '';
+
+          for (let i = 0; i < shopRating; i++) {
+            rating += '<span class="fa fa-star checked"></span>';
           }
 
           let infoWindow = new google.maps.InfoWindow({
             content: `<h6 style="color: #ef4123;">Фокстрот</h6>`+
-            `<p>${shopRating > 0 ? ('Рейтинг:  ' + shopRating) : ''}</p>`+
+            `<p>${shopRating > 0 ? `${rating}` : ''}</p>`+
             `<p>${markerData.address}</p>`+
             `<p>Години роботи: ${shopOpensTime} - ${shopClosesTime}</p>`+
             `<p style="color: ${(this.shopIsWorking(shopOpensTime, shopClosesTime) === 'Open') ? 'green' : 'red'}">${this.shopIsWorking(shopOpensTime, shopClosesTime)}</p>`
@@ -461,7 +462,8 @@ export class MapPage extends ComponentBase implements OnInit {
       this.makeShopList();
       this.selectedMarker = {label: store.address, value: store.position};
       this.changeDetector.detectChanges();
-      this.calculateAndDisplayRoute(this.userPos, store.position);
+      // this.calculateAndDisplayRoute(this.userPos, store.position);
+      this.handleListSelect();
     }
   }
 }
