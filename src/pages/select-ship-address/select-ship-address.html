@@ -2,67 +2,22 @@
   <main-toolbar></main-toolbar>
 </ion-header>
 
-<ion-content>
-<div *ngIf="dataLoaded">
-  <div *ngIf="shippingAddresses && (shippingAddresses.length>0)">
-    <ion-grid class="f-item-nopadding-tb f-color-secondary">
-      <ion-row>
-        <ion-col>
-          <b><span class="f-size-large">Select a shipping address</span></b>
-        </ion-col>
-      </ion-row>
-
-      <ion-row *ngFor="let sa of shippingAddresses">
-
-          <ion-grid style="border: 1px solid #EBEBEC;" >
-
-              <ion-row (click)="onIsPrimaryClick(sa)">
-                <ion-col col-2 text-center>
-                    <input type="radio" id="radioButton" [checked]="sa.isPrimary">
-                </ion-col>
-                <ion-col style="padding-bottom: 10px;" class="f-size-larger">
-                  <b>{{sa?.recName}}</b>
-                  <br>
-                  {{sa?.street}}
-                  <br>
-                  {{sa?.bldApp}}
-                  <br>
-                  {{sa?.city}}, {{sa?.zip}}
-                  <span *ngIf="sa?.idCountry"><br>
-                  {{sa?.country?.name}} </span>
-                  <br>
-                  Phone: {{sa?.phone}}
-                </ion-col>
-              </ion-row>
-              <div *ngIf="sa.isPrimary">
-                <ion-row>
-                  <ion-col style="padding-left: 10px; padding-right: 10px;">
-                    <button class="f-btn-add-cart" ion-button block (click)="deliverToThisAddress(sa)">Deliver to this address</button>
-                  </ion-col>
-                </ion-row>
-                <ion-row>
-                  <ion-col col-6 style="padding-left: 10px; padding-bottom: 15px;  padding-right: 10px;">
-                    <button class="f-btn-secondary"  ion-button block (click)="editAddress(sa)">Edit</button>
-                  </ion-col>
-                  <ion-col col-6 style="padding-right: 10px; padding-bottom: 15px; padding-left: 10px;">
-                    <button class="f-btn-secondary"  ion-button block (click)="deleteAddress(sa)">Delete</button>
-                  </ion-col>
-                </ion-row>
-              </div>
-
-          </ion-grid>
-      </ion-row>
-    </ion-grid>
-  </div>
-
+<ion-content padding>
+  <ion-row>
+    <ion-col>
+      <b><span class="f-size-large f-color-secondary">Select a shipping address</span></b>
+    </ion-col>
+  </ion-row>
+  <div *ngIf="dataLoaded">
+    <shipping-address [withDelivery]="withDelivery" [addresses]="shippingAddresses"></shipping-address>
     <ion-grid class="f-item-nopadding-tb f-color-secondary" (click)="addNewAddress()">
       <ion-row>
         <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
-          <ion-item  detail-push text-wrap class="f-color-secondary">
+          <ion-item detail-push text-wrap class="f-color-secondary">
             <b class="f-size-larger">Add a New Shipping Address</b>
           </ion-item>
         </ion-col>
       </ion-row>
     </ion-grid>
-</div>
+  </div>
 </ion-content>

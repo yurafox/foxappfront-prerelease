@@ -49,6 +49,7 @@ import {
   AboutPageModule,
   AccountPageModule,
   AccountMenuPageModule,
+  ActionPageModule,
   BarcodePageModule,
   CartPageModule,
   CategoriesPageModule,
@@ -56,7 +57,6 @@ import {
   ChangePasswordPageModule,
   CityPopoverPageModule,
   EditShipAddressPageModule,
-  EditShipAddressNoDeliveryPageModule,
   FavoriteStoresPageModule,
   FilterPopoverPageModule,
   ForgotPasswordPageModule,
@@ -71,13 +71,12 @@ import {
   LoginPageModule,
   ManagePlacesMenuPageModule,
   MapPageModule,
+  OrdersPageModule,
   RegisterPageModule,
   SearchPageModule,
   SearchResultsPageModule,
   SelectShipAddressPageModule,
-  ShipAddressesPageModule,
-  SupportPageModule,
-  ActionPageModule
+  SupportPageModule
 } from "../pages/index-modules";
 import {NgxQRCodeModule} from "ngx-qrcode2";
 import {AppAvailability} from "@ionic-native/app-availability";
@@ -103,6 +102,7 @@ import {AppAvailability} from "@ionic-native/app-availability";
     AboutPageModule,
     AccountPageModule,
     AccountMenuPageModule,
+    ActionPageModule,
     BarcodePageModule,
     CartPageModule,
     CategoriesPageModule,
@@ -110,7 +110,6 @@ import {AppAvailability} from "@ionic-native/app-availability";
     ChangePasswordPageModule,
     CityPopoverPageModule,
     EditShipAddressPageModule,
-    EditShipAddressNoDeliveryPageModule,
     FavoriteStoresPageModule,
     FilterPopoverPageModule,
     ForgotPasswordPageModule,
@@ -125,13 +124,12 @@ import {AppAvailability} from "@ionic-native/app-availability";
     LoginPageModule,
     ManagePlacesMenuPageModule,
     MapPageModule,
+    OrdersPageModule,
     RegisterPageModule,
     SearchPageModule,
     SearchResultsPageModule,
     SelectShipAddressPageModule,
-    ShipAddressesPageModule,
-    SupportPageModule,
-    ActionPageModule
+    SupportPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

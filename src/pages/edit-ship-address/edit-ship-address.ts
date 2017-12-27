@@ -1,4 +1,3 @@
-import { DropdownListComponent } from './../../components/dropdown-list/dropdown-list';
 import {Component, ViewChild} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
@@ -7,8 +6,7 @@ import {SelectShipAddressPage} from '../select-ship-address/select-ship-address'
 import {NgForm} from '@angular/forms';
 import {Country} from '../../app/model/country';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
-import {System} from '../../app/core/app-core';
-
+import {UserService} from "../../app/service";
 
 @IonicPage()
 @Component({
@@ -24,6 +22,7 @@ export class EditShipAddressPage extends ComponentBase  {
 
   mode: string;
   addressSelectorPage: SelectShipAddressPage;
+  delivery: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public alertCtrl: AlertController, public repo: AbstractDataRepository) {
@@ -34,6 +33,7 @@ export class EditShipAddressPage extends ComponentBase  {
   async initPage() {
     this.countries = await this.repo.getCountries();
     this.mode = this.navParams.data.mode;
+    this.delivery = this.navParams.data.delivery;
     this.addressSelectorPage = this.navParams.data.page;
     this.originalAddr = this.navParams.data.data;
 
@@ -45,10 +45,10 @@ export class EditShipAddressPage extends ComponentBase  {
       this.shippingAddress.zip = this.originalAddr.zip;
       this.shippingAddress.phone = this.originalAddr.phone;
       this.shippingAddress.idCountry = this.originalAddr.idCountry;
-    };
+    }
   }
 
-  deliverToThisAddress() {
+  saveAddress() {
     if (!this.addressEditForm.valid) {
       let alert = this.alertCtrl.create({
         title: 'Error',
@@ -62,7 +62,7 @@ export class EditShipAddressPage extends ComponentBase  {
       });
       alert.present();
       return;
-    };
+    }
 
     if (this.mode === 'create') {
       this.addressSelectorPage.shippingAddresses.forEach(i => i.isPrimary = false);
@@ -82,6 +82,7 @@ export class EditShipAddressPage extends ComponentBase  {
       this.navCtrl.pop().catch(err => {
         console.log(`Error while going back: ${err}`)
       });
-    };
+    }
+
   }
 }

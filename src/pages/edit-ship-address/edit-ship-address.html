@@ -8,7 +8,8 @@
         <ion-col style="padding-bottom: 10px;">
           <input [(ngModel)]="shippingAddress.recName" name="recName"
                  placeholder="First and last name" required #recName="ngModel">
-          <span *ngIf="!recName.valid && recName.touched" style="color: red;">Please enter your first and last name</span>
+          <span *ngIf="!recName.valid && recName.touched"
+                style="color: red;">Please enter your first and last name</span>
           <br>
           <input [(ngModel)]="shippingAddress.street" name="street"
                  placeholder="Street" required #street="ngModel">
@@ -16,7 +17,8 @@
           <br>
           <input [(ngModel)]="shippingAddress.bldApp" name="bldApp"
                  placeholder="Building and apartment" required #bldApp="ngModel">
-          <span *ngIf="!bldApp.valid && bldApp.touched" style="color: red;">Please enter your building and apartment</span>
+          <span *ngIf="!bldApp.valid && bldApp.touched"
+                style="color: red;">Please enter your building and apartment</span>
           <br>
           <input [(ngModel)]="shippingAddress.city" name="city"
                  placeholder="City" required #city="ngModel">
@@ -36,17 +38,26 @@
                          [placeholder]="'Please select country'"
                          [store]="countries"
                          [options]="{popupClass: 'f-large-dictionary', popupHeader: 'Select country'}"
-                         [map]="{valueName:'id', displayName:'name'}" >
+                         [map]="{valueName:'id', displayName:'name'}">
           </dropdown-list>
 
 
         </ion-col>
       </ion-row>
-      <ion-row>
-        <ion-col>
-          <button class="f-btn-add-cart" ion-button block (click)="deliverToThisAddress()">Deliver to this address</button>
-        </ion-col>
-      </ion-row>
+      <div *ngIf="delivery === 0">
+        <ion-row>
+          <ion-col>
+            <button class="f-btn-add-cart" ion-button block (click)="saveAddress()">Save this address</button>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div *ngIf="delivery === 1">
+        <ion-row>
+          <ion-col>
+            <button class="f-btn-add-cart" ion-button block (click)="saveAddress()">Deliver to this address</button>
+          </ion-col>
+        </ion-row>
+      </div>
     </ion-grid>
   </form>
 </ion-content>
