@@ -1,5 +1,5 @@
 import {Component, ViewChild, ElementRef, OnInit, ChangeDetectorRef} from '@angular/core';
-import {Platform, IonicPage, NavController} from 'ionic-angular';
+import {Platform, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {LatLng} from '@ionic-native/google-maps';
 import {City, Store} from "../../app/model/index";
@@ -7,6 +7,7 @@ import {ComponentBase} from "../../components/component-extension/component-base
 import {Geolocation} from '@ionic-native/geolocation';
 import {StatusBar} from "@ionic-native/status-bar";
 import {LaunchNavigator/*, LaunchNavigatorOptions*/} from "@ionic-native/launch-navigator";
+import {FavoriteStoresPage} from "../favorite-stores/favorite-stores";
 
 declare var google: any;
 
@@ -23,20 +24,13 @@ interface SelectItem {
 export class MapPage extends ComponentBase implements OnInit {
 
   @ViewChild('mapCanvas') mapElement: ElementRef;
-
-  // Page sizes
-  /*headerHeight: number; // Height of header on map page
-  footerHeight: number; // Height of footer on map page
-  windowHeight: number;
-  windowWidth: number;
-  height: number;       // Dynamical height of the map
-  // width: number;        // Dynamical width of the map*/
+  previousPage: string;
 
   map: /*GoogleMap;*/ any;
   city: City;
   defaultCityId: number;  // Used to set position when map just opened and user's location is unknown.
   cities: Array<City>;
-  selectedCity: City  = {id: 0, name: ''};
+  selectedCity: City  = {id: 0, name: ' '};
   selectedMarker: SelectItem;
   markersArr: Array<{ id: number, stores: Store[] }>;
   shopList: Array<SelectItem>;
@@ -47,16 +41,8 @@ export class MapPage extends ComponentBase implements OnInit {
   directionsService: any;
   directionsDisplay: any;
 
-  // Screen orientation constants
-  /*portrait = this.screenOrientation.ORIENTATIONS.PORTRAIT;
-  portraitPrimary = this.screenOrientation.ORIENTATIONS.PORTRAIT_PRIMARY;
-  portraitSecondary = this.screenOrientation.ORIENTATIONS.PORTRAIT_SECONDARY;
-  landscape = this.screenOrientation.ORIENTATIONS.LANDSCAPE;
-  landscapePrimary = this.screenOrientation.ORIENTATIONS.LANDSCAPE_PRIMARY;
-  landscapeSecondary = this.screenOrientation.ORIENTATIONS.LANDSCAPE_SECONDARY;*/
-
-  constructor(private nav: NavController, private platform: Platform, private repo: AbstractDataRepository,
-              private geolocation: Geolocation, private statusBar: StatusBar,
+  constructor(private nav: NavController, private navParams: NavParams, private platform: Platform,
+              private repo: AbstractDataRepository, private geolocation: Geolocation, private statusBar: StatusBar,
               private launchNavigator: LaunchNavigator, private changeDetector: ChangeDetectorRef) {
     super();
     this.defaultCityId = 0;
@@ -66,26 +52,11 @@ export class MapPage extends ComponentBase implements OnInit {
     this.selectedMarker = {label: '', value: null};
     this.userPos = new LatLng(0, 0);
 
-    // Set up window sizes for map
-    /*this.headerHeight = 120;
-    this.footerHeight = 45;
-    if (this.screenOrientation.type === this.portrait ||
-      this.screenOrientation.type === this.portraitPrimary ||
-      this.screenOrientation.type === this.portraitSecondary) {
-
-      this.windowHeight = this.platform.height() - this.headerHeight;
-      this.windowWidth = this.platform.width();
-      this.height = this.windowHeight;
-
-    } else if (this.screenOrientation.type === this.landscape ||
-      this.screenOrientation.type === this.landscapePrimary ||
-      this.screenOrientation.type === this.landscapeSecondary) {
-
-      this.windowHeight = this.platform.width() - this.headerHeight;
-      this.windowWidth = this.platform.height();
-      this.height = this.windowWidth - this.headerHeight;
-
-    }*/
+    try {
+      this.previousPage = this.nav.last().id;
+    } catch (err) {
+      console.log(`Error getting last page: ${err}`);
+    }
 
     platform.ready().then(() => {
       this.getLocation().then(res => {
@@ -127,28 +98,7 @@ export class MapPage extends ComponentBase implements OnInit {
         };
       }
 
-      /**
-       * Making list of shops addresses
-       */
-      for (let i = 0; i < this.cities.length; i++) {
-        if (this.selectedCity.name === this.cities[i].name) {
-          try {
-            for (let j = 0; j < this.markersArr[i].stores.length; j++) {
-              try {
-                this.shopList = [];
-                this.shopList.push({
-                  label: this.markersArr[i].stores[j].address,
-                  value: this.markersArr[i].stores[j].position
-                });
-              } catch (error) {
-                console.log('In-view shops push error: ' + error);
-              }
-            }
-          } catch (error) {
-            console.log('View error: ' + error);
-          }
-        }
-      }
+      this.makeShopList();
 
       let mapEle = this.mapElement.nativeElement;
       this.map = new google.maps.Map(mapEle, this.options);
@@ -182,14 +132,15 @@ export class MapPage extends ComponentBase implements OnInit {
           let shopOpensTime = markerData.openTime;
           let shopClosesTime = markerData.closeTime;
           const shopRating = markerData.rating;
-          let hidden = '';
-          if (!markerData.rating || 0 >= markerData.rating) {
-            hidden = 'hidden';
+          let rating = '';
+
+          for (let i = 0; i < shopRating; i++) {
+            rating += '<span class="fa fa-star checked"></span>';
           }
 
           let infoWindow = new google.maps.InfoWindow({
             content: `<h6 style="color: #ef4123;">Фокстрот</h6>`+
-            `<p>${shopRating > 0 ? ('Рейтинг:  ' + shopRating) : ''}</p>`+
+            `<p>${shopRating > 0 ? `${rating}` : ''}</p>`+
             `<p>${markerData.address}</p>`+
             `<p>Години роботи: ${shopOpensTime} - ${shopClosesTime}</p>`+
             `<p style="color: ${(this.shopIsWorking(shopOpensTime, shopClosesTime) === 'Open') ? 'green' : 'red'}">${this.shopIsWorking(shopOpensTime, shopClosesTime)}</p>`
@@ -222,30 +173,12 @@ export class MapPage extends ComponentBase implements OnInit {
             if (markerArr.id !== this.selectedCity.id) {
               this.selectedCity = {id: this.cities[markerArr.id - 1].id, name: this.cities[markerArr.id - 1].name};
               {
-                this.shopList = [];
                 for (const city of this.cities) {
                   if (city.name === this.selectedCity.name) {
                     this.city = city;
                   }
                 }
-                for (let i = 0; i < this.cities.length; i++) {
-                  if (this.selectedCity.name === this.cities[i].name) {
-                    try {
-                      for (let j = 0; j < this.markersArr[i].stores.length; j++) {
-                        try {
-                          this.shopList.push({
-                            label: this.markersArr[i].stores[j].address,
-                            value: this.markersArr[i].stores[j].position
-                          });
-                        } catch (error) {
-                          console.log('In-changeMarkers shops push error: ' + error);
-                        }
-                      }
-                    } catch (error) {
-                      console.log('Markers change error: ' + error);
-                    }
-                  }
-                }
+                this.makeShopList();
               }
             }
             // this.changeDetector.markForCheck();
@@ -274,6 +207,8 @@ export class MapPage extends ComponentBase implements OnInit {
       google.maps.event.addListenerOnce(this.map, 'idle', () => {
         mapEle.classList.add('show-map');
       });
+
+      this.navFromFavoriteStoresPage();
     } catch(err) {
       window.alert('Error occurred: ' + err);
     }
@@ -333,6 +268,31 @@ export class MapPage extends ComponentBase implements OnInit {
   }*/
 
   /**
+   * Making list of shops
+   */
+  makeShopList() {
+    for (let i = 0; i < this.cities.length; i++) {
+      if (this.selectedCity.name === this.cities[i].name) {
+        this.shopList = [];
+        try {
+          for (let j = 0; j < this.markersArr[i].stores.length; j++) {
+            try {
+              this.shopList.push({
+                label: this.markersArr[i].stores[j].address,
+                value: this.markersArr[i].stores[j].position
+              });
+            } catch (error) {
+              console.log('In-view shops push error: ' + error);
+            }
+          }
+        } catch (error) {
+          console.log('View error: ' + error);
+        }
+      }
+    }
+  }
+
+  /**
    * Updating stores every time city changes
    */
   changeMarkers() {
@@ -385,7 +345,6 @@ export class MapPage extends ComponentBase implements OnInit {
    */
   addToFavorite() {
     if (this.selectedMarker.value !== null) {
-      console.log(`Added to favorite: ${this.selectedMarker.label}`);
       for (let markerArr of this.markersArr) {
         for (let store of markerArr.stores) {
           if (store.address === this.selectedMarker.label) {
@@ -489,6 +448,22 @@ export class MapPage extends ComponentBase implements OnInit {
       }
     } else {
       console.log('wrong time input');
+    }
+  }
+
+  /**
+   * Displays route when user navigates to MapPage from FavoriteStoresPage with favorite store and city in params
+   */
+  navFromFavoriteStoresPage() {
+    if (this.previousPage === 'FavoriteStoresPage') {
+      let store = this.navParams.get('store');
+      let city = this.navParams.get('city');
+      this.selectedCity = city;
+      this.makeShopList();
+      this.selectedMarker = {label: store.address, value: store.position};
+      this.changeDetector.detectChanges();
+      // this.calculateAndDisplayRoute(this.userPos, store.position);
+      this.handleListSelect();
     }
   }
 }

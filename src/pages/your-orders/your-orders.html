@@ -1,0 +1,15 @@
+<ion-header>
+  <main-toolbar></main-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <h5>Your orders</h5>
+  <div *ngFor="let order of orders; let i = index">
+    <ion-card padding>
+      <p>Order #{{i+1}}</p>
+      <p>Date: {{order?.orderDate}}</p>
+      <p>Total: {{order?.total}}</p>
+    </ion-card>
+  </div>
+</ion-content>

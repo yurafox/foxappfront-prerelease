@@ -1,7 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {Nav, Platform, MenuController, IonicPage} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {AbstractDataRepository} from "../../app/service";
+import * as JsBarcode from "jsbarcode";
 
 @IonicPage({name: 'BarcodePage'})
 @Component({
@@ -9,6 +10,8 @@ import {AbstractDataRepository} from "../../app/service";
   templateUrl: 'barcode.html'
 })
 export class BarcodePage extends ComponentBase {
+
+  @ViewChild('image') image: ElementRef;
 
   createdCode = null;
 
@@ -41,6 +44,14 @@ export class BarcodePage extends ComponentBase {
       }
       this.repo.getClientByUserId(+id).then(client => {
         this.createdCode = client.barcode;
+        let image = this.image.nativeElement;
+        JsBarcode(image, client.barcode, {
+          width: 3,
+          height: 120,
+          fontSize: 16,
+        });
+      }).catch(err => {
+        console.log(`Something went wrong with BarcodeGenerator: ${err}`);
       });
     } catch (err) {
       console.log(`Error creating barcode: ${err}`);

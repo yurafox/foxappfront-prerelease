@@ -3,6 +3,7 @@ import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angula
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {City, Store, User} from "../../app/model";
 import {AbstractAccountRepository, AbstractDataRepository} from "../../app/service";
+import {MapPage} from "../";
 
 @IonicPage()
 @Component({
@@ -12,9 +13,11 @@ import {AbstractAccountRepository, AbstractDataRepository} from "../../app/servi
 export class FavoriteStoresPage extends ComponentBase implements OnInit {
 
   dataLoaded: boolean;
-  stores: Array<{city: City, store: Store}>;
-  foxStores: Array<{id: number, stores: Store[]}>;
+  stores: Array<{ city: City, store: Store }>;
+  foxStores: Array<{ id: number, stores: Store[] }>;
   cities: City[];
+
+  mapPage: MapPage;
 
   constructor(private navCtrl: NavController, private navParams: NavParams, private repo: AbstractDataRepository,
               private _account: AbstractAccountRepository, private alertCtrl: AlertController) {
@@ -27,8 +30,8 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
       console.log(`Couldn't retrieve cities and foxStores: ${err}`);
     });
     this.getFavStoresId().then(data => {
+        this.dataLoaded = true;
         if (data) {
-          this.dataLoaded = true;
           let clen = this.cities.length;
           let fslen = this.foxStores.length;
           for (let id of data) {
@@ -42,11 +45,6 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
                 }
               }
             }
-            /*this.getStore(id).then((datai) => {
-              this.stores.push(datai);
-            }).catch(err => {
-              console.log(`Didn't load: ${err}`)
-            });*/
           }
         } else {
           console.log(`Didn't load favoriteStoresId from storage`);
@@ -58,9 +56,6 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
       this.navCtrl.pop().catch(err => console.log(`Couldn't go back: ${err}`));
       return;
     });
-    if (this.stores === []) {
-      this.dataLoaded = false;
-    }
   }
 
   ngOnInit() {
@@ -96,31 +91,23 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
     let storeById: Store = null;
     for (let i = 0; i < this.foxStores.length; i++) {
       for (let j = 0; j < this.foxStores[i].stores.length; j++) {
-        if(this.foxStores[i].stores[j].id === id) {
+        if (this.foxStores[i].stores[j].id === id) {
           storeById = this.foxStores[i].stores[j];
         }
       }
     }
-    /*this.foxStores.forEach(storesArr => {
-      storesArr.stores.forEach(store => {
-        if(store.id === id) {
-          storeById = store;
-        }
-      })
-    });*/
-    // return await this.repo.getFoxStoreById(id);
     return storeById;
   }
 
   onIsPrimaryClick(item: Store) {
     this.stores.forEach(i => {
-      i.store.isPrimary = false;
+        i.store.isPrimary = false;
       }
     );
     item.isPrimary = true;
   }
 
-  deleteStore(item: {city: City, store: Store}) {
+  deleteStore(item: { city: City, store: Store }) {
     let alert = this.alertCtrl.create({
       title: 'Confirmation',
       message: 'Are you sure you want to delete this store from your favorite stores?',
@@ -140,6 +127,12 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
       ]
     });
     alert.present();
+  }
+
+  navToMap(store: Store, city: City) {
+    this.navCtrl.push('MapPage', {store: store, city: city, page: this}).catch(err => {
+      console.log(`Couldn't navigate to MapPage with selected params: ${err}`);
+    });
   }
 
 }

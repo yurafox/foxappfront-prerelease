@@ -4,20 +4,20 @@
 
     <ion-header>
       <!-- User profile -->
-      <div padding class="menu-left menu-bg" *ngIf="userService.isAuth">
-        <a menuClose>
-          <img class="profile-picture" src="http://www.gravatar.com/avatar?d=mm&s=140">
-          <h4 ion-text color="light">{{userService.name}}</h4>
-        </a>
+      <div padding class="menu-bg f-main-menu-header" *ngIf="userService.isAuth">
+          <h5 class="f-main-menu-header-content" ion-text color="light">
+            <img class="profile-picture" src="http://www.gravatar.com/avatar?d=mm&s=140"/>
+            <span class="f-main-menu-header-content-text">Hello, {{userService.name}}</span>
+          </h5>
       </div>
-      <ion-navbar>
+      <!--<ion-navbar>
         <ion-title>
           <span loc="Меню" name="MainMenu">{{locale.MainMenu}}</span>
         </ion-title>
-      </ion-navbar>
+      </ion-navbar>-->
     </ion-header>
 
-    <ion-content>
+    <ion-content no-bounce>
       <ion-list>
         <div *ngFor="let p of appPages">
           <button ion-item menuClose (click)="openPage(p)">

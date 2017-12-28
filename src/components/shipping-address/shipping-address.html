@@ -1,0 +1,48 @@
+<div *ngIf="addresses && (addresses.length>0)">
+  <ion-grid class="f-item-nopadding-tb f-color-secondary">
+    <ion-row *ngFor="let sa of addresses">
+
+      <ion-grid style="border: 1px solid #EBEBEC;">
+
+        <ion-row (click)="onIsPrimaryClick(sa)">
+          <ion-col col-2 text-center>
+            <input type="radio" id="radioButton" [checked]="sa.isPrimary">
+          </ion-col>
+          <ion-col style="padding-bottom: 10px;" class="f-size-larger">
+            <b>{{sa?.recName}}</b>
+            <br>
+            {{sa?.street}}
+            <br>
+            {{sa?.bldApp}}
+            <br>
+            {{sa?.city}}, {{sa?.zip}}
+            <span *ngIf="sa?.idCountry"><br>
+                  {{sa?.country?.name}} </span>
+            <br>
+            Phone: {{sa?.phone}}
+          </ion-col>
+        </ion-row>
+        <div *ngIf="sa.isPrimary">
+          <div *ngIf="withDelivery === true">
+            <ion-row>
+              <ion-col style="padding-left: 10px; padding-right: 10px;">
+                <button class="f-btn-add-cart" ion-button block (click)="deliverToThisAddress(sa)">Deliver to this
+                  address
+                </button>
+              </ion-col>
+            </ion-row>
+          </div>
+          <ion-row>
+            <ion-col col-6 style="padding-left: 10px; padding-bottom: 15px;  padding-right: 10px;">
+              <button class="f-btn-secondary" ion-button block (click)="editAddress(sa)">Edit</button>
+            </ion-col>
+            <ion-col col-6 style="padding-right: 10px; padding-bottom: 15px; padding-left: 10px;">
+              <button class="f-btn-secondary" ion-button block (click)="deleteAddress(sa)">Delete</button>
+            </ion-col>
+          </ion-row>
+        </div>
+
+      </ion-grid>
+    </ion-row>
+  </ion-grid>
+</div>

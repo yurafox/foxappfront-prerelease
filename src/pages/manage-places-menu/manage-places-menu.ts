@@ -17,14 +17,25 @@ export interface PageInterface {
 export class ManagePlacesMenuPage extends ComponentBase {
 
   places: PageInterface[] = [
-    {title: 'Shipping addresses', name: 'ShipAddresses', component: 'ShipAddressesPage', icon: 'ios-home-outline', index: 0},
-    {title: 'Favorite stores', name: 'FavoriteStores', component: 'FavoriteStoresPage', icon: 'md-star-outline', index: 1}
+    {
+      title: 'Shipping addresses',
+      name: 'SelectShipAddress',
+      component: 'SelectShipAddressPage',
+      icon: 'ios-home-outline',
+      index: 0
+    },
+    {
+      title: 'Favorite stores',
+      name: 'FavoriteStores',
+      component: 'FavoriteStoresPage',
+      icon: 'md-star-outline',
+      index: 1
+    }
   ]
 
   constructor(private platform: Platform, private nav: Nav,
               public menuCtrl: MenuController) {
     super();
-    //this.rootPage = HomePage;
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -42,9 +53,15 @@ export class ManagePlacesMenuPage extends ComponentBase {
   }
 
   openPage(page: PageInterface) {
-    this.nav.push(page.component).catch((err: any) => {
-      console.log(`Didn't set nav root: ${err}`);
-    });
+    if (page.component === 'SelectShipAddressPage') {
+      this.nav.push('SelectShipAddressPage', {fromCart: 0}).catch((err: any) => {
+        console.log(`Didn't set nav root: ${err}`);
+      });
+    } else {
+      this.nav.push(page.component).catch((err: any) => {
+        console.log(`Didn't set nav root: ${err}`);
+      });
+    }
   }
 
 }

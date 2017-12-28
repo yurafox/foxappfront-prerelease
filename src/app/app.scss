@@ -102,8 +102,9 @@ ion-list ion-icon {
 
 .profile-picture {
   border-radius: 50%;
-  width: 64px;
-  height: 64px;
+  width: 45px;
+  height: 45px;
+  align-self: left !important;
 }
 
 // quantity input buttons
@@ -219,5 +220,19 @@ ion-slides[pager] {
   button {
     width: $full-dictionary-width;
   }
+}
+
+.f-main-menu-header {
+  height: 60px;
+  padding: 10px !important;
+}
+.f-main-menu-header-content {
+  h5 {
+    margin: 20px;
+  }
+}
+.f-main-menu-header-content-text {
+  text-align: center;
+  vertical-align: 70%;
 }
 

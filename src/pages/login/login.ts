@@ -64,7 +64,7 @@ export class LoginPage extends ComponentBase{
     if(this.userService.isAuth) {
       this.evServ.events['localeChangeEvent'].emit(this.userService.lang);
       if (this.navParams.data.continuePage)
-        this.nav.push(this.navParams.data.continuePage)
+        this.nav.push(this.navParams.data.continuePage, {fromCart: 1});
       else
         this.nav.setRoot('HomePage');
     }

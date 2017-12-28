@@ -8,7 +8,7 @@ import {HttpModule} from '@angular/http';
 import {FormsModule} from '@angular/forms';
 import {InAppBrowser} from '@ionic-native/in-app-browser';
 import {GoogleMaps} from '@ionic-native/google-maps';
-import {Ionic2RatingModule} from 'ionic2-rating';
+import {Ionic2Rating, Ionic2RatingModule} from 'ionic2-rating';
 import {BarcodeScanner} from '@ionic-native/barcode-scanner';
 
 import {FoxApp} from './app.component';
@@ -49,6 +49,7 @@ import {
   AboutPageModule,
   AccountPageModule,
   AccountMenuPageModule,
+  ActionPageModule,
   BarcodePageModule,
   CartPageModule,
   CategoriesPageModule,
@@ -56,7 +57,6 @@ import {
   ChangePasswordPageModule,
   CityPopoverPageModule,
   EditShipAddressPageModule,
-  EditShipAddressNoDeliveryPageModule,
   FavoriteStoresPageModule,
   FilterPopoverPageModule,
   ForgotPasswordPageModule,
@@ -71,15 +71,15 @@ import {
   LoginPageModule,
   ManagePlacesMenuPageModule,
   MapPageModule,
+  OrdersPageModule,
   RegisterPageModule,
   SearchPageModule,
   SearchResultsPageModule,
   SelectShipAddressPageModule,
-  ShipAddressesPageModule,
-  SupportPageModule,
-  ActionPageModule
+  SupportPageModule
 } from "../pages/index-modules";
 import {NgxQRCodeModule} from "ngx-qrcode2";
+import {AppAvailability} from "@ionic-native/app-availability";
 
 @NgModule({
   declarations: [
@@ -102,6 +102,7 @@ import {NgxQRCodeModule} from "ngx-qrcode2";
     AboutPageModule,
     AccountPageModule,
     AccountMenuPageModule,
+    ActionPageModule,
     BarcodePageModule,
     CartPageModule,
     CategoriesPageModule,
@@ -109,7 +110,6 @@ import {NgxQRCodeModule} from "ngx-qrcode2";
     ChangePasswordPageModule,
     CityPopoverPageModule,
     EditShipAddressPageModule,
-    EditShipAddressNoDeliveryPageModule,
     FavoriteStoresPageModule,
     FilterPopoverPageModule,
     ForgotPasswordPageModule,
@@ -124,13 +124,12 @@ import {NgxQRCodeModule} from "ngx-qrcode2";
     LoginPageModule,
     ManagePlacesMenuPageModule,
     MapPageModule,
+    OrdersPageModule,
     RegisterPageModule,
     SearchPageModule,
     SearchResultsPageModule,
     SelectShipAddressPageModule,
-    ShipAddressesPageModule,
-    SupportPageModule,
-    ActionPageModule
+    SupportPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -147,6 +146,8 @@ import {NgxQRCodeModule} from "ngx-qrcode2";
     BarcodeScanner,
     ScreenOrientation,
     LaunchNavigator,
+    AppAvailability,
+    Ionic2Rating,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
     {provide: AbstractAccountRepository, useClass: AccountRepository},

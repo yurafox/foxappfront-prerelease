@@ -1,26 +1,27 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
-import { SearchBtnComponent } from './search-btn/search-btn';
+import {SearchBtnComponent} from './search-btn/search-btn';
 import {IonicModule} from 'ionic-angular';
-import { MainToolbarComponent } from './main-toolbar/main-toolbar';
-import { ItemComponent } from './item/item';
+import {MainToolbarComponent} from './main-toolbar/main-toolbar';
+import {ItemComponent} from './item/item';
 import {PipesModule} from '../app/pipe/pipes.module';
-import { Ionic2RatingModule } from 'ionic2-rating';
-import { ProductRatingComponent } from './product-rating/product-rating';
-import { ItemPropsComponent } from './item-props/item-props';
-import { ItemDescriptionComponent } from './item-description/item-description';
-import { ItemReviewComponent } from './item-review/item-review';
-import { ReadMoreComponent } from './read-more/read-more';
-import { ItemsListComponent } from './items-list/items-list';
-import { FilterComponent } from './filter/filter';
-import { CustomPopupComponent } from './custom-popup/custom-popup';
-import { DropdownViewComponent } from './dropdown-view/dropdown-view';
-import { DropdownListComponent } from './dropdown-list/dropdown-list';
-import { ActionSketchComponent } from './action-sketch/action-sketch';
+import {Ionic2RatingModule} from 'ionic2-rating';
+import {ProductRatingComponent} from './product-rating/product-rating';
+import {ItemPropsComponent} from './item-props/item-props';
+import {ItemDescriptionComponent} from './item-description/item-description';
+import {ItemReviewComponent} from './item-review/item-review';
+import {ReadMoreComponent} from './read-more/read-more';
+import {ItemsListComponent} from './items-list/items-list';
+import {FilterComponent} from './filter/filter';
+import {CustomPopupComponent} from './custom-popup/custom-popup';
+import {DropdownViewComponent} from './dropdown-view/dropdown-view';
+import {DropdownListComponent} from './dropdown-list/dropdown-list';
+import {ActionSketchComponent} from './action-sketch/action-sketch';
 import {HtmlOutlet} from './html-outlet/html-outlet';
+import {ShippingAddressComponent} from './shipping-address/shipping-address';
 
 @NgModule({
-	declarations: [
-	  SearchBtnComponent,
+  declarations: [
+    SearchBtnComponent,
     MainToolbarComponent,
     ItemComponent,
     ProductRatingComponent,
@@ -34,7 +35,8 @@ import {HtmlOutlet} from './html-outlet/html-outlet';
     DropdownListComponent,
     DropdownViewComponent,
     ActionSketchComponent,
-    HtmlOutlet
+    HtmlOutlet,
+    ShippingAddressComponent
   ],
   entryComponents: [
     CustomPopupComponent,
@@ -42,13 +44,13 @@ import {HtmlOutlet} from './html-outlet/html-outlet';
     DropdownListComponent
   ],
 
-	imports: [
+  imports: [
     IonicModule,
     PipesModule,
     Ionic2RatingModule
   ],
-	exports: [
-	  SearchBtnComponent,
+  exports: [
+    SearchBtnComponent,
     MainToolbarComponent,
     ItemComponent,
     ProductRatingComponent,
@@ -62,10 +64,12 @@ import {HtmlOutlet} from './html-outlet/html-outlet';
     DropdownListComponent,
     DropdownViewComponent,
     ActionSketchComponent,
-    HtmlOutlet
+    HtmlOutlet,
+    ShippingAddressComponent
   ],
   schemas: [
-  CUSTOM_ELEMENTS_SCHEMA
+    CUSTOM_ELEMENTS_SCHEMA
   ]
 })
-export class ComponentsModule {}
+export class ComponentsModule {
+}
