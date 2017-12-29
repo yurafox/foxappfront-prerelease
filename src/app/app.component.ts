@@ -202,5 +202,13 @@ export class FoxApp extends ComponentBase {
       return;
     });
   }
+
+  toLogIn() {
+    if (this.userService.isAuth === false) {
+      this.nav.push('LoginPage').catch((err: any) => {
+        console.log(`Couldn't navigate to LoginPage: ${err}`);
+      });
+    }
+  }
 }
 

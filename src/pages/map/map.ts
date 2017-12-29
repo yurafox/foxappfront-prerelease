@@ -1,12 +1,12 @@
 import {Component, ViewChild, ElementRef, OnInit, ChangeDetectorRef} from '@angular/core';
 import {Platform, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
-import {LatLng} from '@ionic-native/google-maps';
+import {/*GoogleMap,*/ LatLng} from '@ionic-native/google-maps';
 import {City, Store} from "../../app/model/index";
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {Geolocation} from '@ionic-native/geolocation';
 import {StatusBar} from "@ionic-native/status-bar";
-import {LaunchNavigator/*, LaunchNavigatorOptions*/} from "@ionic-native/launch-navigator";
+import {LaunchNavigator} from "@ionic-native/launch-navigator";
 import {FavoriteStoresPage} from "../favorite-stores/favorite-stores";
 
 declare var google: any;
@@ -27,6 +27,7 @@ export class MapPage extends ComponentBase implements OnInit {
   previousPage: string;
 
   map: /*GoogleMap;*/ any;
+  prevInfoWindow: any;
   city: City;
   defaultCityId: number;  // Used to set position when map just opened and user's location is unknown.
   cities: Array<City>;
@@ -143,7 +144,8 @@ export class MapPage extends ComponentBase implements OnInit {
             `<p>${shopRating > 0 ? `${rating}` : ''}</p>`+
             `<p>${markerData.address}</p>`+
             `<p>Години роботи: ${shopOpensTime} - ${shopClosesTime}</p>`+
-            `<p style="color: ${(this.shopIsWorking(shopOpensTime, shopClosesTime) === 'Open') ? 'green' : 'red'}">${this.shopIsWorking(shopOpensTime, shopClosesTime)}</p>`
+            `<p style="color: ${(this.shopIsWorking(shopOpensTime, shopClosesTime) === 'Open') ? 'green' : 'red'}">${this.shopIsWorking(shopOpensTime, shopClosesTime)}</p>`,
+
           });
 
           let marker = new google.maps.Marker({
@@ -162,13 +164,16 @@ export class MapPage extends ComponentBase implements OnInit {
            * Center to the marker and show info on click
            */
           marker.addListener('click', () => {
+            if (this.prevInfoWindow) {
+              this.prevInfoWindow.close();
+            }
 
             this.map.panTo(markerPosition);
-            if (14 >= this.map.zoom) {
+            /*if (14 >= this.map.zoom) {
               setTimeout(() => {
                 infoWindow.close();
               }, 5000);
-            }
+            }*/
             this.selectedMarker = {label: markerData.address, value: markerPosition};
             if (markerArr.id !== this.selectedCity.id) {
               this.selectedCity = {id: this.cities[markerArr.id - 1].id, name: this.cities[markerArr.id - 1].name};
@@ -181,8 +186,8 @@ export class MapPage extends ComponentBase implements OnInit {
                 this.makeShopList();
               }
             }
-            // this.changeDetector.markForCheck();
             this.changeDetector.detectChanges();
+            this.prevInfoWindow = infoWindow;
             infoWindow.open(this.map, marker);
           });
 
@@ -190,6 +195,10 @@ export class MapPage extends ComponentBase implements OnInit {
            * Zoom to the marker on double click
            */
           marker.addListener('dblclick', () => {
+            if (this.prevInfoWindow) {
+              this.prevInfoWindow.close();
+            }
+            this.prevInfoWindow = infoWindow;
             infoWindow.open(this.map, marker);
             this.map.panTo(markerPosition);
             this.map.setZoom(17);
@@ -215,57 +224,7 @@ export class MapPage extends ComponentBase implements OnInit {
   }
 
   async ionViewDidLoad() {
-    // await this.loadMap(); // For Ionic Native GMap
   }
-
-  /**
-   * Ionic Native GMap
-   */
-  /*loadMap() {
-
-    let mapOptions: GoogleMapOptions = {
-      camera: {
-        target: this.markersArr[22].stores[0].position,
-        zoom: 10,
-        tilt: 90
-      }
-    };
-
-    this.map = this.googleMaps.create('map_canvas', mapOptions);
-
-    // Wait the MAP_READY before using any methods.
-    this.map.one(GoogleMapsEvent.MAP_READY)
-      .then(() => {
-        console.log('Map is ready!');
-        // Set true if you want to show the MyLocation button
-        this.map.setMyLocationEnabled(true);
-
-        this.markersArr.forEach((markerArr) => {
-          markerArr.stores.forEach((markerData) => {
-            // Now you can use all methods safely.
-            this.map.addMarker({
-              title: markerData.title,
-              icon: 'blue',
-              animation: 'DROP',
-              position: markerData.position
-            })
-              .then(marker => {
-                marker.on(GoogleMapsEvent.MARKER_CLICK)
-                  .subscribe(() => {
-                    alert('clicked');
-                    // Set camera center
-                    this.map.setCameraTarget(markerData.position);
-                    // Set camera zoom
-                    this.map.setCameraZoom(17);
-                    // Animate camera to move to selected position
-                    this.map.animateCamera(markerData.position).catch((err) => console.log(err));
-                  });
-              });
-          });
-        });
-
-      });
-  }*/
 
   /**
    * Making list of shops

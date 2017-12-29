@@ -104,6 +104,41 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async getClientOrdersAll(): Promise<ClientOrder[]> {
+    try {
+      const response = await this.http
+        .get(clientOrdersUrl)
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const cClientOrders = new Array<ClientOrder>();
+      if (data != null) {
+        data.forEach(val =>
+          cClientOrders.push(
+            new ClientOrder(
+              val.id,
+              val.orderDate,
+              val.idCur,
+              val.idClient,
+              val.total,
+              val.idPaymentMethod,
+              val.idPaymentStatus,
+              val.idStatus,
+              val.loIdEntity,
+              val.loIdClientAddress
+            )
+          )
+        );
+      }
+      return cClientOrders;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
   public async getClientOrderById(id: number): Promise<ClientOrder> {
     try {
       const response = await this.http
@@ -251,6 +286,40 @@ export class AppDataRepository extends AbstractDataRepository {
       p.loDeliveryCompletedDate = val.loDeliveryCompletedDate;
       p.errorMessage = val.errorMessage;
       return p;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getClientDraftOrderSpecProducts(): Promise<Array<ClientOrderProducts>> {
+    try {
+      let orderProducts = [];
+      const response = await this.http
+        .get(clientOrderSpecProductsUrl + '')
+        .toPromise();
+
+      const val = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      val.forEach(product => {
+        let p = new ClientOrderProducts();
+        p.id = product.id;
+        p.idOrder = product.idOrder;
+        p.idQuotationProduct = product.idQuotationProduct;
+        p.price = product.price;
+        p.qty = product.qty;
+        p.idStorePlace = product.idStorePlace;
+        p.idLoEntity = product.idLoEntity;
+        p.loTrackTicket = product.loTrackTicket;
+        p.loDeliveryCost = product.loDeliveryCost;
+        p.loDeliveryCompleted = product.loDeliveryCompleted;
+        p.loEstimatedDeliveryDate = product.loEstimatedDeliveryDate;
+        p.loDeliveryCompletedDate = product.loDeliveryCompletedDate;
+        p.errorMessage = product.errorMessage;
+        orderProducts.push(p);
+      });
+      return orderProducts;
     } catch (err) {
       return await this.handleError(err);
     }

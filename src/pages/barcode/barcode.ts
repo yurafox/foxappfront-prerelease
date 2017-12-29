@@ -46,9 +46,12 @@ export class BarcodePage extends ComponentBase {
         this.createdCode = client.barcode;
         let image = this.image.nativeElement;
         JsBarcode(image, client.barcode, {
-          width: 3,
-          height: 120,
-          fontSize: 16,
+          width: 2,
+          height: 60,
+          fontSize: 0,
+          textPosition: 'top',
+          textMargin: 0,
+          text: ' ',
         });
       }).catch(err => {
         console.log(`Something went wrong with BarcodeGenerator: ${err}`);

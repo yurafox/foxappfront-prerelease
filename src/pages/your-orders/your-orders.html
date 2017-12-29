@@ -5,11 +5,21 @@
 
 <ion-content padding>
   <h5>Your orders</h5>
-  <div *ngFor="let order of orders; let i = index">
-    <ion-card padding>
-      <p>Order #{{i+1}}</p>
-      <p>Date: {{order?.orderDate}}</p>
-      <p>Total: {{order?.total}}</p>
-    </ion-card>
+  <div *ngIf="loaded === true">
+    <div *ngFor="let product of productArr; let i = index">
+      <ion-card padding>
+        <p>Order #{{i+1}}</p>
+        <div *ngFor="let p of product?.products">
+          <item [product]="p"></item>
+          <br/>
+        </div>
+        <br/>
+        <p>Date: {{product?.order?.orderDate}}</p>
+        <p>Total: {{product?.order?.total}}</p>
+      </ion-card>
+    </div>
+  </div>
+  <div *ngIf="loaded === false">
+    <h6>You have no orders</h6>
   </div>
 </ion-content>

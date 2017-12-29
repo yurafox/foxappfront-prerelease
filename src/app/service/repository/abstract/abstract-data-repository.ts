@@ -27,6 +27,7 @@ export abstract class AbstractDataRepository {
   public async abstract getCurrencies(cacheForce: boolean): Promise<Currency[]>;
   public async abstract getLocale(cacheForce: boolean): Promise<Lang[]>;
 
+  public async abstract getQuotationProductById(qpId: number): Promise<QuotationProduct>
   public async abstract getQuotationProductsByProductId(productId: number): Promise<QuotationProduct[]>;
   public async abstract getProductStorePlacesByQuotId(quotId: number): Promise<ProductStorePlace[]>;
   public async abstract getStorePlaceById(id: number): Promise<StorePlace>;
@@ -39,6 +40,7 @@ export abstract class AbstractDataRepository {
 
   public async abstract getClientDraftOrder(): Promise<ClientOrder>;
   public async abstract getClientOrders(): Promise<ClientOrder[]>;
+  public async abstract getClientOrdersAll(): Promise<ClientOrder[]>;
   public async abstract getClientOrderById(id: number): Promise<ClientOrder>;
 
   public async abstract getCartProducts(): Promise<ClientOrderProducts[]>;
@@ -47,6 +49,7 @@ export abstract class AbstractDataRepository {
   public async abstract deleteCartProduct(prod: ClientOrderProducts);
 
   public async abstract getClientDraftOrderSpecProductsById(id: number): Promise<ClientOrderProducts>;
+  public async abstract getClientDraftOrderSpecProducts(): Promise<Array<ClientOrderProducts>>;
 
   public async abstract getCountryById(id: number): Promise<Country>;
   public async abstract getCountries(): Promise<Country[]>;
