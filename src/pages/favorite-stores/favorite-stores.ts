@@ -69,7 +69,7 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
       }).catch(err => {
         console.log(`Error loading cities: ${err}`);
       });
-      await this.repo.getFoxStores().then(storesArr => {
+      await this.repo.getStores().then(storesArr => {
         this.foxStores = storesArr;
       }).catch(err => {
         console.log(`Error loading foxStores: ${err}`);
@@ -132,6 +132,12 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
   navToMap(store: Store, city: City) {
     this.navCtrl.push('MapPage', {store: store, city: city, page: this}).catch(err => {
       console.log(`Couldn't navigate to MapPage with selected params: ${err}`);
+    });
+  }
+
+  onShowReviewsClick(store: any): void {
+    this.navCtrl.push('ItemReviewsPage', {store: store}).catch(err => {
+      console.log(`Error navigating to ItemReviewPage: ${err}`);
     });
   }
 

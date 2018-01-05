@@ -6,7 +6,7 @@ import {ComponentBase} from '../component-extension/component-base';
   template: `
         <div [innerHTML]="currentText">
         </div>
-            <a style="color: darkslateblue;" [class.hidden]="hideToggle" (click)="toggleView()">Read {{isCollapsed? 'more':'less'}}</a>
+        <a style="color: darkslateblue;" *ngIf="!this.hideToggle" (click)="toggleView()">Read {{isCollapsed? 'more':'less'}}</a>
     `
 })
 
@@ -32,8 +32,9 @@ export class ReadMoreComponent extends ComponentBase implements OnChanges {
       this.isCollapsed = false;
       this.hideToggle = true;
       return;
+    } else {
+      this.hideToggle = false;
     }
-    this.hideToggle = false;
     if (this.isCollapsed == true) {
       this.currentText = this.text.substring(0, this.maxLength) + "...";
     } else if(this.isCollapsed == false)  {

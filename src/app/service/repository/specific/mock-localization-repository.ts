@@ -49,6 +49,41 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'Support', lang:2, text:'Підтримка'},
       { tagName:'Support', lang:3, text:'Support'}
     ];
+
+    this._mockLocalizationStore['MapPage'] = [
+      { tagName:'Open', lang:1, text:'Открыто'},
+      { tagName:'Open', lang:2, text:'Відчинено'},
+      { tagName:'Open', lang:3, text:'Open'},
+      { tagName:'Closed', lang:1, text:'Закрыто'},
+      { tagName:'Closed', lang:2, text:'Зачинено'},
+      { tagName:'Closed', lang:3, text:'Closed'},
+      { tagName:'OpenHours', lang:1, text:'Время работы'},
+      { tagName:'OpenHours', lang:2, text:'Години роботи'},
+      { tagName:'OpenHours', lang:3, text:'Open hours'},
+      { tagName:'Reviews', lang:1, text:'Отзывы'},
+      { tagName:'Reviews', lang:2, text:'Відгуки'},
+      { tagName:'Reviews', lang:3, text:'Reviews'},
+      { tagName:'WriteReview', lang:1, text:'Оставить отзыв'},
+      { tagName:'WriteReview', lang:2, text:'Залишити відгук'},
+      { tagName:'WriteReview', lang:3, text:'Write review'},
+
+      { tagName:'toFav', lang:1, text:'В избранное'},
+      { tagName:'toFav', lang:2, text:'У відбірне'},
+      { tagName:'toFav', lang:3, text:'To favorite'},
+      { tagName:'inNav', lang:1, text:'В навигаторе'},
+      { tagName:'inNav', lang:2, text:'У навігаторі'},
+      { tagName:'inNav', lang:3, text:'In navigator'},
+      { tagName:'route', lang:1, text:'Маршрут'},
+      { tagName:'route', lang:2, text:'Маршрут'},
+      { tagName:'route', lang:3, text:'Route'},
+
+      { tagName:'City', lang:1, text:'Город'},
+      { tagName:'City', lang:2, text:'Місто'},
+      { tagName:'City', lang:3, text:'City'},
+      { tagName:'Address', lang:1, text:'Адрес'},
+      { tagName:'Address', lang:2, text:'Адреса'},
+      { tagName:'Address', lang:3, text:'Address'},
+    ];
   }
 
   public getLocalization(data: { componentName: string, lang: number }): Promise<IDictionary<string>> {

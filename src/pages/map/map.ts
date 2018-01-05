@@ -8,6 +8,7 @@ import {Geolocation} from '@ionic-native/geolocation';
 import {StatusBar} from "@ionic-native/status-bar";
 import {LaunchNavigator} from "@ionic-native/launch-navigator";
 import {FavoriteStoresPage} from "../favorite-stores/favorite-stores";
+import {StoreReview} from "../../app/model/store-review";
 
 declare var google: any;
 
@@ -31,7 +32,7 @@ export class MapPage extends ComponentBase implements OnInit {
   city: City;
   defaultCityId: number;  // Used to set position when map just opened and user's location is unknown.
   cities: Array<City>;
-  selectedCity: City  = {id: 0, name: ' '};
+  selectedCity: City = {id: 0, name: ' '};
   selectedMarker: SelectItem;
   markersArr: Array<{ id: number, stores: Store[] }>;
   shopList: Array<SelectItem>;
@@ -41,6 +42,15 @@ export class MapPage extends ComponentBase implements OnInit {
   // Setting up direction service
   directionsService: any;
   directionsDisplay: any;
+  // Variables for infoWindow content
+  open: string;
+  close: string;
+  openHoursStr: string;
+  reviewsStr: string;
+  writeReviewStr: string;
+  // Variables for drop-down buttons
+  dropDownCityOpts: any;
+  dropDownAddressOpts: any;
 
   constructor(private nav: NavController, private navParams: NavParams, private platform: Platform,
               private repo: AbstractDataRepository, private geolocation: Geolocation, private statusBar: StatusBar,
@@ -52,9 +62,18 @@ export class MapPage extends ComponentBase implements OnInit {
     this.cities = [{id: 0, name: ''}];
     this.selectedMarker = {label: '', value: null};
     this.userPos = new LatLng(0, 0);
+    this.open = ''/*'Open'*/;
+    this.close = ''/*'Closed'*/;
+    this.openHoursStr = ''/*'Open hours'*/;
+    this.reviewsStr = ''/*'Reviews'*/;
+    this.writeReviewStr = ''/*'Write review'*/;
+    this.dropDownCityOpts = {popupClass: 'f-middle-dictionary', buttonClass: 'f-drop-button-full', popupHeader: '', buttonHeader: ''};
+    this.dropDownAddressOpts = {popupClass: 'f-large-dictionary', buttonClass: 'f-drop-button-full', popupHeader: '', buttonHeader: ''};
 
     try {
-      this.previousPage = this.nav.last().id;
+      if (this.nav.last()) {
+        this.previousPage = this.nav.last().id;
+      }
     } catch (err) {
       console.log(`Error getting last page: ${err}`);
     }
@@ -74,7 +93,7 @@ export class MapPage extends ComponentBase implements OnInit {
   async ngOnInit() {
     super.ngOnInit();
     try {
-      [this.markersArr, this.cities] = await Promise.all([this.repo.getFoxStores(), this.repo.getCities()]);
+      [this.markersArr, this.cities] = await Promise.all([this.repo.getStores(), this.repo.getCities()]);
 
       /**
        * Set defaultCityId to id of the city with name 'Киев'/'Київ'/'Kiev'/'Kyiv'
@@ -130,23 +149,27 @@ export class MapPage extends ComponentBase implements OnInit {
         markerArr.stores.forEach((markerData, i) => {
           let labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
+          let reviews: StoreReview[] = [];
+          this.repo.getStoreReviewsByStoreId(markerData.id).then(reviewsArr => {
+            reviewsArr.forEach(review => {
+              if (review.idStore === markerData.id) {
+                reviews.push(review);
+              }
+            });
+          }).catch(err => {
+            console.log(`Error retrieving store reviews: ${err}`);
+            return null;
+          });
+
           let shopOpensTime = markerData.openTime;
           let shopClosesTime = markerData.closeTime;
           const shopRating = markerData.rating;
           let rating = '';
-
           for (let i = 0; i < shopRating; i++) {
             rating += '<span class="fa fa-star checked"></span>';
           }
 
-          let infoWindow = new google.maps.InfoWindow({
-            content: `<h6 style="color: #ef4123;">Фокстрот</h6>`+
-            `<p>${shopRating > 0 ? `${rating}` : ''}</p>`+
-            `<p>${markerData.address}</p>`+
-            `<p>Години роботи: ${shopOpensTime} - ${shopClosesTime}</p>`+
-            `<p style="color: ${(this.shopIsWorking(shopOpensTime, shopClosesTime) === 'Open') ? 'green' : 'red'}">${this.shopIsWorking(shopOpensTime, shopClosesTime)}</p>`,
-
-          });
+          let infoWindow = new google.maps.InfoWindow();
 
           let marker = new google.maps.Marker({
             position: markerData.position,
@@ -164,16 +187,18 @@ export class MapPage extends ComponentBase implements OnInit {
            * Center to the marker and show info on click
            */
           marker.addListener('click', () => {
+            let isWorking = this.shopIsWorking(shopOpensTime, shopClosesTime);
             if (this.prevInfoWindow) {
               this.prevInfoWindow.close();
             }
-
             this.map.panTo(markerPosition);
+
             /*if (14 >= this.map.zoom) {
               setTimeout(() => {
                 infoWindow.close();
               }, 5000);
             }*/
+
             this.selectedMarker = {label: markerData.address, value: markerPosition};
             if (markerArr.id !== this.selectedCity.id) {
               this.selectedCity = {id: this.cities[markerArr.id - 1].id, name: this.cities[markerArr.id - 1].name};
@@ -188,6 +213,32 @@ export class MapPage extends ComponentBase implements OnInit {
             }
             this.changeDetector.detectChanges();
             this.prevInfoWindow = infoWindow;
+
+            let content =
+              `<div style="font-size: 15px;">`+
+              `<p style="color: #ef4123; padding: 0; margin: 0; font-size: 16px; text-align: center"><b>Фокстрот</b></p>` +
+              `<p style="padding: 0; margin: 0; text-align: center">${shopRating > 0 ? `${rating}` : ''}</p>` +
+              `<p style="padding: 0; margin: 0;">${markerData.address}</p>` +
+              `<p style="padding: 0; margin: 0;">${this.openHoursStr}:  ${shopOpensTime} - ${shopClosesTime}</p>` +
+              `<p style="color: ${(isWorking === this.open) ? 'green' : 'red'}; padding: 0; margin: 0;">${(isWorking !== null) ? isWorking : '' }</p>` +
+              `<span id="revs" #revs style="color: darkblue; padding: 0; margin: 0;">${(reviews && (reviews.length > 0)) ? (this.reviewsStr + '<span style=""> (' + reviews.length + ')</span>') : this.writeReviewStr}</span>`+
+              `</div>`;
+
+            infoWindow.setContent(content);
+
+            /**
+             * Listen to infoWindow when it's ready and add listener to DOM element
+             */
+            google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
+              document.getElementById('revs').addEventListener('click', () => {
+                if (reviews && (reviews.length > 0)) {
+                  this.onShowReviewsClick(reviews, markerData);
+                } else {
+                  this.onWriteReviewClick(markerData);
+                }
+              });
+            });
+
             infoWindow.open(this.map, marker);
           });
 
@@ -213,18 +264,28 @@ export class MapPage extends ComponentBase implements OnInit {
         });
       });
 
+      /**
+       * Listener that shows map and loads localization
+       */
       google.maps.event.addListenerOnce(this.map, 'idle', () => {
         mapEle.classList.add('show-map');
+        this.open = this.locale['Open'];
+        this.close = this.locale['Close'];
+        this.openHoursStr = this.locale['OpenHours'];
+        this.reviewsStr = this.locale['Reviews'];
+        this.writeReviewStr = this.locale['WriteReview'];
+        this.dropDownCityOpts = {popupClass: 'f-middle-dictionary', buttonClass: 'f-drop-button-full', popupHeader: this.locale['City'], buttonHeader: this.locale['City']};
+        this.dropDownAddressOpts = {popupClass: 'f-large-dictionary', buttonClass: 'f-drop-button-full', popupHeader: this.locale['Address'], buttonHeader: this.locale['Address']};
+        this.changeDetector.detectChanges();
       });
 
       this.navFromFavoriteStoresPage();
-    } catch(err) {
+    } catch (err) {
       window.alert('Error occurred: ' + err);
     }
   }
 
-  async ionViewDidLoad() {
-  }
+  async ionViewDidLoad() {}
 
   /**
    * Making list of shops
@@ -309,7 +370,7 @@ export class MapPage extends ComponentBase implements OnInit {
           if (store.address === this.selectedMarker.label) {
             try {
               this.userService.addFavoriteStoresId(store.id);
-            } catch(err) {
+            } catch (err) {
               console.log(`Error while adding to favorite: ${err}`);
               return;
             }
@@ -385,28 +446,31 @@ export class MapPage extends ComponentBase implements OnInit {
    * @param closesTime  - time when shop closes
    * @returns {string}
    */
-  shopIsWorking(opensTime, closesTime) {
+  shopIsWorking(opensTime: string, closesTime: string): string {
     const date = new Date();
+    if (opensTime && closesTime) {
+      let substrings1 = opensTime.split(':');
+      let substring11 = substrings1[0].slice(0, substrings1[0].length);
+      let substring12 = substrings1[1].slice(0, substrings1[1].length - 1);
+      let substrings2 = closesTime.split(':');
+      let substring21 = substrings2[0].slice(0, substrings2[0].length);
+      let substring22 = substrings2[1].slice(0, substrings2[1].length - 1);
 
-    let substrings1 = opensTime.split(':');
-    let substring11 = substrings1[0].slice(0, substrings1[0].length);
-    let substring12 = substrings1[1].slice(0, substrings1[1].length - 1);
-    let substrings2 = closesTime.split(':');
-    let substring21 = substrings2[0].slice(0, substrings2[0].length);
-    let substring22 = substrings2[1].slice(0, substrings2[1].length - 1);
+      let myTime = date.getHours() * 100 + date.getMinutes();
+      let openTime = +substring11 * 100 + +substring12;
+      let closeTime = +substring21 * 100 + +substring22;
 
-    let myTime = date.getHours() * 100 + date.getMinutes();
-    let openTime = +substring11 * 100 + +substring12;
-    let closeTime = +substring21 * 100 + +substring22;
-
-    if ((openTime >= 0 && closeTime >= 0) && (openTime <= 2400 && closeTime <= 2400)) {
-      if ((myTime >= openTime) && (myTime <= closeTime)) {
-        return 'Open';
+      if ((openTime >= 0 && closeTime >= 0) && (openTime <= 2400 && closeTime <= 2400)) {
+        if ((myTime >= openTime) && (myTime <= closeTime)) {
+          return this.open;
+        } else {
+          return this.close;
+        }
       } else {
-        return 'Closed';
+        console.log('wrong time input');
       }
     } else {
-      console.log('wrong time input');
+      return null;
     }
   }
 
@@ -423,6 +487,20 @@ export class MapPage extends ComponentBase implements OnInit {
       this.changeDetector.detectChanges();
       // this.calculateAndDisplayRoute(this.userPos, store.position);
       this.handleListSelect();
+    }
+  }
+
+  onShowReviewsClick(reviews: any, store: any): void {
+    this.nav.push('ItemReviewsPage', {reviews: reviews, store: store}).catch(err => {
+      console.log(`Error navigating to ItemReviewPage: ${err}`);
+    });
+  }
+
+  onWriteReviewClick(store: Store): void {
+    if (store) {
+      this.nav.push('ItemReviewWritePage', store).catch(err => {
+        console.log(`Error navigating to ItemReviewWritePage: ${err}`);
+      });
     }
   }
 }

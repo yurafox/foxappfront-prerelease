@@ -17,6 +17,7 @@ import {ClientAddress} from '../../../model/client-address';
 import {Country} from '../../../model/country';
 import {ClientOrder} from '../../../model/client-order';
 import {ClientOrderProducts} from '../../../model/client-order-products';
+import {StoreReview} from "../../../model/store-review";
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
@@ -59,8 +60,9 @@ export abstract class AbstractDataRepository {
   public async abstract getClientAddressesByClientId(id: number): Promise<ClientAddress[]>;
 
   public async abstract getCities(): Promise<City[]>;
-  public async abstract getFoxStores(): Promise<Array<{id: number, stores: Store[]}>>;
-  public async abstract getFoxStoreById(id: number): Promise<Store>;
+  public async abstract getStores(): Promise<Array<{id: number, stores: Store[]}>>;
+  public async abstract getStoreById(id: number): Promise<Store>;
+  public async abstract getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]>;
   public async abstract getCityById(id: number): Promise<City>;
   public async abstract getPageContent(id:number):Promise<string>;
   public async abstract getAction(id:number):Promise<Action>;

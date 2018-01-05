@@ -1,14 +1,54 @@
-<rating  style="display: inline-block;" [(ngModel)]="review.rating"
-         readOnly="true">
+<rating style="display: inline-block;" [(ngModel)]="review.rating"
+        readOnly="true">
 </rating>
 <p *ngIf="displayTextLength === -1"></p> <!-- фиксим баг верстки -->
 <div *ngIf="collapsibleMode">
-  <span>by </span><span style="color: darkslateblue;">{{review.user}}</span><span> on </span><span>{{review.reviewDate | date:'longDate'}}</span>
+  <span>by </span><span class="f-review-user-name">{{review.user}}</span><span> on </span><span>{{review.reviewDate | date:'longDate'}}</span>
   <read-more [text]="review.reviewText" [maxLength]="displayTextLength"></read-more>
+  <br/>
+  <span *ngIf="review.advantages"><b>Advantages:</b> {{review.advantages}}<br/></span>
+  <span *ngIf="review.disadvantages"><b>Disadvantages:</b> {{review.disadvantages}}<br/></span>
+  <span *ngIf="review.upvotes && (review.upvotes > 0)">
+      {{review.upvotes ? review.upvotes + ' people found this helpful' : ''}}
+    </span>
+  <span *ngIf="!review.upvotes || (review.upvotes === 0)">
+      <span>Was this review helpful to you?</span>
+    </span><br>
+  <span style="display: inline-block">
+    <button ion-button class="f-btn-secondary">Helpful</button>
+    <button ion-button class="f-btn-secondary">Not Helpful</button>
+  </span><br>
+  <!--<span>
+    <ion-icon class="f-icon-thumbs-up" name="md-thumbs-up"></ion-icon> {{review.upvotes ? review.upvotes : 0}}
+    <ion-icon class="f-icon-thumbs-down" name="md-thumbs-down"></ion-icon> {{review.downvotes ? review.downvotes : 0}}
+  </span>-->
 </div>
 <div *ngIf="!collapsibleMode">
-  <span [innerHTML]="review.reviewText | truncate : displayTextLength" *ngIf="!(displayTextLength === -1); else elseBlock"></span>
-  <ng-template #elseBlock><span [innerHTML]="review.reviewText"></span></ng-template>
-  <br>
-  <span>by </span><span style="color: darkslateblue;">{{review.user}}</span>
+  <div *ngIf="!(displayTextLength === -1); else elseBlock">
+    <span [innerHTML]="review.reviewText | truncate : displayTextLength"></span><br>
+    <span>by </span><span class="f-review-user-name">{{review.user}}</span><br>
+  </div>
+  <ng-template #elseBlock>
+    <span>by </span><span class="f-review-user-name">{{review.user}}</span><br>
+    <span [innerHTML]="review.reviewText"></span><br/>
+    <span *ngIf="review.advantages"><b>Advantages:</b> {{review.advantages}}<br/></span>
+    <span *ngIf="review.disadvantages"><b>Disadvantages:</b> {{review.disadvantages}}<br/></span>
+    <span *ngIf="review.upvotes && (review.upvotes > 0)">
+      {{review.upvotes ? review.upvotes + ' people found this helpful' : ''}}
+    </span>
+    <span *ngIf="!review.upvotes || (review.upvotes === 0)">
+      <span>Was this review helpful to you?</span>
+    </span><br>
+    <span style="display: inline-block">
+      <button ion-button class="f-btn-secondary">Helpful</button>
+      <button ion-button class="f-btn-secondary">Not Helpful</button>
+    </span><br>
+    <div *ngIf="review.reviewAnswers && (review.reviewAnswers.length > 0)">
+      <span style="font-size: 18px"><b>Answers:</b></span><br>
+      <div *ngFor="let answer of review.reviewAnswers" class="f-review-answer">
+        <span>by </span><span class="f-review-user-name">{{answer?.user}}</span><span> on </span><span>{{answer?.answerDate  | date:'longDate'}}</span><br/>
+        <span>{{answer?.answerText}}</span><br/>
+      </div>
+    </div>
+  </ng-template>
 </div>

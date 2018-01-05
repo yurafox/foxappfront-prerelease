@@ -51,6 +51,15 @@ page-item-review-write {
         font-size: 45px;
       }
     }
+    &.rating1 li {
+      padding: 0px 0px !important;
+      background: none;
+      color: color($colors, foxrating);
+
+      ion-icon {
+        font-size: 45px;
+      }
+    }
   }
 
 }

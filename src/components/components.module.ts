@@ -18,7 +18,6 @@ import {DropdownListComponent} from './dropdown-list/dropdown-list';
 import {ActionSketchComponent} from './action-sketch/action-sketch';
 import {HtmlOutlet} from './html-outlet/html-outlet';
 import {ShippingAddressComponent} from './shipping-address/shipping-address';
-import {FeedbackComponent} from './feedback/feedback';
 
 @NgModule({
   declarations: [
@@ -37,8 +36,7 @@ import {FeedbackComponent} from './feedback/feedback';
     DropdownViewComponent,
     ActionSketchComponent,
     HtmlOutlet,
-    ShippingAddressComponent,
-    FeedbackComponent
+    ShippingAddressComponent
   ],
   entryComponents: [
     CustomPopupComponent,
@@ -67,8 +65,7 @@ import {FeedbackComponent} from './feedback/feedback';
     DropdownViewComponent,
     ActionSketchComponent,
     HtmlOutlet,
-    ShippingAddressComponent,
-    FeedbackComponent
+    ShippingAddressComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

@@ -16,4 +16,22 @@ item-review {
     }
   }
 
+  .f-review-answer {
+    margin-left: 10px;
+    //margin-top: 5px;
+    padding: 10px 5px 5px;
+    //border: 1px solid #EBEBEC;
+  }
+
+  .f-icon-thumbs-up {
+    color: forestgreen;
+  }
+  .f-icon-thumbs-down {
+    color: color($colors, fox);
+  }
+
+  .f-review-user-name {
+    color: darkslateblue;
+  }
+
 }
