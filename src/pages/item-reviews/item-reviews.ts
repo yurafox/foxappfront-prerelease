@@ -28,7 +28,9 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
       this.store = navParams.data.store;
       this.item = this.store;
     }
-    this.reviews = navParams.data.reviews;
+    if (this.navParams.data.reviews) {
+      this.reviews = navParams.data.reviews;
+    }
   }
 
   async ngOnInit () {

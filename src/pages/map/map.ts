@@ -490,7 +490,7 @@ export class MapPage extends ComponentBase implements OnInit {
     }
   }
 
-  onShowReviewsClick(reviews: any, store: any): void {
+  onShowReviewsClick(reviews: StoreReview[], store: Store): void {
     this.nav.push('ItemReviewsPage', {reviews: reviews, store: store}).catch(err => {
       console.log(`Error navigating to ItemReviewPage: ${err}`);
     });
