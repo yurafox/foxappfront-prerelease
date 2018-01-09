@@ -23,15 +23,27 @@ item-review {
     //border: 1px solid #EBEBEC;
   }
 
-  .f-icon-thumbs-up {
-    color: forestgreen;
-  }
-  .f-icon-thumbs-down {
-    color: color($colors, fox);
-  }
-
   .f-review-user-name {
     color: darkslateblue;
+  }
+
+  .f-review-feedback-thanks {
+    color: forestgreen;
+    ion-icon::before {
+      font-size: 30px;
+      padding: 0;
+      margin: 0;
+      height: 17px;
+      line-height: 17px;
+    }
+    ion-icon {
+      font-size: 30px;
+      padding: 0;
+      margin: 0;
+      height: 17px;
+      line-height: 17px;
+      vertical-align: -35%;
+    }
   }
 
 }

@@ -35,7 +35,7 @@
 
             <ion-row>
               <ion-col nowrap no-padding class="f-item-padding-bottom">
-                <rating id="rating" style="display: inline-block;" [ngModel]="rating">
+                <rating id="rating" style="display: inline-block;" [(ngModel)]="rating">
                 </rating>
               </ion-col>
             </ion-row>
@@ -44,7 +44,7 @@
       </ion-row>
       <ion-row>
         <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
-          <ion-textarea placeholder="Write your review here" rows="15"></ion-textarea>
+          <ion-textarea placeholder="Write your review here" rows="15" [(ngModel)]="reviewText"></ion-textarea>
         </ion-col>
       </ion-row>
       <ion-row>

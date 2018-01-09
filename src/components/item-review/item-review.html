@@ -14,10 +14,14 @@
   <span *ngIf="!review.upvotes || (review.upvotes === 0)">
       <span>Was this review helpful to you?</span>
     </span><br>
-  <span style="display: inline-block">
-    <button ion-button class="f-btn-secondary">Helpful</button>
-    <button ion-button class="f-btn-secondary">Not Helpful</button>
+  <span style="display: inline-block" *ngIf="!helpfulClicked">
+    <button ion-button class="f-btn-secondary" (click)="onHelpfulClick()">Helpful</button>
+    <button ion-button class="f-btn-secondary" (click)="onNotHelpfulClick()">Not Helpful</button>
   </span><br>
+  <span *ngIf="helpfulClicked">
+    <span class="f-review-feedback-thanks" icon-start>
+      <ion-icon name="ios-checkmark-outline"></ion-icon> Thank you for your feedback.</span>
+  </span>
   <!--<span>
     <ion-icon class="f-icon-thumbs-up" name="md-thumbs-up"></ion-icon> {{review.upvotes ? review.upvotes : 0}}
     <ion-icon class="f-icon-thumbs-down" name="md-thumbs-down"></ion-icon> {{review.downvotes ? review.downvotes : 0}}
@@ -39,10 +43,14 @@
     <span *ngIf="!review.upvotes || (review.upvotes === 0)">
       <span>Was this review helpful to you?</span>
     </span><br>
-    <span style="display: inline-block">
-      <button ion-button class="f-btn-secondary">Helpful</button>
-      <button ion-button class="f-btn-secondary">Not Helpful</button>
+    <span style="display: inline-block" *ngIf="!helpfulClicked">
+      <button ion-button class="f-btn-secondary" (click)="onHelpfulClick()">Helpful</button>
+      <button ion-button class="f-btn-secondary" (click)="onNotHelpfulClick()">Not Helpful</button>
     </span><br>
+    <span *ngIf="helpfulClicked">
+      <span class="f-review-feedback-thanks">
+        <ion-icon name="ios-checkmark-outline"></ion-icon> Thank you for your feedback.</span>
+    </span>
     <div *ngIf="review.reviewAnswers && (review.reviewAnswers.length > 0)">
       <span style="font-size: 18px"><b>Answers:</b></span><br>
       <div *ngFor="let answer of review.reviewAnswers" class="f-review-answer">

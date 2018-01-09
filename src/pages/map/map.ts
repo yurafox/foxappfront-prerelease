@@ -276,7 +276,11 @@ export class MapPage extends ComponentBase implements OnInit {
         this.writeReviewStr = this.locale['WriteReview'];
         this.dropDownCityOpts = {popupClass: 'f-middle-dictionary', buttonClass: 'f-drop-button-full', popupHeader: this.locale['City'], buttonHeader: this.locale['City']};
         this.dropDownAddressOpts = {popupClass: 'f-large-dictionary', buttonClass: 'f-drop-button-full', popupHeader: this.locale['Address'], buttonHeader: this.locale['Address']};
-        this.changeDetector.detectChanges();
+        try {
+          this.changeDetector.detectChanges();
+        } catch(err) {
+          console.log(`Couldn't detect changes: ${err}`);
+        }
       });
 
       this.navFromFavoriteStoresPage();
