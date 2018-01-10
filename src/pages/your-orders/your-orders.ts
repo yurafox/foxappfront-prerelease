@@ -12,7 +12,7 @@ import {ClientOrder, Product} from "../../app/model";
 export class OrdersPage extends ComponentBase {
 
   loaded: boolean;
-  productArr: Array<{ order: ClientOrder, products: Product[] }> = [];
+  productArr: Array<{ order: ClientOrder, products: Product[] }>;
 
   constructor(private navCtrl: NavController, private navParams: NavParams, private repo: AbstractDataRepository) {
     super();
@@ -20,50 +20,50 @@ export class OrdersPage extends ComponentBase {
 
   async ionViewDidLoad() {
     let client = await (<any>this.userService).profile.client_p;
-
+    let ordersAre: boolean;
     try {
       await this.repo.getClientOrdersAll().then(orders => {
-        if (orders) {
-          orders.forEach(order => {
-            //console.log(`order clientId: ${order.idClient}`);
-            //console.log(`client id: ${client.id}`);
+        if (orders && orders.length > 0) {
+          this.productArr = [];
+          for(let i = 0; i < orders.length; i++) {
+            let order = orders[i];
             if (order.idClient === client.id) {
+              ordersAre = true;
+
               let prod: { order: ClientOrder, products: Product[] };
               let productsArr: Product[] = [];
-              this.loaded = true;
-
               this.repo.getClientDraftOrderSpecProducts().then(orderSpecProducts => {
-                orderSpecProducts.forEach(orderSpecProduct => {
+                for (let j = 0; j < orderSpecProducts.length; j ++) {
+                  let orderSpecProduct = orderSpecProducts[j];
                   if (order.id === orderSpecProduct.idOrder) {
-                    //console.log(`idQuotProd: ${orderSpecProduct.idQuotationProduct}`);
-
                     this.repo.getQuotationProductById(orderSpecProduct.idQuotationProduct).then(quotProd => {
-                      //console.log(`qoutProd id: ${quotProd.idProduct}`);
+                      let quotProdProductId = quotProd.idProduct;
+                      this.repo.getProductById(quotProdProductId).then(product => {
+                        //console.log(`${j}. product.id: ${product.id}`);
 
-                      this.repo.getProductById(quotProd.idProduct).then(product => {
-                        //console.log(`product price: ${product.price}`);
-                        this.loaded = true;
-
-                        if (order.id === orderSpecProduct.idOrder) {
-                          if (orderSpecProduct.idQuotationProduct === quotProd.id) {
-                            if (quotProd.idProduct === product.id) {
-                              //console.log(`product id: ${product.id}`);
-                              productsArr.push(new Product(quotProd.id, product.name, quotProd.price, product.manufacturerId,
-                                null, product.imageUrl, product.rating));
+                        if (product.id) {
+                          if (order.id === orderSpecProduct.idOrder) {
+                            if (orderSpecProduct.idQuotationProduct === quotProd.id) {
+                              if (quotProdProductId === product.id) {
+                                this.loaded = true;
+                                productsArr.push(new Product(quotProd.id, product.name, quotProd.price, product.manufacturerId,
+                                  null, product.imageUrl, product.rating));
+                              }
                             }
                           }
                         }
                       });
                     })
                   }
-                });
+                }
                 prod = {order: order, products: productsArr};
                 this.productArr.push(prod);
               })
-            } else if (!orders || (order.idClient !== client.id)) {
-              this.loaded = false;
             }
-          });
+          }
+          if (!ordersAre) {
+            this.loaded = false;
+          }
         } else {
           this.loaded = false;
         }

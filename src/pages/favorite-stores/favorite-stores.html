@@ -37,8 +37,11 @@
               <ion-col>
                 <button class="f-btn-add-cart" ion-button block (click)="navToMap(store.store, store.city)">Show on map</button>
               </ion-col>
-              <ion-col>
+              <ion-col *ngIf="store.hasReviews === true">
                 <button class="f-btn-add-cart" ion-button block (click)="onShowReviewsClick(store.store)">Reviews</button>
+              </ion-col>
+              <ion-col *ngIf="store.hasReviews === false">
+                <button class="f-btn-add-cart" ion-button block (click)="onWriteReviewClick(store.store)">Write review</button>
               </ion-col>
             </ion-row>
           </div>

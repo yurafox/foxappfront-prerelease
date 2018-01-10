@@ -1,7 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Product} from '../../app/model/product';
 import {NavController, NavParams} from "ionic-angular";
-import {ItemDetailPage} from "../../pages/item-detail/item-detail";
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {ItemBase} from '../component-extension/item-base';
 
@@ -20,7 +19,7 @@ export class ItemComponent extends ItemBase {
 
 
   openItemDetails(data: Product): void {
-    this.navCtrl.push(ItemDetailPage, this.product);
+    this.navCtrl.push('ItemDetailPage', this.product);
   }
 
 }

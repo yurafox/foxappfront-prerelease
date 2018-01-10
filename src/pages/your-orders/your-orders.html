@@ -4,22 +4,30 @@
 
 
 <ion-content padding>
-  <h5>Your orders</h5>
-  <div *ngIf="loaded === true">
-    <div *ngFor="let product of productArr; let i = index">
-      <ion-card padding>
-        <p>Order #{{i+1}}</p>
-        <div *ngFor="let p of product?.products">
-          <item [product]="p"></item>
+  <ion-grid class="f-item-nopadding-tb f-color-secondary">
+    <ion-row>
+      <ion-col>
+        <b><span class="f-size-large">Your orders</span></b>
+      </ion-col>
+    </ion-row>
+    <span *ngIf="loaded === true">
+      <ion-row *ngFor="let product of productArr; let i = index">
+        <ion-card padding>
+          <b><span>Order #{{i+1}}</span></b>
+          <div *ngFor="let p of product?.products">
+            <item [product]="p"></item><br>
+          </div>
           <br/>
-        </div>
-        <br/>
-        <p>Date: {{product?.order?.orderDate}}</p>
-        <p>Total: {{product?.order?.total}}</p>
-      </ion-card>
-    </div>
-  </div>
-  <div *ngIf="loaded === false">
-    <h6>You have no orders</h6>
-  </div>
+          <b><span>Date: {{product?.order?.orderDate}}</span></b><br>
+          <b><span>Total: {{product?.order?.total | localeCurrency:userService.currency}}</span></b>
+        </ion-card>
+      </ion-row>
+    </span>
+    <span *ngIf="loaded === false">
+      <ion-row>
+        <span class="f-size-larger">You have no orders yet</span>
+      </ion-row>
+    </span>
+
+  </ion-grid>
 </ion-content>

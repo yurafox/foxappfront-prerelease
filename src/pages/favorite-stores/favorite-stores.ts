@@ -13,7 +13,7 @@ import {MapPage} from "../";
 export class FavoriteStoresPage extends ComponentBase implements OnInit {
 
   dataLoaded: boolean;
-  stores: Array<{ city: City, store: Store }>;
+  stores: Array<{ city: City, store: Store, hasReviews?: boolean }>;
   foxStores: Array<{ id: number, stores: Store[] }>;
   cities: City[];
 
@@ -29,7 +29,7 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
     await this.getCitiesAndFoxStores().catch(err => {
       console.log(`Couldn't retrieve cities and foxStores: ${err}`);
     });
-    this.getFavStoresId().then(data => {
+    await this.getFavStoresId().then(data => {
         this.dataLoaded = true;
         if (data) {
           let clen = this.cities.length;
@@ -56,6 +56,16 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
       this.navCtrl.pop().catch(err => console.log(`Couldn't go back: ${err}`));
       return;
     });
+
+    for (let store of this.stores) {
+      await this.repo.getStoreReviewsByStoreId(store.store.id).then((revs) => {
+        if (revs && revs.length > 0) {
+          store.hasReviews = true;
+        } else {
+          store.hasReviews = false;
+        }
+      });
+    }
   }
 
   ngOnInit() {
@@ -107,7 +117,7 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
     item.isPrimary = true;
   }
 
-  deleteStore(item: { city: City, store: Store }) {
+  deleteStore(item: { city: City, store: Store, hasReviews: boolean }) {
     let alert = this.alertCtrl.create({
       title: 'Confirmation',
       message: 'Are you sure you want to delete this store from your favorite stores?',
@@ -139,6 +149,14 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
     this.navCtrl.push('ItemReviewsPage', {store: store}).catch(err => {
       console.log(`Error navigating to ItemReviewPage: ${err}`);
     });
+  }
+
+  onWriteReviewClick(store: Store): void {
+    if (store) {
+      this.navCtrl.push('ItemReviewWritePage', store).catch(err => {
+        console.log(`Error navigating to ItemReviewWritePage: ${err}`);
+      });
+    }
   }
 
 }

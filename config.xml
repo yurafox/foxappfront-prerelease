@@ -98,5 +98,4 @@
     <plugin name="cordova-plugin-exoplayer" spec="^2.5.3" />
     <plugin name="com.lampa.startapp" spec="^0.1.4" />
     <plugin name="cordova-plugin-appavailability" spec="~0.4.2" />
-    <allow-navigation href="http://172.26.81.145:8100" />
 </widget>

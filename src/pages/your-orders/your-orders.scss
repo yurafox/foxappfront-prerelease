@@ -2,4 +2,22 @@ page-orders {
   .f-img-item {
     width: 100px; height: 100px;  padding: 6px 4px 2px;
   }
+
+  .f-item-nopadding-tb {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  .f-color-secondary {
+    color: dimgrey;
+  }
+
+  .f-size-large {
+    font-size: 18px;
+  }
+
+  .f-size-larger {
+    font-size: 16px;
+  }
+
 }
