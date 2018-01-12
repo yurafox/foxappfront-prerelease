@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { OrdersPage } from './your-orders';
 import {ComponentsModule} from "../../components/components.module";
 import {PipesModule} from "../../app/pipe/pipes.module";
+import {Ionic2RatingModule} from "ionic2-rating";
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import {PipesModule} from "../../app/pipe/pipes.module";
   imports: [
     IonicPageModule.forChild(OrdersPage),
     ComponentsModule,
-    PipesModule
+    PipesModule,
+    Ionic2RatingModule
   ],
   exports: [
     OrdersPage

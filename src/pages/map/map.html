@@ -28,7 +28,7 @@
 
 <div *ngIf="selectedMarker.value !== null">
   <ion-footer class="f-map-footer">
-    <ion-buttons align="center">
+    <ion-buttons align="center" class="f-map-buttons">
       <button ion-button icon-left (click)="addToFavorite()" [disabled]="selectedMarker.value === null"
               class="f-map-button">
         <ion-icon name="md-star-outline"></ion-icon>
