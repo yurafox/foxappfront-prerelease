@@ -11,7 +11,8 @@ import { QuotationProduct,
          ProductStorePlace,
          Lang,
          Client,
-         Action
+         Action,
+         ActionOffer
        } from '../../../model/index';
 import {ClientAddress} from '../../../model/client-address';
 import {Country} from '../../../model/country';
@@ -28,6 +29,7 @@ export abstract class AbstractDataRepository {
   public async abstract getLocale(cacheForce: boolean): Promise<Lang[]>;
 
   public async abstract getQuotationProductsByProductId(productId: number): Promise<QuotationProduct[]>;
+  public async abstract getQuotationProductsByQuotationId(quotationId:number) : Promise<QuotationProduct[]>;
   public async abstract getProductStorePlacesByQuotId(quotId: number): Promise<ProductStorePlace[]>;
   public async abstract getStorePlaceById(id: number): Promise<StorePlace>;
   public async abstract getProductById(productId: number): Promise<Product>;
@@ -61,4 +63,5 @@ export abstract class AbstractDataRepository {
   public async abstract getCityById(id: number): Promise<City>;
   public async abstract getPageContent(id:number):Promise<string>;
   public async abstract getAction(id:number):Promise<Action>;
+  public async abstract getActionOffersByActionId(id:number):Promise<ActionOffer[]>;
 }

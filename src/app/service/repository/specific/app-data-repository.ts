@@ -19,7 +19,8 @@ import {
   ProductStorePlace,
   StorePlace,
   Lang,
-  Action
+  Action,
+  ActionOffer
 } from "../../../model/index";
 import { AbstractDataRepository } from "../../index";
 import { Providers, System } from "../../../core/app-core";
@@ -50,6 +51,7 @@ const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
 const cartProductsUrl = "/api/mcartProducts";
 const pagesDynamicUrl="/api/mpages";
 const actionDynamicUrl="/api/mactions";
+const actionOffersUrl="/api/mactionOffers";
 // </editor-fold
 
 @Injectable()
@@ -767,7 +769,8 @@ export class AppDataRepository extends AbstractDataRepository {
               val.maxDeliveryDays,
               val.stockQuant,
               val.stockLow,
-              val.freeShipping
+              val.freeShipping,
+              val.actionPrice
             )
           )
         );
@@ -1359,6 +1362,76 @@ export class AppDataRepository extends AbstractDataRepository {
         );
       }
       return action;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getActionOffersByActionId(idAction:number):Promise<ActionOffer[]> {
+      try {
+        const response = await this.http.get(actionOffersUrl, {
+            search: this.createSearchParams([
+              { key: "idAction", value: idAction.toString() }
+            ])
+          })
+          .toPromise();
+
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        const aOffers = new Array<ActionOffer>();
+        if (data != null) {
+          data.forEach(val =>
+            aOffers.push(
+              new ActionOffer(
+                val.id,
+                val.idAction,
+                val.idQuotation,
+                val.idCur
+              )
+            )
+          );
+        }
+        return aOffers;
+      } catch (err) {
+        return await this.handleError(err);
+      }
+  }
+
+  public async  getQuotationProductsByQuotationId(quotationId:number) : Promise<QuotationProduct[]> {
+    try {
+      const response = await this.http
+        .get(quotationProductsUrl, {
+          search: this.createSearchParams([
+            { key: "idQuotation", value: quotationId.toString() }
+          ])
+        })
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const qProducts = new Array<QuotationProduct>();
+      if (data != null) {
+        data.forEach(val =>
+          qProducts.push(
+            new QuotationProduct(
+              val.id,
+              val.idQuotation,
+              val.idProduct,
+              val.price,
+              val.maxDeliveryDays,
+              val.stockQuant,
+              val.stockLow,
+              val.freeShipping,
+              val.actionPrice
+            )
+          )
+        );
+      }
+      return qProducts;
     } catch (err) {
       return await this.handleError(err);
     }

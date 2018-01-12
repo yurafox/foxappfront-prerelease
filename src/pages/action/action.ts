@@ -1,3 +1,5 @@
+import { ActionOffer, QuotationProduct } from './../../app/model/index';
+import {System} from '../../app/core/app-core';
 import { Component,OnInit,OnDestroy} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AbstractDataRepository } from '../../app/service/index';
@@ -5,41 +7,56 @@ import { Action } from './../../app/model/index';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/takeWhile';
 import { IntervalObservable } from "rxjs/observable/IntervalObservable";
+import { ComponentBase } from '../../components/component-extension/component-base';
 
 @IonicPage()
 @Component({
   selector: 'page-action',
   templateUrl: 'action.html',
 })
-export class ActionPage implements OnInit,OnDestroy {
+export class ActionPage extends ComponentBase implements OnInit,OnDestroy {
   public actionId:number;
   public content:string='';
   public action:Action;
+  public actionOffers:Array<ActionOffer>=[];
+  public quotationProduct:Array<QuotationProduct>=[];
   public expire:Date;
   private alive:boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private _repo:AbstractDataRepository) {
+    super();
     this.actionId = this.navParams.data.id;
     this.action = this.navParams.data.action;
     this.alive = true;
   }
 
   async ngOnInit() {
+    super.ngOnInit();
     if(!this.action)
      this.action = await this._repo.getAction(this.actionId);
 
+    // get dynamic content
     this.content = this.action.action_content;
     this.actionExpire(); // for design display
 
+    // timer action time
     IntervalObservable.create(1000)
     .takeWhile(() => this.alive)
     .subscribe(() => {
       this.actionExpire();
     });
+
+    this.actionOffers = await this._repo.getActionOffersByActionId(this.actionId);
+    for(let offer of this.actionOffers) {
+      const qp:QuotationProduct[] = await this._repo.getQuotationProductsByQuotationId(offer.idQuotation);
+      System.customConcat<QuotationProduct>(this.quotationProduct,qp);
+    }
+
   }
 
   ngOnDestroy():void {
+    super.ngOnDestroy();
     this.alive= false;
   }
 

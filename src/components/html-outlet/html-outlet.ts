@@ -1,5 +1,6 @@
 import { HomePage } from './../../pages/home/home';
 import { ComponentsModule } from './../components.module';
+import {PipesModule} from '../../app/pipe/pipes.module';
 //import { AppModule } from './../../app/app.module';
 import {
   Component,
@@ -26,7 +27,7 @@ export function createComponentFactory(
   const decoratedCmp = Component(metadata)(cmpClass);
 
   @NgModule({
-    imports: [ComponentsModule,IonicModule],
+    imports: [ComponentsModule,PipesModule,IonicModule],
     declarations: [decoratedCmp]
   })
   class DynamicHtmlModule {}

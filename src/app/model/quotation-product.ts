@@ -16,7 +16,8 @@ export class QuotationProduct {
               public maxDeliveryDays: number,
               public stockQuant: number,
               public stockLow?: boolean,
-              public freeShipping?: boolean) {
+              public freeShipping?: boolean,
+              public actionPrice?: number) {
     this._repo = RefInjector.pull(AbstractDataRepository);
   }
 }

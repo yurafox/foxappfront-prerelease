@@ -28,3 +28,4 @@ export * from './country';
 export * from './lo-suppl-entity';
 export * from './client-address';
 export * from './action';
+export * from './action-offer';

@@ -280,17 +280,23 @@ export namespace System {
     min:number;
     max:number;
   }
-  // custome number 
+  // custome number
   export class FoxNumber {
     public value:number;
-    private _range:IRange; 
+    private _range:IRange;
     constructor(value: number = 1) {
          this.value = value;
          this._range = {min:1,max:30};
     }
-    
+
     public get range(): IRange {
       return this._range;
-    } 
+    }
   }
+
+  export function customConcat<T>(source:Array<T>,target:Array<T>): void {
+    for(let i=0;i < target.length; i++) {
+       source.push(target[i]);
+    }
+ }
 }

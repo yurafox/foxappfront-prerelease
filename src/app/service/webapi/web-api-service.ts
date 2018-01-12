@@ -80,7 +80,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       price: 5199.0,
       maxDeliveryDays: 3,
       stockQuant: 12,
-      freeShipping: true
+      freeShipping: true,
+      actionPrice: 5000.0
     },
     {
       id: 2,
@@ -88,7 +89,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6293680,
       price: 349.0,
       maxDeliveryDays: 2,
-      stockQuant: 102.0
+      stockQuant: 102.0,
+      actionPrice: null
     },
     {
       id: 3,
@@ -96,7 +98,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6280637,
       price: 5220.0,
       maxDeliveryDays: 5,
-      stockQuant: 25
+      stockQuant: 25,
+      actionPrice: 5100.0
     },
     {
       id: 4,
@@ -104,7 +107,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6293680,
       price: 330.0,
       maxDeliveryDays: 2,
-      stockQuant: 85.0
+      stockQuant: 85.0,
+      actionPrice: null
     },
     {
       id: 5,
@@ -112,7 +116,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6294898,
       price: 3899.0,
       maxDeliveryDays: 2,
-      stockQuant: 5.0
+      stockQuant: 5.0,
+      actionPrice: null
     },
     {
       id: 6,
@@ -120,7 +125,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6280637,
       price: 167.7,
       maxDeliveryDays: 3,
-      stockQuant: 28
+      stockQuant: 28,
+      actionPrice: null
     },
     {
       id: 7,
@@ -130,7 +136,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       maxDeliveryDays: 2,
       stockQuant: 50,
       stockLow: true,
-      freeShipping: true
+      freeShipping: true,
+      actionPrice: null
     },
     {
       id: 8,
@@ -138,7 +145,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6325585,
       price: 3600,
       maxDeliveryDays: 2,
-      stockQuant: 61
+      stockQuant: 61,
+      actionPrice: 3000
     },
     {
       id: 9,
@@ -146,7 +154,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6325585,
       price: 3500,
       maxDeliveryDays: 2,
-      stockQuant: 54
+      stockQuant: 54,
+      actionPrice: 3400
     },
     {
       id: 10,
@@ -154,7 +163,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6324182,
       price: 4600,
       maxDeliveryDays: 2,
-      stockQuant: 68
+      stockQuant: 68,
+      actionPrice: null
     },
     {
       id: 11,
@@ -162,7 +172,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6324182,
       price: 185,
       maxDeliveryDays: 3,
-      stockQuant: 30
+      stockQuant: 30,
+      actionPrice: null
     },
     {
       id: 12,
@@ -170,7 +181,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6252121,
       price: 6000,
       maxDeliveryDays: 2,
-      stockQuant: 70
+      stockQuant: 70,
+      actionPrice: null
     },
     {
       id: 13,
@@ -178,7 +190,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6252121,
       price: 499,
       maxDeliveryDays: 3,
-      stockQuant: 43
+      stockQuant: 43,
+      actionPrice: null
     },
     {
       id: 14,
@@ -186,7 +199,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6202929,
       price: 4600,
       maxDeliveryDays: 2,
-      stockQuant: 30
+      stockQuant: 30,
+      actionPrice: null
     },
     {
       id: 15,
@@ -194,7 +208,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6202929,
       price: 150,
       maxDeliveryDays: 2,
-      stockQuant: 10
+      stockQuant: 10,
+      actionPrice: null
     },
     {
       id: 16,
@@ -202,7 +217,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6324216,
       price: 4599,
       maxDeliveryDays: 2,
-      stockQuant: 40
+      stockQuant: 40,
+      actionPrice: null
     },
     {
       id: 17,
@@ -210,7 +226,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6324216,
       price: 4630,
       maxDeliveryDays: 3,
-      stockQuant: 24
+      stockQuant: 24,
+      actionPrice: null
     },
     {
       id: 18,
@@ -218,7 +235,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6324213,
       price: 120,
       maxDeliveryDays: 2,
-      stockQuant: 29
+      stockQuant: 29,
+      actionPrice: null
     },
     {
       id: 19,
@@ -226,7 +244,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6324213,
       price: 3270,
       maxDeliveryDays: 2,
-      stockQuant: 15
+      stockQuant: 15,
+      actionPrice: null
     }
   ];
   // </editor-fold>
@@ -2912,6 +2931,21 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     }
   ];
 
+  actionOffers = [
+    {
+      id:1,
+      idAction:1,
+      idQuotation: 1,
+      idCur: 0,
+    },
+    {
+      id:2,
+      idAction:2,
+      idQuotation: 2,
+      idCur: 0,
+    },
+  ];
+
   // </editor-fold>
   createDb() {
     const mquotationProducts = this.quotationProducts;
@@ -2938,6 +2972,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mcartProducts = this.cartProducts;
     const mpages = this.pages;
     const mactions = this.actions;
+    const mactionOffers= this.actionOffers;
 
     return {
       mquotationProducts,
@@ -2963,7 +2998,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mclientOrderSpecProducts,
       mcartProducts,
       mpages,
-      mactions
+      mactions,
+      mactionOffers
     };
   }
 
