@@ -49,9 +49,9 @@ const countriesUrl = "/api/mcountries";
 const clientOrdersUrl = "/api/mclientOrders";
 const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
 const cartProductsUrl = "/api/mcartProducts";
-const pagesDynamicUrl="/api/mpages";
-const actionDynamicUrl="/api/mactions";
-const actionOffersUrl="/api/mactionOffers";
+const pagesDynamicUrl = "/api/mpages";
+const actionDynamicUrl = "/api/mactions";
+const actionOffersUrl = "/api/mactionOffers";
 // </editor-fold
 
 @Injectable()
@@ -153,7 +153,7 @@ export class AppDataRepository extends AbstractDataRepository {
         .toPromise();
       const val = response.json();
 
-      if (response.status !== 201 && response.status !== 200 ) {
+      if (response.status !== 201 && response.status !== 200) {
         throw new Error("server side status error");
       }
       let p = new ClientOrderProducts();
@@ -1277,7 +1277,7 @@ export class AppDataRepository extends AbstractDataRepository {
     } catch (err) {
       await this.handleError(err);
     }
-  };
+  }
 
   public async getFoxStoreById(id: number): Promise<Store> {
     try {
@@ -1285,55 +1285,92 @@ export class AppDataRepository extends AbstractDataRepository {
 
       const data = response.json();
       if (response.status !== 200) {
-        throw new Error('server side status error');
+        throw new Error("server side status error");
       }
-      const stores = new Array<{id: number, stores: Store[]}>();
+      const stores = new Array<{ id: number; stores: Store[] }>();
       if (data != null) {
-        data.forEach((val) => {
+        data.forEach(val => {
           const storeArr = new Array<Store>();
           const arr: Store[] = val.stores;
-          arr.forEach((store) => {
-            if (store.openTime !== null && store.closeTime !== null && store.rating === null && store.feedbacks === null) {
-              storeArr.push(new Store(store.id, store.position, store.address, store.openTime, store.closeTime));
-            }
-            else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.feedbacks === null) {
-              storeArr.push(new Store(store.id, store.position, store.address, store.openTime, store.closeTime,
-                store.rating));
-            }
-            else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.feedbacks !== null) {
-              storeArr.push(new Store(store.id, store.position, store.address, store.openTime, store.closeTime,
-                store.rating, store.feedbacks));
-            }
-            else {
+          arr.forEach(store => {
+            if (
+              store.openTime !== null &&
+              store.closeTime !== null &&
+              store.rating === null &&
+              store.feedbacks === null
+            ) {
+              storeArr.push(
+                new Store(
+                  store.id,
+                  store.position,
+                  store.address,
+                  store.openTime,
+                  store.closeTime
+                )
+              );
+            } else if (
+              store.openTime !== null &&
+              store.closeTime !== null &&
+              store.rating !== null &&
+              store.feedbacks === null
+            ) {
+              storeArr.push(
+                new Store(
+                  store.id,
+                  store.position,
+                  store.address,
+                  store.openTime,
+                  store.closeTime,
+                  store.rating
+                )
+              );
+            } else if (
+              store.openTime !== null &&
+              store.closeTime !== null &&
+              store.rating !== null &&
+              store.feedbacks !== null
+            ) {
+              storeArr.push(
+                new Store(
+                  store.id,
+                  store.position,
+                  store.address,
+                  store.openTime,
+                  store.closeTime,
+                  store.rating,
+                  store.feedbacks
+                )
+              );
+            } else {
               storeArr.push(new Store(store.id, store.position, store.address));
             }
           });
-          stores.push({id: val.id, stores: storeArr});
+          stores.push({ id: val.id, stores: storeArr });
         });
       }
       for (let i = 0; i < stores.length; i++) {
-        for (let j =0; j < stores[i].stores.length; j++) {
+        for (let j = 0; j < stores[i].stores.length; j++) {
           if (stores[i].stores[j].id === id) {
             return stores[i].stores[j];
           }
         }
       }
-
     } catch (err) {
       await this.handleError(err);
     }
-  };
+  }
 
   public async getPageContent(id: number): Promise<string> {
     try {
-      const response = await this.http.get(`${pagesDynamicUrl}/${id}`)
+      const response = await this.http
+        .get(`${pagesDynamicUrl}/${id}`)
         .toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      return data['content'];
+      return data["content"];
     } catch (err) {
       return await this.handleError(err);
     }
@@ -1341,7 +1378,8 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getAction(id: number): Promise<Action> {
     try {
-      const response = await this.http.get(`${actionDynamicUrl}/${id}`)
+      const response = await this.http
+        .get(`${actionDynamicUrl}/${id}`)
         .toPromise();
 
       const data = response.json();
@@ -1367,39 +1405,70 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getActionOffersByActionId(idAction:number):Promise<ActionOffer[]> {
-      try {
-        const response = await this.http.get(actionOffersUrl, {
-            search: this.createSearchParams([
-              { key: "idAction", value: idAction.toString() }
-            ])
-          })
-          .toPromise();
+  public async getActions(): Promise<Action[]> {
+    try {
+      const response = await this.http.get(actionDynamicUrl).toPromise();
 
-        const data = response.json();
-        if (response.status !== 200) {
-          throw new Error("server side status error");
-        }
-        const aOffers = new Array<ActionOffer>();
-        if (data != null) {
-          data.forEach(val =>
-            aOffers.push(
-              new ActionOffer(
-                val.id,
-                val.idAction,
-                val.idQuotation,
-                val.idCur
-              )
-            )
-          );
-        }
-        return aOffers;
-      } catch (err) {
-        return await this.handleError(err);
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
       }
+      const actions = new Array<Action>();
+      if (data != null) {
+        data.forEach(val => {
+          const actionItem: Action = new Action(
+            val.id,
+            val.name,
+            new Date(val.dateStart),
+            new Date(val.dateEnd),
+            val.img_url,
+            val.priority,
+            val.sketch_content,
+            val.action_content
+          );
+
+          actions.push(actionItem);
+        });
+      }
+      return actions;
+    } catch (err) {
+      await this.handleError(err);
+    }
   }
 
-  public async  getQuotationProductsByQuotationId(quotationId:number) : Promise<QuotationProduct[]> {
+  public async getActionOffersByActionId(
+    idAction: number
+  ): Promise<ActionOffer[]> {
+    try {
+      const response = await this.http
+        .get(actionOffersUrl, {
+          search: this.createSearchParams([
+            { key: "idAction", value: idAction.toString() }
+          ])
+        })
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const aOffers = new Array<ActionOffer>();
+      if (data != null) {
+        data.forEach(val =>
+          aOffers.push(
+            new ActionOffer(val.id, val.idAction, val.idQuotation, val.idCur)
+          )
+        );
+      }
+      return aOffers;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getQuotationProductsByQuotationId(
+    quotationId: number
+  ): Promise<QuotationProduct[]> {
     try {
       const response = await this.http
         .get(quotationProductsUrl, {

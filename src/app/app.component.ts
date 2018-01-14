@@ -42,8 +42,9 @@ export class FoxApp extends ComponentBase {
   ];
   infoPages: PageInterface[] = [
     {title: 'Магазины на карте', name: 'Map', component: 'MapPage', index: 0, icon: 'ios-map-outline'},
-    {title: 'О нас', name: 'About', index: 1, icon: 'ios-information-circle-outline'},
-    {title: 'Поддержка', name: 'Support', component: 'SupportPage', index: 2, icon: 'ios-text-outline'}
+    {title: 'Акции', name: 'Actions', component: 'ActionsPage', index: 1, icon: 'ios-briefcase-outline'},
+    {title: 'О нас', name: 'About', index: 2, icon: 'ios-information-circle-outline'},
+    {title: 'Поддержка', name: 'Support', component: 'SupportPage', index: 3, icon: 'ios-text-outline'}
   ];
 
   constructor(private platform: Platform, statusBar: StatusBar,

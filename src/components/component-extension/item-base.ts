@@ -35,7 +35,7 @@ export class ItemBase extends ComponentBase implements OnInit {
 
   async ngOnInit() {
     super.ngOnInit();
-    this.quotes = await this.repo.getQuotationProductsByProductId(6280637);
+    this.quotes = await this.repo.getQuotationProductsByProductId(this.product.id);
     this.noOfQuotes = this.quotes.length;
 
     // Определяем самое дешевое предложение и сохраняем его в св-во valueQuot

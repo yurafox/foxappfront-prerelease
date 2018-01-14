@@ -77,7 +77,8 @@ import {
   SelectShipAddressPageModule,
   ShipAddressesPageModule,
   SupportPageModule,
-  ActionPageModule
+  ActionPageModule,
+  ActionsPageModule
 } from "../pages/index-modules";
 import {NgxQRCodeModule} from "ngx-qrcode2";
 
@@ -130,7 +131,8 @@ import {NgxQRCodeModule} from "ngx-qrcode2";
     SelectShipAddressPageModule,
     ShipAddressesPageModule,
     SupportPageModule,
-    ActionPageModule
+    ActionPageModule,
+    ActionsPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
