@@ -31,7 +31,7 @@ export class ClientOrderProducts implements IDTO {
       idStorePlace: this.idStorePlace, idLoEntity: this.idLoEntity, loTrackTicket: this.loTrackTicket,
       loDeliveryCost: this.loDeliveryCost, loDeliveryCompleted: this.loDeliveryCompleted,
       loEstimatedDeliveryDate: this.loEstimatedDeliveryDate, loDeliveryCompletedDate: this.loDeliveryCompletedDate,
-      errorMessage: this.errorMessage};
+      errorMessage: this.errorMessage, warningMessage: this.warningMessage};
   }
 
 
@@ -48,7 +48,8 @@ export class ClientOrderProducts implements IDTO {
     public loDeliveryCompleted?: boolean,
     public loEstimatedDeliveryDate?: Date,
     public loDeliveryCompletedDate?: Date,
-    public errorMessage?: string
+    public errorMessage?: string,
+    public warningMessage?: string
   ){ this._repo = RefInjector.pull(AbstractDataRepository) }
 
 

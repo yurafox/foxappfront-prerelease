@@ -168,6 +168,7 @@ export class AppDataRepository extends AbstractDataRepository {
       p.loEstimatedDeliveryDate = val.loEstimatedDeliveryDate;
       p.loDeliveryCompletedDate = val.loDeliveryCompletedDate;
       p.errorMessage = val.errorMessage;
+      p.warningMessage = val.warningMessage;
       return p;
     } catch (err) {
       return await this.handleError(err);
@@ -213,6 +214,7 @@ export class AppDataRepository extends AbstractDataRepository {
           p.loEstimatedDeliveryDate = val.loEstimatedDeliveryDate;
           p.loDeliveryCompletedDate = val.loDeliveryCompletedDate;
           p.errorMessage = val.errorMessage;
+          p.warningMessage = val.warningMessage;
 
           cClientOrderProducts.push(p);
         });
@@ -250,6 +252,7 @@ export class AppDataRepository extends AbstractDataRepository {
       p.loEstimatedDeliveryDate = val.loEstimatedDeliveryDate;
       p.loDeliveryCompletedDate = val.loDeliveryCompletedDate;
       p.errorMessage = val.errorMessage;
+      p.warningMessage = val.warningMessage;
       return p;
     } catch (err) {
       return await this.handleError(err);

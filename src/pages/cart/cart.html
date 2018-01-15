@@ -81,6 +81,18 @@
               </ion-col>
             </ion-row>
 
+            <ion-row *ngIf="item.errorMessage">
+              <ion-col no-padding>
+                <span class="f-item-nopadding f-size-small f-color-red">{{item?.errorMessage}}</span>
+              </ion-col>
+            </ion-row>
+
+            <ion-row *ngIf="item.warningMessage">
+              <ion-col no-padding>
+                <span class="f-item-nopadding f-size-small f-color-blue">{{item?.warningMessage}}</span>
+              </ion-col>
+            </ion-row>
+
 
           </ion-grid>
         </ion-col>
