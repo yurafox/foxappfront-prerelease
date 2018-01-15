@@ -37,7 +37,7 @@ export function createComponentFactory(
       return moduleWithComponentFactory.componentFactories.find(
         x => x.componentType === decoratedCmp
       );
-    });
+    }).catch(err => console.log(`Error compiling module and all components async: ${err}`));
 }
 
 @Directive({selector:"html-outlet"})
@@ -67,7 +67,7 @@ export class HtmlOutlet {
         this.vcRef.parentInjector
       );
       this.cmpRef = this.vcRef.createComponent(factory, 0, injector, []);
-    });
+    }).catch(err => console.log(`Error creating component factory: ${err}`));
   }
 
   ngOnDestroy() {

@@ -2,8 +2,9 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {AbstractDataRepository} from "../../app/service";
-import {ClientOrder, ClientOrderProducts, Product} from "../../app/model";
+import {Client, ClientOrder, ClientOrderProducts, Product, QuotationProduct} from "../../app/model";
 import {isNullOrUndefined} from "util";
+import {Order} from "../../app/model/cart-product";
 
 @IonicPage()
 @Component({
@@ -19,8 +20,11 @@ export class OrdersPage extends ComponentBase {
     super();
   }
 
-  async ionViewDidLoad() {
+  async ngOnInit() {
     await this.loadProducts();
+  }
+
+  async ionViewDidLoad() {
   }
 
   async loadProducts() {
@@ -30,6 +34,7 @@ export class OrdersPage extends ComponentBase {
       await this.extractedClientOrdersAll(client, ordersAre);
     } catch (err) {
       console.log(`Error occurred: ${err}`);
+      this.navCtrl.setRoot('HomePage').catch();
     }
   }
 
@@ -44,7 +49,9 @@ export class OrdersPage extends ComponentBase {
 
             let prod: { order: ClientOrder, products: Product[] };
             let productsArr: Product[] = [];
-            this.extractedClientDraftSpecProducts(order, productsArr, prod);
+            this.extractedClientDraftSpecProducts(order, productsArr, prod).catch(err => {
+              console.log(`Error: ${err}`);
+            });
           }
         }
         if (!ordersAre) {
@@ -58,14 +65,16 @@ export class OrdersPage extends ComponentBase {
     });
   }
 
-  extractedClientDraftSpecProducts(order: ClientOrder, productsArr: Product[], prod: { order: ClientOrder; products: Product[] }) {
-    this.repo.getClientDraftOrderSpecProducts().then(orderSpecProducts => {
+  async extractedClientDraftSpecProducts(order: ClientOrder, productsArr: Product[], prod: { order: ClientOrder; products: Product[] }) {
+    await this.repo.getClientDraftOrderSpecProducts().then(orderSpecProducts => {
       for (let j = 0; j < orderSpecProducts.length; j++) {
         let orderSpecProduct = orderSpecProducts[j];
         if (order.id === orderSpecProduct.idOrder) {
           let prodIds = [];
           let products: Product[] = [];
-          this.extractedQuotationProducts(orderSpecProduct, products, prodIds, productsArr, order);
+          this.extractedQuotationProducts(orderSpecProduct, products, prodIds, productsArr, order).catch(err => {
+            console.log(`Error: ${err}`);
+          });
         }
       }
       prod = {order: order, products: productsArr};
@@ -73,8 +82,8 @@ export class OrdersPage extends ComponentBase {
     })
   }
 
-  extractedQuotationProducts(orderSpecProduct: ClientOrderProducts, products: Product[], prodIds: any[], productsArr: Product[], order: ClientOrder) {
-    this.repo.getQuotationProductById(orderSpecProduct.idQuotationProduct).then(quotProd => {
+  async extractedQuotationProducts(orderSpecProduct: ClientOrderProducts, products: Product[], prodIds: any[], productsArr: Product[], order: ClientOrder) {
+    await this.repo.getQuotationProductById(orderSpecProduct.idQuotationProduct).then(quotProd => {
       let quotProdProductId = quotProd.idProduct;
       for (let k = 0; k <= products.length; k++) {
         if (prodIds.includes(quotProdProductId)) {
@@ -83,14 +92,17 @@ export class OrdersPage extends ComponentBase {
               null, products[k].imageUrl, products[k].rating, products[k].recall, products[k].supplOffers));
           }
         } else {
-          this.extractedProducts(quotProdProductId, order, orderSpecProduct, quotProd, prodIds, products, productsArr);
+          this.extractedProducts(quotProdProductId, order, orderSpecProduct, quotProd, prodIds, products, productsArr).catch(err => {
+            console.log(`Error: ${err}`);
+          });
         }
       }
     });
   }
 
-  extractedProducts(quotProdProductId: number, order: ClientOrder, orderSpecProduct: ClientOrderProducts, quotProd, prodIds: any[], products: Product[], productsArr: Product[]) {
-    this.repo.getProductById(quotProdProductId).then(product => {
+  async extractedProducts(quotProdProductId: number, order: ClientOrder, orderSpecProduct: ClientOrderProducts, quotProd, prodIds: any[], products: Product[], productsArr: Product[]) {
+    await this.repo.getProductById(quotProdProductId).then(product => {
+
       if (!isNullOrUndefined(product)) {
         if (order.id === orderSpecProduct.idOrder) {
           if (orderSpecProduct.idQuotationProduct === quotProd.id) {

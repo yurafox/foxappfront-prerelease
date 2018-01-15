@@ -5,19 +5,18 @@
 <div *ngIf="collapsibleMode">
   <span>by </span><span class="f-review-user-name">{{review.user}}</span><span> on </span><span>{{review.reviewDate | date:'longDate'}}</span>
   <read-more [text]="review.reviewText" [maxLength]="displayTextLength"></read-more>
-  <br/>
   <span *ngIf="review.advantages"><b>Advantages:</b> {{review.advantages}}<br/></span>
   <span *ngIf="review.disadvantages"><b>Disadvantages:</b> {{review.disadvantages}}<br/></span>
   <span *ngIf="review.upvotes && (review.upvotes > 0)">
-      {{review.upvotes ? review.upvotes + ' people found this helpful' : ''}}
-    </span>
+      {{review.upvotes ? review.upvotes + ' people found this helpful' : ''}}<br>
+  </span>
   <span *ngIf="!review.upvotes || (review.upvotes === 0)">
-      <span>Was this review helpful to you?</span>
-    </span><br>
+      <span>Was this review helpful to you?</span><br>
+  </span>
   <span style="display: inline-block" *ngIf="!helpfulClicked">
     <button ion-button class="f-btn-secondary" (click)="onHelpfulClick()">Helpful</button>
     <button ion-button class="f-btn-secondary" (click)="onNotHelpfulClick()">Not Helpful</button>
-  </span><br>
+  <br></span>
   <span *ngIf="helpfulClicked">
     <span class="f-review-feedback-thanks" icon-start>
       <ion-icon name="ios-checkmark-outline"></ion-icon> Thank you for your feedback.</span>
@@ -38,15 +37,15 @@
     <span *ngIf="review.advantages"><b>Advantages:</b> {{review.advantages}}<br/></span>
     <span *ngIf="review.disadvantages"><b>Disadvantages:</b> {{review.disadvantages}}<br/></span>
     <span *ngIf="review.upvotes && (review.upvotes > 0)">
-      {{review.upvotes ? review.upvotes + ' people found this helpful' : ''}}
+      {{review.upvotes ? review.upvotes + ' people found this helpful' : ''}}<br>
     </span>
     <span *ngIf="!review.upvotes || (review.upvotes === 0)">
-      <span>Was this review helpful to you?</span>
-    </span><br>
+      <span>Was this review helpful to you?</span><br>
+    </span>
     <span style="display: inline-block" *ngIf="!helpfulClicked">
       <button ion-button class="f-btn-secondary" (click)="onHelpfulClick()">Helpful</button>
-      <button ion-button class="f-btn-secondary" (click)="onNotHelpfulClick()">Not Helpful</button>
-    </span><br>
+      <button ion-button class="f-btn-secondary" (click)="onNotHelpfulClick()">Not Helpful</button><br>
+    </span>
     <span *ngIf="helpfulClicked">
       <span class="f-review-feedback-thanks">
         <ion-icon name="ios-checkmark-outline"></ion-icon> Thank you for your feedback.</span>
@@ -54,8 +53,8 @@
     <div *ngIf="review.reviewAnswers && (review.reviewAnswers.length > 0)">
       <span style="font-size: 18px"><b>Answers:</b></span><br>
       <div *ngFor="let answer of review.reviewAnswers" class="f-review-answer">
-        <span>by </span><span class="f-review-user-name">{{answer?.user}}</span><span> on </span><span>{{answer?.answerDate  | date:'longDate'}}</span><br/>
-        <span>{{answer?.answerText}}</span><br/>
+        <span>by </span><span class="f-review-user-name">{{answer?.user}}</span><span> on </span><span>{{answer?.answerDate  | date:'longDate'}}</span><br>
+        <span>{{answer?.answerText}}</span><br>
       </div>
     </div>
   </ng-template>

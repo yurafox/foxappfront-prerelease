@@ -6,7 +6,7 @@ import {ComponentBase} from '../component-extension/component-base';
   template: `
         <div [innerHTML]="currentText">
         </div>
-        <a style="color: darkslateblue;" *ngIf="!this.hideToggle" (click)="toggleView()">Read {{isCollapsed? 'more':'less'}}</a>
+        <a style="color: darkslateblue;" *ngIf="!this.hideToggle" (click)="toggleView()">Read {{isCollapsed? 'more':'less'}}<br></a>
     `
 })
 
