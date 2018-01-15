@@ -2,8 +2,8 @@
   <main-toolbar></main-toolbar>
 </ion-header>
 
-<ion-content class="common-bg">
-  <div *ngIf=content>
+<ion-content>
+  <div style="height: 100%" *ngIf=content>
       <html-outlet [html]="content" [context]="this"></html-outlet>
   </div>
 </ion-content>

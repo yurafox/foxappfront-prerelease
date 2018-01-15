@@ -11,12 +11,14 @@ import { QuotationProduct,
          ProductStorePlace,
          Lang,
          Client,
-         Action
+         Action,
+         ActionOffer
        } from '../../../model/index';
 import {ClientAddress} from '../../../model/client-address';
 import {Country} from '../../../model/country';
 import {ClientOrder} from '../../../model/client-order';
 import {ClientOrderProducts} from '../../../model/client-order-products';
+import {StoreReview} from "../../../model/store-review";
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
@@ -27,7 +29,9 @@ export abstract class AbstractDataRepository {
   public async abstract getCurrencies(cacheForce: boolean): Promise<Currency[]>;
   public async abstract getLocale(cacheForce: boolean): Promise<Lang[]>;
 
+  public async abstract getQuotationProductById(qpId: number): Promise<QuotationProduct>
   public async abstract getQuotationProductsByProductId(productId: number): Promise<QuotationProduct[]>;
+  public async abstract getQuotationProductsByQuotationId(quotationId:number) : Promise<QuotationProduct[]>;
   public async abstract getProductStorePlacesByQuotId(quotId: number): Promise<ProductStorePlace[]>;
   public async abstract getStorePlaceById(id: number): Promise<StorePlace>;
   public async abstract getProductById(productId: number): Promise<Product>;
@@ -39,6 +43,7 @@ export abstract class AbstractDataRepository {
 
   public async abstract getClientDraftOrder(): Promise<ClientOrder>;
   public async abstract getClientOrders(): Promise<ClientOrder[]>;
+  public async abstract getClientOrdersAll(): Promise<ClientOrder[]>;
   public async abstract getClientOrderById(id: number): Promise<ClientOrder>;
 
   public async abstract getCartProducts(): Promise<ClientOrderProducts[]>;
@@ -47,6 +52,7 @@ export abstract class AbstractDataRepository {
   public async abstract deleteCartProduct(prod: ClientOrderProducts);
 
   public async abstract getClientDraftOrderSpecProductsById(id: number): Promise<ClientOrderProducts>;
+  public async abstract getClientDraftOrderSpecProducts(): Promise<Array<ClientOrderProducts>>;
 
   public async abstract getCountryById(id: number): Promise<Country>;
   public async abstract getCountries(): Promise<Country[]>;
@@ -56,9 +62,12 @@ export abstract class AbstractDataRepository {
   public async abstract getClientAddressesByClientId(id: number): Promise<ClientAddress[]>;
 
   public async abstract getCities(): Promise<City[]>;
-  public async abstract getFoxStores(): Promise<Array<{id: number, stores: Store[]}>>;
-  public async abstract getFoxStoreById(id: number): Promise<Store>;
+  public async abstract getStores(): Promise<Array<{id: number, stores: Store[]}>>;
+  public async abstract getStoreById(id: number): Promise<Store>;
+  public async abstract getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]>;
   public async abstract getCityById(id: number): Promise<City>;
   public async abstract getPageContent(id:number):Promise<string>;
   public async abstract getAction(id:number):Promise<Action>;
+  public async abstract getActions():Promise<Action[]>;
+  public async abstract getActionOffersByActionId(id:number):Promise<ActionOffer[]>;
 }

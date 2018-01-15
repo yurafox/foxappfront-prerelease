@@ -3,10 +3,9 @@
 </ion-header>
 
 
-<ion-content padding>
-
+<ion-content>
   <ion-grid class="f-item-nopadding-tb f-color-secondary">
-    <ion-row>
+    <ion-row padding>
       <ion-col>
         <b><span class="f-size-large">Select a favorite store</span></b>
       </ion-col>
@@ -26,7 +25,7 @@
             </ion-col>
             <div *ngIf="store.store.isPrimary">
               <ion-col col-10 style="padding: 10px 10px">
-                <button style="font-size: 26px; position: relative;" ion-button clear (click)="deleteStore(store)">
+                <button class="f-fav-stores-btn-delete" ion-button clear (click)="deleteStore(store)">
                   <ion-icon name="ios-trash-outline"></ion-icon>
                 </button>
               </ion-col>
@@ -36,6 +35,12 @@
             <ion-row>
               <ion-col>
                 <button class="f-btn-add-cart" ion-button block (click)="navToMap(store.store, store.city)">Show on map</button>
+              </ion-col>
+              <ion-col *ngIf="store.hasReviews === true">
+                <button class="f-btn-add-cart" ion-button block (click)="onShowReviewsClick(store.store)">Reviews</button>
+              </ion-col>
+              <ion-col *ngIf="store.hasReviews === false">
+                <button class="f-btn-add-cart" ion-button block (click)="onWriteReviewClick(store.store)">Write review</button>
               </ion-col>
             </ion-row>
           </div>

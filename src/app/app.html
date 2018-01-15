@@ -5,10 +5,15 @@
     <ion-header>
       <!-- User profile -->
       <div padding class="menu-bg f-main-menu-header" *ngIf="userService.isAuth">
-          <h5 class="f-main-menu-header-content" ion-text color="light">
-            <img class="profile-picture" src="http://www.gravatar.com/avatar?d=mm&s=140"/>
-            <span class="f-main-menu-header-content-text">Hello, {{userService.name}}</span>
-          </h5>
+        <img class="profile-picture" src="http://www.gravatar.com/avatar?d=mm&s=140"/>
+          <p class="f-main-menu-header-content-text">
+           Hello, {{userService.name}}
+          </p>
+      </div>
+      <div padding class="menu-bg f-main-menu-header" *ngIf="!userService.isAuth">
+        <p menuClose class="f-main-menu-header-content-text" (click)="toLogIn()">
+          Hello. Sign in
+        </p>
       </div>
       <!--<ion-navbar>
         <ion-title>

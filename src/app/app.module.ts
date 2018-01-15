@@ -76,7 +76,8 @@ import {
   SearchPageModule,
   SearchResultsPageModule,
   SelectShipAddressPageModule,
-  SupportPageModule
+  SupportPageModule,
+  ActionsPageModule
 } from "../pages/index-modules";
 import {NgxQRCodeModule} from "ngx-qrcode2";
 import {AppAvailability} from "@ionic-native/app-availability";
@@ -129,7 +130,9 @@ import {AppAvailability} from "@ionic-native/app-availability";
     SearchPageModule,
     SearchResultsPageModule,
     SelectShipAddressPageModule,
-    SupportPageModule
+    SupportPageModule,
+    ActionPageModule,
+    ActionsPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

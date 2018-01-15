@@ -3,8 +3,10 @@
 </ion-header>
 
 <ion-content>
-  <h1 text-center class="h1">Картка комфорту</h1>
   <ion-card>
-    <img id="image" #image />
+    <h1 text-center class="h1">Картка комфорту</h1><br/>
+    <h6 text-center class="h6">{{clientBarcode}}</h6>
+    <img src="assets/icon/logo.svg" id="logo"/>
+    <span class="barcode" text-center><img id="image" #image/></span>
   </ion-card>
 </ion-content>

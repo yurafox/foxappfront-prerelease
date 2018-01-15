@@ -14,18 +14,21 @@ export class ActionSketchComponent {
   @Input()
   public innerId:number;
   public content:string='';
+  @Input()
   public action:Action;
 
   constructor(public navCtrl: NavController, private _repo:AbstractDataRepository) {
   }
 
   async ngOnInit() {
-    this.action = await this._repo.getAction(this.innerId);
+    if(!this.action) {
+      this.action = await this._repo.getAction(this.innerId);
+    }
     this.content=this.action.sketch_content;
   }
 
   public openAction() {
-    this.navCtrl.push(ActionPage, {id:this.innerId, action:this.action});
+    this.navCtrl.push(ActionPage, {id:this.innerId || this.action.id, action:this.action});
   }
 
   public get id ():number {

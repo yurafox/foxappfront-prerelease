@@ -43,7 +43,14 @@ page-item-reviews {
         font-size: 18px;
       }
     }
+  }
 
+  .f-btn-secondary {
+    background: color($colors, bgColor);
+    color: #000000;
+    text-transform: none;
+    font-size: 16px;
+    font-weight: 400;
   }
 
 }

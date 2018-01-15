@@ -1,5 +1,6 @@
 import { HomePage } from './../../pages/home/home';
 import { ComponentsModule } from './../components.module';
+import {PipesModule} from '../../app/pipe/pipes.module';
 //import { AppModule } from './../../app/app.module';
 import {
   Component,
@@ -26,7 +27,7 @@ export function createComponentFactory(
   const decoratedCmp = Component(metadata)(cmpClass);
 
   @NgModule({
-    imports: [ComponentsModule,IonicModule],
+    imports: [ComponentsModule,PipesModule,IonicModule],
     declarations: [decoratedCmp]
   })
   class DynamicHtmlModule {}
@@ -37,7 +38,7 @@ export function createComponentFactory(
       return moduleWithComponentFactory.componentFactories.find(
         x => x.componentType === decoratedCmp
       );
-    });
+    }).catch(err => console.log(`Error compiling module and all components async: ${err}`));
 }
 
 @Directive({selector:"html-outlet"})
@@ -67,7 +68,7 @@ export class HtmlOutlet {
         this.vcRef.parentInjector
       );
       this.cmpRef = this.vcRef.createComponent(factory, 0, injector, []);
-    });
+    }).catch(err => console.log(`Error creating component factory: ${err}`));
   }
 
   ngOnDestroy() {

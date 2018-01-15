@@ -28,4 +28,5 @@ export * from './city-popover/city-popover.module';
 export * from './select-ship-address/select-ship-address.module';
 export * from './edit-ship-address/edit-ship-address.module';
 export * from './action/action.module';
+export * from './actions/actions.module';
 export * from './your-orders/your-orders.module';

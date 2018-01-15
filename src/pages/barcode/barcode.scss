@@ -1,7 +1,39 @@
 page-barcode {
-  .h1 {
-    font-size: 32px;
-    color: color($colors, fox);
-    -webkit-text-stroke: 0.3px orangered;
+  ion-content {
+    background: url("../../assets/imgs/head-bg.png");
+  }
+  ion-card {
+    position: relative;
+    height: 300px;
+    background-color: lightgrey;
+
+    .h1 {
+      font-size: 26px;
+      position: relative;
+      top: 50px;
+      //color: #ef4123;
+      color: #e00000;
+    }
+    .h6 {
+      font-size: 24px;
+      position: relative;
+      top: 50px;
+    }
+    #logo {
+      position: absolute;
+      top: 2%;
+      right: 2%;
+      width: 100px;
+    }
+    .barcode {
+      position: relative;
+      top: 70px;
+      img {
+        display: block;
+        margin: auto;
+        height: 120px;
+        width: 300px;
+      }
+    }
   }
 }

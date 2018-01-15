@@ -13,7 +13,7 @@ export class BarcodePage extends ComponentBase {
 
   @ViewChild('image') image: ElementRef;
 
-  createdCode = null;
+  clientBarcode = null;
 
   constructor(private platform: Platform, private nav: Nav,
               public menuCtrl: MenuController, private repo: AbstractDataRepository) {
@@ -43,12 +43,15 @@ export class BarcodePage extends ComponentBase {
         return false;
       }
       this.repo.getClientByUserId(+id).then(client => {
-        this.createdCode = client.barcode;
+        this.clientBarcode = client.barcode;
         let image = this.image.nativeElement;
         JsBarcode(image, client.barcode, {
-          width: 3,
-          height: 120,
-          fontSize: 16,
+          width: 2,
+          height: 60,
+          fontSize: 0,
+          textPosition: 'top',
+          textMargin: 0,
+          text: ' ',
         });
       }).catch(err => {
         console.log(`Something went wrong with BarcodeGenerator: ${err}`);

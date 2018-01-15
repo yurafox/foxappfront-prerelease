@@ -1,0 +1,11 @@
+<ion-header>
+  <main-toolbar></main-toolbar>
+</ion-header>
+<ion-content padding>
+  <!--actions list-->
+<h2 style="text-align: center">Активные акции</h2>
+<ion-card *ngFor='let curAction of actions'>
+  <action-sketch [action]=curAction></action-sketch>
+</ion-card>
+  <!-- end actions list-->
+</ion-content>

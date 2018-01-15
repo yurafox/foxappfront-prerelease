@@ -71,4 +71,13 @@ page-favorite-stores {
     font-size: 16px;
     font-weight: 400;
   }
+
+  .f-fav-stores-btn-delete {
+    padding: 30px 30px;
+    font-size: 30px !important;
+    width: 50% !important;
+    position: absolute;
+    right: -10px;
+    top: 0;
+  }
 }
