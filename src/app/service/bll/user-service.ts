@@ -93,7 +93,16 @@ export class UserService {
   }
 
   public addFavoriteStoresId(id:number) {
-    this.user.favoriteStoresId.push(id);
+    let count = 0;
+    this.user.favoriteStoresId.forEach(storeId => {
+      if (id === storeId) {
+        window.alert(`You already have this address in favorites`);
+        count++;
+      }
+    });
+    if (count === 0) {
+      this.user.favoriteStoresId.push(id);
+    }
     this.trySendSettings();
   }
 

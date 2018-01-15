@@ -101,9 +101,13 @@ ion-list ion-icon {
 }
 
 .profile-picture {
+  position: absolute;
   border-radius: 50%;
-  width: 64px;
-  height: 64px;
+  left: 50px;
+  top: 8px;
+  width: 45px;
+  height: 45px;
+  align-self: left !important;
 }
 
 // quantity input buttons
@@ -218,6 +222,29 @@ ion-slides[pager] {
   @extend.f-drop-button-small;
   button {
     width: $full-dictionary-width;
+  }
+}
+
+.f-main-menu-header {
+  height: 60px;
+  padding: 10px !important;
+
+  .f-main-menu-header-content-text {
+    position: absolute !important;
+    left: 105px;
+    top: 20px;
+    font-size: 20px;
+    color: white;
+    //text-align: center;
+  }
+}
+
+ion-header {
+  p {
+    -webkit-margin-before: 0 !important;
+    -webkit-margin-after: 0 !important;
+    -webkit-margin-start: 0 !important;
+    -webkit-margin-end: 0 !important;
   }
 }
 

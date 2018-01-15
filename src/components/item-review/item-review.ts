@@ -1,7 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {ChangeDetectorRef, Component, Input} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
-import {Product} from '../../app/model/product';
 import {ProductReview} from '../../app/model/product-review';
+import {StoreReview} from "../../app/model/store-review";
 
 @Component({
   selector: 'item-review',
@@ -9,12 +9,24 @@ import {ProductReview} from '../../app/model/product-review';
 })
 export class ItemReviewComponent extends ComponentBase {
 
-  @Input() review: ProductReview;
+  @Input() review: ProductReview | StoreReview;
   @Input() displayTextLength: number;
   @Input() collapsibleMode = false;
+  helpfulClicked: boolean;
 
-  constructor() {
+  constructor(private changeDetector: ChangeDetectorRef) {
     super();
   }
 
+  onHelpfulClick() {
+    console.log('"Helpful" clicked');
+    this.helpfulClicked = true;
+    this.changeDetector.detectChanges();
+
+  }
+  onNotHelpfulClick() {
+    console.log('"Not Helpful" clicked');
+    this.helpfulClicked = true;
+    this.changeDetector.detectChanges();
+  }
 }

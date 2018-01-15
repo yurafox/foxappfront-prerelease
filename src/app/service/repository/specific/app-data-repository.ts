@@ -29,6 +29,8 @@ import { ClientAddress } from "../../../model/client-address";
 import { Country } from "../../../model/country";
 import { ClientOrder } from "../../../model/client-order";
 import { ClientOrderProducts } from "../../../model/client-order-products";
+import {StoreReview} from "../../../model/store-review";
+import {ReviewAnswer} from "../../../model/review-answer";
 
 // <editor-fold desc="url const">
 const currenciesUrl = "/api/mcurrencies";
@@ -39,7 +41,7 @@ const suppliersUrl = "/api/msuppliers";
 const productReviewsUrl = "/api/mproductReviews";
 const manufacturersUrl = "/api/manufacturers";
 const citiesUrl = "/api/mcities";
-const foxStoresUrl = "/api/mfoxStores";
+const storesUrl = "/api/mstores";
 const storePlacesUrl = "/api/mstorePlaces";
 const productStorePlacesUrl = "/api/mproductStorePlaces";
 const LangUrl = "/api/mlocalization";
@@ -52,6 +54,7 @@ const cartProductsUrl = "/api/mcartProducts";
 const pagesDynamicUrl = "/api/mpages";
 const actionDynamicUrl = "/api/mactions";
 const actionOffersUrl = "/api/mactionOffers";
+const storeReviewsUrl = "/api/mstoreReviews";
 // </editor-fold
 
 @Injectable()
@@ -75,6 +78,41 @@ export class AppDataRepository extends AbstractDataRepository {
             { key: "idStatus", value: "2" }
           ])
         })
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const cClientOrders = new Array<ClientOrder>();
+      if (data != null) {
+        data.forEach(val =>
+          cClientOrders.push(
+            new ClientOrder(
+              val.id,
+              val.orderDate,
+              val.idCur,
+              val.idClient,
+              val.total,
+              val.idPaymentMethod,
+              val.idPaymentStatus,
+              val.idStatus,
+              val.loIdEntity,
+              val.loIdClientAddress
+            )
+          )
+        );
+      }
+      return cClientOrders;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getClientOrdersAll(): Promise<ClientOrder[]> {
+    try {
+      const response = await this.http
+        .get(clientOrdersUrl)
         .toPromise();
 
       const data = response.json();
@@ -258,6 +296,40 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async getClientDraftOrderSpecProducts(): Promise<Array<ClientOrderProducts>> {
+    try {
+      let orderProducts = [];
+      const response = await this.http
+        .get(clientOrderSpecProductsUrl + '')
+        .toPromise();
+
+      const val = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      val.forEach(product => {
+        let p = new ClientOrderProducts();
+        p.id = product.id;
+        p.idOrder = product.idOrder;
+        p.idQuotationProduct = product.idQuotationProduct;
+        p.price = product.price;
+        p.qty = product.qty;
+        p.idStorePlace = product.idStorePlace;
+        p.idLoEntity = product.idLoEntity;
+        p.loTrackTicket = product.loTrackTicket;
+        p.loDeliveryCost = product.loDeliveryCost;
+        p.loDeliveryCompleted = product.loDeliveryCompleted;
+        p.loEstimatedDeliveryDate = product.loEstimatedDeliveryDate;
+        p.loDeliveryCompletedDate = product.loDeliveryCompletedDate;
+        p.errorMessage = product.errorMessage;
+        orderProducts.push(p);
+      });
+      return orderProducts;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
   public async getProductReviewsByProductId(
     productId: number
   ): Promise<ProductReview[]> {
@@ -276,7 +348,21 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const qProductsRevs = new Array<ProductReview>();
       if (data != null) {
-        data.forEach(val =>
+        data.forEach(val => {
+          let answers: ReviewAnswer[] = [];
+          if (val.reviewAnswers) {
+            val.reviewAnswers.forEach(answer => {
+              answers.push(
+                new ReviewAnswer(
+                  answer.id,
+                  answer.idReview,
+                  answer.user,
+                  answer.answerDate,
+                  answer.answerText
+                )
+              );
+            });
+          }
           qProductsRevs.push(
             new ProductReview(
               val.id,
@@ -284,10 +370,15 @@ export class AppDataRepository extends AbstractDataRepository {
               val.user,
               val.reviewDate,
               val.reviewText,
-              val.rating
+              val.rating,
+              val.advantages,
+              val.disadvantages,
+              val.upvotes,
+              val.downvotes,
+              answers
             )
           )
-        );
+        });
       }
       return qProductsRevs;
     } catch (err) {
@@ -1204,9 +1295,9 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getFoxStores(): Promise<Array<{ id: number; stores: Store[] }>> {
+  public async getStores(): Promise<Array<{ id: number; stores: Store[] }>> {
     try {
-      const response = await this.http.get(foxStoresUrl).toPromise();
+      const response = await this.http.get(storesUrl).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -1221,8 +1312,7 @@ export class AppDataRepository extends AbstractDataRepository {
             if (
               store.openTime !== null &&
               store.closeTime !== null &&
-              store.rating === null &&
-              store.feedbacks === null
+              store.rating === null
             ) {
               storeArr.push(
                 new Store(
@@ -1236,8 +1326,7 @@ export class AppDataRepository extends AbstractDataRepository {
             } else if (
               store.openTime !== null &&
               store.closeTime !== null &&
-              store.rating !== null &&
-              store.feedbacks === null
+              store.rating !== null
             ) {
               storeArr.push(
                 new Store(
@@ -1247,23 +1336,6 @@ export class AppDataRepository extends AbstractDataRepository {
                   store.openTime,
                   store.closeTime,
                   store.rating
-                )
-              );
-            } else if (
-              store.openTime !== null &&
-              store.closeTime !== null &&
-              store.rating !== null &&
-              store.feedbacks !== null
-            ) {
-              storeArr.push(
-                new Store(
-                  store.id,
-                  store.position,
-                  store.address,
-                  store.openTime,
-                  store.closeTime,
-                  store.rating,
-                  store.feedbacks
                 )
               );
             } else {
@@ -1279,9 +1351,9 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getFoxStoreById(id: number): Promise<Store> {
+  public async getStoreById(id: number): Promise<Store> {
     try {
-      const response = await this.http.get(foxStoresUrl).toPromise();
+      const response = await this.http.get(storesUrl).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -1292,56 +1364,15 @@ export class AppDataRepository extends AbstractDataRepository {
         data.forEach(val => {
           const storeArr = new Array<Store>();
           const arr: Store[] = val.stores;
-          arr.forEach(store => {
-            if (
-              store.openTime !== null &&
-              store.closeTime !== null &&
-              store.rating === null &&
-              store.feedbacks === null
-            ) {
-              storeArr.push(
-                new Store(
-                  store.id,
-                  store.position,
-                  store.address,
-                  store.openTime,
-                  store.closeTime
-                )
-              );
-            } else if (
-              store.openTime !== null &&
-              store.closeTime !== null &&
-              store.rating !== null &&
-              store.feedbacks === null
-            ) {
-              storeArr.push(
-                new Store(
-                  store.id,
-                  store.position,
-                  store.address,
-                  store.openTime,
-                  store.closeTime,
-                  store.rating
-                )
-              );
-            } else if (
-              store.openTime !== null &&
-              store.closeTime !== null &&
-              store.rating !== null &&
-              store.feedbacks !== null
-            ) {
-              storeArr.push(
-                new Store(
-                  store.id,
-                  store.position,
-                  store.address,
-                  store.openTime,
-                  store.closeTime,
-                  store.rating,
-                  store.feedbacks
-                )
-              );
-            } else {
+          arr.forEach((store) => {
+            if (store.openTime !== null && store.closeTime !== null && store.rating === null) {
+              storeArr.push(new Store(store.id, store.position, store.address, store.openTime, store.closeTime));
+            }
+            else if (store.openTime !== null && store.closeTime !== null && store.rating !== null) {
+              storeArr.push(new Store(store.id, store.position, store.address, store.openTime, store.closeTime,
+                store.rating));
+            }
+            else {
               storeArr.push(new Store(store.id, store.position, store.address));
             }
           });
@@ -1357,6 +1388,62 @@ export class AppDataRepository extends AbstractDataRepository {
       }
     } catch (err) {
       await this.handleError(err);
+    }
+  }
+
+  public async getStoreReviewsByStoreId(
+    storeId: number
+  ): Promise<StoreReview[]> {
+    try {
+      const response = await this.http
+        .get(storeReviewsUrl, {
+          search: this.createSearchParams([
+            { key: "idStore", value: storeId.toString() }
+          ])
+        })
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const storesRevs = new Array<StoreReview>();
+      if (data != null) {
+        data.forEach(val => {
+          let answers: ReviewAnswer[] = [];
+          if (val.reviewAnswers) {
+            val.reviewAnswers.forEach(answer => {
+              answers.push(
+                new ReviewAnswer(
+                  answer.id,
+                  answer.idReview,
+                  answer.user,
+                  answer.answerDate,
+                  answer.answerText
+                )
+              );
+            });
+          }
+          storesRevs.push(
+            new StoreReview(
+              val.id,
+              val.idStore,
+              val.user,
+              val.reviewDate,
+              val.reviewText,
+              val.rating,
+              val.advantages,
+              val.disadvantages,
+              val.upvotes,
+              val.downvotes,
+              answers
+            )
+          )
+        });
+      }
+      return storesRevs;
+    } catch (err) {
+      return await this.handleError(err);
     }
   }
 

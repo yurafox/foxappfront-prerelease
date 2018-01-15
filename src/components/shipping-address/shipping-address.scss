@@ -1,4 +1,4 @@
-page-ship-addresses {
+ship-address {
   #radioButton {
     position: relative;
     top: 40%;
@@ -20,7 +20,7 @@ page-ship-addresses {
   }
 
   .f-color-green {
-    color: color($colors, green);
+    color: green;
   }
 
   .f-size-large {

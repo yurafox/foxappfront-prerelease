@@ -45,7 +45,16 @@ page-item-review-write {
     &.rating li {
       padding: 0px 0px !important;
       background: none;
-      color: color($colors, foxrating);
+      color: #ffb400;
+
+      ion-icon {
+        font-size: 45px;
+      }
+    }
+    &.rating1 li {
+      padding: 0px 0px !important;
+      background: none;
+      color: #ffb400;
 
       ion-icon {
         font-size: 45px;

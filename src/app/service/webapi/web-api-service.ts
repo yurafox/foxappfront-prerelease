@@ -29,10 +29,21 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       user: "Анастасия",
       reviewDate: new Date(2017, 11, 7),
       reviewText:
-      "Пользуюсь телефоном месяц, нареканий на работу нет - красивый, функциональный, быстрый. Но!!! Понадобилась функция NFC, а её не оказалось, хотя в описании на сайте производителя она есть. Как такое может быть?\n" +
-      "\n" +
-      "<b>Минусы:</b> Отсутствие NFC, заявленной производителем.",
-      rating: 3
+      "Пользуюсь телефоном месяц, нареканий на работу нет - красивый, функциональный, быстрый. Но!!! Понадобилась функция NFC, а её не оказалось, хотя в описании на сайте производителя она есть. Как такое может быть?",
+      rating: 3,
+      advantages: '',
+      disadvantages: 'Отсутствие NFC, заявленной производителем.',
+      upvotes: 2,
+      downvotes: null,
+      reviewAnswers: [{
+        id: 1,
+        idReview: 1,
+        user: 'Foxtrot support',
+        answerDate: new Date(2017, 11, 8),
+        answerText: 'Спасибо за Ваш отзыв!',
+        upvotes: null,
+        downvotes: null
+      }]
     },
     {
       id: 2,
@@ -40,10 +51,29 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       user: "богдан зернов",
       reviewDate: new Date(2017, 4, 8),
       reviewText:
-      "Классный аппарат, учитывая его стоимость. Самсунг новинки штампует много и быстро, так что этот джей5 не такой и старый, а по характеристикам очень даже и отличный. Сборка отличная, симпатичный внешне и удобно лежит в руке. Из минусов – мало памяти и слабенькие камеры.\n" +
-      "\n" +
-      "Минусы: мало памяти, камеры так себе",
-      rating: 4
+      "Классный аппарат, учитывая его стоимость. Самсунг новинки штампует много и быстро, так что этот джей5 не такой и старый, а по характеристикам очень даже и отличный. Сборка отличная, симпатичный внешне и удобно лежит в руке. Из минусов – мало памяти и слабенькие камеры.",
+      rating: 4,
+      advantages: '',
+      disadvantages: 'мало памяти, камеры так себе',
+      upvotes: 1,
+      downvotes: null,
+      reviewAnswers: [{
+        id: 1,
+        idReview: 2,
+        user: 'Foxtrot support',
+        answerDate: new Date(2017, 4, 8),
+        answerText: 'Спасибо за Ваш отзыв!',
+        upvotes: null,
+        downvotes: null
+      }, {
+        id: 2,
+        idReview: 2,
+        user: 'Андрей',
+        answerDate: new Date(2017, 4, 9),
+        answerText: 'памяти действительно на многое не хватает, но камеры ещё сносные',
+        upvotes: 1,
+        downvotes: null
+      }]
     },
     {
       id: 3,
@@ -51,10 +81,21 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       user: "максим",
       reviewDate: new Date(2017, 7, 23),
       reviewText:
-      "Покупал в начале весны такой аппарат для мамы. Поскольку смартфон для нее первый, то выбирал не сильно навороченный и дорогой. Она быстро со всем разобралась, научил ее как пользоваться. В принципе памяти хоть и ало, но можно карточку всегда поставить. У мамы не игр, не еще какого то хлама не установлено, так что у нее все работает стабильно и не глючит. Для звонков, смс и мессенджеров отличный вариант и батарея при такой нагрузке 2 дня выдерживает точно. А то и больше.\n" +
-      "\n" +
-      "Плюсы: цена, характеристики",
-      rating: 5
+      "Покупал в начале весны такой аппарат для мамы. Поскольку смартфон для нее первый, то выбирал не сильно навороченный и дорогой. Она быстро со всем разобралась, научил ее как пользоваться. В принципе памяти хоть и ало, но можно карточку всегда поставить. У мамы не игр, не еще какого то хлама не установлено, так что у нее все работает стабильно и не глючит. Для звонков, смс и мессенджеров отличный вариант и батарея при такой нагрузке 2 дня выдерживает точно. А то и больше.",
+      rating: 5,
+      advantages: 'цена, характеристики',
+      disadvantages: '',
+      upvotes: null,
+      downvotes: null,
+      reviewAnswers: [{
+        id: 1,
+        idReview: 3,
+        user: 'Foxtrot support',
+        answerDate: new Date(2017, 7, 23),
+        answerText: 'Спасибо за Ваш отзыв!',
+        upvotes: null,
+        downvotes: null
+      }]
     },
     {
       id: 4,
@@ -62,12 +103,90 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       user: "Светлана",
       reviewDate: new Date(2017, 7, 8),
       reviewText:
-      "Пришло время поменять телефон,был у меня Смартфон HUAWEI Y625 ,отличный телефон,сейчас юзает старший сын, себе же взяла Смартфон HUAWEI Y6 II Dual Sim, неделю он у меня, перед покупкой прочитала кучу отзывов, понравился, о самом телефоне, экран отзывчивый,удобный в руке.Звук как для меня достаточный, слышно даже в шумном автобусе и я и меня слышат хорошо, связь тоже не пропадает,wi-fi ловит быстро, камера делает хорошие снимки, у меня перед HUAWEI была Ленова так фото леновы ужасные, батареи мне хватает на два дня, это при том что говорю много и часто пользуюсь и wi-fi и передачей данных. Телефоном довольна,надеюсь проблем не будет.\n" +
-      "\n" +
-      "Плюсы: Отличный смартфон.\n" +
-      "\n" +
-      "Минусы: Не нашла.",
-      rating: 4
+      "Пришло время поменять телефон,был у меня Смартфон HUAWEI Y625 ,отличный телефон,сейчас юзает старший сын, себе же взяла Смартфон HUAWEI Y6 II Dual Sim, неделю он у меня, перед покупкой прочитала кучу отзывов, понравился, о самом телефоне, экран отзывчивый,удобный в руке.Звук как для меня достаточный, слышно даже в шумном автобусе и я и меня слышат хорошо, связь тоже не пропадает,wi-fi ловит быстро, камера делает хорошие снимки, у меня перед HUAWEI была Ленова так фото леновы ужасные, батареи мне хватает на два дня, это при том что говорю много и часто пользуюсь и wi-fi и передачей данных. Телефоном довольна,надеюсь проблем не будет.",
+      rating: 4,
+      advantages: 'Отличный смартфон',
+      disadvantages: 'Не нашла.',
+      upvotes: 1,
+      downvotes: 1,
+      reviewAnswers: [{
+        id: 1,
+        idReview: 4,
+        user: 'Foxtrot support',
+        answerDate: new Date(2017, 7, 8),
+        answerText: 'Спасибо за Ваш отзыв!',
+        upvotes: null,
+        downvotes: null
+      }, {
+        id: 2,
+        idReview: 4,
+        user: 'Виктория',
+        answerDate: new Date(2017, 7, 11),
+        answerText: 'да, смартфон действительно отличный!',
+        upvotes: null,
+        downvotes: 1
+      }]
+    }
+  ];
+
+  storeReviews = [
+    {
+      id: 1,
+      idStore: 36,
+      user: "Анастасия",
+      reviewDate: new Date(2017, 11, 7),
+      reviewText: 'Хороший магазин. Чисто и всегда понятно где что находится',
+      rating: 5,
+      advantages: 'Товары отлично отсортированы',
+      disadvantages: '',
+      upvotes: 2,
+      downvotes: null,
+      reviewAnswers: [{
+        id: 1,
+        idReview: 1,
+        user: 'Foxtrot support',
+        answerDate: new Date(2017, 11, 8),
+        answerText: 'Спасибо за Ваш отзыв! Приятно, что Вы довольны',
+        upvotes: null,
+        downvotes: null
+      }]
+    },
+    {
+      id: 2,
+      idStore: 36,
+      user: "богдан зернов",
+      reviewDate: new Date(2017, 4, 8),
+      reviewText: 'в целом всё хорошо и легко нашел, что искал. Но обслуживание мне не понравилось',
+      rating: 3,
+      advantages: 'местоположение',
+      disadvantages: 'обслуживание',
+      upvotes: 1,
+      downvotes: null,
+      reviewAnswers: [{
+        id: 1,
+        idReview: 2,
+        user: 'Foxtrot support',
+        answerDate: new Date(2017, 4, 8),
+        answerText: 'Спасибо за Ваш отзыв! Хотелось бы чтобы Вы уточнили свои замечания',
+        upvotes: null,
+        downvotes: null
+      }, {
+        id: 2,
+        idReview: 2,
+        user: 'богдан зернов',
+        answerDate: new Date(2017, 4, 9),
+        answerText: 'мне не хватило индивидуального подхода и внимания персонала магазина',
+        upvotes: null,
+        downvotes: null
+      }, {
+        id: 3,
+        idReview: 2,
+        user: 'Foxtrot support',
+        answerDate: new Date(2017, 4, 9),
+        answerText: 'Спасибо за Ваш отзыв! Мы учтём Ваши замечания',
+        upvotes: 1,
+        downvotes: null
+      }]
     }
   ];
 
@@ -987,8 +1106,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   ];
   // </editor-fold>
 
-  // <editor-fold desc="foxStores"
-  foxStores = [
+  // <editor-fold desc="stores"
+  stores = [
     // Александрия
     {
       id: 1,
@@ -1331,110 +1450,120 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
           position: {lat: 50.4357, lng: 30.5164},
           address: 'вул. В. Васильківська, 45',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 3
         },
         {
           id: 36,
           position: {lat: 50.4898, lng: 30.4927},
           address: 'просп. Степана Бандери, 21',
           openTime: '9:00',
-          closeTime: '21:00',
-          rating: 4,
-          feedbacks: [{
-            feedback: 'Отличный магазин. Персонал работает хорошо',
-            rating: 5
-          }, {feedback: 'Всё устроило, персонал приветливый. Но сложно разобраться где что.', rating: 3}]
+          closeTime: '22:00',
+          rating: 4
         },
         {
           id: 37,
           position: {lat: 50.4316, lng: 30.5131},
           address: 'вул. Антоновича, 52',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 4
         },
         {
           id: 38,
           position: {lat: 50.5145, lng: 30.4986},
           address: 'просп. Оболонський, 21Б',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 5
         },
         {
           id: 39,
           position: {lat: 50.381827, lng: 30.44093},
           address: 'вул. Велика Кільцева, 110',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 3
         },
         {
           id: 40,
           position: {lat: 50.4605, lng: 30.3469},
           address: 'вул. Чорнобильська, 16/80',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 4
         },
         {
           id: 41,
           position: {lat: 50.4083, lng: 30.6552},
           address: 'вул. Вербицького, 18',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 4
         },
         {
           id: 42,
           position: {lat: 50.399, lng: 30.5107},
           address: 'просп. Голосіївський, 68а',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 5
         },
         {
           id: 43,
           position: {lat: 50.4634, lng: 30.5992},
           address: 'просп. Визволителів, 17',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 2
         },
         {
           id: 44,
           position: {lat: 50.454762, lng: 30.636051},
           address: 'вул. Гната Хоткевича, 1-В',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 5
         },
         {
           id: 45,
           position: {lat: 50.4304, lng: 30.4552},
           address: 'бульв. Чоколівський, 19',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 4
         },
         {
           id: 46,
           position: {lat: 50.4312, lng: 30.3836},
           address: 'вул. Гната Юри, 20',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 3
         },
         {
           id: 47,
           position: {lat: 50.3976, lng: 30.6382},
           address: 'вул. Олександра Мішуги, 4',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 2
         },
         {
           id: 48,
           position: {lat: 50.451, lng: 30.4416},
           address: 'вул. Гетьмана, 6 (літери "Б,Б")',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 5
         },
         {
           id: 49,
           position: {lat: 50.4567, lng: 30.3832},
           address: 'просп. Перемоги, 87',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 4
         },
         {
           id: 50,
@@ -1448,7 +1577,15 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
           position: {lat: 50.5198, lng: 30.4656},
           address: 'вул. Калнишевського, 2',
           openTime: '9:00',
-          closeTime: '21:00'
+          closeTime: '21:00',
+          rating: 3
+        },
+        {
+          id: 161,
+          position: {lat: 50.489967, lng: 30.495350},
+          address: 'просп. Степана Бандери, 23',
+          openTime: '9:00',
+          closeTime: '22:00'
         }
       ]
     },
@@ -2899,7 +3036,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     {id: 2, name: "UKR"},
     {id: 3, name: "ENG"}
   ];
+  // </editor-fold>
 
+  // <editor-fold desc="pages">
   pages = [
     {
       id: 1,
@@ -2907,7 +3046,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       content: this.dynamicContent['HOME']
     }
   ];
+  // </editor-fold>
 
+  // <editor-fold desc="actions">
   actions = [
     {
       id: 1,
@@ -2945,8 +3086,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idCur: 0,
     },
   ];
-
   // </editor-fold>
+
+
   createDb() {
     const mquotationProducts = this.quotationProducts;
     const mproducts = this.products;
@@ -2956,7 +3098,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mproductReviews = this.productReviews;
     const manufacturers = this.manufacturers;
     const mcities = this.cities;
-    const mfoxStores = this.foxStores;
+    const mstores = this.stores;
     const mtoken = this.tokens;
     const musers = this.users;
     const mproductStorePlaces = this.productStorePlaces;
@@ -2973,6 +3115,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mpages = this.pages;
     const mactions = this.actions;
     const mactionOffers= this.actionOffers;
+    const mstoreReviews = this.storeReviews;
 
     return {
       mquotationProducts,
@@ -2983,7 +3126,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mproductReviews,
       manufacturers,
       mcities,
-      mfoxStores,
+      mstores,
       mtoken,
       musers,
       mproductStorePlaces,
@@ -2999,7 +3142,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mcartProducts,
       mpages,
       mactions,
-      mactionOffers
+      mactionOffers,
+      mstoreReviews
     };
   }
 

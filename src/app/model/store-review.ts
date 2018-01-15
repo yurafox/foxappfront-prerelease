@@ -1,9 +1,9 @@
 import {ReviewAnswer} from "./review-answer";
 
-export class ProductReview {
+export class StoreReview {
   constructor (
     public id: number,
-    public idProduct: number,
+    public idStore: number,
     public user: string,
     public reviewDate: Date,
     public reviewText: string,

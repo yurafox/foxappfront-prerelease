@@ -12,7 +12,7 @@ const PAGEHOME:string = `<ion-slides pager autoplay="2000">
 <ion-list class="cat-list">
   <ion-row>
     <ion-col text-center (click)="viewCategories()">
-      <img src="assets/icon/allcategories.svg" alt="" height="100px" padding="0.5em">
+      <img src="assets/icon/allcategories.svg" alt="" height="50px">
       <div text-center>Все категории</div>
     </ion-col>
   </ion-row>

@@ -4,6 +4,7 @@ import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {AbstractDataRepository} from "./service/index";
 import {ComponentBase} from "../components/component-extension/component-base";
+import {AppAvailability} from "@ionic-native/app-availability";
 
 export interface PageInterface {
   title: string;
@@ -14,7 +15,6 @@ export interface PageInterface {
 }
 
 declare var ExoPlayer: any;
-declare var appAvailability: any;
 
 @Component({
   templateUrl: 'app.html'
@@ -49,7 +49,7 @@ export class FoxApp extends ComponentBase {
 
   constructor(private platform: Platform, statusBar: StatusBar,
               private splashScreen: SplashScreen, public menuCtrl: MenuController,
-              private repo: AbstractDataRepository) {
+              private repo: AbstractDataRepository, private appAvailability: AppAvailability) {
     super();
     //this.rootPage = HomePage;
     platform.ready().then(() => {
@@ -79,7 +79,7 @@ export class FoxApp extends ComponentBase {
 
     if ((this.userService.isAuth === false) && (page.component === 'AccountMenuPage')) {
       this.nav.push('LoginPage').catch((err: any) => {
-        console.log(`Didn't set nav root: ${err}`);
+        console.log(`Couldn't navigate to LoginPage: ${err}`);
       });
     } else {
       switch (page.name) {
@@ -107,21 +107,22 @@ export class FoxApp extends ComponentBase {
         }
         default: {
           this.nav.push(page.component).catch((err: any) => {
-            console.log(`Didn't set nav root: ${err}`);
+            console.log(`Couldn't push this page: ${page.component.toString()}: ${err}`);
           });
           break;
         }
       }
-      /*this.nav.push(page.component).catch((err: any) => {
-        console.log(`Didn't set nav root: ${err}`);
-      });*/
     }
   }
 
   signOut() {
     this.userService.logOut();
-    this.nav.setRoot('HomePage');
-    this.menuCtrl.close();
+    this.nav.setRoot('HomePage').catch(err => {
+      console.log(`Didn't set nav root: ${err}`);
+    });
+    this.menuCtrl.close().catch(err => {
+      console.log(`Couldn't close the menu: ${err}`);
+    });
   }
 
   // To play video when device is ready
@@ -140,11 +141,11 @@ export class FoxApp extends ComponentBase {
       // Exit player on phones BACK button
       if (json.eventType === 'KEY_EVENT' && json.eventKeycode === 'KEYCODE_BACK') {
         ExoPlayer.close();
-      };
+      }
       // Show controls on tap on the screen
       if (json.eventType === 'TOUCH_EVENT' && json.eventAction === 'ACTION_UP') {
         ExoPlayer.showController();
-      };
+      }
       // Play video again (from 0 ms) if it ended
       if (json.eventType === 'STATE_CHANGED_EVENT') {
         if (json.position >= (json.duration - 1)) {
@@ -182,23 +183,33 @@ export class FoxApp extends ComponentBase {
 
   // Opens external application
   openExternalApp() {
-    let scheme = this.scheme;
-    let appUrl = this.appUrl;
-    let userToken = this.userToken;
+    let scheme: string = this.scheme;
+    let appUrl: string = this.appUrl;
+    let userToken: string = this.userToken;
     this.platform.ready().then(() => {
-      appAvailability.check(scheme,// URI Scheme
-        function() {  // Success callback
+      this.appAvailability.check(scheme).then(
+        ()=> {  // Success callback
           window.open(appUrl + userToken, '_system', 'location=no');
           console.log('App is available');
         },
-        function() {  // Error callback
-          window.alert('App is not installed');
+        () => {  // Error callback
+          window.open('https://www.facebook.com/' + userToken, '_system', 'location=yes');
+          console.log('App is not installed');
           return;
         })
     }).catch((err) => {
+      window.open('https://www.facebook.com/' + userToken, '_system', 'location=yes');
       console.log(`Error occurred while opening external app: ${err}`);
       return;
     });
+  }
+
+  toLogIn() {
+    if (this.userService.isAuth === false) {
+      this.nav.push('LoginPage').catch((err: any) => {
+        console.log(`Couldn't navigate to LoginPage: ${err}`);
+      });
+    }
   }
 }
 

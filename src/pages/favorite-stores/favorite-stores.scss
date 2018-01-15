@@ -1,12 +1,4 @@
 page-favorite-stores {
-  #radioButton {
-    position: relative;
-    top: 40%;
-    transform: translateY(-50%);
-    font-size: 25px;
-    background-color: #ffb400;
-  }
-
   .item-md.item-block .item-inner {
     border-bottom: 0px;
   }
@@ -78,5 +70,14 @@ page-favorite-stores {
     text-transform: none;
     font-size: 16px;
     font-weight: 400;
+  }
+
+  .f-fav-stores-btn-delete {
+    padding: 30px 30px;
+    font-size: 30px !important;
+    width: 50% !important;
+    position: absolute;
+    right: -10px;
+    top: 0;
   }
 }

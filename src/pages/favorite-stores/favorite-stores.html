@@ -3,43 +3,52 @@
 </ion-header>
 
 
-<ion-content padding>
-  <div *ngIf="(dataLoaded === true) && stores && (stores.length > 0)">
-    <ion-grid class="f-item-nopadding-tb f-color-secondary">
-      <ion-row>
-        <ion-col>
-          <b><span class="f-size-large">Select a favorite store</span></b>
-        </ion-col>
-      </ion-row>
+<ion-content>
+  <ion-grid class="f-item-nopadding-tb f-color-secondary">
+    <ion-row padding>
+      <ion-col>
+        <b><span class="f-size-large">Select a favorite store</span></b>
+      </ion-col>
+    </ion-row>
+    <div *ngIf="(dataLoaded === true) && stores && (stores.length > 0)">
       <ion-row *ngFor="let store of stores">
 
         <ion-grid style="border: 1px solid #EBEBEC;">
           <ion-row (click)="onIsPrimaryClick(store.store)">
-            <ion-col col-2 text-center>
-              <input type="radio" id="radioButton" [checked]="store.store.isPrimary">
-            </ion-col>
-            <ion-col style="padding-bottom: 10px;" class="f-size-larger">
+            <ion-col style="padding: 10px 5px;" class="f-size-larger">
                 <span *ngIf="store?.store.address">
                   {{store?.store.address}}
                 </span><br/>
-                <span *ngIf="store?.city.name">
+              <span *ngIf="store?.city.name">
                   {{store?.city.name}}
                 </span>
             </ion-col>
+            <div *ngIf="store.store.isPrimary">
+              <ion-col col-10 style="padding: 10px 10px">
+                <button class="f-fav-stores-btn-delete" ion-button clear (click)="deleteStore(store)">
+                  <ion-icon name="ios-trash-outline"></ion-icon>
+                </button>
+              </ion-col>
+            </div>
           </ion-row>
           <div *ngIf="store.store.isPrimary">
             <ion-row>
-              <ion-col col-6 style="padding-right: 10px; padding-bottom: 15px; padding-left: 10px;">
-                <button class="f-btn-secondary" ion-button block (click)="deleteStore(store)">Delete</button>
+              <ion-col>
+                <button class="f-btn-add-cart" ion-button block (click)="navToMap(store.store, store.city)">Show on map</button>
+              </ion-col>
+              <ion-col *ngIf="store.hasReviews === true">
+                <button class="f-btn-add-cart" ion-button block (click)="onShowReviewsClick(store.store)">Reviews</button>
+              </ion-col>
+              <ion-col *ngIf="store.hasReviews === false">
+                <button class="f-btn-add-cart" ion-button block (click)="onWriteReviewClick(store.store)">Write review</button>
               </ion-col>
             </ion-row>
           </div>
-
         </ion-grid>
       </ion-row>
-    </ion-grid>
-  </div>
-  <div *ngIf="(dataLoaded === false) || (stores.length === 0) || !stores">
+    </div>
+  </ion-grid>
+  <div *ngIf="(dataLoaded === false) || !stores">
     <span class="f-size-large">You have no favorite stores yet<br/>Or they are loading</span>
   </div>
 </ion-content>
