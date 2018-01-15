@@ -53,6 +53,7 @@ export abstract class AbstractDataRepository {
 
   public async abstract getClientDraftOrderSpecProductsById(id: number): Promise<ClientOrderProducts>;
   public async abstract getClientDraftOrderSpecProducts(): Promise<Array<ClientOrderProducts>>;
+  public async abstract getClientOrderSpecProductsByClientId(clientId: number): Promise<Array<ClientOrderProducts>>;
 
   public async abstract getCountryById(id: number): Promise<Country>;
   public async abstract getCountries(): Promise<Country[]>;

@@ -50,6 +50,7 @@ const clientAddressesUrl = "/api/mclientAddresses";
 const countriesUrl = "/api/mcountries";
 const clientOrdersUrl = "/api/mclientOrders";
 const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
+const clientOrderSpecProductsOfClientUrl = "/api/mclientOrderSpecProductsOfClient";
 const cartProductsUrl = "/api/mcartProducts";
 const pagesDynamicUrl = "/api/mpages";
 const actionDynamicUrl = "/api/mactions";
@@ -301,6 +302,44 @@ export class AppDataRepository extends AbstractDataRepository {
       let orderProducts = [];
       const response = await this.http
         .get(clientOrderSpecProductsUrl + '')
+        .toPromise();
+
+      const val = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      val.forEach(product => {
+        let p = new ClientOrderProducts();
+        p.id = product.id;
+        p.idOrder = product.idOrder;
+        p.idQuotationProduct = product.idQuotationProduct;
+        p.price = product.price;
+        p.qty = product.qty;
+        p.idStorePlace = product.idStorePlace;
+        p.idLoEntity = product.idLoEntity;
+        p.loTrackTicket = product.loTrackTicket;
+        p.loDeliveryCost = product.loDeliveryCost;
+        p.loDeliveryCompleted = product.loDeliveryCompleted;
+        p.loEstimatedDeliveryDate = product.loEstimatedDeliveryDate;
+        p.loDeliveryCompletedDate = product.loDeliveryCompletedDate;
+        p.errorMessage = product.errorMessage;
+        orderProducts.push(p);
+      });
+      return orderProducts;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getClientOrderSpecProductsByClientId(clientId: number): Promise<Array<ClientOrderProducts>> {
+    try {
+      let orderProducts = [];
+      const response = await this.http
+        .get(clientOrderSpecProductsOfClientUrl, {
+          search: this.createSearchParams([
+            { key: "idClient", value: clientId.toString() }
+          ])
+        })
         .toPromise();
 
       const val = response.json();
