@@ -38,8 +38,8 @@ export class CartPage extends ComponentBase {
       this.navCtrl.push('LoginPage', {continuePage: 'SelectShipAddressPage'});
     }
     else {
-      //todo check error messages
       let hasErrors = false;
+
       for (let i of this.cart.orderProducts) {
         if (i.errorMessage) {
           hasErrors = true;
@@ -49,8 +49,8 @@ export class CartPage extends ComponentBase {
 
       if (hasErrors){
         let alert = this.alertCtrl.create({
-          title: 'Error',
-          message: 'Please check error messages',
+          title: '',
+          message: 'Some items in your order needs your attention. Please review your order and try again',
           buttons: [
             {
               text: 'OK',
