@@ -18,6 +18,7 @@ import {DropdownListComponent} from './dropdown-list/dropdown-list';
 import {ActionSketchComponent} from './action-sketch/action-sketch';
 import {HtmlOutlet} from './html-outlet/html-outlet';
 import {ShippingAddressComponent} from './shipping-address/shipping-address';
+import { NoveltySketchComponent } from './novelty-sketch/novelty-sketch';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {ShippingAddressComponent} from './shipping-address/shipping-address';
     DropdownViewComponent,
     ActionSketchComponent,
     HtmlOutlet,
-    ShippingAddressComponent
+    ShippingAddressComponent,
+    NoveltySketchComponent
   ],
   entryComponents: [
     CustomPopupComponent,
@@ -65,7 +67,8 @@ import {ShippingAddressComponent} from './shipping-address/shipping-address';
     DropdownViewComponent,
     ActionSketchComponent,
     HtmlOutlet,
-    ShippingAddressComponent
+    ShippingAddressComponent,
+    NoveltySketchComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

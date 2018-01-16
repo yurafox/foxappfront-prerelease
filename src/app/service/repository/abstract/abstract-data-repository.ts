@@ -19,6 +19,7 @@ import {Country} from '../../../model/country';
 import {ClientOrder} from '../../../model/client-order';
 import {ClientOrderProducts} from '../../../model/client-order-products';
 import {StoreReview} from "../../../model/store-review";
+import {Novelty} from "../../../model/novelty";
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
@@ -71,4 +72,6 @@ export abstract class AbstractDataRepository {
   public async abstract getAction(id:number):Promise<Action>;
   public async abstract getActions():Promise<Action[]>;
   public async abstract getActionOffersByActionId(id:number):Promise<ActionOffer[]>;
+  public async abstract getNovelty(id: number): Promise<Novelty>;
+  public async abstract getNovelties(): Promise<Novelty[]>;
 }

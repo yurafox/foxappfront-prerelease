@@ -38,7 +38,6 @@ page-map {
   .f-map-footer {
     width: 100vw;
     text-align: center;
-    //background-color: color($colors, fox);
   }
   .f-left-15 {
     text-align: right;
@@ -81,12 +80,12 @@ page-map {
   }
 
   .checked {
-    color: color($colors, foxrating);
+    color: #ffb400;
   }
 
   .f-drop-buttons {
     text-align: center;
-    background-color: color($colors, fox);
+    background-color: white;
     button {
       background-color: #ffbc2e !important;
     }
