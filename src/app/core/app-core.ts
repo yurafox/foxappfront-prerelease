@@ -5,6 +5,7 @@ import {Manufacturer} from "../model/manufacturer";
 import {City} from '../model/city';
 import {StorePlace} from '../model/store-place';
 import {Lang} from "../model/lang";
+import { RequestOptionsArgs,Headers} from '@angular/http';
 
 export interface IDictionary<T> {
   [k: string]: T;
@@ -265,8 +266,39 @@ function lazyParamToValue(pointer: any, params: string[]): any[] {
   params.forEach((value) => resultArr.push(pointer[value]));
   return resultArr;
 }
-
 // </editor-fold>
+
+// #region requestParamsFactory
+export class RequestParamsFactory {
+  /** only search param
+   * example in http.get(apiUrl,
+   *                     RequestParamsFactory.makeSearchParam(this.createSearchParams([{ key: "idAction", value: idAction.toString()}]))
+   *                    ).toPromise();
+  **/
+   public static makeSearchParam(searchParam: URLSearchParams):RequestOptionsArgs {
+       return {search: searchParam};
+   }
+   /** only auth headers (token,uid)
+   * example in http.get(apiUrl,
+   *                     RequestParamsFactory.makeAuthHeader(this.createAuthHeader())
+   *                    ).toPromise();
+   **/
+   public static makeAuthHeader(header:Headers): RequestOptionsArgs{
+      return {headers:header}
+   }
+   /** both search and auth param
+    * example in http.get(apiUrl,
+    *                     RequestParamsFactory.makeSearchAndAuthParam(this.createSearchParams([{ key: "idAction", value: idAction.toString()}]),
+                                                                      this.createAuthHeader()
+                                                                     )
+                         ).toPromise();
+  **/
+   public static makeSearchAndAuthParam(searchParam:URLSearchParams,header:Headers): RequestOptionsArgs {
+
+      return {search:searchParam, headers:header};
+   }
+}
+// #endregion
 
 // <editor-fold desc="core object methods">
 export function Activator<T>(type:{new():T}):T {

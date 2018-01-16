@@ -1,6 +1,7 @@
+import { RequestParamsFactory } from './../../../core/app-core';
 import { Observable } from "rxjs/Observable";
 import { Injectable } from "@angular/core";
-import { Http, URLSearchParams } from "@angular/http";
+import { Http, URLSearchParams, Headers } from "@angular/http";
 import "rxjs/add/operator/toPromise";
 import CacheProvider = Providers.CacheProvider;
 import {
@@ -1218,6 +1219,15 @@ export class AppDataRepository extends AbstractDataRepository {
     return searchParams;
   }
 
+  // auth header creater
+  private createAuthHeader():Headers {
+    const h = new Headers();
+
+    h.set('Authorization', `Bearer: ${localStorage.getItem('token') || ''}`);
+    h.set('X-User',localStorage.getItem('id') || '');
+    return h;
+  }
+
   // </editor-fold>
   // <editor-fold desc="get product prop value from product"
   private getPropValuefromProduct(product: any): Array<ProductPropValue> {
@@ -1495,7 +1505,6 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getActions(): Promise<Action[]> {
     try {
       const response = await this.http.get(actionDynamicUrl).toPromise();
-
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
