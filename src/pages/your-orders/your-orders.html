@@ -1,67 +1,37 @@
 <ion-header>
-  <main-toolbar></main-toolbar>
+    <main-toolbar></main-toolbar>
 </ion-header>
 
 
 <ion-content>
-  <ion-grid class="f-item-nopadding-tb f-color-secondary">
-    <ion-row padding>
-      <ion-col>
-        <b><span class="f-size-large">Your orders</span></b>
-      </ion-col>
-    </ion-row>
-    <span *ngIf="loaded === true">
+    <ion-grid class="f-item-nopadding-tb f-color-secondary">
+        <ion-row padding>
+            <ion-col>
+                <b><span class="f-size-large">Your orders</span></b>
+            </ion-col>
+        </ion-row>
+        <span *ngIf="loaded === true">
       <ion-row padding *ngFor="let product of productArr; let i = index">
         <b><span>Order #{{i+1}}</span></b>
         <div *ngFor="let p of product?.products">
-          <span *ngIf="p?.id">
+            <span *ngIf="p?.id">
             <item [product]="p"></item><br>
-            <!--<ion-grid class="f-color-secondary f-item-nopadding-tb">
-                  <ion-row>
-                    <ion-col col-auto>
-                      <img class="f-img-item" width="60" height="60" [src]="p?.imageUrl">
-                    </ion-col>
-                    <ion-col>
-                      <ion-grid class="f-item-nopadding-tb">
-                        <ion-row>
-                          <ion-col no-padding class="f-item-padding-bottom">
-                            <span class="f-size-medium"><b>{{p?.name}}</b></span>
-                          </ion-col>
-                        </ion-row>
-                        <ion-row>
-                          <ion-col no-padding class="f-item-padding-bottom">
-                            <span class="f-size-medium">
-                              <rating readOnly style="display: inline-block;" [ngModel]="p?.rating"></rating>
-                            </span>
-                          </ion-col>
-                        </ion-row>
-                        <ion-row>
-                          <ion-col no-padding class="f-item-padding-bottom">
-                            <span
-                              class="f-size-medium f-color-red">{{p?.price | localeCurrency:userService.currency}}</span>
-                          </ion-col>
-                        </ion-row>
-                      </ion-grid>
-                    </ion-col>
-                  </ion-row>
-                  <hr>
-            </ion-grid>-->
           </span>
         </div>
         <br>
         <ion-col>
-          <b><span>Date: {{product?.order?.orderDate}}</span></b><br>
+            <b><span>Date: {{product?.order?.orderDate}}</span></b><br>
         </ion-col>
         <ion-col>
-          <b><span>Total: {{product?.order?.total | localeCurrency:userService.currency}}</span></b>
+            <b><span>Total: {{product?.order?.total | localeCurrency:userService.currency}}</span></b>
         </ion-col><br>
-      </ion-row>
-    </span>
-    <span *ngIf="loaded === false">
+        </ion-row>
+        </span>
+        <span *ngIf="loaded === false">
       <ion-row>
         <span class="f-size-larger">You have no orders yet</span>
-      </ion-row>
-    </span>
+        </ion-row>
+        </span>
 
-  </ion-grid>
+    </ion-grid>
 </ion-content>
