@@ -1,4 +1,4 @@
-import { RequestParamsFactory } from './../../../core/app-core';
+import { RequestFactory } from './../../../core/app-core';
 import { Observable } from "rxjs/Observable";
 import { Injectable } from "@angular/core";
 import { Http, URLSearchParams, Headers } from "@angular/http";
@@ -1217,15 +1217,6 @@ export class AppDataRepository extends AbstractDataRepository {
     });
 
     return searchParams;
-  }
-
-  // auth header creater
-  private createAuthHeader():Headers {
-    const h = new Headers();
-
-    h.set('Authorization', `Bearer: ${localStorage.getItem('token') || ''}`);
-    h.set('X-User',localStorage.getItem('id') || '');
-    return h;
   }
 
   // </editor-fold>

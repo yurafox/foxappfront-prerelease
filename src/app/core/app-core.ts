@@ -5,7 +5,7 @@ import {Manufacturer} from "../model/manufacturer";
 import {City} from '../model/city';
 import {StorePlace} from '../model/store-place';
 import {Lang} from "../model/lang";
-import { RequestOptionsArgs,Headers} from '@angular/http';
+import { RequestOptionsArgs,Headers,URLSearchParams} from '@angular/http';
 
 export interface IDictionary<T> {
   [k: string]: T;
@@ -268,34 +268,41 @@ function lazyParamToValue(pointer: any, params: string[]): any[] {
 }
 // </editor-fold>
 
-// #region requestParamsFactory
-export class RequestParamsFactory {
+// #region requestFactory
+export class RequestFactory {
   /** only search param
    * example in http.get(apiUrl,
-   *                     RequestParamsFactory.makeSearchParam(this.createSearchParams([{ key: "idAction", value: idAction.toString()}]))
+   *                     RequestFactory.makeSearch([{ key: "idAction", value: idAction.toString()}]))
    *                    ).toPromise();
   **/
-   public static makeSearchParam(searchParam: URLSearchParams):RequestOptionsArgs {
-       return {search: searchParam};
+   public static makeSearch(params: Array<{ key: string; value: string }>):RequestOptionsArgs {
+
+    let searchParams = new URLSearchParams();
+    params.forEach(val => {searchParams.set(val.key, val.value);});
+
+    return {search: searchParams};
    }
    /** only auth headers (token,uid)
-   * example in http.get(apiUrl,
-   *                     RequestParamsFactory.makeAuthHeader(this.createAuthHeader())
-   *                    ).toPromise();
+   * example in http.get(apiUrl, RequestFactory.makeAuthHeader()).toPromise();
    **/
-   public static makeAuthHeader(header:Headers): RequestOptionsArgs{
-      return {headers:header}
+   public static makeAuthHeader(): RequestOptionsArgs{
+    const h = new Headers();
+
+    h.set('Authorization', `Bearer: ${localStorage.getItem('token') || ''}`);
+    h.set('X-User',localStorage.getItem('id') || '');
+
+    return {headers:h}
    }
    /** both search and auth param
     * example in http.get(apiUrl,
-    *                     RequestParamsFactory.makeSearchAndAuthParam(this.createSearchParams([{ key: "idAction", value: idAction.toString()}]),
-                                                                      this.createAuthHeader()
-                                                                     )
-                         ).toPromise();
+    *                      RequestFactory.makeSearchAndAuth([{ key: "idAction", value: idAction.toString()}]
+                          ).toPromise();
   **/
-   public static makeSearchAndAuthParam(searchParam:URLSearchParams,header:Headers): RequestOptionsArgs {
+   public static makeSearchAndAuth(params: Array<{ key: string; value: string }>): RequestOptionsArgs {
+     const search = RequestFactory.makeSearch(params).search;
+     const headers = RequestFactory.makeAuthHeader().headers;
 
-      return {search:searchParam, headers:header};
+     return {search:search, headers:headers};
    }
 }
 // #endregion
