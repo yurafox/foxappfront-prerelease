@@ -2956,6 +2956,73 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     }
   ];
 
+  clientOrderSpecProductsOfClient = [
+    {
+      idClient: 100,
+      id: 6,
+      idOrder: 3,
+      idQuotationProduct: 7,
+      price: 120.0,
+      qty: 1,
+      idStorePlace: null,
+      idLoEntity: null,
+      loTrackTicket: null,
+      loDeliveryCost: null,
+      loDeliveryCompleted: null,
+      loEstimatedDeliveryDate: null,
+      loDeliveryCompletedDate: null,
+      errorMessage: null
+    },
+    {
+      idClient: 101,
+      id: 1,
+      idOrder: 2,
+      idQuotationProduct: 1,
+      price: 5199.0,
+      qty: 1,
+      idStorePlace: null,
+      idLoEntity: null,
+      loTrackTicket: null,
+      loDeliveryCost: null,
+      loDeliveryCompleted: null,
+      loEstimatedDeliveryDate: null,
+      loDeliveryCompletedDate: null,
+      errorMessage: null
+    },
+    {
+      idClient: 101,
+      id: 2,
+      idOrder: 2,
+      idQuotationProduct: 3,
+      price: 5220.0,
+      qty: 1,
+      idStorePlace: null,
+      idLoEntity: null,
+      loTrackTicket: null,
+      loDeliveryCost: null,
+      loDeliveryCompleted: null,
+      loEstimatedDeliveryDate: null,
+      loDeliveryCompletedDate: null,
+      errorMessage: null
+    },
+    {
+      idClient: 101,
+      id: 3,
+      idOrder: 2,
+      idQuotationProduct: 2,
+      price: 349.0,
+      qty: 2,
+      idStorePlace: null,
+      idLoEntity: null,
+      loTrackTicket: null,
+      loDeliveryCost: null,
+      loDeliveryCompleted: null,
+      loEstimatedDeliveryDate: null,
+      loDeliveryCompletedDate: null,
+      errorMessage: null
+    }
+  ];
+
   cartProducts = [
     {
       id: 4,
@@ -3088,6 +3155,20 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   ];
   // </editor-fold>
 
+  // <editor-fold desc="novelties">
+  novelties = [
+    {
+      id: 1,
+      productId: 6280637,
+      name: 'Смартфон WILEYFOX Spark',
+      img_url: 'assets/imgs/novelties/spark',
+      priority: 10,
+      sketch_content: this.dynamicContent['NOVELTY'],
+      novelty_content: this.dynamicContent['WILEYFOXSPARK']
+    }
+  ]
+  // </editor-fold>
+
 
   createDb() {
     const mquotationProducts = this.quotationProducts;
@@ -3111,11 +3192,13 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mloSupplEntities = this.loSupplEntities;
     const mclientOrders = this.clientOrders;
     const mclientOrderSpecProducts = this.clientOrderSpecProducts;
+    const mclientOrderSpecProductsOfClient = this.clientOrderSpecProductsOfClient;
     const mcartProducts = this.cartProducts;
     const mpages = this.pages;
     const mactions = this.actions;
     const mactionOffers= this.actionOffers;
     const mstoreReviews = this.storeReviews;
+    const mnovelties = this.novelties;
 
     return {
       mquotationProducts,
@@ -3139,11 +3222,13 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mloSupplEntities,
       mclientOrders,
       mclientOrderSpecProducts,
+      mclientOrderSpecProductsOfClient,
       mcartProducts,
       mpages,
       mactions,
       mactionOffers,
-      mstoreReviews
+      mstoreReviews,
+      mnovelties
     };
   }
 

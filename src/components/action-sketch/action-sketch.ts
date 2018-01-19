@@ -1,4 +1,3 @@
-import { ActionPage } from './../../pages/action/action';
 import { Component, Input } from '@angular/core';
 import {NavController} from "ionic-angular";
 import { AbstractDataRepository } from '../../app/service/index';
@@ -28,7 +27,11 @@ export class ActionSketchComponent {
   }
 
   public openAction() {
-    this.navCtrl.push(ActionPage, {id:this.innerId || this.action.id, action:this.action});
+    this.navCtrl.push('ActionPage', {id:this.innerId || this.action.id, action:this.action}).catch(
+      err => {
+        console.log(`Error navigating to ActionPage: ${err}`);
+      }
+    );
   }
 
   public get id ():number {
