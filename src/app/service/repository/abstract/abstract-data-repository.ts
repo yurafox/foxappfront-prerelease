@@ -1,26 +1,27 @@
 import { QuotationProduct,
-         Product,
-         Quotation,
-         Supplier,
-         Currency,
-         Manufacturer,
-         City,
-         Store,
-         StorePlace,
-         ProductReview,
-         ProductStorePlace,
-         Lang,
-         Client,
-         Action,
-         ActionOffer
+          Product,
+          Quotation,
+          Supplier,
+          Currency,
+          Manufacturer,
+          City,
+          Store,
+          StorePlace,
+          ProductReview,
+          ProductStorePlace,
+          Lang,
+          Client,
+          Action,
+          ActionOffer,
+          ClientAddress,
+          Country,
+          ClientOrder,
+          ClientOrderProducts,
+          StoreReview,
+          LoEntity,
+          LoSupplEntity,
+          EnumPaymentMethod
        } from '../../../model/index';
-import {ClientAddress} from '../../../model/client-address';
-import {Country} from '../../../model/country';
-import {ClientOrder} from '../../../model/client-order';
-import {ClientOrderProducts} from '../../../model/client-order-products';
-import {StoreReview} from "../../../model/store-review";
-import {LoEntity} from '../../../model/lo-entity';
-import {LoSupplEntity} from '../../../model/lo-suppl-entity';
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
@@ -77,4 +78,7 @@ export abstract class AbstractDataRepository {
   public async abstract getAction(id:number):Promise<Action>;
   public async abstract getActions():Promise<Action[]>;
   public async abstract getActionOffersByActionId(id:number):Promise<ActionOffer[]>;
+
+  public async abstract getPmtMethods(): Promise<EnumPaymentMethod[]>;
+  public async abstract getPmtMethodById(id: number): Promise<EnumPaymentMethod>;
 }

@@ -6,6 +6,7 @@ import {StorePlace} from '../model/store-place';
 import {UserService} from './bll/user-service';
 import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
 import {EventService} from './event-service';
+import {EnumPaymentMethod} from '../model/enum-payment-method';
 
 
 export class LoDeliveryOption {
@@ -28,6 +29,8 @@ export class CartService  {
   public order: ClientOrder;
   public orderProducts = new Array <ClientOrderProducts>();
   public loDeliveryOptions = new Array <LoDeliveryOption>();
+  public pmtMethod: EnumPaymentMethod = null;
+  public promoCode: string;
 
   constructor(private userService: UserService, private repo: AbstractDataRepository,
               private evServ: EventService) {

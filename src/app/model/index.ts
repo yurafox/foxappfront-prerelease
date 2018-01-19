@@ -29,3 +29,16 @@ export * from './lo-suppl-entity';
 export * from './client-address';
 export * from './action';
 export * from './action-offer';
+export * from './enum-payment-method';
+export * from './client';
+export * from './client-address';
+export * from './country';
+export * from './client-order';
+export * from './client-order-products';
+export * from './store-review';
+export * from './lo-entity';
+export * from './lo-suppl-entity';
+export * from './review-answer';
+
+
+

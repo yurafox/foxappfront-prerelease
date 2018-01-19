@@ -20,19 +20,20 @@ import {
   StorePlace,
   Lang,
   Action,
-  ActionOffer
-} from "../../../model/index";
-import { AbstractDataRepository } from "../../index";
+  ActionOffer,
+  Client,
+  ClientAddress,
+  Country,
+  ClientOrder,
+  ClientOrderProducts,
+  StoreReview,
+  LoEntity,
+  LoSupplEntity,
+  EnumPaymentMethod,
+  ReviewAnswer
+} from '../../../model/index';
+import { AbstractDataRepository } from '../../index';
 import { Providers, System } from "../../../core/app-core";
-import { Client } from "../../../model/client";
-import { ClientAddress } from "../../../model/client-address";
-import { Country } from "../../../model/country";
-import { ClientOrder } from "../../../model/client-order";
-import { ClientOrderProducts } from "../../../model/client-order-products";
-import {StoreReview} from "../../../model/store-review";
-import {ReviewAnswer} from "../../../model/review-answer";
-import {LoEntity} from '../../../model/lo-entity';
-import {LoSupplEntity} from '../../../model/lo-suppl-entity';
 
 // <editor-fold desc="url const">
 const currenciesUrl = "/api/mcurrencies";
@@ -61,6 +62,7 @@ const loEntitiesUrl = "/api/mloEntities";
 const loSupplEntitiesUrl = "/api/mloSupplEntities";
 const getDeliveryCostUrl = "/api/mgetDeliveryCost";
 const getDeliveryDateUrl = "/api/mgetDeliveryDate";
+const getPaymentMethodsUrl = "/api/mpaymentMethods";
 
 // </editor-fold
 
@@ -71,6 +73,50 @@ export class AppDataRepository extends AbstractDataRepository {
   constructor(private http: Http) {
     super();
   }
+
+  public async getPmtMethods(): Promise<EnumPaymentMethod[]> {
+    try {
+      const response = await this.http.get(getPaymentMethodsUrl).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const cItems = new Array<EnumPaymentMethod>();
+      if (data != null) {
+        data.forEach(val => {
+          cItems.push(new EnumPaymentMethod(val.id, val.name));
+        });
+      }
+      return cItems;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+
+  }
+
+  public async getPmtMethodById(id: number): Promise<EnumPaymentMethod> {
+    try {
+      const response = await this.http
+        .get(getPaymentMethodsUrl + `/${id.toString()}`)
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data)
+        return new EnumPaymentMethod(
+          data.id,
+          data.name
+        )
+      else
+        return null;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 
   public async getDeliveryDate(orderSpecId: number, loEntityId: number): Promise<Date> {
     try {

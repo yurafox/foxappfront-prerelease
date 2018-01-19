@@ -79,6 +79,6 @@ export class ShippingOptionsPage extends ComponentBase {
     if (this.itemIndex < this.cart.orderProducts.length-1)
       this.itemIndex++
     else
-      console.log('Goto next page');
+      this.navCtrl.push('SelectPmtMethodPage');
   }
 }
