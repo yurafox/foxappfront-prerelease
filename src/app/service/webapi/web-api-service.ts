@@ -2958,7 +2958,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
 
   cartProducts = [
     {
-      id: 4,
+      id: 7,
       idOrder: 1,
       idQuotationProduct: 4,
       price: 330.0,
@@ -2974,7 +2974,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       warningMessage: "We have changed price for this item from $332 to $330"
     },
     {
-      id: 5,
+      id: 8,
       idOrder: 1,
       idQuotationProduct: 6,
       price: 167.7,
@@ -3089,6 +3089,118 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   ];
   // </editor-fold>
 
+  paymentMethods = [
+    {id: 1, name: 'Cash'},
+    {id: 2, name: 'Credit card Visa / MasterCard'},
+    {id: 3, name: 'Privat - parts payment'},
+    {id: 4, name: 'Privat - immediate instalments'},
+    {id: 5, name: 'Credit'}
+  ];
+
+  productSupplCreditGrades = [
+    { id:1, idProduct: 6280637, idSupplier: 2, partsPmtCnt: 1, creditSize: 2},
+    { id:2, idProduct: 6293680, idSupplier: 3, partsPmtCnt: 2, creditSize: 4},
+    { id:4, idProduct: 6293680, idSupplier: 1, partsPmtCnt: 4, creditSize: 8},
+    { id:5, idProduct: 6294898, idSupplier: 2, partsPmtCnt: 5, creditSize: 10},
+    { id:6, idProduct: 6280637, idSupplier: 1, partsPmtCnt: 6, creditSize: 12},
+    { id:7, idProduct: 6294898, idSupplier: 3, partsPmtCnt: 7, creditSize: 14},
+    { id:8, idProduct: 6325585, idSupplier: 1, partsPmtCnt: 8, creditSize: 16},
+    { id:9, idProduct: 6325585, idSupplier: 2, partsPmtCnt: 9, creditSize: 18},
+    { id:10, idProduct: 6324182, idSupplier: 2, partsPmtCnt: 10, creditSize: 20},
+    { id:11, idProduct: 6324182, idSupplier: 3, partsPmtCnt: 11, creditSize: 22},
+    { id:12, idProduct: 6252121, idSupplier: 1, partsPmtCnt: 12, creditSize: 24},
+    { id:13, idProduct: 6252121, idSupplier: 3, partsPmtCnt: 13, creditSize: 26},
+    { id:14, idProduct: 6202929, idSupplier: 2, partsPmtCnt: 14, creditSize: 28},
+    { id:15, idProduct: 6202929, idSupplier: 1, partsPmtCnt: 15, creditSize: 30},
+    { id:16, idProduct: 6324216, idSupplier: 1, partsPmtCnt: 16, creditSize: 32},
+    { id:17, idProduct: 6324216, idSupplier: 2, partsPmtCnt: 17, creditSize: 34},
+    { id:18, idProduct: 6324213, idSupplier: 1, partsPmtCnt: 18, creditSize: 36},
+    { id:19, idProduct: 6324213, idSupplier: 2, partsPmtCnt: 19, creditSize: 38},
+    { id:21, idProduct: 6161537, idSupplier: 1, partsPmtCnt: 21, creditSize: 42},
+    { id:22, idProduct: 6307814, idSupplier: 3, partsPmtCnt: 22, creditSize: 44},
+    { id:23, idProduct: 6307814, idSupplier: 1, partsPmtCnt: 23, creditSize: 46},
+    { id:24, idProduct: 6307814, idSupplier: 2, partsPmtCnt: 24, creditSize: 48},
+    { id:25, idProduct: 6343804, idSupplier: 1, partsPmtCnt: 25, creditSize: 50},
+    { id:26, idProduct: 6337167, idSupplier: 1, partsPmtCnt: 26, creditSize: 52},
+    { id:27, idProduct: 6337167, idSupplier: 3, partsPmtCnt: 27, creditSize: 54},
+    { id:28, idProduct: 6291460, idSupplier: 2, partsPmtCnt: 28, creditSize: 56},
+    { id:29, idProduct: 6291460, idSupplier: 1, partsPmtCnt: 29, creditSize: 58},
+    { id:30, idProduct: 6316576, idSupplier: 1, partsPmtCnt: 30, creditSize: 60},
+    { id:31, idProduct: 6310491, idSupplier: 2, partsPmtCnt: 31, creditSize: 62},
+    { id:32, idProduct: 6310491, idSupplier: 1, partsPmtCnt: 32, creditSize: 64},
+    { id:34, idProduct: 6312913, idSupplier: 1, partsPmtCnt: 34, creditSize: 68},
+    { id:35, idProduct: 6293680, idSupplier: 2, partsPmtCnt: 35, creditSize: 70}
+  ];
+
+  creditProducts = [
+    { sId:26, sName: "L+", sDefProdId: 11004, sPartPay: 0, sGracePeriod: null, maxTerm: 37, firstPay: null, monthCommissionPct: 3, yearPct: .01, kpcPct: 7.2},
+    { sId:8, sName: "XXL", sDefProdId: 11482, sPartPay: 0, sGracePeriod: null, maxTerm: 12, firstPay: 0, monthCommissionPct: 4, yearPct: .01, kpcPct: 0},
+    { sId:9, sName: "XS-24", sDefProdId: 11470, sPartPay: 0, sGracePeriod: 24, maxTerm: 37, firstPay: null, monthCommissionPct: 3, yearPct: .01, kpcPct: 25},
+    { sId:12, sName: "XS-20", sDefProdId: 11675, sPartPay: 0, sGracePeriod: 20, maxTerm: 37, firstPay: 0, monthCommissionPct: 3, yearPct: .01, kpcPct: 19.23},
+    { sId:59, sName: "ОЧ 16", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:60, sName: "ОЧ 17", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:61, sName: "ОЧ 18", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:62, sName: "ОЧ 19", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:63, sName: "ОЧ 20", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:64, sName: "ОЧ 21", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:65, sName: "ОЧ 22", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:66, sName: "ОЧ 23", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:67, sName: "ОЧ 24", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:13, sName: "ОЧ 1", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: 3.3},
+    { sId:14, sName: "ОЧ 2", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: 4.3},
+    { sId:15, sName: "ОЧ 3", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: 6.3},
+    { sId:16, sName: "ОЧ 4", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: 8.8},
+    { sId:17, sName: "ОЧ 5", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: 10.8},
+    { sId:18, sName: "ОЧ 6", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: 13.3},
+    { sId:19, sName: "ОЧ 7", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: 15.3},
+    { sId:20, sName: "ОЧ 8", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: 17.3},
+    { sId:21, sName: "ОЧ 9", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: 18.3},
+    { sId:22, sName: "ОЧ 10", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: 18.8},
+    { sId:23, sName: "ОЧ 11", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: 17},
+    { sId:24, sName: "ОЧ 12", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: 21.2},
+    { sId:54, sName: "ОЧ 13", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:55, sName: "ОЧ 14", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:56, sName: "ОЧ 15", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:10, sName: "XS-14", sDefProdId: 11635, sPartPay: 0, sGracePeriod: 14, maxTerm: 14, firstPay: 0, monthCommissionPct: 3, yearPct: .01, kpcPct: 21.31},
+    { sId:1, sName: "S", sDefProdId: 11008, sPartPay: 0, sGracePeriod: null, maxTerm: 37, firstPay: null, monthCommissionPct: 3, yearPct: .01, kpcPct: 15.6},
+    { sId:2, sName: "M", sDefProdId: 11474, sPartPay: 0, sGracePeriod: null, maxTerm: 37, firstPay: null, monthCommissionPct: 3, yearPct: .01, kpcPct: 10},
+    { sId:3, sName: "L", sDefProdId: 11036, sPartPay: 0, sGracePeriod: null, maxTerm: 37, firstPay: null, monthCommissionPct: 3, yearPct: .01, kpcPct: 5.1},
+    { sId:4, sName: "XL", sDefProdId: 11024, sPartPay: 0, sGracePeriod: null, maxTerm: 24, firstPay: null, monthCommissionPct: 3, yearPct: .01, kpcPct: 0},
+    { sId:5, sName: "10*10*10", sDefProdId: 11020, sPartPay: 0, sGracePeriod: null, maxTerm: 10, firstPay: 10, monthCommissionPct: 1, yearPct: .01, kpcPct: 10},
+    { sId:6, sName: "XS-10", sDefProdId: 11585, sPartPay: 0, sGracePeriod: 10, maxTerm: 37, firstPay: null, monthCommissionPct: 3, yearPct: .01, kpcPct: 15.6},
+    { sId:7, sName: "XS-12", sDefProdId: 11642, sPartPay: 0, sGracePeriod: 12, maxTerm: 37, firstPay: 0, monthCommissionPct: 3, yearPct: .01, kpcPct: 18},
+    { sId:25, sName: "XS-25", sDefProdId: 11575, sPartPay: 0, sGracePeriod: 25, maxTerm: 37, firstPay: null, monthCommissionPct: 3, yearPct: .01, kpcPct: 50},
+    { sId:29, sName: "МР акц. 1", sDefProdId: null, sPartPay: 2, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:30, sName: "МР акц. 2", sDefProdId: 11693, sPartPay: 2, sGracePeriod: null, maxTerm: 14, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: null},
+    { sId:31, sName: "МР акц. 3", sDefProdId: 11691, sPartPay: 2, sGracePeriod: null, maxTerm: 15, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: null},
+    { sId:32, sName: "МР акц. 4", sDefProdId: 11697, sPartPay: 2, sGracePeriod: null, maxTerm: 16, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: null},
+    { sId:33, sName: "МР акц. 5", sDefProdId: 10478, sPartPay: 2, sGracePeriod: null, maxTerm: 17, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: null},
+    { sId:34, sName: "МР акц. 6", sDefProdId: 11686, sPartPay: 2, sGracePeriod: null, maxTerm: 18, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: null},
+    { sId:35, sName: "МР акц. 7", sDefProdId: 11702, sPartPay: 2, sGracePeriod: null, maxTerm: 19, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: null},
+    { sId:36, sName: "МР акц. 8", sDefProdId: 11704, sPartPay: 2, sGracePeriod: null, maxTerm: 20, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: null},
+    { sId:37, sName: "МР акц. 9", sDefProdId: 11709, sPartPay: 2, sGracePeriod: null, maxTerm: 23, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: null},
+    { sId:38, sName: "МР акц. 10", sDefProdId: 11712, sPartPay: 2, sGracePeriod: null, maxTerm: 21, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: null},
+    { sId:39, sName: "МР акц. 11", sDefProdId: 11715, sPartPay: 2, sGracePeriod: null, maxTerm: 22, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: null},
+    { sId:40, sName: "МР акц. 12", sDefProdId: 11718, sPartPay: 2, sGracePeriod: null, maxTerm: 12, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: 6.2},
+    { sId:41, sName: "МР акц. 13", sDefProdId: 11721, sPartPay: 2, sGracePeriod: null, maxTerm: 13, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: 6.8},
+    { sId:42, sName: "МР акц. 14", sDefProdId: 11693, sPartPay: 2, sGracePeriod: null, maxTerm: 14, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: 7.4},
+    { sId:43, sName: "МР акц. 15", sDefProdId: 11691, sPartPay: 2, sGracePeriod: null, maxTerm: 15, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: 8},
+    { sId:44, sName: "МР акц. 16", sDefProdId: 11697, sPartPay: 2, sGracePeriod: null, maxTerm: 16, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: 8.6},
+    { sId:45, sName: "МР акц. 17", sDefProdId: 10478, sPartPay: 2, sGracePeriod: null, maxTerm: 17, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: 9.2},
+    { sId:46, sName: "МР акц. 18", sDefProdId: 11686, sPartPay: 2, sGracePeriod: null, maxTerm: 18, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: 9.8},
+    { sId:47, sName: "МР акц. 19", sDefProdId: 11702, sPartPay: 2, sGracePeriod: null, maxTerm: 19, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: 10.4},
+    { sId:48, sName: "МР акц. 20", sDefProdId: 11704, sPartPay: 2, sGracePeriod: null, maxTerm: 20, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: 11},
+    { sId:49, sName: "МР акц. 21", sDefProdId: 11712, sPartPay: 2, sGracePeriod: null, maxTerm: 21, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: 11.5},
+    { sId:50, sName: "МР акц. 22", sDefProdId: 11715, sPartPay: 2, sGracePeriod: null, maxTerm: 22, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: 12},
+    { sId:51, sName: "МР акц. 23", sDefProdId: 11709, sPartPay: 2, sGracePeriod: null, maxTerm: 23, firstPay: null, monthCommissionPct: null, yearPct: .99, kpcPct: 12.6},
+    { sId:52, sName: "МР акц. 24", sDefProdId: null, sPartPay: 2, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:53, sName: "МР акц. 25", sDefProdId: null, sPartPay: 2, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:11, sName: "M+", sDefProdId: 11428, sPartPay: 0, sGracePeriod: null, maxTerm: 37, firstPay: null, monthCommissionPct: 3, yearPct: .01, kpcPct: 11},
+    { sId:27, sName: "XS-17", sDefProdId: null, sPartPay: 0, sGracePeriod: 17, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:28, sName: "XS-19", sDefProdId: null, sPartPay: 0, sGracePeriod: 19, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:58, sName: "XS-18", sDefProdId: null, sPartPay: 0, sGracePeriod: 18, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
+    { sId:57, sName: "XS-15", sDefProdId: 12110, sPartPay: 0, sGracePeriod: 15, maxTerm: 37, firstPay: null, monthCommissionPct: 3, yearPct: 0.01, kpcPct: 15}
+  ];
 
   createDb() {
     const mquotationProducts = this.quotationProducts;
@@ -3117,6 +3229,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mactions = this.actions;
     const mactionOffers= this.actionOffers;
     const mstoreReviews = this.storeReviews;
+    const mpaymentMethods = this.paymentMethods;
+    const mproductSupplCreditGrades = this.productSupplCreditGrades;
+    const mcreditProducts = this.creditProducts;
 
     return {
       mquotationProducts,
@@ -3144,7 +3259,10 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mpages,
       mactions,
       mactionOffers,
-      mstoreReviews
+      mstoreReviews,
+      mpaymentMethods,
+      mproductSupplCreditGrades,
+      mcreditProducts
     };
   }
 
@@ -3177,6 +3295,21 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
         return this.userHandler[info.method](info, resOpt);
       }
 
+      case "mgetDeliveryDate": {
+        let reqData = (<any>info.req)._body;
+        let mockDate = new Date();
+        mockDate.setDate(mockDate.getDate() + reqData.loEntity);
+        resOpt.body = {DeliveryDate: mockDate};
+        return info.utils.createResponse$(() => resOpt);
+      }
+
+      case "mgetDeliveryCost": {
+        let reqData = (<any>info.req)._body;
+        resOpt.body = {AssessedCost: reqData.loEntity/10};
+        return info.utils.createResponse$(() => resOpt);
+      }
+
+
       default:
         return null;
     }
@@ -3185,6 +3318,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   // </editor-fold>
 
   // <editor-fold desc="HTTP verbs override collections">
+
   userHandler: IDictionary<(info: RequestInfo, resOpt?: ResponseOptions) => any> = {
     post: info => null,
     get: info => {

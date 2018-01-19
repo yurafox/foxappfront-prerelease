@@ -34,7 +34,8 @@ export class ShippingAddressComponent extends ComponentBase {
   }
 
   deliverToThisAddress(item: any) {
-    if (this.withDelivery === true) {
+    if (this.withDelivery) {
+      this.navCtrl.push('ShippingOptionsPage', {data: item});
 
     }
   }

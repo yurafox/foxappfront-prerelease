@@ -30,3 +30,4 @@ export * from './edit-ship-address/edit-ship-address.module';
 export * from './action/action.module';
 export * from './actions/actions.module';
 export * from './your-orders/your-orders.module';
+export * from './shipping-options/shipping-options.module';

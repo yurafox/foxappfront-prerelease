@@ -8,12 +8,26 @@ import {AbstractDataRepository} from './repository/abstract/abstract-data-reposi
 import {EventService} from './event-service';
 
 
+export class LoDeliveryOption {
+  public itemIdx?: number;
+  public loEntityId?: number;
+  public deliveryDate?: Date;
+  public deliveryCost?: number;
+  public loName?: string;
+  public isChecked?: boolean
+
+  constructor(
+
+  ){};
+}
+
 @Injectable()
 export class CartService  {
 
   private cKey = 'cartItems';
   public order: ClientOrder;
   public orderProducts = new Array <ClientOrderProducts>();
+  public loDeliveryOptions = new Array <LoDeliveryOption>();
 
   constructor(private userService: UserService, private repo: AbstractDataRepository,
               private evServ: EventService) {

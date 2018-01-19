@@ -20,15 +20,6 @@ export class CartPage extends ComponentBase {
     super();
   }
 
-  incQty(item): void {
-    item.qty++;
-  }
-
-  decQty(item): void {
-    if (item.qty >= 2)
-      item.qty--;
-  }
-
   onDeleteItem(itemIndex: number) {
     this.cart.removeItem(itemIndex);
   }
@@ -49,7 +40,6 @@ export class CartPage extends ComponentBase {
 
       if (hasErrors){
         let alert = this.alertCtrl.create({
-          title: '',
           message: 'Some items in your order needs your attention. Please review your order and try again',
           buttons: [
             {

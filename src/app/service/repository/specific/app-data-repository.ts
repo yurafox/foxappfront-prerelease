@@ -31,6 +31,8 @@ import { ClientOrder } from "../../../model/client-order";
 import { ClientOrderProducts } from "../../../model/client-order-products";
 import {StoreReview} from "../../../model/store-review";
 import {ReviewAnswer} from "../../../model/review-answer";
+import {LoEntity} from '../../../model/lo-entity';
+import {LoSupplEntity} from '../../../model/lo-suppl-entity';
 
 // <editor-fold desc="url const">
 const currenciesUrl = "/api/mcurrencies";
@@ -55,6 +57,11 @@ const pagesDynamicUrl = "/api/mpages";
 const actionDynamicUrl = "/api/mactions";
 const actionOffersUrl = "/api/mactionOffers";
 const storeReviewsUrl = "/api/mstoreReviews";
+const loEntitiesUrl = "/api/mloEntities";
+const loSupplEntitiesUrl = "/api/mloSupplEntities";
+const getDeliveryCostUrl = "/api/mgetDeliveryCost";
+const getDeliveryDateUrl = "/api/mgetDeliveryDate";
+
 // </editor-fold
 
 @Injectable()
@@ -65,6 +72,93 @@ export class AppDataRepository extends AbstractDataRepository {
     super();
   }
 
+  public async getDeliveryDate(orderSpecId: number, loEntityId: number): Promise<Date> {
+    try {
+      const response = await this.http
+        .post(getDeliveryDateUrl, {id: orderSpecId, loEntity: loEntityId})
+        .toPromise();
+      const val = response.json();
+
+      if (response.status !== 201 && response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      return val.DeliveryDate;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getDeliveryCost(orderSpecId: number, loEntityId: number): Promise<number> {
+    try {
+      const response = await this.http
+        .post(getDeliveryCostUrl, {id: orderSpecId, loEntity: loEntityId})
+        .toPromise();
+      const val = response.json();
+
+      if (response.status !== 201 && response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      return val.AssessedCost;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getLoEntitiyById(entityId: number):Promise<LoEntity> {
+    try {
+      const response = await this.http
+        .get(loEntitiesUrl + `/${entityId}`)
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data)
+        return new LoEntity(
+          data.id,
+          data.name
+        );
+    } catch (err) {
+      return await this.handleError(err);
+    }
+
+  }
+
+  public async getLoEntitiesForSupplier(supplierId: number):Promise<LoSupplEntity[]> {
+    try {
+      const response = await this.http
+        .get(loSupplEntitiesUrl, {
+          search: this.createSearchParams([
+            { key: "idSuppler", value: supplierId.toString() }
+          ])
+        })
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const cloSupplEntArr = new Array<LoSupplEntity>();
+      if (data != null) {
+        data.forEach(val =>
+          cloSupplEntArr.push(
+            new LoSupplEntity(
+              val.id,
+              val.idSupplier,
+              val.idLoEntity
+            )
+          )
+        );
+      }
+      return cloSupplEntArr;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+
+  }
+
+
   public async getClientDraftOrder(): Promise<ClientOrder> {
     return null;
   }
@@ -73,6 +167,7 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
       const response = await this.http
         .get(clientOrdersUrl, {
+          //TODO переделать этот метод (два одинаковых поисковых параметра - кривизна)
           search: this.createSearchParams([
             { key: "idStatus", value: "1" },
             { key: "idStatus", value: "2" }

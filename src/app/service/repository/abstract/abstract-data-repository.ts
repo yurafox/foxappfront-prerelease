@@ -19,6 +19,8 @@ import {Country} from '../../../model/country';
 import {ClientOrder} from '../../../model/client-order';
 import {ClientOrderProducts} from '../../../model/client-order-products';
 import {StoreReview} from "../../../model/store-review";
+import {LoEntity} from '../../../model/lo-entity';
+import {LoSupplEntity} from '../../../model/lo-suppl-entity';
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
@@ -40,6 +42,11 @@ export abstract class AbstractDataRepository {
   public async abstract getCurrencyById(currencyId: number): Promise<Currency>;
   public async abstract getManufacturerById(manufacturerId: number): Promise<Manufacturer>;
   public async abstract getManufacturers(cacheForce: boolean): Promise<Manufacturer[]>;
+
+  public async abstract getLoEntitiesForSupplier(supplierId: number):Promise<LoSupplEntity[]>;
+  public async abstract getLoEntitiyById(entityId: number):Promise<LoEntity>;
+  public async abstract getDeliveryDate(orderSpecId: number, loEntityId: number): Promise<Date>;
+  public async abstract getDeliveryCost(orderSpecId: number, loEntityId: number): Promise<number>;
 
   public async abstract getClientDraftOrder(): Promise<ClientOrder>;
   public async abstract getClientOrders(): Promise<ClientOrder[]>;

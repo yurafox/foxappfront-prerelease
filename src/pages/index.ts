@@ -25,3 +25,4 @@ export * from './select-ship-address/select-ship-address';
 export * from './edit-ship-address/edit-ship-address';
 export * from './action/action';
 export * from './actions/actions';
+export * from './shipping-options/shipping-options';
