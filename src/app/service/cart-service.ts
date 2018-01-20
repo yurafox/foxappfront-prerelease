@@ -138,4 +138,9 @@ export class CartService  {
     this.saveToLocalStorage();
   }
 
+  emptyCart() {
+    //TODO implement emptyCart method
+    console.log('Empty cart');
+  }
+
 }

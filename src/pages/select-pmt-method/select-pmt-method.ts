@@ -53,7 +53,7 @@ export class SelectPmtMethodPage extends ComponentBase {
   }
 
   onContinueClick() {
-    console.log('Continue click.. ' + this.cart.promoCode);
+    this.navCtrl.push('CheckoutPage');
   }
 
   onApplyPromoCodeClick() {
