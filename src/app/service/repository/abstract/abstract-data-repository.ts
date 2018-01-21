@@ -68,6 +68,7 @@ export abstract class AbstractDataRepository {
   public async abstract getClientById(id: number): Promise<Client>;
   public async abstract getClientByEmail(email: string): Promise<Client>;
   public async abstract getClientAddressesByClientId(id: number): Promise<ClientAddress[]>;
+  public async abstract getClientAddressById(id: number): Promise<ClientAddress>;
 
   public async abstract getCities(): Promise<City[]>;
   public async abstract getStores(): Promise<Array<{id: number, stores: Store[]}>>;

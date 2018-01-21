@@ -63,6 +63,7 @@ const loSupplEntitiesUrl = "/api/mloSupplEntities";
 const getDeliveryCostUrl = "/api/mgetDeliveryCost";
 const getDeliveryDateUrl = "/api/mgetDeliveryDate";
 const getPaymentMethodsUrl = "/api/mpaymentMethods";
+const clientDraftOrderUrl = "/api/mclientDraftOrder";
 
 // </editor-fold
 
@@ -204,9 +205,38 @@ export class AppDataRepository extends AbstractDataRepository {
 
   }
 
-
+  // Метод должен возвращать 1 обїект - черновой заказ, которьій для каждого клиента может бьіть только в единсвенном єкземпляре.
+  // Если чернового заказа в базе нет - то создавать и возвращать его
   public async getClientDraftOrder(): Promise<ClientOrder> {
-    return null;
+    try {
+      const response = await this.http
+        .get(clientDraftOrderUrl).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        console.log('data[0].loIdClientAddress :' + data[0].loIdClientAddress);
+          let cClientOrder = new ClientOrder(
+            data[0].id,
+            data[0].orderDate,
+            data[0].idCur,
+            data[0].idClient,
+            data[0].total,
+            data[0].idPaymentMethod,
+            data[0].idPaymentStatus,
+            data[0].idStatus,
+            null,
+            data[0].loIdEntity,
+            data[0].loIdClientAddress
+          );
+          console.log(cClientOrder);
+          return cClientOrder;
+      };
+    } catch (err) {
+      return await this.handleError(err);
+    }
   }
 
   public async getClientOrders(): Promise<ClientOrder[]> {
@@ -705,9 +735,42 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getClientAddressesByClientId(
-    id: number
-  ): Promise<ClientAddress[]> {
+  public async getClientAddressById(id: number): Promise<ClientAddress> {
+    try {
+      let _id = id.toString();
+
+      const response = await this.http
+        .get(clientAddressesUrl+ `/${_id}`).toPromise();
+
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+          console.log('Client address: ' + data);
+          let clientAddress = new ClientAddress();
+          clientAddress.id = data.id;
+          clientAddress.idClient = data.idClient;
+          clientAddress.idCity = data.idCity;
+          clientAddress.zip = data.zip;
+          clientAddress.street = data.street;
+          clientAddress.lat = data.lat;
+          clientAddress.lng = data.lng;
+          clientAddress.isPrimary = data.isPrimary;
+          clientAddress.idCountry = data.idCountry;
+          clientAddress.city = data.city;
+          clientAddress.bldApp = data.bldApp;
+          clientAddress.recName = data.recName;
+          clientAddress.phone = data.phone;
+          return clientAddress;
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+
+  public async getClientAddressesByClientId(id: number): Promise<ClientAddress[]> {
     try {
       let _id = id.toString();
       let clientAdresses = new Array<ClientAddress>();

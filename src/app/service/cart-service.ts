@@ -26,31 +26,39 @@ export class LoDeliveryOption {
 export class CartService  {
 
   private cKey = 'cartItems';
-  public order: ClientOrder;
+  public order: ClientOrder = null;
   public orderProducts = new Array <ClientOrderProducts>();
   public loDeliveryOptions = new Array <LoDeliveryOption>();
   public pmtMethod: EnumPaymentMethod = null;
   public promoCode: string;
 
-  constructor(private userService: UserService, private repo: AbstractDataRepository,
+  constructor(private userService: UserService, public repo: AbstractDataRepository,
               private evServ: EventService) {
+
     this.evServ.events['logonEvent'].subscribe(() => {
+        console.log('logonEvent');
+        this.initCart();
         this.addCartItemsFromStorage();
       }
     );
 
     this.evServ.events['logOffEvent'].subscribe(() => {
-        this.orderProducts = [];
+      this.initCart();
+      this.orderProducts = [];
       }
     );
+
     this.initCart();
   };
 
   async initCart() {
-    //this.orderProducts = [];
-    if (this.userService.isAuth)
-      this.orderProducts = await this.repo.getCartProducts()
+    console.log('CartInit call. Is auth: '+ this.userService.isAuth);
+    if (this.userService.isAuth) {
+      this.order = await this.repo.getClientDraftOrder();
+      this.orderProducts = await this.repo.getCartProducts();
+    }
     else {
+      this.order = null;
       const stor = JSON.parse(localStorage.getItem(this.cKey));
       if (stor) {
         stor.forEach((val) => {
@@ -90,6 +98,20 @@ export class CartService  {
   }
 
   public get orderTotal(): number {
+    return this.itemsTotal + this.shippingCost;
+  }
+
+  public get shippingCost(): number {
+    let res = 0;
+    this.loDeliveryOptions.forEach(i => {
+      if (i.isChecked)
+        res = res + i.deliveryCost;
+      }
+    );
+    return res;
+  }
+
+  public get itemsTotal(): number {
     let _s = 0;
     if (this.orderProducts) {
       this.orderProducts.forEach(item => {

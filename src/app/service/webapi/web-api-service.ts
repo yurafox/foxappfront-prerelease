@@ -2824,6 +2824,22 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     {id: 4, idSuppler: 2, idLoEntity: 150}
   ];
 
+  clientDraftOrder = [
+    {
+      id: 1000,
+      orderDate: new Date(),
+      idCur: 1,
+      idClient: 100,
+      total: 1200.35,
+      idPaymentMethod: 1,
+      idPaymentStatus: 1,
+      idStatus: 0,
+      loIdEntity: null,
+      loIdClientAddress: 2
+    }
+  ];
+
+
   clientOrders = [
     {
       id: 1,
@@ -3232,6 +3248,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mpaymentMethods = this.paymentMethods;
     const mproductSupplCreditGrades = this.productSupplCreditGrades;
     const mcreditProducts = this.creditProducts;
+    const mclientDraftOrder = this.clientDraftOrder;
 
     return {
       mquotationProducts,
@@ -3262,7 +3279,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mstoreReviews,
       mpaymentMethods,
       mproductSupplCreditGrades,
-      mcreditProducts
+      mcreditProducts,
+      mclientDraftOrder
     };
   }
 

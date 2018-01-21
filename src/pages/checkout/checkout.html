@@ -2,6 +2,169 @@
   <main-toolbar></main-toolbar>
 </ion-header>
 <ion-content>
-  Checkout works
+  <ion-grid class="f-color-secondary">
+
+    <ion-row *ngIf="dataLoaded">
+      <ion-col style="padding-left: 5px; padding-right: 5px;">
+        <button class="f-btn-add-cart" ion-button block
+                (click)="onPlaceOrderClick()">Place your order</button>
+      </ion-col>
+    </ion-row>
+
+
+<!--
+    SUMMARY AREA
+-->
+    <ion-row>
+      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
+        <b><span class="f-size-large">Order summary</span></b>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding-left: 5px; padding-right: 5px;">
+      <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
+        <ion-row>
+          <ion-col class="f-size-larger">
+            Shipping to:
+            <b>{{cart.order?.clientaddress?.recName}}</b>,
+            {{cart.order?.clientaddress?.street}}
+            {{cart.order?.clientaddress?.bldApp}}
+            {{cart.order?.clientaddress?.city}}, {{cart.order?.clientaddress?.zip}}
+            <span *ngIf="cart.order?.clientaddress?.idCountry">
+                  {{cart.order?.clientaddress?.country?.name}}, </span>
+            Phone: {{cart.order?.clientaddress?.phone}}
+            <hr>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="f-size-larger">
+            Items({{cart.orderProducts.length}}):
+          </ion-col>
+          <ion-col class="f-size-larger" text-right col-auto>
+            {{cart.itemsTotal | localeCurrency:userService.currency}}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="f-size-larger">
+            Shipping:
+          </ion-col>
+          <ion-col class="f-size-larger" text-right col-auto>
+            {{cart.shippingCost | localeCurrency:userService.currency}}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="f-size-larger">
+            Order Total:
+          </ion-col>
+          <ion-col class="f-size-larger" text-right col-auto>
+            <span class="f-color-red"><b>{{cart.orderTotal | localeCurrency:userService.currency}}</b></span>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-row>
+
+<!--
+    PAYMENT INFO AREA
+-->
+    <ion-row>
+      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
+        <b><span class="f-size-large">Payment information</span></b>
+      </ion-col>
+    </ion-row>
+    <ion-row style="padding-left: 5px; padding-right: 5px;">
+      <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
+        <ion-row>
+          <ion-col  class="f-size-larger">
+            <span><b>Payment method</b></span>
+            <br>
+            {{ cart.pmtMethod.name }}
+          </ion-col>
+        </ion-row>
+
+      </ion-grid>
+    </ion-row>
+    <promo-code *ngIf="dataLoaded"></promo-code>
+
+<!--
+   SHIPPING ITEMS AREA
+-->
+    <div *ngFor="let item of cart.orderProducts; let i = index">
+      <ion-row>
+        <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
+          <b><span class="f-size-large">Shipment {{i+1}} of {{cart.orderProducts.length}}</span></b>
+          <br>
+          <span class="f-size-larger">Item shipped from {{item?.quotationproduct?.quotation?.supplier?.name}}</span>
+        </ion-col>
+      </ion-row>
+
+      <ion-row style="padding-left: 5px; padding-right: 5px;">
+        <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
+          <ion-row>
+            <ion-col  class="f-size-larger" >
+              <span>{{cart.loDeliveryOptions[i].loName}}</span>
+              <hr>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col  class="f-size-larger">
+              <span>Est. delivery date: </span>
+              <span class="f-color-green">{{cart.loDeliveryOptions[i].deliveryDate | date: 'fullDate'}}</span>
+              <hr>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col col-auto>
+              <div>
+                <img class="f-img-item" [src]="item?.quotationproduct?.product?.imageUrl">
+              </div>
+            </ion-col>
+            <ion-col no-padding>
+              <ion-grid class="f-item-nopadding-tb">
+                <ion-row>
+                  <ion-col class="f-item-padding-bottom">
+                    <span><b>{{item?.quotationproduct?.product.name}}</b></span>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row>
+                  <ion-col class="f-item-padding-bottom">
+                    <span class="f-color-red f-size-larger">{{item?.price |  localeCurrency:userService.currency}}</span>
+                  </ion-col>
+                </ion-row>
+
+
+              </ion-grid>
+
+
+            </ion-col>
+
+          </ion-row>
+          <ion-row>
+            <ion-col class="f-item-padding-bottom">
+              <dropdown-list id="btnQty" [reference]="item"
+                             [map]="{valueName:'qty', displayName:'qty'}"
+                             [options]="{popupHeader:'Quantity', buttonHeader:'Qty'}"
+                             [isQty]="true">
+              </dropdown-list>
+            </ion-col>
+          </ion-row>
+
+
+        </ion-grid>
+      </ion-row>
+
+    </div>
+
+    <ion-row *ngIf="dataLoaded">
+      <ion-col style="padding-left: 5px; padding-right: 5px; padding-top: 15px;">
+        <button class="f-btn-add-cart" ion-button block
+                (click)="onPlaceOrderClick()">Place your order</button>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
 
 </ion-content>
