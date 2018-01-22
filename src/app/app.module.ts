@@ -80,7 +80,8 @@ import {
   ActionsPageModule,
   ShippingOptionsPageModule,
   SelectPmtMethodPageModule,
-  CheckoutPageModule
+  CheckoutPageModule,
+  PollPageModule
 
 } from '../pages/index-modules';
 import {NgxQRCodeModule} from 'ngx-qrcode2';
@@ -135,11 +136,11 @@ import {AppAvailability} from '@ionic-native/app-availability';
     SearchResultsPageModule,
     SelectShipAddressPageModule,
     SupportPageModule,
-    ActionPageModule,
     ActionsPageModule,
     ShippingOptionsPageModule,
     SelectPmtMethodPageModule,
-    CheckoutPageModule
+    CheckoutPageModule,
+    PollPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

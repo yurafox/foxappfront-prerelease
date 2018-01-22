@@ -3,7 +3,8 @@ export class Poll{
     public id?: number,
     public dateStart?: Date,
     public dateEnd?: Date,
-    public urlBanner?: string
+    public urlBanner?: string,
+    public bannerText?:string
   ){ }
 }
 

@@ -3303,12 +3303,14 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       id:1,
       dateStart: new Date(),
       dateEnd: new Date(2018,1,22),
-      urlBanner : 'assets/imgs/poll/poll1.png'
+      urlBanner : 'assets/imgs/polls/poll1.png',
+      bannerText: 'Примите участие в опросе'
     }, {
       id:2,
       dateStart: new Date(),
       dateEnd: new Date(2018,1,23),
-      urlBanner : 'assets/imgs/poll/poll2.png'
+      urlBanner : 'assets/imgs/polls/poll2.png',
+      bannerText: 'Клиентский опрос'
     }
   ];
 
@@ -3345,6 +3347,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mcreditProducts = this.creditProducts;
     const mclientDraftOrder = this.clientDraftOrder;
     const mnovelties = this.novelties;
+    const mpolls = this.polls;
 
     return {
       mquotationProducts,
@@ -3378,7 +3381,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mproductSupplCreditGrades,
       mcreditProducts,
       mclientDraftOrder,
-      mnovelties
+      mnovelties,
+      mpolls
     };
   }
 

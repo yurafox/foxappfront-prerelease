@@ -31,7 +31,8 @@ import {
   LoEntity,
   LoSupplEntity,
   EnumPaymentMethod,
-  ReviewAnswer
+  ReviewAnswer,
+  Poll
 } from '../../../model/index';
 import { AbstractDataRepository } from '../../index';
 import { Providers, System } from "../../../core/app-core";
@@ -69,6 +70,7 @@ const getPaymentMethodsUrl = "/api/mpaymentMethods";
 const clientDraftOrderUrl = "/api/mclientDraftOrder";
 
 const noveltyDynamicUrl = "/api/mnovelties";
+const pollsUrl='/api/mpolls';
 // </editor-fold
 
 @Injectable()
@@ -1890,6 +1892,32 @@ export class AppDataRepository extends AbstractDataRepository {
         });
       }
       return novelties;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getPollById(id:number): Promise<Poll> {
+    try {
+      const response = await this.http
+        .get(`${pollsUrl}/${id}`, RequestFactory.makeAuthHeader())
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      let poll: Poll = null;
+      if (data != null) {
+        poll = new Poll(
+          data.id,
+          new Date(data.dateStart),
+          new Date(data.dateEnd),
+          data.urlBanner,
+          data.bannerText
+        );
+      }
+      return poll;
     } catch (err) {
       return await this.handleError(err);
     }

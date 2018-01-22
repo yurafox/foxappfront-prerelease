@@ -20,7 +20,8 @@ import { QuotationProduct,
           StoreReview,
           LoEntity,
           LoSupplEntity,
-          EnumPaymentMethod
+          EnumPaymentMethod,
+          Poll
        } from '../../../model/index';
 
 import {Novelty} from "../../../model/novelty";
@@ -86,4 +87,5 @@ export abstract class AbstractDataRepository {
   public async abstract getPmtMethodById(id: number): Promise<EnumPaymentMethod>;
   public async abstract getNovelty(id: number): Promise<Novelty>;
   public async abstract getNovelties(): Promise<Novelty[]>;
+  public async abstract getPollById(id:number): Promise<Poll>;
 }

@@ -28,3 +28,4 @@ export * from './actions/actions';
 export * from './shipping-options/shipping-options';
 export * from './select-pmt-method/select-pmt-method';
 export * from './checkout/checkout';
+export * from './poll/poll';

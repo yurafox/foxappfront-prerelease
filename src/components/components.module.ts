@@ -20,6 +20,7 @@ import {HtmlOutlet} from './html-outlet/html-outlet';
 import {ShippingAddressComponent} from './shipping-address/shipping-address';
 import { PromoCodeComponent } from './promo-code/promo-code';
 import { NoveltySketchComponent } from './novelty-sketch/novelty-sketch';
+import { PollBannerComponent } from './poll-banner/poll-banner';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { NoveltySketchComponent } from './novelty-sketch/novelty-sketch';
     HtmlOutlet,
     ShippingAddressComponent,
     PromoCodeComponent,
-    NoveltySketchComponent
+    NoveltySketchComponent,
+    PollBannerComponent
   ],
   entryComponents: [
     CustomPopupComponent,
@@ -71,7 +73,8 @@ import { NoveltySketchComponent } from './novelty-sketch/novelty-sketch';
     HtmlOutlet,
     ShippingAddressComponent,
     PromoCodeComponent,
-    NoveltySketchComponent
+    NoveltySketchComponent,
+    PollBannerComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

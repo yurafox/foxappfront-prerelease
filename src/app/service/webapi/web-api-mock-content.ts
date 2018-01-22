@@ -23,13 +23,16 @@ const PAGEHOME:string = `<ion-slides pager autoplay="2000">
 <ion-card>
   <novelty-sketch [innerId]=1></novelty-sketch>
 </ion-card>
+ <poll-banner [innerId]=1></poll-banner>
 <!--actions list-->
 <h2 style="text-align: center">Акции</h2>
 <ion-card>
   <action-sketch [innerId]=1></action-sketch>
   <hr style='height: 5px'>
   <action-sketch [innerId]=2></action-sketch>
-</ion-card>`
+</ion-card>
+<poll-banner [innerId]=2></poll-banner>`
+
 //#endregion
 //#region NOVELTY
 const NOVELTY = `<div style="text-align: center">
@@ -64,8 +67,8 @@ const WILEYFOXSPARK = `<h3 style='text-align: center'>{{name}}</h3>
     <span class="default-container">Фронтальная 8-мегапиксельная камера с широкоугольным объективом и диафрагмой f/2.4 делает отличные селфи-снимки.</span>
     <img src="{{img_url}}10.jpg">
     <span class="default-container">Съемный аккумулятор на 2200 мАч гарантирует работу смартфона до 352 часов в режиме ожидания и 12 часов в режиме разговора.</span>
-  <br><span style="text-align: center; display: block;"><button ion-button (click)="addToCart()" 
-              style="background: #ef4123; color: #ffffff; text-transform: none; font-size: 20px; font-weight: 400; 
+  <br><span style="text-align: center; display: block;"><button ion-button (click)="addToCart()"
+              style="background: #ef4123; color: #ffffff; text-transform: none; font-size: 20px; font-weight: 400;
               padding: 20px; margin: 10px 20px 20px 20px;">
               Купить сейчас
       </button></span>
