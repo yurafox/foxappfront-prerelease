@@ -3298,6 +3298,19 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   ]
   // </editor-fold>
 
+  polls = [
+    {
+      id:1,
+      dateStart: new Date(),
+      dateEnd: new Date(2018,1,22),
+      urlBanner : 'assets/imgs/poll/poll1.png'
+    }, {
+      id:2,
+      dateStart: new Date(),
+      dateEnd: new Date(2018,1,23),
+      urlBanner : 'assets/imgs/poll/poll2.png'
+    }
+  ];
 
   createDb() {
     const mquotationProducts = this.quotationProducts;
