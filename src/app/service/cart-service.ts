@@ -35,7 +35,7 @@ export class CartService  {
   private navCtrl: NavController;
 
   constructor(private userService: UserService, public repo: AbstractDataRepository,
-              private evServ: EventService, protected injector: Injector, private app: App) {
+              private evServ: EventService, private app: App) {
     this.navCtrl = app.getActiveNav();
 
     this.evServ.events['logonEvent'].subscribe(() => {
