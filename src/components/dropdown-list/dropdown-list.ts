@@ -19,6 +19,7 @@
      - f-drop-button-small
      - f-drop-button-middle
      - f-drop-button-large
+     - f-drop-button-block
      Значение по умолчанию если не задан класс - f-drop-button-small
 
     options.popupHeader? - имя заголовка pop up окна

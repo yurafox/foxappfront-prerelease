@@ -159,4 +159,14 @@ export class CartService  {
     console.log('Empty cart');
   }
 
+  public get cartErrors(): Array<{idQuotProduct: number, errorMessage: string}> {
+    let arr = new Array<any>();
+    for (let i of this.orderProducts) {
+      if (i.errorMessage) {
+        arr.push({idQuotProduct: i.idQuotationProduct, errorMessage: i.errorMessage});
+      }
+    };
+    return (arr.length === 0) ? null : arr;
+  }
+
 }

@@ -221,7 +221,6 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
       if (data != null) {
-        console.log('data[0].loIdClientAddress :' + data[0].loIdClientAddress);
           let cClientOrder = new ClientOrder(
             data[0].id,
             data[0].orderDate,

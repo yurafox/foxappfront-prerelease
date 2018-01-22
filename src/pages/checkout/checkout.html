@@ -28,7 +28,7 @@
             Shipping to:
             <b>{{cart.order?.clientaddress?.recName}}</b>,
             {{cart.order?.clientaddress?.street}}
-            {{cart.order?.clientaddress?.bldApp}}
+            {{cart.order?.clientaddress?.bldApp}},
             {{cart.order?.clientaddress?.city}}, {{cart.order?.clientaddress?.zip}}
             <span *ngIf="cart.order?.clientaddress?.idCountry">
                   {{cart.order?.clientaddress?.country?.name}}, </span>
@@ -39,7 +39,7 @@
 
         <ion-row>
           <ion-col class="f-size-larger">
-            Items({{cart.orderProducts.length}}):
+            Items ({{cart.cartItemsCount}}):
           </ion-col>
           <ion-col class="f-size-larger" text-right col-auto>
             {{cart.itemsTotal | localeCurrency:userService.currency}}
@@ -146,7 +146,7 @@
             <ion-col class="f-item-padding-bottom">
               <dropdown-list id="btnQty" [reference]="item"
                              [map]="{valueName:'qty', displayName:'qty'}"
-                             [options]="{popupHeader:'Quantity', buttonHeader:'Qty', buttonClass:'block'}"
+                             [options]="{popupHeader:'Quantity', buttonHeader:'Qty', buttonClass:'f-drop-button-block'}"
                              [isQty]="true">
               </dropdown-list>
             </ion-col>

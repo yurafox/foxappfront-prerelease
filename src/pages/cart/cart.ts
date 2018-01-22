@@ -24,34 +24,36 @@ export class CartPage extends ComponentBase {
     this.cart.removeItem(itemIndex);
   }
 
+  validateStep(): boolean {
+    // Proceed to checkout rule
+    let err = this.cart.cartErrors;
+    if (err) {
+      let alert = this.alertCtrl.create({
+        message: 'Some items in your order needs your attention. Please review your order and try again',
+        buttons: [
+          {
+            text: 'OK',
+            handler: () => {
+            }
+          }
+        ]
+      });
+      alert.present();
+      return false;
+    }
+    else
+      return true;
+  }
+
   checkout() {
+    if (!this.validateStep())
+      return;
+
     if (!this.uService.isAuth) {
       this.navCtrl.push('LoginPage', {continuePage: 'SelectShipAddressPage'});
     }
     else {
-      let hasErrors = false;
-
-      for (let i of this.cart.orderProducts) {
-        if (i.errorMessage) {
-          hasErrors = true;
-          break;
-        }
-      };
-
-      if (hasErrors){
-        let alert = this.alertCtrl.create({
-          message: 'Some items in your order needs your attention. Please review your order and try again',
-          buttons: [
-            {
-              text: 'OK',
-              handler: () => {}
-            }
-          ]
-        });
-        alert.present();
-      }
-      else
-        this.navCtrl.push('SelectShipAddressPage', {fromCart: 1});
+      this.navCtrl.push('SelectShipAddressPage', {fromCart: 1});
     };
   }
 

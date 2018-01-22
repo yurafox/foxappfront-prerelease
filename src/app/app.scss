@@ -225,6 +225,15 @@ ion-slides[pager] {
   }
 }
 
+.f-drop-button-block {
+  button {
+    display: block;
+    clear: both;
+    width: 100%;
+    contain: strict;
+  }
+}
+
 .f-main-menu-header {
   height: 60px;
   padding: 10px !important;
