@@ -1,6 +1,7 @@
+import { RequestFactory } from './../../../core/app-core';
 import { Observable } from "rxjs/Observable";
 import { Injectable } from "@angular/core";
-import { Http, URLSearchParams } from "@angular/http";
+import { Http, URLSearchParams, Headers } from "@angular/http";
 import "rxjs/add/operator/toPromise";
 import CacheProvider = Providers.CacheProvider;
 import {
@@ -34,6 +35,7 @@ import {
 } from '../../../model/index';
 import { AbstractDataRepository } from '../../index';
 import { Providers, System } from "../../../core/app-core";
+import {Novelty} from "../../../model/novelty";
 
 // <editor-fold desc="url const">
 const currenciesUrl = "/api/mcurrencies";
@@ -53,6 +55,7 @@ const clientAddressesUrl = "/api/mclientAddresses";
 const countriesUrl = "/api/mcountries";
 const clientOrdersUrl = "/api/mclientOrders";
 const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
+const clientOrderSpecProductsOfClientUrl = "/api/mclientOrderSpecProductsOfClient";
 const cartProductsUrl = "/api/mcartProducts";
 const pagesDynamicUrl = "/api/mpages";
 const actionDynamicUrl = "/api/mactions";
@@ -65,6 +68,7 @@ const getDeliveryDateUrl = "/api/mgetDeliveryDate";
 const getPaymentMethodsUrl = "/api/mpaymentMethods";
 const clientDraftOrderUrl = "/api/mclientDraftOrder";
 
+const noveltyDynamicUrl = "/api/mnovelties";
 // </editor-fold
 
 @Injectable()
@@ -473,6 +477,44 @@ export class AppDataRepository extends AbstractDataRepository {
       let orderProducts = [];
       const response = await this.http
         .get(clientOrderSpecProductsUrl + '')
+        .toPromise();
+
+      const val = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      val.forEach(product => {
+        let p = new ClientOrderProducts();
+        p.id = product.id;
+        p.idOrder = product.idOrder;
+        p.idQuotationProduct = product.idQuotationProduct;
+        p.price = product.price;
+        p.qty = product.qty;
+        p.idStorePlace = product.idStorePlace;
+        p.idLoEntity = product.idLoEntity;
+        p.loTrackTicket = product.loTrackTicket;
+        p.loDeliveryCost = product.loDeliveryCost;
+        p.loDeliveryCompleted = product.loDeliveryCompleted;
+        p.loEstimatedDeliveryDate = product.loEstimatedDeliveryDate;
+        p.loDeliveryCompletedDate = product.loDeliveryCompletedDate;
+        p.errorMessage = product.errorMessage;
+        orderProducts.push(p);
+      });
+      return orderProducts;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getClientOrderSpecProductsByClientId(clientId: number): Promise<Array<ClientOrderProducts>> {
+    try {
+      let orderProducts = [];
+      const response = await this.http
+        .get(clientOrderSpecProductsOfClientUrl, {
+          search: this.createSearchParams([
+            { key: "idClient", value: clientId.toString() }
+          ])
+        })
         .toPromise();
 
       const val = response.json();
@@ -1699,7 +1741,6 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getActions(): Promise<Action[]> {
     try {
       const response = await this.http.get(actionDynamicUrl).toPromise();
-
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -1792,6 +1833,63 @@ export class AppDataRepository extends AbstractDataRepository {
         );
       }
       return qProducts;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getNovelty(id: number): Promise<Novelty> {
+    try {
+      const response = await this.http
+        .get(`${noveltyDynamicUrl}/${id}`)
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      let novelty: Novelty = null;
+      if (data != null) {
+        novelty = new Novelty(
+          data.id,
+          data.productId,
+          data.name,
+          data.img_url,
+          data.priority,
+          data.sketch_content,
+          data.novelty_content
+        );
+      }
+      return novelty;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getNovelties(): Promise<Novelty[]> {
+    try {
+      const response = await this.http.get(noveltyDynamicUrl).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      let novelties: Array<Novelty> = new Array<Novelty>();
+      if (data != null) {
+        data.forEach(val => {
+          const novelty: Novelty = new Novelty(
+            val.id,
+            val.productId,
+            val.name,
+            val.img_url,
+            val.priority,
+            val.sketch_content,
+            val.novelty_content
+          );
+          novelties.push(novelty);
+        });
+      }
+      return novelties;
     } catch (err) {
       return await this.handleError(err);
     }

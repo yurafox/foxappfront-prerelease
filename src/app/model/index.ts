@@ -39,6 +39,5 @@ export * from './store-review';
 export * from './lo-entity';
 export * from './lo-suppl-entity';
 export * from './review-answer';
-
-
+export * from './novelty';
 

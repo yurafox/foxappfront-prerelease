@@ -5,6 +5,7 @@ import {Manufacturer} from "../model/manufacturer";
 import {City} from '../model/city';
 import {StorePlace} from '../model/store-place';
 import {Lang} from "../model/lang";
+import { RequestOptionsArgs,Headers,URLSearchParams} from '@angular/http';
 
 export interface IDictionary<T> {
   [k: string]: T;
@@ -265,8 +266,46 @@ function lazyParamToValue(pointer: any, params: string[]): any[] {
   params.forEach((value) => resultArr.push(pointer[value]));
   return resultArr;
 }
-
 // </editor-fold>
+
+// #region requestFactory
+export class RequestFactory {
+  /** only search param
+   * example in http.get(apiUrl,
+   *                     RequestFactory.makeSearch([{ key: "idAction", value: idAction.toString()}]))
+   *                    ).toPromise();
+  **/
+   public static makeSearch(params: Array<{ key: string; value: string }>):RequestOptionsArgs {
+
+    let searchParams = new URLSearchParams();
+    params.forEach(val => {searchParams.set(val.key, val.value);});
+
+    return {search: searchParams};
+   }
+   /** only auth headers (token,uid)
+   * example in http.get(apiUrl, RequestFactory.makeAuthHeader()).toPromise();
+   **/
+   public static makeAuthHeader(): RequestOptionsArgs{
+    const h = new Headers();
+
+    h.set('Authorization', `Bearer: ${localStorage.getItem('token') || ''}`);
+    h.set('X-User',localStorage.getItem('id') || '');
+
+    return {headers:h}
+   }
+   /** both search and auth param
+    * example in http.get(apiUrl,
+    *                      RequestFactory.makeSearchAndAuth([{ key: "idAction", value: idAction.toString()}]
+                          ).toPromise();
+  **/
+   public static makeSearchAndAuth(params: Array<{ key: string; value: string }>): RequestOptionsArgs {
+     const search = RequestFactory.makeSearch(params).search;
+     const headers = RequestFactory.makeAuthHeader().headers;
+
+     return {search:search, headers:headers};
+   }
+}
+// #endregion
 
 // <editor-fold desc="core object methods">
 export function Activator<T>(type:{new():T}):T {

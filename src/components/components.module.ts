@@ -19,6 +19,7 @@ import {ActionSketchComponent} from './action-sketch/action-sketch';
 import {HtmlOutlet} from './html-outlet/html-outlet';
 import {ShippingAddressComponent} from './shipping-address/shipping-address';
 import { PromoCodeComponent } from './promo-code/promo-code';
+import { NoveltySketchComponent } from './novelty-sketch/novelty-sketch';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { PromoCodeComponent } from './promo-code/promo-code';
     ActionSketchComponent,
     HtmlOutlet,
     ShippingAddressComponent,
-    PromoCodeComponent
+    PromoCodeComponent,
+    NoveltySketchComponent
   ],
   entryComponents: [
     CustomPopupComponent,
@@ -68,7 +70,8 @@ import { PromoCodeComponent } from './promo-code/promo-code';
     ActionSketchComponent,
     HtmlOutlet,
     ShippingAddressComponent,
-    PromoCodeComponent
+    PromoCodeComponent,
+    NoveltySketchComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

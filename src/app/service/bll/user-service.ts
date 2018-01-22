@@ -5,6 +5,7 @@ import {AppConstants} from "../../app-constants";
 import {LoginTemplate} from "../../model/index";
 import {IDictionary} from "../../core/app-core";
 import {EventService} from "../event-service";
+import {AlertController, ToastController} from "ionic-angular";
 
 @Injectable()
 export class UserService {
@@ -22,7 +23,9 @@ export class UserService {
 
   // <editor-fold desc='.ctor'>
   constructor(private _account: AbstractAccountRepository,
-              private evServ:EventService) {
+              private evServ:EventService,
+              private alertCtrl:AlertController,
+              private toastCtrl:ToastController) {
 
     this.callDefaultUser();
   }
@@ -96,12 +99,30 @@ export class UserService {
     let count = 0;
     this.user.favoriteStoresId.forEach(storeId => {
       if (id === storeId) {
-        window.alert(`You already have this address in favorites`);
         count++;
+        let alert = this.alertCtrl.create({
+          title: 'Sorry',
+          message: 'You already have this address in favorites',
+          buttons: [
+            {
+              text: 'OK'
+            }
+          ]
+        });
+        alert.present().catch((err) => console.log(`Alert error: ${err}`));
       }
     });
     if (count === 0) {
       this.user.favoriteStoresId.push(id);
+      let toast = this.toastCtrl.create({
+        message: 'Store added to favorites',
+        duration: 2000,
+        position: 'bottom',
+        cssClass: 'toast-message'
+      });
+      toast.onDidDismiss(() => {
+      });
+      toast.present().catch((err) => console.log(`Toast error: ${err}`));
     }
     this.trySendSettings();
   }

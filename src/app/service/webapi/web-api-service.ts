@@ -2972,6 +2972,73 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     }
   ];
 
+  clientOrderSpecProductsOfClient = [
+    {
+      idClient: 100,
+      id: 6,
+      idOrder: 3,
+      idQuotationProduct: 7,
+      price: 120.0,
+      qty: 1,
+      idStorePlace: null,
+      idLoEntity: null,
+      loTrackTicket: null,
+      loDeliveryCost: null,
+      loDeliveryCompleted: null,
+      loEstimatedDeliveryDate: null,
+      loDeliveryCompletedDate: null,
+      errorMessage: null
+    },
+    {
+      idClient: 101,
+      id: 1,
+      idOrder: 2,
+      idQuotationProduct: 1,
+      price: 5199.0,
+      qty: 1,
+      idStorePlace: null,
+      idLoEntity: null,
+      loTrackTicket: null,
+      loDeliveryCost: null,
+      loDeliveryCompleted: null,
+      loEstimatedDeliveryDate: null,
+      loDeliveryCompletedDate: null,
+      errorMessage: null
+    },
+    {
+      idClient: 101,
+      id: 2,
+      idOrder: 2,
+      idQuotationProduct: 3,
+      price: 5220.0,
+      qty: 1,
+      idStorePlace: null,
+      idLoEntity: null,
+      loTrackTicket: null,
+      loDeliveryCost: null,
+      loDeliveryCompleted: null,
+      loEstimatedDeliveryDate: null,
+      loDeliveryCompletedDate: null,
+      errorMessage: null
+    },
+    {
+      idClient: 101,
+      id: 3,
+      idOrder: 2,
+      idQuotationProduct: 2,
+      price: 349.0,
+      qty: 2,
+      idStorePlace: null,
+      idLoEntity: null,
+      loTrackTicket: null,
+      loDeliveryCost: null,
+      loDeliveryCompleted: null,
+      loEstimatedDeliveryDate: null,
+      loDeliveryCompletedDate: null,
+      errorMessage: null
+    }
+  ];
+
   cartProducts = [
     {
       id: 7,
@@ -3217,6 +3284,20 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     { sId:58, sName: "XS-18", sDefProdId: null, sPartPay: 0, sGracePeriod: 18, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
     { sId:57, sName: "XS-15", sDefProdId: 12110, sPartPay: 0, sGracePeriod: 15, maxTerm: 37, firstPay: null, monthCommissionPct: 3, yearPct: 0.01, kpcPct: 15}
   ];
+  // <editor-fold desc="novelties">
+  novelties = [
+    {
+      id: 1,
+      productId: 6280637,
+      name: 'Смартфон WILEYFOX Spark',
+      img_url: 'assets/imgs/novelties/spark',
+      priority: 10,
+      sketch_content: this.dynamicContent['NOVELTY'],
+      novelty_content: this.dynamicContent['WILEYFOXSPARK']
+    }
+  ]
+  // </editor-fold>
+
 
   createDb() {
     const mquotationProducts = this.quotationProducts;
@@ -3240,6 +3321,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mloSupplEntities = this.loSupplEntities;
     const mclientOrders = this.clientOrders;
     const mclientOrderSpecProducts = this.clientOrderSpecProducts;
+    const mclientOrderSpecProductsOfClient = this.clientOrderSpecProductsOfClient;
     const mcartProducts = this.cartProducts;
     const mpages = this.pages;
     const mactions = this.actions;
@@ -3249,6 +3331,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mproductSupplCreditGrades = this.productSupplCreditGrades;
     const mcreditProducts = this.creditProducts;
     const mclientDraftOrder = this.clientDraftOrder;
+    const mnovelties = this.novelties;
 
     return {
       mquotationProducts,
@@ -3272,6 +3355,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mloSupplEntities,
       mclientOrders,
       mclientOrderSpecProducts,
+      mclientOrderSpecProductsOfClient,
       mcartProducts,
       mpages,
       mactions,
@@ -3280,7 +3364,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mpaymentMethods,
       mproductSupplCreditGrades,
       mcreditProducts,
-      mclientDraftOrder
+      mclientDraftOrder,
+      mnovelties
     };
   }
 
