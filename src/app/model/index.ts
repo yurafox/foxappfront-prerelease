@@ -40,4 +40,8 @@ export * from './lo-entity';
 export * from './lo-suppl-entity';
 export * from './review-answer';
 export * from './novelty';
+export * from './poll';
+export * from './poll-question';
+export * from './poll-question-answer';
+export * from './client-poll-answer';
 
