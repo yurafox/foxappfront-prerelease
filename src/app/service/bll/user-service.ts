@@ -242,8 +242,10 @@ export class UserService {
   // change status method facade
   private changeAuthStatus(userFields: Array<string>): void {
     this.addImpotantDataToStorage(userFields);
+    let cAuth = this._auth;
     this._auth = true;
-    this.evServ.events['logonEvent'].emit();
+    if (!cAuth)
+      this.evServ.events['logonEvent'].emit();
   }
 
  // remove data from storage and check user status

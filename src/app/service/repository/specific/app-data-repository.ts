@@ -231,7 +231,6 @@ export class AppDataRepository extends AbstractDataRepository {
             data[0].loIdEntity,
             data[0].loIdClientAddress
           );
-          console.log(cClientOrder);
           return cClientOrder;
       };
     } catch (err) {
@@ -387,7 +386,6 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async deleteCartProduct(prod: ClientOrderProducts) {
-    console.log("delete " + prod);
     try {
       const response = await this.http
         .delete(clientOrderSpecProductsUrl + `/${prod.id}`)
@@ -747,7 +745,6 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
       if (data != null) {
-          console.log('Client address: ' + data);
           let clientAddress = new ClientAddress();
           clientAddress.id = data.id;
           clientAddress.idClient = data.idClient;

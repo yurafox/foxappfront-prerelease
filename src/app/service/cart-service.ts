@@ -17,9 +17,7 @@ export class LoDeliveryOption {
   public loName?: string;
   public isChecked?: boolean
 
-  constructor(
-
-  ){};
+  constructor(){};
 }
 
 @Injectable()
@@ -38,13 +36,13 @@ export class CartService  {
     this.evServ.events['logonEvent'].subscribe(() => {
         console.log('logonEvent');
         this.initCart();
-        this.addCartItemsFromStorage();
       }
     );
 
     this.evServ.events['logOffEvent'].subscribe(() => {
-      this.initCart();
+      console.log('logoffEvent');
       this.orderProducts = [];
+      this.initCart();
       }
     );
 
@@ -55,7 +53,18 @@ export class CartService  {
     console.log('CartInit call. Is auth: '+ this.userService.isAuth);
     if (this.userService.isAuth) {
       this.order = await this.repo.getClientDraftOrder();
-      this.orderProducts = await this.repo.getCartProducts();
+
+      let op = await this.repo.getCartProducts();
+      for (let i of this.orderProducts) {
+        await this.repo.saveCartProduct(i);
+        op.push(i);
+      };
+
+      //переключаем корзину на результирующую
+      this.orderProducts = op;
+
+      // после переноса содержимого локальной корзины в бекенд - затираем локальную корзину
+      localStorage.setItem(this.cKey, null);
     }
     else {
       this.order = null;
@@ -71,21 +80,6 @@ export class CartService  {
         });
       };
     }
-  }
-
-  // после успешного логона переносим корзину из локалстораджа в бекенд
-  async addCartItemsFromStorage() {
-    let op = await this.repo.getCartProducts();
-    for (let i of this.orderProducts) {
-      await this.repo.saveCartProduct(i);
-      op.push(i);
-    };
-
-    //переключаем корзину на результирующую
-    this.orderProducts = op;
-
-    // после переноса содержимого локальной корзиньі в бекенд - затираем локальную корзину
-    localStorage.setItem(this.cKey, null);
   }
 
   public get cartItemsCount(): number {

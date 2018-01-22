@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {NavController, NavParams} from "ionic-angular";
 import {CartPage, HomePage} from '../../pages/index';
 import {CartService} from '../../app/service/cart-service';
@@ -9,7 +9,8 @@ import {CartService} from '../../app/service/cart-service';
 })
 export class MainToolbarComponent {
 
-  text: string;
+  @Input()
+  showCartIcon = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
                 public cart: CartService) {}

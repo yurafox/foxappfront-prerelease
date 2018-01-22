@@ -3,7 +3,7 @@
     <ion-icon name="menu"></ion-icon>
   </button>
   <img src="assets/imgs/foxlogo.svg" id="button-logo" (click)="goToHome()">
-  <ion-buttons end>
+  <ion-buttons end *ngIf="showCartIcon">
     <button id="cart-button" ion-button (click)="goToCart()">
       <ion-icon name="shopping-cart">
         <ion-badge id="itemscount-badge" *ngIf="cart.cartItemsCount>0">{{cart.cartItemsCount}}</ion-badge>
