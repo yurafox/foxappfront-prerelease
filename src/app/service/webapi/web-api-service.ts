@@ -3295,7 +3295,24 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       sketch_content: this.dynamicContent['NOVELTY'],
       novelty_content: this.dynamicContent['WILEYFOXSPARK']
     }
-  ]
+  ];
+  noveltyDetails = [
+    {
+      id: 1,
+      noveltyId: 1,
+      idProduct: 6280637
+    },
+    {
+      id: 2,
+      noveltyId: 1,
+      idProduct: 6310491
+    },
+    {
+      id: 3,
+      noveltyId: 1,
+      idProduct: 6312913
+    }
+  ];
   // </editor-fold>
 
 
@@ -3332,6 +3349,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mcreditProducts = this.creditProducts;
     const mclientDraftOrder = this.clientDraftOrder;
     const mnovelties = this.novelties;
+    const mnoveltyDetails = this.noveltyDetails;
 
     return {
       mquotationProducts,
@@ -3365,7 +3383,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mproductSupplCreditGrades,
       mcreditProducts,
       mclientDraftOrder,
-      mnovelties
+      mnovelties,
+      mnoveltyDetails
     };
   }
 

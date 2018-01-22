@@ -40,4 +40,4 @@ export * from './lo-entity';
 export * from './lo-suppl-entity';
 export * from './review-answer';
 export * from './novelty';
-
+export * from './novelty-det';

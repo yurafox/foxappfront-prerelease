@@ -45,8 +45,18 @@ export class CategoryPage extends ComponentBase implements OnInit {
 
   async ngOnInit() {
     super.ngOnInit();
-
-    this.baseProducts = await this.repo.getProducts(this.navParams.data, true);
+    if (typeof this.navParams.data === "string") {
+      this.baseProducts = await this.repo.getProducts(this.navParams.data, true);
+    } else if (typeof this.navParams.data === "object") {
+      if(this.navParams.data && (this.navParams.data.length > 0)){
+        let products: Product[] = [];
+        for (let productId of this.navParams.data) {
+          let p = await this.repo.getProductById(productId);
+          products.push(p);
+        }
+        this.baseProducts = products;
+      }
+    }
 
   }
 

@@ -31,11 +31,12 @@ import {
   LoEntity,
   LoSupplEntity,
   EnumPaymentMethod,
-  ReviewAnswer
+  ReviewAnswer,
+  Novelty,
+  NoveltyDetails
 } from '../../../model/index';
 import { AbstractDataRepository } from '../../index';
 import { Providers, System } from "../../../core/app-core";
-import {Novelty} from "../../../model/novelty";
 
 // <editor-fold desc="url const">
 const currenciesUrl = "/api/mcurrencies";
@@ -67,8 +68,8 @@ const getDeliveryCostUrl = "/api/mgetDeliveryCost";
 const getDeliveryDateUrl = "/api/mgetDeliveryDate";
 const getPaymentMethodsUrl = "/api/mpaymentMethods";
 const clientDraftOrderUrl = "/api/mclientDraftOrder";
-
 const noveltyDynamicUrl = "/api/mnovelties";
+const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
 // </editor-fold
 
 @Injectable()
@@ -1890,6 +1891,35 @@ export class AppDataRepository extends AbstractDataRepository {
         });
       }
       return novelties;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getNoveltyDetailsByNoveltyId(id: number): Promise<NoveltyDetails[]> {
+    try {
+      const response = await this.http.get(`${noveltyDetailsDynamicUrl}`, {
+        search: this.createSearchParams([
+          { key: "noveltyId", value: id.toString() }
+        ])
+      }).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      let noveltyDetails: NoveltyDetails[] = [];
+      if (data != null) {
+        data.forEach(val => {
+          let detail: NoveltyDetails = new NoveltyDetails(
+            val.id,
+            val.noveltyId,
+            val.idProduct
+          );
+          noveltyDetails.push(detail);
+        });
+      }
+      return noveltyDetails;
     } catch (err) {
       return await this.handleError(err);
     }

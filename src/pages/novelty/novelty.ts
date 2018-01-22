@@ -7,6 +7,7 @@ import {Observable} from 'rxjs';
 import 'rxjs/add/operator/takeWhile';
 import {ItemBase} from "../../components/component-extension/item-base";
 import {StorePlace} from "../../app/model/store-place";
+import {NoveltyDetails} from "../../app/model/novelty-det";
 
 @IonicPage()
 @Component({
@@ -15,8 +16,9 @@ import {StorePlace} from "../../app/model/store-place";
 })
 export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
   public noveltyId: number;
-  public content: string='';
+  public content: string = '';
   public novelty: Novelty;
+  public noveltyDetails: NoveltyDetails[];
   public productId: number;
   private available: boolean = true;
 
@@ -42,6 +44,8 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
     }
     // get dynamic content
     this.content = this.novelty.novelty_content;
+
+    this.noveltyDetails = await this.repo.getNoveltyDetailsByNoveltyId(this.novelty.id);
   }
 
   ngOnDestroy():void {
@@ -73,14 +77,25 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
   }
 
   public addToCart(): void {
-    if (this.product && (this.available !== false)) {
-      this.cart.addItem(this.valueQuot, this.qty.value, this.product.price, this.selectedStorePlace).then(
-        () =>
-      {
-        this.showAddToCartConfirmToast();
-      }).catch(
-        err => {
-        console.log(`Error adding product to cart: ${err}`);
+    if (this.noveltyDetails.length === 1) {
+      if (this.product && (this.available !== false)) {
+        this.cart.addItem(this.valueQuot, this.qty.value, this.product.price, this.selectedStorePlace).then(
+          () => {
+            this.showAddToCartConfirmToast();
+          }).catch(
+          err => {
+            console.log(`Error adding product to cart: ${err}`);
+          });
+      } else {
+        this.showNotAddedToCartConfirmToast();
+      }
+    } else if (this.noveltyDetails.length > 1) {
+      let productsIds: number[] = [];
+      for (let noveltyD of this.noveltyDetails) {
+        productsIds.push(noveltyD.idProduct);
+      }
+      this.navCtrl.push('CategoryPage', productsIds).catch(err => {
+        console.log(`Couldn't navigate to CategoryPage: ${err}`);
       });
     } else {
       this.showNotAddedToCartConfirmToast();
@@ -102,7 +117,7 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
   }
   showNotAddedToCartConfirmToast() {
     let toast = this.toastCtrl.create({
-      message: 'Item didn\'t add to cart',
+      message: 'Something went wrong',
       duration: 2000,
       position: 'bottom',
       cssClass: 'toast-message'
