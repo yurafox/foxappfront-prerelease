@@ -1,4 +1,4 @@
-import {Injectable, OnDestroy} from '@angular/core';
+import {Injectable, Injector, OnDestroy} from '@angular/core';
 import {ClientOrder} from '../model/client-order';
 import {ClientOrderProducts} from '../model/client-order-products';
 import {QuotationProduct} from '../model/quotation-product';
@@ -7,6 +7,7 @@ import {UserService} from './bll/user-service';
 import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
 import {EventService} from './event-service';
 import {EnumPaymentMethod} from '../model/enum-payment-method';
+import {App, NavController} from 'ionic-angular';
 
 
 export class LoDeliveryOption {
@@ -29,13 +30,24 @@ export class CartService  {
   public loDeliveryOptions = new Array <LoDeliveryOption>();
   public pmtMethod: EnumPaymentMethod = null;
   public promoCode: string;
+  public cartValidationNeeded = false;
+
+  private navCtrl: NavController;
 
   constructor(private userService: UserService, public repo: AbstractDataRepository,
-              private evServ: EventService) {
+              private evServ: EventService, protected injector: Injector, private app: App) {
+    this.navCtrl = app.getActiveNav();
 
     this.evServ.events['logonEvent'].subscribe(() => {
         console.log('logonEvent');
-        this.initCart();
+        this.initCart().then (() => {
+            if ((this.cartValidationNeeded) && (this.cartErrors)) {
+              const startIndex = this.navCtrl.getActive().index - 1;
+              this.navCtrl.remove(startIndex, 2);
+            };
+            this.cartValidationNeeded = false;
+          }
+        );
       }
     );
 

@@ -2818,10 +2818,11 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   ];
 
   loSupplEntities = [
-    {id: 1, idSuppler: 1, idLoEntity: 150},
-    {id: 2, idSuppler: 1, idLoEntity: 100},
-    {id: 3, idSuppler: 2, idLoEntity: 102},
-    {id: 4, idSuppler: 2, idLoEntity: 150}
+    {id: 1, idSupplier: 1, idLoEntity: 150},
+    {id: 2, idSupplier: 1, idLoEntity: 100},
+    {id: 3, idSupplier: 2, idLoEntity: 102},
+    {id: 4, idSupplier: 2, idLoEntity: 150},
+    {id: 5, idSupplier: 3, idLoEntity: 150}
   ];
 
   clientDraftOrder = [

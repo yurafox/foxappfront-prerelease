@@ -181,7 +181,7 @@ export class AppDataRepository extends AbstractDataRepository {
       const response = await this.http
         .get(loSupplEntitiesUrl, {
           search: this.createSearchParams([
-            { key: "idSuppler", value: supplierId.toString() }
+            { key: "idSupplier", value: supplierId.toString() }
           ])
         })
         .toPromise();

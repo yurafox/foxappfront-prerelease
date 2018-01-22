@@ -3,6 +3,7 @@ import {NavController, NavParams, IonicPage} from 'ionic-angular';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {SelectShipAddressPage} from '../select-ship-address/select-ship-address';
+import {CartService} from '../../app/service/cart-service';
 
 @IonicPage({name: 'LoginPage', segment: 'login'})
 @Component({
@@ -37,7 +38,7 @@ export class LoginPage extends ComponentBase{
   };
 
   constructor(public nav: NavController, public navParams: NavParams,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder, public cart: CartService) {
     super();
   }
 
@@ -63,8 +64,10 @@ export class LoginPage extends ComponentBase{
     await this.userService.login(data.email,data.password);
     if(this.userService.isAuth) {
       this.evServ.events['localeChangeEvent'].emit(this.userService.lang);
-      if (this.navParams.data.continuePage)
+      if (this.navParams.data.continuePage) {
+        this.cart.cartValidationNeeded = true;
         this.nav.push(this.navParams.data.continuePage, {fromCart: 1});
+      }
       else
         this.nav.setRoot('HomePage');
     }
