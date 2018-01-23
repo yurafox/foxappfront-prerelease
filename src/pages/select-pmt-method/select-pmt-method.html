@@ -30,8 +30,8 @@
     <div *ngIf="dataLoaded && (pmtMethods[4].isChecked)">
       <ion-row style="padding-left: 5px; padding-right: 5px;">
         <ion-grid class="f-border-ligthgray">
-
-          <ion-row>
+          <form #f="ngForm">
+            <ion-row>
             <ion-col style="padding-bottom: 10px;">
               <label for="lastName">Last name:*</label>
               <input [(ngModel)]="cart.person.lastName" id="lastName" name="lastName"
@@ -126,14 +126,15 @@
               </div>
               <br>
               <label for="birthDate">Birth date:*</label>
-              <input [(ngModel)]="cart.person.birthDate" id="birthDate" name="birthDate"
+              <input type="date" [(ngModel)]="cart.person.birthDate"
+                     id="birthDate" name="birthDate"
                      required #birthDate="ngModel">
               <span *ngIf="!birthDate.valid && birthDate.touched"
                     style="color: red;">Please enter your birth date</span>
             </ion-col>
 
           </ion-row>
-
+          </form>
         </ion-grid>
       </ion-row>
     </div>
@@ -147,7 +148,9 @@
     <ion-row *ngIf="dataLoaded">
       <ion-col style="padding-left: 5px; padding-right: 5px;">
         <button class="f-btn-add-cart" ion-button block
-                [attr.disabled]="!isAnyOptionSelected()?'':null"
+
+                [attr.disabled]="!validatePage()?'':null"
+
                 (click)="onContinueClick()">Continue</button>
       </ion-col>
     </ion-row>
