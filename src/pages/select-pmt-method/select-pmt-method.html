@@ -43,7 +43,6 @@
                 <span *ngIf="lastName.hasError('pattern')"
                       style="color: red;">Only alphabets allowed</span>
               </div>
-              <br>
               <label for="firstName">First name:*</label>
               <input [(ngModel)]="cart.person.firstName" id="firstName" name="firstName"
                      pattern="[a-zA-Z][a-zA-Z ]+"
@@ -54,7 +53,6 @@
                 <span *ngIf="firstName.hasError('pattern')"
                       style="color: red;">Only alphabets allowed</span>
               </div>
-              <br>
               <label for="middleName">Middle name:*</label>
               <input [(ngModel)]="cart.person.middleName" id="middleName" name="middleName"
                      pattern="[a-zA-Z][a-zA-Z ]+"
@@ -65,7 +63,6 @@
                 <span *ngIf="middleName.hasError('pattern')"
                       style="color: red;">Only alphabets allowed</span>
               </div>
-              <br>
               <ion-grid no-padding>
                 <ion-row no-padding>
                   <label for="passportSeries">Passport series and number:*</label>
@@ -106,9 +103,10 @@
               <label for="issuedAuthority">Issued Authority:*</label>
               <input [(ngModel)]="cart.person.issuedAuthority" id="issuedAuthority" name="issuedAuthority"
                      required #issuedAuthority="ngModel">
-              <span *ngIf="!issuedAuthority.valid && issuedAuthority.touched"
-                    style="color: red;">Please enter Issued Authority</span>
-              <br>
+              <div *ngIf="!issuedAuthority.valid && issuedAuthority.touched">
+                <span *ngIf="issuedAuthority.hasError('required')"
+                      style="color: red;">Please enter Issued Authority</span>
+              </div>
               <label for="taxNumber">Tax Number:*</label>
               <input [(ngModel)]="cart.person.taxNumber" id="taxNumber" name="taxNumber"
                      pattern="[0-9]*"
@@ -122,15 +120,15 @@
                       style="color: red;">Only digits allowed</span>
                 <span *ngIf="taxNumber.hasError('minlength')"
                       style="color: red;">Tax number should be 10 digits</span>
-
               </div>
-              <br>
               <label for="birthDate">Birth date:*</label>
               <input type="date" [(ngModel)]="cart.person.birthDate"
                      id="birthDate" name="birthDate"
                      required #birthDate="ngModel">
-              <span *ngIf="!birthDate.valid && birthDate.touched"
-                    style="color: red;">Please enter your birth date</span>
+              <div *ngIf="!birthDate.valid && birthDate.touched">
+                <span *ngIf="birthDate.hasError('required')"
+                      style="color: red;">Please enter your birth date</span>
+              </div>
             </ion-col>
 
           </ion-row>
