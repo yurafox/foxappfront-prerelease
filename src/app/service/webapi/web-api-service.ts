@@ -3314,6 +3314,106 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     }
   ];
 
+  pollQuestion = [
+    {
+      id:1,
+      idPoll:1,
+      order:10,
+      question:'Как Вы оцениваете качество приложения?',
+      answerType:0
+    }, {
+      id:2,
+      idPoll:1,
+      order:20,
+      question:'Как Вы оцениваете уровень обслуживания?',
+      answerType:2
+    },{
+      id:3,
+      idPoll:1,
+      order:30,
+      question:'Охарактеризуйте пожалуйста работу персонала',
+      answerType:1
+    },{
+      id:4,
+      idPoll:2,
+      order:40,
+      question:'На сколько устраивает Вас наш ассортимент?',
+      answerType:0
+    }, {
+      id:5,
+      idPoll:2,
+      order:50,
+      question:'Из каких источников Вы бы хотели получать от нас информацию о расширении ассортимента?',
+      answerType:2
+    },{
+      id:6,
+      idPoll:2,
+      order:60,
+      question:'Чтобы Вы хотели улучшить в работе приложения?',
+      answerType:1
+    }
+  ];
+
+  pollQuestionAnswer =[
+    {
+      id:1,
+      idPollQuestions: 1,
+      answer:'Отлично'
+    }, {
+      id:2,
+      idPollQuestions: 1,
+      answer:'Хорошо'
+    },{
+      id:3,
+      idPollQuestions: 1,
+      answer:'Удовлетворительно'
+    },{
+      id:4,
+      idPollQuestions: 1,
+      answer:'Неудовлетворительно'
+    },{
+      id:5,
+      idPollQuestions: 2,
+      answer:'Высокий'
+    },{
+      id:6,
+      idPollQuestions: 2,
+      answer:'Допустимый'
+    },{
+      id:7,
+      idPollQuestions: 2,
+      answer:'Недопустимый'
+    },{
+      id:8,
+      idPollQuestions: 4,
+      answer:'Очень устраивает'
+    },{
+      id:9,
+      idPollQuestions: 4,
+      answer:'Устраивает'
+    },{
+      id:10,
+      idPollQuestions: 4,
+      answer:'Относительно устраивает'
+    },{
+      id:11,
+      idPollQuestions: 4,
+      answer:'Не устраивает'
+    },{
+      id:12,
+      idPollQuestions: 5,
+      answer:'Электронная почта'
+    },{
+      id:13,
+      idPollQuestions: 5,
+      answer:'Фейсбук'
+    },{
+      id:14,
+      idPollQuestions: 5,
+      answer:'Вконтакте'
+    }
+  ];
+
   createDb() {
     const mquotationProducts = this.quotationProducts;
     const mproducts = this.products;
@@ -3348,6 +3448,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mclientDraftOrder = this.clientDraftOrder;
     const mnovelties = this.novelties;
     const mpolls = this.polls;
+    const mpollQuestion = this.pollQuestion;
+    const mpollQuestionAnswer = this.pollQuestionAnswer;
 
     return {
       mquotationProducts,
@@ -3382,7 +3484,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mcreditProducts,
       mclientDraftOrder,
       mnovelties,
-      mpolls
+      mpolls,
+      mpollQuestion,
+      mpollQuestionAnswer
     };
   }
 

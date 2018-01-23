@@ -21,7 +21,7 @@ import { QuotationProduct,
           LoEntity,
           LoSupplEntity,
           EnumPaymentMethod,
-          Poll
+          Poll,PollQuestion,PollQuestionAnswer
        } from '../../../model/index';
 
 import {Novelty} from "../../../model/novelty";
@@ -88,4 +88,6 @@ export abstract class AbstractDataRepository {
   public async abstract getNovelty(id: number): Promise<Novelty>;
   public async abstract getNovelties(): Promise<Novelty[]>;
   public async abstract getPollById(id:number): Promise<Poll>;
+  public async abstract getPollQuestionsByPollId(pollId:number):Promise<PollQuestion[]>;
+  public async abstract getPollAnswersByQuestionId(idPollQuestion:number):Promise<PollQuestionAnswer[]>;
 }

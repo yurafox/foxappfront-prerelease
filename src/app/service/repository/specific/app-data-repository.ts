@@ -32,10 +32,10 @@ import {
   LoSupplEntity,
   EnumPaymentMethod,
   ReviewAnswer,
-  Poll
+  Poll,PollQuestion,PollQuestionAnswer
 } from '../../../model/index';
 import { AbstractDataRepository } from '../../index';
-import { Providers, System } from "../../../core/app-core";
+import { Providers} from "../../../core/app-core";
 import {Novelty} from "../../../model/novelty";
 
 // <editor-fold desc="url const">
@@ -71,6 +71,8 @@ const clientDraftOrderUrl = "/api/mclientDraftOrder";
 
 const noveltyDynamicUrl = "/api/mnovelties";
 const pollsUrl='/api/mpolls';
+const pollQuestionUrl='/api/mpollQuestion';
+const pollQuestionAnswerUrl = '/api/mpollQuestionAnswer';
 // </editor-fold
 
 @Injectable()
@@ -1918,6 +1920,56 @@ export class AppDataRepository extends AbstractDataRepository {
         );
       }
       return poll;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getPollQuestionsByPollId(pollId:number):Promise<PollQuestion[]> {
+    try {
+      const response = await this.http
+        .get(pollQuestionUrl,RequestFactory
+                             .makeSearchAndAuth([{key:'idPoll', value:pollId.toString()}]))
+                             .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const pollQuestions = new Array<PollQuestion>();
+      if (data != null) {
+        data.forEach(val =>
+          pollQuestions.push(
+            new PollQuestion(val.id,val.idPoll,val.order,val.question,val.answerType)
+          )
+        );
+      }
+      return pollQuestions;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getPollAnswersByQuestionId(idPollQuestion:number):Promise<PollQuestionAnswer[]>{
+    try {
+      const response = await this.http
+        .get(pollQuestionAnswerUrl,RequestFactory
+                             .makeSearchAndAuth([{key:'idPollQuestions', value:idPollQuestion.toString()}]))
+                             .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const pollQuestionAnswers:PollQuestionAnswer[] = new Array<PollQuestion>();
+      if (data != null) {
+        data.forEach(val =>
+          pollQuestionAnswers.push(
+            new PollQuestionAnswer(val.id,val.idPollQuestions,val.answer)
+          )
+        );
+      }
+      return pollQuestionAnswers;
     } catch (err) {
       return await this.handleError(err);
     }
