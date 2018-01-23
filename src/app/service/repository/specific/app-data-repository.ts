@@ -33,7 +33,8 @@ import {
   EnumPaymentMethod,
   ReviewAnswer,
   Novelty,
-  NoveltyDetails
+  NoveltyDetails,
+  DeviceData
 } from '../../../model/index';
 import { AbstractDataRepository } from '../../index';
 import { Providers, System } from "../../../core/app-core";
@@ -70,6 +71,7 @@ const getPaymentMethodsUrl = "/api/mpaymentMethods";
 const clientDraftOrderUrl = "/api/mclientDraftOrder";
 const noveltyDynamicUrl = "/api/mnovelties";
 const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
+const deviceDataUrl = "/api/mdeviceData";
 // </editor-fold
 
 @Injectable()
@@ -1920,6 +1922,22 @@ export class AppDataRepository extends AbstractDataRepository {
         });
       }
       return noveltyDetails;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async sendDeviceData(deviceData: DeviceData): Promise<DeviceData> {
+    try {
+      const response = await this.http
+        .post(deviceDataUrl, deviceData)
+        .toPromise();
+      const val = response.json();
+
+      if (response.status !== 201 && response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      return val;
     } catch (err) {
       return await this.handleError(err);
     }

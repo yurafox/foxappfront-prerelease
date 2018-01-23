@@ -51,6 +51,7 @@ export class MapPage extends ComponentBase implements OnInit {
   // Variables for drop-down buttons
   dropDownCityOpts: any;
   dropDownAddressOpts: any;
+  isAuthoraized: boolean;
 
   constructor(private nav: NavController, private navParams: NavParams, private platform: Platform,
               private repo: AbstractDataRepository, private geolocation: Geolocation, private statusBar: StatusBar,
@@ -92,6 +93,9 @@ export class MapPage extends ComponentBase implements OnInit {
 
   async ngOnInit() {
     super.ngOnInit();
+    if (this.userService.isAuth) {
+      this.isAuthoraized = true;
+    }
     try {
       [this.markersArr, this.cities] = await Promise.all([this.repo.getStores(), this.repo.getCities()]);
 
@@ -372,11 +376,13 @@ export class MapPage extends ComponentBase implements OnInit {
       for (let markerArr of this.markersArr) {
         for (let store of markerArr.stores) {
           if (store.address === this.selectedMarker.label) {
-            try {
-              this.userService.addFavoriteStoresId(store.id);
-            } catch (err) {
-              console.log(`Error while adding to favorite: ${err}`);
-              return;
+            if (this.isAuthoraized === true) {
+              try {
+                this.userService.addFavoriteStoresId(store.id);
+              } catch (err) {
+                console.log(`Error while adding to favorite: ${err}`);
+                return;
+              }
             }
           }
         }

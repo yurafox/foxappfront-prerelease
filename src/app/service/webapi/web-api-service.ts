@@ -3431,6 +3431,11 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
         return info.utils.createResponse$(() => resOpt);
       }
 
+      case "mdeviceData": {
+        let reqData = (<any>info.req)._body;
+        resOpt.body = {model: reqData.model, os: reqData.os, height: reqData.height, width: reqData.width};
+        return info.utils.createResponse$(() => resOpt);
+      }
 
       default:
         return null;

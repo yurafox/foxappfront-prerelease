@@ -80,11 +80,13 @@ import {
   ActionsPageModule,
   ShippingOptionsPageModule,
   SelectPmtMethodPageModule,
-  CheckoutPageModule
-
+  CheckoutPageModule,
+  NoveltyPageModule
 } from '../pages/index-modules';
 import {NgxQRCodeModule} from 'ngx-qrcode2';
 import {AppAvailability} from '@ionic-native/app-availability';
+import {Device} from "@ionic-native/device";
+import {Push} from "@ionic-native/push";
 
 @NgModule({
   declarations: [
@@ -139,7 +141,8 @@ import {AppAvailability} from '@ionic-native/app-availability';
     ActionsPageModule,
     ShippingOptionsPageModule,
     SelectPmtMethodPageModule,
-    CheckoutPageModule
+    CheckoutPageModule,
+    NoveltyPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -158,6 +161,8 @@ import {AppAvailability} from '@ionic-native/app-availability';
     LaunchNavigator,
     AppAvailability,
     Ionic2Rating,
+    Device,
+    Push,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
     {provide: AbstractAccountRepository, useClass: AccountRepository},

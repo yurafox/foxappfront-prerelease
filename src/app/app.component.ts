@@ -5,6 +5,9 @@ import {SplashScreen} from '@ionic-native/splash-screen';
 import {AbstractDataRepository} from "./service/index";
 import {ComponentBase} from "../components/component-extension/component-base";
 import {AppAvailability} from "@ionic-native/app-availability";
+import {Device} from '@ionic-native/device';
+import {Push, PushObject, PushOptions} from '@ionic-native/push';
+import {DeviceData} from "./model/index";
 
 export interface PageInterface {
   title: string;
@@ -49,7 +52,8 @@ export class FoxApp extends ComponentBase {
 
   constructor(private platform: Platform, statusBar: StatusBar,
               private splashScreen: SplashScreen, public menuCtrl: MenuController,
-              private repo: AbstractDataRepository, private appAvailability: AppAvailability) {
+              private repo: AbstractDataRepository, private appAvailability: AppAvailability,
+              private device: Device, private push: Push) {
     super();
     //this.rootPage = HomePage;
     platform.ready().then(() => {
@@ -62,17 +66,20 @@ export class FoxApp extends ComponentBase {
     this.userToken = '192385130800097';
   }
 
-  ionViewDidLoad() {
-    this.platform.ready().then(() => {
-      this.splashScreen.hide();
-    });
-  }
-
   async ngOnInit() {
     super.ngOnInit();
     if (!this.userService.isAuth && this.userService.isNotSignOutSelf()) {
       await this.userService.shortLogin();
     }
+    this.platform.ready().then(() => {
+      this.splashScreen.hide();
+
+      if (this.device.platform && (this.device.platform !== null)) {
+        this.collectAndSendDeviceData();
+      }
+
+      // this.pushNotify();
+    });
   }
 
   openPage(page: PageInterface) {
@@ -209,6 +216,67 @@ export class FoxApp extends ComponentBase {
       this.nav.push('LoginPage').catch((err: any) => {
         console.log(`Couldn't navigate to LoginPage: ${err}`);
       });
+    }
+  }
+
+  // Collects and sends device's data about model, operation system + it's version and screen size
+  private collectAndSendDeviceData() {
+    let model = this.device.model;
+    let os = this.device.platform + ' ' + this.device.version;
+    let height = this.platform.height();
+    let width = this.platform.width();
+    let deviceData = new DeviceData(model, os, height, width);
+    this.repo.sendDeviceData(deviceData).catch(err => {
+      console.log(`Couldn't send device data: ${err}`);
+    });
+  }
+
+  pushNotify() {
+    try {
+      // to check if we have permission
+      this.push.hasPermission()
+        .then((res: any) => {
+
+          if (res.isEnabled) {
+            console.log('We have permission to send push notifications');
+          } else {
+            console.log('We do not have permission to send push notifications');
+          }
+
+        });
+
+      // Create a channel (Android O and above). You'll need to provide the id, description and importance properties.
+      this.push.createChannel({
+        id: "Novelty1",
+        description: "My first test channel",
+        // The importance property goes from 1 = Lowest, 2 = Low, 3 = Normal, 4 = High and 5 = Highest.
+        importance: 3
+      }).then(() => console.log('Channel created'));
+
+      // Delete a channel (Android O and above)
+      this.push.deleteChannel('Novelty1').then(() => console.log('Channel deleted'));
+
+      // Return a list of currently configured channels
+      this.push.listChannels().then((channels) => console.log('List of channels', channels));
+
+      // to initialize push notifications
+
+      const options: PushOptions = {
+        android: {
+          senderID: '431639834815'
+        }
+      };
+
+      const pushObject: PushObject = this.push.init(options);
+
+
+      pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
+
+      pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
+
+      pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
+    } catch (err) {
+      console.log(`Push plugin error: ${err}`);
     }
   }
 }

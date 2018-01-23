@@ -33,3 +33,4 @@ export * from './your-orders/your-orders.module';
 export * from './shipping-options/shipping-options.module';
 export * from './select-pmt-method/select-pmt-method.module';
 export * from './checkout/checkout.module';
+export * from './novelty/novelty.module';
