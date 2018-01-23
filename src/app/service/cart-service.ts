@@ -8,6 +8,7 @@ import {AbstractDataRepository} from './repository/abstract/abstract-data-reposi
 import {EventService} from './event-service';
 import {EnumPaymentMethod} from '../model/enum-payment-method';
 import {App, NavController} from 'ionic-angular';
+import {PersonInfo} from '../model/person';
 
 
 export class LoDeliveryOption {
@@ -33,6 +34,7 @@ export class CartService  {
   public pmtMethod: EnumPaymentMethod = null;
   public promoCode: string;
   public cartValidationNeeded = false;
+  public person = new PersonInfo();
 
   private navCtrl: NavController;
 

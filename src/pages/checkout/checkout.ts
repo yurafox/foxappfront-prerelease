@@ -26,23 +26,16 @@ export class CheckoutPage extends ComponentBase {
 
   onAfterQtyUpdate(item: any, objRef:any): void {
     let j = 0;
-    for (let i of this.cart.loDeliveryOptions) {
-      if ((i.idClientOrderProduct === objRef.id) && (i.isChecked))  {
+    for (let i of this.cart.loResultDeliveryOptions) {
+      if (i.idClientOrderProduct === objRef.id)  {
         break;
       }
       j++;
     };
 
-    this.repo.getDeliveryCost(objRef, this.cart.loDeliveryOptions[j].loEntityId).then(r => {
-        console.log('r: '+ r + ' , j: '+ j);
-        this.cart.loDeliveryOptions[j].deliveryCost = r;
+    this.repo.getDeliveryCost(objRef, this.cart.loResultDeliveryOptions[j].loEntityId).then(r => {
+        this.cart.loResultDeliveryOptions[j].deliveryCost = r;
       }
     );
-
-    console.log(item);
-    console.log(objRef);
-    console.log(this.cart.loDeliveryOptions);
-    console.log(this.cart.orderProducts);
-
   }
 }
