@@ -35,7 +35,12 @@
             <ion-col class="f-size-larger">
               Get it <span class="f-color-green">{{opt.deliveryDate | date: 'fullDate'}}</span>
               <br>
-              Delivery Cost <span class="f-color-green">{{opt.deliveryCost | localeCurrency:userService.currency}} </span>
+              <span *ngIf="!(opt.deliveryCost === 0)">
+                Delivery Cost <span class="f-color-green" >{{opt.deliveryCost | localeCurrency:userService.currency}} </span>
+              </span>
+              <span *ngIf="(opt.deliveryCost === 0)">
+                <span class="f-color-green"><b>FREE delivery</b></span>
+              </span>
               <br>
               Delivery by <span class="f-color-green">{{opt.loName}}</span>
             </ion-col>

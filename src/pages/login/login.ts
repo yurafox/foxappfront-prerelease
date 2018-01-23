@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {NavController, NavParams, IonicPage} from 'ionic-angular';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {ComponentBase} from "../../components/component-extension/component-base";
-import {SelectShipAddressPage} from '../select-ship-address/select-ship-address';
 import {CartService} from '../../app/service/cart-service';
 
 @IonicPage({name: 'LoginPage', segment: 'login'})
@@ -10,7 +9,7 @@ import {CartService} from '../../app/service/cart-service';
   selector: 'page-login',
   templateUrl: 'login.html'
 })
-export class LoginPage extends ComponentBase{
+export class LoginPage extends ComponentBase {
 
   private _authError = false;
   public loginForm: FormGroup;

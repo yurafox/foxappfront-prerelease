@@ -123,10 +123,10 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
 
-  public async getDeliveryDate(orderSpecId: number, loEntityId: number): Promise<Date> {
+  public async getDeliveryDate(order: ClientOrderProducts, loEntityId: number): Promise<Date> {
     try {
       const response = await this.http
-        .post(getDeliveryDateUrl, {id: orderSpecId, loEntity: loEntityId})
+        .post(getDeliveryDateUrl, {order: order, loEntity: loEntityId})
         .toPromise();
       const val = response.json();
 
@@ -139,10 +139,11 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getDeliveryCost(orderSpecId: number, loEntityId: number): Promise<number> {
+  public async getDeliveryCost(order: ClientOrderProducts, loEntityId: number): Promise<number> {
     try {
+      //console.log('orderSpecId: '+ orderSpecId + ', loEntityId: ' + loEntityId);
       const response = await this.http
-        .post(getDeliveryCostUrl, {id: orderSpecId, loEntity: loEntityId})
+        .post(getDeliveryCostUrl, {order: order, loEntity: loEntityId})
         .toPromise();
       const val = response.json();
 

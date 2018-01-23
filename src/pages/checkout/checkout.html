@@ -11,7 +11,6 @@
       </ion-col>
     </ion-row>
 
-
 <!--
     SUMMARY AREA
 -->
@@ -102,15 +101,24 @@
         <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
           <ion-row>
             <ion-col  class="f-size-larger" >
-              <span>{{cart.loDeliveryOptions[i].loName}}</span>
+              <span>{{cart.loResultDeliveryOptions[i].loName}}</span>
+              <hr>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="item.idStorePlace">
+            <ion-col  class="f-size-larger" >
+              <span>Pickup at -- </span>
+              <span class="f-color-green">{{item?.storeplace?.name}}, {{item?.storeplace?.address_line}}
+                {{item?.storeplace?.city?.name}}</span>
               <hr>
             </ion-col>
           </ion-row>
 
           <ion-row>
             <ion-col  class="f-size-larger">
-              <span>Est. delivery date: </span>
-              <span class="f-color-green">{{cart.loDeliveryOptions[i].deliveryDate | date: 'fullDate'}}</span>
+              <span>Est. delivery date -- </span>
+              <span class="f-color-green">{{cart.loResultDeliveryOptions[i].deliveryDate | date: 'fullDate'}}</span>
               <hr>
             </ion-col>
           </ion-row>
@@ -145,6 +153,7 @@
           <ion-row>
             <ion-col class="f-item-padding-bottom">
               <dropdown-list id="btnQty" [reference]="item"
+                             [afterUpdate] = "onAfterQtyUpdate"
                              [map]="{valueName:'qty', displayName:'qty'}"
                              [options]="{popupHeader:'Quantity', buttonHeader:'Qty', buttonClass:'f-drop-button-block'}"
                              [isQty]="true">

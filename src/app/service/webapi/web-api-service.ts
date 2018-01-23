@@ -3409,7 +3409,16 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
 
       case "mgetDeliveryCost": {
         let reqData = (<any>info.req)._body;
-        resOpt.body = {AssessedCost: reqData.loEntity/10};
+        if (reqData.order.idStorePlace)
+          // Если пикап с магазина - доставка 0
+          resOpt.body = {AssessedCost: 0}
+        else
+          {
+            if (reqData.order.idQuotationProduct === 7) //Для телевизора цену доставки умножаем на кол-во товара
+              resOpt.body = {AssessedCost: reqData.loEntity/10 * reqData.order.qty}
+            else
+              resOpt.body = {AssessedCost: reqData.loEntity/10};
+          }
         return info.utils.createResponse$(() => resOpt);
       }
 

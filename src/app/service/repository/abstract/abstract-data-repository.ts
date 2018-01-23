@@ -48,8 +48,8 @@ export abstract class AbstractDataRepository {
 
   public async abstract getLoEntitiesForSupplier(supplierId: number):Promise<LoSupplEntity[]>;
   public async abstract getLoEntitiyById(entityId: number):Promise<LoEntity>;
-  public async abstract getDeliveryDate(orderSpecId: number, loEntityId: number): Promise<Date>;
-  public async abstract getDeliveryCost(orderSpecId: number, loEntityId: number): Promise<number>;
+  public async abstract getDeliveryDate(order: ClientOrderProducts, loEntityId: number): Promise<Date>;
+  public async abstract getDeliveryCost(order: ClientOrderProducts, loEntityId: number): Promise<number>;
 
   public async abstract getClientDraftOrder(): Promise<ClientOrder>;
   public async abstract getClientOrders(): Promise<ClientOrder[]>;

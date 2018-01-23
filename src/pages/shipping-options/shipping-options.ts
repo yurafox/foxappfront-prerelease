@@ -39,10 +39,11 @@ export class ShippingOptionsPage extends ComponentBase {
       for (let loEnt of supplLoEnt) {
         let ent = await this.repo.getLoEntitiyById(loEnt.idLoEntity);
         let item = new LoDeliveryOption();
+        item.idClientOrderProduct = ci.id;
         item.loEntityId = loEnt.idLoEntity;
         item.itemIdx = i;
-        item.deliveryCost = await this.repo.getDeliveryCost(ci.id, loEnt.idLoEntity);
-        item.deliveryDate = await this.repo.getDeliveryDate(ci.id, loEnt.idLoEntity);
+        item.deliveryCost = await this.repo.getDeliveryCost(/*ci.id,*/ci, loEnt.idLoEntity);
+        item.deliveryDate = await this.repo.getDeliveryDate(/*ci.id,*/ci, loEnt.idLoEntity);
         item.loName = ent.name;
         item.isChecked = false;
         this.cart.loDeliveryOptions.push(item);
@@ -78,7 +79,16 @@ export class ShippingOptionsPage extends ComponentBase {
   onContinueClick() {
     if (this.itemIndex < this.cart.orderProducts.length-1)
       this.itemIndex++
-    else
+    else {
+      // Выбранные опции запихиваем в массив выбранных опций
+      this.cart.loResultDeliveryOptions = [];
+      this.cart.loDeliveryOptions.forEach(i => {
+          if (i.isChecked) {
+            this.cart.loResultDeliveryOptions.push(i);
+          }
+        }
+      );
       this.navCtrl.push('SelectPmtMethodPage');
+    };
   }
 }

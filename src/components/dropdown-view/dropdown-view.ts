@@ -62,7 +62,7 @@ export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
       }
       case 2 : {
         this.makeChange(item);
-        this.parent.afterUpdate.call(this.parent.sourceContext,item);
+        this.parent.afterUpdate.call(this.parent.sourceContext,item,this.bindedObject);
         break;
       }
 
@@ -70,7 +70,7 @@ export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
         const beforeResult = this.parent.beforeUpdate.call(this.parent.sourceContext,this.bindedObject,item);
         if(beforeResult){
           this.makeChange(item);
-          this.parent.afterUpdate.call(this.parent.sourceContext,item);
+          this.parent.afterUpdate.call(this.parent.sourceContext,item,this.bindedObject);
         }
       }
     }

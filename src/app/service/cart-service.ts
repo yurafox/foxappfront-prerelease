@@ -11,6 +11,7 @@ import {App, NavController} from 'ionic-angular';
 
 
 export class LoDeliveryOption {
+  public idClientOrderProduct?: number;
   public itemIdx?: number;
   public loEntityId?: number;
   public deliveryDate?: Date;
@@ -28,6 +29,7 @@ export class CartService  {
   public order: ClientOrder = null;
   public orderProducts = new Array <ClientOrderProducts>();
   public loDeliveryOptions = new Array <LoDeliveryOption>();
+  public loResultDeliveryOptions = new Array <LoDeliveryOption>();
   public pmtMethod: EnumPaymentMethod = null;
   public promoCode: string;
   public cartValidationNeeded = false;
@@ -109,8 +111,7 @@ export class CartService  {
 
   public get shippingCost(): number {
     let res = 0;
-    this.loDeliveryOptions.forEach(i => {
-      if (i.isChecked)
+    this.loResultDeliveryOptions.forEach(i => {
         res = res + i.deliveryCost;
       }
     );
