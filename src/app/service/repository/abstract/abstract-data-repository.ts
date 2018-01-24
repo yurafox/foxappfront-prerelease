@@ -24,6 +24,7 @@ import { QuotationProduct,
        } from '../../../model/index';
 
 import {Novelty} from "../../../model/novelty";
+import {CreditProduct} from '../../../model/credit-product';
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
@@ -85,6 +86,8 @@ export abstract class AbstractDataRepository {
   public async abstract getActionOffersByActionId(id:number):Promise<ActionOffer[]>;
   public async abstract getPmtMethods(): Promise<EnumPaymentMethod[]>;
   public async abstract getPmtMethodById(id: number): Promise<EnumPaymentMethod>;
+  public async abstract getCreditProducts(): Promise<CreditProduct[]>;
+
   public async abstract getNovelty(id: number): Promise<Novelty>;
   public async abstract getNovelties(): Promise<Novelty[]>;
 }

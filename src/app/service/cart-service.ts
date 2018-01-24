@@ -9,6 +9,7 @@ import {EventService} from './event-service';
 import {EnumPaymentMethod} from '../model/enum-payment-method';
 import {App, NavController} from 'ionic-angular';
 import {PersonInfo} from '../model/person';
+import {CreditProduct} from '../model/credit-product';
 
 
 export class LoDeliveryOption {
@@ -26,18 +27,22 @@ export class LoDeliveryOption {
 @Injectable()
 export class CartService  {
 
+  public creditsLoaded = false;
   private cKey = 'cartItems';
   public order: ClientOrder = null;
-  public orderProducts = new Array <ClientOrderProducts>();
-  public loDeliveryOptions = new Array <LoDeliveryOption>();
-  public loResultDeliveryOptions = new Array <LoDeliveryOption>();
+  public orderProducts: Array<ClientOrderProducts> = [];
+  public loDeliveryOptions: Array<LoDeliveryOption>=[];
+  public loResultDeliveryOptions: Array<LoDeliveryOption>=[];
   public pmtMethod: EnumPaymentMethod = null;
   public maxPartPaymentSizeInfo = null;
+  public credits: Array<CreditProduct>=[];
 
   public promoCode: string;
   public cartValidationNeeded = false;
   public person = new PersonInfo();
+
   public selectedPartsPmtCount = {value: null, displayValue: null};
+  public creditProduct = {sId: null, sName: null};
 
   private navCtrl: NavController;
 
@@ -68,28 +73,44 @@ export class CartService  {
     this.initCart();
   };
 
-  public async getMaxPartsPmt() {
-    let is2 = (this.pmtMethod.id === 3);
-    let is3 = (this.pmtMethod.id === 4);
-    if ((this.orderProducts.length === 0) && !(is2 || is3))
+  public get mostExpensiveItem(): ClientOrderProducts {
+    if (this.orderProducts.length === 0)
       return null;
-
-    let mostExpensiveItem: ClientOrderProducts = this.orderProducts[0];
+    let item: ClientOrderProducts = this.orderProducts[0];
     this.orderProducts.forEach(i => {
-      if (i.price > mostExpensiveItem.price)
-        mostExpensiveItem = i;
+        if (i.price > item.price)
+          item = i;
       }
     );
+    return item;
+  }
 
+  public async getCreditInfo() {
+    this.creditsLoaded = false;
+    const is3 = (this.pmtMethod.id === 3);
+    const is4 = (this.pmtMethod.id === 4);
+    const is5 = (this.pmtMethod.id === 5);
+    const exItem = this.mostExpensiveItem;
+    if (!(exItem) && !(is4 || is3 || is5))
+      return;
 
-    let qp = await (<any>mostExpensiveItem).quotationproduct_p;
-    let quot = await (<any>qp).quotation_p;
-    let suppl = await (<any>quot).supplier_p;
+    this.selectedPartsPmtCount = {value: null, displayValue: null};
+
+    const qp = await (<any>exItem).quotationproduct_p;
+    const quot = await (<any>qp).quotation_p;
+    const suppl = await (<any>quot).supplier_p;
     let pInfo = await this.repo.getProductCreditSize(qp.idProduct, suppl.id);
     if (!pInfo)
       pInfo = {partsPmtCnt: 0, creditSize: 0};
-    this.maxPartPaymentSizeInfo =  pInfo; //await this.repo.getProductCreditSize(qp.idProduct, suppl.id)
+    this.maxPartPaymentSizeInfo =  pInfo;
 
+    const arr: CreditProduct[] = await this.repo.getCreditProducts();
+    this.credits = [];
+    arr.forEach(i => {
+      if (i.kpcPct < pInfo.creditSize)
+        this.credits.push(i);
+    });
+    this.creditsLoaded = true;
   }
 
   async initCart() {

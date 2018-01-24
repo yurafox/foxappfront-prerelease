@@ -36,6 +36,7 @@ import {
 import { AbstractDataRepository } from '../../index';
 import { Providers, System } from "../../../core/app-core";
 import {Novelty} from "../../../model/novelty";
+import {CreditProduct} from '../../../model/credit-product';
 
 // <editor-fold desc="url const">
 const currenciesUrl = "/api/mcurrencies";
@@ -68,6 +69,7 @@ const getDeliveryDateUrl = "/api/mgetDeliveryDate";
 const getPaymentMethodsUrl = "/api/mpaymentMethods";
 const clientDraftOrderUrl = "/api/mclientDraftOrder";
 const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
+const creditProductsUrl = "/api/mcreditProducts";
 
 const noveltyDynamicUrl = "/api/mnovelties";
 // </editor-fold
@@ -79,6 +81,39 @@ export class AppDataRepository extends AbstractDataRepository {
   constructor(private http: Http) {
     super();
   }
+
+  public async getCreditProducts(): Promise<CreditProduct[]> {
+    try {
+      const response = await this.http.get(creditProductsUrl).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const cItems = new Array<CreditProduct>();
+      if (data != null) {
+        data.forEach(val => {
+          let cp = new CreditProduct();
+          cp.sId = val.sId;
+          cp.sName = val.sName;
+          cp.sDefProdId = val.sDefProdId;
+          cp.sPartPay = val.sPartPay;
+          cp.sGracePeriod = val.sGracePeriod;
+          cp.maxTerm = val.maxTerm;
+          cp.firstPay = val.firstPay;
+          cp.monthCommissionPct = val.monthCommissionPct;
+          cp.yearPct = val.yearPct;
+          cp.kpcPct = val.kpcPct;
+
+          cItems.push(cp);
+        });
+      }
+      return cItems;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 
   public async getPmtMethods(): Promise<EnumPaymentMethod[]> {
     try {

@@ -19,7 +19,8 @@ export class SelectPmtMethodPage extends ComponentBase {
   pmtMethods = [];
   dataLoaded = false;
 
-  public partsPmtArray:Array<{value: number, displayValue: string}> = [];
+  public partsPmtArray: Array<{value: number, displayValue: string}> = [];
+  public credProdArray: Array<{id: number, name: string}> = [];
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -36,8 +37,7 @@ export class SelectPmtMethodPage extends ComponentBase {
 
     loading.present();
 
-    this.cart.selectedPartsPmtCount = {value: null, displayValue: null};
-    await this.cart.getMaxPartsPmt();
+    await this.cart.getCreditInfo();
     let hBound = 0;
     if (this.cart.pmtMethod.id === 3)
       hBound = this.cart.maxPartPaymentSizeInfo.partsPmtCnt;
@@ -82,7 +82,7 @@ export class SelectPmtMethodPage extends ComponentBase {
 
     switch (this.cart.pmtMethod.id) {
       case 5: {
-        return (this.isAnyOptionSelected() && this.personInfoValid());
+        return (this.isAnyOptionSelected() && this.personInfoValid() && (this.cart.creditProduct.sId));
       }
       case 3: {
         return (this.isAnyOptionSelected() && (this.cart.selectedPartsPmtCount.value));
@@ -104,11 +104,15 @@ export class SelectPmtMethodPage extends ComponentBase {
       i.isChecked = (i === option);
       this.cdRef.detectChanges();
       this.cart.pmtMethod = option.method;
-      if ( (i === option) && ((option.method.id === 3 ) || (option.method.id === 4 )) && (option.isChecked) )
+      if ( (i === option) && ((option.method.id === 3 ) || (option.method.id === 4 ) || (option.method.id === 5) ) && (option.isChecked) )
         this.initPartsPmt();
       if  ( (i === option) && !((option.method.id === 3 ) || (option.method.id === 4 )) && (option.isChecked) ) {
         this.cart.selectedPartsPmtCount = {value: null, displayValue: null};
       };
+      if  ( (i === option) && !(option.method.id === 5) && (option.isChecked) ) {
+        this.cart.creditProduct = {sId: null, sName: null};
+      };
+
     };
   }
 

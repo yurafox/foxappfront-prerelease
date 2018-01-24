@@ -41,4 +41,5 @@ export * from './lo-suppl-entity';
 export * from './review-answer';
 export * from './novelty';
 export * from './person';
+export * from './credit-product';
 

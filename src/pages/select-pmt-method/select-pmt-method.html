@@ -27,116 +27,11 @@
         </ion-grid>
       </ion-row>
     </div>
-    <div *ngIf="dataLoaded && (pmtMethods[4].isChecked)">
-      <ion-row style="padding-left: 5px; padding-right: 5px;">
-        <ion-grid class="f-border-ligthgray">
-          <form #f="ngForm">
-            <ion-row>
-              <ion-col style="padding-bottom: 10px;">
-              <label for="lastName">Last name:*</label>
-              <input [(ngModel)]="cart.person.lastName" id="lastName" name="lastName"
-                     pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,']+"
-                     required #lastName="ngModel">
-              <div *ngIf="!lastName.valid && lastName.touched">
-                <span *ngIf="lastName.hasError('required')"
-                      style="color: red;">Please enter your last name</span>
-                <span *ngIf="lastName.hasError('pattern')"
-                      style="color: red;">Only alphabets allowed</span>
-              </div>
-              <label for="firstName">First name:*</label>
-              <input [(ngModel)]="cart.person.firstName" id="firstName" name="firstName"
-                     pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,']+"
-                     required #firstName="ngModel">
-              <div *ngIf="!firstName.valid && firstName.touched">
-                <span *ngIf="firstName.hasError('required')"
-                      style="color: red;">Please enter your first name</span>
-                <span *ngIf="firstName.hasError('pattern')"
-                      style="color: red;">Only alphabets allowed</span>
-              </div>
-              <label for="middleName">Middle name:*</label>
-              <input [(ngModel)]="cart.person.middleName" id="middleName" name="middleName"
-                     pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,']+"
-                     required #middleName="ngModel">
-              <div *ngIf="!middleName.valid && middleName.touched">
-                <span *ngIf="middleName.hasError('required')"
-                      style="color: red;">Please enter your middle name</span>
-                <span *ngIf="middleName.hasError('pattern')"
-                      style="color: red;">Only alphabets allowed</span>
-              </div>
-              <ion-grid no-padding>
-                <ion-row no-padding>
-                  <label for="passportSeries">Passport series and number:*</label>
-                </ion-row>
-                <ion-row no-padding>
-                  <ion-col col-2 no-padding>
-                    <input [(ngModel)]="cart.person.passportSeries" id="passportSeries" name="passportSeries"
-                           pattern="[А-ЯA-Za-яa-z]{2}"
-                           minlength="2"
-                           maxlength="2"
-                           required #passportSeries="ngModel">
-                  </ion-col>
-                  <ion-col col-10 no-padding>
-                    <input [(ngModel)]="cart.person.passportNum" id="passportNum" name="passportNum"
-                           pattern="[0-9]{6}"
-                           minlength="6"
-                           maxlength="6"
-                           required #passportNum="ngModel">
-                  </ion-col>
-                </ion-row>
-                <ion-row no-padding>
-                  <ion-col no-padding>
-
-                    <div *ngIf="!passportSeries.valid && passportSeries.touched">
-                      <span *ngIf="passportSeries.hasError('required')" style="color: red;">Please enter your your passport series</span>
-                      <span *ngIf="passportSeries.hasError('pattern')" style="color: red;">Only 2 uppercase alphabets allowed</span>
-                    </div>
-
-                    <div *ngIf="!passportNum.valid && passportNum.touched">
-                      <span *ngIf="passportNum.hasError('required')" style="color: red;">Please enter your passport number</span>
-                      <span *ngIf="passportNum.hasError('pattern')" style="color: red;">Only 6 digits allowed</span>
-                      <span *ngIf="passportNum.hasError('minlength')"
-                            style="color: red;"><br>Passport number should be 6 digits</span>
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-              <label for="issuedAuthority">Issued Authority:*</label>
-              <input [(ngModel)]="cart.person.issuedAuthority" id="issuedAuthority" name="issuedAuthority"
-                     required #issuedAuthority="ngModel">
-              <div *ngIf="!issuedAuthority.valid && issuedAuthority.touched">
-                <span *ngIf="issuedAuthority.hasError('required')"
-                      style="color: red;">Please enter Issued Authority</span>
-              </div>
-              <label for="taxNumber">Tax Number:*</label>
-              <input [(ngModel)]="cart.person.taxNumber" id="taxNumber" name="taxNumber"
-                     pattern="[0-9]*"
-                     minlength="10"
-                     maxlength="10"
-                     required #taxNumber="ngModel">
-              <div *ngIf="!taxNumber.valid && taxNumber.touched">
-                <span *ngIf="taxNumber.hasError('required')"
-                      style="color: red;">Please enter your tax number</span>
-                <span *ngIf="taxNumber.hasError('pattern')"
-                      style="color: red;">Only digits allowed</span>
-                <span *ngIf="taxNumber.hasError('minlength')"
-                      style="color: red;">Tax number should be 10 digits</span>
-              </div>
-              <label for="birthDate">Birth date:*</label>
-              <input type="date" [(ngModel)]="cart.person.birthDate"
-                     id="birthDate" name="birthDate"
-                     required #birthDate="ngModel">
-              <div *ngIf="!birthDate.valid && birthDate.touched">
-                <span *ngIf="birthDate.hasError('required')"
-                      style="color: red;">Please enter your birth date</span>
-              </div>
-            </ion-col>
-
-          </ion-row>
-          </form>
-        </ion-grid>
-      </ion-row>
-    </div>
-    <div *ngIf="dataLoaded && ((pmtMethods[2].isChecked) || (pmtMethods[3].isChecked)) && (partsPmtArray.length > 0)">
+<!--
+Privat
+-->
+    <div *ngIf="dataLoaded && ((pmtMethods[2].isChecked) || (pmtMethods[3].isChecked))
+                && (partsPmtArray.length > 0) && (cart.creditsLoaded)">
       <ion-row style="padding-left: 5px; padding-right: 5px;">
           <ion-grid class="f-border-ligthgray">
             <ion-row>
@@ -153,6 +48,140 @@
           </ion-grid>
       </ion-row>
     </div>
+<!--
+Credit Products
+-->
+    <div *ngIf="dataLoaded && ((pmtMethods[4].isChecked))
+                  && (cart.credits.length > 0) && (cart.creditsLoaded)">
+      <ion-row style="padding-left: 5px; padding-right: 5px;">
+        <ion-grid class="f-border-ligthgray">
+          <ion-row>
+            <ion-col>
+              <span class="f-size-larger">Please select a credit product</span>
+              <br>
+              <dropdown-list [reference]="cart.creditProduct"
+                             [store]="cart.credits"
+                             [options]="{popupHeader: 'Credit', buttonClass:'f-drop-button-block' }"
+                             [map]="{valueName:'sId',displayName:'sName'}">
+              </dropdown-list>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-row>
+    </div>
+<!--
+Passport Data
+-->
+    <div *ngIf="dataLoaded && (pmtMethods[4].isChecked)">
+      <ion-row style="padding-left: 5px; padding-right: 5px;">
+        <ion-grid class="f-border-ligthgray">
+          <form #f="ngForm">
+            <ion-row>
+              <ion-col style="padding-bottom: 10px;">
+                <label for="lastName">Last name:*</label>
+                <input [(ngModel)]="cart.person.lastName" id="lastName" name="lastName"
+                       pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,']+"
+                       required #lastName="ngModel">
+                <div *ngIf="!lastName.valid && lastName.touched">
+                <span *ngIf="lastName.hasError('required')"
+                      style="color: red;">Please enter your last name</span>
+                  <span *ngIf="lastName.hasError('pattern')"
+                        style="color: red;">Only alphabets allowed</span>
+                </div>
+                <label for="firstName">First name:*</label>
+                <input [(ngModel)]="cart.person.firstName" id="firstName" name="firstName"
+                       pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,']+"
+                       required #firstName="ngModel">
+                <div *ngIf="!firstName.valid && firstName.touched">
+                <span *ngIf="firstName.hasError('required')"
+                      style="color: red;">Please enter your first name</span>
+                  <span *ngIf="firstName.hasError('pattern')"
+                        style="color: red;">Only alphabets allowed</span>
+                </div>
+                <label for="middleName">Middle name:*</label>
+                <input [(ngModel)]="cart.person.middleName" id="middleName" name="middleName"
+                       pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,']+"
+                       required #middleName="ngModel">
+                <div *ngIf="!middleName.valid && middleName.touched">
+                <span *ngIf="middleName.hasError('required')"
+                      style="color: red;">Please enter your middle name</span>
+                  <span *ngIf="middleName.hasError('pattern')"
+                        style="color: red;">Only alphabets allowed</span>
+                </div>
+                <ion-grid no-padding>
+                  <ion-row no-padding>
+                    <label for="passportSeries">Passport series and number:*</label>
+                  </ion-row>
+                  <ion-row no-padding>
+                    <ion-col col-2 no-padding>
+                      <input [(ngModel)]="cart.person.passportSeries" id="passportSeries" name="passportSeries"
+                             pattern="[А-ЯA-Za-яa-z]{2}"
+                             minlength="2"
+                             maxlength="2"
+                             required #passportSeries="ngModel">
+                    </ion-col>
+                    <ion-col col-10 no-padding>
+                      <input [(ngModel)]="cart.person.passportNum" id="passportNum" name="passportNum"
+                             pattern="[0-9]{6}"
+                             minlength="6"
+                             maxlength="6"
+                             required #passportNum="ngModel">
+                    </ion-col>
+                  </ion-row>
+                  <ion-row no-padding>
+                    <ion-col no-padding>
+
+                      <div *ngIf="!passportSeries.valid && passportSeries.touched">
+                        <span *ngIf="passportSeries.hasError('required')" style="color: red;">Please enter your your passport series</span>
+                        <span *ngIf="passportSeries.hasError('pattern')" style="color: red;">Only 2 uppercase alphabets allowed</span>
+                      </div>
+
+                      <div *ngIf="!passportNum.valid && passportNum.touched">
+                        <span *ngIf="passportNum.hasError('required')" style="color: red;">Please enter your passport number</span>
+                        <span *ngIf="passportNum.hasError('pattern')" style="color: red;">Only 6 digits allowed</span>
+                        <span *ngIf="passportNum.hasError('minlength')"
+                              style="color: red;"><br>Passport number should be 6 digits</span>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+                <label for="issuedAuthority">Issued Authority:*</label>
+                <input [(ngModel)]="cart.person.issuedAuthority" id="issuedAuthority" name="issuedAuthority"
+                       required #issuedAuthority="ngModel">
+                <div *ngIf="!issuedAuthority.valid && issuedAuthority.touched">
+                <span *ngIf="issuedAuthority.hasError('required')"
+                      style="color: red;">Please enter Issued Authority</span>
+                </div>
+                <label for="taxNumber">Tax Number:*</label>
+                <input [(ngModel)]="cart.person.taxNumber" id="taxNumber" name="taxNumber"
+                       pattern="[0-9]*"
+                       minlength="10"
+                       maxlength="10"
+                       required #taxNumber="ngModel">
+                <div *ngIf="!taxNumber.valid && taxNumber.touched">
+                <span *ngIf="taxNumber.hasError('required')"
+                      style="color: red;">Please enter your tax number</span>
+                  <span *ngIf="taxNumber.hasError('pattern')"
+                        style="color: red;">Only digits allowed</span>
+                  <span *ngIf="taxNumber.hasError('minlength')"
+                        style="color: red;">Tax number should be 10 digits</span>
+                </div>
+                <label for="birthDate">Birth date:*</label>
+                <input type="date" [(ngModel)]="cart.person.birthDate"
+                       id="birthDate" name="birthDate"
+                       required #birthDate="ngModel">
+                <div *ngIf="!birthDate.valid && birthDate.touched">
+                <span *ngIf="birthDate.hasError('required')"
+                      style="color: red;">Please enter your birth date</span>
+                </div>
+              </ion-col>
+
+            </ion-row>
+          </form>
+        </ion-grid>
+      </ion-row>
+    </div>
+
 
     <ion-row padding-top>
       <ion-col></ion-col>
