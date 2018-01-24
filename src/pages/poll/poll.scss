@@ -1,12 +1,19 @@
 page-poll {
   .questionHeader{
     background-color: #d8d8d8;
-    height: 70px;
-    padding: 28px 20px;
+    height: 100px;
+    padding: 43px 20px;
 
     margin: 10px 10px;
     span {
       font-size: 14px;
     }
   }
+
+  .questionRadioArea {
+    padding: 5px;
+    border: 2px solid #EBEBEC;
+    margin:0px 26px;
+  }
+
 }
