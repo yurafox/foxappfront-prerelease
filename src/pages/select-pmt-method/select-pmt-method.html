@@ -32,6 +32,10 @@ Privat
 -->
     <div *ngIf="dataLoaded && ((pmtMethods[2].isChecked) || (pmtMethods[3].isChecked))
                 && (partsPmtArray.length > 0) && (cart.creditsLoaded)">
+      <ion-row padding-top>
+        <ion-col></ion-col>
+      </ion-row>
+
       <ion-row style="padding-left: 5px; padding-right: 5px;">
           <ion-grid class="f-border-ligthgray">
             <ion-row>
@@ -53,6 +57,10 @@ Credit Products
 -->
     <div *ngIf="dataLoaded && ((pmtMethods[4].isChecked))
                   && (cart.credits.length > 0) && (cart.creditsLoaded)">
+      <ion-row padding-top>
+        <ion-col></ion-col>
+      </ion-row>
+
       <ion-row style="padding-left: 5px; padding-right: 5px;">
         <ion-grid class="f-border-ligthgray">
           <ion-row>
@@ -73,6 +81,10 @@ Credit Products
 Passport Data
 -->
     <div *ngIf="dataLoaded && (pmtMethods[4].isChecked)">
+      <ion-row padding-top>
+        <ion-col></ion-col>
+      </ion-row>
+
       <ion-row style="padding-left: 5px; padding-right: 5px;">
         <ion-grid class="f-border-ligthgray">
           <form #f="ngForm">
