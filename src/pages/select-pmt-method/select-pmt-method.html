@@ -32,10 +32,10 @@
         <ion-grid class="f-border-ligthgray">
           <form #f="ngForm">
             <ion-row>
-            <ion-col style="padding-bottom: 10px;">
+              <ion-col style="padding-bottom: 10px;">
               <label for="lastName">Last name:*</label>
               <input [(ngModel)]="cart.person.lastName" id="lastName" name="lastName"
-                     pattern="[a-zA-Z][a-zA-Z ]+"
+                     pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,']+"
                      required #lastName="ngModel">
               <div *ngIf="!lastName.valid && lastName.touched">
                 <span *ngIf="lastName.hasError('required')"
@@ -45,7 +45,7 @@
               </div>
               <label for="firstName">First name:*</label>
               <input [(ngModel)]="cart.person.firstName" id="firstName" name="firstName"
-                     pattern="[a-zA-Z][a-zA-Z ]+"
+                     pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,']+"
                      required #firstName="ngModel">
               <div *ngIf="!firstName.valid && firstName.touched">
                 <span *ngIf="firstName.hasError('required')"
@@ -55,7 +55,7 @@
               </div>
               <label for="middleName">Middle name:*</label>
               <input [(ngModel)]="cart.person.middleName" id="middleName" name="middleName"
-                     pattern="[a-zA-Z][a-zA-Z ]+"
+                     pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,']+"
                      required #middleName="ngModel">
               <div *ngIf="!middleName.valid && middleName.touched">
                 <span *ngIf="middleName.hasError('required')"
@@ -70,14 +70,14 @@
                 <ion-row no-padding>
                   <ion-col col-2 no-padding>
                     <input [(ngModel)]="cart.person.passportSeries" id="passportSeries" name="passportSeries"
-                           pattern="[A-Z][A-Z]"
+                           pattern="[А-ЯA-Za-яa-z]{2}"
                            minlength="2"
                            maxlength="2"
                            required #passportSeries="ngModel">
                   </ion-col>
                   <ion-col col-10 no-padding>
                     <input [(ngModel)]="cart.person.passportNum" id="passportNum" name="passportNum"
-                           pattern="[0-9]*"
+                           pattern="[0-9]{6}"
                            minlength="6"
                            maxlength="6"
                            required #passportNum="ngModel">
@@ -134,6 +134,23 @@
           </ion-row>
           </form>
         </ion-grid>
+      </ion-row>
+    </div>
+    <div *ngIf="dataLoaded && ((pmtMethods[2].isChecked) || (pmtMethods[3].isChecked)) && (partsPmtArray.length > 0)">
+      <ion-row style="padding-left: 5px; padding-right: 5px;">
+          <ion-grid class="f-border-ligthgray">
+            <ion-row>
+              <ion-col>
+                <span class="f-size-larger">Parts Count</span>
+                <br>
+                <dropdown-list [reference]="cart.selectedPartsPmtCount"
+                               [store]="partsPmtArray"
+                               [options]="{popupHeader: 'Parts', buttonClass:'f-drop-button-block' }"
+                               [map]="{valueName:'value',displayName:'displayValue'}">
+                </dropdown-list>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
       </ion-row>
     </div>
 

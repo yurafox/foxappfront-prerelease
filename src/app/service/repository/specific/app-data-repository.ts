@@ -67,6 +67,7 @@ const getDeliveryCostUrl = "/api/mgetDeliveryCost";
 const getDeliveryDateUrl = "/api/mgetDeliveryDate";
 const getPaymentMethodsUrl = "/api/mpaymentMethods";
 const clientDraftOrderUrl = "/api/mclientDraftOrder";
+const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
 
 const noveltyDynamicUrl = "/api/mnovelties";
 // </editor-fold
@@ -154,6 +155,32 @@ export class AppDataRepository extends AbstractDataRepository {
     } catch (err) {
       return await this.handleError(err);
     }
+  }
+
+  public async getProductCreditSize(idProduct: number, isSupplier: number): Promise<any> {
+    try {
+      const response = await this.http
+        .get(productSupplCreditGradesUrl, {
+          search: this.createSearchParams([
+            { key: "idProduct", value: idProduct.toString() },
+            { key: "idSupplier", value: isSupplier.toString() }
+          ])
+        })
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data[0])
+        return {partsPmtCnt: data[0].partsPmtCnt, creditSize: data[0].creditSize}
+      else
+        return null;
+
+    } catch (err) {
+      return await this.handleError(err);
+    }
+
   }
 
   public async getLoEntitiyById(entityId: number):Promise<LoEntity> {

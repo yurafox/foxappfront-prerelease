@@ -32,9 +32,12 @@ export class CartService  {
   public loDeliveryOptions = new Array <LoDeliveryOption>();
   public loResultDeliveryOptions = new Array <LoDeliveryOption>();
   public pmtMethod: EnumPaymentMethod = null;
+  public maxPartPaymentSizeInfo = null;
+
   public promoCode: string;
   public cartValidationNeeded = false;
   public person = new PersonInfo();
+  public selectedPartsPmtCount = {value: null, displayValue: null};
 
   private navCtrl: NavController;
 
@@ -64,6 +67,30 @@ export class CartService  {
 
     this.initCart();
   };
+
+  public async getMaxPartsPmt() {
+    let is2 = (this.pmtMethod.id === 3);
+    let is3 = (this.pmtMethod.id === 4);
+    if ((this.orderProducts.length === 0) && !(is2 || is3))
+      return null;
+
+    let mostExpensiveItem: ClientOrderProducts = this.orderProducts[0];
+    this.orderProducts.forEach(i => {
+      if (i.price > mostExpensiveItem.price)
+        mostExpensiveItem = i;
+      }
+    );
+
+
+    let qp = await (<any>mostExpensiveItem).quotationproduct_p;
+    let quot = await (<any>qp).quotation_p;
+    let suppl = await (<any>quot).supplier_p;
+    let pInfo = await this.repo.getProductCreditSize(qp.idProduct, suppl.id);
+    if (!pInfo)
+      pInfo = {partsPmtCnt: 0, creditSize: 0};
+    this.maxPartPaymentSizeInfo =  pInfo; //await this.repo.getProductCreditSize(qp.idProduct, suppl.id)
+
+  }
 
   async initCart() {
     console.log('CartInit call. Is auth: '+ this.userService.isAuth);
