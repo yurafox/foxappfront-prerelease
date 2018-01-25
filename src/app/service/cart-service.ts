@@ -36,7 +36,7 @@ export class CartService  {
   public loResultDeliveryOptions: Array<LoDeliveryOption>=[];
   public pmtMethod: EnumPaymentMethod = null;
   public maxPartPaymentSizeInfo = null;
-  public credits: Array<CreditProduct>=[];
+  public credits: Array<{isChecked: boolean, creditProduct: CreditProduct}>=[];
 
   public promoCode: string;
   public cartValidationNeeded = false;
@@ -116,8 +116,9 @@ export class CartService  {
       const arr: CreditProduct[] = await this.repo.getCreditProducts();
       this.credits = [];
       arr.forEach(i => {
-        if (i.kpcPct < pInfo.creditSize)
-          this.credits.push(i);
+        if ((i.kpcPct < pInfo.creditSize)
+              && (i.sPartPay === 0) && (i.sDefProdId))
+          this.credits.push({isChecked: false, creditProduct: i});
       });
       this.lastItemCreditCalc = exItem;
     }

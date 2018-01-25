@@ -15,6 +15,18 @@ page-credit-calc {
     padding-bottom: 10px;
   }
 
+  .f-row-odd {
+    background-color: #eceff3;
+  }
+
+  .f-row-even {
+    background-color: white;
+  }
+
+  .f-color-red {
+    color: red;
+  }
+
   .f-border-ligthgray {
     border: 1px solid #EBEBEC;
   }
@@ -50,6 +62,10 @@ page-credit-calc {
     font-size: 12px;
   }
 
+  .f-size-smaller {
+    font-size: 10px;
+  }
+
   .f-img-item-lg {
     padding: 6px 4px 2px;
   }
@@ -75,6 +91,10 @@ page-credit-calc {
   .f-grid-feat-bkgrnd {
     background-color: #8e9093;
     color: black;
+  }
+
+  .f-fond-bold {
+    font-weight: bold;
   }
 
   .f-btn-add-cart, .f-btn-add-cart.activated {

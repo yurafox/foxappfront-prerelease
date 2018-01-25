@@ -3214,14 +3214,14 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     { id:32, idProduct: 6310491, idSupplier: 1, partsPmtCnt: 6, creditSize: 4},
     { id:34, idProduct: 6312913, idSupplier: 1, partsPmtCnt: 4, creditSize: 12},
     { id:35, idProduct: 6293680, idSupplier: 2, partsPmtCnt: 6, creditSize: 12},
-    { id:36, idProduct: 6337781, idSupplier: 3, partsPmtCnt: 3, creditSize: 8}
+    { id:36, idProduct: 6337781, idSupplier: 3, partsPmtCnt: 3, creditSize: 37}
   ];
 
   creditProducts = [
-    { sId:26, sName: "L+", sDefProdId: 11004, sPartPay: 0, sGracePeriod: null, maxTerm: 37, firstPay: null, monthCommissionPct: 3, yearPct: .01, kpcPct: 7.2},
-    { sId:8, sName: "XXL", sDefProdId: 11482, sPartPay: 0, sGracePeriod: null, maxTerm: 12, firstPay: 0, monthCommissionPct: 4, yearPct: .01, kpcPct: 0},
-    { sId:9, sName: "XS-24", sDefProdId: 11470, sPartPay: 0, sGracePeriod: 24, maxTerm: 37, firstPay: null, monthCommissionPct: 3, yearPct: .01, kpcPct: 25},
-    { sId:12, sName: "XS-20", sDefProdId: 11675, sPartPay: 0, sGracePeriod: 20, maxTerm: 37, firstPay: 0, monthCommissionPct: 3, yearPct: .01, kpcPct: 19.23},
+    { sId:26, sName: "L+", sDefProdId: 11004, sPartPay: 0, sGracePeriod: null, maxTerm: 37, firstPay: null, monthCommissionPct: 3, yearPct: 0.01, kpcPct: 7.2},
+    { sId:8, sName: "XXL", sDefProdId: 11482, sPartPay: 0, sGracePeriod: null, maxTerm: 12, firstPay: 0, monthCommissionPct: 4, yearPct: 0.01, kpcPct: 0},
+    { sId:9, sName: "XS-24", sDefProdId: 11470, sPartPay: 0, sGracePeriod: 24, maxTerm: 37, firstPay: null, monthCommissionPct: 3, yearPct: 0.01, kpcPct: 25},
+    { sId:12, sName: "XS-20", sDefProdId: 11675, sPartPay: 0, sGracePeriod: 20, maxTerm: 37, firstPay: 0, monthCommissionPct: 3, yearPct: 0.01, kpcPct: 19.23},
     { sId:59, sName: "ОЧ 16", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
     { sId:60, sName: "ОЧ 17", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
     { sId:61, sName: "ОЧ 18", sDefProdId: null, sPartPay: 1, sGracePeriod: null, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
