@@ -44,6 +44,10 @@ export class CartService  {
 
 
   public selectedPartsPmtCount = {value: null, displayValue: null};
+  public selectedImmLoanCount = {value: null, displayValue: null};
+  public selectedLoanCount = {value: null, displayValue: null};
+
+
   public creditProduct = {sId: null, sName: null};
 
   private navCtrl: NavController;
@@ -87,13 +91,29 @@ export class CartService  {
     return item;
   }
 
+  calculateLoan(amount: number, months: number, monthsCommissPct: number): number {
+    if ((months) && (amount) && !(months == 0)) {
+      if (monthsCommissPct)
+        return(Math.round(amount/months + amount*monthsCommissPct/100))
+      else
+        return(Math.round(amount/months));
+    }
+    else
+      return null;
+  }
+
   public async getCreditInfo() {
     this.selectedPartsPmtCount = {value: null, displayValue: null};
+    this.selectedImmLoanCount = {value: null, displayValue: null};
+    this.selectedLoanCount = {value: null, displayValue: null};
+/*
     const is3 = (this.pmtMethod.id === 3);
     const is4 = (this.pmtMethod.id === 4);
     const is5 = (this.pmtMethod.id === 5);
+*/
+
     const exItem = this.mostExpensiveItem;
-    if (!(exItem) && !(is4 || is3 || is5))
+    if (!(exItem) /*&& !(is4 || is3 || is5)*/)
       return;
 
     if (this.lastItemCreditCalc === exItem)

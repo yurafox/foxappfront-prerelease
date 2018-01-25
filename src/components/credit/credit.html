@@ -1,0 +1,25 @@
+<ion-row style="padding-left: 5px; padding-right: 5px;">
+  <ion-grid class="f-border-ligthgray">
+    <ion-row>
+      <ion-col col-1 text-center>
+        <input type="radio" id="radioPBparts">
+      </ion-col>
+      <ion-col>
+        {{creditName}}
+        <br>
+        <span class="f-size-small">Максимальный срок кредита - до <b>{{cart.maxPartPaymentSizeInfo.partsPmtCnt}}</b> частей,
+              ежемесячная комиссия – <b>{{comissionPct}}</b>% от суммы кредита</span>
+        <hr>
+        <span>Количество месяцев</span>
+        <dropdown-list *ngIf="partsPmtArray && (partsPmtArray.length > 0)"
+                       [reference]="storeVal"
+                       [store]="partsPmtArray"
+                       [options]="{popupHeader: 'Parts', buttonClass:'f-drop-button-block'}"
+                       [map]="{valueName:'value',displayName:'displayValue'}">
+        </dropdown-list>
+        <span *ngIf="storeVal.value">Ежемесячный платеж <b> <span class="f-color-green">{{mouthlyPmt | localeCurrency:userService.currency}}</span></b>
+        </span>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-row>

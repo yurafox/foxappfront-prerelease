@@ -1,13 +1,11 @@
-page-credit-calc {
-  /*
-  #radioButton {
+credit {
+  #radioPBparts {
     position: relative;
-    top: 50%;
+    top: 20%;
     transform: translateY(-50%);
     font-size: 25px;
     background-color: #ffb400;
   }
-  */
 
   input {
     width: 100%;
@@ -15,10 +13,6 @@ page-credit-calc {
     padding-left: 5px;
     padding-top: 10px;
     padding-bottom: 10px;
-  }
-
-  .row {
-    align-items: center;
   }
 
   .f-row-odd {
@@ -120,5 +114,6 @@ page-credit-calc {
     font-size: 16px;
     font-weight: 400;
   }
+
 
 }

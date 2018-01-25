@@ -32,11 +32,6 @@ export class SelectPmtMethodPage extends ComponentBase {
   }
 
   async initPartsPmt() {
-    // let loading = this.loadingCtrl.create({
-    //   content: 'Please wait...'
-    // });
-    // loading.present();
-
 
     await this.cart.getCreditInfo();
     let hBound = 0;
@@ -49,7 +44,6 @@ export class SelectPmtMethodPage extends ComponentBase {
       this.partsPmtArray.push({value: i, displayValue: i.toString()});
     }
 
-    // loading.dismiss();
   }
 
   async getPmtMethods () {
