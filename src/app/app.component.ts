@@ -1,6 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
-import {Nav, Platform, MenuController} from 'ionic-angular';
-import {StatusBar} from '@ionic-native/status-bar';
+import {Component, ViewChild, OnDestroy} from '@angular/core';
+import {Nav, Platform, MenuController, AlertController} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {AbstractDataRepository} from "./service/index";
 import {ComponentBase} from "../components/component-extension/component-base";
@@ -8,6 +7,8 @@ import {AppAvailability} from "@ionic-native/app-availability";
 import {Device} from '@ionic-native/device';
 import {Push, PushObject, PushOptions} from '@ionic-native/push';
 import {DeviceData} from "./model/index";
+import {System} from "./core/app-core";
+
 
 export interface PageInterface {
   title: string;
@@ -22,15 +23,17 @@ declare var ExoPlayer: any;
 @Component({
   templateUrl: 'app.html'
 })
-export class FoxApp extends ComponentBase {
+export class FoxApp extends ComponentBase implements OnDestroy{
   // the root nav is a child of the root app component
   // @ViewChild(Nav) gets a reference to the app's root nav
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = 'HomePage';
 
-  readonly LOCAL_VIDEO_URL = 'file:///android_asset/www/assets/video/'; // Default path if file located in assets/video
-  videoFileName = 'video';  // Set the name of video file
+  // Default path if file located in assets/video
+  readonly LOCAL_VIDEO_URL = 'file:///android_asset/www/assets/video/';
+  // Set name of the video file
+  videoFileName = 'video';
 
   // Parameters of the external app
   scheme: string;
@@ -40,8 +43,7 @@ export class FoxApp extends ComponentBase {
   appPages: PageInterface[] = [
     {title: 'Главная', name: 'Home', component: 'HomePage', index: 0, icon: 'ios-home-outline'},
     {title: 'Категории', name: 'Categories', component: 'CategoriesPage', index: 1, icon: 'ios-list-outline'},
-    /*{title: 'Ваши Заказы', name: 'Orders', component: 'MyOrderPage', index: 2, icon: 'ios-cart-outline'},*/
-    {title: 'Профиль', name: 'Account', component: 'AccountMenuPage', index: 3, icon: 'ios-person-outline'},
+    {title: 'Профиль', name: 'Account', component: 'AccountMenuPage', index: 2, icon: 'ios-person-outline'},
   ];
   infoPages: PageInterface[] = [
     {title: 'Магазины на карте', name: 'Map', component: 'MapPage', index: 0, icon: 'ios-map-outline'},
@@ -50,17 +52,18 @@ export class FoxApp extends ComponentBase {
     {title: 'Поддержка', name: 'Support', component: 'SupportPage', index: 3, icon: 'ios-text-outline'}
   ];
 
-  constructor(private platform: Platform, statusBar: StatusBar,
+  private noveltyPushEventDescriptor: any;
+  private actionPushEventDescriptor: any;
+
+  constructor(private platform: Platform, private alertCtrl: AlertController,
               private splashScreen: SplashScreen, public menuCtrl: MenuController,
               private repo: AbstractDataRepository, private appAvailability: AppAvailability,
               private device: Device, private push: Push) {
     super();
-    //this.rootPage = HomePage;
     platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
     });
     // Setting up external app params
+    // TODO: Change these params to Foxtrot game's
     this.scheme = 'com.facebook.katana';
     this.appUrl = 'fb://page/';
     this.userToken = '192385130800097';
@@ -77,9 +80,23 @@ export class FoxApp extends ComponentBase {
       if (this.device.platform && (this.device.platform !== null)) {
         this.collectAndSendDeviceData();
       }
-
-      // this.pushNotify();
     });
+
+    /**
+     * Subscribing to the push events and putting our dynamic components to special pushStore dictionary in PushContainer
+     */
+    this.noveltyPushEventDescriptor = this.evServ.events['noveltyPushEvent'].subscribe(data => {
+        System.PushContainer.pushStore[`novelty${data.innerId}`] = data;
+    });
+    this.actionPushEventDescriptor = this.evServ.events['actionPushEvent'].subscribe(data => {
+        System.PushContainer.pushStore[`action${data.innerId}`] = data;
+    });
+    this.pushNotify();
+  }
+
+  ngOnDestroy() {
+    this.noveltyPushEventDescriptor.unsubscribe();
+    this.actionPushEventDescriptor.unsubscribe();
   }
 
   openPage(page: PageInterface) {
@@ -233,48 +250,100 @@ export class FoxApp extends ComponentBase {
 
   pushNotify() {
     try {
-      // to check if we have permission
-      this.push.hasPermission()
-        .then((res: any) => {
+      if (this.device.cordova) {
+        // to check if we have permission
+        this.push.hasPermission()
+          .then((res: any) => {
 
-          if (res.isEnabled) {
-            console.log('We have permission to send push notifications');
-          } else {
-            console.log('We do not have permission to send push notifications');
+            if (res.isEnabled) {
+              //console.log('We have permission to send push notifications');
+            } else {
+              console.log('We do not have permission to send push notifications');
+            }
+
+          });
+
+        // Create a channel (Android O and above). You'll need to provide the id, description and importance properties.
+        this.push.createChannel({
+          id: "test_channel",
+          description: "Channel one",
+          // The importance property goes from 1 = Lowest, 2 = Low, 3 = Normal, 4 = High and 5 = Highest.
+          importance: 3
+        }).then(
+          () => {},
+          (err) => console.log(`Error creating channel: ${err}`)
+        );
+
+        // Delete a channel (Android O and above)
+        // this.push.deleteChannel('test_channel').then(() => console.log('Channel deleted'));
+
+        // Return a list of currently configured channels
+        this.push.listChannels().then((channels) => {
+          for (let i=0; i<channels.length; i++) {
+            console.log(`ID: ${channels[i].id} Description: ${channels[i].description}`);
           }
-
         });
 
-      // Create a channel (Android O and above). You'll need to provide the id, description and importance properties.
-      this.push.createChannel({
-        id: "Novelty1",
-        description: "My first test channel",
-        // The importance property goes from 1 = Lowest, 2 = Low, 3 = Normal, 4 = High and 5 = Highest.
-        importance: 3
-      }).then(() => console.log('Channel created'));
+        // senderID should be right as your account senderID in 3rd party push service
+        const options: PushOptions = {
+          android: {
+            senderID: '431639834815',
+            icon: 'www/assets/icon/app_icon.png' //TODO: This doesn't work. Find working directory
+          }
+        };
 
-      // Delete a channel (Android O and above)
-      this.push.deleteChannel('Novelty1').then(() => console.log('Channel deleted'));
+        const pushObject: PushObject = this.push.init(options);
 
-      // Return a list of currently configured channels
-      this.push.listChannels().then((channels) => console.log('List of channels', channels));
+        pushObject.on('registration').subscribe((registration: any) => {
+          //console.log('Device registered');
+        });
 
-      // to initialize push notifications
+        pushObject.on('notification').subscribe((notification: any) => {
+          if (notification.additionalData['target'] === 'novelty') {
+            let alert = this.alertCtrl.create({
+              title: 'New product in Foxtrot!',
+              message: 'Do you want to check it?',
+              buttons: [
+                {
+                  text: 'Yes',
+                  handler: () => {
+                    let noveltySketch = System.PushContainer.pushStore[`novelty${notification.additionalData['id']}`];
+                    if (noveltySketch.novelty && noveltySketch.product) {
+                      noveltySketch.openNovelty();
+                    }
+                  }
+                },
+                {
+                  text: 'No'
+                }
+              ]
+            });
+            alert.present().catch((err) => console.log(`Alert error: ${err}`));
+          } else if (notification.additionalData['target'] === 'action') {
+            let alert = this.alertCtrl.create({
+              title: 'New promotion!',
+              message: 'Do you want to check it?',
+              buttons: [
+                {
+                  text: 'Yes',
+                  handler: () => {
+                    let actionSketch = System.PushContainer.pushStore[`action${notification.additionalData['id']}`];
+                    if (actionSketch.action) {
+                      actionSketch.openAction();
+                    }
+                  }
+                },
+                {
+                  text: 'No'
+                }
+              ]
+            });
+            alert.present().catch((err) => console.log(`Alert error: ${err}`));
+          }
+        });
 
-      const options: PushOptions = {
-        android: {
-          senderID: '431639834815'
-        }
-      };
-
-      const pushObject: PushObject = this.push.init(options);
-
-
-      pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
-
-      pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
-
-      pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
+        pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
+      }
     } catch (err) {
       console.log(`Push plugin error: ${err}`);
     }

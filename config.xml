@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.foxapp.android" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>FoxApp</name>
+    <name>Foxtrot</name>
     <description>Foxtrot application</description>
     <author email="" href="http://foxtrot.ua/">Foxtrot Team</author>
     <content src="index.html" />
@@ -98,7 +98,6 @@
     <plugin name="cordova-plugin-exoplayer" spec="^2.5.3" />
     <plugin name="com.lampa.startapp" spec="^0.1.4" />
     <plugin name="cordova-plugin-appavailability" spec="^0.4.2" />
-    <allow-navigation href="http://172.26.81.145:8100" />
     <plugin name="phonegap-plugin-push" spec="^2.1.2">
         <variable name="SENDER_ID" value="1:431639834815:android:c4e7b5033263a6c3" />
         <variable name="FCM_VERSION" value="11.0.1" />
