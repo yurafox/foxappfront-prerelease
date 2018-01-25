@@ -7,7 +7,7 @@ import {UserService} from './bll/user-service';
 import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
 import {EventService} from './event-service';
 import {EnumPaymentMethod} from '../model/enum-payment-method';
-import {App, NavController} from 'ionic-angular';
+import {App, LoadingController, NavController} from 'ionic-angular';
 import {PersonInfo} from '../model/person';
 import {CreditProduct} from '../model/credit-product';
 
@@ -28,6 +28,7 @@ export class LoDeliveryOption {
 export class CartService  {
 
   public creditsLoaded = false;
+  public lastItemCreditCalc: ClientOrderProducts = null;
   private cKey = 'cartItems';
   public order: ClientOrder = null;
   public orderProducts: Array<ClientOrderProducts> = [];
@@ -41,13 +42,14 @@ export class CartService  {
   public cartValidationNeeded = false;
   public person = new PersonInfo();
 
+
   public selectedPartsPmtCount = {value: null, displayValue: null};
   public creditProduct = {sId: null, sName: null};
 
   private navCtrl: NavController;
 
   constructor(private userService: UserService, public repo: AbstractDataRepository,
-              private evServ: EventService, private app: App) {
+              private evServ: EventService, private app: App, public loadingCtrl: LoadingController) {
     this.navCtrl = app.getActiveNav();
 
     this.evServ.events['logonEvent'].subscribe(() => {
@@ -86,7 +88,7 @@ export class CartService  {
   }
 
   public async getCreditInfo() {
-    this.creditsLoaded = false;
+    this.selectedPartsPmtCount = {value: null, displayValue: null};
     const is3 = (this.pmtMethod.id === 3);
     const is4 = (this.pmtMethod.id === 4);
     const is5 = (this.pmtMethod.id === 5);
@@ -94,23 +96,35 @@ export class CartService  {
     if (!(exItem) && !(is4 || is3 || is5))
       return;
 
-    this.selectedPartsPmtCount = {value: null, displayValue: null};
+    if (this.lastItemCreditCalc === exItem)
+      return;
 
-    const qp = await (<any>exItem).quotationproduct_p;
-    const quot = await (<any>qp).quotation_p;
-    const suppl = await (<any>quot).supplier_p;
-    let pInfo = await this.repo.getProductCreditSize(qp.idProduct, suppl.id);
-    if (!pInfo)
-      pInfo = {partsPmtCnt: 0, creditSize: 0};
-    this.maxPartPaymentSizeInfo =  pInfo;
-
-    const arr: CreditProduct[] = await this.repo.getCreditProducts();
-    this.credits = [];
-    arr.forEach(i => {
-      if (i.kpcPct < pInfo.creditSize)
-        this.credits.push(i);
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
     });
-    this.creditsLoaded = true;
+    loading.present();
+    try {
+      this.creditsLoaded = false;
+      const qp = await (<any>exItem).quotationproduct_p;
+      const quot = await (<any>qp).quotation_p;
+      const suppl = await (<any>quot).supplier_p;
+      let pInfo = await this.repo.getProductCreditSize(qp.idProduct, suppl.id);
+      if (!pInfo)
+        pInfo = {partsPmtCnt: 0, creditSize: 0};
+      this.maxPartPaymentSizeInfo =  pInfo;
+
+      const arr: CreditProduct[] = await this.repo.getCreditProducts();
+      this.credits = [];
+      arr.forEach(i => {
+        if (i.kpcPct < pInfo.creditSize)
+          this.credits.push(i);
+      });
+      this.lastItemCreditCalc = exItem;
+    }
+    finally {
+      this.creditsLoaded = true;
+      loading.dismiss();
+    }
   }
 
   async initCart() {
@@ -150,7 +164,7 @@ export class CartService  {
       let _q = 0;
       if (this.orderProducts)
         this.orderProducts.forEach(item => {
-          _q = _q + item.qty;
+          _q += item.qty;
         });
       return _q;
   }
@@ -162,7 +176,7 @@ export class CartService  {
   public get shippingCost(): number {
     let res = 0;
     this.loResultDeliveryOptions.forEach(i => {
-        res = res + i.deliveryCost;
+        res += i.deliveryCost;
       }
     );
     return res;
@@ -172,7 +186,7 @@ export class CartService  {
     let _s = 0;
     if (this.orderProducts) {
       this.orderProducts.forEach(item => {
-        _s = _s + item.price*item.qty;
+        _s += item.price*item.qty;
       });
     };
     return _s;
@@ -191,6 +205,7 @@ export class CartService  {
 
     this.orderProducts.push(orderItem);
     this.saveToLocalStorage();
+    this.lastItemCreditCalc = null;
   }
 
   saveToLocalStorage() {
@@ -215,6 +230,7 @@ export class CartService  {
       this.repo.deleteCartProduct(this.orderProducts[itemIndex]);
     this.orderProducts.splice(itemIndex, 1);
     this.saveToLocalStorage();
+    this.lastItemCreditCalc = null;
   }
 
   emptyCart() {

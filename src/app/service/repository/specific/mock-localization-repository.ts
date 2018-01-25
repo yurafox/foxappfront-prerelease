@@ -27,7 +27,7 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'InfoMenu', lang:3, text:'Information'},
       { tagName:'OutApp', lang:1, text:'Выйти'},
       { tagName:'OutApp', lang:2, text:'Вийти'},
-      { tagName:'OutApp', lang:3, text:'Go out'},
+      { tagName:'OutApp', lang:3, text:'Log off'},
 
       { tagName:'Home', lang:1, text:'Главная'},
       { tagName:'Home', lang:2, text:'Головна'},

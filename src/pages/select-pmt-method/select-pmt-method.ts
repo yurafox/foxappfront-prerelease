@@ -1,11 +1,12 @@
 import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, LoadingController, ModalController, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {EnumPaymentMethod} from '../../app/model/enum-payment-method';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {CartService} from '../../app/service/cart-service';
 import {PersonInfo} from '../../app/model/person';
 import {NgForm} from '@angular/forms';
+import {CreditCalcPage} from '../credit-calc/credit-calc';
 
 
 @IonicPage()
@@ -20,22 +21,22 @@ export class SelectPmtMethodPage extends ComponentBase {
   dataLoaded = false;
 
   public partsPmtArray: Array<{value: number, displayValue: string}> = [];
-  public credProdArray: Array<{id: number, name: string}> = [];
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
-              private cdRef:ChangeDetectorRef, public loadingCtrl: LoadingController) {
+              private cdRef:ChangeDetectorRef, public modalCtrl: ModalController)
+  {
     super();
     this.getPmtMethods();
   }
 
   async initPartsPmt() {
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
+    // let loading = this.loadingCtrl.create({
+    //   content: 'Please wait...'
+    // });
+    // loading.present();
 
-    loading.present();
 
     await this.cart.getCreditInfo();
     let hBound = 0;
@@ -48,7 +49,7 @@ export class SelectPmtMethodPage extends ComponentBase {
       this.partsPmtArray.push({value: i, displayValue: i.toString()});
     }
 
-    loading.dismiss();
+    // loading.dismiss();
   }
 
   async getPmtMethods () {
@@ -114,6 +115,11 @@ export class SelectPmtMethodPage extends ComponentBase {
       };
 
     };
+  }
+
+  onShowCreditCalculatorClick() {
+    let calcModal = this.modalCtrl.create(CreditCalcPage);
+    calcModal.present();
   }
 
   onContinueClick() {

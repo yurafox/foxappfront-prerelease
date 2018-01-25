@@ -6,4 +6,5 @@ export class AppConstants {
   public static readonly PRODUCT_PAGELINK_SIZE = 5;
   public static readonly LOCALE_DEFAULT_VALUE = 1;
   public static readonly CURRENCY_DEFAULT_VALUE = 0;
+
 }

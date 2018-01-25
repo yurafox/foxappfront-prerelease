@@ -67,6 +67,9 @@ Credit Products
             <ion-col>
               <span class="f-size-larger">Please select a credit product</span>
               <br>
+              <button class="f-btn-secondary" ion-button block
+                      (click)="onShowCreditCalculatorClick()">Show a loan calculator</button>
+              <br>
               <dropdown-list [reference]="cart.creditProduct"
                              [store]="cart.credits"
                              [options]="{popupHeader: 'Credit', buttonClass:'f-drop-button-block' }"
@@ -80,7 +83,7 @@ Credit Products
 <!--
 Passport Data
 -->
-    <div *ngIf="dataLoaded && (pmtMethods[4].isChecked)">
+    <div *ngIf="dataLoaded && (pmtMethods[4].isChecked) && (cart.creditsLoaded)">
       <ion-row padding-top>
         <ion-col></ion-col>
       </ion-row>

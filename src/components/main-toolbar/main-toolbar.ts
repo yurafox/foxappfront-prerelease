@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {NavController, NavParams} from "ionic-angular";
+import {NavController, NavParams, ViewController} from "ionic-angular";
 import {CartPage, HomePage} from '../../pages/index';
 import {CartService} from '../../app/service/cart-service';
 
@@ -12,8 +12,11 @@ export class MainToolbarComponent {
   @Input()
   showCartIcon = true;
 
+  @Input()
+  showCloseIcon = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
-                public cart: CartService) {}
+                public cart: CartService, public viewCtrl: ViewController) {}
 
   goToCart(): void {
     if (!(this.navCtrl.getActive().name === 'CartPage'))
@@ -25,4 +28,9 @@ export class MainToolbarComponent {
       this.navCtrl.setRoot(HomePage);
     }
   }
+
+  close() {
+    this.viewCtrl.dismiss();
+  }
+
 }
