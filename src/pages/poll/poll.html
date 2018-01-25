@@ -2,7 +2,7 @@
   <main-toolbar></main-toolbar>
 </ion-header>
 
-<ion-content overflow-scroll="true">
+<ion-content>
   <div *ngIf='pollQuestAns.length!==0'>
     <div *ngFor='let qa of pollQuestAns'>
       <div class="questionHeader">
@@ -15,27 +15,27 @@
           <ion-row *ngFor='let ans of qa.answers;let idx=index'>
             <ion-col col-2 text-center>
               <input type="radio" name=`${radiogroup}-{{qa.questionObj.id}}`
-                                 (change)="onSelectionChange(qa.questionObj.id,ans.id)">
+                                 (change)="onSelectionChange(qa,ans.id)">
             </ion-col>
             <ion-col>
               <span>{{ans.answer}}</span>
             </ion-col>
           </ion-row>
 
-          <div *ngIf='qa.questionObj.answerType!==listTextType'>
+          <div *ngIf='qa.questionObj.answerType==listTextType'>
             <ion-row >
               <ion-col col-2 text-center>
                 <input type="radio" name=`${radiogroup}-{{qa.questionObj.id}}`
-                                    (change)="onSelectionOwnerChange(qa.questionObj.id)">
+                                    (change)="onSelectionOwnerChange(qa)">
               </ion-col>
                 <ion-col>
                  <span>Ваш вариант</span>
               </ion-col>
             </ion-row>
 
-            <ion-row>
+            <ion-row [hidden]='!qa.showOpt'>
               <ion-col class="questionRadioArea">
-                <ion-textarea placeholder="Свой вариант" rows="5"></ion-textarea>
+                <textarea class="poll-textarea" [(ngModel)]='qa.usrOptVal' (change)='onSelectionOwnerChange(qa)' placeholder="Свой вариант" rows="5"></textarea>
               </ion-col>
             </ion-row>
           </div>
@@ -46,12 +46,16 @@
          <ion-grid>
             <ion-row>
                 <ion-col class="questionRadioArea">
-                  <ion-textarea  placeholder="Свой вариант" rows="5"></ion-textarea>
+                  <textarea class="poll-textarea" placeholder="Свой вариант" rows="5"></textarea>
                 </ion-col>
             </ion-row>
           </ion-grid>
       </div>
-
     </div>
+    <!-- post -->
+   <div *ngIf='canView' class='f-btn-post-container'>
+     <button class="f-btn-post-questions" ion-button block>Отправить</button>
+   </div>
+
   </div>
 </ion-content>

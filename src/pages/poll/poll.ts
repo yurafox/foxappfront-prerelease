@@ -1,6 +1,6 @@
 import { IDictionary } from './../../app/core/app-core';
 import { PollQuestion, PollQuestionAnswer, AnswerType } from './../../app/model/index';
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ComponentBase } from '../../components/component-extension/component-base';
 import { AbstractDataRepository } from '../../app/service/index';
@@ -8,6 +8,12 @@ import { AbstractDataRepository } from '../../app/service/index';
 interface IPollResult {
   questionId:number,
   answerValue:string
+}
+interface IQuestionContainer {
+  questionObj:PollQuestion,
+  answers:PollQuestionAnswer[],
+  showOpt:boolean,
+  usrOptVal:string
 }
 
 @IonicPage()
@@ -19,8 +25,9 @@ export class PollPage extends ComponentBase{
   private pollId:number;
   private pollQuestions:Array<PollQuestion>=[];
   private pollresults:{pollId:number, pollResult:IDictionary<IPollResult>};
+  private displayContentResult:boolean= false;
 
-  public pollQuestAns:Array<{questionObj:PollQuestion, answers:PollQuestionAnswer[]}>=[];
+  public pollQuestAns:IQuestionContainer[]=[];
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -36,8 +43,9 @@ export class PollPage extends ComponentBase{
 
     for(let question of this.pollQuestions) {
       let answers: PollQuestionAnswer[] = await this._repo.getPollAnswersByQuestionId(question.id);
-      this.pollQuestAns.push({questionObj:question,answers:answers});
+      this.pollQuestAns.push({questionObj:question,answers:answers,showOpt:false,usrOptVal:''});
     }
+    this.displayContentResult=true;
   }
 
   public get listType():AnswerType {
@@ -52,11 +60,23 @@ export class PollPage extends ComponentBase{
     return AnswerType.ListText;
   }
 
-  public onSelectionChange(questionId,answerValue):void {
-    this.pollresults.pollResult[`${questionId}`] = {questionId:questionId,answerValue:`${answerValue}`};
+  public get canView():boolean {
+    return this.displayContentResult;
   }
 
-  public onSelectionOwnerChange(questionId):void {
-     console.log(questionId);
+  public onSelectionChange(qAnswer:IQuestionContainer,answerValue:string):void {
+    this.setUsrOptConfig(qAnswer,answerValue,false);
+  }
+
+  public onSelectionOwnerChange(qAnswer:IQuestionContainer):void {
+    let answer:string = qAnswer.usrOptVal;
+    this.setUsrOptConfig(qAnswer,answer,true);
+  }
+
+  private setUsrOptConfig(qAnswer:IQuestionContainer,answerValue:string,isShowOpt:boolean):void {
+    qAnswer.showOpt = isShowOpt;
+    if(answerValue) {
+      this.pollresults.pollResult[`${qAnswer.questionObj.id}`] = {questionId:qAnswer.questionObj.id,answerValue:`${answerValue}`};
+    }
   }
 }

@@ -3321,6 +3321,12 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       order:10,
       question:'Как Вы оцениваете качество приложения?',
       answerType:0
+    },{
+      id:7,
+      idPoll:1,
+      order:70,
+      question:'Как часто Вы используете наше приложение?',
+      answerType:2
     }, {
       id:2,
       idPoll:1,
@@ -3411,6 +3417,18 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       id:14,
       idPollQuestions: 5,
       answer:'Вконтакте'
+    },{
+      id:15,
+      idPollQuestions: 7,
+      answer:'Каждый день'
+    },{
+      id:16,
+      idPollQuestions: 7,
+      answer:'Довольно часто'
+    },{
+      id:17,
+      idPollQuestions: 7,
+      answer:'Редко'
     }
   ];
 
