@@ -1,3 +1,4 @@
+import { IDictionary } from './../../../core/app-core';
 import { QuotationProduct,
           Product,
           Quotation,
@@ -21,7 +22,8 @@ import { QuotationProduct,
           LoEntity,
           LoSupplEntity,
           EnumPaymentMethod,
-          Poll,PollQuestion,PollQuestionAnswer
+          Poll,PollQuestion,PollQuestionAnswer,
+          ClientPollAnswer
        } from '../../../model/index';
 
 import {Novelty} from "../../../model/novelty";
@@ -90,4 +92,6 @@ export abstract class AbstractDataRepository {
   public async abstract getPollById(id:number): Promise<Poll>;
   public async abstract getPollQuestionsByPollId(pollId:number):Promise<PollQuestion[]>;
   public async abstract getPollAnswersByQuestionId(idPollQuestion:number):Promise<PollQuestionAnswer[]>;
+  public async abstract postClientPoolAnswers(pollAnswers:any):Promise<ClientPollAnswer>;
+  public async abstract getClientPoolAnswersForUserByPollId(pollId:number):Promise<ClientPollAnswer[]>;
 }

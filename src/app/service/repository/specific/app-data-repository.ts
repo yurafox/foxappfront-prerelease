@@ -32,7 +32,8 @@ import {
   LoSupplEntity,
   EnumPaymentMethod,
   ReviewAnswer,
-  Poll,PollQuestion,PollQuestionAnswer
+  Poll,PollQuestion,PollQuestionAnswer,
+  ClientPollAnswer
 } from '../../../model/index';
 import { AbstractDataRepository } from '../../index';
 import { Providers} from "../../../core/app-core";
@@ -73,6 +74,7 @@ const noveltyDynamicUrl = "/api/mnovelties";
 const pollsUrl='/api/mpolls';
 const pollQuestionUrl='/api/mpollQuestion';
 const pollQuestionAnswerUrl = '/api/mpollQuestionAnswer';
+const clientPollAnswersUrl = '/api/mclientPollAnswers';
 // </editor-fold
 
 @Injectable()
@@ -1944,7 +1946,7 @@ export class AppDataRepository extends AbstractDataRepository {
           )
         );
       }
-      return pollQuestions;
+      return pollQuestions.sort((a:PollQuestion,b:PollQuestion):number=>{return b.order-a.order;});
     } catch (err) {
       return await this.handleError(err);
     }
@@ -1970,6 +1972,50 @@ export class AppDataRepository extends AbstractDataRepository {
         );
       }
       return pollQuestionAnswers;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async postClientPoolAnswers(pollAnswers:any):Promise<ClientPollAnswer> {
+    try {
+      const response = await this.http
+        .post(clientPollAnswersUrl, pollAnswers,RequestFactory.makeAuthHeader())
+        .toPromise();
+      const data = response.json();
+
+      if (response.status !== 201) {
+        throw new Error("server side status error");
+      }
+      const clientPollLast:ClientPollAnswer = new ClientPollAnswer
+                            (data.id,data.userId,data.idPoll,data.idPollQuestions,data.clientAnswer);
+
+      return clientPollLast;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async  getClientPoolAnswersForUserByPollId(pollId:number):Promise<ClientPollAnswer[]> {
+    try {
+      const response = await this.http
+        .get(clientPollAnswersUrl,RequestFactory
+                             .makeSearchAndAuth([{key:'idPoll', value:pollId.toString()}]))
+                             .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const clientPollAnswer:ClientPollAnswer[] = new Array<ClientPollAnswer>();
+      if (data != null) {
+        data.forEach(val =>
+          clientPollAnswer.push(
+            new ClientPollAnswer(val.id,val.userId,val.idPoll,val.idPollQuestions,val.clientAnswer)
+          )
+        );
+      }
+      return clientPollAnswer;
     } catch (err) {
       return await this.handleError(err);
     }

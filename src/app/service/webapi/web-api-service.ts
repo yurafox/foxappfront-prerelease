@@ -17,7 +17,6 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   }
 
   get(info: RequestInfo) {
-    // console.log( info);
     let response: Observable<any> | null;
     if ((response = this.apiController(info)) !== null) return response;
   }
@@ -3432,6 +3431,14 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     }
   ];
 
+  clientPollAnswers =[{ // init test object
+    id: 0,
+    userId:0,
+    idPoll:0,
+    idPollQuestions: 0,
+    clientAnswer: ''
+  }];
+
   createDb() {
     const mquotationProducts = this.quotationProducts;
     const mproducts = this.products;
@@ -3468,6 +3475,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mpolls = this.polls;
     const mpollQuestion = this.pollQuestion;
     const mpollQuestionAnswer = this.pollQuestionAnswer;
+    const mclientPollAnswers = this.clientPollAnswers;
 
     return {
       mquotationProducts,
@@ -3504,7 +3512,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mnovelties,
       mpolls,
       mpollQuestion,
-      mpollQuestionAnswer
+      mpollQuestionAnswer,
+      mclientPollAnswers
     };
   }
 
@@ -3551,6 +3560,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
         return info.utils.createResponse$(() => resOpt);
       }
 
+      case "mclientPollAnswers":{
+        return this.clientPollAnswersHandler[info.method](info, resOpt);
+      }
 
       default:
         return null;
@@ -3594,6 +3606,49 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       resOpt.body = resultUser;
       return info.utils.createResponse$(() => resOpt);
     }
+  };
+
+  clientPollAnswersHandler:IDictionary<(info: RequestInfo, resOpt?: ResponseOptions) => any> = {
+     post: info => {
+       const body = (<any>info.req)._body;
+       const tokenStr = (<any>info).req.headers.get("Authorization");
+       const userId = (<any>info).req.headers.get("x-user");
+
+       if(!userId || !this.verifyToken(tokenStr)) {
+          return info.utils.createResponse$(
+            ()=> new ResponseOptions({status: 401,statusText:'Unauthorized'})
+          );
+       }
+
+       if(!body || body.pollResult.length === 0) {
+        return info.utils.createResponse$(
+          ()=> new ResponseOptions({status: 400,statusText:'Bad Request'})
+        );
+      }
+
+      const keys:string[] = Object.keys(body.pollResult);
+      const lastclientAnswerId:number = this.clientPollAnswers[this.clientPollAnswers.length-1].id;
+
+      for(let i=0; i < keys.length; i++) {
+        this.clientPollAnswers.push({
+           id:lastclientAnswerId+i+1,
+           userId:userId,
+           idPoll:body.pollId,
+           idPollQuestions: body.pollResult[keys[i]].questionId,
+           clientAnswer: body.pollResult[keys[i]].answerValue
+        });
+      }
+
+        return info.utils.createResponse$(
+          ()=> new ResponseOptions(
+            {
+              status: 201,
+              statusText:'Created',
+              body:this.clientPollAnswers[this.clientPollAnswers.length-1]
+            })
+        );
+     },
+     get: info => null
   };
   // </editor-fold>
 
@@ -3643,6 +3698,5 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       !!this.tokens.find(value => value.token === tokenSplit[1].trim())
     );
   }
-
   // </editor-fold>
 }

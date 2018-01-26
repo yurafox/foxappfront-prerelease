@@ -1,9 +1,10 @@
 import { IDictionary } from './../../app/core/app-core';
 import { PollQuestion, PollQuestionAnswer, AnswerType } from './../../app/model/index';
 import { Component} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { ComponentBase } from '../../components/component-extension/component-base';
 import { AbstractDataRepository } from '../../app/service/index';
+import {ClientPollAnswer} from '../../app/model/index';
 
 interface IPollResult {
   questionId:number,
@@ -31,7 +32,8 @@ export class PollPage extends ComponentBase{
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public _repo:AbstractDataRepository) {
+              public _repo:AbstractDataRepository,
+              private alertCtrl:AlertController) {
     super();
     this.pollId = this.navParams.data.id;
     this.pollresults = {pollId:this.pollId,pollResult:{}};
@@ -73,10 +75,38 @@ export class PollPage extends ComponentBase{
     this.setUsrOptConfig(qAnswer,answer,true);
   }
 
+  public async sendAnswers() {
+    const clientAnswer:ClientPollAnswer = await this._repo.postClientPoolAnswers(this.pollresults);
+    if(clientAnswer) {
+      let alert = this.alertCtrl.create({
+        message: 'Спасибо за участие. Ваше мнение важно для нас',
+        buttons:[
+          {
+            text: 'OK',
+            handler: () => {this.navCtrl.push('HomePage')}
+          }
+        ]
+      });
+
+      alert.present();
+    }
+  }
+
+  public getSenderBtnVisible():boolean {
+    if(!this.pollresults.pollResult) {
+      return false;
+    }
+    let answersCount=Object.keys(this.pollresults.pollResult).length;
+    return answersCount===this.pollQuestions.length;
+  }
+
   private setUsrOptConfig(qAnswer:IQuestionContainer,answerValue:string,isShowOpt:boolean):void {
     qAnswer.showOpt = isShowOpt;
     if(answerValue) {
       this.pollresults.pollResult[`${qAnswer.questionObj.id}`] = {questionId:qAnswer.questionObj.id,answerValue:`${answerValue}`};
+    }
+    else {
+      delete this.pollresults.pollResult[`${qAnswer.questionObj.id}`];
     }
   }
 }
