@@ -10,6 +10,7 @@ import {EnumPaymentMethod} from '../model/enum-payment-method';
 import {App, LoadingController, NavController} from 'ionic-angular';
 import {PersonInfo} from '../model/person';
 import {CreditProduct} from '../model/credit-product';
+import {CreditCalc} from '../model/credit-calc';
 
 
 export class LoDeliveryOption {
@@ -27,7 +28,6 @@ export class LoDeliveryOption {
 @Injectable()
 export class CartService  {
 
-  public creditsLoaded = false;
   public lastItemCreditCalc: ClientOrderProducts = null;
   private cKey = 'cartItems';
   public order: ClientOrder = null;
@@ -35,20 +35,12 @@ export class CartService  {
   public loDeliveryOptions: Array<LoDeliveryOption>=[];
   public loResultDeliveryOptions: Array<LoDeliveryOption>=[];
   public pmtMethod: EnumPaymentMethod = null;
-  public maxPartPaymentSizeInfo = null;
-  public credits: Array<{isChecked: boolean, creditProduct: CreditProduct}>=[];
+
+  public loan: CreditCalc = null;
 
   public promoCode: string;
   public cartValidationNeeded = false;
   public person = new PersonInfo();
-
-
-  public selectedPartsPmtCount = {value: null, displayValue: null};
-  public selectedImmLoanCount = {value: null, displayValue: null};
-  public selectedLoanCount = {value: null, displayValue: null};
-
-
-  public creditProduct = {sId: null, sName: null};
 
   private navCtrl: NavController;
 
@@ -98,18 +90,14 @@ export class CartService  {
     return Math.ceil((_am + (_am * _com / 100 * (months - _gr))) / months);
   }
 
+/*
   public async getCreditInfo() {
     this.selectedPartsPmtCount = {value: null, displayValue: null};
     this.selectedImmLoanCount = {value: null, displayValue: null};
     this.selectedLoanCount = {value: null, displayValue: null};
-/*
-    const is3 = (this.pmtMethod.id === 3);
-    const is4 = (this.pmtMethod.id === 4);
-    const is5 = (this.pmtMethod.id === 5);
-*/
 
     const exItem = this.mostExpensiveItem;
-    if (!(exItem) /*&& !(is4 || is3 || is5)*/)
+    if (!(exItem) /!*&& !(is4 || is3 || is5)*!/)
       return;
 
     if (this.lastItemCreditCalc === exItem)
@@ -143,6 +131,7 @@ export class CartService  {
       loading.dismiss();
     }
   }
+*/
 
   async initCart() {
     console.log('CartInit call. Is auth: '+ this.userService.isAuth);

@@ -42,4 +42,5 @@ export * from './review-answer';
 export * from './novelty';
 export * from './person';
 export * from './credit-product';
+export * from './credit-calc';
 

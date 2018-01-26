@@ -28,57 +28,32 @@
       </ion-row>
     </div>
 <!--
-Privat
--->
-    <div *ngIf="dataLoaded && ((pmtMethods[2].isChecked) || (pmtMethods[3].isChecked))
-                && (partsPmtArray.length > 0) && (cart.creditsLoaded)">
-      <ion-row padding-top>
-        <ion-col></ion-col>
-      </ion-row>
-
-      <ion-row style="padding-left: 5px; padding-right: 5px;">
-          <ion-grid class="f-border-ligthgray">
-            <ion-row>
-              <ion-col>
-                <span class="f-size-larger">Parts Count</span>
-<!--
-                <br>
-                <dropdown-list [reference]="cart.selectedPartsPmtCount"
-                               [store]="partsPmtArray"
-                               [options]="{popupHeader: 'Parts', buttonClass:'f-drop-button-block' }"
-                               [map]="{valueName:'value',displayName:'displayValue'}">
-                </dropdown-list>
--->
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-      </ion-row>
-    </div>
-<!--
 Credit Products
 -->
-    <div *ngIf="dataLoaded && ((pmtMethods[4].isChecked))">
-      <ion-row padding-top>
-        <ion-col></ion-col>
-      </ion-row>
-
+    <div *ngIf="dataLoaded && ((pmtMethods[2].isChecked))">
       <ion-row style="padding-left: 5px; padding-right: 5px;">
         <ion-grid class="f-border-ligthgray">
           <ion-row>
             <ion-col>
-              <span class="f-size-larger">Please select a credit product</span>
-              <br>
               <button class="f-btn-secondary" ion-button block
-                      (click)="onShowCreditCalculatorClick()">Show a loan calculator</button>
+                      (click)="onShowCreditCalculatorClick()">Please select a loan</button>
             </ion-col>
           </ion-row>
+
+<!--
+          <ion-row *ngIf="cart.loan && (cart.pmtMethod.id === 3)">
+            Selected item:
+          </ion-row>
+-->
+
+          <credit-brief *ngIf="cart.loan && (cart.pmtMethod.id === 3)" [credit]="cart.loan"></credit-brief>
         </ion-grid>
       </ion-row>
     </div>
 <!--
 Passport Data
 -->
-    <div *ngIf="dataLoaded && (pmtMethods[4].isChecked) && (cart.creditsLoaded)">
+    <div *ngIf="dataLoaded && cart.loan && ((pmtMethods[2].isChecked))">
       <ion-row padding-top>
         <ion-col></ion-col>
       </ion-row>

@@ -4,16 +4,7 @@ import {CartService} from '../../app/service/cart-service';
 import {QuotationProduct} from '../../app/model/quotation-product';
 import {UserService} from '../../app/service/bll/user-service';
 import {CreditProduct} from '../../app/model/credit-product';
-
-export class CreditCalc {
-  constructor(
-              public isChecked: boolean,
-              public creditProduct: CreditProduct,
-              public clMonths: number = null, public clMonthCommPct: number = null,
-              public clYearPct: number = null, public clFirstAidAmt: number = null,
-              public clGraceMonths: number = null, public clMonthAmt: number = null
-  ) {}
-}
+import {CreditCalc} from '../../app/model/credit-calc';
 
 @IonicPage()
 @Component({
@@ -108,7 +99,19 @@ export class CreditCalcPage {
       return this.cart.orderTotal;
   }
 
+  public get selectedLoan(): CreditCalc {
+    let res: any = null;
+    for (let i of this.credits) {
+      if (i.isChecked) {
+        res = i;
+        break;
+      };
+    };
+    return res;
+  }
+
   onContinueClick() {
+    this.cart.loan = this.selectedLoan;
     this.viewCtrl.dismiss();
   }
 

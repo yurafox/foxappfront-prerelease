@@ -1,5 +1,6 @@
+<hr>
 <ion-row style="padding-left: 5px; padding-right: 5px;">
-  <ion-grid class="f-border-ligthgray">
+  <ion-grid>
     <ion-row>
       <ion-col col-12>
         <span class="f-size-small">Максимальный срок кредита - до <b>{{cProduct.creditProduct.maxTerm}}</b> месяцев;</span>
@@ -23,16 +24,15 @@
         </span>
 
         <hr>
-        <span>Срок кредита, мес</span>
+        <span class="f-size-medium">Срок кредита, мес</span>
         <dropdown-list *ngIf="partsPmtArray && (partsPmtArray.length > 0)"
                        [reference]="cProduct"
                        [store]="partsPmtArray"
+                       [afterUpdate] = "onAfterCreditSelect"
                        [options]="{popupHeader: 'Parts', buttonClass:'f-drop-button-block'}"
                        [map]="{valueName:'clMonths',displayName:'clMonths'}">
         </dropdown-list>
-        <hr>
-
-        <span *ngIf="cProduct.clMonths">Ежемесячный платеж
+        <span *ngIf="cProduct.clMonths" class="f-size-medium"><hr>Ежемесячный платеж --
           <b> <span class="f-color-green">
             {{cart.calculateLoan(loanAmount, cProduct.clMonths,
                   cProduct.creditProduct.monthCommissionPct, cProduct.creditProduct.sGracePeriod)

@@ -1,10 +1,8 @@
-import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {IonicPage, LoadingController, ModalController, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
-import {EnumPaymentMethod} from '../../app/model/enum-payment-method';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {CartService} from '../../app/service/cart-service';
-import {PersonInfo} from '../../app/model/person';
 import {NgForm} from '@angular/forms';
 import {CreditCalcPage} from '../credit-calc/credit-calc';
 
@@ -25,26 +23,12 @@ export class SelectPmtMethodPage extends ComponentBase {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
-              private cdRef:ChangeDetectorRef, public modalCtrl: ModalController)
+              public modalCtrl: ModalController)
   {
     super();
     this.getPmtMethods();
   }
 
-  async initPartsPmt() {
-
-    await this.cart.getCreditInfo();
-    let hBound = 0;
-    if (this.cart.pmtMethod.id === 3)
-      hBound = this.cart.maxPartPaymentSizeInfo.partsPmtCnt;
-    if (this.cart.pmtMethod.id === 4)
-      hBound = this.cart.maxPartPaymentSizeInfo.creditSize;
-    this.partsPmtArray = [];
-    for (let i = 2; i <= hBound; i++) {
-      this.partsPmtArray.push({value: i, displayValue: i.toString()});
-    }
-
-  }
 
   async getPmtMethods () {
     let pmt = await this.repo.getPmtMethods();
@@ -76,14 +60,8 @@ export class SelectPmtMethodPage extends ComponentBase {
       return false;
 
     switch (this.cart.pmtMethod.id) {
-      case 5: {
-        return (this.isAnyOptionSelected() && this.personInfoValid() && (this.cart.creditProduct.sId));
-      }
       case 3: {
-        return (this.isAnyOptionSelected() && (this.cart.selectedPartsPmtCount.value));
-      }
-      case 4: {
-        return (this.isAnyOptionSelected() && (this.cart.selectedPartsPmtCount.value));
+        return ((this.isAnyOptionSelected()) && (this.personInfoValid()) && !(this.cart.loan === null));
       }
       default: {
         return this.isAnyOptionSelected();
@@ -96,20 +74,14 @@ export class SelectPmtMethodPage extends ComponentBase {
       return;
 
     for (let i of this.pmtMethods) {
-      i.isChecked = (i === option);
-      // this.cdRef.detectChanges();
-      this.cart.pmtMethod = option.method;
-/*      if ( (i === option) && ((option.method.id === 3 ) || (option.method.id === 4 ) || (option.method.id === 5) ) && (option.isChecked) )
-        this.initPartsPmt();*/
-/*
-      if  ( (i === option) && !((option.method.id === 3 ) || (option.method.id === 4 )) && (option.isChecked) ) {
-        this.cart.selectedPartsPmtCount = {value: null, displayValue: null};
-      };
-      if  ( (i === option) && !(option.method.id === 5) && (option.isChecked) ) {
-        this.cart.creditProduct = {sId: null, sName: null};
-      };
-*/
+      let match = (i === option);
+      i.isChecked = match;
 
+      if (match) {
+        this.cart.pmtMethod = option.method;
+        if ((this.cart.pmtMethod.id === 1) || (this.cart.pmtMethod.id === 2))
+          this.cart.loan = null;
+      };
     };
   }
 

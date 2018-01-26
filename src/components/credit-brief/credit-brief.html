@@ -1,0 +1,18 @@
+<hr>
+<ion-row>
+  <ion-col>
+    <span class="f-size-larger">{{credit.creditProduct.sName}}</span>
+  </ion-col>
+</ion-row>
+<ion-row *ngIf="credit.clMonths">
+  <ion-col>
+    <span class="f-size-larger" >Loan period: <b>{{credit.clMonths}}</b> months</span>
+  </ion-col>
+</ion-row>
+<ion-row *ngIf="credit.clMonths">
+  <ion-col>
+    <span class="f-size-larger">Monthly payment: <span class="f-color-green"><b>{{credit.clMonthAmt | localeCurrency:userService.currency}}</b></span></span>
+    <br>
+    <span class="f-size-smaller" *ngIf="credit.clMonths">*The calculation of the monthly payment is approximate. The final value will be defined by the credit manager</span>
+  </ion-col>
+</ion-row>

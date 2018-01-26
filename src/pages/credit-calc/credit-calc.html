@@ -30,8 +30,8 @@ General Credits
     <div *ngIf="credits">
       <ion-row style="padding-left: 5px; padding-right: 5px;">
 
-        <ion-grid class="f-border-ligthgray">
-          <ion-row class="f-row-odd f-fond-bold f-size-small">
+        <ion-grid no-padding>
+          <ion-row  padding-top padding-bottom class="f-row-odd f-fond-bold f-size-small">
             <ion-col col-5 text-center>Название кредита</ion-col>
             <ion-col col-2 text-center>Льготный период, мес</ion-col>
             <ion-col col-2 text-center>Срок кредита, мес</ion-col>
@@ -86,7 +86,7 @@ General Credits
 
                 [attr.disabled]="!validatePage()?'':null"
 
-                (click)="onContinueClick()">Select loan</button>
+                (click)="onContinueClick()">Continue</button>
       </ion-col>
     </ion-row>
   </ion-grid>

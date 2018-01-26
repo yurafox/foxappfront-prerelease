@@ -3176,9 +3176,11 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   paymentMethods = [
     {id: 1, name: 'Cash'},
     {id: 2, name: 'Credit card Visa / MasterCard'},
+/*
     {id: 3, name: 'Privat - parts payment'},
     {id: 4, name: 'Privat - immediate instalments'},
-    {id: 5, name: 'Credit'}
+*/
+    {id: 3, name: 'Loan'}
   ];
 
   productSupplCreditGrades = [

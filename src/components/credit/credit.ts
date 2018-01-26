@@ -1,7 +1,8 @@
 import {Component, Input, OnChanges} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {CartService} from '../../app/service/cart-service';
-import {CreditCalc} from '../../pages/credit-calc/credit-calc';
+import {CreditCalc} from '../../app/model/credit-calc';
+
 
 @Component({
   selector: 'credit',
@@ -28,12 +29,15 @@ export class CreditComponent extends ComponentBase implements OnChanges {
   }
 
   initData() {
-    //console.log('Credit max perriod: ' + this.cProduct.creditProduct.maxTerm);
     for (let i = this.cProduct.creditProduct.minTerm; i <= this.cProduct.creditProduct.maxTerm; i++) {
       this.partsPmtArray.push({clMonths: i, displayValue: i.toString()});
     };
   }
 
+  onAfterCreditSelect(item: any, objRef:any): void {
+    objRef.clMonthAmt = this.cart.calculateLoan(this.loanAmount, objRef.clMonths,
+      objRef.creditProduct.monthCommissionPct, objRef.creditProduct.sGracePeriod);
+  }
 
 
 }

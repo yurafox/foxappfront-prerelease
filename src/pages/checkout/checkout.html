@@ -80,7 +80,7 @@
             {{ cart.pmtMethod.name }}
           </ion-col>
         </ion-row>
-
+        <credit-brief *ngIf="cart.loan && (cart.pmtMethod.id === 3)" [credit]="cart.loan"></credit-brief>
       </ion-grid>
     </ion-row>
     <promo-code *ngIf="dataLoaded"></promo-code>
