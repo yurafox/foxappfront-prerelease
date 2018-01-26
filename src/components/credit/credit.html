@@ -1,24 +1,45 @@
 <ion-row style="padding-left: 5px; padding-right: 5px;">
   <ion-grid class="f-border-ligthgray">
     <ion-row>
-      <ion-col col-1 text-center>
-        <input type="radio" id="radioPBparts">
-      </ion-col>
-      <ion-col>
-        {{creditName}}
-        <br>
-        <span class="f-size-small">Максимальный срок кредита - до <b>{{cart.maxPartPaymentSizeInfo.partsPmtCnt}}</b> частей,
-              ежемесячная комиссия – <b>{{comissionPct}}</b>% от суммы кредита</span>
+      <ion-col col-12>
+        <span class="f-size-small">Максимальный срок кредита - до <b>{{cProduct.creditProduct.maxTerm}}</b> месяцев;</span>
+        <span class="f-size-small" *ngIf="cProduct.creditProduct.sGracePeriod">
+        Льготный период – <b>{{cProduct.creditProduct.sGracePeriod}}</b> месяцев;
+        </span>
+        <span class="f-size-small">
+        Первый взнос – <b>
+          <span *ngIf="!cProduct.creditProduct.firstPay; else elseBlock">0</span>
+          <ng-template #elseBlock>{{cProduct.creditProduct.firstPay}}</ng-template>
+        </b>%;
+        </span>
+        <span class="f-size-small">Ежемесячная комиссия
+           <span *ngIf="cProduct.creditProduct.sGracePeriod && !(cProduct.creditProduct.sGracePeriod == 0)"> после льготного периода </span>
+           – <b>{{cProduct.creditProduct.monthCommissionPct}}</b>% от суммы кредита; </span>
+        <span class="f-size-small" *ngIf="cProduct.creditProduct.maxAmt">
+        Максимальная сумма кредита – <b>{{cProduct.creditProduct.maxAmt | localeCurrency:userService.currency}}</b>;
+        </span>
+        <span class="f-size-small" *ngIf="cProduct.creditProduct.yearPct">
+        Годовая % ставка – <b>{{cProduct.creditProduct.yearPct}}</b>%
+        </span>
+
         <hr>
-        <span>Количество месяцев</span>
+        <span>Срок кредита, мес</span>
         <dropdown-list *ngIf="partsPmtArray && (partsPmtArray.length > 0)"
-                       [reference]="storeVal"
+                       [reference]="cProduct"
                        [store]="partsPmtArray"
                        [options]="{popupHeader: 'Parts', buttonClass:'f-drop-button-block'}"
-                       [map]="{valueName:'value',displayName:'displayValue'}">
+                       [map]="{valueName:'clMonths',displayName:'clMonths'}">
         </dropdown-list>
-        <span *ngIf="storeVal.value">Ежемесячный платеж <b> <span class="f-color-green">{{mouthlyPmt | localeCurrency:userService.currency}}</span></b>
+        <hr>
+
+        <span *ngIf="cProduct.clMonths">Ежемесячный платеж
+          <b> <span class="f-color-green">
+            {{cart.calculateLoan(loanAmount, cProduct.clMonths,
+                  cProduct.creditProduct.monthCommissionPct, cProduct.creditProduct.sGracePeriod)
+                  | localeCurrency:userService.currency}}
+          </span></b>
         </span>
+
       </ion-col>
     </ion-row>
   </ion-grid>

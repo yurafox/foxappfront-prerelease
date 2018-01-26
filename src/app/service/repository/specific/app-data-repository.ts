@@ -104,6 +104,7 @@ export class AppDataRepository extends AbstractDataRepository {
           cp.monthCommissionPct = val.monthCommissionPct;
           cp.yearPct = val.yearPct;
           cp.kpcPct = val.kpcPct;
+          cp.minTerm = val.minTerm;
 
           cItems.push(cp);
         });

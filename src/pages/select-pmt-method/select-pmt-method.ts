@@ -97,22 +97,24 @@ export class SelectPmtMethodPage extends ComponentBase {
 
     for (let i of this.pmtMethods) {
       i.isChecked = (i === option);
-      this.cdRef.detectChanges();
+      // this.cdRef.detectChanges();
       this.cart.pmtMethod = option.method;
-      if ( (i === option) && ((option.method.id === 3 ) || (option.method.id === 4 ) || (option.method.id === 5) ) && (option.isChecked) )
-        this.initPartsPmt();
+/*      if ( (i === option) && ((option.method.id === 3 ) || (option.method.id === 4 ) || (option.method.id === 5) ) && (option.isChecked) )
+        this.initPartsPmt();*/
+/*
       if  ( (i === option) && !((option.method.id === 3 ) || (option.method.id === 4 )) && (option.isChecked) ) {
         this.cart.selectedPartsPmtCount = {value: null, displayValue: null};
       };
       if  ( (i === option) && !(option.method.id === 5) && (option.isChecked) ) {
         this.cart.creditProduct = {sId: null, sName: null};
       };
+*/
 
     };
   }
 
   onShowCreditCalculatorClick() {
-    let calcModal = this.modalCtrl.create(CreditCalcPage);
+    let calcModal = this.modalCtrl.create(CreditCalcPage, {quotProduct: null});
     calcModal.present();
   }
 

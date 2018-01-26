@@ -21,39 +21,25 @@
         </b>
       </ion-col>
     </ion-row>
-    <credit
-      [maxPeriod]="cart.maxPartPaymentSizeInfo.partsPmtCnt"
-      [creditName]="'Приват банк Оплата частями'"
-      [comissionPct]="0"
-      [storeVal]="cart.selectedPartsPmtCount"
-      [loanAmount]="loanAmount"
-    ></credit>
-    <credit
-      [maxPeriod]="cart.maxPartPaymentSizeInfo.creditSize"
-      [creditName]="'Приват банк Мгновенная рассрочка'"
-      [comissionPct]="2.9"
-      [storeVal]="cart.selectedImmLoanCount"
-      [loanAmount]="loanAmount"
-    ></credit>
     <ion-row>
       <ion-col></ion-col>
     </ion-row>
 <!--
 General Credits
 -->
-    <div *ngIf="cart.credits">
+    <div *ngIf="credits">
       <ion-row style="padding-left: 5px; padding-right: 5px;">
 
         <ion-grid class="f-border-ligthgray">
           <ion-row class="f-row-odd f-fond-bold f-size-small">
-            <ion-col col-4 text-center>Название кредита</ion-col>
-            <ion-col col-3 text-center>Льготный период, мес</ion-col>
+            <ion-col col-5 text-center>Название кредита</ion-col>
+            <ion-col col-2 text-center>Льготный период, мес</ion-col>
             <ion-col col-2 text-center>Срок кредита, мес</ion-col>
             <ion-col col-3 text-center>Ежемесячный платёж **</ion-col>
           </ion-row>
 
           <ion-row padding-top padding-bottom
-                   *ngFor="let cProd of cart.credits odd as isOdd; even as isEven"
+                   *ngFor="let cProd of credits odd as isOdd; even as isEven"
                    [class.f-row-odd]="isOdd"
                    [class.f-row-even]="isEven" (click)="onSelectItem(cProd)">
             <ion-grid no-padding>
@@ -61,52 +47,29 @@ General Credits
                 <ion-col col-1 text-center>
                   <input type="radio" id="radioButton" [checked]="cProd.isChecked">
                 </ion-col>
-                <ion-col col-3>
-                  <span>{{cProd.creditProduct.sName}}</span>
-                </ion-col>
-                <ion-col col-3 text-center>
-                  <span>{{cProd.creditProduct.sGracePeriod}}</span>
+                <ion-col col-4>
+                  <span class="f-size-small">{{cProd.creditProduct.sName}}</span>
                 </ion-col>
                 <ion-col col-2 text-center>
-                  <span *ngIf="!cProd.isChecked">{{cProd.creditProduct.maxTerm}}</span>
-
-                  <dropdown-list *ngIf="cProd.isChecked && dArray && (dArray.length > 0)"
-                                 [reference]="cart.selectedLoanCount"
-                                 [store]="dArray"
-                                 [options]="{popupHeader: 'Months', buttonClass:'f-drop-button-block'}"
-                                 [map]="{valueName:'value',displayName:'displayValue'}">
-                  </dropdown-list>
-
+                  <span class="f-size-small">{{cProd.creditProduct.sGracePeriod}}</span>
                 </ion-col>
-                <ion-col col-3 text-center>
-              <span *ngIf="cProd.creditProduct.maxTerm && !(cProd.creditProduct.maxTerm === 0)">
-                {{loanAmount/cProd.creditProduct.maxTerm | localeCurrency:userService.currency}}
+                <ion-col col-2 text-center>
+                  <span class="f-size-small">{{cProd.creditProduct.minTerm}}</span>
+                </ion-col>
+                <ion-col col-3 text-end>
+              <span class="f-size-small" *ngIf="cProd.creditProduct.minTerm && !(cProd.creditProduct.minTerm === 0)">
+                {{ cart.calculateLoan(loanAmount, cProd.creditProduct.minTerm,
+                  cProd.creditProduct.monthCommissionPct, cProd.creditProduct.sGracePeriod)
+                  | localeCurrency:userService.currency}}
               </span>
                 </ion-col>
               </ion-row>
               <ion-row class="f-size-small" *ngIf="cProd.isChecked">
-                <ion-col>
-                  <hr>
-                  <ion-grid>
-                    <ion-row>
-                      <ion-col>
-                        <span>Первый взнос, % от </span>
-                        <span *ngIf="cProd.creditProduct.firstPay; else elseBlock1"><b>{{cProd.creditProduct.firstPay}}%</b></span>
-                            <ng-template #elseBlock1>
-                              <b>0%</b>
-                            </ng-template>
-                      </ion-col>
-                      <ion-col><span>Макс. сумма кредита, до: <b>{{maxAmt | localeCurrency:userService.currency}}</b></span></ion-col>
-                    </ion-row>
-                    <ion-row>
-                      <ion-col><span>Ежемесячная комиссия после льготного периода: <b>{{cProd.creditProduct.monthCommissionPct}} % от суммы кредита</b></span></ion-col>
-                      <ion-col><span>Годовая процентная ставка: <b>{{cProd.creditProduct.yearPct}}%</b></span></ion-col>
-                    </ion-row>
-                  </ion-grid>
-                </ion-col>
+                <credit
+                  [cProduct]="cProd"
+                  [loanAmount]="loanAmount"
+                ></credit>
               </ion-row>
-
-
             </ion-grid>
 
           </ion-row>

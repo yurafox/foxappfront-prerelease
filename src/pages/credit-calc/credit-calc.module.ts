@@ -13,5 +13,8 @@ import {PipesModule} from '../../app/pipe/pipes.module';
     ComponentsModule,
     PipesModule
   ],
+  exports: [
+    CreditCalcPage
+  ]
 })
 export class CreditCalcPageModule {}

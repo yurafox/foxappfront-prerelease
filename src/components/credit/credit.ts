@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {CartService} from '../../app/service/cart-service';
+import {CreditCalc} from '../../pages/credit-calc/credit-calc';
 
 @Component({
   selector: 'credit',
@@ -9,21 +10,13 @@ import {CartService} from '../../app/service/cart-service';
 export class CreditComponent extends ComponentBase implements OnChanges {
 
   @Input()
-  maxPeriod: number;
-
-  @Input()
-  creditName: string;
-
-  @Input()
-  comissionPct: number;
-
-  @Input()
-  storeVal: any;
-
-  @Input()
   loanAmount: number;
 
-  public partsPmtArray: Array<{value: number, displayValue: string}> = [];
+
+  @Input()
+  cProduct: CreditCalc;
+
+  public partsPmtArray: Array<{clMonths: number, displayValue: string}> = [];
 
 
   constructor(public cart: CartService ) {
@@ -35,14 +28,12 @@ export class CreditComponent extends ComponentBase implements OnChanges {
   }
 
   initData() {
-    console.log('Credit max perriod: ' + this.maxPeriod);
-    for (let i = 2; i <= this.maxPeriod; i++) {
-      this.partsPmtArray.push({value: i, displayValue: i.toString()});
+    //console.log('Credit max perriod: ' + this.cProduct.creditProduct.maxTerm);
+    for (let i = this.cProduct.creditProduct.minTerm; i <= this.cProduct.creditProduct.maxTerm; i++) {
+      this.partsPmtArray.push({clMonths: i, displayValue: i.toString()});
     };
   }
 
-  public get mouthlyPmt(): number {
-    return this.cart.calculateLoan(this.loanAmount, this.storeVal.value, this.comissionPct);
-  }
+
 
 }

@@ -1,11 +1,19 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
+import {IonicPage, LoadingController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {CartService} from '../../app/service/cart-service';
 import {QuotationProduct} from '../../app/model/quotation-product';
 import {UserService} from '../../app/service/bll/user-service';
-import {AppConstants} from '../../app/app-constants';
 import {CreditProduct} from '../../app/model/credit-product';
 
+export class CreditCalc {
+  constructor(
+              public isChecked: boolean,
+              public creditProduct: CreditProduct,
+              public clMonths: number = null, public clMonthCommPct: number = null,
+              public clYearPct: number = null, public clFirstAidAmt: number = null,
+              public clGraceMonths: number = null, public clMonthAmt: number = null
+  ) {}
+}
 
 @IonicPage()
 @Component({
@@ -14,16 +22,76 @@ import {CreditProduct} from '../../app/model/credit-product';
 })
 export class CreditCalcPage {
 
+  creditsLoaded: boolean;
   quotProduct: QuotationProduct = null;
-  maxAmt = AppConstants.MAX_LOAN_AMT;
-  minAmt = AppConstants.MIN_LOAN_AMT;
+  lastQp: number = null;
+  credits: Array<CreditCalc> = [];
   private _cProd: {isChecked: boolean, creditProduct: CreditProduct} = null;
   public dArray: Array<{value: number, displayValue: string}> = [];
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController, public cart: CartService,
-              public userService: UserService) {
+              public userService: UserService, public loadingCtrl: LoadingController) {
+
+    this.quotProduct = this.navParams.data.quotProduct;
+    this.initCreditCalcData();
+  }
+
+  async initCreditCalcData() {
+    let _qp =
+      (this.quotProduct ? this.quotProduct.id : this.cart.mostExpensiveItem.idQuotationProduct);
+
+    if (this.lastQp === _qp)
+      return;
+
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    loading.present();
+    try {
+      this.creditsLoaded = false;
+      let qp: QuotationProduct = (this.quotProduct ? this.quotProduct : await this.cart.repo.getQuotationProductById(_qp));
+      const quot = await (<any>qp).quotation_p;
+      const suppl = await (<any>quot).supplier_p;
+      let pInfo = await this.cart.repo.getProductCreditSize(qp.idProduct, suppl.id);
+
+      if (!pInfo)
+        pInfo = {partsPmtCnt: 0, creditSize: 0};
+
+      const arr: CreditProduct[] = await this.cart.repo.getCreditProducts();
+      this.credits = [];
+      let _cpOplataChastyami = new CreditProduct();
+      _cpOplataChastyami.sId = -2;
+      _cpOplataChastyami.sName = "Приват банк \"Оплата частями\"";
+      _cpOplataChastyami.firstPay = 0;
+      _cpOplataChastyami.maxTerm = pInfo.partsPmtCnt;
+      _cpOplataChastyami.monthCommissionPct = 0;
+      _cpOplataChastyami.maxAmt = null;
+      _cpOplataChastyami.minTerm = 2;
+      this.credits.push(new CreditCalc(false, _cpOplataChastyami));
+
+      let _cpMgnovCredit = new CreditProduct();
+      _cpMgnovCredit.sId = -1;
+      _cpMgnovCredit.sName = "Приват банк \"Мгновенная рассрочка\"";
+      _cpMgnovCredit.firstPay = 0;
+      _cpMgnovCredit.maxTerm = pInfo.creditSize;
+      _cpMgnovCredit.monthCommissionPct = 2.9;
+      _cpMgnovCredit.maxAmt = null;
+      _cpMgnovCredit.minTerm = 2;
+      this.credits.push(new CreditCalc(false, _cpMgnovCredit));
+
+      arr.forEach(i => {
+        if ((i.kpcPct < pInfo.creditSize)
+          && (i.sPartPay === 0) && (i.sDefProdId))
+          this.credits.push(new CreditCalc(false, i));
+      });
+      this.lastQp = _qp;
+    }
+    finally {
+      this.creditsLoaded = true;
+      loading.dismiss();
+    }
   }
 
   initCombo() {
@@ -45,7 +113,7 @@ export class CreditCalcPage {
   }
 
   onSelectItem(cProd) {
-    this.cart.credits.forEach(i => {
+    this.credits.forEach(i => {
         i.isChecked = (cProd == i);
       }
     );
@@ -55,7 +123,7 @@ export class CreditCalcPage {
 
   isAnyItemSelected(): boolean {
     let res = false;
-    for (let i of this.cart.credits) {
+    for (let i of this.credits) {
       if (i.isChecked) {
         res = true;
         break;

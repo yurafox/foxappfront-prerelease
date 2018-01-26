@@ -41,12 +41,14 @@ Privat
             <ion-row>
               <ion-col>
                 <span class="f-size-larger">Parts Count</span>
+<!--
                 <br>
                 <dropdown-list [reference]="cart.selectedPartsPmtCount"
                                [store]="partsPmtArray"
                                [options]="{popupHeader: 'Parts', buttonClass:'f-drop-button-block' }"
                                [map]="{valueName:'value',displayName:'displayValue'}">
                 </dropdown-list>
+-->
               </ion-col>
             </ion-row>
           </ion-grid>
@@ -55,8 +57,7 @@ Privat
 <!--
 Credit Products
 -->
-    <div *ngIf="dataLoaded && ((pmtMethods[4].isChecked))
-                  && (cart.credits.length > 0) && (cart.creditsLoaded)">
+    <div *ngIf="dataLoaded && ((pmtMethods[4].isChecked))">
       <ion-row padding-top>
         <ion-col></ion-col>
       </ion-row>
@@ -69,12 +70,6 @@ Credit Products
               <br>
               <button class="f-btn-secondary" ion-button block
                       (click)="onShowCreditCalculatorClick()">Show a loan calculator</button>
-              <br>
-              <dropdown-list [reference]="cart.creditProduct"
-                             [store]="cart.credits"
-                             [options]="{popupHeader: 'Credit', buttonClass:'f-drop-button-block' }"
-                             [map]="{valueName:'sId',displayName:'sName'}">
-              </dropdown-list>
             </ion-col>
           </ion-row>
         </ion-grid>

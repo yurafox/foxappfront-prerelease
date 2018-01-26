@@ -91,15 +91,11 @@ export class CartService  {
     return item;
   }
 
-  calculateLoan(amount: number, months: number, monthsCommissPct: number): number {
-    if ((months) && (amount) && !(months == 0)) {
-      if (monthsCommissPct)
-        return(Math.round(amount/months + amount*monthsCommissPct/100))
-      else
-        return(Math.round(amount/months));
-    }
-    else
-      return null;
+  calculateLoan(amount: number, months: number, monthsCommissPct: number, grace: number): number {
+    let _gr = (grace) ? grace : 0;
+    let _am = (amount) ? amount : 0;
+    let _com = (monthsCommissPct) ? monthsCommissPct : 0;
+    return Math.ceil((_am + (_am * _com / 100 * (months - _gr))) / months);
   }
 
   public async getCreditInfo() {
