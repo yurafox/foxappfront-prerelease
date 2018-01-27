@@ -20,11 +20,15 @@ export class CheckoutPage extends ComponentBase {
 
   }
 
-  validatePage() {
+  validatePage(): {isValid: boolean, errors: string[]} {
+    let err = [];
     if (this.cart.pmtMethod.id === 3)
-      return (this.cart.validateLoan(this.cart.orderTotal).isValid)
-    else
-      return true;
+      this.cart.validateLoan(this.cart.orderTotal).validationErrors.forEach(i => {err.push(i)});
+    this.cart.orderProducts.forEach(i => {
+      if(i.errorMessage)
+        err.push(i.errorMessage);
+    });
+    return {isValid: !(err.length>0), errors: err};
   }
 
   onPlaceOrderClick() {

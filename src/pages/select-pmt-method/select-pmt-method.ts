@@ -33,7 +33,7 @@ export class SelectPmtMethodPage extends ComponentBase {
   async getPmtMethods () {
     let pmt = await this.repo.getPmtMethods();
     pmt.forEach(i => {
-        this.pmtMethods.push({isChecked: false, method: i});
+        this.pmtMethods.push({isChecked: ((this.cart.pmtMethod) && (this.cart.pmtMethod.id === i.id)), method: i});
       }
     );
 

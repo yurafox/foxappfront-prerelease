@@ -40,9 +40,16 @@
               </ion-col>
             </ion-row>
 
+            <ion-row *ngIf="item?.quotationproduct?.product?.bonuses">
+              <ion-col no-padding class="f-item-padding-bottom" >
+                <div class="f-bonuses"><span>+{{item?.quotationproduct?.product?.bonuses*item.qty | localeCurrency:userService.currency}}</span> bonuses </div>
+              </ion-col>
+            </ion-row>
+
+
             <ion-row *ngIf="item?.quotationproduct?.freeShipping">
               <ion-col no-padding>
-                <b><span class="f-item-nopadding f-size-small">FREE shipping</span></b>
+                <b><span class="f-item-nopadding f-size-small f-color-green">FREE shipping</span></b>
               </ion-col>
             </ion-row>
 

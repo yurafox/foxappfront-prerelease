@@ -7,6 +7,8 @@ import {CartService} from '../../app/service/cart-service';
 import {CustomPopupComponent} from '../../components/custom-popup/custom-popup';
 import {StorePlace} from '../../app/model/store-place';
 import {System} from '../../app/core/app-core';
+import {CreditCalcPage} from '../credit-calc/credit-calc';
+import {AppConstants} from '../../app/app-constants';
 
 @IonicPage()
 @Component({
@@ -18,6 +20,8 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   qty = new System.FoxNumber();
   selectedStorePlace: StorePlace;
   reviews = new Array<ProductReview>();
+  minLoanAmt = AppConstants.MIN_LOAN_AMT;
+  maxLoanAmt = AppConstants.MAX_LOAN_AMT;
 
 
 
@@ -60,10 +64,18 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   }
 
   onAddToCart() {
-    //console.log(this.valueQuot);
-
     this.cart.addItem(this.valueQuot, this.qty.value, this.product.price, this.selectedStorePlace);
     this.showAddToCartConfirmToast();
+  }
+
+  onGetForLoan() {
+    let calcModal = this.modalCtrl.create(CreditCalcPage,
+      {quotProduct: this.valueQuot,
+            storePlace: this.selectedStorePlace,
+            qty: this.qty.value,
+            price: this.product.price,
+            itemPage: this});
+    calcModal.present();
   }
 
   showAddToCartConfirmToast() {

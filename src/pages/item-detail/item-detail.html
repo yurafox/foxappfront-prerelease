@@ -31,9 +31,19 @@
         </ion-slides>
       </ion-col>
     </ion-row>
+    <ion-row *ngIf="product.oldPrice">
+      <ion-col class="f-item-nopadding f-item-padding-left f-old-price" >
+        <span>{{product.oldPrice | localeCurrency:userService.currency}}</span>
+      </ion-col>
+    </ion-row>
     <ion-row>
-      <ion-col class="f-item-nopadding f-item-padding-left" >
-        <h3>{{product.price | localeCurrency:userService.currency}}</h3>
+      <ion-col class="f-item-nopadding f-item-padding-left f-item-padding-bottom f-price" >
+        <span>{{product.price | localeCurrency:userService.currency}}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="product.bonuses">
+      <ion-col class="f-item-nopadding f-item-padding-left f-item-padding-bottom" >
+        <div class="f-bonuses"><span>+{{product.bonuses | localeCurrency:userService.currency}}</span> bonuses </div>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="OnStock && resolved">
@@ -81,12 +91,21 @@
 -->
       </ion-col>
     </ion-row>
+
     <ion-row>
       <ion-col>
         <button class="f-btn-add-cart" ion-button block [attr.disabled]="!valueQuot?'':null"
                 (click)="onAddToCart()">Add to Cart</button>
       </ion-col>
     </ion-row>
+    <ion-row *ngIf="valueQuot && (valueQuot.price >= minLoanAmt)
+                              && (valueQuot.price <= maxLoanAmt)">
+      <ion-col>
+        <button class="f-btn-secondary" ion-button block [attr.disabled]="!valueQuot?'':null"
+                (click)="onGetForLoan()">Get it for a loan</button>
+      </ion-col>
+    </ion-row>
+
   </ion-grid>
   <hr>
   <ion-grid class="f-item-nopadding-tb" *ngIf="noOfQuotes>1" (click)="onShowMoreQuotesClick()">

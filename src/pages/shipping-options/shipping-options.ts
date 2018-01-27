@@ -85,6 +85,7 @@ export class ShippingOptionsPage extends ComponentBase {
       this.cart.loDeliveryOptions.forEach(i => {
           if (i.isChecked) {
             this.cart.loResultDeliveryOptions.push(i);
+            this.evServ.events['cartUpdateEvent'].emit();
           }
         }
       );

@@ -589,6 +589,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       id: 6280637,
       name: "smart/tel SAMSUNG SM-J510H Galaxy J5 Duos ZDD (gold)",
       price: 5031,
+      oldPrice: 6000,
+      bonuses: 700,
       manufacturerId: 220,
       props: [
         this.productPropValue2,
@@ -633,6 +635,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       id: 6294898,
       name: "smart/tel HUAWEI Y6II Dual Sim (black)",
       price: 3899,
+      oldPrice: 4599,
       manufacturerId: 114733,
       props: [
         this.productPropValue3,
@@ -903,6 +906,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       id: 6337781,
       name: "Телевизор SAMSUNG UE32M5500AUXUA",
       price: 13999,
+      oldPrice: 14299,
+      bonuses: 1399,
       manufacturerId: 220,
       props: [
         this.productPropValue5,

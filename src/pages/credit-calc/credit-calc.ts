@@ -5,6 +5,7 @@ import {QuotationProduct} from '../../app/model/quotation-product';
 import {UserService} from '../../app/service/bll/user-service';
 import {CreditProduct} from '../../app/model/credit-product';
 import {CreditCalc} from '../../app/model/credit-calc';
+import {EnumPaymentMethod} from '../../app/model/enum-payment-method';
 
 @IonicPage()
 @Component({
@@ -118,6 +119,25 @@ export class CreditCalcPage {
   onContinueClick() {
     this.cart.loan = this.selectedLoan;
     this.viewCtrl.dismiss();
+    if(this.navParams.data.itemPage) {
+
+      if (this.cart.pmtMethod)
+        this.cart.pmtMethod.id = 3
+      else {
+        let _p = new EnumPaymentMethod(3, null);
+        this.cart.pmtMethod = _p;
+      };
+
+      this.navParams.data.itemPage.onAddToCart();
+
+      if (!this.userService.isAuth) {
+        this.navCtrl.push('LoginPage', {continuePage: 'SelectShipAddressPage'});
+      }
+      else {
+        this.navCtrl.push('SelectShipAddressPage', {fromCart: 1});
+      };
+
+    };
   }
 
   onSelectItem(cProd) {
