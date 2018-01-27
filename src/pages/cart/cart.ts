@@ -57,4 +57,8 @@ export class CartPage extends ComponentBase {
     };
   }
 
+  onAfterQtyUpdate(item: any, objRef:any): void {
+    this.evServ.events['cartUpdateEvent'].emit();
+  }
+
 }

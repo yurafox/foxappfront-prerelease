@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {CreditCalc} from '../../app/model/credit-calc';
+import {CartService} from '../../app/service/cart-service';
 
 
 @Component({
@@ -12,7 +13,10 @@ export class CreditBriefComponent extends ComponentBase {
   @Input()
   public credit: CreditCalc = null;
 
-  constructor() {
+  @Input()
+  public creditAmt: number;
+
+  constructor(public cart: CartService) {
     super();
   }
 

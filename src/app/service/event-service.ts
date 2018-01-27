@@ -8,7 +8,8 @@ export class EventService {
      this.events = {
        'localeChangeEvent': new EventEmitter<any>(),
        'logonEvent': new EventEmitter<any>(),
-       'logOffEvent': new EventEmitter<any>()
+       'logOffEvent': new EventEmitter<any>(),
+       'cartUpdateEvent': new EventEmitter<any>()
      };
   }
 }

@@ -7,6 +7,7 @@
     <ion-row *ngIf="dataLoaded">
       <ion-col style="padding-left: 5px; padding-right: 5px;">
         <button class="f-btn-add-cart" ion-button block
+                [attr.disabled]="!validatePage()?'':null"
                 (click)="onPlaceOrderClick()">Place your order</button>
       </ion-col>
     </ion-row>
@@ -80,7 +81,10 @@
             {{ cart.pmtMethod.name }}
           </ion-col>
         </ion-row>
-        <credit-brief *ngIf="cart.loan && (cart.pmtMethod.id === 3)" [credit]="cart.loan"></credit-brief>
+        <div *ngIf="cart.loan && (cart.pmtMethod.id === 3)">
+          <hr>
+          <credit-brief [creditAmt]="cart.orderTotal" [credit]="cart.loan"></credit-brief>
+        </div>
       </ion-grid>
     </ion-row>
     <promo-code *ngIf="dataLoaded"></promo-code>
@@ -170,6 +174,7 @@
     <ion-row *ngIf="dataLoaded">
       <ion-col style="padding-left: 5px; padding-right: 5px; padding-top: 15px;">
         <button class="f-btn-add-cart" ion-button block
+                [attr.disabled]="!validatePage()?'':null"
                 (click)="onPlaceOrderClick()">Place your order</button>
       </ion-col>
     </ion-row>

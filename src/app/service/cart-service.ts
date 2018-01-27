@@ -11,6 +11,7 @@ import {App, LoadingController, NavController} from 'ionic-angular';
 import {PersonInfo} from '../model/person';
 import {CreditProduct} from '../model/credit-product';
 import {CreditCalc} from '../model/credit-calc';
+import {AppConstants} from '../app-constants';
 
 
 export class LoDeliveryOption {
@@ -68,8 +69,23 @@ export class CartService  {
       }
     );
 
+    this.evServ.events['cartUpdateEvent'].subscribe(() => {
+        this.calLoan();
+      }
+    );
+
+
     this.initCart();
   };
+
+  calLoan() {
+    if ((this.pmtMethod) && (this.pmtMethod.id === 3) && (this.loan)) {
+      let cObj = this.loan;
+
+      cObj.clMonthAmt = this.calculateLoan(this.orderTotal, cObj.clMonths,
+        cObj.creditProduct.monthCommissionPct, cObj.creditProduct.sGracePeriod);
+    }
+  }
 
   public get mostExpensiveItem(): ClientOrderProducts {
     if (this.orderProducts.length === 0)
@@ -90,48 +106,17 @@ export class CartService  {
     return Math.ceil((_am + (_am * _com / 100 * (months - _gr))) / months);
   }
 
-/*
-  public async getCreditInfo() {
-    this.selectedPartsPmtCount = {value: null, displayValue: null};
-    this.selectedImmLoanCount = {value: null, displayValue: null};
-    this.selectedLoanCount = {value: null, displayValue: null};
-
-    const exItem = this.mostExpensiveItem;
-    if (!(exItem) /!*&& !(is4 || is3 || is5)*!/)
-      return;
-
-    if (this.lastItemCreditCalc === exItem)
-      return;
-
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-    loading.present();
-    try {
-      this.creditsLoaded = false;
-      const qp = await (<any>exItem).quotationproduct_p;
-      const quot = await (<any>qp).quotation_p;
-      const suppl = await (<any>quot).supplier_p;
-      let pInfo = await this.repo.getProductCreditSize(qp.idProduct, suppl.id);
-      if (!pInfo)
-        pInfo = {partsPmtCnt: 0, creditSize: 0};
-      this.maxPartPaymentSizeInfo =  pInfo;
-
-      const arr: CreditProduct[] = await this.repo.getCreditProducts();
-      this.credits = [];
-      arr.forEach(i => {
-        if ((i.kpcPct < pInfo.creditSize)
-              && (i.sPartPay === 0) && (i.sDefProdId))
-          this.credits.push({isChecked: false, creditProduct: i});
-      });
-      this.lastItemCreditCalc = exItem;
-    }
-    finally {
-      this.creditsLoaded = true;
-      loading.dismiss();
-    }
+  validateLoan (loanAmt: number): {isValid:boolean, validationErrors:string[]} {
+    let mes = null;
+    let errs = [];
+    mes = (loanAmt > AppConstants.MAX_LOAN_AMT) ? "Max loan limit exceeded" : null;
+    if (mes)
+      errs.push(mes);
+    mes = (loanAmt < AppConstants.MIN_LOAN_AMT) ? "The loan amount is below limit" : null;
+    if (mes)
+      errs.push(mes);
+    return {isValid: !(errs.length > 0), validationErrors: errs};
   }
-*/
 
   async initCart() {
     console.log('CartInit call. Is auth: '+ this.userService.isAuth);
@@ -212,6 +197,7 @@ export class CartService  {
     this.orderProducts.push(orderItem);
     this.saveToLocalStorage();
     this.lastItemCreditCalc = null;
+    this.evServ.events['cartUpdateEvent'].emit();
   }
 
   saveToLocalStorage() {
@@ -237,6 +223,7 @@ export class CartService  {
     this.orderProducts.splice(itemIndex, 1);
     this.saveToLocalStorage();
     this.lastItemCreditCalc = null;
+    this.evServ.events['cartUpdateEvent'].emit();
   }
 
   emptyCart() {

@@ -27,7 +27,7 @@
 <!--
 General Credits
 -->
-    <div *ngIf="credits">
+    <div *ngIf="credits && creditsLoaded">
       <ion-row style="padding-left: 5px; padding-right: 5px;">
 
         <ion-grid no-padding>
@@ -79,7 +79,7 @@ General Credits
 
   </ion-grid>
 
-  <ion-grid class="f-color-secondary">
+  <ion-grid *ngIf="credits && creditsLoaded" class="f-color-secondary">
     <ion-row>
       <ion-col style="padding-left: 5px; padding-right: 5px;">
         <button class="f-btn-add-cart" ion-button block

@@ -20,6 +20,13 @@ export class CheckoutPage extends ComponentBase {
 
   }
 
+  validatePage() {
+    if (this.cart.pmtMethod.id === 3)
+      return (this.cart.validateLoan(this.cart.orderTotal).isValid)
+    else
+      return true;
+  }
+
   onPlaceOrderClick() {
     console.log('Place Order!');
   }
@@ -37,5 +44,6 @@ export class CheckoutPage extends ComponentBase {
         this.cart.loResultDeliveryOptions[j].deliveryCost = r;
       }
     );
+    this.evServ.events['cartUpdateEvent'].emit();
   }
 }

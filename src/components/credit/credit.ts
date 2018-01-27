@@ -35,6 +35,8 @@ export class CreditComponent extends ComponentBase implements OnChanges {
   }
 
   onAfterCreditSelect(item: any, objRef:any): void {
+//    this.evServ.events['cartUpdateEvent'].emit();
+
     objRef.clMonthAmt = this.cart.calculateLoan(this.loanAmount, objRef.clMonths,
       objRef.creditProduct.monthCommissionPct, objRef.creditProduct.sGracePeriod);
   }

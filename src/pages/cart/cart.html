@@ -103,6 +103,7 @@
         <ion-col col-auto class="f-item-padding-bottom" >
           <dropdown-list id="btnQty" [reference]="item"
                          [map]="{valueName:'qty', displayName:'qty'}"
+                         [afterUpdate] = "onAfterQtyUpdate"
                          [options]="{popupHeader:'Quantity', buttonHeader:'Qty'}"
                          [isQty]="true">
           </dropdown-list>

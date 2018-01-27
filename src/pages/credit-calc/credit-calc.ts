@@ -72,6 +72,11 @@ export class CreditCalcPage {
       _cpMgnovCredit.minTerm = 2;
       this.credits.push(new CreditCalc(false, _cpMgnovCredit));
 
+      //Сортируем по макс грейсу
+      arr.sort((a,b) => {
+        return (b.sGracePeriod - a.sGracePeriod);
+      });
+
       arr.forEach(i => {
         if ((i.kpcPct < pInfo.creditSize)
           && (i.sPartPay === 0) && (i.sDefProdId))

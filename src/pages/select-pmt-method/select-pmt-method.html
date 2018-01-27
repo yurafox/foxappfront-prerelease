@@ -31,22 +31,34 @@
 Credit Products
 -->
     <div *ngIf="dataLoaded && ((pmtMethods[2].isChecked))">
-      <ion-row style="padding-left: 5px; padding-right: 5px;">
-        <ion-grid class="f-border-ligthgray">
-          <ion-row>
-            <ion-col>
-              <button class="f-btn-secondary" ion-button block
-                      (click)="onShowCreditCalculatorClick()">Please select a loan</button>
-            </ion-col>
-          </ion-row>
+      <ion-row *ngIf="!cart.loan">
+        <ion-col>
+          <button text-center class="f-btn-secondary" ion-item block
+                  (click)="onShowCreditCalculatorClick()">Please select a loan</button>
+        </ion-col>
+      </ion-row>
 
+      <ion-row *ngIf="cart.loan && (cart.pmtMethod.id === 3)"
+               style="padding-left: 5px; padding-right: 5px;">
 <!--
-          <ion-row *ngIf="cart.loan && (cart.pmtMethod.id === 3)">
-            Selected item:
-          </ion-row>
+        <ion-col>
+          <ion-item  detail-push text-wrap class="f-color-secondary">
+            <credit-brief *ngIf="cart.loan" [credit]="cart.loan"></credit-brief>
+          </ion-item>
+        </ion-col>
 -->
 
-          <credit-brief *ngIf="cart.loan && (cart.pmtMethod.id === 3)" [credit]="cart.loan"></credit-brief>
+        <ion-grid no-padding class="f-border-ligthgray">
+          <ion-row *ngIf="(cart.pmtMethod.id === 3)"
+                   (click)="onShowCreditCalculatorClick()">
+            <ion-col>
+              <ion-item  detail-push text-wrap class="f-color-secondary">
+                <credit-brief *ngIf="cart.loan"
+                              [creditAmt]="cart.orderTotal" [credit]="cart.loan">
+                </credit-brief>
+              </ion-item>
+            </ion-col>
+          </ion-row>
         </ion-grid>
       </ion-row>
     </div>
@@ -54,10 +66,6 @@ Credit Products
 Passport Data
 -->
     <div *ngIf="dataLoaded && cart.loan && ((pmtMethods[2].isChecked))">
-      <ion-row padding-top>
-        <ion-col></ion-col>
-      </ion-row>
-
       <ion-row style="padding-left: 5px; padding-right: 5px;">
         <ion-grid class="f-border-ligthgray">
           <form #f="ngForm">
