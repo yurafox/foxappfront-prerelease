@@ -23,6 +23,7 @@ import { NoveltySketchComponent } from './novelty-sketch/novelty-sketch';
 import { CreditComponent } from './credit/credit';
 import { CreditBriefComponent } from './credit-brief/credit-brief';
 import { BonusComponent } from './bonus/bonus';
+import { BonusPayComponent } from './bonus-pay/bonus-pay';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { BonusComponent } from './bonus/bonus';
     NoveltySketchComponent,
     CreditComponent,
     CreditBriefComponent,
-    BonusComponent
+    BonusComponent,
+    BonusPayComponent
   ],
   entryComponents: [
     CustomPopupComponent,
@@ -80,7 +82,8 @@ import { BonusComponent } from './bonus/bonus';
     NoveltySketchComponent,
     CreditComponent,
     CreditBriefComponent,
-    BonusComponent
+    BonusComponent,
+    BonusPayComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

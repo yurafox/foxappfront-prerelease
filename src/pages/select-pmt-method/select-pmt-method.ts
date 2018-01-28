@@ -26,6 +26,7 @@ export class SelectPmtMethodPage extends ComponentBase {
               public modalCtrl: ModalController)
   {
     super();
+    this.cart.initBonusData();
     this.getPmtMethods();
   }
 

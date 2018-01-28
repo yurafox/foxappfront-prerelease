@@ -102,7 +102,7 @@ export class CreditCalcPage {
     if (this.quotProduct)
       return this.quotProduct.price
     else
-      return this.cart.orderTotal;
+      return this.cart.cartGrandTotal;
   }
 
   public get selectedLoan(): CreditCalc {

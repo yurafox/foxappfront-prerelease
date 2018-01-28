@@ -53,14 +53,44 @@
             {{cart.shippingCost | localeCurrency:userService.currency}}
           </ion-col>
         </ion-row>
+
         <ion-row>
           <ion-col class="f-size-larger">
             Order Total:
           </ion-col>
           <ion-col class="f-size-larger" text-right col-auto>
-            <span class="f-color-red"><b>{{cart.orderTotal | localeCurrency:userService.currency}}</b></span>
+            <span class="f-color-red">{{cart.orderTotal | localeCurrency:userService.currency}}</span>
           </ion-col>
         </ion-row>
+
+        <ion-row *ngIf="(cart.bonus>0)">
+          <ion-col class="f-size-larger">
+            Bonuses:
+          </ion-col>
+          <ion-col class="f-size-larger" text-right col-auto>
+            <span>- {{cart.bonus}}</span>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="cart.payByPromoBonus">
+          <ion-col class="f-size-larger">
+            Promo bonuses:
+          </ion-col>
+          <ion-col class="f-size-larger" text-right col-auto>
+            <span>- {{cart.promoBonusPayMaxQty}}</span>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="f-size-larger">
+            <b>Grand Total:</b>
+          </ion-col>
+          <ion-col class="f-size-larger" text-right col-auto>
+            <span class="f-color-red"><b>{{cart.cartGrandTotal | localeCurrency:userService.currency}}</b></span>
+          </ion-col>
+        </ion-row>
+
+
       </ion-grid>
     </ion-row>
 
@@ -87,6 +117,9 @@
         </div>
       </ion-grid>
     </ion-row>
+<!--
+    <bonus-pay *ngIf="dataLoaded"></bonus-pay>
+-->
     <promo-code *ngIf="dataLoaded"></promo-code>
 
 <!--

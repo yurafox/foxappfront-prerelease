@@ -38,8 +38,12 @@ export class CartService  {
 
   public loan: CreditCalc = null;
 
-  public bonus: number;
-  public payByPromoBonus: boolean;
+  private _bonus = 0;
+  private _payByPromoBonus = false;
+
+  //Текущие доступньіе бонусьі клиента
+  public availBonus: number;
+  public availPromoBonus: number;
 
   public promoCode: string;
   public cartValidationNeeded = false;
@@ -79,14 +83,84 @@ export class CartService  {
     this.initCart();
   };
 
+
+  public set bonus(val: number) {
+    this._bonus = val;
+    this.evServ.events['cartUpdateEvent'].emit();
+  }
+
+  public get bonus(): number {
+    return this._bonus;
+  }
+
+  public get payByPromoBonus(): boolean {
+    return this._payByPromoBonus;
+  }
+
+  public set payByPromoBonus(val: boolean) {
+    this._payByPromoBonus = val;
+    this.evServ.events['cartUpdateEvent'].emit();
+  }
+
   calLoan() {
     if ((this.pmtMethod) && (this.pmtMethod.id === 3) && (this.loan)) {
       let cObj = this.loan;
 
-      cObj.clMonthAmt = this.calculateLoan(this.orderTotal, cObj.clMonths,
+      cObj.clMonthAmt = this.calculateLoan(this.cartGrandTotal, cObj.clMonths,
         cObj.creditProduct.monthCommissionPct, cObj.creditProduct.sGracePeriod);
     }
   }
+
+  public get cartGrandTotal(): number {
+    return (this.orderTotal - this.bonus - this.promoBonusPayMaxQty*AppConstants.ACTION_BONUS_TO_CURRENCY_RATE);
+  }
+
+  public get promoBonusPayMaxQty(): number {
+    let _pb = 0;
+    if (this.payByPromoBonus)
+      _pb = this.availPromoBonus*AppConstants.ACTION_BONUS_TO_CURRENCY_RATE;
+    else
+      return 0;
+
+    let  _s = Math.floor(this.itemsTotal - this.orderProducts.length);
+
+    if (_s < 0)
+      return 0;
+
+    if (_s >= _pb)
+      return _pb/AppConstants.ACTION_BONUS_TO_CURRENCY_RATE;
+    else {
+      return _s/AppConstants.ACTION_BONUS_TO_CURRENCY_RATE;
+    };
+  }
+
+  public get bonusPayMaxQty(): number {
+    let _pb = this.promoBonusPayMaxQty*AppConstants.ACTION_BONUS_TO_CURRENCY_RATE;
+    let _s = 0;
+    let _rem = 0;
+
+    if (_pb === 0)
+      _s = Math.floor(this.itemsTotal - this.orderProducts.length);
+    else
+      _s = Math.floor(this.itemsTotal - 1);
+
+    if (_s >= _pb)
+      _rem = _s - _pb;
+    else
+      return 0;
+
+    if (_rem <= this.availBonus*AppConstants.BONUS_TO_CURRENCY_RATE)
+      return _rem;
+    else
+      return this.availBonus;
+  }
+
+  public async initBonusData() {
+    let cl = await (<any>this.userService).profile.client_p;
+    this.availBonus = cl.bonusBalance;
+    this.availPromoBonus = cl.actionBonusBalance;
+  }
+
 
   public get mostExpensiveItem(): ClientOrderProducts {
     if (this.orderProducts.length === 0)

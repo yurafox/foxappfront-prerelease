@@ -50,4 +50,9 @@ export class CheckoutPage extends ComponentBase {
     );
     this.evServ.events['cartUpdateEvent'].emit();
   }
+
+  onShowBalanceClick() {
+    this.navCtrl.push('BalancePage');
+  }
+
 }

@@ -3,7 +3,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid class="f-color-secondary">
+  <ion-grid class="f-color-secondary" *ngIf="dataLoaded">
     <ion-row>
       <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
         <b><span class="f-size-large">Your current FoxClub member's bonus balance</span></b>
@@ -18,7 +18,7 @@
             Bonus:
           </ion-col>
           <ion-col class="f-size-larger f-color-red" text-right col-auto>
-            <b>{{availBonus}}</b>
+            <b>{{cart.availBonus}}</b>
           </ion-col>
         </ion-row>
         <ion-row>
@@ -26,64 +26,13 @@
             Promo bonus:
           </ion-col>
           <ion-col class="f-size-larger f-color-red" text-right col-auto>
-            <b>{{availPromoBonus}}</b>
+            <b>{{cart.availPromoBonus}}</b>
           </ion-col>
         </ion-row>
-        <ion-row>
-          <ion-col>
-            <hr>
-          </ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col class="f-size-larger">
-            <span>Bonus quantity</span>
-          </ion-col>
-        </ion-row>
-
-
-        <ion-row>
-          <ion-col class="f-size-larger">
-
-<!--
-            <label for="bonus">Bonus quantity:</label>
--->
-
-            <input [(ngModel)]="cart.bonus" placeholder="Enter bonus quantity" name="bonus" id="bonus"
-                   pattern="[0-9]*"
-                   #bonus="ngModel">
-            <div *ngIf="!bonus.valid && bonus.touched">
-              <span *ngIf="bonus.hasError('pattern')"
-                    style="color: red;">Only digits allowed</span>
-            </div>
-          </ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col>
-          </ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col class="f-size-larger">
-            <span>Pay by promo bonuses</span>
-          </ion-col>
-        </ion-row>
-
-
-        <ion-row>
-          <ion-col class="f-size-larger">
-            <input type="checkbox" [checked]="cart.payByPromoBonus" name="payByPromoBonus" id="payByPromoBonus"
-                   (change)="cart.payByPromoBonus = !cart.payByPromoBonus">
-<!--
-            <label for="payByPromoBonus">Pay by promo bonus</label>
--->
-          </ion-col>
-        </ion-row>
-
-
       </ion-grid>
     </ion-row>
+    <bonus-pay></bonus-pay>
+
 
     <ion-row>
       <ion-col style="padding-left: 5px; padding-right: 5px; padding-top: 15px;">

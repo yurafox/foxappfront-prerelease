@@ -11,20 +11,17 @@ import {CartService} from '../../app/service/cart-service';
 })
 export class BalancePage extends ComponentBase {
 
-  availBonus: number;
-  availPromoBonus: number;
   dataLoaded = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public uService: UserService, public cart: CartService) {
     super();
+
     this.initData();
   }
 
   async initData() {
-    let cl = await (<any>this.uService).profile.client_p;
-    this.availBonus = cl.bonusBalance;
-    this.availPromoBonus = cl.actionBonusBalance;
+    await this.cart.initBonusData();
     this.dataLoaded = true;
   }
 
@@ -33,7 +30,7 @@ export class BalancePage extends ComponentBase {
   }
 
   validatePage() {
-    return (this.cart.bonus <= this.availBonus);
+    return (this.cart.bonus <= this.cart.availBonus);
   }
 
 }
