@@ -65,6 +65,7 @@ const storeReviewsUrl = "/api/mstoreReviews";
 const loEntitiesUrl = "/api/mloEntities";
 const loSupplEntitiesUrl = "/api/mloSupplEntities";
 const getDeliveryCostUrl = "/api/mgetDeliveryCost";
+const getBonusesInfoForCheckoutUrl = "/api/getBonusesInfoForCheckout";
 const getDeliveryDateUrl = "/api/mgetDeliveryDate";
 const getPaymentMethodsUrl = "/api/mpaymentMethods";
 const clientDraftOrderUrl = "/api/mclientDraftOrder";
@@ -81,6 +82,22 @@ export class AppDataRepository extends AbstractDataRepository {
   constructor(private http: Http) {
     super();
   }
+
+  public async getBonusesInfoForCheckout(): Promise<{bonusLimit: number, actionBonusLimit: number}> {
+    try {
+      const response = await this.http
+        .get(getBonusesInfoForCheckoutUrl).toPromise();
+      const val = response.json();
+
+      if (response.status !== 201 && response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      return val.BonusInfo;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 
   public async getCreditProducts(): Promise<CreditProduct[]> {
     try {
@@ -776,6 +793,8 @@ export class AppDataRepository extends AbstractDataRepository {
         client.fname = data.fname;
         client.lname = data.lname;
         client.barcode = data.barcode;
+        client.bonusBalance = data.bonusBalance;
+        client.actionBonusBalance = data.actionBonusBalance;
         return client;
       }
     } catch (err) {

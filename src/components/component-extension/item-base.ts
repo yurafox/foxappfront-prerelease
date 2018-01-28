@@ -8,12 +8,10 @@ import {AbstractDataRepository} from '../../app/service/repository/abstract/abst
 export class ItemBase extends ComponentBase implements OnInit {
 
   @Input() product: Product;
-  private _minPrice = -1;
 
   quotes: QuotationProduct[];
   valueQuot: QuotationProduct;
   productStorePlaces: ProductStorePlace[];
-  selectedPickupStorePlace: ProductStorePlace;
 
   noOfQuotes = 0;
   resolved = false;
@@ -29,8 +27,10 @@ export class ItemBase extends ComponentBase implements OnInit {
     return !(this.valueQuot == null);
   }
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public repo: AbstractDataRepository) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              public repo: AbstractDataRepository) {
     super();
+
   }
 
   async ngOnInit() {

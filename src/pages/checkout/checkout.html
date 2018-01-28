@@ -149,7 +149,7 @@
 
                 <ion-row *ngIf="item?.quotationproduct?.product?.bonuses">
                   <ion-col class="f-item-padding-bottom" >
-                    <div class="f-bonuses"><span>+{{item?.quotationproduct?.product?.bonuses*item.qty | localeCurrency:userService.currency}}</span> bonuses </div>
+                    <bonus [bonusCnt]="item?.quotationproduct?.product?.bonuses"></bonus>
                   </ion-col>
                 </ion-row>
 

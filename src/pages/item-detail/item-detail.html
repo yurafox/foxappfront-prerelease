@@ -43,7 +43,7 @@
     </ion-row>
     <ion-row *ngIf="product.bonuses">
       <ion-col class="f-item-nopadding f-item-padding-left f-item-padding-bottom" >
-        <div class="f-bonuses"><span>+{{product.bonuses | localeCurrency:userService.currency}}</span> bonuses </div>
+        <bonus [bonusCnt]="product.bonuses"></bonus>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="OnStock && resolved">

@@ -29,3 +29,4 @@ export * from './shipping-options/shipping-options';
 export * from './select-pmt-method/select-pmt-method';
 export * from './checkout/checkout';
 export * from './credit-calc/credit-calc';
+export * from './balance/balance';

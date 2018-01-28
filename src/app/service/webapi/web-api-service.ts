@@ -2734,7 +2734,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       email: 'yurafox@fox.com',
       fname: 'Yurii',
       lname: 'Ishchenko',
-      barcode: '+11000002680'
+      barcode: '+11000002680',
+      bonusBalance: 1500,
+      actionBonusBalance: 2000
     },
     {
       id: 101,
@@ -3430,6 +3432,10 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
         return info.utils.createResponse$(() => resOpt);
       }
 
+      case "getBonusesInfoForCheckoutUrl": {
+        resOpt.body = {BonusInfo: {bonusLimit: 500, actionBonusLimit: 1000}};
+        return info.utils.createResponse$(() => resOpt);
+      }
 
       default:
         return null;

@@ -7,6 +7,7 @@ import {Observable} from 'rxjs';
 import 'rxjs/add/operator/takeWhile';
 import {ItemBase} from "../../components/component-extension/item-base";
 import {StorePlace} from "../../app/model/store-place";
+import {EventService} from '../../app/service/event-service';
 
 @IonicPage()
 @Component({
@@ -24,7 +25,7 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
   selectedStorePlace: StorePlace;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private cart: CartService,
-              private _repo:AbstractDataRepository, private toastCtrl: ToastController) {
+              private _repo:AbstractDataRepository, public toastCtrl: ToastController, public evServ: EventService) {
     super(navCtrl, navParams, _repo);
     this.noveltyId = this.navParams.data.id;
     this.novelty = this.navParams.data.novelty;
@@ -74,7 +75,7 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
 
   public addToCart(): void {
     if (this.product && (this.available !== false)) {
-      this.cart.addItem(this.valueQuot, this.qty.value, this.product.price, this.selectedStorePlace).then(
+      this.cart.addItem(this.valueQuot, this.qty.value, this.product.price, this.selectedStorePlace, this).then(
         () =>
       {
         this.showAddToCartConfirmToast();

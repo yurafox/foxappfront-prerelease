@@ -62,6 +62,7 @@ export abstract class AbstractDataRepository {
   public async abstract saveCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
   public async abstract updateCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
   public async abstract deleteCartProduct(prod: ClientOrderProducts);
+  public async abstract getBonusesInfoForCheckout(): Promise<{bonusLimit: number, actionBonusLimit: number}>;
 
   public async abstract getClientDraftOrderSpecProductsById(id: number): Promise<ClientOrderProducts>;
   public async abstract getClientDraftOrderSpecProducts(): Promise<Array<ClientOrderProducts>>;

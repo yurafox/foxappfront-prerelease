@@ -7,9 +7,8 @@ import {UserService} from './bll/user-service';
 import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
 import {EventService} from './event-service';
 import {EnumPaymentMethod} from '../model/enum-payment-method';
-import {App, LoadingController, NavController} from 'ionic-angular';
+import {App, LoadingController, NavController, ToastController} from 'ionic-angular';
 import {PersonInfo} from '../model/person';
-import {CreditProduct} from '../model/credit-product';
 import {CreditCalc} from '../model/credit-calc';
 import {AppConstants} from '../app-constants';
 
@@ -21,7 +20,7 @@ export class LoDeliveryOption {
   public deliveryDate?: Date;
   public deliveryCost?: number;
   public loName?: string;
-  public isChecked?: boolean
+  public isChecked?: boolean;
 
   constructor(){};
 }
@@ -39,6 +38,9 @@ export class CartService  {
 
   public loan: CreditCalc = null;
 
+  public bonus: number;
+  public payByPromoBonus: boolean;
+
   public promoCode: string;
   public cartValidationNeeded = false;
   public person = new PersonInfo();
@@ -46,7 +48,7 @@ export class CartService  {
   private navCtrl: NavController;
 
   constructor(private userService: UserService, public repo: AbstractDataRepository,
-              private evServ: EventService, private app: App, public loadingCtrl: LoadingController) {
+              private evServ: EventService, private app: App) {
     this.navCtrl = app.getActiveNav();
 
     this.evServ.events['logonEvent'].subscribe(() => {
@@ -73,7 +75,6 @@ export class CartService  {
         this.calLoan();
       }
     );
-
 
     this.initCart();
   };
@@ -107,9 +108,8 @@ export class CartService  {
   }
 
   validateLoan (loanAmt: number): {isValid:boolean, validationErrors:string[]} {
-    let mes = null;
     let errs = [];
-    mes = (loanAmt > AppConstants.MAX_LOAN_AMT) ? "Max loan limit exceeded" : null;
+    let mes = (loanAmt > AppConstants.MAX_LOAN_AMT) ? "Max loan limit exceeded" : null;
     if (mes)
       errs.push(mes);
     mes = (loanAmt < AppConstants.MIN_LOAN_AMT) ? "The loan amount is below limit" : null;
@@ -127,7 +127,7 @@ export class CartService  {
       for (let i of this.orderProducts) {
         await this.repo.saveCartProduct(i);
         op.push(i);
-      };
+      }
 
       //переключаем корзину на результирующую
       this.orderProducts = op;
@@ -177,28 +177,58 @@ export class CartService  {
     let _s = 0;
     if (this.orderProducts) {
       this.orderProducts.forEach(item => {
-        _s += item.price*item.qty;
+        _s += item.price*item.qty
       });
     };
     return _s;
   }
 
-  async addItem(item: QuotationProduct, qty: number, price: number, storePlace: StorePlace) {
-    let orderItem = new ClientOrderProducts();
-    orderItem.idQuotationProduct = item.id;
-    orderItem.price = price;
-    orderItem.qty = qty;
-    orderItem.idStorePlace = (storePlace ? storePlace.id : null);
+  async addItem(item: QuotationProduct, qty: number, price: number, storePlace: StorePlace, page: any) {
+    let foundQuot: ClientOrderProducts = null;
+    let foundIndex = 0;
+    for (let i of this.orderProducts) {
+      if (i.idQuotationProduct === item.id) {
+        foundQuot = i;
+        break;
+      }
+      foundIndex ++;
+    };
 
-    if (this.userService.isAuth) {
-      orderItem = await this.repo.saveCartProduct(orderItem);
-    }
+    if (foundQuot) {
+      foundQuot.qty += qty;
+      foundQuot.price = price;
+      this.updateItem(foundIndex);
+    } else {
+      let orderItem = new ClientOrderProducts();
+      orderItem.idQuotationProduct = item.id;
+      orderItem.price = price;
+      orderItem.qty = qty;
+      orderItem.idStorePlace = (storePlace ? storePlace.id : null);
 
-    this.orderProducts.push(orderItem);
+      if (this.userService.isAuth) {
+        orderItem = await this.repo.saveCartProduct(orderItem);
+      }
+      this.orderProducts.push(orderItem);
+    };
+
     this.saveToLocalStorage();
     this.lastItemCreditCalc = null;
+
     this.evServ.events['cartUpdateEvent'].emit();
+
+    let toast = page.toastCtrl.create({
+      message: 'Item added to cart',
+      duration: 2000,
+      position: 'bottom',
+      cssClass: 'toast-message'
+    });
+
+    toast.onDidDismiss(() => {
+    });
+
+    toast.present();
   }
+
 
   saveToLocalStorage() {
     if (!this.userService.isAuth) {

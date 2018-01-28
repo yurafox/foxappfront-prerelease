@@ -117,8 +117,10 @@ export class CreditCalcPage {
   }
 
   onContinueClick() {
+    let data = null;
+
     this.cart.loan = this.selectedLoan;
-    this.viewCtrl.dismiss();
+
     if(this.navParams.data.itemPage) {
 
       if (this.cart.pmtMethod)
@@ -127,17 +129,17 @@ export class CreditCalcPage {
         let _p = new EnumPaymentMethod(3, null);
         this.cart.pmtMethod = _p;
       };
-
       this.navParams.data.itemPage.onAddToCart();
 
       if (!this.userService.isAuth) {
-        this.navCtrl.push('LoginPage', {continuePage: 'SelectShipAddressPage'});
+        data = {nextPage: 'LoginPage', params: {continuePage: 'SelectShipAddressPage'}};
       }
       else {
-        this.navCtrl.push('SelectShipAddressPage', {fromCart: 1});
+        data = {nextPage: 'SelectShipAddressPage', params: {fromCart: 1}};
       };
-
     };
+    this.viewCtrl.dismiss(data);
+
   }
 
   onSelectItem(cProd) {

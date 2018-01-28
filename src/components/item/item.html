@@ -36,10 +36,9 @@
 
        <ion-row *ngIf="product.bonuses">
          <ion-col no-padding class="f-item-padding-bottom" >
-           <div class="f-bonuses"><span>+{{product.bonuses | localeCurrency:userService.currency}}</span> bonuses </div>
+           <bonus [bonusCnt]="product.bonuses"></bonus>
          </ion-col>
        </ion-row>
-
 
        <ion-row>
          <ion-col no-padding class="f-item-padding-bottom f-size-smaller" *ngIf="(resolved) && (noOfQuotes > 1)">

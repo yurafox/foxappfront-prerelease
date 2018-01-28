@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams, PopoverController, ToastController} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams, ToastController} from 'ionic-angular';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {ProductReview} from '../../app/model/product-review';
 import {ItemBase} from '../../components/component-extension/item-base';
@@ -9,6 +9,7 @@ import {StorePlace} from '../../app/model/store-place';
 import {System} from '../../app/core/app-core';
 import {CreditCalcPage} from '../credit-calc/credit-calc';
 import {AppConstants} from '../../app/app-constants';
+import {EventService} from '../../app/service/event-service';
 
 @IonicPage()
 @Component({
@@ -27,7 +28,8 @@ export class ItemDetailPage extends ItemBase implements OnInit {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
-              private toastCtrl: ToastController, public modalCtrl: ModalController) {
+              public modalCtrl: ModalController, public toastCtrl: ToastController,
+              public evServ: EventService) {
     super(navCtrl, navParams, repo);
     this.product = this.navParams.data;
     this.qty.value = 1;
@@ -64,8 +66,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   }
 
   onAddToCart() {
-    this.cart.addItem(this.valueQuot, this.qty.value, this.product.price, this.selectedStorePlace);
-    this.showAddToCartConfirmToast();
+    this.cart.addItem(this.valueQuot, this.qty.value, this.product.price, this.selectedStorePlace, this);
   }
 
   onGetForLoan() {
@@ -75,21 +76,11 @@ export class ItemDetailPage extends ItemBase implements OnInit {
             qty: this.qty.value,
             price: this.product.price,
             itemPage: this});
+    calcModal.onDidDismiss(data => {
+      if (data)
+        this.navCtrl.push(data.nextPage, data.params);
+    });
     calcModal.present();
-  }
-
-  showAddToCartConfirmToast() {
-    let toast = this.toastCtrl.create({
-      message: 'Item added to cart',
-      duration: 2000,
-      position: 'bottom',
-      cssClass: 'toast-message'
-    });
-
-    toast.onDidDismiss(() => {
-    });
-
-    toast.present();
   }
 
   showLocationPopover() {

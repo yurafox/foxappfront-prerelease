@@ -22,6 +22,7 @@ import { PromoCodeComponent } from './promo-code/promo-code';
 import { NoveltySketchComponent } from './novelty-sketch/novelty-sketch';
 import { CreditComponent } from './credit/credit';
 import { CreditBriefComponent } from './credit-brief/credit-brief';
+import { BonusComponent } from './bonus/bonus';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { CreditBriefComponent } from './credit-brief/credit-brief';
     PromoCodeComponent,
     NoveltySketchComponent,
     CreditComponent,
-    CreditBriefComponent
+    CreditBriefComponent,
+    BonusComponent
   ],
   entryComponents: [
     CustomPopupComponent,
@@ -77,7 +79,8 @@ import { CreditBriefComponent } from './credit-brief/credit-brief';
     PromoCodeComponent,
     NoveltySketchComponent,
     CreditComponent,
-    CreditBriefComponent
+    CreditBriefComponent,
+    BonusComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
