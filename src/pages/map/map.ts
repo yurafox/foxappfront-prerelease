@@ -51,7 +51,8 @@ export class MapPage extends ComponentBase implements OnInit {
   // Variables for drop-down buttons
   dropDownCityOpts: any;
   dropDownAddressOpts: any;
-  isAuthoraized: boolean;
+  isAuthorized: boolean;
+  availableNavApps: void | string[];
 
   constructor(private nav: NavController, private navParams: NavParams, private platform: Platform,
               private repo: AbstractDataRepository, private geolocation: Geolocation, private statusBar: StatusBar,
@@ -70,6 +71,7 @@ export class MapPage extends ComponentBase implements OnInit {
     this.writeReviewStr = ''/*'Write review'*/;
     this.dropDownCityOpts = {popupClass: 'f-middle-dictionary', buttonClass: 'f-drop-button-full', popupHeader: '', buttonHeader: ''};
     this.dropDownAddressOpts = {popupClass: 'f-large-dictionary', buttonClass: 'f-drop-button-full', popupHeader: '', buttonHeader: ''};
+    this.availableNavApps = [];
 
     try {
       if (this.nav.last()) {
@@ -94,7 +96,7 @@ export class MapPage extends ComponentBase implements OnInit {
   async ngOnInit() {
     super.ngOnInit();
     if (this.userService.isAuth) {
-      this.isAuthoraized = true;
+      this.isAuthorized = true;
     }
     try {
       [this.markersArr, this.cities] = await Promise.all([this.repo.getStores(), this.repo.getCities()]);
@@ -288,12 +290,14 @@ export class MapPage extends ComponentBase implements OnInit {
       });
 
       this.navFromFavoriteStoresPage();
+
+      this.availableNavApps = await this.launchNavigator.availableApps().catch((err) => {
+        console.log(`Couldn't get available navigation apps: ${err}`);
+      });
     } catch (err) {
       window.alert('Error occurred: ' + err);
     }
   }
-
-  async ionViewDidLoad() {}
 
   /**
    * Making list of shops
@@ -376,7 +380,7 @@ export class MapPage extends ComponentBase implements OnInit {
       for (let markerArr of this.markersArr) {
         for (let store of markerArr.stores) {
           if (store.address === this.selectedMarker.label) {
-            if (this.isAuthoraized === true) {
+            if (this.isAuthorized === true) {
               try {
                 this.userService.addFavoriteStoresId(store.id);
               } catch (err) {

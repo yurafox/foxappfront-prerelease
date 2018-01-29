@@ -5,7 +5,6 @@ import {AbstractDataRepository} from "./service/index";
 import {ComponentBase} from "../components/component-extension/component-base";
 import {AppAvailability} from "@ionic-native/app-availability";
 import {Device} from '@ionic-native/device';
-import {Push, PushObject, PushOptions} from '@ionic-native/push';
 import {DeviceData} from "./model/index";
 import {System} from "./core/app-core";
 
@@ -59,7 +58,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   constructor(private platform: Platform, private alertCtrl: AlertController,
               private splashScreen: SplashScreen, public menuCtrl: MenuController,
               private repo: AbstractDataRepository, private appAvailability: AppAvailability,
-              private device: Device, private push: Push) {
+              private device: Device) {
     super();
     // Setting up external app params
     // TODO: Change these params to Foxtrot game's
@@ -116,7 +115,6 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   ngOnDestroy() {
     this.noveltyPushEventDescriptor.unsubscribe();
     this.actionPushEventDescriptor.unsubscribe();
-    this.push.deleteChannel('channel').catch((err) => console.log(`Couldn't delete channel: ${err}`));
   }
 
   openPage(page: PageInterface) {
