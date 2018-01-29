@@ -508,9 +508,15 @@ export class MapPage extends ComponentBase implements OnInit {
 
   onWriteReviewClick(store: Store): void {
     if (store) {
-      this.nav.push('ItemReviewWritePage', store).catch(err => {
-        console.log(`Error navigating to ItemReviewWritePage: ${err}`);
-      });
+      if (!this.userService.isAuth) {
+        this.nav.push('LoginPage').catch((err) => {
+          console.log(`Couldn't navigate to LoginPage: ${err}`);
+        });
+      } else {
+        this.nav.push('ItemReviewWritePage', store).catch(err => {
+          console.log(`Error navigating to ItemReviewWritePage: ${err}`);
+        });
+      }
     }
   }
 }

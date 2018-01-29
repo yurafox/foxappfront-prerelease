@@ -9,7 +9,6 @@ import {Push, PushObject, PushOptions} from '@ionic-native/push';
 import {DeviceData} from "./model/index";
 import {System} from "./core/app-core";
 
-
 export interface PageInterface {
   title: string;
   name?: string;
@@ -19,11 +18,12 @@ export interface PageInterface {
 }
 
 declare var ExoPlayer: any;
+declare var cordova: any;
 
 @Component({
   templateUrl: 'app.html'
 })
-export class FoxApp extends ComponentBase implements OnDestroy{
+export class FoxApp extends ComponentBase implements OnDestroy {
   // the root nav is a child of the root app component
   // @ViewChild(Nav) gets a reference to the app's root nav
   @ViewChild(Nav) nav: Nav;
@@ -60,8 +60,6 @@ export class FoxApp extends ComponentBase implements OnDestroy{
               private repo: AbstractDataRepository, private appAvailability: AppAvailability,
               private device: Device, private push: Push) {
     super();
-    platform.ready().then(() => {
-    });
     // Setting up external app params
     // TODO: Change these params to Foxtrot game's
     this.scheme = 'com.facebook.katana';
@@ -76,9 +74,14 @@ export class FoxApp extends ComponentBase implements OnDestroy{
     }
     this.platform.ready().then(() => {
       this.splashScreen.hide();
-
-      if (this.device.platform && (this.device.platform !== null)) {
+      if (this.device.cordova) {
+        // Collect and send data about device
         this.collectAndSendDeviceData();
+
+        // Schedule delayed local notification
+        //this.initLocalNotifications();
+
+        //this.trySendPush();
       }
     });
 
@@ -86,17 +89,19 @@ export class FoxApp extends ComponentBase implements OnDestroy{
      * Subscribing to the push events and putting our dynamic components to special pushStore dictionary in PushContainer
      */
     this.noveltyPushEventDescriptor = this.evServ.events['noveltyPushEvent'].subscribe(data => {
-        System.PushContainer.pushStore[`novelty${data.innerId}`] = data;
+      System.PushContainer.pushStore[`novelty${data.innerId}`] = data;
     });
     this.actionPushEventDescriptor = this.evServ.events['actionPushEvent'].subscribe(data => {
-        System.PushContainer.pushStore[`action${data.innerId}`] = data;
+      System.PushContainer.pushStore[`action${data.innerId}`] = data;
     });
+    // Handle push-notifications
     this.pushNotify();
   }
 
   ngOnDestroy() {
     this.noveltyPushEventDescriptor.unsubscribe();
     this.actionPushEventDescriptor.unsubscribe();
+    this.push.deleteChannel('channel').catch((err) => console.log(`Couldn't delete channel: ${err}`));
   }
 
   openPage(page: PageInterface) {
@@ -116,7 +121,7 @@ export class FoxApp extends ComponentBase implements OnDestroy{
         case 'About': {
           try {
             this.playVideo();
-          } catch(err) {
+          } catch (err) {
             console.log(err);
           }
           break;
@@ -124,7 +129,7 @@ export class FoxApp extends ComponentBase implements OnDestroy{
         case 'Game': {
           try {
             this.openExternalApp();
-          } catch(err) {
+          } catch (err) {
             console.log(err);
           }
           break;
@@ -150,7 +155,7 @@ export class FoxApp extends ComponentBase implements OnDestroy{
   }
 
   // To play video when device is ready
-  playVideo() {
+  private playVideo() {
     this.platform.ready().then(() => {
       // ExoPlayer
       this.playExoPlayer();
@@ -160,7 +165,7 @@ export class FoxApp extends ComponentBase implements OnDestroy{
   }
 
   // Function to play Google's ExoPlayer
-  playExoPlayer() {
+  private playExoPlayer() {
     let successCallback = json => {
       // Exit player on phones BACK button
       if (json.eventType === 'KEY_EVENT' && json.eventKeycode === 'KEYCODE_BACK') {
@@ -206,13 +211,13 @@ export class FoxApp extends ComponentBase implements OnDestroy{
   }
 
   // Opens external application
-  openExternalApp() {
+  private openExternalApp() {
     let scheme: string = this.scheme;
     let appUrl: string = this.appUrl;
     let userToken: string = this.userToken;
     this.platform.ready().then(() => {
       this.appAvailability.check(scheme).then(
-        ()=> {  // Success callback
+        () => {  // Success callback
           window.open(appUrl + userToken, '_system', 'location=no');
           console.log('App is available');
         },
@@ -248,105 +253,111 @@ export class FoxApp extends ComponentBase implements OnDestroy{
     });
   }
 
-  pushNotify() {
+  // Check if we have permission to send push notifications and listen to these notifications
+  private pushNotify() {
     try {
       if (this.device.cordova) {
         // to check if we have permission
         this.push.hasPermission()
           .then((res: any) => {
-
             if (res.isEnabled) {
-              //console.log('We have permission to send push notifications');
+              // Create a channel (Android O and above). You'll need to provide the id, description and importance properties.
+              this.push.createChannel({
+                id: "channel",
+                description: "Channel one",
+                // The importance property goes from 1 = Lowest, 2 = Low, 3 = Normal, 4 = High and 5 = Highest.
+                importance: 3
+              }).then(() => {
+                }, (err) => console.log(`Error creating channel: ${err}`)
+              );
+
+              // senderID should be right as your account senderID in 3rd party push service
+              const options: PushOptions = {
+                android: {
+                  senderID: '431639834815',
+                  icon: 'www/assets/icon/app_icon.png' //TODO: This doesn't work. Find working directory
+                }
+              };
+
+              const pushObject: PushObject = this.push.init(options);
+
+              pushObject.on('registration').subscribe((registration: any) => {
+              });
+
+              pushObject.on('notification').subscribe((notification: any) => {
+                let target = notification.additionalData['target'];
+                if (target === 'novelty') {
+                  let alert = this.alertCtrl.create({
+                    title: 'New product in Foxtrot!',
+                    message: 'Do you want to check it?',
+                    buttons: [
+                      {
+                        text: 'OK',
+                        handler: () => {
+                          let noveltySketch = System.PushContainer.pushStore[`novelty${notification.additionalData['id']}`];
+                          if (noveltySketch.novelty && noveltySketch.product) {
+                            noveltySketch.openNovelty();
+                          }
+                        }
+                      },
+                      {
+                        text: 'CANCEL'
+                      }
+                    ]
+                  });
+                  alert.present().catch((err) => console.log(`Alert error: ${err}`));
+                } else if (target === 'action') {
+                  let alert = this.alertCtrl.create({
+                    title: 'New promotion!',
+                    message: 'Do you want to check it?',
+                    buttons: [
+                      {
+                        text: 'OK',
+                        handler: () => {
+                          let actionSketch = System.PushContainer.pushStore[`action${notification.additionalData['id']}`];
+                          if (actionSketch.action) {
+                            actionSketch.openAction();
+                          }
+                        }
+                      },
+                      {
+                        text: 'CANCEL'
+                      }
+                    ]
+                  });
+                  alert.present().catch((err) => console.log(`Alert error: ${err}`));
+                }
+              });
+
+              pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
             } else {
               console.log('We do not have permission to send push notifications');
             }
-
           });
-
-        // Create a channel (Android O and above). You'll need to provide the id, description and importance properties.
-        this.push.createChannel({
-          id: "test_channel",
-          description: "Channel one",
-          // The importance property goes from 1 = Lowest, 2 = Low, 3 = Normal, 4 = High and 5 = Highest.
-          importance: 3
-        }).then(
-          () => {},
-          (err) => console.log(`Error creating channel: ${err}`)
-        );
-
-        // Delete a channel (Android O and above)
-        // this.push.deleteChannel('test_channel').then(() => console.log('Channel deleted'));
-
-        // Return a list of currently configured channels
-        this.push.listChannels().then((channels) => {
-          for (let i=0; i<channels.length; i++) {
-            console.log(`ID: ${channels[i].id} Description: ${channels[i].description}`);
-          }
-        });
-
-        // senderID should be right as your account senderID in 3rd party push service
-        const options: PushOptions = {
-          android: {
-            senderID: '431639834815',
-            icon: 'www/assets/icon/app_icon.png' //TODO: This doesn't work. Find working directory
-          }
-        };
-
-        const pushObject: PushObject = this.push.init(options);
-
-        pushObject.on('registration').subscribe((registration: any) => {
-          //console.log('Device registered');
-        });
-
-        pushObject.on('notification').subscribe((notification: any) => {
-          if (notification.additionalData['target'] === 'novelty') {
-            let alert = this.alertCtrl.create({
-              title: 'New product in Foxtrot!',
-              message: 'Do you want to check it?',
-              buttons: [
-                {
-                  text: 'Yes',
-                  handler: () => {
-                    let noveltySketch = System.PushContainer.pushStore[`novelty${notification.additionalData['id']}`];
-                    if (noveltySketch.novelty && noveltySketch.product) {
-                      noveltySketch.openNovelty();
-                    }
-                  }
-                },
-                {
-                  text: 'No'
-                }
-              ]
-            });
-            alert.present().catch((err) => console.log(`Alert error: ${err}`));
-          } else if (notification.additionalData['target'] === 'action') {
-            let alert = this.alertCtrl.create({
-              title: 'New promotion!',
-              message: 'Do you want to check it?',
-              buttons: [
-                {
-                  text: 'Yes',
-                  handler: () => {
-                    let actionSketch = System.PushContainer.pushStore[`action${notification.additionalData['id']}`];
-                    if (actionSketch.action) {
-                      actionSketch.openAction();
-                    }
-                  }
-                },
-                {
-                  text: 'No'
-                }
-              ]
-            });
-            alert.present().catch((err) => console.log(`Alert error: ${err}`));
-          }
-        });
-
-        pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
       }
     } catch (err) {
       console.log(`Push plugin error: ${err}`);
     }
+  }
+
+  private initLocalNotifications() {
+      cordova.plugins.notification.local.hasPermission(
+        granted => {
+          if (granted === true) {
+            cordova.plugins.notification.local.schedule([
+              {
+                id: 0,
+                title: 'Local Notification Example',
+                text: 'Delayed Notification',
+                trigger: {every: 15, unit: 'second'}
+              }
+            ]);
+            cordova.plugins.notification.local.on("click", (notification, state) => {
+              console.log(notification.id + " was clicked");
+            }, this);
+          }
+        }
+      );
   }
 }
 
