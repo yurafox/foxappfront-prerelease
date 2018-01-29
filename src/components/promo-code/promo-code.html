@@ -2,8 +2,8 @@
     <ion-grid class="f-border-ligthgray">
 
       <ion-row *ngIf="cart.promocodeInvalid">
-        <ion-col class="f-color-red">
-          <span>Cart content has been updated. Please apply promocode again</span>
+        <ion-col>
+          <error [errorText]="'Cart content has been updated. Please apply promocode again'"></error>
         </ion-col>
       </ion-row>
 

@@ -24,6 +24,7 @@ import { CreditComponent } from './credit/credit';
 import { CreditBriefComponent } from './credit-brief/credit-brief';
 import { BonusComponent } from './bonus/bonus';
 import { BonusPayComponent } from './bonus-pay/bonus-pay';
+import { ErrorComponent } from './error/error';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { BonusPayComponent } from './bonus-pay/bonus-pay';
     CreditComponent,
     CreditBriefComponent,
     BonusComponent,
-    BonusPayComponent
+    BonusPayComponent,
+    ErrorComponent
   ],
   entryComponents: [
     CustomPopupComponent,
@@ -83,7 +85,8 @@ import { BonusPayComponent } from './bonus-pay/bonus-pay';
     CreditComponent,
     CreditBriefComponent,
     BonusComponent,
-    BonusPayComponent
+    BonusPayComponent,
+    ErrorComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

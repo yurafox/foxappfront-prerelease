@@ -40,7 +40,9 @@ export class CartService  {
 
   private _bonus = 0;
   private _payByPromoBonus = false;
+
   public promoCode: string;
+  //public promocodeApplied: {code: string, discount: number} = null;
   public promoCodeDiscount = 0;
   public promocodeInvalid = false;
 
@@ -86,7 +88,8 @@ export class CartService  {
     );
 
     this.evServ.events['cartItemsUpdateEvent'].subscribe(() => {
-      this.promocodeInvalid = (this.promoCode && !(this.promoCodeDiscount === 0));
+      this.promocodeInvalid = (this.promoCode) ? true : false;
+      //this.promocodeInvalid = (this.promoCode && !(this.promoCodeDiscount === 0));
       this.promoCodeDiscount = 0;
       }
     );
