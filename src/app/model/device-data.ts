@@ -3,6 +3,7 @@ export class DeviceData {
     public model?: string,
     public os?: string,
     public height?: any,
-    public width?: any
+    public width?: any,
+    public pushDeviceToken?: any
   ) {}
 }
