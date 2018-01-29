@@ -30,7 +30,8 @@ export class BalancePage extends ComponentBase {
   }
 
   validatePage() {
-    return (this.cart.bonus <= this.cart.availBonus);
+    return (!(this.cart.userInputBonus)
+        || (this.cart.userInputBonus && (this.cart.userInputBonus <= this.cart.bonusPayMaxQty)));
   }
 
 }

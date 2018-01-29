@@ -9,7 +9,8 @@ export class EventService {
        'localeChangeEvent': new EventEmitter<any>(),
        'logonEvent': new EventEmitter<any>(),
        'logOffEvent': new EventEmitter<any>(),
-       'cartUpdateEvent': new EventEmitter<any>()
+       'cartUpdateEvent': new EventEmitter<any>(),
+       'cartItemsUpdateEvent': new EventEmitter<any>()
      };
   }
 }

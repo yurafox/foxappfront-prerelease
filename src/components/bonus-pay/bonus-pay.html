@@ -17,7 +17,7 @@
 
     <ion-row>
       <ion-col class="f-size-larger">
-        <input [(ngModel)]="cart.bonus" placeholder="Enter bonus quantity" name="bonus" id="bonus"
+        <input [(ngModel)]="cart.userInputBonus" placeholder="Enter bonus quantity" name="bonus" id="bonus"
                pattern="[0-9]*"
                #bonus="ngModel">
         <div *ngIf="!bonus.valid && bonus.touched">

@@ -23,7 +23,7 @@ export class CheckoutPage extends ComponentBase {
   validatePage(): {isValid: boolean, errors: string[]} {
     let err = [];
     if (this.cart.pmtMethod.id === 3)
-      this.cart.validateLoan(this.cart.orderTotal).validationErrors.forEach(i => {err.push(i)});
+      this.cart.validateLoan(this.cart.cartGrandTotal).validationErrors.forEach(i => {err.push(i)});
     this.cart.orderProducts.forEach(i => {
       if(i.errorMessage)
         err.push(i.errorMessage);
@@ -48,7 +48,9 @@ export class CheckoutPage extends ComponentBase {
         this.cart.loResultDeliveryOptions[j].deliveryCost = r;
       }
     );
+    this.evServ.events['cartItemsUpdateEvent'].emit();
     this.evServ.events['cartUpdateEvent'].emit();
+
   }
 
   onShowBalanceClick() {

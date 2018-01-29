@@ -47,7 +47,7 @@ Credit Products
             <ion-col>
               <ion-item  detail-push text-wrap class="f-color-secondary">
                 <credit-brief *ngIf="cart.loan"
-                              [creditAmt]="cart.orderTotal" [credit]="cart.loan">
+                              [creditAmt]="cart.cartGrandTotal" [credit]="cart.loan">
                 </credit-brief>
               </ion-item>
             </ion-col>

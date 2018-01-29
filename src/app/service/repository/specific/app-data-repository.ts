@@ -71,6 +71,7 @@ const getPaymentMethodsUrl = "/api/mpaymentMethods";
 const clientDraftOrderUrl = "/api/mclientDraftOrder";
 const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
 const creditProductsUrl = "/api/mcreditProducts";
+const getPromocodeDiscountUrl = "/api/mgetPromocodeDiscount";
 
 const noveltyDynamicUrl = "/api/mnovelties";
 // </editor-fold
@@ -81,6 +82,21 @@ export class AppDataRepository extends AbstractDataRepository {
 
   constructor(private http: Http) {
     super();
+  }
+
+  public async getDiscountByPromocode(promoCode: string): Promise<number> {
+    try {
+      const response = await this.http
+        .post(getPromocodeDiscountUrl, {promoCode: promoCode}).toPromise();
+      const val = response.json();
+
+      if (response.status !== 201 && response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      return val.discount;
+    } catch (err) {
+      return await this.handleError(err);
+    }
   }
 
   public async getBonusesInfoForCheckout(): Promise<{bonusLimit: number, actionBonusLimit: number}> {

@@ -63,6 +63,17 @@
           </ion-col>
         </ion-row>
 
+
+        <ion-row *ngIf="(cart.promoCodeDiscount>0)">
+          <ion-col class="f-size-larger">
+            Promocode discount:
+          </ion-col>
+          <ion-col class="f-size-larger" text-right col-auto>
+            <span>- {{cart.promoCodeDiscount | localeCurrency:userService.currency}}</span>
+          </ion-col>
+        </ion-row>
+
+
         <ion-row *ngIf="(cart.bonus>0)">
           <ion-col class="f-size-larger">
             Bonuses:
@@ -72,7 +83,7 @@
           </ion-col>
         </ion-row>
 
-        <ion-row *ngIf="cart.payByPromoBonus">
+        <ion-row *ngIf="cart.payByPromoBonus && (!(cart.promoBonusPayMaxQty === 0))">
           <ion-col class="f-size-larger">
             Promo bonuses:
           </ion-col>
@@ -113,7 +124,7 @@
         </ion-row>
         <div *ngIf="cart.loan && (cart.pmtMethod.id === 3)">
           <hr>
-          <credit-brief [creditAmt]="cart.orderTotal" [credit]="cart.loan"></credit-brief>
+          <credit-brief [creditAmt]="cart.cartGrandTotal" [credit]="cart.loan"></credit-brief>
         </div>
       </ion-grid>
     </ion-row>

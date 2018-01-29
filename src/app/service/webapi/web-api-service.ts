@@ -3437,6 +3437,16 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
         return info.utils.createResponse$(() => resOpt);
       }
 
+      case "mgetPromocodeDiscount": {
+        let reqData = (<any>info.req)._body;
+        if (reqData.promoCode) {
+          let numb = reqData.promoCode.match(/\d/g);
+          numb = (numb) ? numb.join("") : 0;
+          resOpt.body = {discount: numb };
+        }
+        return info.utils.createResponse$(() => resOpt);
+      }
+
       default:
         return null;
     }

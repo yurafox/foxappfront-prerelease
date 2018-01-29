@@ -14,7 +14,7 @@ export class PromoCodeComponent extends ComponentBase {
   }
 
   onApplyPromoCodeClick() {
-    console.log('ApplyPromoCode click.. ');
+    this.cart.getPromocodeDiscount();
   }
 
 }

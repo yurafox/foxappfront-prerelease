@@ -40,12 +40,16 @@ export class CartService  {
 
   private _bonus = 0;
   private _payByPromoBonus = false;
+  public promoCode: string;
+  public promoCodeDiscount = 0;
+  public promocodeInvalid = false;
 
-  //Текущие доступньіе бонусьі клиента
+  //Текущие доступные бонусы клиента
   public availBonus: number;
   public availPromoBonus: number;
 
-  public promoCode: string;
+  private _userInputBonus: number;
+
   public cartValidationNeeded = false;
   public person = new PersonInfo();
 
@@ -76,13 +80,35 @@ export class CartService  {
     );
 
     this.evServ.events['cartUpdateEvent'].subscribe(() => {
+        this.updateBonuses();
         this.calLoan();
       }
     );
 
+    this.evServ.events['cartItemsUpdateEvent'].subscribe(() => {
+      this.promocodeInvalid = (this.promoCode && !(this.promoCodeDiscount === 0));
+      this.promoCodeDiscount = 0;
+      }
+    );
     this.initCart();
   };
 
+  public get userInputBonus(): number {
+    return this._userInputBonus;
+  }
+
+  public set userInputBonus(val: number) {
+    this._userInputBonus = val;
+    this.bonus = val;
+  }
+
+
+  public async getPromocodeDiscount() {
+    let _d = (this.promoCode) ? await this.repo.getDiscountByPromocode(this.promoCode) : 0;
+    this.promoCodeDiscount = (_d <= this.itemsTotal) ? _d : this.itemsTotal;
+    this.evServ.events['cartUpdateEvent'].emit();
+    this.promocodeInvalid = false;
+  }
 
   public set bonus(val: number) {
     this._bonus = val;
@@ -112,7 +138,7 @@ export class CartService  {
   }
 
   public get cartGrandTotal(): number {
-    return (this.orderTotal - this.bonus - this.promoBonusPayMaxQty*AppConstants.ACTION_BONUS_TO_CURRENCY_RATE);
+    return (this.orderTotal - this.promoCodeDiscount - this.bonus - this.promoBonusPayMaxQty*AppConstants.ACTION_BONUS_TO_CURRENCY_RATE);
   }
 
   public get promoBonusPayMaxQty(): number {
@@ -122,7 +148,7 @@ export class CartService  {
     else
       return 0;
 
-    let  _s = Math.floor(this.itemsTotal - this.orderProducts.length);
+    let  _s = Math.floor(this.itemsTotal - this.orderProducts.length - this.promoCodeDiscount);
 
     if (_s < 0)
       return 0;
@@ -134,15 +160,20 @@ export class CartService  {
     };
   }
 
+  public updateBonuses() {
+    if (this.cartGrandTotal < 0)
+      this.bonus =  this.bonusPayMaxQty;
+  }
+
   public get bonusPayMaxQty(): number {
     let _pb = this.promoBonusPayMaxQty*AppConstants.ACTION_BONUS_TO_CURRENCY_RATE;
     let _s = 0;
     let _rem = 0;
 
     if (_pb === 0)
-      _s = Math.floor(this.itemsTotal - this.orderProducts.length);
+      _s = Math.floor(this.itemsTotal - this.orderProducts.length - this.promoCodeDiscount);
     else
-      _s = Math.floor(this.itemsTotal - 1);
+      _s = Math.floor(this.itemsTotal - 1 - this.promoCodeDiscount);
 
     if (_s >= _pb)
       _rem = _s - _pb;
@@ -288,6 +319,7 @@ export class CartService  {
     this.saveToLocalStorage();
     this.lastItemCreditCalc = null;
 
+    this.evServ.events['cartItemsUpdateEvent'].emit();
     this.evServ.events['cartUpdateEvent'].emit();
 
     let toast = page.toastCtrl.create({
@@ -327,6 +359,7 @@ export class CartService  {
     this.orderProducts.splice(itemIndex, 1);
     this.saveToLocalStorage();
     this.lastItemCreditCalc = null;
+    this.evServ.events['cartItemsUpdateEvent'].emit();
     this.evServ.events['cartUpdateEvent'].emit();
   }
 
