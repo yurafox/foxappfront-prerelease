@@ -35,3 +35,4 @@ export * from './select-pmt-method/select-pmt-method.module';
 export * from './checkout/checkout.module';
 export * from './credit-calc/credit-calc.module';
 export * from './balance/balance.module';
+export * from './poll/poll.module';

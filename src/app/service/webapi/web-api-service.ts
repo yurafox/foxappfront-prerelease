@@ -17,7 +17,6 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   }
 
   get(info: RequestInfo) {
-    // console.log( info);
     let response: Observable<any> | null;
     if ((response = this.apiController(info)) !== null) return response;
   }
@@ -3309,6 +3308,147 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   ]
   // </editor-fold>
 
+  polls = [
+    {
+      id:1,
+      dateStart: new Date(),
+      dateEnd: new Date(2018,1,22),
+      urlBanner : 'assets/imgs/polls/poll1.png',
+      bannerText: 'Примите участие в опросе'
+    }, {
+      id:2,
+      dateStart: new Date(),
+      dateEnd: new Date(2018,1,23),
+      urlBanner : 'assets/imgs/polls/poll2.png',
+      bannerText: 'Клиентский опрос'
+    }
+  ];
+
+  pollQuestion = [
+    {
+      id:1,
+      idPoll:1,
+      order:10,
+      question:'Как Вы оцениваете качество приложения?',
+      answerType:0
+    },{
+      id:7,
+      idPoll:1,
+      order:70,
+      question:'Как часто Вы используете наше приложение?',
+      answerType:2
+    }, {
+      id:2,
+      idPoll:1,
+      order:20,
+      question:'Как Вы оцениваете уровень обслуживания?',
+      answerType:2
+    },{
+      id:3,
+      idPoll:1,
+      order:30,
+      question:'Охарактеризуйте пожалуйста работу персонала',
+      answerType:1
+    },{
+      id:4,
+      idPoll:2,
+      order:40,
+      question:'На сколько устраивает Вас наш ассортимент?',
+      answerType:0
+    }, {
+      id:5,
+      idPoll:2,
+      order:50,
+      question:'Из каких источников Вы бы хотели получать от нас информацию о расширении ассортимента?',
+      answerType:2
+    },{
+      id:6,
+      idPoll:2,
+      order:60,
+      question:'Чтобы Вы хотели улучшить в работе приложения?',
+      answerType:1
+    }
+  ];
+
+  pollQuestionAnswer =[
+    {
+      id:1,
+      idPollQuestions: 1,
+      answer:'Отлично'
+    }, {
+      id:2,
+      idPollQuestions: 1,
+      answer:'Хорошо'
+    },{
+      id:3,
+      idPollQuestions: 1,
+      answer:'Удовлетворительно'
+    },{
+      id:4,
+      idPollQuestions: 1,
+      answer:'Неудовлетворительно'
+    },{
+      id:5,
+      idPollQuestions: 2,
+      answer:'Высокий'
+    },{
+      id:6,
+      idPollQuestions: 2,
+      answer:'Допустимый'
+    },{
+      id:7,
+      idPollQuestions: 2,
+      answer:'Недопустимый'
+    },{
+      id:8,
+      idPollQuestions: 4,
+      answer:'Очень устраивает'
+    },{
+      id:9,
+      idPollQuestions: 4,
+      answer:'Устраивает'
+    },{
+      id:10,
+      idPollQuestions: 4,
+      answer:'Относительно устраивает'
+    },{
+      id:11,
+      idPollQuestions: 4,
+      answer:'Не устраивает'
+    },{
+      id:12,
+      idPollQuestions: 5,
+      answer:'Электронная почта'
+    },{
+      id:13,
+      idPollQuestions: 5,
+      answer:'Фейсбук'
+    },{
+      id:14,
+      idPollQuestions: 5,
+      answer:'Вконтакте'
+    },{
+      id:15,
+      idPollQuestions: 7,
+      answer:'Каждый день'
+    },{
+      id:16,
+      idPollQuestions: 7,
+      answer:'Довольно часто'
+    },{
+      id:17,
+      idPollQuestions: 7,
+      answer:'Редко'
+    }
+  ];
+
+  clientPollAnswers =[{ // init test object
+    id: 0,
+    userId:0,
+    idPoll:0,
+    idPollQuestions: 0,
+    clientAnswer: ''
+  }];
 
   createDb() {
     const mquotationProducts = this.quotationProducts;
@@ -3343,6 +3483,10 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mcreditProducts = this.creditProducts;
     const mclientDraftOrder = this.clientDraftOrder;
     const mnovelties = this.novelties;
+    const mpolls = this.polls;
+    const mpollQuestion = this.pollQuestion;
+    const mpollQuestionAnswer = this.pollQuestionAnswer;
+    const mclientPollAnswers = this.clientPollAnswers;
 
     return {
       mquotationProducts,
@@ -3376,7 +3520,11 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mproductSupplCreditGrades,
       mcreditProducts,
       mclientDraftOrder,
-      mnovelties
+      mnovelties,
+      mpolls,
+      mpollQuestion,
+      mpollQuestionAnswer,
+      mclientPollAnswers
     };
   }
 
@@ -3442,9 +3590,12 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
         if (reqData.promoCode) {
           let numb = reqData.promoCode.match(/\d/g);
           numb = (numb) ? numb.join("") : 0;
-          resOpt.body = {discount: numb };
+          resOpt.body = {discount: numb};
         }
         return info.utils.createResponse$(() => resOpt);
+      }
+      case "mclientPollAnswers":{
+        return this.clientPollAnswersHandler[info.method](info, resOpt);
       }
 
       default:
@@ -3489,6 +3640,49 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       resOpt.body = resultUser;
       return info.utils.createResponse$(() => resOpt);
     }
+  };
+
+  clientPollAnswersHandler:IDictionary<(info: RequestInfo, resOpt?: ResponseOptions) => any> = {
+     post: info => {
+       const body = (<any>info.req)._body;
+       const tokenStr = (<any>info).req.headers.get("Authorization");
+       const userId = (<any>info).req.headers.get("x-user");
+
+       if(!userId || !this.verifyToken(tokenStr)) {
+          return info.utils.createResponse$(
+            ()=> new ResponseOptions({status: 401,statusText:'Unauthorized'})
+          );
+       }
+
+       if(!body || body.pollResult.length === 0) {
+        return info.utils.createResponse$(
+          ()=> new ResponseOptions({status: 400,statusText:'Bad Request'})
+        );
+      }
+
+      const keys:string[] = Object.keys(body.pollResult);
+      const lastclientAnswerId:number = this.clientPollAnswers[this.clientPollAnswers.length-1].id;
+
+      for(let i=0; i < keys.length; i++) {
+        this.clientPollAnswers.push({
+           id:lastclientAnswerId+i+1,
+           userId:userId,
+           idPoll:body.pollId,
+           idPollQuestions: body.pollResult[keys[i]].questionId,
+           clientAnswer: body.pollResult[keys[i]].answerValue
+        });
+      }
+
+        return info.utils.createResponse$(
+          ()=> new ResponseOptions(
+            {
+              status: 201,
+              statusText:'Created',
+              body:this.clientPollAnswers[this.clientPollAnswers.length-1]
+            })
+        );
+     },
+     get: info => null
   };
   // </editor-fold>
 
@@ -3538,6 +3732,5 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       !!this.tokens.find(value => value.token === tokenSplit[1].trim())
     );
   }
-
   // </editor-fold>
 }

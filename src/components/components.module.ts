@@ -25,6 +25,7 @@ import { CreditBriefComponent } from './credit-brief/credit-brief';
 import { BonusComponent } from './bonus/bonus';
 import { BonusPayComponent } from './bonus-pay/bonus-pay';
 import { ErrorComponent } from './error/error';
+import { PollBannerComponent } from './poll-banner/poll-banner';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { ErrorComponent } from './error/error';
     CreditBriefComponent,
     BonusComponent,
     BonusPayComponent,
-    ErrorComponent
+    ErrorComponent,
+    PollBannerComponent
   ],
   entryComponents: [
     CustomPopupComponent,
@@ -86,7 +88,8 @@ import { ErrorComponent } from './error/error';
     CreditBriefComponent,
     BonusComponent,
     BonusPayComponent,
-    ErrorComponent
+    ErrorComponent,
+    PollBannerComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

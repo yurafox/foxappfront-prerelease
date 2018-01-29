@@ -43,4 +43,8 @@ export * from './novelty';
 export * from './person';
 export * from './credit-product';
 export * from './credit-calc';
+export * from './poll';
+export * from './poll-question';
+export * from './poll-question-answer';
+export * from './client-poll-answer';
 

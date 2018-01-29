@@ -1,0 +1,37 @@
+page-poll {
+  .questionHeader{
+    background-color: #d8d8d8;
+    height: 100px;
+    padding: 43px 20px;
+
+    margin: 10px 10px;
+    span {
+      font-size: 14px;
+    }
+  }
+
+  .questionRadioArea {
+    padding: 5px;
+    margin:0px 26px;
+  }
+
+  .poll-textarea {
+    border: 2px solid #EBEBEC;
+    width: 100%;
+    font-family: "Roboto", "Helvetica Neue", sans-serif;
+    font-size: 1.4rem;
+    background-color: #fff;
+  }
+
+  .f-btn-post-questions, .f-btn-post-questions.activated {
+    background: #ffbc2e;
+    color: #000000;
+    text-transform: none;
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  .f-btn-post-container {
+    padding: 20px 10px;
+  }
+}

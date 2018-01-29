@@ -31,10 +31,12 @@ import {
   LoEntity,
   LoSupplEntity,
   EnumPaymentMethod,
-  ReviewAnswer
+  ReviewAnswer,
+  Poll,PollQuestion,PollQuestionAnswer,
+  ClientPollAnswer
 } from '../../../model/index';
 import { AbstractDataRepository } from '../../index';
-import { Providers, System } from "../../../core/app-core";
+import { Providers} from "../../../core/app-core";
 import {Novelty} from "../../../model/novelty";
 import {CreditProduct} from '../../../model/credit-product';
 
@@ -74,6 +76,10 @@ const creditProductsUrl = "/api/mcreditProducts";
 const getPromocodeDiscountUrl = "/api/mgetPromocodeDiscount";
 
 const noveltyDynamicUrl = "/api/mnovelties";
+const pollsUrl='/api/mpolls';
+const pollQuestionUrl='/api/mpollQuestion';
+const pollQuestionAnswerUrl = '/api/mpollQuestionAnswer';
+const clientPollAnswersUrl = '/api/mclientPollAnswers';
 // </editor-fold
 
 @Injectable()
@@ -1992,6 +1998,126 @@ export class AppDataRepository extends AbstractDataRepository {
         });
       }
       return novelties;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getPollById(id:number): Promise<Poll> {
+    try {
+      const response = await this.http
+        .get(`${pollsUrl}/${id}`, RequestFactory.makeAuthHeader())
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      let poll: Poll = null;
+      if (data != null) {
+        poll = new Poll(
+          data.id,
+          new Date(data.dateStart),
+          new Date(data.dateEnd),
+          data.urlBanner,
+          data.bannerText
+        );
+      }
+      return poll;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getPollQuestionsByPollId(pollId:number):Promise<PollQuestion[]> {
+    try {
+      const response = await this.http
+        .get(pollQuestionUrl,RequestFactory
+                             .makeSearchAndAuth([{key:'idPoll', value:pollId.toString()}]))
+                             .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const pollQuestions = new Array<PollQuestion>();
+      if (data != null) {
+        data.forEach(val =>
+          pollQuestions.push(
+            new PollQuestion(val.id,val.idPoll,val.order,val.question,val.answerType)
+          )
+        );
+      }
+      return pollQuestions.sort((a:PollQuestion,b:PollQuestion):number=>{return b.order-a.order;});
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getPollAnswersByQuestionId(idPollQuestion:number):Promise<PollQuestionAnswer[]>{
+    try {
+      const response = await this.http
+        .get(pollQuestionAnswerUrl,RequestFactory
+                             .makeSearchAndAuth([{key:'idPollQuestions', value:idPollQuestion.toString()}]))
+                             .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const pollQuestionAnswers:PollQuestionAnswer[] = new Array<PollQuestion>();
+      if (data != null) {
+        data.forEach(val =>
+          pollQuestionAnswers.push(
+            new PollQuestionAnswer(val.id,val.idPollQuestions,val.answer)
+          )
+        );
+      }
+      return pollQuestionAnswers;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async postClientPoolAnswers(pollAnswers:any):Promise<ClientPollAnswer> {
+    try {
+      const response = await this.http
+        .post(clientPollAnswersUrl, pollAnswers,RequestFactory.makeAuthHeader())
+        .toPromise();
+      const data = response.json();
+
+      if (response.status !== 201) {
+        throw new Error("server side status error");
+      }
+      const clientPollLast:ClientPollAnswer = new ClientPollAnswer
+                            (data.id,data.userId,data.idPoll,data.idPollQuestions,data.clientAnswer);
+
+      return clientPollLast;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async  getClientPoolAnswersForUserByPollId(pollId:number):Promise<ClientPollAnswer[]> {
+    try {
+      const response = await this.http
+        .get(clientPollAnswersUrl,RequestFactory
+                             .makeSearchAndAuth([{key:'idPoll', value:pollId.toString()}]))
+                             .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const clientPollAnswer:ClientPollAnswer[] = new Array<ClientPollAnswer>();
+      if (data != null) {
+        data.forEach(val =>
+          clientPollAnswer.push(
+            new ClientPollAnswer(val.id,val.userId,val.idPoll,val.idPollQuestions,val.clientAnswer)
+          )
+        );
+      }
+      return clientPollAnswer;
     } catch (err) {
       return await this.handleError(err);
     }
