@@ -1,4 +1,3 @@
-import { IDictionary } from './../../../core/app-core';
 import { QuotationProduct,
           Product,
           Quotation,
@@ -20,13 +19,15 @@ import { QuotationProduct,
           ClientOrderProducts,
           StoreReview,
           LoEntity,
+          Novelty,
+          NoveltyDetails,
+          DeviceData,
           LoSupplEntity,
           EnumPaymentMethod,
           Poll,PollQuestion,PollQuestionAnswer,
           ClientPollAnswer
        } from '../../../model/index';
 
-import {Novelty} from "../../../model/novelty";
 import {CreditProduct} from '../../../model/credit-product';
 
 export abstract class AbstractDataRepository {
@@ -100,4 +101,6 @@ export abstract class AbstractDataRepository {
   public async abstract getPollAnswersByQuestionId(idPollQuestion:number):Promise<PollQuestionAnswer[]>;
   public async abstract postClientPoolAnswers(pollAnswers:any):Promise<ClientPollAnswer>;
   public async abstract getClientPoolAnswersForUserByPollId(pollId:number):Promise<ClientPollAnswer[]>;
+  public async abstract getNoveltyDetailsByNoveltyId(id: number): Promise<NoveltyDetails[]>;
+  public async abstract sendDeviceData(deviceData: DeviceData): Promise<DeviceData>
 }

@@ -3,13 +3,14 @@ import {NavController} from "ionic-angular";
 import { AbstractDataRepository } from '../../app/service/index';
 import {Action} from '../../app/model/index';
 import {fadeInAnimation} from '../../app/core/animation-core';
+import {ComponentBase} from "../component-extension/component-base";
 
 @Component({
   selector: 'action-sketch',
   templateUrl: 'action-sketch.html',
   animations: [fadeInAnimation]
 })
-export class ActionSketchComponent {
+export class ActionSketchComponent extends ComponentBase {
   @Input()
   public innerId:number;
   public content:string='';
@@ -17,13 +18,16 @@ export class ActionSketchComponent {
   public action:Action;
 
   constructor(public navCtrl: NavController, private _repo:AbstractDataRepository) {
+    super();
   }
 
   async ngOnInit() {
+    super.ngOnInit();
     if(!this.action) {
       this.action = await this._repo.getAction(this.innerId);
     }
     this.content=this.action.sketch_content;
+    this.evServ.events['actionPushEvent'].emit(this);
   }
 
   public openAction() {

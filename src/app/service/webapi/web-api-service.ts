@@ -3305,7 +3305,24 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       sketch_content: this.dynamicContent['NOVELTY'],
       novelty_content: this.dynamicContent['WILEYFOXSPARK']
     }
-  ]
+  ];
+  noveltyDetails = [
+    {
+      id: 1,
+      noveltyId: 1,
+      idProduct: 6280637
+    },
+    {
+      id: 2,
+      noveltyId: 1,
+      idProduct: 6310491
+    },
+    {
+      id: 3,
+      noveltyId: 1,
+      idProduct: 6312913
+    }
+  ];
   // </editor-fold>
 
   polls = [
@@ -3487,6 +3504,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mpollQuestion = this.pollQuestion;
     const mpollQuestionAnswer = this.pollQuestionAnswer;
     const mclientPollAnswers = this.clientPollAnswers;
+    const mnoveltyDetails = this.noveltyDetails;
 
     return {
       mquotationProducts,
@@ -3524,7 +3542,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mpolls,
       mpollQuestion,
       mpollQuestionAnswer,
-      mclientPollAnswers
+      mclientPollAnswers,
+      mnoveltyDetails
     };
   }
 
@@ -3596,6 +3615,11 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       }
       case "mclientPollAnswers":{
         return this.clientPollAnswersHandler[info.method](info, resOpt);
+      }
+      case "mdeviceData": {
+        let reqData = (<any>info.req)._body;
+        resOpt.body = {model: reqData.model, os: reqData.os, height: reqData.height, width: reqData.width};
+        return info.utils.createResponse$(() => resOpt);
       }
 
       default:

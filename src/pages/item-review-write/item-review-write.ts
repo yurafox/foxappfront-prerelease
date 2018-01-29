@@ -27,6 +27,10 @@ export class ItemReviewWritePage extends ComponentBase {
     }
   }
 
+  async ngOnInit() {
+    super.ngOnInit();
+  }
+
   onSubmitClick(): void {
     console.log(`Submitted review: "${this.reviewText}"\n With rating: ${this.rating}`);
   }

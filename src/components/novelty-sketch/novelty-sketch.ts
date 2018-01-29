@@ -1,15 +1,16 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input ,AfterViewInit} from '@angular/core';
 import {NavController} from "ionic-angular";
 import {AbstractDataRepository} from '../../app/service/index';
 import {fadeInAnimation} from '../../app/core/animation-core';
 import {Novelty, Product} from "../../app/model/index";
+import {ComponentBase} from "../component-extension/component-base";
 
 @Component({
   selector: 'novelty-sketch',
   templateUrl: 'novelty-sketch.html',
   animations: [fadeInAnimation]
 })
-export class NoveltySketchComponent {
+export class NoveltySketchComponent extends ComponentBase implements AfterViewInit{
   @Input()
   public innerId:number;
   public content:string='';
@@ -19,9 +20,11 @@ export class NoveltySketchComponent {
   private productId: number;
 
   constructor(public navCtrl: NavController, private _repo:AbstractDataRepository) {
+    super();
   }
 
   async ngOnInit() {
+    super.ngOnInit();
     if(!this.novelty || !this.novelty.id) {
       this.novelty = await this._repo.getNovelty(this.innerId);
     }
@@ -30,6 +33,10 @@ export class NoveltySketchComponent {
       this.product = await this._repo.getProductById(this.novelty.productId);
     }
     this.content=this.novelty.sketch_content;
+    this.evServ.events['noveltyPushEvent'].emit(this);
+  }
+
+  ngAfterViewInit() {
   }
 
   public openNovelty() {

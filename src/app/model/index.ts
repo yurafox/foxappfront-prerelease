@@ -47,4 +47,5 @@ export * from './poll';
 export * from './poll-question';
 export * from './poll-question-answer';
 export * from './client-poll-answer';
-
+export * from './novelty-det';
+export * from './device-data';

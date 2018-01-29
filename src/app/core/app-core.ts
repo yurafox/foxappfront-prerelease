@@ -338,4 +338,8 @@ export namespace System {
        source.push(target[i]);
     }
  }
+
+  export class PushContainer {
+    public static pushStore:IDictionary<any> = {};
+  }
 }

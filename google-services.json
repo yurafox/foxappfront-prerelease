@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "431639834815",
+    "firebase_url": "https://foxapp-187308.firebaseio.com",
+    "project_id": "foxapp-187308",
+    "storage_bucket": "foxapp-187308.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431639834815:android:c4e7b5033263a6c3",
+        "android_client_info": {
+          "package_name": "com.foxapp.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "431639834815-b6d6ueao81hb3teq3hvnjrcgilkvcos7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKDQzb3RKdVlh0gqZMhY4MEjl53Lh-Dmk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

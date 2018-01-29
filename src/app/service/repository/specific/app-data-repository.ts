@@ -1,5 +1,4 @@
 import { RequestFactory } from './../../../core/app-core';
-import { Observable } from "rxjs/Observable";
 import { Injectable } from "@angular/core";
 import { Http, URLSearchParams, Headers } from "@angular/http";
 import "rxjs/add/operator/toPromise";
@@ -31,14 +30,17 @@ import {
   LoEntity,
   LoSupplEntity,
   EnumPaymentMethod,
+  Novelty,
+  NoveltyDetails,
+  DeviceData,
   ReviewAnswer,
   Poll,PollQuestion,PollQuestionAnswer,
   ClientPollAnswer
 } from '../../../model/index';
-import { AbstractDataRepository } from '../../index';
-import { Providers} from "../../../core/app-core";
-import {Novelty} from "../../../model/novelty";
+
 import {CreditProduct} from '../../../model/credit-product';
+import { AbstractDataRepository } from '../../index';
+import { Providers, System } from "../../../core/app-core";
 
 // <editor-fold desc="url const">
 const currenciesUrl = "/api/mcurrencies";
@@ -75,11 +77,13 @@ const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
 const creditProductsUrl = "/api/mcreditProducts";
 const getPromocodeDiscountUrl = "/api/mgetPromocodeDiscount";
 
-const noveltyDynamicUrl = "/api/mnovelties";
 const pollsUrl='/api/mpolls';
 const pollQuestionUrl='/api/mpollQuestion';
 const pollQuestionAnswerUrl = '/api/mpollQuestionAnswer';
 const clientPollAnswersUrl = '/api/mclientPollAnswers';
+const noveltyDynamicUrl = "/api/mnovelties";
+const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
+const deviceDataUrl = "/api/mdeviceData";
 // </editor-fold
 
 @Injectable()
@@ -105,7 +109,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getBonusesInfoForCheckout(): Promise<{bonusLimit: number, actionBonusLimit: number}> {
+  public async getBonusesInfoForCheckout(): Promise<{ bonusLimit: number, actionBonusLimit: number }> {
     try {
       const response = await this.http
         .get(getBonusesInfoForCheckoutUrl).toPromise();
@@ -237,8 +241,8 @@ export class AppDataRepository extends AbstractDataRepository {
       const response = await this.http
         .get(productSupplCreditGradesUrl, {
           search: this.createSearchParams([
-            { key: "idProduct", value: idProduct.toString() },
-            { key: "idSupplier", value: isSupplier.toString() }
+            {key: "idProduct", value: idProduct.toString()},
+            {key: "idSupplier", value: isSupplier.toString()}
           ])
         })
         .toPromise();
@@ -258,7 +262,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   }
 
-  public async getLoEntitiyById(entityId: number):Promise<LoEntity> {
+  public async getLoEntitiyById(entityId: number): Promise<LoEntity> {
     try {
       const response = await this.http
         .get(loEntitiesUrl + `/${entityId}`)
@@ -279,12 +283,12 @@ export class AppDataRepository extends AbstractDataRepository {
 
   }
 
-  public async getLoEntitiesForSupplier(supplierId: number):Promise<LoSupplEntity[]> {
+  public async getLoEntitiesForSupplier(supplierId: number): Promise<LoSupplEntity[]> {
     try {
       const response = await this.http
         .get(loSupplEntitiesUrl, {
           search: this.createSearchParams([
-            { key: "idSupplier", value: supplierId.toString() }
+            {key: "idSupplier", value: supplierId.toString()}
           ])
         })
         .toPromise();
@@ -324,21 +328,22 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
       if (data != null) {
-          let cClientOrder = new ClientOrder(
-            data[0].id,
-            data[0].orderDate,
-            data[0].idCur,
-            data[0].idClient,
-            data[0].total,
-            data[0].idPaymentMethod,
-            data[0].idPaymentStatus,
-            data[0].idStatus,
-            null,
-            data[0].loIdEntity,
-            data[0].loIdClientAddress
-          );
-          return cClientOrder;
-      };
+        let cClientOrder = new ClientOrder(
+          data[0].id,
+          data[0].orderDate,
+          data[0].idCur,
+          data[0].idClient,
+          data[0].total,
+          data[0].idPaymentMethod,
+          data[0].idPaymentStatus,
+          data[0].idStatus,
+          null,
+          data[0].loIdEntity,
+          data[0].loIdClientAddress
+        );
+        return cClientOrder;
+      }
+      ;
     } catch (err) {
       return await this.handleError(err);
     }
@@ -350,8 +355,8 @@ export class AppDataRepository extends AbstractDataRepository {
         .get(clientOrdersUrl, {
           //TODO переделать этот метод (два одинаковых поисковых параметра - кривизна)
           search: this.createSearchParams([
-            { key: "idStatus", value: "1" },
-            { key: "idStatus", value: "2" }
+            {key: "idStatus", value: "1"},
+            {key: "idStatus", value: "2"}
           ])
         })
         .toPromise();
@@ -425,7 +430,7 @@ export class AppDataRepository extends AbstractDataRepository {
       const response = await this.http
         .get(clientOrdersUrl, {
           search: this.createSearchParams([
-            { key: "idStatus", value: id.toString() }
+            {key: "idStatus", value: id.toString()}
           ])
         })
         .toPromise();
@@ -451,16 +456,12 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async updateCartProduct(
-    prod: ClientOrderProducts
-  ): Promise<ClientOrderProducts> {
+  public async updateCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
     //TODO
     return null;
   }
 
-  public async saveCartProduct(
-    prod: ClientOrderProducts
-  ): Promise<ClientOrderProducts> {
+  public async saveCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
     try {
       const response = await this.http
         .post(clientOrderSpecProductsUrl, prod.dto /*obj*/)
@@ -540,9 +541,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getClientDraftOrderSpecProductsById(
-    id: number
-  ): Promise<ClientOrderProducts> {
+  public async getClientDraftOrderSpecProductsById(id: number): Promise<ClientOrderProducts> {
     try {
       const _id = id.toString();
       const response = await this.http
@@ -614,7 +613,7 @@ export class AppDataRepository extends AbstractDataRepository {
       const response = await this.http
         .get(clientOrderSpecProductsOfClientUrl, {
           search: this.createSearchParams([
-            { key: "idClient", value: clientId.toString() }
+            {key: "idClient", value: clientId.toString()}
           ])
         })
         .toPromise();
@@ -646,14 +645,12 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getProductReviewsByProductId(
-    productId: number
-  ): Promise<ProductReview[]> {
+  public async getProductReviewsByProductId(productId: number): Promise<ProductReview[]> {
     try {
       const response = await this.http
         .get(productReviewsUrl, {
           search: this.createSearchParams([
-            { key: "idProduct", value: productId.toString() }
+            {key: "idProduct", value: productId.toString()}
           ])
         })
         .toPromise();
@@ -702,14 +699,12 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getProductStorePlacesByQuotId(
-    quotId: number
-  ): Promise<ProductStorePlace[]> {
+  public async getProductStorePlacesByQuotId(quotId: number): Promise<ProductStorePlace[]> {
     try {
       const response = await this.http
         .get(productStorePlacesUrl, {
           search: this.createSearchParams([
-            { key: "idQuotationProduct", value: quotId.toString() }
+            {key: "idQuotationProduct", value: quotId.toString()}
           ])
         })
         .toPromise();
@@ -730,7 +725,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
           let sp = await (<any>psp).storeplace_p;
           if (sp.type == 1)
-            //select only storeplaces with type of store
+          //select only storeplaces with type of store
             qProductsStorePlaces.push(psp);
         }
       }
@@ -797,7 +792,7 @@ export class AppDataRepository extends AbstractDataRepository {
       let client = new Client();
       const response = await this.http
         .get(clientsUrl, {
-          search: this.createSearchParams([{ key: "userId", value: _id }])
+          search: this.createSearchParams([{key: "userId", value: _id}])
         })
         .toPromise();
       let data: any = response.json();
@@ -855,7 +850,7 @@ export class AppDataRepository extends AbstractDataRepository {
       let client = new Client();
       const response = await this.http
         .get(clientsUrl, {
-          search: this.createSearchParams([{ key: "email", value: email }])
+          search: this.createSearchParams([{key: "email", value: email}])
         })
         .toPromise();
       let data: any = response.json();
@@ -884,28 +879,28 @@ export class AppDataRepository extends AbstractDataRepository {
       let _id = id.toString();
 
       const response = await this.http
-        .get(clientAddressesUrl+ `/${_id}`).toPromise();
+        .get(clientAddressesUrl + `/${_id}`).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
       if (data != null) {
-          let clientAddress = new ClientAddress();
-          clientAddress.id = data.id;
-          clientAddress.idClient = data.idClient;
-          clientAddress.idCity = data.idCity;
-          clientAddress.zip = data.zip;
-          clientAddress.street = data.street;
-          clientAddress.lat = data.lat;
-          clientAddress.lng = data.lng;
-          clientAddress.isPrimary = data.isPrimary;
-          clientAddress.idCountry = data.idCountry;
-          clientAddress.city = data.city;
-          clientAddress.bldApp = data.bldApp;
-          clientAddress.recName = data.recName;
-          clientAddress.phone = data.phone;
-          return clientAddress;
+        let clientAddress = new ClientAddress();
+        clientAddress.id = data.id;
+        clientAddress.idClient = data.idClient;
+        clientAddress.idCity = data.idCity;
+        clientAddress.zip = data.zip;
+        clientAddress.street = data.street;
+        clientAddress.lat = data.lat;
+        clientAddress.lng = data.lng;
+        clientAddress.isPrimary = data.isPrimary;
+        clientAddress.idCountry = data.idCountry;
+        clientAddress.city = data.city;
+        clientAddress.bldApp = data.bldApp;
+        clientAddress.recName = data.recName;
+        clientAddress.phone = data.phone;
+        return clientAddress;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -920,7 +915,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
       const response = await this.http
         .get(clientAddressesUrl, {
-          search: this.createSearchParams([{ key: "idClient", value: _id }])
+          search: this.createSearchParams([{key: "idClient", value: _id}])
         })
         .toPromise();
 
@@ -1096,16 +1091,14 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getProducts(
-    urlQuery: string,
-    cacheForce: boolean
-  ): Promise<Product[]> {
+  public async getProducts(urlQuery: string,
+                           cacheForce: boolean): Promise<Product[]> {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
       if (this.cache.Products.Count() === 0 || cacheForce === true) {
         const response = await this.http
           .get(productsUrl, {
-            search: this.createSearchParams([{ key: "url", value: urlQuery }])
+            search: this.createSearchParams([{key: "url", value: urlQuery}])
           })
           .toPromise();
 
@@ -1155,9 +1148,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getQuotationProductById(
-    qpId: number
-  ): Promise<QuotationProduct> {
+  public async getQuotationProductById(qpId: number): Promise<QuotationProduct> {
     try {
       const response = await this.http
         .get(quotationProductsUrl + `/${qpId}`)
@@ -1186,14 +1177,12 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getQuotationProductsByProductId(
-    productId: number
-  ): Promise<QuotationProduct[]> {
+  public async getQuotationProductsByProductId(productId: number): Promise<QuotationProduct[]> {
     try {
       const response = await this.http
         .get(quotationProductsUrl, {
           search: this.createSearchParams([
-            { key: "idProduct", value: productId.toString() }
+            {key: "idProduct", value: productId.toString()}
           ])
         })
         .toPromise();
@@ -1238,7 +1227,7 @@ export class AppDataRepository extends AbstractDataRepository {
         const response = await this.http
           .get(productsUrl, {
             search: this.createSearchParams([
-              { key: "id", value: productId.toString() }
+              {key: "id", value: productId.toString()}
             ])
           })
           .toPromise();
@@ -1483,9 +1472,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getManufacturerById(
-    manufacturerId: number
-  ): Promise<Manufacturer> {
+  public async getManufacturerById(manufacturerId: number): Promise<Manufacturer> {
     try {
       const manufacturer: Manufacturer = new Manufacturer();
       const id: string = manufacturerId.toString();
@@ -1561,9 +1548,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   // </editor-fold>
   // <editor-fold desc="url search factory">
-  private createSearchParams(
-    params: Array<{ key: string; value: string }>
-  ): URLSearchParams {
+  private createSearchParams(params: Array<{ key: string; value: string }>): URLSearchParams {
     const searchParams = new URLSearchParams();
     params.forEach(val => {
       searchParams.set(val.key, val.value);
@@ -1580,13 +1565,13 @@ export class AppDataRepository extends AbstractDataRepository {
       let enumVal =
         val.prop_Value_Enum !== null
           ? new PropEnumList(
-              val.prop_Value_Enum.id,
-              this.getSingleProp(val.prop_Value_Enum.id_Prop),
-              val.prop_Value_Enum.name,
-              val.prop_Value_Enum.list_Index,
-              val.prop_Value_Enum.bit_Index,
-              val.prop_Value_Enum.url
-            )
+          val.prop_Value_Enum.id,
+          this.getSingleProp(val.prop_Value_Enum.id_Prop),
+          val.prop_Value_Enum.name,
+          val.prop_Value_Enum.list_Index,
+          val.prop_Value_Enum.bit_Index,
+          val.prop_Value_Enum.url
+          )
           : null;
 
       props.push(
@@ -1696,7 +1681,7 @@ export class AppDataRepository extends AbstractDataRepository {
               storeArr.push(new Store(store.id, store.position, store.address));
             }
           });
-          stores.push({ id: val.id, stores: storeArr });
+          stores.push({id: val.id, stores: storeArr});
         });
       }
       return stores;
@@ -1730,7 +1715,7 @@ export class AppDataRepository extends AbstractDataRepository {
               storeArr.push(new Store(store.id, store.position, store.address));
             }
           });
-          stores.push({ id: val.id, stores: storeArr });
+          stores.push({id: val.id, stores: storeArr});
         });
       }
       for (let i = 0; i < stores.length; i++) {
@@ -1745,14 +1730,12 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getStoreReviewsByStoreId(
-    storeId: number
-  ): Promise<StoreReview[]> {
+  public async getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]> {
     try {
       const response = await this.http
         .get(storeReviewsUrl, {
           search: this.createSearchParams([
-            { key: "idStore", value: storeId.toString() }
+            {key: "idStore", value: storeId.toString()}
           ])
         })
         .toPromise();
@@ -1876,14 +1859,12 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getActionOffersByActionId(
-    idAction: number
-  ): Promise<ActionOffer[]> {
+  public async getActionOffersByActionId(idAction: number): Promise<ActionOffer[]> {
     try {
       const response = await this.http
         .get(actionOffersUrl, {
           search: this.createSearchParams([
-            { key: "idAction", value: idAction.toString() }
+            {key: "idAction", value: idAction.toString()}
           ])
         })
         .toPromise();
@@ -1906,14 +1887,12 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getQuotationProductsByQuotationId(
-    quotationId: number
-  ): Promise<QuotationProduct[]> {
+  public async getQuotationProductsByQuotationId(quotationId: number): Promise<QuotationProduct[]> {
     try {
       const response = await this.http
         .get(quotationProductsUrl, {
           search: this.createSearchParams([
-            { key: "idQuotation", value: quotationId.toString() }
+            {key: "idQuotation", value: quotationId.toString()}
           ])
         })
         .toPromise();
@@ -2003,7 +1982,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getPollById(id:number): Promise<Poll> {
+  public async getPollById(id: number): Promise<Poll> {
     try {
       const response = await this.http
         .get(`${pollsUrl}/${id}`, RequestFactory.makeAuthHeader())
@@ -2029,47 +2008,80 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getPollQuestionsByPollId(pollId:number):Promise<PollQuestion[]> {
+  public async getPollQuestionsByPollId(pollId: number): Promise<PollQuestion[]> {
     try {
       const response = await this.http
-        .get(pollQuestionUrl,RequestFactory
-                             .makeSearchAndAuth([{key:'idPoll', value:pollId.toString()}]))
-                             .toPromise();
+        .get(pollQuestionUrl, RequestFactory
+          .makeSearchAndAuth([{key: 'idPoll', value: pollId.toString()}]))
+        .toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const pollQuestions = new Array<PollQuestion>();
       if (data != null) {
         data.forEach(val =>
           pollQuestions.push(
-            new PollQuestion(val.id,val.idPoll,val.order,val.question,val.answerType)
+            new PollQuestion(val.id, val.idPoll, val.order, val.question, val.answerType)
           )
         );
       }
-      return pollQuestions.sort((a:PollQuestion,b:PollQuestion):number=>{return b.order-a.order;});
+      return pollQuestions.sort((a: PollQuestion, b: PollQuestion): number => {
+        return b.order - a.order;
+      });
     } catch (err) {
       return await this.handleError(err);
     }
   }
 
-  public async getPollAnswersByQuestionId(idPollQuestion:number):Promise<PollQuestionAnswer[]>{
+  public async getNoveltyDetailsByNoveltyId(id: number): Promise<NoveltyDetails[]> {
     try {
-      const response = await this.http
-        .get(pollQuestionAnswerUrl,RequestFactory
-                             .makeSearchAndAuth([{key:'idPollQuestions', value:idPollQuestion.toString()}]))
-                             .toPromise();
+      const response = await this.http.get(`${noveltyDetailsDynamicUrl}`, {
+        search: this.createSearchParams([
+          {key: "noveltyId", value: id.toString()}
+        ])
+      }).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      const pollQuestionAnswers:PollQuestionAnswer[] = new Array<PollQuestion>();
+
+      let noveltyDetails: NoveltyDetails[] = [];
+      if (data != null) {
+        data.forEach(val => {
+          let detail: NoveltyDetails = new NoveltyDetails(
+            val.id,
+            val.noveltyId,
+            val.idProduct
+          );
+          noveltyDetails.push(detail);
+        });
+      }
+      return noveltyDetails;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getPollAnswersByQuestionId(idPollQuestion: number): Promise<PollQuestionAnswer[]> {
+    try {
+      const response = await this.http
+        .get(pollQuestionAnswerUrl, RequestFactory
+          .makeSearchAndAuth([{key: 'idPollQuestions', value: idPollQuestion.toString()}]))
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const pollQuestionAnswers: PollQuestionAnswer[] = new Array<PollQuestion>();
       if (data != null) {
         data.forEach(val =>
           pollQuestionAnswers.push(
-            new PollQuestionAnswer(val.id,val.idPollQuestions,val.answer)
+            new PollQuestionAnswer(val.id, val.idPollQuestions, val.answer)
           )
         );
       }
@@ -2079,18 +2091,18 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async postClientPoolAnswers(pollAnswers:any):Promise<ClientPollAnswer> {
+  public async postClientPoolAnswers(pollAnswers: any): Promise<ClientPollAnswer> {
     try {
       const response = await this.http
-        .post(clientPollAnswersUrl, pollAnswers,RequestFactory.makeAuthHeader())
+        .post(clientPollAnswersUrl, pollAnswers, RequestFactory.makeAuthHeader())
         .toPromise();
       const data = response.json();
 
       if (response.status !== 201) {
         throw new Error("server side status error");
       }
-      const clientPollLast:ClientPollAnswer = new ClientPollAnswer
-                            (data.id,data.userId,data.idPoll,data.idPollQuestions,data.clientAnswer);
+      const clientPollLast: ClientPollAnswer = new ClientPollAnswer
+      (data.id, data.userId, data.idPoll, data.idPollQuestions, data.clientAnswer);
 
       return clientPollLast;
     } catch (err) {
@@ -2098,22 +2110,22 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async  getClientPoolAnswersForUserByPollId(pollId:number):Promise<ClientPollAnswer[]> {
+  public async getClientPoolAnswersForUserByPollId(pollId: number): Promise<ClientPollAnswer[]> {
     try {
       const response = await this.http
-        .get(clientPollAnswersUrl,RequestFactory
-                             .makeSearchAndAuth([{key:'idPoll', value:pollId.toString()}]))
-                             .toPromise();
+        .get(clientPollAnswersUrl, RequestFactory
+          .makeSearchAndAuth([{key: 'idPoll', value: pollId.toString()}]))
+        .toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      const clientPollAnswer:ClientPollAnswer[] = new Array<ClientPollAnswer>();
+      const clientPollAnswer: ClientPollAnswer[] = new Array<ClientPollAnswer>();
       if (data != null) {
         data.forEach(val =>
           clientPollAnswer.push(
-            new ClientPollAnswer(val.id,val.userId,val.idPoll,val.idPollQuestions,val.clientAnswer)
+            new ClientPollAnswer(val.id, val.userId, val.idPoll, val.idPollQuestions, val.clientAnswer)
           )
         );
       }
@@ -2121,5 +2133,22 @@ export class AppDataRepository extends AbstractDataRepository {
     } catch (err) {
       return await this.handleError(err);
     }
+  }
+
+  public async sendDeviceData(deviceData: DeviceData): Promise<DeviceData> {
+    try {
+      const response = await this.http
+        .post(deviceDataUrl, deviceData)
+        .toPromise();
+      const val = response.json();
+
+      if (response.status !== 201 && response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      return val;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+
   }
 }

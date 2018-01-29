@@ -97,8 +97,8 @@ export class UserService {
 
   public addFavoriteStoresId(id:number) {
     let count = 0;
-    this.user.favoriteStoresId.forEach(storeId => {
-      if (id === storeId) {
+    for (let favSoreID of this.user.favoriteStoresId) {
+      if (id === favSoreID) {
         count++;
         let alert = this.alertCtrl.create({
           title: 'Sorry',
@@ -111,7 +111,7 @@ export class UserService {
         });
         alert.present().catch((err) => console.log(`Alert error: ${err}`));
       }
-    });
+    }
     if (count === 0) {
       this.user.favoriteStoresId.push(id);
       let toast = this.toastCtrl.create({
