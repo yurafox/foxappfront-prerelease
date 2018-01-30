@@ -13,7 +13,7 @@ import {CartService} from '../../app/service/cart-service';
 })
 export class BonusPayComponent extends ComponentBase {
 
-  _bonusCnt: string;
+  //_bonusCnt: string;
   term$ = new Subject<string>();
 
   constructor(public cart: CartService) {
@@ -26,8 +26,11 @@ export class BonusPayComponent extends ComponentBase {
   }
 
   public set bonusCnt (val: string) {
-    this._bonusCnt = val;
-    console.log(val);
+    if (!val)
+      val = '0';
+    //this._bonusCnt = val;
+    this.cart.bonus = parseInt(val);
+    console.log(this.cart.bonus);
   }
 
 }
