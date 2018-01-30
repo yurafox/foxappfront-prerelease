@@ -14,7 +14,8 @@ export class PromoCodeComponent extends ComponentBase {
   }
 
   onApplyPromoCodeClick() {
-    this.cart.getPromocodeDiscount();
+    this.evServ.events['cartUpdateEvent'].emit();
+    //this.cart.getPromocodeDiscount();
   }
 
 }

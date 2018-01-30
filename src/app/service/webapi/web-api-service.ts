@@ -3115,7 +3115,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       password: "yurafox",
       id: 3,
       appKey: '',
-      userSetting: {'currency': '2', 'lang': '3'},
+      userSetting: {'currency': '0', 'lang': '3'},
       favoriteStoresId: [37, 39]
     },
   ];
@@ -3627,18 +3627,18 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
         let reqData = (<any>info.req)._body;
         let _respDataArr = [];
 
-        reqData.cartContent.forEach(i => {
-          let _bonusDisc = (i.maxBonusCnt > 0) ? Math.round(i.price*0.1):null;
+          (<[any]>reqData.cartContent).forEach(i => {
+          let _bonusDisc = (reqData.maxBonusCnt > 0) ? Math.round(i.price*0.1):null;
           let _promoCodeDisc = (reqData.promoCode) ? Math.round(i.price*0.05):null;
           let _promoBonusDisc = (reqData.usePromoBonus) ? Math.round(i.price*0.03):null;
 
           _respDataArr.push(
             {clOrderSpecProdId: i.id, promoCodeDisc: _promoCodeDisc,
-                BonusDisc: _bonusDisc, promoBonusDisc: _promoBonusDisc}
+                bonusDisc: _bonusDisc, promoBonusDisc: _promoBonusDisc}
                 );
           }
         );
-        resOpt.body = _respDataArr;
+        resOpt.body = JSON.stringify(_respDataArr);
         return info.utils.createResponse$(() => resOpt);
       }
 

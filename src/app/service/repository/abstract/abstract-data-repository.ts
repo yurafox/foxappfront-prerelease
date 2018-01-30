@@ -72,7 +72,7 @@ export abstract class AbstractDataRepository {
                                       usePromoBonus: boolean,
                                       cartContent: ClientOrderProducts[])
                                                               : Promise<{clOrderSpecProdId: number,
-                                                                          promoCodeDisc: number, BonusDisc: number,
+                                                                          promoCodeDisc: number, bonusDisc: number,
                                                                           promoBonusDisc: number}[]>;
 
 

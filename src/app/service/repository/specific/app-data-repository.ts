@@ -112,12 +112,18 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async calculateCart(promoCode: string, maxBonusCnt: number, usePromoBonus: boolean,
                              cartContent: ClientOrderProducts[]):
-      Promise<{clOrderSpecProdId: number, promoCodeDisc: number, BonusDisc: number, promoBonusDisc: number}[]>
+      Promise<{clOrderSpecProdId: number, promoCodeDisc: number, bonusDisc: number, promoBonusDisc: number}[]>
   {
     try {
+      let _dtoContent = [];
+      cartContent.forEach(i => {
+          _dtoContent.push(i.dto);
+        }
+      );
+
       const response = await this.http
         .post(calculateCartUrl, {promoCode: promoCode, maxBonusCnt: maxBonusCnt,
-                                        usePromoBonus: usePromoBonus, cartContent: cartContent})
+                                        usePromoBonus: usePromoBonus, cartContent: _dtoContent})
         .toPromise();
       const val = response.json();
 
@@ -127,7 +133,8 @@ export class AppDataRepository extends AbstractDataRepository {
       let _res = [];
       if (val) {
         val.forEach(i => {
-          _res.push(i.clOrderSpecProdId, i.promoDodeDisc, i.BonusDisc, i.promoBonusDisc);
+          _res.push({clOrderSpecProdId: i.clOrderSpecProdId, promoCodeDisc: i.promoCodeDisc,
+            bonusDisc: i.bonusDisc, promoBonusDisc: i.promoBonusDisc});
         });
       }
       return _res;
