@@ -76,6 +76,7 @@ const clientDraftOrderUrl = "/api/mclientDraftOrder";
 const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
 const creditProductsUrl = "/api/mcreditProducts";
 const getPromocodeDiscountUrl = "/api/mgetPromocodeDiscount";
+const calculateCartUrl = "/api/mcalculateCart";
 
 const pollsUrl='/api/mpolls';
 const pollQuestionUrl='/api/mpollQuestion';
@@ -108,6 +109,40 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+
+  public async calculateCart(promoCode: string, maxBonusCnt: number, usePromoBonus: boolean,
+                             cartContent: ClientOrderProducts[]):
+      Promise<{clOrderSpecProdId: number, promoCodeDisc: number, bonusDisc: number, promoBonusDisc: number}[]>
+  {
+    try {
+      let _dtoContent = [];
+      cartContent.forEach(i => {
+          _dtoContent.push(i.dto);
+        }
+      );
+
+      const response = await this.http
+        .post(calculateCartUrl, {promoCode: promoCode, maxBonusCnt: maxBonusCnt,
+                                        usePromoBonus: usePromoBonus, cartContent: _dtoContent})
+        .toPromise();
+      const val = response.json();
+
+      if (response.status !== 201 && response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      let _res = [];
+      if (val) {
+        val.forEach(i => {
+          _res.push({clOrderSpecProdId: i.clOrderSpecProdId, promoCodeDisc: i.promoCodeDisc,
+            bonusDisc: i.bonusDisc, promoBonusDisc: i.promoBonusDisc});
+        });
+      }
+      return _res;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 
   public async getBonusesInfoForCheckout(): Promise<{ bonusLimit: number, actionBonusLimit: number }> {
     try {

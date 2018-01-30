@@ -74,12 +74,12 @@
         </ion-row>
 
 
-        <ion-row *ngIf="(cart.bonus>0)">
+        <ion-row *ngIf="(cart.itemsBonusDisc>0)">
           <ion-col class="f-size-larger">
             Bonuses:
           </ion-col>
           <ion-col class="f-size-larger" text-right col-auto>
-            <span>- {{cart.bonus}}</span>
+            <span>- {{cart.itemsBonusDisc | localeCurrency:userService.currency}}</span>
           </ion-col>
         </ion-row>
 
@@ -88,7 +88,7 @@
             Promo bonuses:
           </ion-col>
           <ion-col class="f-size-larger" text-right col-auto>
-            <span>- {{cart.promoBonusPayMaxQty}}</span>
+            <span>- {{cart.itemsPromoBonusDisc | localeCurrency:userService.currency}}</span>
           </ion-col>
         </ion-row>
 

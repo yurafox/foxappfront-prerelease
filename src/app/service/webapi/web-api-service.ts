@@ -6,6 +6,7 @@ import {IDictionary} from "../../core/app-core";
 import {WebApiMockContent} from './web-api-mock-content';
 
 export class WebApiService extends WebApiMockContent implements InMemoryDbService {
+
   post(info: RequestInfo) {
     let response: Observable<any> | null;
     if ((response = this.apiController(info)) !== null) return response;
@@ -3115,7 +3116,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       password: "yurafox",
       id: 3,
       appKey: '',
-      userSetting: {'currency': '2', 'lang': '3'},
+      userSetting: {'currency': '0', 'lang': '3'},
       favoriteStoresId: [37, 39]
     },
   ];
@@ -3625,6 +3626,25 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       case "mdeviceData": {
         let reqData = (<any>info.req)._body;
         resOpt.body = {model: reqData.model, os: reqData.os, height: reqData.height, width: reqData.width};
+        return info.utils.createResponse$(() => resOpt);
+      }
+
+      case "mcalculateCart": {
+        let reqData = (<any>info.req)._body;
+        let _respDataArr = [];
+
+          (<[any]>reqData.cartContent).forEach(i => {
+          let _bonusDisc = (reqData.maxBonusCnt > 0) ? Math.round(i.price*0.1):null;
+          let _promoCodeDisc = (reqData.promoCode) ? Math.round(i.price*0.05):null;
+          let _promoBonusDisc = (reqData.usePromoBonus) ? Math.round(i.price*0.03):null;
+
+          _respDataArr.push(
+            {clOrderSpecProdId: i.id, promoCodeDisc: _promoCodeDisc,
+                bonusDisc: _bonusDisc, promoBonusDisc: _promoBonusDisc}
+                );
+          }
+        );
+        resOpt.body = JSON.stringify(_respDataArr);
         return info.utils.createResponse$(() => resOpt);
       }
 

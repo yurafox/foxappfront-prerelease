@@ -7,7 +7,7 @@ import {UserService} from './bll/user-service';
 import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
 import {EventService} from './event-service';
 import {EnumPaymentMethod} from '../model/enum-payment-method';
-import {App, LoadingController, NavController, ToastController} from 'ionic-angular';
+import {App, NavController} from 'ionic-angular';
 import {PersonInfo} from '../model/person';
 import {CreditCalc} from '../model/credit-calc';
 import {AppConstants} from '../app-constants';
@@ -41,9 +41,8 @@ export class CartService  {
   private _bonus = 0;
   private _payByPromoBonus = false;
 
-  public promoCode: string;
-  //public promocodeApplied: {code: string, discount: number} = null;
-  public promoCodeDiscount = 0;
+  public _promoCode: string;
+  //public promoCodeDiscount = 0;
   public promocodeInvalid = false;
 
   //Текущие доступные бонусы клиента
@@ -82,19 +81,46 @@ export class CartService  {
     );
 
     this.evServ.events['cartUpdateEvent'].subscribe(() => {
-        this.updateBonuses();
-        this.calLoan();
+        this.calculateCart();
       }
     );
 
     this.evServ.events['cartItemsUpdateEvent'].subscribe(() => {
+/*
       this.promocodeInvalid = !!(this.promoCode);
-      //this.promocodeInvalid = (this.promoCode && !(this.promoCodeDiscount === 0));
       this.promoCodeDiscount = 0;
+*/
       }
     );
     this.initCart();
   };
+
+  public async calculateCart(){
+    let calcRes = await this.repo.calculateCart(this.promoCode, this.userInputBonus, this.payByPromoBonus,
+                                    this.orderProducts);
+    console.log('calcRes: ' + calcRes);
+
+    calcRes.forEach(i => {
+      let _found = false;
+      let _prod: ClientOrderProducts = null;
+
+      for (let _p of this.orderProducts) {
+          if (_p.id === i.clOrderSpecProdId) {
+            _prod = _p;
+            _found = true;
+            break;
+          }
+        };
+      if (_found) {
+        _prod.payBonusCnt = i.bonusDisc;
+        _prod.payPromoCodeDiscount = i.promoCodeDisc;
+        _prod.payPromoBonusCnt = i.promoBonusDisc;
+      };
+      }
+    );
+
+    this.calLoan();
+  }
 
   public get userInputBonus(): number {
     return this._userInputBonus;
@@ -105,12 +131,14 @@ export class CartService  {
     this.bonus = val;
   }
 
+  public get promoCode(): string {
+    return this._promoCode;
+  }
 
-  public async getPromocodeDiscount() {
-    let _d = (this.promoCode) ? await this.repo.getDiscountByPromocode(this.promoCode) : 0;
-    this.promoCodeDiscount = (_d <= this.itemsTotal) ? _d : this.itemsTotal;
-    this.evServ.events['cartUpdateEvent'].emit();
-    this.promocodeInvalid = false;
+  public set promoCode (val: string)  {
+    this._promoCode = val;
+    if (!val)
+      this.evServ.events['cartUpdateEvent'].emit();
   }
 
   public set bonus(val: number) {
@@ -140,35 +168,47 @@ export class CartService  {
     }
   }
 
+  public get itemsBonusDisc(): number {
+    let _res = 0;
+    this.orderProducts.forEach(i => {
+      _res += i.payBonusCnt*i.qty;
+    });
+    return _res;
+  }
+
+  public get promoCodeDiscount(): number {
+    let _res = 0;
+    this.orderProducts.forEach(i => {
+      _res += i.payPromoCodeDiscount*i.qty;
+    });
+    return _res;
+  }
+
+  public get itemsPromoBonusDisc(): number {
+    let _res = 0;
+    this.orderProducts.forEach(i => {
+      _res += i.payPromoBonusCnt*i.qty;
+    });
+    return _res;
+  }
+
   public get cartGrandTotal(): number {
-    return (this.orderTotal - this.promoCodeDiscount - this.bonus - this.promoBonusPayMaxQty*AppConstants.ACTION_BONUS_TO_CURRENCY_RATE);
+    return (this.orderTotal - this.promoCodeDiscount
+              - this.itemsBonusDisc - this.itemsPromoBonusDisc);
   }
 
   public get promoBonusPayMaxQty(): number {
     let _pb = 0;
     if (this.payByPromoBonus)
-      _pb = this.availPromoBonus*AppConstants.ACTION_BONUS_TO_CURRENCY_RATE;
+      _pb = this.availPromoBonus; // *AppConstants.ACTION_BONUS_TO_CURRENCY_RATE;
     else
       return 0;
-
-    let  _s = Math.floor(this.itemsTotal - this.orderProducts.length - this.promoCodeDiscount);
-
-    if (_s < 0)
-      return 0;
-
-    if (_s >= _pb)
-      return _pb/AppConstants.ACTION_BONUS_TO_CURRENCY_RATE;
-    else {
-      return _s/AppConstants.ACTION_BONUS_TO_CURRENCY_RATE;
-    };
-  }
-
-  public updateBonuses() {
-    if (this.cartGrandTotal < 0)
-      this.bonus =  this.bonusPayMaxQty;
+    return _pb;
   }
 
   public get bonusPayMaxQty(): number {
+    return this.availBonus;
+/*
     let _pb = this.promoBonusPayMaxQty*AppConstants.ACTION_BONUS_TO_CURRENCY_RATE;
     let _s = 0;
     let _rem = 0;
@@ -187,6 +227,7 @@ export class CartService  {
       return _rem;
     else
       return this.availBonus;
+*/
   }
 
   public async initBonusData() {
