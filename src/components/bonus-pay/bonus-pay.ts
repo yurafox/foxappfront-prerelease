@@ -14,17 +14,23 @@ import {Observable} from 'rxjs/Observable';
 })
 export class BonusPayComponent extends ComponentBase {
 
+/*
   _bonusCnt: number;
   public s: string;
   term$ = new Subject<string>();
+*/
 
   constructor(public cart: CartService) {
     super();
+  }
+/*
     this.term$
       .debounceTime(1000)
       .distinctUntilChanged()
-      .switchMap(term => Observable.interval(term.te));
-  }
+      .switchMap(term => Observable.interval(term.te));   super();
 
+
+  }
+*/
 
 }

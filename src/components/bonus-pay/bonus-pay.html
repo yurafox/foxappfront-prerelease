@@ -18,7 +18,10 @@
     <ion-row>
       <ion-col class="f-size-larger">
         <input [(ngModel)]="cart.userInputBonus" placeholder="Enter bonus quantity" name="bonus" id="bonus"
-               pattern="[0-9]*" (keyup)="term$.next($event.target.value)"
+               pattern="[0-9]*"
+<!--
+               (keyup)="term$.next($event.target.value)"
+-->
                #bonus="ngModel">
         <div *ngIf="!bonus.valid && bonus.touched">
                   <span *ngIf="bonus.hasError('pattern')"
