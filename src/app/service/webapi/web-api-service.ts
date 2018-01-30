@@ -3089,6 +3089,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   //</editor-fold>
 
   //<editor-fold desc="Users">
+  // TODO: Добавить в базу юзеру набор FCM айди (набор строк) его девайсов и обрабатывать их на сервере для PUSH-уведомлений
   users = [
     {
       name: "sergey",
@@ -3294,31 +3295,36 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     { sId:58, sName: "XS-18", sDefProdId: null, sPartPay: 0, sGracePeriod: 18, maxTerm: null, firstPay: null, monthCommissionPct: null, yearPct: null, kpcPct: null},
     { sId:57, sName: "XS-15", sDefProdId: 12110, sPartPay: 0, sGracePeriod: 15, maxTerm: 37, firstPay: null, monthCommissionPct: 3, yearPct: 0.01, kpcPct: 15, minTerm: 30}
   ];
+
   // <editor-fold desc="novelties">
   novelties = [
     {
       id: 1,
-      productId: 6280637,
+      productId: 6310491,
       name: 'Смартфон WILEYFOX Spark',
       img_url: 'assets/imgs/novelties/spark',
       priority: 10,
       sketch_content: this.dynamicContent['NOVELTY'],
       novelty_content: this.dynamicContent['WILEYFOXSPARK']
+    },
+    {
+      id: 2,
+      productId: 6280637,
+      name: 'Смартфон SAMSUNG Galaxy S8 Plus',
+      img_url: 'assets/imgs/novelties/galaxys8',
+      priority: 10,
+      sketch_content: this.dynamicContent['NOVELTY'],
+      novelty_content: this.dynamicContent['SAMSUNGGS8']
     }
   ];
   noveltyDetails = [
     {
       id: 1,
       noveltyId: 1,
-      idProduct: 6280637
-    },
-    {
-      id: 2,
-      noveltyId: 1,
       idProduct: 6310491
     },
     {
-      id: 3,
+      id: 2,
       noveltyId: 1,
       idProduct: 6312913
     }
