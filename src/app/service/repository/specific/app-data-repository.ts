@@ -76,6 +76,7 @@ const clientDraftOrderUrl = "/api/mclientDraftOrder";
 const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
 const creditProductsUrl = "/api/mcreditProducts";
 const getPromocodeDiscountUrl = "/api/mgetPromocodeDiscount";
+const calculateCartUrl = "/api/mcalculateCart";
 
 const pollsUrl='/api/mpolls';
 const pollQuestionUrl='/api/mpollQuestion';
@@ -108,6 +109,33 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+
+  public async calculateCart(promoCode: string, maxBonusCnt: number, usePromoBonus: boolean,
+                             cartContent: ClientOrderProducts[]):
+      Promise<{clOrderSpecProdId: number, promoCodeDisc: number, BonusDisc: number, promoBonusDisc: number}[]>
+  {
+    try {
+      const response = await this.http
+        .post(calculateCartUrl, {promoCode: promoCode, maxBonusCnt: maxBonusCnt,
+                                        usePromoBonus: usePromoBonus, cartContent: cartContent})
+        .toPromise();
+      const val = response.json();
+
+      if (response.status !== 201 && response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      let _res = [];
+      if (val) {
+        val.forEach(i => {
+          _res.push(i.clOrderSpecProdId, i.promoDodeDisc, i.BonusDisc, i.promoBonusDisc);
+        });
+      }
+      return _res;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 
   public async getBonusesInfoForCheckout(): Promise<{ bonusLimit: number, actionBonusLimit: number }> {
     try {

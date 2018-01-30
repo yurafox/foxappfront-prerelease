@@ -89,7 +89,6 @@ export class CartService  {
 
     this.evServ.events['cartItemsUpdateEvent'].subscribe(() => {
       this.promocodeInvalid = !!(this.promoCode);
-      //this.promocodeInvalid = (this.promoCode && !(this.promoCodeDiscount === 0));
       this.promoCodeDiscount = 0;
       }
     );
