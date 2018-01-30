@@ -9,6 +9,7 @@ import 'rxjs/add/operator/takeWhile';
 import { IntervalObservable } from "rxjs/observable/IntervalObservable";
 import { ComponentBase } from '../../components/component-extension/component-base';
 
+
 @IonicPage()
 @Component({
   selector: 'page-action',
@@ -20,7 +21,7 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy {
   public action:Action;
   public actionOffers:Array<ActionOffer>=[];
   public quotationProduct:Array<QuotationProduct>=[];
-  public expire:Date;
+  public expire:{days?:number,hours?:number,minutes?:number,seconds?:number};
   private alive:boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -29,6 +30,7 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy {
     this.actionId = this.navParams.data.id;
     this.action = this.navParams.data.action;
     this.alive = true;
+    this.expire = {};
   }
 
   async ngOnInit() {
@@ -102,6 +104,10 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy {
   }
 
   public  actionExpire(): void {
-    this.expire = new Date(this.dateEnd.getTime() - new Date().getTime());
+    let timespan:number = Math.abs(this.dateEnd.getTime() - new Date().getTime());
+    this.expire.days = Math.ceil(timespan / (1000*3600*24));
+    this.expire.hours = Math.ceil(timespan / (1000*3600));
+    this.expire.minutes = Math.ceil(timespan / (1000*60));
+    this.expire.seconds = Math.ceil(timespan / 1000);
   }
 }

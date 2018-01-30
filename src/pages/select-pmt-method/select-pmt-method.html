@@ -157,6 +157,7 @@ Passport Data
                 <input type="date" [(ngModel)]="cart.person.birthDate"
                        id="birthDate" name="birthDate"
                        required #birthDate="ngModel">
+
                 <div *ngIf="!birthDate.valid && birthDate.touched">
                 <span *ngIf="birthDate.hasError('required')"
                       style="color: red;">Please enter your birth date</span>

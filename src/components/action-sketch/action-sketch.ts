@@ -26,7 +26,10 @@ export class ActionSketchComponent extends ComponentBase {
     if(!this.action) {
       this.action = await this._repo.getAction(this.innerId);
     }
-    this.content=this.action.sketch_content;
+    if(this.action.sketch_content && this.dateEnd > new Date()) {
+      this.content=this.action.sketch_content;
+    }
+
     this.evServ.events['actionPushEvent'].emit(this);
   }
 
@@ -71,7 +74,13 @@ export class ActionSketchComponent extends ComponentBase {
   }
 
   public get actionActiveRange():any {
-     return (this.dateEnd) ? this.dateEnd.getDate()-new Date().getDate()
-                           : this.dateEnd;
+    if(this.dateEnd < new Date())
+         return 0;
+
+
+    let timespan:number = Math.abs(this.dateEnd.getTime() - new Date().getTime());
+    let diffDays:number = Math.ceil(timespan / (1000*3600*24));
+
+     return diffDays;
   }
 }
