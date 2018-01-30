@@ -10,7 +10,6 @@ export class EventService {
        'logonEvent': new EventEmitter<any>(),
        'logOffEvent': new EventEmitter<any>(),
        'cartUpdateEvent': new EventEmitter<any>(),
-       'cartItemsUpdateEvent': new EventEmitter<any>(),
        'noveltyPushEvent': new EventEmitter<any>(),
        'actionPushEvent': new EventEmitter<any>()
      };

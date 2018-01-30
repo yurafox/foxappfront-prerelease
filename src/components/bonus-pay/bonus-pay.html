@@ -3,7 +3,7 @@
   <ion-grid class="f-border-ligthgray">
     <ion-row>
       <ion-col class="f-size-medium f-color-blue">
-        You could pay up to <span class="f-color-red"><b>{{cart.bonusPayMaxQty}}</b></span> bonuses for this purchase.
+        You could pay up to <span class="f-color-red"><b>{{cart.availBonus}}</b></span> bonuses for this purchase.
         <br>
         Tick "Pay promotional bonuses" option if you want to pay promotional bonuses.
       </ion-col>
@@ -18,7 +18,7 @@
     <ion-row>
       <ion-col class="f-size-larger">
         <input [(ngModel)]="cart.userInputBonus" placeholder="Enter bonus quantity" name="bonus" id="bonus"
-               pattern="[0-9]*"
+               pattern="[0-9]*" (keyup)="term$.next($event.target.value)"
                #bonus="ngModel">
         <div *ngIf="!bonus.valid && bonus.touched">
                   <span *ngIf="bonus.hasError('pattern')"

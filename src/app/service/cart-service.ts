@@ -85,13 +85,6 @@ export class CartService  {
       }
     );
 
-    this.evServ.events['cartItemsUpdateEvent'].subscribe(() => {
-/*
-      this.promocodeInvalid = !!(this.promoCode);
-      this.promoCodeDiscount = 0;
-*/
-      }
-    );
     this.initCart();
   };
 
@@ -197,45 +190,11 @@ export class CartService  {
               - this.itemsBonusDisc - this.itemsPromoBonusDisc);
   }
 
-  public get promoBonusPayMaxQty(): number {
-    let _pb = 0;
-    if (this.payByPromoBonus)
-      _pb = this.availPromoBonus; // *AppConstants.ACTION_BONUS_TO_CURRENCY_RATE;
-    else
-      return 0;
-    return _pb;
-  }
-
-  public get bonusPayMaxQty(): number {
-    return this.availBonus;
-/*
-    let _pb = this.promoBonusPayMaxQty*AppConstants.ACTION_BONUS_TO_CURRENCY_RATE;
-    let _s = 0;
-    let _rem = 0;
-
-    if (_pb === 0)
-      _s = Math.floor(this.itemsTotal - this.orderProducts.length - this.promoCodeDiscount);
-    else
-      _s = Math.floor(this.itemsTotal - 1 - this.promoCodeDiscount);
-
-    if (_s >= _pb)
-      _rem = _s - _pb;
-    else
-      return 0;
-
-    if (_rem <= this.availBonus*AppConstants.BONUS_TO_CURRENCY_RATE)
-      return _rem;
-    else
-      return this.availBonus;
-*/
-  }
-
   public async initBonusData() {
     let cl = await (<any>this.userService).profile.client_p;
     this.availBonus = cl.bonusBalance;
     this.availPromoBonus = cl.actionBonusBalance;
   }
-
 
   public get mostExpensiveItem(): ClientOrderProducts {
     if (this.orderProducts.length === 0)
@@ -363,7 +322,6 @@ export class CartService  {
     this.saveToLocalStorage();
     this.lastItemCreditCalc = null;
 
-    this.evServ.events['cartItemsUpdateEvent'].emit();
     this.evServ.events['cartUpdateEvent'].emit();
 
     let toast = page.toastCtrl.create({
@@ -403,7 +361,6 @@ export class CartService  {
     this.orderProducts.splice(itemIndex, 1);
     this.saveToLocalStorage();
     this.lastItemCreditCalc = null;
-    this.evServ.events['cartItemsUpdateEvent'].emit();
     this.evServ.events['cartUpdateEvent'].emit();
   }
 
