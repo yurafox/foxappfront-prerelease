@@ -19,8 +19,10 @@ export enum PageMode {
 export class HomePage extends ComponentBase {
 
 //  searchMode = false;
+
   private _pageMode: PageMode = PageMode.HomeMode;
   public baseProducts = new Array<Product>();
+
   // list slides for slider
   public slides = [
     {
@@ -40,15 +42,11 @@ export class HomePage extends ComponentBase {
   constructor(public app: App, public nav: NavController,
               private _repo:AbstractDataRepository, public srchService: SearchService) {
     super();
-
-  }
+    this.srchService.lastSearch = null;
+ }
 
   public set pageMode(val: PageMode) {
     this._pageMode = val;
-/*
-    if (val == PageMode.HomeMode)
-      this.searchButtonControl.clearInput();
-*/
   }
 
   public get pageMode(): PageMode {
@@ -75,7 +73,6 @@ export class HomePage extends ComponentBase {
       this.pageMode = PageMode.SearchMode;
       this.searchButtonControl.inputMode = true;
     }
-    //this.nav.push('SearchPage');
   }
 
   deleteSearchItem(event: any, item: string) {

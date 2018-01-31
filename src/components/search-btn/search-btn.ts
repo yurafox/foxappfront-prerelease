@@ -1,51 +1,50 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {NavController} from 'ionic-angular';
 import {SearchService} from '../../app/service/search-service';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import {PageMode} from '../../pages/home/home';
 
+
 @Component({
   selector: 'search-btn',
   templateUrl: 'search-btn.html'
 })
-export class SearchBtnComponent extends ComponentBase implements OnInit {
+export class SearchBtnComponent extends ComponentBase {
 
   @ViewChild('input') input;
 
   @Input()
   public hostPage: any = null;
 
+  public tmpSearchArray = [];
   searchValue = '';
   inputMode = false;
 
-  public tmpSearchArray = [];
+
   constructor(public searchService: SearchService,
               public navCtrl: NavController,
               private barcodeScanner: BarcodeScanner,
               private srchService: SearchService) {
     super();
+
     searchService.lastSearchStringUpdated.subscribe(
       (value: string) => {
         this.searchValue = value;
       }
     );
-  }
 
-  setFocus(): void {
-    this.input.setFocus();
+    this.initTmpSearchArray();
+
   }
 
   async searchByText(searchString: string) {
-    console.log('searchByText');
     if (searchString) {
       this.searchValue = searchString;
-      //if (!this.disabled) {
-        (<any>this.hostPage).pageMode = PageMode.SearchResultsMode;
-        this.hostPage.baseProducts = null;
-        this.inputMode = false;
-        this.hostPage.baseProducts = await this.srchService.searchProducts(searchString);
-      //};
+      this.hostPage.baseProducts = await this.srchService.searchProducts(searchString);
+      console.log(this.hostPage.baseProducts);
+      (<any>this.hostPage).pageMode = PageMode.SearchResultsMode;
+      this.inputMode = false;
     }
   }
 
@@ -64,18 +63,20 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
     ar.forEach((item) => {
       this.tmpSearchArray.push(item);
     });
+    this.searchValue = this.searchService.lastSearch;
   }
 
   incSearch() {
     this.inputMode = true;
-    this.hostPage.mode = PageMode.SearchMode;
+    this.hostPage.pageMode = PageMode.SearchMode;
     if (this.searchValue) {
       this.tmpSearchArray = this.searchService.searchItems.filter((value) => {
         return !(value.toLowerCase().indexOf(this.searchValue.toLowerCase()) == -1);
-      })}
+      }).slice()}
     else
       this.tmpSearchArray = this.searchService.searchItems;
   }
+
 
   onKeyUp(event) {
     if (!(event.keyCode === 13))
@@ -98,8 +99,4 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
     this.inputMode = false;
   }
 
-  ngOnInit() {
-    this.initTmpSearchArray();
-    this.searchValue = this.searchService.lastSearch;
-  }
 }

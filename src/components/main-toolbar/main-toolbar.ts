@@ -3,6 +3,7 @@ import {NavController, NavParams, ViewController} from "ionic-angular";
 import {CartPage, HomePage} from '../../pages/index';
 import {CartService} from '../../app/service/cart-service';
 import {PageMode} from '../../pages/home/home';
+import {SearchService} from '../../app/service/search-service';
 
 @Component({
   selector: 'main-toolbar',
@@ -22,14 +23,14 @@ export class MainToolbarComponent {
   constructor(public navCtrl: NavController, public navParams: NavParams,
                 public cart: CartService, public viewCtrl: ViewController) {}
 
-  goToCart(): void {
+  goToCart() {
     if (!(this.navCtrl.getActive().name === 'CartPage'))
       this.navCtrl.push(CartPage);
   }
 
-  goToHome(): void {
+  goToHome() {
     if (this.host) {
-      this.host.pageMode = 1;
+      this.host.pageMode = PageMode.HomeMode;;
       this.host.searchButtonControl.clearInput(null);
     }
     else
