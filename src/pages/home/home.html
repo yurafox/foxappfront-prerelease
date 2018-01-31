@@ -1,10 +1,25 @@
 <ion-header>
-  <main-toolbar></main-toolbar>
-  <search-btn (click)="onSearchClick()"></search-btn>
+  <main-toolbar [host]="this"></main-toolbar>
+  <search-btn #srch [hostPage]="this" (click)="onSearchClick()"></search-btn>
 </ion-header>
 
 <ion-content>
-  <div *ngIf=content>
+  <div *ngIf="content && (pageMode === 1)">
       <html-outlet [html]="content" [context]="this"></html-outlet>
   </div>
+
+  <div *ngIf="pageMode === 2">
+    <ion-item *ngFor="let sItem of searchButtonControl.tmpSearchArray; let i=index" (click)="search(sItem)">
+      <ion-icon name="md-close" item-left color="gray" (click)="deleteSearchItem($event, sItem)"></ion-icon>
+      <div>
+        {{sItem}}
+      </div>
+      <ion-icon name="arrow-up-left" item-right color="gray"></ion-icon>
+    </ion-item>
+  </div>
+
+  <div *ngIf="pageMode === 3">
+    <items-list [products]="baseProducts"></items-list>
+  </div>
+
 </ion-content>

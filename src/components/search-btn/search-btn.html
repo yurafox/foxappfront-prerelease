@@ -7,12 +7,12 @@
     </ion-buttons>
     <ion-input #input placeholder="What are you looking for?" [attr.disabled]="disabled?'':null"
                [(ngModel)]="searchValue"
-               (keyup.enter)="searchByText(input.value)" (keyup)="incSearch()"></ion-input>
+               (keyup.enter)="searchByText(input.value)" (keyup)="onKeyUp($event)"></ion-input>
     <ion-buttons right>
-      <button ion-button icon-only (click)="searchByBarcode()" *ngIf="disabled">
+      <button ion-button icon-only (click)="searchByBarcode()" *ngIf="!inputMode">
         <ion-icon name="barcode1"></ion-icon> <!-- noun_816149 -->
       </button>
-      <button ion-button icon-only (click)="clearInput()" *ngIf="!disabled">
+      <button ion-button icon-only (click)="clearInput($event)" *ngIf="inputMode">
         <ion-icon name="md-close-circle"></ion-icon> <!-- noun_816149 -->
       </button>
 

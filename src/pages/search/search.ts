@@ -17,12 +17,7 @@ export class SearchPage extends ComponentBase implements OnInit {
   }
 
   ngOnInit() {
-    setTimeout(() =>
-        {
-          this.searchButtonControl.setFocus();
-          this.searchButtonControl.disabled = false;
-        },
-      150);
+    //this.searchButtonControl.disabled = false;
   }
 
   deleteSearchItem(event: any, item: string) {

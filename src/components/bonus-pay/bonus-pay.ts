@@ -13,24 +13,21 @@ import {CartService} from '../../app/service/cart-service';
 })
 export class BonusPayComponent extends ComponentBase {
 
-  //_bonusCnt: string;
-  term$ = new Subject<string>();
+  bonusInputStream$ = new Subject<string>();
 
   constructor(public cart: CartService) {
     super();
 
-    this.term$.debounceTime(800)
+    this.bonusInputStream$.debounceTime(1500)
       .distinctUntilChanged()
-      .subscribe(term => this.bonusCnt = term);
+      .subscribe(inputValue =>
+        {
+          const _intval: number = parseInt(inputValue);
+          this.cart.bonus = isNaN(_intval)? null : _intval;
+          this.evServ.events['cartUpdateEvent'].emit();
+        }
+      );
 
-  }
-
-  public set bonusCnt (val: string) {
-    if (!val)
-      val = '0';
-    //this._bonusCnt = val;
-    this.cart.bonus = parseInt(val);
-    console.log(this.cart.bonus);
   }
 
 }

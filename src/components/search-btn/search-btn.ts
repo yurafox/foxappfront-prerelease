@@ -1,9 +1,9 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
-import {AlertController, NavController, NavParams} from 'ionic-angular';
+import {NavController} from 'ionic-angular';
 import {SearchService} from '../../app/service/search-service';
-import {SearchResultsPage} from '../../pages/search-results/search-results';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import {PageMode} from '../../pages/home/home';
 
 @Component({
   selector: 'search-btn',
@@ -12,16 +12,18 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 export class SearchBtnComponent extends ComponentBase implements OnInit {
 
   @ViewChild('input') input;
-  disabled = true;
-  searchValue = '';
-  public tmpSearchArray = new Array<string>();
-  //barcodeResult: string;
-  //showFlipCameraButton = true;
 
+  @Input()
+  public hostPage: any = null;
+
+  searchValue = '';
+  inputMode = false;
+
+  public tmpSearchArray = [];
   constructor(public searchService: SearchService,
-               public navCtrl: NavController,
-               private barcodeScanner: BarcodeScanner,
-                private alertCtrl: AlertController) {
+              public navCtrl: NavController,
+              private barcodeScanner: BarcodeScanner,
+              private srchService: SearchService) {
     super();
     searchService.lastSearchStringUpdated.subscribe(
       (value: string) => {
@@ -34,27 +36,22 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
     this.input.setFocus();
   }
 
-  searchByText(searchString: string): void {
+  async searchByText(searchString: string) {
+    console.log('searchByText');
     if (searchString) {
       this.searchValue = searchString;
-      if (!this.disabled)
-        this.navCtrl.push(SearchResultsPage, this.searchService.searchProducts(searchString));
+      //if (!this.disabled) {
+        (<any>this.hostPage).pageMode = PageMode.SearchResultsMode;
+        this.hostPage.baseProducts = null;
+        this.inputMode = false;
+        this.hostPage.baseProducts = await this.srchService.searchProducts(searchString);
+      //};
     }
   }
 
   searchByBarcode(): void {
     this.barcodeScanner.scan().then((barcodeData) => {
-      this.disabled = false;
       this.searchValue = barcodeData.text;
-/*
-      let alert = this.alertCtrl.create({
-        title: 'Barcode result',
-        subTitle: barcodeData.text,
-        buttons: ['OK']
-      });
-      alert.present();
-
-*/
       this.incSearch();
       this.searchByText(this.searchValue);
     }, (err) => {
@@ -70,12 +67,19 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
   }
 
   incSearch() {
+    this.inputMode = true;
+    this.hostPage.mode = PageMode.SearchMode;
     if (this.searchValue) {
       this.tmpSearchArray = this.searchService.searchItems.filter((value) => {
         return !(value.toLowerCase().indexOf(this.searchValue.toLowerCase()) == -1);
       })}
     else
       this.tmpSearchArray = this.searchService.searchItems;
+  }
+
+  onKeyUp(event) {
+    if (!(event.keyCode === 13))
+      this.incSearch();
   }
 
   removeSearchItem(item: string) {
@@ -85,9 +89,13 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
     this.searchService.removeSearchItem(item);
   }
 
-  clearInput() {
+  clearInput(event) {
+    if (event)
+      event.stopPropagation();
     this.searchService.lastSearch = '';
     this.incSearch();
+    this.hostPage.pageMode = PageMode.HomeMode;
+    this.inputMode = false;
   }
 
   ngOnInit() {

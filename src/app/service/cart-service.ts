@@ -38,18 +38,15 @@ export class CartService  {
 
   public loan: CreditCalc = null;
 
-  private _bonus = 0;
+  public bonus: number = null;
   private _payByPromoBonus = false;
 
   public _promoCode: string;
-  //public promoCodeDiscount = 0;
   public promocodeInvalid = false;
 
   //Текущие доступные бонусы клиента
   public availBonus: number;
   public availPromoBonus: number;
-
-  private _userInputBonus: number;
 
   public cartValidationNeeded = false;
   public person = new PersonInfo();
@@ -89,7 +86,7 @@ export class CartService  {
   };
 
   public async calculateCart(){
-    let calcRes = await this.repo.calculateCart(this.promoCode, this.userInputBonus, this.payByPromoBonus,
+    let calcRes = await this.repo.calculateCart(this.promoCode, this.bonus, this.payByPromoBonus,
                                     this.orderProducts);
     console.log('calcRes: ' + calcRes);
 
@@ -115,15 +112,6 @@ export class CartService  {
     this.calLoan();
   }
 
-  public get userInputBonus(): number {
-    return this._userInputBonus;
-  }
-
-  public set userInputBonus(val: number) {
-    this._userInputBonus = val;
-    this.bonus = val;
-  }
-
   public get promoCode(): string {
     return this._promoCode;
   }
@@ -132,15 +120,6 @@ export class CartService  {
     this._promoCode = val;
     if (!val)
       this.evServ.events['cartUpdateEvent'].emit();
-  }
-
-  public set bonus(val: number) {
-    this._bonus = val;
-    this.evServ.events['cartUpdateEvent'].emit();
-  }
-
-  public get bonus(): number {
-    return this._bonus;
   }
 
   public get payByPromoBonus(): boolean {
