@@ -33,8 +33,23 @@ export class OrdersPage extends ComponentBase {
       order.orderProducts = orSpec;
     }
     this.orders = _orders;
-
     this.dataLoaded = true;
+  }
+
+  onBuyItAgainClick(){
+    //TODO
+  }
+
+  onViewOrderDetailsClick() {
+    //TODO
+  }
+
+  onWriteReviewClick() {
+    //TODO
+  }
+
+  onReturnReplaceItemClick() {
+    //TODO
   }
 
 }
