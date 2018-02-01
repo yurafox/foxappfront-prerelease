@@ -3120,7 +3120,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
 
   cartProducts = [
     {
-      id: 7,
+      id: 25,
       idOrder: 1,
       idQuotationProduct: 4,
       price: 330.0,
@@ -3136,7 +3136,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       warningMessage: "We have changed price for this item from $332 to $330"
     },
     {
-      id: 8,
+      id: 26,
       idOrder: 1,
       idQuotationProduct: 6,
       price: 167.7,

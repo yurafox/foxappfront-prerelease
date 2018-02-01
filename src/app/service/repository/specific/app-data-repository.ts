@@ -448,7 +448,7 @@ export class AppDataRepository extends AbstractDataRepository {
             )
           )
         );
-      }
+      };
       return cClientOrders;
     } catch (err) {
       return await this.handleError(err);
@@ -621,23 +621,24 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      val.forEach(product => {
+      val.forEach(i => {
         let p = new ClientOrderProducts();
-        p.id = product.id;
-        p.idOrder = product.idOrder;
-        p.idQuotationProduct = product.idQuotationProduct;
-        p.price = product.price;
-        p.qty = product.qty;
-        p.idStorePlace = product.idStorePlace;
-        p.idLoEntity = product.idLoEntity;
-        p.loTrackTicket = product.loTrackTicket;
-        p.loDeliveryCost = product.loDeliveryCost;
-        p.loDeliveryCompleted = product.loDeliveryCompleted;
-        p.loEstimatedDeliveryDate = product.loEstimatedDeliveryDate;
-        p.loDeliveryCompletedDate = product.loDeliveryCompletedDate;
-        p.errorMessage = product.errorMessage;
+        p.id = i.id;
+        p.idOrder = i.idOrder;
+        p.idQuotationProduct = i.idQuotationProduct;
+        p.price = i.price;
+        p.qty = i.qty;
+        p.idStorePlace = i.idStorePlace;
+        p.idLoEntity = i.idLoEntity;
+        p.loTrackTicket = i.loTrackTicket;
+        p.loDeliveryCost = i.loDeliveryCost;
+        p.loDeliveryCompleted = i.loDeliveryCompleted;
+        p.loEstimatedDeliveryDate = i.loEstimatedDeliveryDate;
+        p.loDeliveryCompletedDate = i.loDeliveryCompletedDate;
+        p.errorMessage = i.errorMessage;
         orderProducts.push(p);
       });
+      console.log(orderProducts);
       return orderProducts;
     } catch (err) {
       return await this.handleError(err);
