@@ -5,7 +5,7 @@
 <ion-content>
   <ion-grid class="f-color-secondary">
     <ion-row>
-      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
+      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 10px;">
         <b><span class="f-size-large f-color-secondary">Your orders</span></b>
       </ion-col>
     </ion-row>
@@ -15,7 +15,7 @@
     <div *ngFor="let ord of orders">
       <div *ngFor="let spec of ord.orderProducts">
 
-        <ion-grid>
+        <ion-grid *ngIf="spec?.quotationproduct?.product?.imageUrl && spec?.quotationproduct?.product?.name">
 
           <ion-row style="padding-left: 5px; padding-right: 5px;">
 
@@ -50,7 +50,7 @@
               <ion-row >
                 <ion-col no-padding>
                   <ion-item  detail-push text-wrap class="f-color-secondary">
-                    <b class="f-size-larger">Buy it again</b>
+                    <span>Buy it again</span>
                   </ion-item>
                 </ion-col>
               </ion-row>
@@ -68,7 +68,7 @@
               <ion-row >
                 <ion-col no-padding>
                   <ion-item  detail-push text-wrap class="f-color-secondary">
-                    <b class="f-size-larger">Write a product review</b>
+                    <span>Write a product review</span>
                   </ion-item>
                 </ion-col>
               </ion-row>
@@ -80,7 +80,7 @@
               <ion-row >
                 <ion-col no-padding>
                   <ion-item  detail-push text-wrap class="f-color-secondary">
-                    <b class="f-size-larger">View order details</b>
+                    <span>View order details</span>
                   </ion-item>
                 </ion-col>
               </ion-row>
@@ -92,7 +92,7 @@
               <ion-row >
                 <ion-col no-padding>
                   <ion-item  detail-push text-wrap class="f-color-secondary">
-                    <b class="f-size-larger">Return or replace item</b>
+                    <span>Return or replace item</span>
                   </ion-item>
                 </ion-col>
               </ion-row>
