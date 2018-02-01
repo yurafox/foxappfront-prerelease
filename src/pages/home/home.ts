@@ -21,7 +21,7 @@ export class HomePage extends ComponentBase {
 //  searchMode = false;
 
   private _pageMode: PageMode = PageMode.HomeMode;
-  public baseProducts = new Array<Product>();
+  public baseProducts = []; // new Array<Product>();
 
   // list slides for slider
   public slides = [
@@ -36,8 +36,13 @@ export class HomePage extends ComponentBase {
     }
   ];
 
-  @ViewChild('srch') searchButtonControl;
-  public content:string='';
+  @ViewChild('srch')
+  searchButtonControl;
+
+  @ViewChild('resultsList')
+  public resultsList;
+
+  public content: string = '';
 
   constructor(public app: App, public nav: NavController,
               private _repo:AbstractDataRepository, public srchService: SearchService) {

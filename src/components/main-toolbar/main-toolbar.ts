@@ -3,7 +3,6 @@ import {NavController, NavParams, ViewController} from "ionic-angular";
 import {CartPage, HomePage} from '../../pages/index';
 import {CartService} from '../../app/service/cart-service';
 import {PageMode} from '../../pages/home/home';
-import {SearchService} from '../../app/service/search-service';
 
 @Component({
   selector: 'main-toolbar',

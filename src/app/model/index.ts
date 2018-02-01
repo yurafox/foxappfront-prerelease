@@ -49,3 +49,4 @@ export * from './poll-question-answer';
 export * from './client-poll-answer';
 export * from './novelty-det';
 export * from './device-data';
+export * from './client-bonus';

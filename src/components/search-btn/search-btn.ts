@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import {Component, Input, Renderer} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {NavController} from 'ionic-angular';
 import {SearchService} from '../../app/service/search-service';
@@ -12,20 +12,18 @@ import {PageMode} from '../../pages/home/home';
 })
 export class SearchBtnComponent extends ComponentBase {
 
-  @ViewChild('input') input;
-
   @Input()
   public hostPage: any = null;
 
   public tmpSearchArray = [];
-  searchValue = '';
+  searchValue = null;
   inputMode = false;
 
 
   constructor(public searchService: SearchService,
               public navCtrl: NavController,
               private barcodeScanner: BarcodeScanner,
-              private srchService: SearchService) {
+              private srchService: SearchService, private renderer: Renderer) {
     super();
 
     searchService.lastSearchStringUpdated.subscribe(
@@ -42,10 +40,10 @@ export class SearchBtnComponent extends ComponentBase {
     if (searchString) {
       this.searchValue = searchString;
       this.hostPage.baseProducts = await this.srchService.searchProducts(searchString);
-      console.log(this.hostPage.baseProducts);
       (<any>this.hostPage).pageMode = PageMode.SearchResultsMode;
       this.inputMode = false;
     }
+
   }
 
   searchByBarcode(): void {
@@ -80,7 +78,9 @@ export class SearchBtnComponent extends ComponentBase {
 
   onKeyUp(event) {
     if (!(event.keyCode === 13))
-      this.incSearch();
+      this.incSearch()
+    else
+      this.renderer.invokeElementMethod(event.target, 'blur');
   }
 
   removeSearchItem(item: string) {

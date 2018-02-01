@@ -18,7 +18,6 @@ export interface PageInterface {
 }
 
 declare var ExoPlayer: any;
-declare var cordova: any;
 
 @Component({
   templateUrl: 'app.html'
@@ -77,11 +76,6 @@ export class FoxApp extends ComponentBase implements OnDestroy {
       if (this.device.cordova) {
         // Collect and send data about device
         this.collectAndSendDeviceData();
-
-        // Schedule delayed local notification
-        //this.initLocalNotifications();
-
-        //this.trySendPush();
       }
     });
 
@@ -94,14 +88,11 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     this.actionPushEventDescriptor = this.evServ.events['actionPushEvent'].subscribe(data => {
       System.PushContainer.pushStore[`action${data.innerId}`] = data;
     });
-    // Handle push-notifications
-    this.pushNotify();
   }
 
   ngOnDestroy() {
     this.noveltyPushEventDescriptor.unsubscribe();
     this.actionPushEventDescriptor.unsubscribe();
-    this.push.deleteChannel('channel').catch((err) => console.log(`Couldn't delete channel: ${err}`));
   }
 
   openPage(page: PageInterface) {
@@ -251,113 +242,6 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     this.repo.sendDeviceData(deviceData).catch(err => {
       console.log(`Couldn't send device data: ${err}`);
     });
-  }
-
-  // Check if we have permission to send push notifications and listen to these notifications
-  private pushNotify() {
-    try {
-      if (this.device.cordova) {
-        // to check if we have permission
-        this.push.hasPermission()
-          .then((res: any) => {
-            if (res.isEnabled) {
-              // Create a channel (Android O and above). You'll need to provide the id, description and importance properties.
-              this.push.createChannel({
-                id: "channel",
-                description: "Channel one",
-                // The importance property goes from 1 = Lowest, 2 = Low, 3 = Normal, 4 = High and 5 = Highest.
-                importance: 3
-              }).then(() => {
-                }, (err) => console.log(`Error creating channel: ${err}`)
-              );
-
-              // senderID should be right as your account senderID in 3rd party push service
-              const options: PushOptions = {
-                android: {
-                  senderID: '431639834815',
-                  icon: 'www/assets/icon/app_icon.png' //TODO: This doesn't work. Find working directory
-                }
-              };
-
-              const pushObject: PushObject = this.push.init(options);
-
-              pushObject.on('registration').subscribe((registration: any) => {
-              });
-
-              pushObject.on('notification').subscribe((notification: any) => {
-                let target = notification.additionalData['target'];
-                if (target === 'novelty') {
-                  let alert = this.alertCtrl.create({
-                    title: 'New product in Foxtrot!',
-                    message: 'Do you want to check it?',
-                    buttons: [
-                      {
-                        text: 'OK',
-                        handler: () => {
-                          let noveltySketch = System.PushContainer.pushStore[`novelty${notification.additionalData['id']}`];
-                          if (noveltySketch.novelty && noveltySketch.product) {
-                            noveltySketch.openNovelty();
-                          }
-                        }
-                      },
-                      {
-                        text: 'CANCEL'
-                      }
-                    ]
-                  });
-                  alert.present().catch((err) => console.log(`Alert error: ${err}`));
-                } else if (target === 'action') {
-                  let alert = this.alertCtrl.create({
-                    title: 'New promotion!',
-                    message: 'Do you want to check it?',
-                    buttons: [
-                      {
-                        text: 'OK',
-                        handler: () => {
-                          let actionSketch = System.PushContainer.pushStore[`action${notification.additionalData['id']}`];
-                          if (actionSketch.action) {
-                            actionSketch.openAction();
-                          }
-                        }
-                      },
-                      {
-                        text: 'CANCEL'
-                      }
-                    ]
-                  });
-                  alert.present().catch((err) => console.log(`Alert error: ${err}`));
-                }
-              });
-
-              pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
-            } else {
-              console.log('We do not have permission to send push notifications');
-            }
-          });
-      }
-    } catch (err) {
-      console.log(`Push plugin error: ${err}`);
-    }
-  }
-
-  private initLocalNotifications() {
-      cordova.plugins.notification.local.hasPermission(
-        granted => {
-          if (granted === true) {
-            cordova.plugins.notification.local.schedule([
-              {
-                id: 0,
-                title: 'Local Notification Example',
-                text: 'Delayed Notification',
-                trigger: {every: 15, unit: 'second'}
-              }
-            ]);
-            cordova.plugins.notification.local.on("click", (notification, state) => {
-              console.log(notification.id + " was clicked");
-            }, this);
-          }
-        }
-      );
   }
 }
 

@@ -27,8 +27,9 @@ export class AccountMenuPage extends ComponentBase {
   ];
   accountSettingsPages: PageInterface[] = [
     {title: 'Login & Security', name: 'LoginAndSecurity', component: 'AccountPage', index: 0},
-    {title: 'Your comfort-card', name: 'Barcode', component: 'BarcodePage', index: 1},
-    {title: 'Manage your places', name: 'ManagePlaces', component: 'ManagePlacesMenuPage', index: 2},
+    {title: 'Your FoxClub member\'s balance', name: 'Balance', component: 'BalancePage', index: 1},
+    {title: 'Your virtual FoxClub card', name: 'Barcode', component: 'BarcodePage', index: 2},
+    {title: 'Manage your places', name: 'ManagePlaces', component: 'ManagePlacesMenuPage', index: 3},
   ];
 
   // Categories of pages

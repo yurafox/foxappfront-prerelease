@@ -92,7 +92,7 @@ export class SelectPmtMethodPage extends ComponentBase {
   }
 
   onContinueClick() {
-    this.navCtrl.push('BalancePage');
+    this.navCtrl.push('BalancePage', {checkoutMode: true});
   }
 
   onApplyPromoCodeClick() {

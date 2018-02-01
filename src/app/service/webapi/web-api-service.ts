@@ -2762,6 +2762,15 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     }
   ];
 
+  clientBonuses = [
+    {id: 1, clientId: 100, bonus: 20.1, dueDate: new Date(new Date().getTime() + 15*24 * 3600 * 1000)},
+    {id: 2, clientId: 100, bonus: 4.25, dueDate: new Date(new Date().getTime() + 16*24 * 3600 * 1000)},
+    {id: 3, clientId: 100, bonus: 51.6, dueDate: new Date(new Date().getTime() + 32*24 * 3600 * 1000)},
+    {id: 4, clientId: 101, bonus: 4.17, dueDate: new Date(new Date().getTime() + 3*24 * 3600 * 1000)},
+    {id: 5, clientId: 101, bonus: 12.15, dueDate: new Date(new Date().getTime() + 14*24 * 3600 * 1000)},
+    {id: 6, clientId: 102, bonus: 14.11, dueDate: new Date(new Date().getTime() + 155*24 * 3600 * 1000)}
+  ];
+
   clientAddresses = [
     {
       id: 1,
@@ -2851,7 +2860,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   clientOrders = [
     {
       id: 1,
-      orderDate: "29/10/2017",
+      orderDate: new Date(new Date().getTime() - 15*24 * 3600 * 1000),
       idCur: 1,
       idClient: 100,
       total: 11117,
@@ -2863,7 +2872,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     },
     {
       id: 2,
-      orderDate: "19/10/2017",
+      orderDate: new Date(new Date().getTime() - 32 *24 * 3600 * 1000),
       idCur: 0,
       idClient: 101,
       total: 497.7,
@@ -2875,7 +2884,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     },
     {
       id: 3,
-      orderDate: "30/10/2017",
+      orderDate: new Date(new Date().getTime() - 150*24 * 3600 * 1000),
       idCur: 0,
       idClient: 100,
       total: 120,
@@ -2884,7 +2893,21 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idStatus: 1,
       loIdEntity: null,
       loIdClientAddress: null
+    },
+    {
+      id: 4,
+      orderDate: new Date(new Date().getTime() - 121*24 * 3600 * 1000),
+      idCur: 0,
+      idClient: 100,
+      total: 698.10,
+      idPaymentMethod: 2,
+      idPaymentStatus: 1,
+      idStatus: 1,
+      loIdEntity: null,
+      loIdClientAddress: null
     }
+
+
   ];
 
   clientOrderSpecProducts = [
@@ -3044,7 +3067,24 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       loEstimatedDeliveryDate: null,
       loDeliveryCompletedDate: null,
       errorMessage: null
+    },
+    {
+      idClient: 100,
+      id: 4,
+      idOrder: 4,
+      idQuotationProduct: 2,
+      price: 349.0,
+      qty: 2,
+      idStorePlace: null,
+      idLoEntity: null,
+      loTrackTicket: null,
+      loDeliveryCost: null,
+      loDeliveryCompleted: null,
+      loEstimatedDeliveryDate: null,
+      loDeliveryCompletedDate: null,
+      errorMessage: null
     }
+
   ];
 
   cartProducts = [
@@ -3506,6 +3546,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mpollQuestionAnswer = this.pollQuestionAnswer;
     const mclientPollAnswers = this.clientPollAnswers;
     const mnoveltyDetails = this.noveltyDetails;
+    const mclientBonuses = this.clientBonuses;
 
     return {
       mquotationProducts,
@@ -3544,7 +3585,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mpollQuestion,
       mpollQuestionAnswer,
       mclientPollAnswers,
-      mnoveltyDetails
+      mnoveltyDetails,
+      mclientBonuses
     };
   }
 

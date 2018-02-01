@@ -4,7 +4,8 @@ import {ClientAddress} from './client-address';
 import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
 
 @LazyLoad([
-  { options: {constructor: ClientAddress}, action: 'getClientAddressById', params: ['loIdClientAddress']}
+  { options: {constructor: ClientAddress}, action: 'getClientAddressById', params: ['loIdClientAddress']},
+  { options: {constructor: ClientOrderProducts}, action: 'getClientOrderProductsByOrderId', params: ['id']}
 ])
 
 export class ClientOrder {

@@ -5,12 +5,10 @@
 
 <ion-content>
   <div *ngIf="content && (pageMode === 1)">
-      Home mode
       <html-outlet [html]="content" [context]="this"></html-outlet>
   </div>
 
   <div *ngIf="pageMode === 2">
-    search mode
     <ion-item *ngFor="let sItem of searchButtonControl.tmpSearchArray; let i=index" (click)="search(sItem)">
       <ion-icon name="md-close" item-left color="gray" (click)="deleteSearchItem($event, sItem)"></ion-icon>
       <div>
@@ -21,7 +19,6 @@
   </div>
 
   <div *ngIf="pageMode === 3">
-    results mode
     <items-list [products]="baseProducts"></items-list>
   </div>
 

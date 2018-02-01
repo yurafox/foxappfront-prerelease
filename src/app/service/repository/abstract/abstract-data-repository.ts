@@ -29,6 +29,7 @@ import { QuotationProduct,
        } from '../../../model/index';
 
 import {CreditProduct} from '../../../model/credit-product';
+import {ClientBonus} from '../../../model/client-bonus';
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
@@ -59,6 +60,7 @@ export abstract class AbstractDataRepository {
 
   public async abstract getClientDraftOrder(): Promise<ClientOrder>;
   public async abstract getClientOrders(): Promise<ClientOrder[]>;
+  public async abstract getClientOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]>;
   public async abstract getClientOrdersAll(): Promise<ClientOrder[]>;
   public async abstract getClientOrderById(id: number): Promise<ClientOrder>;
 
@@ -75,7 +77,7 @@ export abstract class AbstractDataRepository {
                                                                           promoCodeDisc: number, bonusDisc: number,
                                                                           promoBonusDisc: number}[]>;
 
-
+  public async abstract getClientBonuses(clientId: number): Promise <ClientBonus[]>;
   public async abstract getClientDraftOrderSpecProductsById(id: number): Promise<ClientOrderProducts>;
   public async abstract getClientDraftOrderSpecProducts(): Promise<Array<ClientOrderProducts>>;
   public async abstract getClientOrderSpecProductsByClientId(clientId: number): Promise<Array<ClientOrderProducts>>;

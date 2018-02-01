@@ -2,36 +2,36 @@
     <main-toolbar></main-toolbar>
 </ion-header>
 
-
 <ion-content>
-    <ion-grid class="f-item-nopadding-tb f-color-secondary">
-        <ion-row padding>
-            <ion-col>
-                <b><span class="f-size-large">Your orders</span></b>
-            </ion-col>
-        </ion-row>
-        <span *ngIf="loaded === true">
-      <ion-row padding *ngFor="let product of productArr; let i = index">
-        <b><span>Order #{{i+1}}</span></b>
-        <div *ngFor="let p of product?.products">
-            <span *ngIf="p?.id">
-            <item [product]="p"></item><br>
-          </span>
-        </div>
-        <br>
-        <ion-col>
-            <b><span>Date: {{product?.order?.orderDate}}</span></b><br>
-        </ion-col>
-        <ion-col>
-            <b><span>Total: {{product?.order?.total | localeCurrency:userService.currency}}</span></b>
-        </ion-col><br>
-        </ion-row>
-        </span>
-        <span *ngIf="loaded === false">
-      <ion-row>
-        <span class="f-size-larger">You have no orders yet</span>
-        </ion-row>
-        </span>
+  <ion-grid class="f-color-secondary">
+    <ion-row>
+      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px; bottom: 10px;">
+        <b><span class="f-size-large f-color-secondary">Your orders</span></b>
+      </ion-col>
+    </ion-row>
 
-    </ion-grid>
+    <div>
+      <ion-row style="padding-left: 5px; padding-right: 5px;">
+
+        <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
+
+          <ion-row *ngFor="let ord of orders">
+            <ion-col col-2 text-center>
+              OrderID: {{ord.id}}
+              <br>
+              IMG
+              {{ord?.orderProducts[0]?.idQuotationProduct}}
+            </ion-col>
+            <ion-col class="f-size-larger">
+              <span>Product price </span> {{ord?.orderProducts[0]?.price}}
+            </ion-col>
+          </ion-row>
+
+        </ion-grid>
+      </ion-row>
+    </div>
+
+
+  </ion-grid>
+
 </ion-content>

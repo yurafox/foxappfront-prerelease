@@ -41,6 +41,7 @@ import {
 import {CreditProduct} from '../../../model/credit-product';
 import { AbstractDataRepository } from '../../index';
 import { Providers, System } from "../../../core/app-core";
+import {ClientBonus} from '../../../model/client-bonus';
 
 // <editor-fold desc="url const">
 const currenciesUrl = "/api/mcurrencies";
@@ -77,6 +78,7 @@ const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
 const creditProductsUrl = "/api/mcreditProducts";
 const getPromocodeDiscountUrl = "/api/mgetPromocodeDiscount";
 const calculateCartUrl = "/api/mcalculateCart";
+const getClientBonuses = "/api/mclientBonuses";
 
 const pollsUrl='/api/mpolls';
 const pollQuestionUrl='/api/mpollQuestion';
@@ -94,6 +96,33 @@ export class AppDataRepository extends AbstractDataRepository {
   constructor(private http: Http) {
     super();
   }
+
+  public async getClientBonuses(clientId: number): Promise <ClientBonus[]> {
+    try {
+      const response = await this.http
+        .get(getClientBonuses, {
+          search: this.createSearchParams([
+            {key: "clientId", value: clientId.toString()}
+          ])
+        })
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const arr = new Array<ClientBonus>();
+      if (data != null) {
+        data.forEach(val =>
+          arr.push(new ClientBonus(val.id,val.clientId, val.bonus, val.dueDate))
+          );
+      }
+      return arr;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 
   public async getDiscountByPromocode(promoCode: string): Promise<number> {
     try {
@@ -158,7 +187,6 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
-
 
   public async getCreditProducts(): Promise<CreditProduct[]> {
     try {
@@ -386,12 +414,13 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getClientOrders(): Promise<ClientOrder[]> {
     try {
+
       const response = await this.http
         .get(clientOrdersUrl, {
           //TODO переделать этот метод (два одинаковых поисковых параметра - кривизна)
           search: this.createSearchParams([
-            {key: "idStatus", value: "1"},
-            {key: "idStatus", value: "2"}
+            {key: "idClient", value: "100"},
+            {key: "idStatus", value: "1"}
           ])
         })
         .toPromise();
@@ -575,6 +604,46 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+
+  public async getClientOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]> {
+    try {
+      const response = await this.http
+        .get(clientOrderSpecProductsUrl, {
+          search: this.createSearchParams([
+            {key: "idOrder", value: orderId.toString()}
+          ])
+        })
+        .toPromise();
+
+      let orderProducts = [];
+      const val = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      val.forEach(product => {
+        let p = new ClientOrderProducts();
+        p.id = product.id;
+        p.idOrder = product.idOrder;
+        p.idQuotationProduct = product.idQuotationProduct;
+        p.price = product.price;
+        p.qty = product.qty;
+        p.idStorePlace = product.idStorePlace;
+        p.idLoEntity = product.idLoEntity;
+        p.loTrackTicket = product.loTrackTicket;
+        p.loDeliveryCost = product.loDeliveryCost;
+        p.loDeliveryCompleted = product.loDeliveryCompleted;
+        p.loEstimatedDeliveryDate = product.loEstimatedDeliveryDate;
+        p.loDeliveryCompletedDate = product.loDeliveryCompletedDate;
+        p.errorMessage = product.errorMessage;
+        orderProducts.push(p);
+      });
+      return orderProducts;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+
+  }
+
 
   public async getClientDraftOrderSpecProductsById(id: number): Promise<ClientOrderProducts> {
     try {

@@ -3,8 +3,6 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {AbstractDataRepository} from "../../app/service";
 import {Client, ClientOrder, ClientOrderProducts, Product, QuotationProduct} from "../../app/model";
-import {isNullOrUndefined} from "util";
-import {Order} from "../../app/model/cart-product";
 
 @IonicPage()
 @Component({
@@ -13,28 +11,30 @@ import {Order} from "../../app/model/cart-product";
 })
 export class OrdersPage extends ComponentBase {
 
-  loaded: boolean;
-  productArr: Array<{ order: ClientOrder, products: Product[] }>;
+  dataLoaded: boolean = true;
+  orders = new Array<ClientOrder>();
 
-  constructor(private navCtrl: NavController, private navParams: NavParams, private repo: AbstractDataRepository) {
+  constructor(private navCtrl: NavController, private navParams: NavParams,
+                private repo: AbstractDataRepository) {
     super();
+    this.initData();
+
   }
 
-  async ngOnInit() {
-    await this.loadProducts();
-  }
+  async initData() {
+    let _orders = await this.repo.getClientOrders();
+    _orders.sort((x,y) => {
+      return (+new Date(y.orderDate) - +new Date(x.orderDate));
+    });
 
-  async ionViewDidLoad() {
-  }
-
-  async loadProducts() {
-    try {
-      let client = await (<any>this.userService).profile.client_p;
-      let ordersAre: boolean;
-    } catch (err) {
-      console.log(`Error occurred: ${err}`);
-      this.navCtrl.setRoot('HomePage').catch();
+    for (let order of _orders) {
+      let orSpec = await (<any>order).clientorderproducts_p;
+      console.log(orSpec);
+      order.orderProducts = orSpec;
     }
+    this.orders = _orders;
+
+    this.dataLoaded = true;
   }
 
 }
