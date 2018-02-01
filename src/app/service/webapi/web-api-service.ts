@@ -3000,7 +3000,38 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       loEstimatedDeliveryDate: null,
       loDeliveryCompletedDate: null,
       errorMessage: null
-    }
+    },
+    {
+      id: 7,
+      idOrder: 4,
+      idQuotationProduct: 1,
+      price: 5199.0,
+      qty: 1,
+      idStorePlace: null,
+      idLoEntity: null,
+      loTrackTicket: null,
+      loDeliveryCost: null,
+      loDeliveryCompleted: null,
+      loEstimatedDeliveryDate: null,
+      loDeliveryCompletedDate: null,
+      errorMessage: null
+    },
+    {
+      id: 8,
+      idOrder: 4,
+      idQuotationProduct: 7,
+      price: 120.0,
+      qty: 1,
+      idStorePlace: null,
+      idLoEntity: null,
+      loTrackTicket: null,
+      loDeliveryCost: null,
+      loDeliveryCompleted: null,
+      loEstimatedDeliveryDate: null,
+      loDeliveryCompletedDate: null,
+      errorMessage: null
+    },
+
   ];
 
   clientOrderSpecProductsOfClient = [

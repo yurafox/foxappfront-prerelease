@@ -245,8 +245,9 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getPmtMethodById(id: number): Promise<EnumPaymentMethod> {
     try {
+      let _id = id.toString();
       const response = await this.http
-        .get(getPaymentMethodsUrl + `/${id.toString()}`)
+        .get(getPaymentMethodsUrl + `/${_id}`)
         .toPromise();
 
       const data = response.json();
