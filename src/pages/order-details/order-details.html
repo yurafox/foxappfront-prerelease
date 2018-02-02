@@ -1,0 +1,71 @@
+<ion-header>
+  <main-toolbar [showCartIcon] = "false"></main-toolbar>
+</ion-header>
+
+<ion-content>
+
+  Order date: {{order.orderDate | date: 'mediumDate'}}
+  <br>
+  Order #: {{order.id}}
+  <br>
+  Order total: {{order.total | localeCurrency:userService.currency}}  ({{order.orderProducts.length}} items)
+  <hr>
+
+  <b>Shipment details</b>
+  <div *ngFor="let spec of order.orderProducts">
+
+<!--
+
+    Log operator: {{spec?.loentity?.name}}
+-->
+    <br>
+    spec.id: {{spec.id}}
+    <br>
+    DeliveryCompletedDate: {{spec.loDeliveryCompletedDate}}
+    <br>
+    imageUrl: {{spec?.quotationproduct?.product?.imageUrl}}
+    <br>
+    product.name: {{spec?.quotationproduct?.product?.name}}
+    <br>
+    qty: {{spec?.qty}}
+    <br>
+    Price: {{spec?.price | localeCurrency:userService.currency}}
+    <br>
+    bonus Earned: {{spec?.earnedBonusCnt}}
+    <hr>
+  </div>
+
+  <b>Payment Info</b>
+  idPaymentMethod:
+  <br>
+
+  {{order?.enumpaymentmethod?.name}}
+
+  <hr>
+
+  <b>Shipping address</b>
+  Shipping Address:
+  <br>
+
+  RecName: <b>{{order?.clientaddress?.recName}}</b>
+  <br>
+  Address: {{order?.clientaddress?.addressString}}
+  <hr>
+  <b>Order summary</b>
+  <hr>
+  Items: {{order.itemsTotal}}
+  <br>
+  Shipping: {{order.shippingTotal}}
+  <br>
+  Bonus: {{order.bonusTotal}}
+  <br>
+  PromoBonus: {{order.promoBonusTotal}}
+  <br>
+  Promocode: {{order.promoBonusTotal}}
+  <br>
+  Order total: {{order.total}}
+  <hr>
+  Bonus Nachisleno: {{order.bonusEarned}}
+  <hr>
+
+</ion-content>

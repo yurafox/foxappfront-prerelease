@@ -3,10 +3,11 @@ import {Country} from './country';
 import {LazyLoad, RefInjector, System} from '../core/app-core';
 import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
 import FoxNumber = System.FoxNumber;
+import {Observable} from 'rxjs/Observable';
 
 @LazyLoad([
  /* { options: {constructor: City}, action: 'getCityById', params: ['idCity']},*/
-  { options: {constructor: Country}, action: 'getCountryById', params: ['idC']}
+  { options: {constructor: Country}, action: 'getCountryById', params: ['idCountry']}
 ])
 export class ClientAddress {
 
@@ -14,6 +15,11 @@ export class ClientAddress {
 
   public get idC(): number {
     return this.idCountry;
+  }
+
+  public get addressString(): string {
+    return ((<any>this).country) ? this.street +' ' + this.bldApp + ', ' + this.city + ', ' + this.zip + ' '
+      + (<any>this).country.name + ', Phone: ' + this.phone : null;
   }
 
   constructor (
@@ -31,4 +37,6 @@ export class ClientAddress {
     public recName?: string,
     public phone?: string
   ) {this._repo = RefInjector.pull(AbstractDataRepository);}
+
+
 }

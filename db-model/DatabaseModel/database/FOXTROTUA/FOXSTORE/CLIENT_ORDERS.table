@@ -157,8 +157,163 @@
       </dataTypeUsage>
       <notNull>false</notNull>
     </column>
+    <column>
+      <name>ITEMS_TOTAL</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">18</value>
+          </entry>
+          <entry>
+            <key>scale</key>
+            <value class="java.lang.Integer">2</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
+    <column>
+      <name>SHIPPING_TOTAL</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">18</value>
+          </entry>
+          <entry>
+            <key>scale</key>
+            <value class="java.lang.Integer">2</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
+    <column>
+      <name>BONUS_TOTAL</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">18</value>
+          </entry>
+          <entry>
+            <key>scale</key>
+            <value class="java.lang.Integer">2</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
+    <column>
+      <name>PROMOBONUS_TOTAL</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">18</value>
+          </entry>
+          <entry>
+            <key>scale</key>
+            <value class="java.lang.Integer">2</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
+    <column>
+      <name>BONUS_EARNED</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">18</value>
+          </entry>
+          <entry>
+            <key>scale</key>
+            <value class="java.lang.Integer">2</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
+    <column>
+      <name>PROMOCODEDISC_TOTAL</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">18</value>
+          </entry>
+          <entry>
+            <key>scale</key>
+            <value class="java.lang.Integer">2</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
+    <column>
+      <name>ID_PERSON</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">18</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
   </columns>
   <constraints>
+    <constraint class="oracle.javatools.db.PKConstraint">
+      <name>CLIENT_ORDER_PK</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.NameBasedID">
+          <name>ID</name>
+          <parent class="oracle.javatools.db.NameBasedID">
+            <name>CLIENT_ORDERS</name>
+            <schemaName>FOXSTORE</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>FOXSTORE</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <indexID class="oracle.javatools.db.NameBasedID">
+        <name>CLIENT_ORDER_PK</name>
+        <parent class="oracle.javatools.db.NameBasedID">
+          <name>CLIENT_ORDERS</name>
+          <schemaName>FOXSTORE</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>FOXSTORE</schemaName>
+        <type>INDEX</type>
+      </indexID>
+    </constraint>
     <constraint class="oracle.javatools.db.FKConstraint">
       <name>CLIENT_ORDERS_FK1</name>
       <columnIDs>
@@ -204,6 +359,32 @@
         <name>CLIENT_ADDRESS_PK</name>
         <parent class="oracle.javatools.db.NameBasedID">
           <name>CLIENT_ADDRESS</name>
+          <schemaName>FOXSTORE</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>FOXSTORE</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <name>CLIENT_ORDERS_FK3</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.NameBasedID">
+          <name>ID_PERSON</name>
+          <parent class="oracle.javatools.db.NameBasedID">
+            <name>CLIENT_ORDERS</name>
+            <schemaName>FOXSTORE</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>FOXSTORE</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <referenceID class="oracle.javatools.db.NameBasedID">
+        <name>PERSON_PK</name>
+        <parent class="oracle.javatools.db.NameBasedID">
+          <name>PERSON</name>
           <schemaName>FOXSTORE</schemaName>
           <type>TABLE</type>
         </parent>
@@ -314,32 +495,6 @@
         <schemaName>FOXSTORE</schemaName>
         <type>CONSTRAINT</type>
       </referenceID>
-    </constraint>
-    <constraint class="oracle.javatools.db.PKConstraint">
-      <name>CLIENT_ORDER_PK</name>
-      <columnIDs>
-        <columnID class="oracle.javatools.db.NameBasedID">
-          <name>ID</name>
-          <parent class="oracle.javatools.db.NameBasedID">
-            <name>CLIENT_ORDERS</name>
-            <schemaName>FOXSTORE</schemaName>
-            <type>TABLE</type>
-          </parent>
-          <schemaName>FOXSTORE</schemaName>
-          <type>COLUMN</type>
-        </columnID>
-      </columnIDs>
-      <enabled>true</enabled>
-      <indexID class="oracle.javatools.db.NameBasedID">
-        <name>CLIENT_ORDER_PK</name>
-        <parent class="oracle.javatools.db.NameBasedID">
-          <name>CLIENT_ORDERS</name>
-          <schemaName>FOXSTORE</schemaName>
-          <type>TABLE</type>
-        </parent>
-        <schemaName>FOXSTORE</schemaName>
-        <type>INDEX</type>
-      </indexID>
     </constraint>
   </constraints>
   <indexes>

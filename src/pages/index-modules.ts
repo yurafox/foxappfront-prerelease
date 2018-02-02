@@ -37,3 +37,4 @@ export * from './credit-calc/credit-calc.module';
 export * from './balance/balance.module';
 export * from './poll/poll.module';
 export * from './novelty/novelty.module';
+export * from './order-details/order-details.module';

@@ -2852,7 +2852,14 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idPaymentStatus: 1,
       idStatus: 0,
       loIdEntity: null,
-      loIdClientAddress: 2
+      loIdClientAddress: 2,
+      itemsTotal: null,
+      shippingTotal: null,
+      bonusTotal: null,
+      promoBonusTotal: null,
+      bonusEarned: null,
+      promoCodeDiscTotal: null
+
     }
   ];
 
@@ -2868,7 +2875,14 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idPaymentStatus: 1,
       idStatus: 0,
       loIdEntity: null,
-      loIdClientAddress: null
+      loIdClientAddress: null,
+      itemsTotal: null,
+      shippingTotal: null,
+      bonusTotal: null,
+      promoBonusTotal: null,
+      bonusEarned: null,
+      promoCodeDiscTotal: null,
+      idPerson: null
     },
     {
       id: 2,
@@ -2880,7 +2894,14 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idPaymentStatus: 1,
       idStatus: 2,
       loIdEntity: null,
-      loIdClientAddress: null
+      loIdClientAddress: null,
+      itemsTotal: null,
+      shippingTotal: null,
+      bonusTotal: null,
+      promoBonusTotal: null,
+      bonusEarned: null,
+      promoCodeDiscTotal: null,
+      idPerson: null
     },
     {
       id: 3,
@@ -2892,23 +2913,41 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idPaymentStatus: 1,
       idStatus: 1,
       loIdEntity: null,
-      loIdClientAddress: null
+      loIdClientAddress: null,
+      itemsTotal: null,
+      shippingTotal: null,
+      bonusTotal: null,
+      promoBonusTotal: null,
+      bonusEarned: null,
+      promoCodeDiscTotal: null,
+      idPerson: null
     },
     {
       id: 4,
       orderDate: new Date(new Date().getTime() - 121*24 * 3600 * 1000),
       idCur: 0,
       idClient: 100,
-      total: 698.10,
-      idPaymentMethod: 2,
+      total: 5103.88,
+      idPaymentMethod: 3,
       idPaymentStatus: 1,
       idStatus: 1,
       loIdEntity: null,
-      loIdClientAddress: null
+      loIdClientAddress: 2,
+      itemsTotal: 5319,
+      shippingTotal: 25,
+      bonusTotal: 70.12,
+      promoBonusTotal: 150,
+      bonusEarned: 53.19,
+      promoCodeDiscTotal: 20,
+      idPerson: 1
     }
-
-
   ];
+
+  persons = [
+    { id: 1, firstName: "Сергей",  lastName: "Романов",  middleName: "Игоревич", passportSeries: "AC",  passportNum: "451125",
+      issuedAuthority: "Святошинским РОВД г.Киева, 15/01/1999", taxNumber: "3251487524", birthDate: new Date(new Date().getTime() - 13140*24 * 3600 * 1000)
+    }
+  ]
 
   clientOrderSpecProducts = [
     {
@@ -2924,7 +2963,12 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       loDeliveryCompleted: null,
       loEstimatedDeliveryDate: null,
       loDeliveryCompletedDate: null,
-      errorMessage: null
+      errorMessage: null,
+      payPromoCode: null,
+      payPromoCodeDiscount: null,
+      payBonusCnt: null,
+      payPromoBonusCnt: null,
+      earnedBonusCnt: null
     },
     {
       id: 2,
@@ -2939,7 +2983,12 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       loDeliveryCompleted: null,
       loEstimatedDeliveryDate: null,
       loDeliveryCompletedDate: null,
-      errorMessage: null
+      errorMessage: null,
+      payPromoCode: null,
+      payPromoCodeDiscount: null,
+      payBonusCnt: null,
+      payPromoBonusCnt: null,
+      earnedBonusCnt: null
     },
     {
       id: 3,
@@ -2954,7 +3003,12 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       loDeliveryCompleted: null,
       loEstimatedDeliveryDate: null,
       loDeliveryCompletedDate: null,
-      errorMessage: null
+      errorMessage: null,
+      payPromoCode: null,
+      payPromoCodeDiscount: null,
+      payBonusCnt: null,
+      payPromoBonusCnt: null,
+      earnedBonusCnt: null
     },
     {
       id: 4,
@@ -2969,7 +3023,12 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       loDeliveryCompleted: null,
       loEstimatedDeliveryDate: null,
       loDeliveryCompletedDate: null,
-      errorMessage: "This item is currently out of stock"
+      errorMessage: "This item is currently out of stock",
+      payPromoCode: null,
+      payPromoCodeDiscount: null,
+      payBonusCnt: null,
+      payPromoBonusCnt: null,
+      earnedBonusCnt: null
     },
     {
       id: 5,
@@ -2984,12 +3043,17 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       loDeliveryCompleted: null,
       loEstimatedDeliveryDate: null,
       loDeliveryCompletedDate: null,
-      errorMessage: null
+      errorMessage: null,
+      payPromoCode: null,
+      payPromoCodeDiscount: null,
+      payBonusCnt: null,
+      payPromoBonusCnt: null,
+      earnedBonusCnt: null
     },
     {
       id: 6,
       idOrder: 3,
-      idQuotationProduct: 7,
+      idQuotationProduct: 4,
       price: 120.0,
       qty: 1,
       idStorePlace: null,
@@ -2999,7 +3063,12 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       loDeliveryCompleted: null,
       loEstimatedDeliveryDate: null,
       loDeliveryCompletedDate: null,
-      errorMessage: null
+      errorMessage: null,
+      payPromoCode: null,
+      payPromoCodeDiscount: null,
+      payBonusCnt: null,
+      payPromoBonusCnt: null,
+      earnedBonusCnt: null
     },
     {
       id: 7,
@@ -3008,13 +3077,18 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       price: 5199.0,
       qty: 1,
       idStorePlace: null,
-      idLoEntity: null,
-      loTrackTicket: null,
-      loDeliveryCost: null,
-      loDeliveryCompleted: null,
-      loEstimatedDeliveryDate: null,
-      loDeliveryCompletedDate: null,
-      errorMessage: null
+      idLoEntity: 150,
+      loTrackTicket: "asdf-1234-xxx",
+      loDeliveryCost: 10,
+      loDeliveryCompleted: true,
+      loEstimatedDeliveryDate: new Date(new Date().getTime() - 119*24 * 3600 * 1000),
+      loDeliveryCompletedDate: new Date(new Date().getTime() - 120*24 * 3600 * 1000),
+      errorMessage: null,
+      payPromoCode: "QA-1254",
+      payPromoCodeDiscount: 20,
+      payBonusCnt: 50.11,
+      payPromoBonusCnt: 150,
+      earnedBonusCnt: 51.99
     },
     {
       id: 8,
@@ -3022,14 +3096,19 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idQuotationProduct: 7,
       price: 120.0,
       qty: 1,
-      idStorePlace: null,
-      idLoEntity: null,
+      idStorePlace: 1,
+      idLoEntity: 100,
       loTrackTicket: null,
-      loDeliveryCost: null,
-      loDeliveryCompleted: null,
-      loEstimatedDeliveryDate: null,
-      loDeliveryCompletedDate: null,
-      errorMessage: null
+      loDeliveryCost: 15,
+      loDeliveryCompleted: true,
+      loEstimatedDeliveryDate: new Date(new Date().getTime() - 117*24 * 3600 * 1000),
+      loDeliveryCompletedDate: new Date(new Date().getTime() - 117*24 * 3600 * 1000),
+      errorMessage: null,
+      payPromoCode: null,
+      payPromoCodeDiscount: null,
+      payBonusCnt: 20.01,
+      payPromoBonusCnt: 0,
+      earnedBonusCnt: 1.2
     },
 
   ];
@@ -3578,6 +3657,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mclientPollAnswers = this.clientPollAnswers;
     const mnoveltyDetails = this.noveltyDetails;
     const mclientBonuses = this.clientBonuses;
+    const mpersons = this.persons;
 
     return {
       mquotationProducts,
@@ -3617,7 +3697,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mpollQuestionAnswer,
       mclientPollAnswers,
       mnoveltyDetails,
-      mclientBonuses
+      mclientBonuses,
+      mpersons
     };
   }
 

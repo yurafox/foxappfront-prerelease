@@ -42,6 +42,7 @@ import {CreditProduct} from '../../../model/credit-product';
 import { AbstractDataRepository } from '../../index';
 import { Providers, System } from "../../../core/app-core";
 import {ClientBonus} from '../../../model/client-bonus';
+import {PersonInfo} from '../../../model/person';
 
 // <editor-fold desc="url const">
 const currenciesUrl = "/api/mcurrencies";
@@ -79,6 +80,7 @@ const creditProductsUrl = "/api/mcreditProducts";
 const getPromocodeDiscountUrl = "/api/mgetPromocodeDiscount";
 const calculateCartUrl = "/api/mcalculateCart";
 const getClientBonuses = "/api/mclientBonuses";
+const personsUrl = "/api/mpersons";
 
 const pollsUrl='/api/mpolls';
 const pollQuestionUrl='/api/mpollQuestion';
@@ -403,7 +405,14 @@ export class AppDataRepository extends AbstractDataRepository {
           data[0].idStatus,
           null,
           data[0].loIdEntity,
-          data[0].loIdClientAddress
+          data[0].loIdClientAddress,
+          data[0].itemsTotal,
+          data[0].shippingTotal,
+          data[0].bonusTotal,
+          data[0].promoBonusTotal,
+          data[0].bonusEarned,
+          data[0].promoCodeDiscTotal,
+          data[0].idPerson
         );
         return cClientOrder;
       }
@@ -418,7 +427,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
       const response = await this.http
         .get(clientOrdersUrl, {
-          //TODO переделать этот метод (два одинаковых поисковых параметра - кривизна)
+          //TODO в реальном бекенде входящие параметры игнорить и возвращать все заказы клиента в статусе > 0
           search: this.createSearchParams([
             {key: "idClient", value: "100"},
             {key: "idStatus", value: "1"}
@@ -443,47 +452,20 @@ export class AppDataRepository extends AbstractDataRepository {
               val.idPaymentMethod,
               val.idPaymentStatus,
               val.idStatus,
+              null,
               val.loIdEntity,
-              val.loIdClientAddress
+              val.loIdClientAddress,
+              val.itemsTotal,
+              val.shippingTotal,
+              val.bonusTotal,
+              val.promoBonusTotal,
+              val.bonusEarned,
+              val.promoCodeDiscTotal,
+              val.idPerson
             )
           )
         );
       };
-      return cClientOrders;
-    } catch (err) {
-      return await this.handleError(err);
-    }
-  }
-
-  public async getClientOrdersAll(): Promise<ClientOrder[]> {
-    try {
-      const response = await this.http
-        .get(clientOrdersUrl)
-        .toPromise();
-
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      const cClientOrders = new Array<ClientOrder>();
-      if (data != null) {
-        data.forEach(val =>
-          cClientOrders.push(
-            new ClientOrder(
-              val.id,
-              val.orderDate,
-              val.idCur,
-              val.idClient,
-              val.total,
-              val.idPaymentMethod,
-              val.idPaymentStatus,
-              val.idStatus,
-              val.loIdEntity,
-              val.loIdClientAddress
-            )
-          )
-        );
-      }
       return cClientOrders;
     } catch (err) {
       return await this.handleError(err);
@@ -513,8 +495,16 @@ export class AppDataRepository extends AbstractDataRepository {
         data.idPaymentMethod,
         data.idPaymentStatus,
         data.idStatus,
+        null,
         data.loIdEntity,
-        data.loIdClientAddress
+        data.loIdClientAddress,
+        data.itemsTotal,
+        data.shippingTotal,
+        data.bonusTotal,
+        data.promoBonusTotal,
+        data.bonusEarned,
+        data.promoCodeDiscTotal,
+        data.idPerson
       );
     } catch (err) {
       return await this.handleError(err);
@@ -596,6 +586,11 @@ export class AppDataRepository extends AbstractDataRepository {
           p.loDeliveryCompletedDate = val.loDeliveryCompletedDate;
           p.errorMessage = val.errorMessage;
           p.warningMessage = val.warningMessage;
+          p.payPromoCode = val.payPromoCode;
+          p.payPromoCodeDiscount = val.payPromoCodeDiscount;
+          p.payBonusCnt = val.payBonusCnt;
+          p.payPromoBonusCnt = val.payPromoBonusCnt;
+          p.earnedBonusCnt = val.earnedBonusCnt;
 
           cClientOrderProducts.push(p);
         });
@@ -636,9 +631,13 @@ export class AppDataRepository extends AbstractDataRepository {
         p.loEstimatedDeliveryDate = i.loEstimatedDeliveryDate;
         p.loDeliveryCompletedDate = i.loDeliveryCompletedDate;
         p.errorMessage = i.errorMessage;
+        p.payPromoCode = i.payPromoCode;
+        p.payPromoCodeDiscount = i.payPromoCodeDiscount;
+        p.payBonusCnt = i.payBonusCnt;
+        p.payPromoBonusCnt = i.payPromoBonusCnt;
+        p.earnedBonusCnt = i.earnedBonusCnt;
         orderProducts.push(p);
       });
-      console.log(orderProducts);
       return orderProducts;
     } catch (err) {
       return await this.handleError(err);
@@ -673,6 +672,11 @@ export class AppDataRepository extends AbstractDataRepository {
       p.loDeliveryCompletedDate = val.loDeliveryCompletedDate;
       p.errorMessage = val.errorMessage;
       p.warningMessage = val.warningMessage;
+      p.payPromoCode = val.payPromoCode;
+      p.payPromoCodeDiscount = val.payPromoCodeDiscount;
+      p.payBonusCnt = val.payBonusCnt;
+      p.payPromoBonusCnt = val.payPromoBonusCnt;
+      p.earnedBonusCnt = val.earnedBonusCnt;
       return p;
     } catch (err) {
       return await this.handleError(err);
@@ -705,6 +709,12 @@ export class AppDataRepository extends AbstractDataRepository {
         p.loEstimatedDeliveryDate = product.loEstimatedDeliveryDate;
         p.loDeliveryCompletedDate = product.loDeliveryCompletedDate;
         p.errorMessage = product.errorMessage;
+        p.payPromoCode = product.payPromoCode;
+        p.payPromoCodeDiscount = product.payPromoCodeDiscount;
+        p.payBonusCnt = product.payBonusCnt;
+        p.payPromoBonusCnt = product.payPromoBonusCnt;
+        p.earnedBonusCnt = product.earnedBonusCnt;
+
         orderProducts.push(p);
       });
       return orderProducts;
@@ -743,6 +753,11 @@ export class AppDataRepository extends AbstractDataRepository {
         p.loEstimatedDeliveryDate = product.loEstimatedDeliveryDate;
         p.loDeliveryCompletedDate = product.loDeliveryCompletedDate;
         p.errorMessage = product.errorMessage;
+        p.payPromoCode = product.payPromoCode;
+        p.payPromoCodeDiscount = product.payPromoCodeDiscount;
+        p.payBonusCnt = product.payBonusCnt;
+        p.payPromoBonusCnt = product.payPromoBonusCnt;
+        p.earnedBonusCnt = product.earnedBonusCnt;
         orderProducts.push(p);
       });
       return orderProducts;
@@ -981,6 +996,8 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async getClientAddressById(id: number): Promise<ClientAddress> {
+    if (!id)
+      return Promise.resolve(null);
     try {
       let _id = id.toString();
 
@@ -1405,6 +1422,32 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+
+  public async getPersonById(personId: number): Promise<PersonInfo> {
+    try {
+      const _id = personId.toString();
+      let p = new PersonInfo();
+      const response = await this.http.get(personsUrl + `/${_id}`).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        p.firstName = data.firstName;
+        p.lastName= data.lastName;
+        p.middleName= data.middleName;
+        p.passportSeries= data.passportSeries;
+        p.passportNum= data.passportNum;
+        p.issuedAuthority= data.issuedAuthority;
+        p.taxNumber= data.taxNumber;
+        p.birthDate= data.birthDate;
+        return p;
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 
   public async getSupplierById(supplierId: number): Promise<Supplier> {
     try {

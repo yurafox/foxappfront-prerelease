@@ -11,7 +11,7 @@ import {Client, ClientOrder, ClientOrderProducts, Product, QuotationProduct} fro
 })
 export class OrdersPage extends ComponentBase {
 
-  dataLoaded: boolean = true;
+  dataLoaded: boolean = false;
   orders = new Array<ClientOrder>();
 
   constructor(private navCtrl: NavController, private navParams: NavParams,
@@ -29,7 +29,6 @@ export class OrdersPage extends ComponentBase {
 
     for (let order of _orders) {
       let orSpec = await (<any>order).clientorderproducts_p;
-      console.log(orSpec);
       order.orderProducts = orSpec;
     }
     this.orders = _orders;
@@ -40,8 +39,8 @@ export class OrdersPage extends ComponentBase {
     //TODO
   }
 
-  onViewOrderDetailsClick() {
-    //TODO
+  onViewOrderDetailsClick(order: ClientOrder) {
+    this.navCtrl.push('OrderDetailsPage', {order: order});
   }
 
   onWriteReviewClick() {

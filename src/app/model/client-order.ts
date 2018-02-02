@@ -2,10 +2,17 @@ import {ClientOrderProducts} from './client-order-products';
 import {LazyLoad, RefInjector} from '../core/app-core';
 import {ClientAddress} from './client-address';
 import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
+import {EnumPaymentMethod} from './enum-payment-method';
+import {PersonInfo} from './person';
+import {LoEntity} from './lo-entity';
 
 @LazyLoad([
   { options: {constructor: ClientAddress}, action: 'getClientAddressById', params: ['loIdClientAddress']},
-  { options: {constructor: ClientOrderProducts}, action: 'getClientOrderProductsByOrderId', params: ['id']}
+  { options: {constructor: ClientOrderProducts}, action: 'getClientOrderProductsByOrderId', params: ['id']},
+  { options: {constructor: EnumPaymentMethod}, action: 'getPmtMethodById', params: ['idPaymentMethod']},
+  { options: {constructor: PersonInfo}, action: 'getPersonById', params: ['idPerson']},
+  { options: {constructor: LoEntity}, action: 'getLoEntitiyById', params: ['loIdEntity']}
+
 ])
 
 export class ClientOrder {
@@ -23,6 +30,13 @@ export class ClientOrder {
     public idStatus?: number,
     public orderProducts?: ClientOrderProducts[],
     public loIdEntity?: number,
-    public loIdClientAddress?: number
+    public loIdClientAddress?: number,
+    public itemsTotal?: number,
+    public shippingTotal?: number,
+    public bonusTotal?: number,
+    public promoBonusTotal?: number,
+    public bonusEarned?: number,
+    public promoCodeDiscTotal?: number,
+    public idPerson?: number
   ){this._repo = RefInjector.pull(AbstractDataRepository);}
 }

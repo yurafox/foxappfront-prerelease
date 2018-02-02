@@ -220,7 +220,12 @@ export function LazyLoad(options: Array<{ options:ILazyOption,
               this[loadingProp] = true;
               (async () => {
                 const repo = this['_repo'];
-                this[navProp] = await repo[fnName].apply(repo, lazyParamToValue(this, value.params));
+
+                let paramsConvertedList = lazyParamToValue(this, value.params);
+                if(paramsConvertedList.length!==0) {
+                  this[navProp] = await repo[fnName].apply(repo, paramsConvertedList);
+                }
+
                 this[loadingProp] = false;
               })();
             }
@@ -231,7 +236,14 @@ export function LazyLoad(options: Array<{ options:ILazyOption,
           configurable: false,
           get: () => {
             const repo = this['_repo'];
-            this[navProp+'_p'] = repo[fnName].apply(repo, lazyParamToValue(this, value.params));
+            var paramsConvertedList = lazyParamToValue(this, value.params);
+            if(paramsConvertedList.length!==0) {
+              this[navProp+'_p'] = repo[fnName].apply(repo, paramsConvertedList);
+
+            } else {
+              this[navProp+'_p'] = Promise.resolve(null);
+            }
+
             return this[navProp+'_p'];
           }
         });
@@ -259,7 +271,7 @@ export function LazyLoad(options: Array<{ options:ILazyOption,
 }
 function lazyParamToValue(pointer: any, params: string[]): any[] {
   const resultArr: any[] = [];
-  if (!params || params.length === 0) {
+  if (!params || params.length === 0 || !pointer[params[0]]) {
     return resultArr;
   }
 

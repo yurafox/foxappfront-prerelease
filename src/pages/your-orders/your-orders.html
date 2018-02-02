@@ -1,5 +1,5 @@
 <ion-header>
-    <main-toolbar></main-toolbar>
+    <main-toolbar [showCartIcon] = "false"></main-toolbar>
 </ion-header>
 
 <ion-content>
@@ -15,7 +15,7 @@
     <div *ngFor="let ord of orders">
       <div *ngFor="let spec of ord.orderProducts">
 
-        <ion-grid *ngIf="spec?.quotationproduct?.product?.imageUrl && spec?.quotationproduct?.product?.name">
+        <ion-grid class="f-color-secondary" *ngIf="spec?.quotationproduct?.product?.imageUrl && spec?.quotationproduct?.product?.name">
 
           <ion-row style="padding-left: 5px; padding-right: 5px;">
 
@@ -76,7 +76,7 @@
           </ion-row>
 
           <ion-row style="padding-left: 5px; padding-right: 5px;">
-            <ion-grid class="f-item-nopadding-tb f-color-secondary f-border-ligthgray" (click)="onViewOrderDetailsClick()">
+            <ion-grid class="f-item-nopadding-tb f-color-secondary f-border-ligthgray" (click)="onViewOrderDetailsClick(ord)">
               <ion-row >
                 <ion-col no-padding>
                   <ion-item  detail-push text-wrap class="f-color-secondary">
