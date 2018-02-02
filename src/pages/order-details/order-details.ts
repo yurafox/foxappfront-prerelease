@@ -13,13 +13,12 @@ import {UserService} from '../../app/service/bll/user-service';
 export class OrderDetailsPage {
 
   order: ClientOrder;
-  dataLoaded: boolean = false;
+  dataLoaded: boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public userService: UserService) {
 
     this.order = this.navParams.data.order;
-    console.log(this.order);
   }
 
 

@@ -30,6 +30,10 @@ page-order-details {
     color: dimgrey;
   }
 
+  .f-color-red {
+    color: red;
+  }
+
   .f-color-blue {
     color: darkslateblue;
   }
@@ -37,6 +41,11 @@ page-order-details {
   .f-color-green {
     color: color($colors, green);
   }
+
+  .f-size-big {
+    font-size: 20px;
+  }
+
 
   .f-size-large {
     font-size: 18px;
