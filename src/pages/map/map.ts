@@ -5,7 +5,6 @@ import {/*GoogleMap,*/ LatLng} from '@ionic-native/google-maps';
 import {City, Store} from "../../app/model/index";
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {Geolocation} from '@ionic-native/geolocation';
-import {StatusBar} from "@ionic-native/status-bar";
 import {LaunchNavigator} from "@ionic-native/launch-navigator";
 import {FavoriteStoresPage} from "../favorite-stores/favorite-stores";
 import {StoreReview} from "../../app/model/store-review";
@@ -55,7 +54,7 @@ export class MapPage extends ComponentBase implements OnInit {
   availableNavApps: void | string[];
 
   constructor(private nav: NavController, private navParams: NavParams, private platform: Platform,
-              private repo: AbstractDataRepository, private geolocation: Geolocation, private statusBar: StatusBar,
+              private repo: AbstractDataRepository, private geolocation: Geolocation,
               private launchNavigator: LaunchNavigator, private changeDetector: ChangeDetectorRef) {
     super();
     this.defaultCityId = 0;
@@ -118,7 +117,7 @@ export class MapPage extends ComponentBase implements OnInit {
         };
       } else {
         this.options = {
-          center: this.markersArr[this.defaultCityId - 1].stores[0].position,
+          center: this.markersArr[this.defaultCityId - 1].stores[0].position/*{lat:48.379433,lng:31.165579999999977}*/,
           zoom: 10,
           disableDefaultUI: true
         };
@@ -181,7 +180,7 @@ export class MapPage extends ComponentBase implements OnInit {
             position: markerData.position,
             map: this.map,
             title: markerData.address,
-            animation: google.maps.Animation.DROP,
+            //animation: google.maps.Animation.DROP,
             label: labels[i % labels.length]
           });
 
@@ -446,11 +445,32 @@ export class MapPage extends ComponentBase implements OnInit {
    */
   useExternalNavigator(endpoint) {
     this.platform.ready().then(() => {
-      this.launchNavigator.navigate([endpoint.lat, endpoint.lng], {app: this.launchNavigator.APP.USER_SELECT})
-        .then(
-          success => console.log('Launched navigator'),
-          error => window.alert('Error launching navigator: ' + error)
-        );
+      if (this.availableNavApps) {
+        this.launchNavigator.navigate([endpoint.lat, endpoint.lng])
+          .then(
+            success => console.log('Launched navigator'),
+            error => window.alert('Error launching navigator: ' + error)
+          );
+        /*this.launchNavigator.navigate([endpoint.lat, endpoint.lng],{
+          app: this.launchNavigator.APP.USER_SELECT,
+          transportMode: this.launchNavigator.TRANSPORT_MODE.WALKING,
+          appSelection: {
+            dialogHeaderText: 'some dialog header',
+            cancelButtonText: 'cancel me',
+            rememberChoice: {
+              enabled: false,
+              prompt: {
+                headerText: 'some prompt header',
+                bodyText: 'some prompt body',
+                yesButtonText: 'go for it',
+                noButtonText: 'please no'
+              }
+            }
+          }
+        })
+          .then(success => console.log('Launched navigator'))
+          .catch(error => console.error('Error launching navigator: ' + JSON.stringify(error, null, 2)));*/
+      }
     });
   }
 

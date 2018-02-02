@@ -110,5 +110,6 @@ export abstract class AbstractDataRepository {
   public async abstract postClientPoolAnswers(pollAnswers:any):Promise<ClientPollAnswer>;
   public async abstract getClientPoolAnswersForUserByPollId(pollId:number):Promise<ClientPollAnswer[]>;
   public async abstract getNoveltyDetailsByNoveltyId(id: number): Promise<NoveltyDetails[]>;
-  public async abstract sendDeviceData(deviceData: DeviceData): Promise<DeviceData>
+  public async abstract postDeviceData(deviceData: DeviceData): Promise<DeviceData>
+  public async abstract getDataForRedirectToPaymaster(orderID: number, cartTotal: number, paySystem: number): Promise<any>;
 }

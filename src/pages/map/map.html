@@ -36,8 +36,8 @@
           <span loc="В избранное" name="toFav">{{locale['toFav']}}</span>
         </button>
       </span>
-      <span *ngIf="availableNavApps">
-        <button ion-button icon-left (click)="useExternalNavigator(selectedMarker)"
+      <!--<span *ngIf="availableNavApps">
+        <button ion-button icon-left (click)="useExternalNavigator(selectedMarker.value)"
                 [disabled]="selectedMarker.value === null"
                 class="f-map-button" *ngIf="userPosIsKnown === false">
           <ion-icon name="ios-car-outline"></ion-icon>
@@ -45,13 +45,13 @@
         </button>
       </span>
       <span *ngIf="availableNavApps">
-        <button ion-button icon-left (click)="useExternalNavigator(selectedMarker)"
+        <button ion-button icon-left (click)="useExternalNavigator(selectedMarker.value)"
                 [disabled]="selectedMarker.value === null"
                 class="f-map-button" *ngIf="userPosIsKnown === true">
           <ion-icon name="ios-car-outline"></ion-icon>
           <span loc="В навигаторе" name="inNav">{{locale['inNav']}}</span>
         </button>
-      </span>
+      </span>-->
       <button ion-button icon-left (click)="buildRoute()" [disabled]="selectedMarker.value === null"
               class="f-map-button" *ngIf="userPosIsKnown === true">
         <ion-icon name="ios-navigate-outline"></ion-icon>

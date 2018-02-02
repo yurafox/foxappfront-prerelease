@@ -3625,7 +3625,14 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       }
       case "mdeviceData": {
         let reqData = (<any>info.req)._body;
-        resOpt.body = {model: reqData.model, os: reqData.os, height: reqData.height, width: reqData.width};
+        resOpt.body = {
+          model: reqData.model,
+          os: reqData.os,
+          height: reqData.height,
+          width: reqData.width,
+          pushDeviceToken: reqData.pushDeviceToken,
+          userToken: reqData.userToken
+        };
         return info.utils.createResponse$(() => resOpt);
       }
 
@@ -3646,6 +3653,28 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
         );
         resOpt.body = JSON.stringify(_respDataArr);
         return info.utils.createResponse$(() => resOpt);
+      }
+
+      case "mredirectToPaymaster": {
+        let reqData = (<any>info.req)._body;
+        resOpt.body = {
+          LMI_MERCHANT_ID: 1984,
+          LMI_PAYMENT_AMOUNT: reqData.total,
+          LMI_SYS_PAYMENT_ID: reqData.id,
+          LMI_SUCCESS_URL: '',
+          LMI_FAIL_URL: '',
+          LMI_PAYMENT_NO: reqData.id,
+          LMI_PAYMENT_DESC: `Payment for order in Foxtrot for amount of ${reqData.total}UAH`,
+          LMI_SIM_MODE: '0', //TODO: Remove Simulation Mode
+          //LMI_ALLOW_SDP: string,
+          LMI_PAYMENT_SYSTEM: reqData.paySys
+        };
+        if (reqData.id >= 0) {
+          return info.utils.createResponse$(() => resOpt);
+        }
+        else {
+          return null;
+        }
       }
 
       default:

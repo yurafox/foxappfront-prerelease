@@ -18,7 +18,6 @@ export interface PageInterface {
 }
 
 declare var ExoPlayer: any;
-declare var cordova: any;
 declare var FCMPlugin: any;
 
 @Component({
@@ -117,9 +116,8 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   }
 
   openPage(page: PageInterface) {
-
     if ((this.userService.isAuth === false) && (page.component === 'AccountMenuPage')) {
-      this.nav.push('LoginPage').catch((err: any) => {
+      this.nav.push('LoginPage', {continuePage: 'AccountMenuPage'}).catch((err: any) => {
         console.log(`Couldn't navigate to LoginPage: ${err}`);
       });
     } else {
@@ -261,7 +259,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     let width = this.platform.width();
     let userToken = this.userService.token;
     let deviceData = new DeviceData(model, os, height, width, pushDeviceToken, userToken);
-    this.repo.sendDeviceData(deviceData).catch(err => {
+    this.repo.postDeviceData(deviceData).catch(err => {
       console.log(`Couldn't send device data: ${err}`);
     });
   }
@@ -269,74 +267,89 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   // Handling incoming PUSH-notifications
   private async pushNotificationHandling(data) {
     let target = data.target;
-    if (target === 'novelty') {
-      if (data.id) {
-        let alert = this.alertCtrl.create({
-          title: 'New product in Foxtrot!',
-          message: 'Do you want to check it?',
-          buttons: [
-            {
-              text: 'OK',
-              handler: () => {
-                let noveltySketch = System.PushContainer.pushStore[`novelty${data.id}`];
-                if (noveltySketch.novelty && noveltySketch.product) {
-                  noveltySketch.openNovelty();
+    switch (target) {
+      case 'novelty': {
+        if (data.id) {
+          let alert = this.alertCtrl.create({
+            title: 'New product in Foxtrot!',
+            message: 'Do you want to check it?',
+            buttons: [
+              {
+                text: 'OK',
+                handler: () => {
+                  let noveltySketch = System.PushContainer.pushStore[`novelty${data.id}`];
+                  if (noveltySketch.novelty && noveltySketch.product) {
+                    noveltySketch.openNovelty();
+                  }
                 }
+              },
+              {
+                text: 'CANCEL'
               }
-            },
-            {
-              text: 'CANCEL'
-            }
-          ]
-        });
-        alert.present().catch((err) => console.log(`Alert error: ${err}`));
+            ]
+          });
+          alert.present().catch((err) => console.log(`Alert error: ${err}`));
+        }
+        break;
       }
-    } else if (target === 'action' || 'promo') {
-      if (data.id) {
-        let alert = this.alertCtrl.create({
-          title: 'New promotion!',
-          message: 'Do you want to check it?',
-          buttons: [
-            {
-              text: 'OK',
-              handler: () => {
-                let actionSketch = System.PushContainer.pushStore[`action${data.id}`];
-                if (actionSketch.action) {
-                  actionSketch.openAction();
+      case 'action' || 'promotion' || 'promo': {
+        if (data.id) {
+          let alert = this.alertCtrl.create({
+            title: 'New promotion!',
+            message: 'Do you want to check it?',
+            buttons: [
+              {
+                text: 'OK',
+                handler: () => {
+                  let actionSketch = System.PushContainer.pushStore[`action${data.id}`];
+                  if (actionSketch.action) {
+                    actionSketch.openAction();
+                  }
                 }
+              },
+              {
+                text: 'CANCEL'
               }
-            },
-            {
-              text: 'CANCEL'
-            }
-          ]
-        });
-        alert.present().catch((err) => console.log(`Alert error: ${err}`));
+            ]
+          });
+          alert.present().catch((err) => console.log(`Alert error: ${err}`));
+        }
+        break;
       }
-    } else if (target === 'promocode') {
-      if (data.code) {
-        this.cartService.promoCode = data.code;
-        this.cartService.getPromocodeDiscount().catch((err) => {
-          console.log(`Couldn't get discount:${err}`);
-        });
-        let alert = this.alertCtrl.create({
-          title: 'Check your cart',
-          message: 'We have added applied a discount to your order',
-          buttons: [
-            {
-              text: 'OK',
-              handler: () => {
-                this.nav.push('CartPage').catch((err: any) => {
-                  console.log(`Couldn't navigate to CartPage: ${err}`);
-                })
+      case 'promocode': {
+        if (data.promocode) {
+          this.cartService.promoCode = data.promocode;
+          if (this.cartService.cartItemsCount > 0) {
+            this.cartService.calculateCart().catch((err) => {
+              console.log(`Couldn't get discount:${err}`);
+            });
+          }
+          this.evServ.events['cartUpdateEvent'].emit();
+          this.evServ.events['cartItemsUpdateEvent'].emit();
+          let alert = this.alertCtrl.create({
+            title: 'Check your cart',
+            message: 'We have added a discount to your order',
+            buttons: [
+              {
+                text: 'OK',
+                handler: () => {
+                  this.nav.push('CartPage').catch((err: any) => {
+                    console.log(`Couldn't navigate to CartPage: ${err}`);
+                  })
+                }
+              },
+              {
+                text: 'CANCEL'
               }
-            },
-            {
-              text: 'CANCEL'
-            }
-          ]
-        });
-        alert.present().catch((err) => console.log(`Alert error: ${err}`));
+            ]
+          });
+          alert.present().catch((err) => console.log(`Alert error: ${err}`));
+        }
+        break;
+      }
+      default: {
+        console.log('The target is not valid');
+        break;
       }
     }
   }
