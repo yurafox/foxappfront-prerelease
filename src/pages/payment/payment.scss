@@ -1,0 +1,24 @@
+page-payment {
+  .f-btn-add-cart, .f-btn-add-cart.activated {
+    background: #ffbc2e;
+    color: #000000;
+    text-transform: none;
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  #paymaster {
+    max-width: none !important;
+    min-width: 0 !important;
+    iframe {
+      html {
+        body {
+          div#mainWidgetBlock {
+            max-width: none;
+            min-width: 0;
+          }
+        }
+      }
+    }
+  }
+}
