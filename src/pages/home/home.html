@@ -3,7 +3,7 @@
   <search-btn (click)="onSearchClick()"></search-btn>
 </ion-header>
 
-<ion-content>
+<ion-content class="common-bg">
   <div *ngIf=content>
       <html-outlet [html]="content" [context]="this"></html-outlet>
   </div>

@@ -4,6 +4,7 @@ import { AbstractDataRepository } from '../../app/service/index';
 import {Action} from '../../app/model/index';
 import {fadeInAnimation} from '../../app/core/animation-core';
 import {ComponentBase} from "../component-extension/component-base";
+import {IntervalObservable} from "rxjs/observable/IntervalObservable";
 
 @Component({
   selector: 'action-sketch',
@@ -17,8 +18,12 @@ export class ActionSketchComponent extends ComponentBase {
   @Input()
   public action:Action;
 
+  public expire:Date;
+  private alive:boolean;
+
   constructor(public navCtrl: NavController, private _repo:AbstractDataRepository) {
     super();
+    this.alive = true;
   }
 
   async ngOnInit() {
@@ -27,7 +32,20 @@ export class ActionSketchComponent extends ComponentBase {
       this.action = await this._repo.getAction(this.innerId);
     }
     this.content=this.action.sketch_content;
+    this.actionExpire(); // for design display
+
+    // timer action time
+    IntervalObservable.create(1000)
+      .takeWhile(() => this.alive)
+      .subscribe(() => {
+        this.actionExpire();
+      });
     this.evServ.events['actionPushEvent'].emit(this);
+  }
+
+  ngOnDestroy():void {
+    super.ngOnDestroy();
+    this.alive= false;
   }
 
   public openAction() {
@@ -73,5 +91,9 @@ export class ActionSketchComponent extends ComponentBase {
   public get actionActiveRange():any {
      return (this.dateEnd) ? this.dateEnd.getDate()-new Date().getDate()
                            : this.dateEnd;
+  }
+
+  public  actionExpire(): void {
+    this.expire = new Date(this.dateEnd.getTime() - new Date().getTime());
   }
 }

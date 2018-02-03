@@ -16,7 +16,7 @@ export class NoveltySketchComponent extends ComponentBase implements AfterViewIn
   public content:string='';
   @Input()
   public novelty: Novelty;
-  private product: Product;
+  public product: Product;
   private productId: number;
 
   constructor(public navCtrl: NavController, private _repo:AbstractDataRepository) {
