@@ -94,7 +94,7 @@ ion-list ion-icon {
 
 // left menu bg
 .menu-bg {
-  background: url("../assets/imgs/head-bg.png");
+  background: url("../../assets/imgs/head-bg.png");
   background-size: 100% auto;
   color: #387ef5;
   color: #4e8ef7;
@@ -385,6 +385,10 @@ ion-header {
   font-size: 1.8rem;
 }
 
+.f-no-padding {
+  padding: 0px;
+}
+
 .f-item-nopadding-tb {
   padding-top: 0px;
   padding-bottom: 0px;
@@ -449,7 +453,13 @@ ion-header {
 }
 
 .f-img-item {
-  width: 100px; height: 100px;  padding: 6px 4px 2px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100px;
+  height: 100px;
+  padding: 6px 4px 2px;
+  vertical-align: middle;
 }
 
 .f-img-item-lg {
@@ -499,8 +509,11 @@ radioButton {
       font-size: 18px;
     }
   }
-
 }
 
+.toast-message {
+  text-align: center;
+  //border-radius: 5px !important;
+}
 
 

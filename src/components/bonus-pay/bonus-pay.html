@@ -10,14 +10,14 @@
     </ion-row>
 
     <ion-row>
-      <ion-col>
+      <ion-col class="f-padding-t-10">
         <span>Pay bonuses</span>
       </ion-col>
     </ion-row>
 
     <ion-row>
       <ion-col>
-        <input [(ngModel)]="cart.bonus" placeholder="Enter bonus quantity" name="bonus" id="bonus"
+        <input type="text" [(ngModel)]="cart.bonus" placeholder="Enter bonus quantity" name="bonus" id="bonus"
                pattern="[0-9]*"
                (keyup)="bonusInputStream$.next($event.target.value)"
                #bonus="ngModel">
@@ -28,21 +28,12 @@
       </ion-col>
     </ion-row>
 
-    <ion-row>
-      <ion-col>
-      </ion-col>
-    </ion-row>
 
     <ion-row>
-      <ion-col>
-        <span>Pay promotional bonuses</span>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col>
-        <input type="checkbox" [checked]="cart.payByPromoBonus" name="payByPromoBonus" id="payByPromoBonus"
+      <ion-col class="f-padding-tb-10">
+        <input type="checkbox" style="float: left; margin-top: 5px;" [checked]="cart.payByPromoBonus" name="payByPromoBonus" id="payByPromoBonus"
                (change)="cart.payByPromoBonus = !cart.payByPromoBonus">
+        <div style="margin-left: 25px;">Pay promotional bonuses</div>
       </ion-col>
     </ion-row>
   </ion-grid>

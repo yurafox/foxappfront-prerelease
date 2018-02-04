@@ -4,7 +4,7 @@
 
 
 <ion-content>
-  <ion-grid class="f-item-nopadding-tb f-color-secondary">
+  <ion-grid class="f-item-nopadding-tb">
     <ion-row padding>
       <ion-col>
         <b><span class="f-size-large">Select a favorite store</span></b>
@@ -13,7 +13,7 @@
     <div *ngIf="(dataLoaded === true) && stores && (stores.length > 0)">
       <ion-row *ngFor="let store of stores">
 
-        <ion-grid style="border: 1px solid #EBEBEC;">
+        <ion-grid class="f-border-ligthgray">
           <ion-row (click)="onIsPrimaryClick(store.store)">
             <ion-col style="padding: 10px 5px;" class="f-size-larger">
                 <span *ngIf="store?.store.address">

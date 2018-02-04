@@ -3739,6 +3739,11 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
         return info.utils.createResponse$(() => resOpt);
       }
 
+      case "mpostProductView": {
+        let reqData = (<any>info.req)._body;
+        return info.utils.createResponse$(() => resOpt);
+      }
+
       case "mgetDeliveryCost": {
         let reqData = (<any>info.req)._body;
         if (reqData.order.idStorePlace)
@@ -3754,7 +3759,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
         return info.utils.createResponse$(() => resOpt);
       }
 
-      case "getBonusesInfoForCheckoutUrl": {
+      case "mgetBonusesInfoForCheckoutUrl": {
         resOpt.body = {BonusInfo: {bonusLimit: 500, actionBonusLimit: 1000}};
         return info.utils.createResponse$(() => resOpt);
       }

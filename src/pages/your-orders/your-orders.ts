@@ -46,8 +46,8 @@ export class OrdersPage extends ComponentBase {
     this.navCtrl.push('OrderDetailsPage', {order: order});
   }
 
-  onWriteReviewClick() {
-    //TODO
+  onWriteReviewClick(product: any) {
+    this.navCtrl.push('ItemReviewWritePage', product);
   }
 
   onReturnReplaceItemClick() {

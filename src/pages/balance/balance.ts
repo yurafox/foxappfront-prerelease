@@ -59,12 +59,10 @@ export class BalancePage extends ComponentBase {
   }
 
   validatePage() {
-    return true;
-/*
+ //   return true;
 
-    return (!(this.cart.userInputBonus)
-        || (this.cart.userInputBonus && (this.cart.userInputBonus <= this.cart.bonusPayMaxQty)));
-*/
+    return (!(this.cart.bonus)
+        || (this.cart.bonus && (this.cart.bonus <= this.cart.availBonus)));
   }
 
 }

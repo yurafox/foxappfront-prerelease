@@ -3,7 +3,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid class="f-color-secondary">
+  <ion-grid>
     <ion-row>
       <ion-col col-auto>
         <div>
@@ -14,12 +14,12 @@
         <ion-grid class="f-item-nopadding">
           <ion-row>
             <ion-col no-padding class="f-item-padding-bottom">
-              <span class="f-size-medium">{{product?.name | truncate : 40 }}</span>
+              {{product?.name | truncate : 40 }}
             </ion-col>
           </ion-row>
           <ion-row>
-            <ion-col nowrap no-padding class="f-item-padding-bottom f-size-medium">
-              <product-rating id="rating-large" [product]=product></product-rating>
+            <ion-col nowrap no-padding class="f-item-padding-bottom">
+              <product-rating class="rating-large" [product]=product></product-rating>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -29,7 +29,7 @@
   <hr>
 
   <div *ngFor="let quote of quotes">
-    <ion-grid class="f-item-nopadding-tb f-color-secondary">
+    <ion-grid class="f-item-nopadding-tb">
       <ion-row>
         <ion-col class="f-item-nopadding f-item-padding-left">
 

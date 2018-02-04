@@ -230,7 +230,7 @@ export class DropdownListComponent implements OnChanges {
   private verifyStore(): boolean {
     const me = this;
     if(this.isQty){
-      const range:System.IRange = {min:1,max:30}; //this.reference['range'];
+      const range:System.IRange = {min:1,max:31}; //this.reference['range'];
       this.store = function(){
         const array:Array<any>=[];
         for(let i = range.min, max= range.max; i< max;i++) {

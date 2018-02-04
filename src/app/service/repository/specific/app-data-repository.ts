@@ -71,7 +71,7 @@ const storeReviewsUrl = "/api/mstoreReviews";
 const loEntitiesUrl = "/api/mloEntities";
 const loSupplEntitiesUrl = "/api/mloSupplEntities";
 const getDeliveryCostUrl = "/api/mgetDeliveryCost";
-const getBonusesInfoForCheckoutUrl = "/api/getBonusesInfoForCheckout";
+const getBonusesInfoForCheckoutUrl = "/api/mgetBonusesInfoForCheckout";
 const getDeliveryDateUrl = "/api/mgetDeliveryDate";
 const getPaymentMethodsUrl = "/api/mpaymentMethods";
 const clientDraftOrderUrl = "/api/mclientDraftOrder";
@@ -81,6 +81,7 @@ const getPromocodeDiscountUrl = "/api/mgetPromocodeDiscount";
 const calculateCartUrl = "/api/mcalculateCart";
 const getClientBonuses = "/api/mclientBonuses";
 const personsUrl = "/api/mpersons";
+const postProductViewUrl = "/api/mpostProductView";
 
 const pollsUrl='/api/mpolls';
 const pollQuestionUrl='/api/mpollQuestion';
@@ -120,6 +121,20 @@ export class AppDataRepository extends AbstractDataRepository {
           );
       }
       return arr;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async postProductView(idProduct: number, params: string) {
+    try {
+      const response = await this.http
+        .post(postProductViewUrl, {idProduct: idProduct.toString(), params: params}).toPromise();
+      const val = response.json();
+
+      if (response.status !== 201 && response.status !== 200) {
+        throw new Error("server side status error");
+      }
     } catch (err) {
       return await this.handleError(err);
     }

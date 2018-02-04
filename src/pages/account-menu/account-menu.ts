@@ -24,18 +24,18 @@ export class AccountMenuPage extends ComponentBase {
   // Pages in menu list
   ordersPages: PageInterface[] = [
     {title: 'Your orders', name: 'Orders', component: 'OrdersPage', index: 0},
+    {title: 'Your FoxClub member\'s balance', name: 'Balance', component: 'BalancePage', index: 1},
+    {title: 'Your virtual FoxClub card', name: 'Barcode', component: 'BarcodePage', index: 2},
   ];
   accountSettingsPages: PageInterface[] = [
     {title: 'Login & Security', name: 'LoginAndSecurity', component: 'AccountPage', index: 0},
-    {title: 'Your FoxClub member\'s balance', name: 'Balance', component: 'BalancePage', index: 1},
-    {title: 'Your virtual FoxClub card', name: 'Barcode', component: 'BarcodePage', index: 2},
-    {title: 'Manage your places', name: 'ManagePlaces', component: 'ManagePlacesMenuPage', index: 3},
+    {title: 'Manage your places', name: 'ManagePlaces', component: 'ManagePlacesMenuPage', index: 1},
   ];
 
   // Categories of pages
   accountMenu: MenuPageInterface[] = [
-    {title: 'Orders', pages: this.ordersPages, index: 0},
-    {title: 'Account settings', pages: this.accountSettingsPages, index: 1}
+    {title: 'Shopping', pages: this.ordersPages, index: 0},
+    {title: 'Settings', pages: this.accountSettingsPages, index: 1}
   ];
 
   constructor(private platform: Platform, private nav: Nav,

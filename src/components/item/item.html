@@ -1,59 +1,60 @@
-<ion-grid class="f-item-nopadding-tb" (click)="openItemDetails(product)">
-  <ion-row>
-    <ion-col col-auto no-padding>
-      <span class="f-size-small"></span> <!-- Badge placeholder -->
+<ion-grid class="f-no-padding" (click)="openItemDetails(product)">
+<!--
+  <ion-row no-padding>
+    <ion-col col-auto>
+      <span class="f-size-small"></span> &lt;!&ndash; Badge placeholder &ndash;&gt;
     </ion-col>
   </ion-row>
+-->
   <ion-row>
    <ion-col col-auto>
-     <div>
-       <img class="f-img-item" [src]="product.imageUrl">
-     </div>
+     <img class="f-img-item" [src]="product.imageUrl">
    </ion-col>
-   <ion-col no-padding>
-     <ion-grid class="f-item-nopadding">
+   <ion-col>
+     <ion-grid class="f-item-nopadding-tb">
        <ion-row>
-         <ion-col no-padding class="f-item-padding-bottom">
+         <ion-col class="f-item-col">
            <span class="f-size-small">{{product?.manufacturer?.name}}</span>
          </ion-col>
        </ion-row>
        <ion-row>
-         <ion-col no-padding class="f-item-padding-bottom f-product">
+         <ion-col class="f-item-col f-product">
            {{product?.name}}
          </ion-col>
        </ion-row>
 
        <ion-row>
-         <ion-col nowrap no-padding class="f-item-padding-bottom">
+         <ion-col nowrap class="f-item-col">
            <product-rating [product]=product></product-rating>
          </ion-col>
        </ion-row>
        <ion-row>
-         <ion-col no-padding class="f-item-padding-bottom f-product">
+         <ion-col class="f-item-col f-product">
            <b>{{product.price | localeCurrency:userService.currency}}</b>
          </ion-col>
        </ion-row>
 
        <ion-row *ngIf="product.bonuses">
-         <ion-col no-padding class="f-item-padding-bottom" >
+         <ion-col class="f-item-col" >
            <bonus [bonusCnt]="product.bonuses"></bonus>
          </ion-col>
        </ion-row>
 
-       <ion-row>
-         <ion-col no-padding class="f-item-padding-bottom f-size-smaller" *ngIf="(resolved) && (noOfQuotes > 1)">
+       <ion-row *ngIf="(resolved) && (noOfQuotes > 1)">
+         <ion-col class="f-item-col f-size-smaller" >
            {{noOfQuotes}} offers from <b>{{Price | localeCurrency:userService.currency}}</b>
          </ion-col>
        </ion-row>
-       <ion-row>
-         <ion-col no-padding>
-           <span class="f-size-small f-color-green" *ngIf="OnStock">In Stock</span>
+
+       <ion-row *ngIf="OnStock">
+         <ion-col class="f-item-col f-size-small f-color-green">
+           In Stock
          </ion-col>
        </ion-row>
 
-       <ion-row>
-         <ion-col no-padding>
-           <span class="f-size-small f-size-smaller" *ngIf="(noOfQuotes > 1)">See more choices</span>
+       <ion-row *ngIf="(noOfQuotes > 1)">
+         <ion-col class="f-item-col f-size-small f-size-smaller">
+           See more choices
          </ion-col>
        </ion-row>
 
