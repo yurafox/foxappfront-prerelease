@@ -3,21 +3,27 @@
 </ion-header>
 
 <ion-content>
-  <ion-row padding>
-    <ion-col>
-      <b><span class="f-size-large f-color-secondary">Select a shipping address</span></b>
-    </ion-col>
-  </ion-row>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="f-section-header">Select a shipping address
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
   <div *ngIf="dataLoaded">
-    <shipping-address [withDelivery]="withDelivery" [addresses]="shippingAddresses"></shipping-address>
-    <ion-grid class="f-item-nopadding-tb f-color-secondary" (click)="addNewAddress()">
-      <ion-row>
-        <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
-          <ion-item detail-push text-wrap class="f-color-secondary">
-            <b class="f-size-larger">Add a New Shipping Address</b>
-          </ion-item>
+    <ion-grid no-padding>
+      <ion-row class="f-padding-lr-5">
+        <ion-col>
+          <shipping-address [withDelivery]="withDelivery" [addresses]="shippingAddresses"></shipping-address>
         </ion-col>
       </ion-row>
+    </ion-grid>
+    <ion-grid class="f-item-nopadding-tb" (click)="addNewAddress()">
+
+      <ion-row class="f-padding-lr-5">
+        <ion-item class="f-border-ligthgray" detail-push>Add a New Shipping Address</ion-item>
+      </ion-row>
+
     </ion-grid>
   </div>
 </ion-content>

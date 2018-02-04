@@ -2,22 +2,23 @@
   <main-toolbar [showCartIcon] = "false" [showCloseIcon] = "true"></main-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-grid class="f-color-secondary">
+<ion-content class="f-size-larger">
+  <ion-grid>
+
     <ion-row>
-      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 15px;">
-        <b><span class="f-size-large f-color-secondary">Get it for a loan</span></b>
+      <ion-col class="f-section-header">Get it for a loan
       </ion-col>
     </ion-row>
+
     <ion-row *ngIf="quotProduct">
-      <ion-col  style="padding-left: 15px; padding-right: 15px; padding-top: 15px;">
+      <ion-col class="f-padding-15">
         <b><span class="f-size-larger f-color-secondary">{{quotProduct?.product?.name}}</span></b>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col style="padding-left: 15px; padding-right: 15px;">
-        <span *ngIf="!quotProduct" class="f-size-larger"><b>Cart total: </b></span>
-        <b><span class="f-size-larger f-color-red">{{loanAmount | localeCurrency:userService.currency}}</span>
+      <ion-col class="f-padding-15">
+        <span *ngIf="!quotProduct"><b>Cart total: </b></span>
+        <b><span class="f-color-red">{{loanAmount | localeCurrency:userService.currency}}</span>
         </b>
       </ion-col>
     </ion-row>
@@ -28,7 +29,7 @@
 General Credits
 -->
     <div *ngIf="credits && creditsLoaded">
-      <ion-row style="padding-left: 5px; padding-right: 5px;">
+      <ion-row class="f-padding-lr-5">
 
         <ion-grid no-padding>
           <ion-row  padding-top padding-bottom class="f-row-odd f-fond-bold f-size-small">
@@ -81,7 +82,7 @@ General Credits
 
   <ion-grid *ngIf="credits && creditsLoaded" class="f-color-secondary">
     <ion-row>
-      <ion-col style="padding-left: 5px; padding-right: 5px;">
+      <ion-col class="f-padding-lr-5">
         <button class="f-btn-add-cart" ion-button block
 
                 [attr.disabled]="!validatePage()?'':null"

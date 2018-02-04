@@ -3,13 +3,12 @@
 </ion-header>
 <ion-content>
   <div *ngIf="product || store">
-    <ion-grid class="f-color-secondary">
+    <ion-grid>
       <ion-row>
-        <ion-col>
-          <span class="f-size-large">Your review</span>
-          <hr>
+        <ion-col class="f-item-section-header">Your review
         </ion-col>
       </ion-row>
+
       <ion-row>
         <ion-col col-auto no-padding *ngIf="product">
           <div>
@@ -22,20 +21,14 @@
               <ion-col no-padding class="f-item-padding-bottom" *ngIf="product">
                 {{product?.name}}
               </ion-col>
-              <ion-col no-padding class="f-item-padding-bottom" style="font-size: 18px" *ngIf="store">
+              <ion-col no-padding class="f-item-padding-bottom" class="f-size-large" *ngIf="store">
                 <span>Store by address: </span><br><span>{{store?.address}}</span>
               </ion-col>
             </ion-row>
 
-            <!--<ion-row>
-              <ion-col no-padding class="f-item-padding-bottom">
-                <span class="f-size-small f-color-secondary">{{product?.manufacturer?.name}}</span>
-              </ion-col>
-            </ion-row>-->
-
             <ion-row>
               <ion-col nowrap no-padding class="f-item-padding-bottom">
-                <rating id="rating" style="display: inline-block;" [(ngModel)]="rating">
+                <rating id="rating" [(ngModel)]="rating">
                 </rating>
               </ion-col>
             </ion-row>
@@ -43,7 +36,7 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
+        <ion-col class="f-padding-5 f-border-ligthgray">
           <ion-textarea placeholder="Write your review here" rows="15" [(ngModel)]="reviewText"></ion-textarea>
         </ion-col>
       </ion-row>

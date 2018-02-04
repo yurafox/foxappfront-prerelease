@@ -1,9 +1,6 @@
 <ion-row *ngIf="!cart.validateLoan(creditAmt).isValid">
   <ion-col>
     <error [errorText]="cart.validateLoan(creditAmt).validationErrors[0]"></error>
-<!--
-    <span class="f-size-larger f-color-red"><b>{{cart.validateLoan(creditAmt).validationErrors[0]}}</b></span>
--->
   </ion-col>
 </ion-row>
 

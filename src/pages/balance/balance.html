@@ -2,15 +2,15 @@
   <main-toolbar [showCartIcon] = "false"></main-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-grid class="f-color-secondary" *ngIf="dataLoaded">
+<ion-content class="f-size-larger">
+  <ion-grid *ngIf="dataLoaded">
+
     <ion-row>
-      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
-        <b><span class="f-size-large">Your current FoxClub member's bonus balance</span></b>
+      <ion-col class="f-section-header">Your current FoxClub member's bonus balance
       </ion-col>
     </ion-row>
 
-    <ion-row style="padding-left: 5px; padding-right: 5px;" *ngIf="dataLoaded">
+    <ion-row class="f-padding-lr-5" *ngIf="dataLoaded">
       <ion-grid class="f-border-ligthgray">
 
         <ion-row>
@@ -18,22 +18,22 @@
             Bonus:
           </ion-col>
 
-          <ion-col text-right col-auto (click)="toggleBonusDetails()">
+          <ion-col  text-right col-auto (click)="toggleBonusDetails()">
             <ion-grid no-padding>
               <ion-row>
                 <ion-col class="f-size-large f-color-green" >
                   <b>{{cart.availBonus | localeCurrency:userService.currency}}</b>
                 </ion-col>
               </ion-row>
-              <div *ngIf="clientBonusArr.length>0">
+              <div class="f-size-default" *ngIf="clientBonusArr.length>0">
                 <ion-row>
-                  <ion-col style="padding-top: 5px;">
+                  <ion-col class="f-padding-t-5">
                     Only <b>{{bonusDaysLeft}}</b> day(s) left. <span class="f-color-red">Hurry up!</span>
                   </ion-col>
                 </ion-row>
                 <ion-row>
-                  <ion-col class="f-size-small" style="padding-top: 0px; padding-bottom: 0px;">
-                    <a style="color: darkslateblue;">{{!showBonusDetails? 'More >>':'Less <<'}}</a>
+                  <ion-col class="f-size-small" class="f-item-nopadding-tb">
+                    <a class="f-color-info">{{!showBonusDetails? 'More >>':'Less <<'}}</a>
                   </ion-col>
                 </ion-row>
               </div>
@@ -43,7 +43,7 @@
           </ion-col>
         </ion-row>
 
-        <div *ngIf="(clientBonusArr.length>0) && showBonusDetails">
+        <div class="f-size-default" *ngIf="(clientBonusArr.length>0) && showBonusDetails">
           <ion-row>
             <ion-col col-5>
             </ion-col>
@@ -55,8 +55,8 @@
                   </ion-col>
                 </ion-row>
                 <ion-row>
-                  <ion-col col-5 text-end style="padding-right: 15px;"><b>Bonus:</b></ion-col>
-                  <ion-col col-7 text-end style="padding-right: 15px;"><b>Valid till:</b></ion-col>
+                  <ion-col col-5 text-end class="f-padding-right-15"><b>Bonus:</b></ion-col>
+                  <ion-col col-7 text-end class="f-padding-right-15"><b>Valid till:</b></ion-col>
                 </ion-row>
                 <ion-row>
                   <ion-col>
@@ -65,10 +65,10 @@
                 </ion-row>
 
                 <ion-row *ngFor="let bInfo of clientBonusArr">
-                  <ion-col col-5 text-end style="padding-right: 10px; padding-bottom: 10px;">
+                  <ion-col col-5 text-end class="f-padding-rb-10">
                     {{bInfo.bonus | localeCurrency:userService.currency}}
                   </ion-col>
-                  <ion-col col-7 text-end style="padding-right: 10px; padding-bottom: 10px;">
+                  <ion-col col-7 text-end class="f-padding-rb-10">
                     {{bInfo.dueDate | date: 'mediumDate'}}
                   </ion-col>
                 </ion-row>
@@ -100,7 +100,7 @@
 
 
     <ion-row *ngIf="checkoutMode">
-      <ion-col style="padding-left: 5px; padding-right: 5px; padding-top: 15px;">
+      <ion-col class="f-padding-lr-5 f-padding-t-10">
         <button class="f-btn-add-cart" ion-button block
                 [attr.disabled]="!validatePage()?'':null"
                 (click)="onContinueClick()">Continue</button>

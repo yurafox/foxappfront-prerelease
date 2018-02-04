@@ -14,11 +14,11 @@
      <ion-grid class="f-item-nopadding">
        <ion-row>
          <ion-col no-padding class="f-item-padding-bottom">
-           <span class="f-size-small f-color-secondary">{{product?.manufacturer?.name}}</span>
+           <span class="f-size-small">{{product?.manufacturer?.name}}</span>
          </ion-col>
        </ion-row>
        <ion-row>
-         <ion-col no-padding class="f-item-padding-bottom">
+         <ion-col no-padding class="f-item-padding-bottom f-product">
            {{product?.name}}
          </ion-col>
        </ion-row>
@@ -29,7 +29,7 @@
          </ion-col>
        </ion-row>
        <ion-row>
-         <ion-col no-padding class="f-item-padding-bottom">
+         <ion-col no-padding class="f-item-padding-bottom f-product">
            <b>{{product.price | localeCurrency:userService.currency}}</b>
          </ion-col>
        </ion-row>
@@ -53,7 +53,7 @@
 
        <ion-row>
          <ion-col no-padding>
-           <span class="f-size-small f-size-smaller f-color-secondary" *ngIf="(noOfQuotes > 1)">See more choices</span>
+           <span class="f-size-small f-size-smaller" *ngIf="(noOfQuotes > 1)">See more choices</span>
          </ion-col>
        </ion-row>
 

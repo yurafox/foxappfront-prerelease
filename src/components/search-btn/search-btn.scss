@@ -1,10 +1,16 @@
-#search-button-div {
-  border-width: medium;
-  border-color: color($colors, foxprimary);
-  border-style: solid;
-}
-
 search-btn {
+
+  #search-button-div {
+    border-width: medium;
+    border-color: color($colors, foxprimary);
+    border-style: solid;
+  }
+
+  #input {
+    background-color: transparent;
+    border: 0px solid;
+    height: 30px;
+  }
 
   .toolbar-background, .input {
     background-color: color($colors, foxclear);

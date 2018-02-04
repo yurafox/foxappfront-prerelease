@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
-import {CartService, LoDeliveryOption} from '../../app/service/cart-service';
+import {CartService} from '../../app/service/cart-service';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 @IonicPage()
@@ -16,8 +16,6 @@ export class CheckoutPage extends ComponentBase {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public cart: CartService, public repo: AbstractDataRepository) {
     super();
-
-
   }
 
   validatePage(): {isValid: boolean, errors: string[]} {
@@ -49,11 +47,6 @@ export class CheckoutPage extends ComponentBase {
       }
     );
     this.evServ.events['cartUpdateEvent'].emit();
-
-  }
-
-  onShowBalanceClick() {
-    this.navCtrl.push('BalancePage');
   }
 
 }

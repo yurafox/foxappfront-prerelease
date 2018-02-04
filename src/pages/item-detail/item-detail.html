@@ -1,7 +1,7 @@
 <ion-header>
   <main-toolbar></main-toolbar>
 </ion-header>
-<ion-content>
+<ion-content >
   <ion-grid class="f-item-nopadding-tb">
     <ion-row>
       <ion-col text-end>
@@ -9,22 +9,17 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col class="f-item-nopadding f-item-padding-left">
-        <span class="f-size-medium f-color-secondary">{{product.name}}</span>
+      <ion-col class="f-item-nopadding f-padding-l-5">
+        <span class="f-size-default ">{{product.name}}</span>
       </ion-col>
     </ion-row>
-<!--    <ion-row>
-      <ion-col class="f-item-nopadding f-item-padding-left">
-        <span class="f-size-small f-color-secondary">Props string placeholder</span>
-      </ion-col>
-    </ion-row>-->
-    <ion-row>
 
+    <ion-row>
       <ion-col text-center *ngIf="!product.slideImageUrls">
         <img class="f-img-item-lg" [src]="product.imageUrl">
       </ion-col>
       <ion-col text-center *ngIf="product.slideImageUrls">
-        <ion-slides pager >
+        <ion-slides pager>
           <ion-slide *ngFor="let slide of product.slideImageUrls">
             <img src="{{ slide }}" alt="">
           </ion-slide>
@@ -32,17 +27,17 @@
       </ion-col>
     </ion-row>
     <ion-row *ngIf="product.oldPrice">
-      <ion-col class="f-item-nopadding f-item-padding-left f-old-price" >
+      <ion-col class="f-item-nopadding f-padding-l-5 f-old-price f-size-20" >
         <span>{{product.oldPrice | localeCurrency:userService.currency}}</span>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col class="f-item-nopadding f-item-padding-left f-item-padding-bottom f-price" >
+      <ion-col class="f-item-nopadding f-padding-l-5 f-item-padding-bottom f-price" >
         <span>{{product.price | localeCurrency:userService.currency}}</span>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="product.bonuses">
-      <ion-col class="f-item-nopadding f-item-padding-left f-item-padding-bottom" >
+      <ion-col class="f-item-nopadding f-padding-l-5 f-item-padding-bottom" >
         <bonus [bonusCnt]="product.bonuses"></bonus>
       </ion-col>
     </ion-row>
@@ -53,19 +48,19 @@
     </ion-row>
     <ion-row *ngIf="valueQuot?.quotation?.supplier">
       <ion-col>
-        <span class="f-color-secondary f-item-nopadding">Sold by {{valueQuot?.quotation?.supplier?.name}}</span>
+        <span class="f-item-nopadding">Sold by {{valueQuot?.quotation?.supplier?.name}}</span>
       </ion-col>
     </ion-row>
     <!-- Pickup places -->
     <ion-row *ngIf="productStorePlaces?.length > 0" (click)="showLocationPopover()">
       <ion-col>
-        <span class="f-color-blue f-item-nopadding">Available for FREE pickup in {{productStorePlaces.length}} places</span>
+        <span class="f-color-info f-item-nopadding">Available for FREE pickup in {{productStorePlaces.length}} places</span>
       </ion-col>
     </ion-row>
     <!-- Selected pickup place -->
     <ion-row *ngIf="selectedStorePlace">
       <ion-col>
-        <span class="f-color-secondary f-item-nopadding">FREE Pickup at</span>
+        <span class="f-item-nopadding">FREE Pickup at</span>
         <span class="f-color-green f-item-nopadding">{{selectedStorePlace.name}}, {{selectedStorePlace.address_line}}
           {{selectedStorePlace?.city?.name}} </span>
       </ion-col>
@@ -77,18 +72,7 @@
                        [options]="{popupHeader:'Quantity', buttonHeader:'Qty'}"
                        [isQty]="true">
         </dropdown-list>
-<!--
-        <div class="input-qty">
-            <span class="btn" (click)="decQty()">
-              <ion-icon name="ios-remove"></ion-icon>
-            </span>
-          <input readonly [(ngModel)]="qty">
-          <span class="btn" (click)="incQty()">
-              <ion-icon name="ios-add"></ion-icon>
-            </span>
-          <div class="clear"></div>
-        </div>
--->
+
       </ion-col>
     </ion-row>
 
@@ -107,70 +91,66 @@
     </ion-row>
 
   </ion-grid>
+
   <hr>
+  <!-- No of quotes -->
   <ion-grid class="f-item-nopadding-tb" *ngIf="noOfQuotes>1" (click)="onShowMoreQuotesClick()">
     <ion-row>
       <ion-col>
-        <span class="f-color-blue">{{noOfQuotes}} more quotes from {{Price | localeCurrency:userService.currency}}</span>
+        <span class="f-color-info">{{noOfQuotes}} more quotes from {{Price | localeCurrency:userService.currency}}</span>
         <hr>
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-grid class="f-item-nopadding-tb f-color-secondary">
+
+  <ion-grid class="f-item-nopadding-tb">
     <ion-row>
-      <ion-col>
-        <span class="f-size-large">About this item</span>
+      <ion-col class="f-item-section-header">About this item
       </ion-col>
     </ion-row>
+
     <ion-row *ngIf="product.description" (click)="onShowProductDescription()">
-      <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
-        <ion-item  detail-push text-wrap class="f-color-secondary">
-          <item-description [description]=product.description [displayTextLength]="250"></item-description>
-        </ion-item>
-      </ion-col>
+      <ion-item class="f-border-ligthgray" detail-push text-wrap>
+        <item-description [description]=product.description [displayTextLength]="250"></item-description>
+      </ion-item>
     </ion-row>
 
     <ion-row *ngIf="product.Props" (click)="onShowProductProps()">
-      <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
-        <ion-item  detail-push text-wrap class="f-color-secondary">
-            <item-props [product]=product [displayPropCount]="3"></item-props>
-        </ion-item>
-
-      </ion-col>
+      <ion-item class="f-border-ligthgray" detail-push text-wrap>
+        <item-props [product]=product [displayPropCount]="3"></item-props>
+      </ion-item>
     </ion-row>
+
   </ion-grid>
 
-  <p></p>
+  <ion-grid class="f-item-nopadding-tb" *ngIf="reviews.length >0">
 
-  <ion-grid class="f-item-nopadding-tb f-color-secondary" *ngIf="reviews.length >0">
     <ion-row>
-      <ion-col>
-        <span class="f-size-large">Customer reviews</span>
+      <ion-col class="f-item-section-header">Customer reviews
       </ion-col>
     </ion-row>
+
+
     <ion-row (click)="onShowReviewsClick({reviews: reviews, product: product})">
-      <ion-col style="padding: 5px; border: 1px solid #EBEBEC;">
-        <ion-item detail-push text-wrap class="f-color-secondary">
-          <b class="f-size-larger">{{reviews.length}} customer reviews</b><br>
-          <rating id="rating-large" style="display: inline-block;" [ngModel]="product.rating"
-                   readOnly="true">
-          </rating>
-        </ion-item>
-      </ion-col>
+      <ion-item class="f-border-ligthgray" detail-push text-wrap>
+        <b class="f-size-larger">{{reviews.length}} customer reviews</b><br>
+        <rating class="rating-large" [ngModel]="product.rating"
+                readOnly="true">
+        </rating>
+      </ion-item>
     </ion-row>
+
+
     <ion-row>
-      <ion-col>
-        <span class="f-size-large">Top reviews</span>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngFor="let rev of reviews; let i= index" (click)="onShowReviewClick(rev)">
-      <ion-col style="padding-left: 5px; border: 1px solid #EBEBEC;" *ngIf="i<4">
-        <ion-item detail-push text-wrap class="f-color-secondary">
-          <item-review [review]=rev [displayTextLength]="200" [collapsibleMode]="false"></item-review>
-        </ion-item>
+      <ion-col class="f-item-section-header">Top reviews
       </ion-col>
     </ion-row>
 
+    <ion-row *ngFor="let rev of reviews; let i= index" (click)="onShowReviewClick(rev)">
+      <ion-item class="f-border-ligthgray" detail-push text-wrap>
+        <item-review [review]=rev [displayTextLength]="200" [collapsibleMode]="false"></item-review>
+      </ion-item>
+    </ion-row>
   </ion-grid>
 
   <ion-grid>

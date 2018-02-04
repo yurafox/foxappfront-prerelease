@@ -1,12 +1,11 @@
 <ion-header>
-    <main-toolbar [showCartIcon] = "false"></main-toolbar>
+  <main-toolbar [showCartIcon]="false"></main-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-grid class="f-color-secondary">
+  <ion-grid>
     <ion-row>
-      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 10px;">
-        <b><span class="f-size-big">Your orders</span></b>
+      <ion-col class="f-page-header">Your orders
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -15,94 +14,47 @@
     <div *ngFor="let ord of orders">
       <div *ngFor="let spec of ord.orderProducts">
 
-        <ion-grid class="f-color-secondary" *ngIf="spec?.quotationproduct?.product?.imageUrl && spec?.quotationproduct?.product?.name">
+        <ion-grid class="f-item-nopadding-tb" *ngIf="spec?.quotationproduct?.product?.imageUrl && spec?.quotationproduct?.product?.name">
 
-          <ion-row style="padding-left: 5px; padding-right: 5px;">
+          <ion-row class="f-padding-lr-5">
 
             <ion-grid class="f-border-ligthgray">
-              <ion-row style="padding-top: 10px; padding-bottom: 10px;">
+              <ion-row class="f-padding-tb-10">
                 <ion-col col-4 no-padding>
-                  <div>
-                    <img class="f-img-item-80" [src]="spec?.quotationproduct?.product?.imageUrl">
-                  </div>
+                  <img class="f-img-item-80" [src]="spec?.quotationproduct?.product?.imageUrl">
                 </ion-col>
                 <ion-col col-8 no-padding>
-                  <ion-grid no-padding>
-                    <ion-row style="padding-top: 10px;">
-                      <ion-col>
-                        <span><b>{{spec?.quotationproduct?.product?.name}}</b></span>
-                      </ion-col>
-                    </ion-row>
-                    <ion-row style="padding-top: 5px;">
-                      <ion-col>
-                        <span class="f-size-13">Ordered on {{ord.orderDate | date: 'mediumDate'}}</span>
-                      </ion-col>
-                    </ion-row>
-
-                  </ion-grid>
+                  <div class="f-product f-padding-t-10"><b>{{spec?.quotationproduct?.product?.name}}</b></div>
+                  <br>
+                  <div class="f-size-13">Ordered on {{ord.orderDate | date: 'mediumDate'}}</div>
                 </ion-col>
               </ion-row>
             </ion-grid>
           </ion-row>
 
-          <ion-row style="padding-left: 5px; padding-right: 5px;">
-            <ion-grid class="f-item-nopadding-tb f-color-secondary f-border-ligthgray" (click)="onBuyItAgainClick()">
-              <ion-row >
-                <ion-col no-padding>
-                  <ion-item  detail-push text-wrap class="f-color-secondary">
-                    <span>Buy it again</span>
-                  </ion-item>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
+          <ion-row class="f-padding-lr-5" (click)="onBuyItAgainClick()">
+            <ion-item class="f-border-ligthgray" detail-push>Buy it again</ion-item>
           </ion-row>
 
           <ion-row>
-            <ion-col style="padding-top: 10px;">
-
+            <ion-col class="f-padding-t-5">
             </ion-col>
           </ion-row>
 
-          <ion-row style="padding-left: 5px; padding-right: 5px;">
-            <ion-grid class="f-item-nopadding-tb f-color-secondary f-border-ligthgray" (click)="onWriteReviewClick()">
-              <ion-row >
-                <ion-col no-padding>
-                  <ion-item  detail-push text-wrap class="f-color-secondary">
-                    <span>Write a product review</span>
-                  </ion-item>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
+          <ion-row class="f-padding-lr-5" (click)="onWriteReviewClick()">
+            <ion-item class="f-border-ligthgray" detail-push>Write a product review</ion-item>
           </ion-row>
 
-          <ion-row style="padding-left: 5px; padding-right: 5px;">
-            <ion-grid class="f-item-nopadding-tb f-color-secondary f-border-ligthgray" (click)="onViewOrderDetailsClick(ord)">
-              <ion-row >
-                <ion-col no-padding>
-                  <ion-item  detail-push text-wrap class="f-color-secondary">
-                    <span>View order details</span>
-                  </ion-item>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
+          <ion-row class="f-padding-lr-5" (click)="onViewOrderDetailsClick(ord)">
+            <ion-item class="f-border-ligthgray" detail-push>View order details</ion-item>
           </ion-row>
 
-          <ion-row style="padding-left: 5px; padding-right: 5px;">
-            <ion-grid class="f-item-nopadding-tb f-color-secondary f-border-ligthgray" (click)="onReturnReplaceItemClick()">
-              <ion-row >
-                <ion-col no-padding>
-                  <ion-item  detail-push text-wrap class="f-color-secondary">
-                    <span>Return or replace item</span>
-                  </ion-item>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
+          <ion-row class="f-padding-lr-5" (click)="onReturnReplaceItemClick()">
+            <ion-item class="f-border-ligthgray" detail-push>Return or replace item</ion-item>
           </ion-row>
-
 
         </ion-grid>
-
-      <hr>
+        <hr>
       </div>
     </div>
   </div>

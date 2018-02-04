@@ -1,8 +1,8 @@
-<ion-row style="padding-left: 5px; padding-right: 5px;">
+<ion-row class="f-padding-lr-5 f-size-larger">
 
   <ion-grid class="f-border-ligthgray">
     <ion-row>
-      <ion-col class="f-size-medium f-color-blue">
+      <ion-col class="f-size-default f-color-info">
         You could pay up to <span class="f-color-red"><b>{{cart.availBonus}}</b></span> bonuses for this purchase.
         <br>
         Tick "Pay promotional bonuses" option if you want to pay promotional bonuses.
@@ -10,20 +10,20 @@
     </ion-row>
 
     <ion-row>
-      <ion-col class="f-size-larger">
+      <ion-col>
         <span>Pay bonuses</span>
       </ion-col>
     </ion-row>
 
     <ion-row>
-      <ion-col class="f-size-larger">
+      <ion-col>
         <input [(ngModel)]="cart.bonus" placeholder="Enter bonus quantity" name="bonus" id="bonus"
                pattern="[0-9]*"
                (keyup)="bonusInputStream$.next($event.target.value)"
                #bonus="ngModel">
         <div *ngIf="!bonus.valid && bonus.touched">
                   <span *ngIf="bonus.hasError('pattern')"
-                        style="color: red;">Only digits allowed</span>
+                        class="f-color-validation-error">Only digits allowed</span>
         </div>
       </ion-col>
     </ion-row>
@@ -34,13 +34,13 @@
     </ion-row>
 
     <ion-row>
-      <ion-col class="f-size-larger">
+      <ion-col>
         <span>Pay promotional bonuses</span>
       </ion-col>
     </ion-row>
 
     <ion-row>
-      <ion-col class="f-size-larger">
+      <ion-col>
         <input type="checkbox" [checked]="cart.payByPromoBonus" name="payByPromoBonus" id="payByPromoBonus"
                (change)="cart.payByPromoBonus = !cart.payByPromoBonus">
       </ion-col>

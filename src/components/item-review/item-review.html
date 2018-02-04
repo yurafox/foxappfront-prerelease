@@ -1,4 +1,4 @@
-<rating style="display: inline-block;" [(ngModel)]="review.rating"
+<rating [(ngModel)]="review.rating"
         readOnly="true">
 </rating>
 <p *ngIf="displayTextLength === -1"></p> <!-- фиксим баг верстки -->
@@ -21,10 +21,6 @@
     <span class="f-review-feedback-thanks" icon-start>
       <ion-icon name="ios-checkmark-outline"></ion-icon> Thank you for your feedback.</span>
   </span>
-  <!--<span>
-    <ion-icon class="f-icon-thumbs-up" name="md-thumbs-up"></ion-icon> {{review.upvotes ? review.upvotes : 0}}
-    <ion-icon class="f-icon-thumbs-down" name="md-thumbs-down"></ion-icon> {{review.downvotes ? review.downvotes : 0}}
-  </span>-->
 </div>
 <div *ngIf="!collapsibleMode">
   <div *ngIf="!(displayTextLength === -1); else elseBlock">

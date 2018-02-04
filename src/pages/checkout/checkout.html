@@ -1,11 +1,11 @@
 <ion-header>
   <main-toolbar [showCartIcon] = "false"></main-toolbar>
 </ion-header>
-<ion-content>
-  <ion-grid class="f-color-secondary">
+<ion-content class="f-size-larger">
+  <ion-grid>
 
     <ion-row *ngIf="dataLoaded">
-      <ion-col style="padding-left: 5px; padding-right: 5px;">
+      <ion-col class="f-padding-lr-5">
         <button class="f-btn-add-cart" ion-button block
                 [attr.disabled]="!validatePage().isValid?'':null"
                 (click)="onPlaceOrderClick()">Place your order</button>
@@ -16,108 +16,100 @@
     SUMMARY AREA
 -->
     <ion-row>
-      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
-        <b><span class="f-size-large">Order summary</span></b>
+      <ion-col class="f-page-header">Order summary
       </ion-col>
     </ion-row>
 
-    <ion-row style="padding-left: 5px; padding-right: 5px;">
+    <ion-row class="f-padding-lr-5">
       <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
         <ion-row>
-          <ion-col class="f-size-larger">
+          <ion-col>
             Shipping to:
-            <b>{{cart.order?.clientaddress?.recName}}</b>,
-            {{cart.order?.clientaddress?.street}}
-            {{cart.order?.clientaddress?.bldApp}},
-            {{cart.order?.clientaddress?.city}}, {{cart.order?.clientaddress?.zip}}
-            <span *ngIf="cart.order?.clientaddress?.idCountry">
-                  {{cart.order?.clientaddress?.country?.name}}, </span>
-            Phone: {{cart.order?.clientaddress?.phone}}
+            <b>{{cart.order?.clientaddress?.recName}}</b>, {{cart.order?.clientaddress?.addressString}}
             <hr>
           </ion-col>
         </ion-row>
 
         <ion-row>
-          <ion-col class="f-size-larger">
+          <ion-col>
             Items ({{cart.cartItemsCount}}):
           </ion-col>
-          <ion-col class="f-size-larger" text-right col-auto>
+          <ion-col text-right col-auto>
             {{cart.itemsTotal | localeCurrency:userService.currency}}
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col class="f-size-larger">
+          <ion-col>
             Shipping:
           </ion-col>
-          <ion-col class="f-size-larger" text-right col-auto>
+          <ion-col text-right col-auto>
             {{cart.shippingCost | localeCurrency:userService.currency}}
           </ion-col>
         </ion-row>
 
         <ion-row>
-          <ion-col class="f-size-larger">
+          <ion-col>
             Order Total:
           </ion-col>
-          <ion-col class="f-size-larger" text-right col-auto>
+          <ion-col text-right col-auto>
             <span class="f-color-red">{{cart.orderTotal | localeCurrency:userService.currency}}</span>
           </ion-col>
         </ion-row>
 
 
         <ion-row *ngIf="(cart.promoCodeDiscount>0)">
-          <ion-col class="f-size-larger">
+          <ion-col>
             Promocode discount:
           </ion-col>
-          <ion-col class="f-size-larger" text-right col-auto>
-            <span>- {{cart.promoCodeDiscount | localeCurrency:userService.currency}}</span>
+          <ion-col text-right col-auto>
+            - {{cart.promoCodeDiscount | localeCurrency:userService.currency}}
           </ion-col>
         </ion-row>
 
 
         <ion-row *ngIf="(cart.itemsBonusDisc>0)">
-          <ion-col class="f-size-larger">
+          <ion-col>
             Bonuses:
           </ion-col>
-          <ion-col class="f-size-larger" text-right col-auto>
-            <span>- {{cart.itemsBonusDisc | localeCurrency:userService.currency}}</span>
+          <ion-col text-right col-auto>
+            - {{cart.itemsBonusDisc | localeCurrency:userService.currency}}
           </ion-col>
         </ion-row>
 
         <ion-row *ngIf="cart.payByPromoBonus && (!(cart.availBonus === 0))">
-          <ion-col class="f-size-larger">
+          <ion-col>
             Promo bonuses:
           </ion-col>
-          <ion-col class="f-size-larger" text-right col-auto>
-            <span>- {{cart.itemsPromoBonusDisc | localeCurrency:userService.currency}}</span>
+          <ion-col text-right col-auto>
+            - {{cart.itemsPromoBonusDisc | localeCurrency:userService.currency}}
           </ion-col>
         </ion-row>
 
         <ion-row>
-          <ion-col class="f-size-larger">
+          <ion-col>
             <b>Grand Total:</b>
           </ion-col>
-          <ion-col class="f-size-larger" text-right col-auto>
+          <ion-col text-right col-auto>
             <span class="f-color-red"><b>{{cart.cartGrandTotal | localeCurrency:userService.currency}}</b></span>
           </ion-col>
         </ion-row>
-
-
       </ion-grid>
     </ion-row>
 
 <!--
     PAYMENT INFO AREA
 -->
+
     <ion-row>
-      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
-        <b><span class="f-size-large">Payment information</span></b>
+      <ion-col class="f-section-header"><b>Payment information</b>
       </ion-col>
     </ion-row>
-    <ion-row style="padding-left: 5px; padding-right: 5px;">
+
+    <ion-row class="f-padding-lr-5">
       <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
         <ion-row>
-          <ion-col  class="f-size-larger">
-            <span><b>Payment method</b></span>
+          <ion-col>
+            <b>Payment method</b>
             <br>
             {{ cart.pmtMethod.name }}
           </ion-col>
@@ -128,9 +120,7 @@
         </div>
       </ion-grid>
     </ion-row>
-<!--
-    <bonus-pay *ngIf="dataLoaded"></bonus-pay>
--->
+
     <promo-code *ngIf="dataLoaded"></promo-code>
 
 <!--
@@ -138,25 +128,35 @@
 -->
     <div *ngFor="let item of cart.orderProducts; let i = index">
       <ion-row>
-        <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
-          <b><span class="f-size-large">Shipment {{i+1}} of {{cart.orderProducts.length}}</span></b>
+        <ion-col class="f-section-header">
+          <b>Shipment {{i+1}} of {{cart.orderProducts.length}}</b>
           <br>
-          <span class="f-size-larger">Item shipped from {{item?.quotationproduct?.quotation?.supplier?.name}}</span>
+          <span class="f-size-default">Item shipped from {{item?.quotationproduct?.quotation?.supplier?.name}}</span>
         </ion-col>
       </ion-row>
 
-      <ion-row style="padding-left: 5px; padding-right: 5px;">
+<!--
+      <ion-row>
+        <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
+          <b>Shipment {{i+1}} of {{cart.orderProducts.length}}</b>
+          <br>
+          Item shipped from {{item?.quotationproduct?.quotation?.supplier?.name}}
+        </ion-col>
+      </ion-row>
+-->
+
+      <ion-row class="f-padding-lr-5">
         <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
           <ion-row>
-            <ion-col  class="f-size-larger" >
-              <span>{{cart.loResultDeliveryOptions[i].loName}}</span>
+            <ion-col>
+              {{cart.loResultDeliveryOptions[i].loName}}
               <hr>
             </ion-col>
           </ion-row>
 
           <ion-row *ngIf="item.idStorePlace">
-            <ion-col  class="f-size-larger" >
-              <span>Pickup at -- </span>
+            <ion-col>
+              Pickup at --
               <span class="f-color-green">{{item?.storeplace?.name}}, {{item?.storeplace?.address_line}}
                 {{item?.storeplace?.city?.name}}</span>
               <hr>
@@ -164,8 +164,8 @@
           </ion-row>
 
           <ion-row>
-            <ion-col  class="f-size-larger">
-              <span>Est. delivery date -- </span>
+            <ion-col>
+              Est. delivery date --
               <span class="f-color-green">{{cart.loResultDeliveryOptions[i].deliveryDate | date: 'fullDate'}}</span>
               <hr>
             </ion-col>
@@ -180,14 +180,14 @@
             <ion-col no-padding>
               <ion-grid class="f-item-nopadding-tb">
                 <ion-row>
-                  <ion-col class="f-item-padding-bottom">
+                  <ion-col>
                     <span><b>{{item?.quotationproduct?.product.name}}</b></span>
                   </ion-col>
                 </ion-row>
 
                 <ion-row>
                   <ion-col class="f-item-padding-bottom">
-                    <span class="f-color-red f-size-larger">{{item?.price |  localeCurrency:userService.currency}}</span>
+                    <span class="f-color-red">{{item?.price |  localeCurrency:userService.currency}}</span>
                   </ion-col>
                 </ion-row>
 
@@ -228,7 +228,7 @@
     </div>
 
     <ion-row *ngIf="dataLoaded">
-      <ion-col style="padding-left: 5px; padding-right: 5px; padding-top: 15px;">
+      <ion-col class="f-padding-lr-5">
         <button class="f-btn-add-cart" ion-button block
                 [attr.disabled]="!validatePage().isValid?'':null"
                 (click)="onPlaceOrderClick()">Place your order</button>

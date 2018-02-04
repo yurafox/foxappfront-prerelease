@@ -3,22 +3,21 @@
 </ion-header>
 <ion-content>
 
-  <ion-grid class="f-color-secondary">
+  <ion-grid>
 
     <ion-row>
-      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 10px; padding-bottom: 15px;">
-        <b><span class="f-size-big">View order details</span></b>
+      <ion-col class="f-page-header">View order details
       </ion-col>
     </ion-row>
 
-    <ion-row style="padding-left: 5px; padding-right: 5px;">
-      <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
+    <ion-row class="f-padding-lr-5">
+      <ion-grid class="f-border-ligthgray f-size-larger" *ngIf="dataLoaded">
 
         <ion-row>
           <ion-col col-4>
             Order date
           </ion-col>
-          <ion-col >
+          <ion-col>
             {{order.orderDate | date: 'mediumDate'}}
           </ion-col>
         </ion-row>
@@ -43,121 +42,111 @@
 
 
     <ion-row>
-      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
-        <b><span class="f-size-larger">Shipment details</span></b>
+      <ion-col class="f-section-header"><b>Shipment details</b>
       </ion-col>
     </ion-row>
 
 
-        <div *ngFor="let spec of order.orderProducts; let i = index">
+    <div class="f-size-larger" *ngFor="let spec of order.orderProducts; let i = index">
+      <ion-row>
+        <ion-col class="f-section-subheader">
+          Shipment {{i+1}} of {{order.orderProducts.length}}
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="f-padding-lr-5">
+        <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
           <ion-row>
-            <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
-              <b><span class="f-size-larger">Shipment {{i+1}} of {{order.orderProducts.length}}</span></b>
+            <ion-col>{{spec?.loentity?.name}}
+              <hr>
             </ion-col>
           </ion-row>
 
-          <ion-row style="padding-left: 5px; padding-right: 5px;">
-            <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
-              <ion-row>
-                <ion-col>
-                  <span>{{spec?.loentity?.name}}</span>
-                  <hr>
-                </ion-col>
-              </ion-row>
 
-
-              <ion-row *ngIf="spec.loDeliveryCompletedDate">
-                <ion-col>
-                  <b>Shipped</b>
-                  <br>
-                  <span class="f-color-green">{{spec.loDeliveryCompletedDate | date: 'mediumDate'}}</span>
-                </ion-col>
-              </ion-row>
-
-              <ion-row *ngIf="!spec.loDeliveryCompletedDate && spec.loEstimatedDeliveryDate">
-                <ion-col>
-                  <span>Est. delivery date</span>
-                  <br>
-                  <span class="f-color-green">{{spec.loEstimatedDeliveryDate | date: 'mediumDate'}}</span>
-                </ion-col>
-              </ion-row>
-
-              <ion-row>
-                <ion-col col-auto>
-                  <div>
-                    <img class="f-img-item-80" [src]="spec?.quotationproduct?.product?.imageUrl">
-                  </div>
-                </ion-col>
-                <ion-col no-padding>
-                  <ion-grid class="f-item-nopadding-tb">
-                    <ion-row>
-                      <ion-col class="f-item-padding-bottom">
-                        <span><b>{{spec?.quotationproduct?.product?.name}}</b></span>
-                      </ion-col>
-                    </ion-row>
-
-                    <ion-row>
-                      <ion-col class="f-item-padding-bottom">
-                        Qty: <span>{{spec?.qty}}</span>
-                      </ion-col>
-                    </ion-row>
-
-                    <ion-row>
-                      <ion-col>
-                        Sold by: <span>{{spec?.quotationproduct?.quotation?.supplier?.name}}</span>
-                      </ion-col>
-                    </ion-row>
-
-                    <ion-row>
-                      <ion-col class="f-item-padding-bottom">
-                        <span class="f-size-larger">{{spec?.price | localeCurrency:userService.currency}}</span>
-                      </ion-col>
-                    </ion-row>
-
-
-                    <ion-row *ngIf="spec?.earnedBonusCnt">
-                      <ion-col class="f-item-padding-bottom" >
-                        <bonus [bonusCnt]="spec?.earnedBonusCnt"></bonus>
-                      </ion-col>
-                    </ion-row>
-
-
-                  </ion-grid>
-
-
-                </ion-col>
-
-              </ion-row>
-
-
-            </ion-grid>
+          <ion-row *ngIf="spec.loDeliveryCompletedDate">
+            <ion-col>
+              <b>Shipped</b>
+              <br>
+              <span class="f-color-green">{{spec.loDeliveryCompletedDate | date: 'mediumDate'}}</span>
+            </ion-col>
           </ion-row>
-        </div>
+
+          <ion-row *ngIf="!spec.loDeliveryCompletedDate && spec.loEstimatedDeliveryDate">
+            <ion-col>
+              <span>Est. delivery date</span>
+              <br>
+              <span class="f-color-green">{{spec.loEstimatedDeliveryDate | date: 'mediumDate'}}</span>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col col-auto>
+              <div>
+                <img class="f-img-item-80" [src]="spec?.quotationproduct?.product?.imageUrl">
+              </div>
+            </ion-col>
+            <ion-col no-padding>
+              <ion-grid class="f-item-nopadding-tb">
+                <ion-row>
+                  <ion-col class="f-item-padding-bottom f-product f-size-default">
+                    <b>{{spec?.quotationproduct?.product?.name}}</b>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row>
+                  <ion-col class="f-item-padding-bottom f-product f-size-default">
+                    Qty: {{spec?.qty}}
+                  </ion-col>
+                </ion-row>
+
+                <ion-row>
+                  <ion-col class="f-size-13">
+                    Sold by: {{spec?.quotationproduct?.quotation?.supplier?.name}}
+                  </ion-col>
+                </ion-row>
+
+                <ion-row>
+                  <ion-col class="f-item-padding-bottom f-product">
+                    {{spec?.price | localeCurrency:userService.currency}}
+                  </ion-col>
+                </ion-row>
+
+                <ion-row *ngIf="spec?.earnedBonusCnt">
+                  <ion-col class="f-item-padding-bottom">
+                    <bonus [bonusCnt]="spec?.earnedBonusCnt"></bonus>
+                  </ion-col>
+                </ion-row>
+
+
+              </ion-grid>
+
+
+            </ion-col>
+
+          </ion-row>
+
+
+        </ion-grid>
+      </ion-row>
+    </div>
 <!--
 PAYMENT INFO
 -->
+
     <ion-row>
-      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
-        <b><span class="f-size-larger">Payment information</span></b>
+      <ion-col class="f-section-header"><b>Payment information</b>
       </ion-col>
     </ion-row>
 
-    <ion-row style="padding-left: 5px; padding-right: 5px;">
+    <ion-row class="f-padding-lr-5 f-size-larger">
       <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
         <ion-row>
           <ion-col>
-            <span><b>Payment method</b></span>
+            <b>Payment method</b>
             <br>
             {{order?.enumpaymentmethod?.name}}
           </ion-col>
         </ion-row>
-<!--
-
-        <div *ngIf="cart.loan && (cart.pmtMethod.id === 3)">
-          <hr>
-          <credit-brief [creditAmt]="cart.cartGrandTotal" [credit]="cart.loan"></credit-brief>
-        </div>
--->
       </ion-grid>
     </ion-row>
 
@@ -166,13 +155,12 @@ SHIPPING ADDRESS INFO
 -->
 
     <ion-row>
-      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
-        <b><span class="f-size-larger">Shipping address</span></b>
+      <ion-col class="f-section-header"><b>Shipping address</b>
       </ion-col>
     </ion-row>
 
-    <ion-row style="padding-left: 5px; padding-right: 5px;">
-      <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
+    <ion-row class="f-padding-lr-5">
+      <ion-grid class="f-border-ligthgray f-size-larger" *ngIf="dataLoaded">
         <ion-row>
           <ion-col>
             <b>{{order?.clientaddress?.recName}}</b>
@@ -189,13 +177,12 @@ ORDER SUMMARY AREA
 -->
 
     <ion-row>
-      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
-        <b><span class="f-size-larger">Order summary</span></b>
+      <ion-col class="f-section-header"><b>Order summary</b>
       </ion-col>
     </ion-row>
 
-    <ion-row style="padding-left: 5px; padding-right: 5px;">
-      <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
+    <ion-row class="f-padding-lr-5">
+      <ion-grid class="f-border-ligthgray f-size-larger" *ngIf="dataLoaded">
 
         <ion-row>
           <ion-col>
@@ -220,7 +207,7 @@ ORDER SUMMARY AREA
             Bonuses paid:
           </ion-col>
           <ion-col text-right col-auto>
-            <span>- {{order.bonusTotal | localeCurrency:userService.currency}}</span>
+            - {{order.bonusTotal | localeCurrency:userService.currency}}
           </ion-col>
         </ion-row>
 
@@ -229,7 +216,7 @@ ORDER SUMMARY AREA
             Promobonuses paid:
           </ion-col>
           <ion-col text-right col-auto>
-            <span>- {{order.promoBonusTotal | localeCurrency:userService.currency}}</span>
+            - {{order.promoBonusTotal | localeCurrency:userService.currency}}
           </ion-col>
         </ion-row>
 
@@ -238,16 +225,16 @@ ORDER SUMMARY AREA
             Promocode discount:
           </ion-col>
           <ion-col text-right col-auto>
-            <span>- {{order.promoCodeDiscTotal | localeCurrency:userService.currency}}</span>
+            - {{order.promoCodeDiscTotal | localeCurrency:userService.currency}}
           </ion-col>
         </ion-row>
 
 
         <ion-row>
-          <ion-col class="f-size-larger">
+          <ion-col>
             <b>Order Total:</b>
           </ion-col>
-          <ion-col class="f-size-larger" text-right col-auto>
+          <ion-col text-right col-auto>
             <span class="f-color-red"><b>{{order.total | localeCurrency:userService.currency}}</b></span>
           </ion-col>
         </ion-row>
@@ -256,7 +243,7 @@ ORDER SUMMARY AREA
           <ion-col>
             Bonuses earned:
           </ion-col>
-          <ion-col class="f-size-larger" text-right col-auto>
+          <ion-col text-right col-auto>
             <bonus [bonusCnt]="order.bonusEarned"></bonus>
           </ion-col>
         </ion-row>

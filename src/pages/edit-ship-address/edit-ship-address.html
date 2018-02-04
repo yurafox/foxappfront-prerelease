@@ -9,28 +9,28 @@
           <input [(ngModel)]="shippingAddress.recName" name="recName"
                  placeholder="First and last name" required #recName="ngModel">
           <span *ngIf="!recName.valid && recName.touched"
-                style="color: red;">Please enter your first and last name</span>
+                class="f-color-validation-error">Please enter your first and last name</span>
           <br>
           <input [(ngModel)]="shippingAddress.street" name="street"
                  placeholder="Street" required #street="ngModel">
-          <span *ngIf="!street.valid && street.touched" style="color: red;">Please enter your street</span>
+          <span *ngIf="!street.valid && street.touched" class="f-color-validation-error">Please enter your street</span>
           <br>
           <input [(ngModel)]="shippingAddress.bldApp" name="bldApp"
                  placeholder="Building and apartment" required #bldApp="ngModel">
           <span *ngIf="!bldApp.valid && bldApp.touched"
-                style="color: red;">Please enter your building and apartment</span>
+                class="f-color-validation-error">Please enter your building and apartment</span>
           <br>
           <input [(ngModel)]="shippingAddress.city" name="city"
                  placeholder="City" required #city="ngModel">
-          <span *ngIf="!city.valid && city.touched" style="color: red;">Please enter your city</span>
+          <span *ngIf="!city.valid && city.touched" class="f-color-validation-error">Please enter your city</span>
           <br>
           <input [(ngModel)]="shippingAddress.zip" name="zip"
                  placeholder="Zip" #zip="ngModel">
-          <span *ngIf="!zip.valid && zip.touched" style="color: red;">Please enter your zip</span>
+          <span *ngIf="!zip.valid && zip.touched" class="f-color-validation-error">Please enter your zip</span>
           <br>
           <input [(ngModel)]="shippingAddress.phone" name="phone"
                  placeholder="Phone" required #phone="ngModel">
-          <span *ngIf="!phone.valid && phone.touched" style="color: red;">Please enter your phone</span>
+          <span *ngIf="!phone.valid && phone.touched" class="f-color-validation-error">Please enter your phone</span>
           <br>
 
           <dropdown-list id="btnCountry" *ngIf="countries" [param]="shippingAddress.idCountry"

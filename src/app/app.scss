@@ -258,3 +258,249 @@ ion-header {
   }
 }
 
+
+////// FONTS
+.f-page-header {
+  font-size: 2.8rem;
+}
+
+.f-size-small {
+  font-size: 1.2rem;
+}
+
+.f-size-smaller {
+  font-size: 10px;
+}
+
+.f-size-13 {
+  font-size: 1.3rem;
+}
+
+.f-size-default {
+  font-size: 1.4rem;
+}
+
+.f-size-larger {
+  font-size: 1.6rem;
+}
+
+.f-size-20 {
+  font-size: 2.0rem;
+}
+
+.f-size-large {
+  font-size: 1.8rem;
+}
+
+.f-product {
+  color: #3b3b3b;
+}
+
+.f-old-price {
+  color: #aaa;
+  text-decoration: line-through!important;
+}
+
+
+
+.f-light-bkgrd {
+  background-color: #EFEFF0;
+}
+
+.f-color-info {
+  color: darkslateblue;
+}
+
+.f-color-secondary {
+  color: dimgrey;
+}
+
+.f-color-green {
+  color: color($colors, green);
+}
+
+.f-color-red {
+  color: red;
+}
+
+.f-color-validation-error {
+  color: red;
+}
+
+///// BUTTONS
+.f-ion-item {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/// ion-item's labels
+.label-md, .label-ios {
+  font-size: 15px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.item-md.item-block .item-inner {
+  border-bottom: 0px;
+}
+
+/// ION-GRID, ROWS, COLS
+.col {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.f-page-header {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 2.4rem;
+  font-weight: bold;
+}
+
+.f-section-header {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 20px;
+  padding-bottom: 5px;
+  font-size: 1.9rem;
+  font-weight: bold;
+}
+
+.f-section-subheader {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  font-size: 1.7rem;
+  font-weight: bold;
+}
+
+.f-item-section-header {
+  padding-left: 5px;
+  padding-right: 15px;
+  padding-top: 20px;
+  padding-bottom: 5px;
+  font-size: 1.8rem;
+}
+
+.f-item-nopadding-tb {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.f-item-padding-bottom {
+  padding-bottom: 2px;
+}
+
+.f-nopadding-t {
+  padding-top: 0px;
+}
+
+.f-padding-t-10 {
+  padding-top: 10px;
+}
+
+.f-padding-t-5 {
+  padding-top: 5px;
+}
+
+.f-padding-lr-5 {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.f-padding-l-5 {
+  padding-left: 5px;
+}
+
+.f-padding-lr-10 {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.f-padding-tb-10 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.f-padding-b-10 {
+  padding-bottom: 10px;
+}
+
+.f-padding-b-15 {
+  padding-bottom: 15px;
+}
+
+
+.f-border-ligthgray {
+  border: 1px solid color($colors, gridlines);
+}
+
+//product images
+.f-img-item-80 {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80px;
+  height: 80px;
+  padding: 6px 4px 2px;
+}
+
+.f-img-item {
+  width: 100px; height: 100px;  padding: 6px 4px 2px;
+}
+
+.f-img-item-lg {
+  padding: 6px 4px 2px;
+}
+
+//buttons
+.f-btn-add-cart, .f-btn-add-cart.activated {
+  background: #ffbc2e;
+  color: #000000;
+  text-transform: none;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.f-btn-secondary {
+  background: color($colors, bgColor);
+  color: #000000;
+  text-transform: none;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+/// Inputs
+input[type="text"], input[type="date"] {
+  width: 100%;
+  height: 38px;
+  padding-right: 5px;
+  padding-left: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+
+radioButton {
+  position: relative;
+  top: 40%;
+  transform: translateY(-50%);
+  font-size: 25px;
+  background-color: #ffb400;
+}
+
+.rating-large {
+  display: inline-block;
+  ul.rating li {
+    ion-icon {
+      font-size: 18px;
+    }
+  }
+
+}
+
+
+

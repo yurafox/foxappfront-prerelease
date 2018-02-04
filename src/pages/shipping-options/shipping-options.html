@@ -1,25 +1,27 @@
 <ion-header>
-  <main-toolbar [showCartIcon] = "false"></main-toolbar>
+  <main-toolbar [showCartIcon]="false"></main-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-grid class="f-color-secondary">
+<ion-content class="f-size-larger">
+  <ion-grid>
     <ion-row>
-      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
-        <b><span class="f-size-large f-color-secondary">Choose your shipping options</span></b>
+      <ion-col class="f-section-header">Choose your shipping options
       </ion-col>
     </ion-row>
+  </ion-grid>
+
+  <ion-grid>
     <ion-row padding *ngIf="dataLoaded">
       <ion-col>
-        <span class="f-size-larger">Shipment {{itemIndex+1}} of {{cart.orderProducts.length}}</span>
+        <span>Shipment {{itemIndex+1}} of {{cart.orderProducts.length}}</span>
         <br>
-        <span class="f-size-medium"><b>{{cart.orderProducts[itemIndex]?.quotationproduct?.product?.name}}</b></span>
+        <span class="f-size-default"><b>{{cart.orderProducts[itemIndex]?.quotationproduct?.product?.name}}</b></span>
       </ion-col>
     </ion-row>
 
     <ion-row *ngIf="dataLoaded">
-      <ion-col style="padding-left: 15px; padding-right: 15px;">
-        <b><span class="f-size-larger f-color-secondary">Choose a delivery option:</span></b>
+      <ion-col class="f-padding-lr-15">
+        <b><span>Choose a delivery option:</span></b>
       </ion-col>
     </ion-row>
 
@@ -52,7 +54,7 @@
 
 
     <ion-row *ngIf="dataLoaded">
-      <ion-col style="padding-left: 5px; padding-right: 5px;">
+      <ion-col class="f-padding-lr-5">
         <button class="f-btn-add-cart" ion-button block
                 [attr.disabled]="!isAnyOptionSelected()?'':null"
                 (click)="onContinueClick()">Continue</button>
