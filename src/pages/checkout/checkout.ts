@@ -49,42 +49,6 @@ export class CheckoutPage extends ComponentBase {
       /*const modal = this.modalCtrl.create('PaymentPage',this.formInput);
       modal.present();
       modal.onDidDismiss(() => {console.log('dismissed')});*/
-      /*let f = this.formInput;
-      let lang: string;
-      switch(this.userService.lang) {
-        case 1: {lang = 'ru'; break;}
-        case 2: {lang = 'uk'; break;}
-        case 3: {lang = 'en'; break;}
-        default: lang = 'ru';
-      }
-      PMWidget.init({
-        //embedTarget: '#paymaster',
-        mode: 'popup',
-        params: {
-          "LMI_MERCHANT_ID": f.LMI_MERCHANT_ID,
-          "LMI_PAYMENT_NO": f.LMI_PAYMENT_NO,
-          "LMI_PAYMENT_AMOUNT": f.LMI_PAYMENT_AMOUNT,
-          "LMI_PAYMENT_DESC": f.LMI_PAYMENT_DESC
-        },
-        closeOnFail: true,
-        language: lang
-      })
-        .on('ready', function() {
-          console.log('READY');
-        })
-        .on('success', function() {
-          console.log('SUCCESS');
-        })
-        .on('fail', function(params) {
-          console.log('FAIL ' + params.message);
-        })
-        .on('close', function() {
-          console.log('CLOSE');
-        })
-        .on('error', function(err) {
-          console.log('ERROR '+err);
-        })
-      ;*/
     }
   }
 
