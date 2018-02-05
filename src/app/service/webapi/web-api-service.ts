@@ -3467,6 +3467,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     clientAnswer: ''
   }];
 
+
   createDb() {
     const mquotationProducts = this.quotationProducts;
     const mproducts = this.products;
