@@ -111,7 +111,7 @@ Passport Data
                              required #passportSeries="ngModel">
                     </ion-col>
                     <ion-col col-10 no-padding>
-                      <input type="text" [(ngModel)]="cart.person.passportNum" id="passportNum" name="passportNum"
+                      <input type="number" [(ngModel)]="cart.person.passportNum" id="passportNum" name="passportNum"
                              pattern="[0-9]{6}"
                              minlength="6"
                              maxlength="6"
@@ -143,8 +143,8 @@ Passport Data
                       class="f-color-validation-error">Please enter Issued Authority</span>
                 </div>
                 <label for="taxNumber">Tax Number:*</label>
-                <input type="text" [(ngModel)]="cart.person.taxNumber" id="taxNumber" name="taxNumber"
-                       pattern="[0-9]*"
+                <input type="number" [(ngModel)]="cart.person.taxNumber" id="taxNumber" name="taxNumber"
+                       pattern="[0-9]{10}"
                        minlength="10"
                        maxlength="10"
                        required #taxNumber="ngModel">
@@ -152,7 +152,7 @@ Passport Data
                 <span *ngIf="taxNumber.hasError('required')"
                       class="f-color-validation-error">Please enter your tax number</span>
                   <span *ngIf="taxNumber.hasError('pattern')"
-                        class="f-color-validation-error">Only digits allowed</span>
+                        class="f-color-validation-error">Only 10 digits allowed</span>
                   <span *ngIf="taxNumber.hasError('minlength')"
                         class="f-color-validation-error">Tax number should be 10 digits</span>
                 </div>
