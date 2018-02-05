@@ -6,19 +6,4 @@ page-payment {
     font-size: 16px;
     font-weight: 400;
   }
-
-  #paymaster {
-    max-width: none !important;
-    min-width: 0 !important;
-    iframe {
-      html {
-        body {
-          div#mainWidgetBlock {
-            max-width: none;
-            min-width: 0;
-          }
-        }
-      }
-    }
-  }
 }

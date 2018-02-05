@@ -18,7 +18,6 @@ export class PaymentPage extends ComponentBase implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    let f = this.frameInput;
     let lang: string;
     switch(this.userService.lang) {
       case 1: {lang = 'ru'; break;}
@@ -28,14 +27,14 @@ export class PaymentPage extends ComponentBase implements AfterViewInit {
     }
     PMWidget.init({
       embedTarget: '#paymaster',
-      /*closeOnSuccess: true,
-      closeOnFail: true,*/
+      closeOnSuccess: true,
+      closeOnFail: true,
       mode: 'embed',
       params: {
-        "LMI_MERCHANT_ID": f.LMI_MERCHANT_ID,
-        "LMI_PAYMENT_NO": f.LMI_PAYMENT_NO,
-        "LMI_PAYMENT_AMOUNT": f.LMI_PAYMENT_AMOUNT,
-        "LMI_PAYMENT_DESC": f.LMI_PAYMENT_DESC
+        "LMI_MERCHANT_ID":    this.frameInput.LMI_MERCHANT_ID,
+        "LMI_PAYMENT_NO":     this.frameInput.LMI_PAYMENT_NO,
+        "LMI_PAYMENT_AMOUNT": this.frameInput.LMI_PAYMENT_AMOUNT,
+        "LMI_PAYMENT_DESC":   this.frameInput.LMI_PAYMENT_DESC
       },
       language: lang
     })

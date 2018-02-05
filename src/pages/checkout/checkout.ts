@@ -3,6 +3,7 @@ import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angula
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {CartService, LoDeliveryOption} from '../../app/service/cart-service';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {Http, Headers} from "@angular/http";
 
 declare var PMWidget: any;
 
@@ -18,7 +19,8 @@ export class CheckoutPage extends ComponentBase {
   pmtMethodID: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
-              public repo: AbstractDataRepository, private modalCtrl: ModalController) {
+              public repo: AbstractDataRepository, private modalCtrl: ModalController,
+              private http: Http) {
     super();
     this.pmtMethodID = this.cart.pmtMethod.id;
   }
@@ -44,11 +46,22 @@ export class CheckoutPage extends ComponentBase {
      **/
     if (this.pmtMethodID === 2) {
       this.formInput = await this.repo.getDataForRedirectToPaymaster(this.cart.order.id, this.cart.cartGrandTotal, 21);
-      console.log(this.formInput);
-      this.navCtrl.push('PaymentPage',this.formInput);
+      //this.navCtrl.push('PaymentPage',this.formInput);
       /*const modal = this.modalCtrl.create('PaymentPage',this.formInput);
       modal.present();
       modal.onDidDismiss(() => {console.log('dismissed')});*/
+      const body = Object.keys(this.formInput).map((key) => {
+        return encodeURIComponent(key) + '=' + encodeURIComponent(this.formInput[key]);
+      }).join('&');
+      let headers = new Headers();
+      headers.set('Content-Type',
+        'application/x-www-form-urlencoded');
+      const val = await this.http.post(
+        'https://lmi.paymaster.ua/',
+        body,
+        {headers: headers}
+      ).toPromise().catch(err=>console.log(err));
+      console.log(JSON.stringify(val));
     }
   }
 
