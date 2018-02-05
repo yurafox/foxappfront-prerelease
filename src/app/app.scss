@@ -58,6 +58,10 @@ ion-list ion-icon {
   color: color($colors, fox);
 }
 
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #cfcfcf;
+}
+
 .primary-bg {
   background-color: color($colors, primary);
 }
