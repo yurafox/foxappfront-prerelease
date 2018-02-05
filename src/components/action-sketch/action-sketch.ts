@@ -36,7 +36,6 @@ export class ActionSketchComponent extends ComponentBase {
       this.content=this.action.sketch_content;
     }
 
-    this.content=this.action.sketch_content;
     this.actionExpire(); // for design display
 
     // timer action time
