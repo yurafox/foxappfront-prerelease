@@ -4,13 +4,13 @@
 
     <ion-header>
       <!-- User profile -->
-      <div padding class="menu-bg f-main-menu-header" *ngIf="userService.isAuth">
+      <div padding class="menu-bg f-main-menu-header" [hidden]="!userService.isAuth">
         <img class="profile-picture" src="http://www.gravatar.com/avatar?d=mm&s=140"/>
           <p class="f-main-menu-header-content-text">
            Hello, {{userService.name}}
           </p>
       </div>
-      <div padding class="menu-bg f-main-menu-header" *ngIf="!userService.isAuth">
+      <div padding class="menu-bg f-main-menu-header" [hidden]="userService.isAuth">
         <p menuClose class="f-main-menu-header-content-text" (click)="toLogIn()">
           Hello. Sign in
         </p>
@@ -24,16 +24,14 @@
 
     <ion-content no-bounce>
       <ion-list>
-        <div *ngFor="let p of appPages">
-          <button ion-item menuClose (click)="openPage(p)">
-            <ion-icon item-start [name]="p.icon"></ion-icon>
-            <span [loc]="p.title" [name]="p.name">{{locale[p.name]}}</span>
-          </button>
-        </div>
+        <button ion-item menuClose *ngFor="let p of appPages" (click)="openPage(p)">
+          <ion-icon item-start [name]="p.icon"></ion-icon>
+          <span [loc]="p.title" [name]="p.name">{{locale[p.name]}}</span>
+        </button>
       </ion-list>
 
       <ion-list>
-        <ion-list-header>
+        <ion-list-header style="margin-bottom:0;">
           <span loc="Информация" name="InfoMenu">{{locale.InfoMenu}}</span>
         </ion-list-header>
         <button ion-item menuClose *ngFor="let p of infoPages" (click)="openPage(p)">
@@ -42,7 +40,7 @@
         </button>
       </ion-list>
 
-      <ion-list *ngIf="userService.isAuth">
+      <ion-list [hidden]="!userService.isAuth">
         <button ion-item menuClose (click)="signOut($event)">
           <ion-icon item-start name="ios-exit-outline"></ion-icon>
           <span loc="Выйти" name="OutApp">{{locale.OutApp}}</span>
@@ -52,7 +50,7 @@
       <ion-list>
         <button ion-item menuClose (click)="openExternalApp()">
           <ion-icon style="color: #3B5999" item-start name="logo-facebook"></ion-icon>
-          Foxtrot on Facebook
+          <span loc="Фокстрот на Facebook" name="FoxOnFB">{{locale.FoxOnFB}}</span>
         </button>
       </ion-list>
     </ion-content>

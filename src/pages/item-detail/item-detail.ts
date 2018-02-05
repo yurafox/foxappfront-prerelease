@@ -59,7 +59,15 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   }
 
   onWriteReview(data: any): void {
-    this.navCtrl.push('ItemReviewWritePage', this.product);
+    if (!this.userService.isAuth) {
+      this.navCtrl.push('LoginPage', {continuePage: 'ItemReviewWritePage', params: this.product}).catch((err) => {
+        console.log(`Couldn't navigate to LoginPage: ${err}`);
+      });
+    } else {
+      this.navCtrl.push('ItemReviewWritePage', this.product).catch(err => {
+        console.log(`Error navigating to ItemReviewWritePage: ${err}`);
+      });
+    }
   }
 
   onShowMoreQuotesClick(): void {

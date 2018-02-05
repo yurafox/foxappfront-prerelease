@@ -6,9 +6,22 @@
 
     <ion-row *ngIf="dataLoaded">
       <ion-col class="f-padding-lr-5">
-        <button class="f-btn-add-cart" ion-button block
+        <form ngNoForm action="https://lmi.paymaster.ua/" target="_blank" method="POST" *ngIf="pmtMethodID === 2">
+          <input type="hidden" name="LMI_MERCHANT_ID" value="{{formInput?.LMI_MERCHANT_ID}}" />
+          <input type="hidden" name="LMI_PAYMENT_NO" value="{{formInput?.LMI_PAYMENT_NO}}" />
+          <input type="hidden" name="LMI_SUCCESS_URL" value="{{formInput?.LMI_SUCCESS_URL}}" />
+          <input type="hidden" name="LMI_FAIL_URL" value="{{formInput?.LMI_FAIL_URL}}" />
+          <input type="hidden" name="LMI_PAYMENT_AMOUNT" value="{{formInput?.LMI_PAYMENT_AMOUNT}}" />
+          <input type="hidden" name="LMI_PAYMENT_DESC" value="{{formInput?.LMI_PAYMENT_DESC}}" />
+          <!--<input type="hidden" name="LMI_SIM_MODE" value="{{formInput?.LMI_SIM_MODE}}" />-->
+          <button class="f-btn-add-cart" ion-button block
+                  [attr.disabled]="!validatePage().isValid?'':null"
+                  (click)="onPlaceOrderClick()">Place your order</button>
+        </form>
+
+        <!--<button class="f-btn-add-cart" ion-button block
                 [attr.disabled]="!validatePage().isValid?'':null"
-                (click)="onPlaceOrderClick()">Place your order</button>
+                (click)="onPlaceOrderClick()">Place your order</button>-->
       </ion-col>
     </ion-row>
 
@@ -229,12 +242,24 @@
 
     <ion-row *ngIf="dataLoaded">
       <ion-col class="f-padding-lr-5">
-        <button class="f-btn-add-cart" ion-button block
+        <form ngNoForm action="https://lmi.paymaster.ua/" target="_blank" method="POST" *ngIf="pmtMethodID === 2">
+          <input type="hidden" name="LMI_MERCHANT_ID" value="{{formInput?.LMI_MERCHANT_ID}}" />
+          <input type="hidden" name="LMI_PAYMENT_NO" value="{{formInput?.LMI_PAYMENT_NO}}" />
+          <input type="hidden" name="LMI_SUCCESS_URL" value="{{formInput?.LMI_SUCCESS_URL}}" />
+          <input type="hidden" name="LMI_FAIL_URL" value="{{formInput?.LMI_FAIL_URL}}" />
+          <input type="hidden" name="LMI_PAYMENT_AMOUNT" value="{{formInput?.LMI_PAYMENT_AMOUNT}}" />
+          <input type="hidden" name="LMI_PAYMENT_DESC" value="{{formInput?.LMI_PAYMENT_DESC}}" />
+          <!--<input type="hidden" name="LMI_SIM_MODE" value="{{formInput?.LMI_SIM_MODE}}" />-->
+          <button class="f-btn-add-cart" ion-button block
+                  [attr.disabled]="!validatePage().isValid?'':null"
+                  (click)="onPlaceOrderClick()">Place your order</button>
+        </form>
+
+        <!--<button class="f-btn-add-cart" ion-button block
                 [attr.disabled]="!validatePage().isValid?'':null"
-                (click)="onPlaceOrderClick()">Place your order</button>
+                (click)="onPlaceOrderClick()">Place your order</button>-->
       </ion-col>
     </ion-row>
 
   </ion-grid>
-
 </ion-content>

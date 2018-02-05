@@ -85,12 +85,12 @@ import {
   BalancePageModule,
   PollPageModule,
   NoveltyPageModule,
-  OrderDetailsPageModule
+  OrderDetailsPageModule,
+  PaymentPageModule
 } from '../pages/index-modules';
 import {NgxQRCodeModule} from 'ngx-qrcode2';
 import {AppAvailability} from '@ionic-native/app-availability';
 import {Device} from "@ionic-native/device";
-import {Push} from "@ionic-native/push";
 import {LocalNotifications} from '@ionic-native/local-notifications';
 
 @NgModule({
@@ -150,7 +150,8 @@ import {LocalNotifications} from '@ionic-native/local-notifications';
     BalancePageModule,
     PollPageModule,
     NoveltyPageModule,
-    OrderDetailsPageModule
+    OrderDetailsPageModule,
+    PaymentPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -170,7 +171,6 @@ import {LocalNotifications} from '@ionic-native/local-notifications';
     AppAvailability,
     Ionic2Rating,
     Device,
-    Push,
     LocalNotifications,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,

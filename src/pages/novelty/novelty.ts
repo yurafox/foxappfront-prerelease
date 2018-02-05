@@ -77,16 +77,14 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
   }
 
   public addToCart(): void {
-    if (this.noveltyDetails.length === 1) {
+    if (this.noveltyDetails.length <= 1) {
       if (this.product && (this.available !== false)) {
         this.cart.addItem( this.valueQuot,
                             this.qty.value,
                             this.product.price,
                             this.selectedStorePlace,
                             this
-                          ).then(() => {
-            this.showAddToCartConfirmToast();
-          }).catch(
+                          ).then(() => {}).catch(
           err => {
             console.log(`Error adding product to cart: ${err}`);
           });
@@ -106,19 +104,6 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
     }
   }
 
-  showAddToCartConfirmToast() {
-    let toast = this.toastCtrl.create({
-      message: 'Item added to cart',
-      duration: 2000,
-      position: 'bottom',
-      cssClass: 'toast-message'
-    });
-
-    toast.onDidDismiss(() => {
-    });
-
-    toast.present();
-  }
   showNotAddedToCartConfirmToast() {
     let toast = this.toastCtrl.create({
       message: 'Something went wrong',
@@ -130,6 +115,6 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
     toast.onDidDismiss(() => {
     });
 
-    toast.present();
+    toast.present().catch((err) => console.log(`Unable to show toast: ${err}`));
   }
 }

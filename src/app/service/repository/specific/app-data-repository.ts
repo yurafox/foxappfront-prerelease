@@ -90,6 +90,7 @@ const clientPollAnswersUrl = '/api/mclientPollAnswers';
 const noveltyDynamicUrl = "/api/mnovelties";
 const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
 const deviceDataUrl = "/api/mdeviceData";
+const redirectToPaymasterUrl = "/api/mredirectToPaymaster";
 // </editor-fold
 
 @Injectable()
@@ -2299,10 +2300,10 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async sendDeviceData(deviceData: DeviceData): Promise<DeviceData> {
+  public async postDeviceData(deviceData: DeviceData): Promise<DeviceData> {
     try {
       const response = await this.http
-        .post(deviceDataUrl, deviceData)
+        .post(deviceDataUrl, deviceData, RequestFactory.makeAuthHeader())
         .toPromise();
       const val = response.json();
 
@@ -2313,6 +2314,43 @@ export class AppDataRepository extends AbstractDataRepository {
     } catch (err) {
       return await this.handleError(err);
     }
+  }
 
+  public async getDataForRedirectToPaymaster(orderID: number, cartTotal: number, paySystem: number): Promise<any> {
+    try {
+      const response = await this.http
+        .post(
+          redirectToPaymasterUrl,
+          {id: orderID, total: cartTotal, paySys: paySystem},
+          RequestFactory.makeAuthHeader()
+        ).toPromise();
+      const resp = response.json();
+
+      if (response.status !== 201 && response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      /*const body = Object.keys(resp).map((key) => {
+        return encodeURIComponent(key) + '=' + encodeURIComponent(resp[key]);
+      }).join('&');*/
+      /*let headers = new Headers();
+      headers.set('Content-Type',
+        'application/x-www-form-urlencoded');
+      const val = await this.http.post('https://lmi.paymaster.ua/', body, {headers: headers}
+      ).toPromise().catch(err=>console.log(err));*/
+      /*const val = await fetch('https://lmi.paymaster.ua/', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: body
+      }).catch(err=>console.log(err));
+      if (val) {
+        return val;
+      } else {
+        return resp;
+      }*/
+      return resp;
+    } catch (err) {
+      return await this.handleError(err);
+    }
   }
 }

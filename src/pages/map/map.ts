@@ -5,7 +5,6 @@ import {/*GoogleMap,*/ LatLng} from '@ionic-native/google-maps';
 import {City, Store} from "../../app/model/index";
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {Geolocation} from '@ionic-native/geolocation';
-import {StatusBar} from "@ionic-native/status-bar";
 import {LaunchNavigator} from "@ionic-native/launch-navigator";
 import {FavoriteStoresPage} from "../favorite-stores/favorite-stores";
 import {StoreReview} from "../../app/model/store-review";
@@ -51,10 +50,11 @@ export class MapPage extends ComponentBase implements OnInit {
   // Variables for drop-down buttons
   dropDownCityOpts: any;
   dropDownAddressOpts: any;
-  isAuthoraized: boolean;
+  isAuthorized: boolean;
+  availableNavApps: void | string[];
 
   constructor(private nav: NavController, private navParams: NavParams, private platform: Platform,
-              private repo: AbstractDataRepository, private geolocation: Geolocation, private statusBar: StatusBar,
+              private repo: AbstractDataRepository, private geolocation: Geolocation,
               private launchNavigator: LaunchNavigator, private changeDetector: ChangeDetectorRef) {
     super();
     this.defaultCityId = 0;
@@ -70,6 +70,7 @@ export class MapPage extends ComponentBase implements OnInit {
     this.writeReviewStr = ''/*'Write review'*/;
     this.dropDownCityOpts = {popupClass: 'f-middle-dictionary', buttonClass: 'f-drop-button-full', popupHeader: '', buttonHeader: ''};
     this.dropDownAddressOpts = {popupClass: 'f-large-dictionary', buttonClass: 'f-drop-button-full', popupHeader: '', buttonHeader: ''};
+    this.availableNavApps = [];
 
     try {
       if (this.nav.last()) {
@@ -94,7 +95,7 @@ export class MapPage extends ComponentBase implements OnInit {
   async ngOnInit() {
     super.ngOnInit();
     if (this.userService.isAuth) {
-      this.isAuthoraized = true;
+      this.isAuthorized = true;
     }
     try {
       [this.markersArr, this.cities] = await Promise.all([this.repo.getStores(), this.repo.getCities()]);
@@ -116,7 +117,7 @@ export class MapPage extends ComponentBase implements OnInit {
         };
       } else {
         this.options = {
-          center: this.markersArr[this.defaultCityId - 1].stores[0].position,
+          center: this.markersArr[this.defaultCityId - 1].stores[0].position/*{lat:48.379433,lng:31.165579999999977}*/,
           zoom: 10,
           disableDefaultUI: true
         };
@@ -179,7 +180,7 @@ export class MapPage extends ComponentBase implements OnInit {
             position: markerData.position,
             map: this.map,
             title: markerData.address,
-            animation: google.maps.Animation.DROP,
+            //animation: google.maps.Animation.DROP,
             label: labels[i % labels.length]
           });
 
@@ -224,7 +225,7 @@ export class MapPage extends ComponentBase implements OnInit {
               `<p style="padding: 0; margin: 0; text-align: center">${shopRating > 0 ? `${rating}` : ''}</p>` +
               `<p style="padding: 0; margin: 0;">${markerData.address}</p>` +
               `<p style="padding: 0; margin: 0;">${this.openHoursStr}:  ${shopOpensTime} - ${shopClosesTime}</p>` +
-              `<p style="color: ${(isWorking === this.open) ? 'green' : 'red'}; padding: 0; margin: 0;">${(isWorking !== null) ? isWorking : '' }</p>` +
+              `<p style="color: ${(isWorking === this.open) ? 'green' : 'red'}; padding: 0; margin: 0;">${(isWorking) ? isWorking : '' }</p>` +
               `<span id="revs" #revs style="color: darkblue; padding: 0; margin: 0;">${(reviews && (reviews.length > 0)) ? (this.reviewsStr + '<span style=""> (' + reviews.length + ')</span>') : this.writeReviewStr}</span>`+
               `</div>`;
 
@@ -274,7 +275,7 @@ export class MapPage extends ComponentBase implements OnInit {
       google.maps.event.addListenerOnce(this.map, 'idle', () => {
         mapEle.classList.add('show-map');
         this.open = this.locale['Open'];
-        this.close = this.locale['Close'];
+        this.close = this.locale['Closed'];
         this.openHoursStr = this.locale['OpenHours'];
         this.reviewsStr = this.locale['Reviews'];
         this.writeReviewStr = this.locale['WriteReview'];
@@ -288,12 +289,14 @@ export class MapPage extends ComponentBase implements OnInit {
       });
 
       this.navFromFavoriteStoresPage();
+
+      this.availableNavApps = await this.launchNavigator.availableApps().catch((err) => {
+        console.log(`Couldn't get available navigation apps: ${err}`);
+      });
     } catch (err) {
       window.alert('Error occurred: ' + err);
     }
   }
-
-  async ionViewDidLoad() {}
 
   /**
    * Making list of shops
@@ -376,7 +379,7 @@ export class MapPage extends ComponentBase implements OnInit {
       for (let markerArr of this.markersArr) {
         for (let store of markerArr.stores) {
           if (store.address === this.selectedMarker.label) {
-            if (this.isAuthoraized === true) {
+            if (this.isAuthorized === true) {
               try {
                 this.userService.addFavoriteStoresId(store.id);
               } catch (err) {
@@ -442,11 +445,32 @@ export class MapPage extends ComponentBase implements OnInit {
    */
   useExternalNavigator(endpoint) {
     this.platform.ready().then(() => {
-      this.launchNavigator.navigate([endpoint.lat, endpoint.lng], {app: this.launchNavigator.APP.USER_SELECT})
-        .then(
-          success => console.log('Launched navigator'),
-          error => window.alert('Error launching navigator: ' + error)
-        );
+      if (this.availableNavApps) {
+        this.launchNavigator.navigate([endpoint.lat, endpoint.lng])
+          .then(
+            success => console.log('Launched navigator'),
+            error => window.alert('Error launching navigator: ' + error)
+          );
+        /*this.launchNavigator.navigate([endpoint.lat, endpoint.lng],{
+          app: this.launchNavigator.APP.USER_SELECT,
+          transportMode: this.launchNavigator.TRANSPORT_MODE.WALKING,
+          appSelection: {
+            dialogHeaderText: 'some dialog header',
+            cancelButtonText: 'cancel me',
+            rememberChoice: {
+              enabled: false,
+              prompt: {
+                headerText: 'some prompt header',
+                bodyText: 'some prompt body',
+                yesButtonText: 'go for it',
+                noButtonText: 'please no'
+              }
+            }
+          }
+        })
+          .then(success => console.log('Launched navigator'))
+          .catch(error => console.error('Error launching navigator: ' + JSON.stringify(error, null, 2)));*/
+      }
     });
   }
 

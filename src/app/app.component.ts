@@ -5,9 +5,9 @@ import {AbstractDataRepository} from "./service/index";
 import {ComponentBase} from "../components/component-extension/component-base";
 import {AppAvailability} from "@ionic-native/app-availability";
 import {Device} from '@ionic-native/device';
-import {Push, PushObject, PushOptions} from '@ionic-native/push';
 import {DeviceData} from "./model/index";
 import {System} from "./core/app-core";
+import {CartService} from "./service/cart-service";
 
 export interface PageInterface {
   title: string;
@@ -18,6 +18,7 @@ export interface PageInterface {
 }
 
 declare var ExoPlayer: any;
+declare var FCMPlugin: any;
 
 @Component({
   templateUrl: 'app.html'
@@ -37,7 +38,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   // Parameters of the external app
   scheme: string;
   appUrl: string;
-  userToken: string;
+  _token: string;
 
   appPages: PageInterface[] = [
     {title: 'Главная', name: 'Home', component: 'HomePage', index: 0, icon: 'ios-home-outline'},
@@ -57,13 +58,13 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   constructor(private platform: Platform, private alertCtrl: AlertController,
               private splashScreen: SplashScreen, public menuCtrl: MenuController,
               private repo: AbstractDataRepository, private appAvailability: AppAvailability,
-              private device: Device, private push: Push) {
+              private device: Device, private cartService: CartService) {
     super();
     // Setting up external app params
     // TODO: Change these params to Foxtrot game's
     this.scheme = 'com.facebook.katana';
     this.appUrl = 'fb://page/';
-    this.userToken = '192385130800097';
+    this._token = '192385130800097';
   }
 
   async ngOnInit() {
@@ -71,12 +72,9 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     if (!this.userService.isAuth && this.userService.isNotSignOutSelf()) {
       await this.userService.shortLogin();
     }
+
     this.platform.ready().then(() => {
       this.splashScreen.hide();
-      if (this.device.cordova) {
-        // Collect and send data about device
-        this.collectAndSendDeviceData();
-      }
     });
 
     /**
@@ -88,6 +86,38 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     this.actionPushEventDescriptor = this.evServ.events['actionPushEvent'].subscribe(data => {
       System.PushContainer.pushStore[`action${data.innerId}`] = data;
     });
+
+      /**
+       * Subscribing to the push events and putting our dynamic components to special pushStore dictionary in PushContainer
+       */
+      this.noveltyPushEventDescriptor = this.evServ.events['noveltyPushEvent'].subscribe(data => {
+        System.PushContainer.pushStore[`novelty${data.innerId}`] = data;
+      });
+      this.actionPushEventDescriptor = this.evServ.events['actionPushEvent'].subscribe(data => {
+        System.PushContainer.pushStore[`action${data.innerId}`] = data;
+      });
+
+      if (this.device.cordova) {
+        // Getting FCM device token and send device data
+        FCMPlugin.getToken((token) => {
+          if (token) {
+            // Collecting and send data about device including device FCM token
+            this.collectAndSendDeviceData(token).catch((err) => console.log(`Sending device's data err: ${err}`));
+          }
+        });
+        // Subscribing this device to the main topic to send PUSH-notifications to this topic
+        FCMPlugin.subscribeToTopic('main');
+        // Handling incoming PUSH-notifications
+        FCMPlugin.onNotification((data) => {
+          if(data.wasTapped){
+            //Notification was received on device tray and tapped by the user.
+            this.pushNotificationHandling(data);
+          }else{
+            //Notification was received in foreground. Maybe the user needs to be notified.
+            this.pushNotificationHandling(data);
+          }
+        });
+      }
   }
 
   ngOnDestroy() {
@@ -96,9 +126,8 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   }
 
   openPage(page: PageInterface) {
-
     if ((this.userService.isAuth === false) && (page.component === 'AccountMenuPage')) {
-      this.nav.push('LoginPage').catch((err: any) => {
+      this.nav.push('LoginPage', {continuePage: 'AccountMenuPage'}).catch((err: any) => {
         console.log(`Couldn't navigate to LoginPage: ${err}`);
       });
     } else {
@@ -205,20 +234,20 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   private openExternalApp() {
     let scheme: string = this.scheme;
     let appUrl: string = this.appUrl;
-    let userToken: string = this.userToken;
+    let token: string = this._token;
     this.platform.ready().then(() => {
       this.appAvailability.check(scheme).then(
         () => {  // Success callback
-          window.open(appUrl + userToken, '_system', 'location=no');
+          window.open(appUrl + token, '_system', 'location=no');
           console.log('App is available');
         },
         () => {  // Error callback
-          window.open('https://www.facebook.com/' + userToken, '_system', 'location=yes');
+          window.open('https://www.facebook.com/' + token, '_system', 'location=yes');
           console.log('App is not installed');
           return;
         })
     }).catch((err) => {
-      window.open('https://www.facebook.com/' + userToken, '_system', 'location=yes');
+      window.open('https://www.facebook.com/' + token, '_system', 'location=yes');
       console.log(`Error occurred while opening external app: ${err}`);
       return;
     });
@@ -232,16 +261,108 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     }
   }
 
-  // Collects and sends device's data about model, operation system + it's version and screen size
-  private collectAndSendDeviceData() {
+  // Collects and sends device's data about model, operation system + it's version and screen size, and FCM device token
+  private async collectAndSendDeviceData(pushDeviceToken: any) {
     let model = this.device.model;
     let os = this.device.platform + ' ' + this.device.version;
     let height = this.platform.height();
     let width = this.platform.width();
-    let deviceData = new DeviceData(model, os, height, width);
-    this.repo.sendDeviceData(deviceData).catch(err => {
+    let userToken = this.userService.token;
+    let deviceData = new DeviceData(model, os, height, width, pushDeviceToken, userToken);
+    this.repo.postDeviceData(deviceData).catch(err => {
       console.log(`Couldn't send device data: ${err}`);
     });
+  }
+
+
+  // Handling incoming PUSH-notifications
+  private async pushNotificationHandling(data) {
+    let target = data.target;
+    switch (target) {
+      case 'novelty': {
+        if (data.id) {
+          let alert = this.alertCtrl.create({
+            title: 'New product in Foxtrot!',
+            message: 'Do you want to check it?',
+            buttons: [
+              {
+                text: 'OK',
+                handler: () => {
+                  let noveltySketch = System.PushContainer.pushStore[`novelty${data.id}`];
+                  if (noveltySketch.novelty && noveltySketch.product) {
+                    noveltySketch.openNovelty();
+                  }
+                }
+              },
+              {
+                text: 'CANCEL'
+              }
+            ]
+          });
+          alert.present().catch((err) => console.log(`Alert error: ${err}`));
+        }
+        break;
+      }
+      case 'action' || 'promotion' || 'promo': {
+        if (data.id) {
+          let alert = this.alertCtrl.create({
+            title: 'New promotion!',
+            message: 'Do you want to check it?',
+            buttons: [
+              {
+                text: 'OK',
+                handler: () => {
+                  let actionSketch = System.PushContainer.pushStore[`action${data.id}`];
+                  if (actionSketch.action) {
+                    actionSketch.openAction();
+                  }
+                }
+              },
+              {
+                text: 'CANCEL'
+              }
+            ]
+          });
+          alert.present().catch((err) => console.log(`Alert error: ${err}`));
+        }
+        break;
+      }
+      case 'promocode': {
+        if (data.promocode) {
+          this.cartService.promoCode = data.promocode;
+          if (this.cartService.cartItemsCount > 0) {
+            this.cartService.calculateCart().catch((err) => {
+              console.log(`Couldn't get discount:${err}`);
+            });
+          }
+          this.evServ.events['cartUpdateEvent'].emit();
+          this.evServ.events['cartItemsUpdateEvent'].emit();
+          let alert = this.alertCtrl.create({
+            title: 'Check your cart',
+            message: 'We have added a discount to your order',
+            buttons: [
+              {
+                text: 'OK',
+                handler: () => {
+                  this.nav.push('CartPage').catch((err: any) => {
+                    console.log(`Couldn't navigate to CartPage: ${err}`);
+                  })
+                }
+              },
+              {
+                text: 'CANCEL'
+              }
+            ]
+          });
+          alert.present().catch((err) => console.log(`Alert error: ${err}`));
+        }
+        break;
+      }
+      default: {
+        console.log('The target is not valid');
+        break;
+      }
+    }
   }
 }
 

@@ -96,8 +96,6 @@ ion-list ion-icon {
 .menu-bg {
   background: url("../../assets/imgs/head-bg.png");
   background-size: 100% auto;
-  color: #387ef5;
-  color: #4e8ef7;
 }
 
 .profile-picture {
@@ -787,4 +785,9 @@ input[type="text"], input[type="date"] {
   50% {
     box-shadow: 0 0 0 2px color($colors, primary);
   }
+}
+
+.f-novelty-h3 {
+  text-align: center;
+  font-size: 22px;
 }

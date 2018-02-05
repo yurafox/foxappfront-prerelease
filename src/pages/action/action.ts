@@ -105,9 +105,16 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy {
 
   public  actionExpire(): void {
     let timespan:number = Math.abs(this.dateEnd.getTime() - new Date().getTime());
-    this.expire.days = Math.ceil(timespan / (1000*3600*24));
-    this.expire.hours = Math.ceil(timespan / (1000*3600));
-    this.expire.minutes = Math.ceil(timespan / (1000*60));
-    this.expire.seconds = Math.ceil(timespan / 1000);
+    this.expire.days = Math.floor(timespan / (1000*3600*24));
+    timespan -=  this.expire.days * (1000 * 60 * 60 * 24);
+
+    this.expire.hours = Math.floor(timespan / (1000*3600));
+    timespan -=  this.expire.hours * (1000 * 3600);
+
+    this.expire.minutes = Math.floor(timespan / (1000*60));
+    timespan -= this.expire.minutes * (1000 * 60);
+
+    this.expire.seconds = Math.floor(timespan / 1000);
+    timespan -= this.expire.seconds * 1000;
   }
 }

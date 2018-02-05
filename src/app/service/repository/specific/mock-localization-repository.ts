@@ -50,7 +50,11 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'About', lang:3, text:'About us'},
       { tagName:'Support', lang:1, text:'Поддержка'},
       { tagName:'Support', lang:2, text:'Підтримка'},
-      { tagName:'Support', lang:3, text:'Support'}
+      { tagName:'Support', lang:3, text:'Support'},
+
+      { tagName:'FoxOnFB', lang:1, text:'Фокстрот на Facebook'},
+      { tagName:'FoxOnFB', lang:2, text:'Фокстрот на Facebook'},
+      { tagName:'FoxOnFB', lang:3, text:'Foxtrot on Facebook'},
     ];
 
     this._mockLocalizationStore['MapPage'] = [

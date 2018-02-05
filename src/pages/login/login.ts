@@ -64,8 +64,13 @@ export class LoginPage extends ComponentBase {
     if(this.userService.isAuth) {
       this.evServ.events['localeChangeEvent'].emit(this.userService.lang);
       if (this.navParams.data.continuePage) {
-        this.cart.cartValidationNeeded = true;
-        this.nav.push(this.navParams.data.continuePage, {fromCart: 1});
+        if (this.navParams.data.continuePage === 'SelectShipAddressPage') {
+          this.cart.cartValidationNeeded = true;
+          this.nav.push(this.navParams.data.continuePage, {fromCart: 1});
+        }
+        else if (this.navParams.data.continuePage !== 'SelectShipAddressPage') {
+          this.nav.push(this.navParams.data.continuePage, this.navParams.data.params);
+        }
       }
       else
         this.nav.setRoot('HomePage');
