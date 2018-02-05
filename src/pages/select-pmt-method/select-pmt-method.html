@@ -17,9 +17,12 @@
 
           <ion-row (click)="onSelectOptionClick(mtd)">
             <ion-col col-2 text-center>
-              <input type="radio" id="radioButton" [checked]="mtd.isChecked">
+              <div class="pure-radiobutton">
+                <input type="radio" id="radioButton" class="radio" [checked]="mtd.isChecked">
+                <label for="radioButton"></label>
+              </div>
             </ion-col>
-            <ion-col>
+            <ion-col class="f-padding-tb-10">
               {{mtd.method.name}}
             </ion-col>
           </ion-row>

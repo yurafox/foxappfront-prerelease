@@ -1,12 +1,13 @@
 page-shipping-options {
 
-
-  #radioButton {
-    position: relative;
-    top: 40%;
-    transform: translateY(-50%);
-    font-size: 25px;
-    background-color: #ffb400;
+  .pure-radiobutton input[type="radio"] + label {
+    position: absolute;
+    top: 50%;
+    left: 20%;
+    padding: 0px;
+    vertical-align: middle;
+    user-select: none;
+    cursor: pointer;
   }
 
   .f-padding-lr-15 {

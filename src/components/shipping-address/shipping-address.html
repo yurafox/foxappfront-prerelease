@@ -4,9 +4,12 @@
 
       <ion-grid class="f-border-ligthgray">
 
-        <ion-row (click)="onIsPrimaryClick(sa)">
+        <ion-row (click)="onIsPrimaryClick(sa, $event)">
           <ion-col col-2 text-center>
-            <input type="radio" id="radioButton" [checked]="sa.isPrimary">
+            <div class="pure-radiobutton">
+              <input type="radio" id="radioButton" class="radio" [checked]="sa.isPrimary">
+              <label for="radioButton"></label>
+            </div>
           </ion-col>
           <ion-col class="f-padding-b-10" >
             <b>{{sa?.recName}}</b>

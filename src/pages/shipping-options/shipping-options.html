@@ -32,7 +32,10 @@
 
           <ion-row (click)="onSelectOptionClick(opt)">
             <ion-col col-2 text-center>
-              <input type="radio" id="radioButton" [checked]="opt.isChecked">
+              <div class="pure-radiobutton">
+                <input type="radio" id="radioButton" class="radio" [checked]="opt.isChecked">
+                <label for="radioButton"></label>
+              </div>
             </ion-col>
             <ion-col class="f-size-larger">
               Get it <span class="f-color-green">{{opt.deliveryDate | date: 'fullDate'}}</span>

@@ -14,8 +14,8 @@
         <ion-grid>
           <ion-row *ngFor='let ans of qa.answers;let idx=index'>
             <ion-col col-2 text-center>
-              <input type="radio" name=`${radiogroup}-{{qa.questionObj.id}}`
-                                 (change)="onSelectionChange(qa,ans.id)">
+                <input type="radio" class="radio" name=`${radiogroup}-{{qa.questionObj.id}}`
+                                   (change)="onSelectionChange(qa,ans.id)">
             </ion-col>
             <ion-col>
               <span>{{ans.answer}}</span>
@@ -25,8 +25,10 @@
           <div *ngIf='qa.questionObj.answerType==listTextType'>
             <ion-row >
               <ion-col col-2 text-center>
-                <input type="radio" name=`${radiogroup}-{{qa.questionObj.id}}`
-                                    (change)="onSelectionOwnerChange(qa)">
+                <div class="pure-radiobutton">
+                  <input type="radio" class="radio" name=`${radiogroup}-{{qa.questionObj.id}}`
+                                      (change)="onSelectionOwnerChange(qa)">
+                </div>
               </ion-col>
                 <ion-col>
                  <span>Ваш вариант</span>

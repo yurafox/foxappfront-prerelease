@@ -31,9 +31,11 @@
 
     <ion-row>
       <ion-col class="f-padding-tb-10">
-        <input type="checkbox" style="float: left; margin-top: 5px;" [checked]="cart.payByPromoBonus" name="payByPromoBonus" id="payByPromoBonus"
-               (change)="cart.payByPromoBonus = !cart.payByPromoBonus">
-        <div style="margin-left: 25px;">Pay promotional bonuses</div>
+        <div class="pure-checkbox">
+          <input type="checkbox" [checked]="cart.payByPromoBonus" name="payByPromoBonus" id="payByPromoBonus"
+                 (change)="cart.payByPromoBonus = !cart.payByPromoBonus">
+          <label for="payByPromoBonus">Pay promotional bonuses</label>
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>

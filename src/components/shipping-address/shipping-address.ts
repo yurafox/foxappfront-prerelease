@@ -25,12 +25,12 @@ export class ShippingAddressComponent extends ComponentBase {
     super();
   }
 
-  onIsPrimaryClick(item: any) {
-    this.addresses.forEach(i => {
-        i.isPrimary = false;
-      }
-    );
-    item.isPrimary = true;
+
+  onIsPrimaryClick(item: any, event: any) {
+    for (let i of this.addresses) {
+      i.isPrimary = (i === item);
+    }
+    event.preventDefault();
   }
 
   deliverToThisAddress(item: any) {

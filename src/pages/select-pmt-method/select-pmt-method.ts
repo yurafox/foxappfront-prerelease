@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, LoadingController, ModalController, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {CartService} from '../../app/service/cart-service';
@@ -17,9 +17,6 @@ export class SelectPmtMethodPage extends ComponentBase {
   @ViewChild('f') personInfoEditForm: NgForm;
   pmtMethods = [];
   dataLoaded = false;
-
-  public partsPmtArray: Array<{value: number, displayValue: string}> = [];
-
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
