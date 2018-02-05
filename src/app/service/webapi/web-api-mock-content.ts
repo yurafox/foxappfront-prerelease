@@ -88,11 +88,11 @@ const PARTSPAY = `<h3 style='text-align: center'>{{name}}</h3>
 <div class='default-container'>
   <span>{{actionActiveLine}}</span>
   <div class='default-timeViewer'>
-     <div style='width: 20%;margin-left:8%'>до конца<br/>акции</div>
-     <div><b>{{expire?.getDate()}}</b><br/>дни</div>
-     <div><b>{{expire?.getHours()}}</b><br/>часы</div>
-     <div><b>{{expire?.getMinutes()}}</b><br/>мин.</div>
-     <div><b>{{expire?.getSeconds()}}</b><br/>сек.</div>
+     <div style='width: 20%;margin-left:3%'>до конца<br/>акции</div>
+     <div><b>{{expire?.days}}</b><br/>дни</div>
+     <div><b>{{expire?.hours}}</b><br/>часы</div>
+     <div><b>{{expire?.minutes}}</b><br/>мин.</div>
+     <div><b>{{expire?.seconds}}</b><br/>сек.</div>
   </div>
   <div class="default-image-section">
      <img src="{{img_url}}_long.jpg" alt=''>
@@ -113,11 +113,11 @@ const ROUTERGIFT = `<h3 style='text-align: center'>{{name}}</h3>
 <div class='default-container'>
   <span>{{actionActiveLine}}</span>
   <div class='default-timeViewer'>
-     <div style='width: 20%;margin-left:8%'>до конца<br/>акции</div>
-     <div><b>{{expire?.getDate()}}</b><br/>дни</div>
-     <div><b>{{expire?.getHours()}}</b><br/>часы</div>
-     <div><b>{{expire?.getMinutes()}}</b><br/>мин.</div>
-     <div><b>{{expire?.getSeconds()}}</b><br/>сек.</div>
+     <div style='width: 20%;margin-left:3%'>до конца<br/>акции</div>
+     <div><b>{{expire?.days}}</b><br/>дни</div>
+     <div><b>{{expire?.hours}}</b><br/>часы</div>
+     <div><b>{{expire?.minutes}}</b><br/>мин.</div>
+     <div><b>{{expire?.seconds}}</b><br/>сек.</div>
   </div>
   <div class="default-image-section">
      <img src="{{img_url}}_long.jpg" alt=''>
