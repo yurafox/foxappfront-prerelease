@@ -3229,7 +3229,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       loEstimatedDeliveryDate: null,
       loDeliveryCompletedDate: null,
       errorMessage: null,
-      warningMessage: "Warranty terms for this item has been changed by manufacturer",
+      warningMessage: "Warranty terms for this item has been updated by manufacturer",
       warningRead: false
     }
   ];

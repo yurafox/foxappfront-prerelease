@@ -59,7 +59,7 @@ ion-list ion-icon {
 }
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: #cfcfcf;
+  color: #bcbcbc;
 }
 
 .primary-bg {
@@ -435,13 +435,30 @@ ion-header {
   padding-bottom: 10px;
 }
 
+.f-warning-box {
+  color: rgba(80,54,1,0.94);
+  border: 1px solid rgba(80,54,1,0.94);
+  outline: 3px solid #fff8c0;
+  outline-offset: -4px;
+}
+
 .f-padding-b-15 {
   padding-bottom: 15px;
 }
 
-
 .f-border-ligthgray {
   border: 1px solid color($colors, gridlines);
+}
+
+.f-grid-error-border-red {
+  border: 1px solid;
+  border-radius: 4px;
+  color: red;
+  .row {
+    .col{
+      color: $text-color;
+    }
+  }
 }
 
 .f-warning {
