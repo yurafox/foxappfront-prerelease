@@ -3825,7 +3825,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
           LMI_FAIL_URL: '',
           LMI_PAYMENT_NO: reqData.id,
           LMI_PAYMENT_DESC: `Payment for order in Foxtrot for amount of ${reqData.total}UAH`,
-          LMI_SIM_MODE: '0', //TODO: Remove Simulation Mode
+          //LMI_SIM_MODE: '0', //TODO: Remove Simulation Mode
           //LMI_ALLOW_SDP: string,
           LMI_PAYMENT_SYSTEM: reqData.paySys
         };

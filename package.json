@@ -92,7 +92,6 @@
       "com.lampa.startapp": {},
       "cordova-plugin-appavailability": {},
       "cordova-plugin-local-notification": {},
-      "cordova-plugin-local-notification": {},
       "cordova-plugin-fcm": {},
       "cordova-plugin-googlemaps": {
         "API_KEY_FOR_ANDROID": "AIzaSyAKDQzb3RKdVlh0gqZMhY4MEjl53Lh-Dmk",

@@ -3,7 +3,7 @@ import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angula
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {CartService} from '../../app/service/cart-service';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
-import {Http, Headers} from "@angular/http";
+import {Http} from "@angular/http";
 
 declare var PMWidget: any;
 
@@ -46,11 +46,11 @@ export class CheckoutPage extends ComponentBase {
      **/
     if (this.pmtMethodID === 2) {
       this.formInput = await this.repo.getDataForRedirectToPaymaster(this.cart.order.id, this.cart.cartGrandTotal, 21);
-      //this.navCtrl.push('PaymentPage',this.formInput);
+      this.navCtrl.push('PaymentPage',this.formInput);
       /*const modal = this.modalCtrl.create('PaymentPage',this.formInput);
       modal.present();
       modal.onDidDismiss(() => {console.log('dismissed')});*/
-      const body = Object.keys(this.formInput).map((key) => {
+      /*const body = Object.keys(this.formInput).map((key) => {
         return encodeURIComponent(key) + '=' + encodeURIComponent(this.formInput[key]);
       }).join('&');
       let headers = new Headers();
@@ -61,7 +61,7 @@ export class CheckoutPage extends ComponentBase {
         body,
         {headers: headers}
       ).toPromise().catch(err=>console.log(err));
-      console.log(JSON.stringify(val));
+      console.log(JSON.stringify(val));*/
     }
   }
 

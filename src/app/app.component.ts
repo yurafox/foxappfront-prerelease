@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnDestroy} from '@angular/core';
+import {Component, ViewChild, OnDestroy, AfterViewInit} from '@angular/core';
 import {Nav, Platform, MenuController, AlertController} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {AbstractDataRepository} from "./service/index";
@@ -23,7 +23,7 @@ declare var FCMPlugin: any;
 @Component({
   templateUrl: 'app.html'
 })
-export class FoxApp extends ComponentBase implements OnDestroy {
+export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
   // the root nav is a child of the root app component
   // @ViewChild(Nav) gets a reference to the app's root nav
   @ViewChild(Nav) nav: Nav;
@@ -73,10 +73,6 @@ export class FoxApp extends ComponentBase implements OnDestroy {
       await this.userService.shortLogin();
     }
 
-    this.platform.ready().then(() => {
-      this.splashScreen.hide();
-    });
-
     /**
      * Subscribing to the push events and putting our dynamic components to special pushStore dictionary in PushContainer
      */
@@ -87,37 +83,33 @@ export class FoxApp extends ComponentBase implements OnDestroy {
       System.PushContainer.pushStore[`action${data.innerId}`] = data;
     });
 
-      /**
-       * Subscribing to the push events and putting our dynamic components to special pushStore dictionary in PushContainer
-       */
-      this.noveltyPushEventDescriptor = this.evServ.events['noveltyPushEvent'].subscribe(data => {
-        System.PushContainer.pushStore[`novelty${data.innerId}`] = data;
+    if (this.device.cordova) {
+      // Getting FCM device token and send device data
+      FCMPlugin.getToken((token) => {
+        if (token) {
+          // Collecting and send data about device including device FCM token
+          this.collectAndSendDeviceData(token).catch((err) => console.log(`Sending device's data err: ${err}`));
+        }
       });
-      this.actionPushEventDescriptor = this.evServ.events['actionPushEvent'].subscribe(data => {
-        System.PushContainer.pushStore[`action${data.innerId}`] = data;
+      // Subscribing this device to the main topic to send PUSH-notifications to this topic
+      FCMPlugin.subscribeToTopic('main');
+      // Handling incoming PUSH-notifications
+      FCMPlugin.onNotification((data) => {
+        if (data.wasTapped) {
+          //Notification was received on device tray and tapped by the user.
+          this.pushNotificationHandling(data);
+        } else {
+          //Notification was received in foreground. Maybe the user needs to be notified.
+          this.pushNotificationHandling(data);
+        }
       });
+    }
+  }
 
-      if (this.device.cordova) {
-        // Getting FCM device token and send device data
-        FCMPlugin.getToken((token) => {
-          if (token) {
-            // Collecting and send data about device including device FCM token
-            this.collectAndSendDeviceData(token).catch((err) => console.log(`Sending device's data err: ${err}`));
-          }
-        });
-        // Subscribing this device to the main topic to send PUSH-notifications to this topic
-        FCMPlugin.subscribeToTopic('main');
-        // Handling incoming PUSH-notifications
-        FCMPlugin.onNotification((data) => {
-          if(data.wasTapped){
-            //Notification was received on device tray and tapped by the user.
-            this.pushNotificationHandling(data);
-          }else{
-            //Notification was received in foreground. Maybe the user needs to be notified.
-            this.pushNotificationHandling(data);
-          }
-        });
-      }
+  ngAfterViewInit() {
+    this.platform.ready().then(() => {
+      this.splashScreen.hide();
+    });
   }
 
   ngOnDestroy() {

@@ -86,7 +86,9 @@ import {
   PollPageModule,
   NoveltyPageModule,
   OrderDetailsPageModule,
-  PaymentPageModule
+  PaymentPageModule,
+  PaymentSuccessPageModule,
+  PaymentFailPageModule,
 } from '../pages/index-modules';
 import {NgxQRCodeModule} from 'ngx-qrcode2';
 import {AppAvailability} from '@ionic-native/app-availability';
@@ -101,7 +103,7 @@ import {LocalNotifications} from '@ionic-native/local-notifications';
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
-    InMemoryWebApiModule.forRoot(WebApiService, {delay: 1000, post204: false, put204: false}),
+    InMemoryWebApiModule.forRoot(WebApiService, {delay: 0, post204: false, put204: false}),
     IonicModule.forRoot(FoxApp),
     IonicPageModule.forChild(HomePage),
     ComponentsModule,
@@ -151,7 +153,9 @@ import {LocalNotifications} from '@ionic-native/local-notifications';
     PollPageModule,
     NoveltyPageModule,
     OrderDetailsPageModule,
-    PaymentPageModule
+    PaymentPageModule,
+    PaymentSuccessPageModule,
+    PaymentFailPageModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [

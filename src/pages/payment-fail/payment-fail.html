@@ -1,0 +1,15 @@
+<ion-header>
+  <main-toolbar></main-toolbar>
+</ion-header>
+
+
+<ion-content padding text-center>
+  <div [hidden]="!fail">
+    <h3 style="color:red">Sorry, but your purchase has not ended successfully</h3>
+    <button ion-button block class="f-btn-secondary" (click)="toHomePage()">To home page</button>
+  </div>
+  <div [hidden]="!error">
+    <h3 style="color:red">Sorry, but your purchase has ended with error</h3>
+    <button ion-button block class="f-btn-secondary" (click)="toHomePage()">To home page</button>
+  </div>
+</ion-content>

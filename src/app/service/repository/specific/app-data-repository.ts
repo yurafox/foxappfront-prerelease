@@ -1,6 +1,6 @@
 import { RequestFactory } from './../../../core/app-core';
 import { Injectable } from "@angular/core";
-import { Http, URLSearchParams, Headers } from "@angular/http";
+import { Http, URLSearchParams, Headers} from "@angular/http";
 import "rxjs/add/operator/toPromise";
 import CacheProvider = Providers.CacheProvider;
 import {
@@ -2332,22 +2332,19 @@ export class AppDataRepository extends AbstractDataRepository {
 
       /*const body = Object.keys(resp).map((key) => {
         return encodeURIComponent(key) + '=' + encodeURIComponent(resp[key]);
-      }).join('&');*/
-      /*let headers = new Headers();
+      }).join('&');
+      let headers = new Headers();
       headers.set('Content-Type',
         'application/x-www-form-urlencoded');
-      const val = await this.http.post('https://lmi.paymaster.ua/', body, {headers: headers}
-      ).toPromise().catch(err=>console.log(err));*/
-      /*const val = await fetch('https://lmi.paymaster.ua/', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      let url = `https://lmi.paymaster.ua/?callback=JSONP_CALLBACK`;
+      let res = await this.jsonp.request(url,{
+        url: url,
+        headers: headers,
         body: body
-      }).catch(err=>console.log(err));
-      if (val) {
-        return val;
-      } else {
-        return resp;
-      }*/
+      }).map((response: any) =>
+        response.json()
+      ).toPromise().catch(err=>console.error(err));
+      console.log(res);*/
       return resp;
     } catch (err) {
       return await this.handleError(err);
