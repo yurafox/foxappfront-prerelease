@@ -24,6 +24,20 @@ export class CartPage extends ComponentBase {
     this.cart.removeItem(itemIndex);
   }
 
+  async onShowWarningsClick() {
+    this.navCtrl.push('WarningViewPage');
+  }
+
+  get containsWarnings(): boolean {
+    let res = false;
+    for (let i of this.cart.orderProducts) {
+      res = (!(i.warningRead) && !(i.warningMessage == null));
+      if (res)
+        break;
+    }
+    return res;
+  }
+
   validateStep(): boolean {
     // Proceed to checkout rule
     let err = this.cart.cartErrors;

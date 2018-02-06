@@ -557,6 +557,7 @@ export class AppDataRepository extends AbstractDataRepository {
       p.loDeliveryCompletedDate = val.loDeliveryCompletedDate;
       p.errorMessage = val.errorMessage;
       p.warningMessage = val.warningMessage;
+      p.warningRead = val.warningRead;
       return p;
     } catch (err) {
       return await this.handleError(err);
@@ -607,6 +608,7 @@ export class AppDataRepository extends AbstractDataRepository {
           p.payBonusCnt = val.payBonusCnt;
           p.payPromoBonusCnt = val.payPromoBonusCnt;
           p.earnedBonusCnt = val.earnedBonusCnt;
+          p.warningRead = val.warningRead;
 
           cClientOrderProducts.push(p);
         });
@@ -652,6 +654,7 @@ export class AppDataRepository extends AbstractDataRepository {
         p.payBonusCnt = i.payBonusCnt;
         p.payPromoBonusCnt = i.payPromoBonusCnt;
         p.earnedBonusCnt = i.earnedBonusCnt;
+        p.warningRead = i.warningRead;
         orderProducts.push(p);
       });
       return orderProducts;
@@ -693,6 +696,7 @@ export class AppDataRepository extends AbstractDataRepository {
       p.payBonusCnt = val.payBonusCnt;
       p.payPromoBonusCnt = val.payPromoBonusCnt;
       p.earnedBonusCnt = val.earnedBonusCnt;
+      p.warningRead = val.warningRead;
       return p;
     } catch (err) {
       return await this.handleError(err);
@@ -730,6 +734,7 @@ export class AppDataRepository extends AbstractDataRepository {
         p.payBonusCnt = product.payBonusCnt;
         p.payPromoBonusCnt = product.payPromoBonusCnt;
         p.earnedBonusCnt = product.earnedBonusCnt;
+        p.warningRead = product.warningRead;
 
         orderProducts.push(p);
       });
@@ -774,6 +779,7 @@ export class AppDataRepository extends AbstractDataRepository {
         p.payBonusCnt = product.payBonusCnt;
         p.payPromoBonusCnt = product.payPromoBonusCnt;
         p.earnedBonusCnt = product.earnedBonusCnt;
+        p.warningRead = product.warningRead;
         orderProducts.push(p);
       });
       return orderProducts;

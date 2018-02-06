@@ -86,7 +86,8 @@ import {
   PollPageModule,
   NoveltyPageModule,
   OrderDetailsPageModule,
-  PaymentPageModule
+  PaymentPageModule,
+  WarningViewPageModule
 } from '../pages/index-modules';
 import {NgxQRCodeModule} from 'ngx-qrcode2';
 import {AppAvailability} from '@ionic-native/app-availability';
@@ -151,7 +152,8 @@ import {LocalNotifications} from '@ionic-native/local-notifications';
     PollPageModule,
     NoveltyPageModule,
     OrderDetailsPageModule,
-    PaymentPageModule
+    PaymentPageModule,
+    WarningViewPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

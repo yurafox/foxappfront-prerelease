@@ -32,3 +32,4 @@ export * from './credit-calc/credit-calc';
 export * from './balance/balance';
 export * from './poll/poll';
 export * from './order-details/order-details';
+export * from './warning-view/warning-view';

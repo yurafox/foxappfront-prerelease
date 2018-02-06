@@ -1,11 +1,11 @@
 <ion-header>
-  <main-toolbar></main-toolbar>
+  <main-toolbar [showCartIcon]="false"></main-toolbar>
 </ion-header>
 <ion-content>
   <ion-grid>
     <ion-row>
       <ion-col text-center class="f-item-padding-bottom">
-        <span class="f-color-secondary">Cart subtotal ({{cart.cartItemsCount}} items):</span>
+        <span class="f-color-secondary f-size-larger">Cart subtotal ({{cart.cartItemsCount}} items):</span>
         <span class="f-size-large f-color-red">{{cart.orderTotal | localeCurrency:userService.currency}}</span>
       </ion-col>
     </ion-row>
@@ -14,11 +14,36 @@
         <button class="f-btn-add-cart" ion-button block [attr.disabled]="(cart.orderProducts.length == 0)?'':null" (click)="checkout()">Proceed to checkout</button>
       </ion-col>
     </ion-row>
+
+    <!--
+    Warning
+    -->
+
+    <grid-hr></grid-hr>
+    <div *ngIf="containsWarnings" (click)="onShowWarningsClick()">
+      <ion-row >
+        <ion-col>
+          <ion-item class="f-warning" detail-push text-wrap>
+            Important messages for items in your cart
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <grid-hr></grid-hr>
+    </div>
+
   </ion-grid>
-  <hr>
+
+
 
   <div *ngFor="let item of cart.orderProducts; let i = index" >
-    <ion-grid class="f-color-secondary f-item-nopadding-tb" >
+    <ion-grid *ngIf="item?.quotationproduct?.product && item?.quotationproduct?.quotation?.supplier"
+          class="f-color-secondary f-item-nopadding-tb" >
+
+      <ion-row *ngIf="item.errorMessage">
+        <ion-col class="f-padding-lr-5 f-padding-b-10">
+          <error [errorText]="item?.errorMessage"></error>
+        </ion-col>
+      </ion-row>
 
       <ion-row>
         <ion-col col-auto>
@@ -82,20 +107,6 @@
                 {{item?.storeplace?.city?.name}}</span>
               </ion-col>
             </ion-row>
-
-            <ion-row *ngIf="item.errorMessage">
-              <ion-col no-padding>
-                <span class="f-item-nopadding f-size-small f-color-red">{{item?.errorMessage}}</span>
-              </ion-col>
-            </ion-row>
-
-            <ion-row *ngIf="item.warningMessage">
-              <ion-col no-padding>
-                <span class="f-item-nopadding f-size-small f-color-info">{{item?.warningMessage}}</span>
-              </ion-col>
-            </ion-row>
-
-
           </ion-grid>
         </ion-col>
 
