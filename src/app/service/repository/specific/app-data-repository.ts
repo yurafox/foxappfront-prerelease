@@ -1,3 +1,4 @@
+import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import { Injectable } from "@angular/core";
 import { Http, URLSearchParams, Headers } from "@angular/http";
@@ -35,7 +36,8 @@ import {
   DeviceData,
   ReviewAnswer,
   Poll,PollQuestion,PollQuestionAnswer,
-  ClientPollAnswer
+  ClientPollAnswer,
+  Category
 } from '../../../model/index';
 
 import {CreditProduct} from '../../../model/credit-product';
@@ -91,6 +93,8 @@ const noveltyDynamicUrl = "/api/mnovelties";
 const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
 const deviceDataUrl = "/api/mdeviceData";
 const redirectToPaymasterUrl = "/api/mredirectToPaymaster";
+
+const categoriesUrl = `${AppConstants.BASE_URL}/api/catalog`;
 // </editor-fold
 
 @Injectable()
@@ -2349,6 +2353,29 @@ export class AppDataRepository extends AbstractDataRepository {
         return resp;
       }*/
       return resp;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getCategories(): Promise<Category[]> {
+    try {
+      const response = await this.http
+        .get(categoriesUrl).toPromise();
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const categories: Category[] = new Array<Category>();
+      if (data != null) {
+        data.forEach(val =>
+          categories.push(
+            new Category(val.id,val.name,val.parentId,val.idProductCat,val.prefix,
+                         val.icon,val.isShow,val.priorityIndex,val.priorityShow)
+          )
+        );
+      }
+      return categories;
     } catch (err) {
       return await this.handleError(err);
     }

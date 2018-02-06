@@ -101,7 +101,7 @@ import {LocalNotifications} from '@ionic-native/local-notifications';
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
-    InMemoryWebApiModule.forRoot(WebApiService, {delay: 1000, post204: false, put204: false}),
+    InMemoryWebApiModule.forRoot(WebApiService, {delay: 1000, passThruUnknownUrl: true,post204: false, put204: false}),
     IonicModule.forRoot(FoxApp),
     IonicPageModule.forChild(HomePage),
     ComponentsModule,
