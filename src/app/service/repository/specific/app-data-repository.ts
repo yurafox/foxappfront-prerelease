@@ -94,7 +94,7 @@ const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
 const deviceDataUrl = "/api/mdeviceData";
 const redirectToPaymasterUrl = "/api/mredirectToPaymaster";
 
-const categoriesUrl = `${AppConstants.BASE_URL}/api/catalog`;
+const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/api/catalog`:"/api/mcategories";
 // </editor-fold
 
 @Injectable()
