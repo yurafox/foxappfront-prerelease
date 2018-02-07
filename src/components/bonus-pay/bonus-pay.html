@@ -17,7 +17,7 @@
 
     <ion-row>
       <ion-col>
-        <input type="text" [(ngModel)]="cart.bonus" placeholder="Enter bonus quantity" name="bonus" id="bonus"
+        <input type="number" [(ngModel)]="cart.bonus" placeholder="Enter bonus quantity" name="bonus" id="bonus"
                pattern="[0-9]*"
                (keyup)="bonusInputStream$.next($event.target.value)"
                #bonus="ngModel">

@@ -89,6 +89,7 @@ import {
   PaymentPageModule,
   PaymentSuccessPageModule,
   PaymentFailPageModule,
+  WarningViewPageModule
 } from '../pages/index-modules';
 import {NgxQRCodeModule} from 'ngx-qrcode2';
 import {AppAvailability} from '@ionic-native/app-availability';
@@ -156,6 +157,7 @@ import {LocalNotifications} from '@ionic-native/local-notifications';
     PaymentPageModule,
     PaymentSuccessPageModule,
     PaymentFailPageModule,
+    WarningViewPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

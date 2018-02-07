@@ -41,3 +41,4 @@ export * from './order-details/order-details.module';
 export * from './payment/payment.module';
 export * from './payment-success/payment-success.module';
 export * from './payment-fail/payment-fail.module';
+export * from './warning-view/warning-view.module';

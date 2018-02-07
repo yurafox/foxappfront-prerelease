@@ -26,6 +26,7 @@ import { BonusComponent } from './bonus/bonus';
 import { BonusPayComponent } from './bonus-pay/bonus-pay';
 import { ErrorComponent } from './error/error';
 import { PollBannerComponent } from './poll-banner/poll-banner';
+import { GridHrComponent } from './grid-hr/grid-hr';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { PollBannerComponent } from './poll-banner/poll-banner';
     BonusComponent,
     BonusPayComponent,
     ErrorComponent,
-    PollBannerComponent
+    PollBannerComponent,
+    GridHrComponent
   ],
   entryComponents: [
     CustomPopupComponent,
@@ -89,7 +91,8 @@ import { PollBannerComponent } from './poll-banner/poll-banner';
     BonusComponent,
     BonusPayComponent,
     ErrorComponent,
-    PollBannerComponent
+    PollBannerComponent,
+    GridHrComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

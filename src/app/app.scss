@@ -58,6 +58,10 @@ ion-list ion-icon {
   color: color($colors, fox);
 }
 
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #bcbcbc;
+}
+
 .primary-bg {
   background-color: color($colors, primary);
 }
@@ -94,7 +98,8 @@ ion-list ion-icon {
 
 // left menu bg
 .menu-bg {
-  background-image: url("../assets/imgs/head-bg.svg");
+  background: url("../assets/img/head-bg.png");
+  background-size: 100% auto;
 }
 
 .profile-picture {
@@ -298,8 +303,6 @@ ion-header {
   text-decoration: line-through!important;
 }
 
-
-
 .f-light-bkgrd {
   background-color: #EFEFF0;
 }
@@ -337,8 +340,8 @@ ion-header {
   margin-bottom: 5px;
 }
 
-.item-md.item-block .item-inner {
-  border-bottom: 0px;
+.item.item-block.item-md .item-inner, .item.item-block.item-ios .item-inner {
+  border-bottom-style: none;
 }
 
 /// ION-GRID, ROWS, COLS
@@ -430,14 +433,37 @@ ion-header {
   padding-bottom: 10px;
 }
 
+.f-warning-box {
+  color: rgba(80,54,1,0.94);
+  border: 1px solid rgba(80,54,1,0.94);
+  outline: 3px solid #fff8c0;
+  outline-offset: -4px;
+}
+
 .f-padding-b-15 {
   padding-bottom: 15px;
 }
 
-
 .f-border-ligthgray {
   border: 1px solid color($colors, gridlines);
 }
+
+.f-grid-error-border-red {
+  border: 1px solid;
+  border-radius: 4px;
+  color: red;
+  .row {
+    .col{
+      color: $text-color;
+    }
+  }
+}
+
+.f-warning {
+  border: 1px solid;
+  color: #ffa969;
+}
+
 
 //product images
 .f-img-item-80 {
@@ -481,7 +507,7 @@ ion-header {
 }
 
 /// Inputs
-input[type="text"], input[type="date"] {
+input[type="text"], input[type="date"], input[type="number"]  {
   width: 100%;
   height: 38px;
   padding-right: 5px;

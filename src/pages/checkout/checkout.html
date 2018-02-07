@@ -33,7 +33,16 @@
       </ion-col>
     </ion-row>
 
-    <ion-row class="f-padding-lr-5">
+
+    <ion-row class="f-padding-lr-5" >
+      <ion-grid class="f-grid-error-border-red" *ngIf="!validatePage().isValid">
+        <ion-row>
+          <ion-col>
+            Your order contains errors. Please review order details below
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <grid-hr></grid-hr>
       <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
         <ion-row>
           <ion-col>
@@ -212,8 +221,11 @@
 
 
                 <ion-row *ngIf="item.errorMessage">
-                  <ion-col>
+                  <ion-col class="f-size-small">
+                    <error [errorText]="item?.errorMessage"></error>
+<!--
                     <span class="f-size-small f-color-red">{{item?.errorMessage}}</span>
+-->
                   </ion-col>
                 </ion-row>
 

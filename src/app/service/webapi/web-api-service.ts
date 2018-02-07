@@ -3212,7 +3212,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       loEstimatedDeliveryDate: null,
       loDeliveryCompletedDate: null,
       errorMessage: "This item is currently out of stock",
-      warningMessage: "We have changed price for this item from $332 to $330"
+      warningMessage: "We have changed price for this item from <b><span class='f-color-red'>$332</span></b> to <b><span class='f-color-red'>$330</span></b>",
+      warningRead: false
     },
     {
       id: 26,
@@ -3227,7 +3228,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       loDeliveryCompleted: null,
       loEstimatedDeliveryDate: null,
       loDeliveryCompletedDate: null,
-      errorMessage: null
+      errorMessage: null,
+      warningMessage: "Warranty terms for this item has been updated by manufacturer",
+      warningRead: false
     }
   ];
 
