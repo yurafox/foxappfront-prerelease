@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {CartService} from '../../app/service/cart-service';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
-import {Http} from "@angular/http";
 
 declare var PMWidget: any;
 
@@ -15,12 +14,10 @@ declare var PMWidget: any;
 export class CheckoutPage extends ComponentBase {
 
   dataLoaded = true;
-  formInput: any;
   pmtMethodID: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
-              public repo: AbstractDataRepository, private modalCtrl: ModalController,
-              private http: Http) {
+              public repo: AbstractDataRepository) {
     super();
     this.pmtMethodID = this.cart.pmtMethod.id;
   }
@@ -38,30 +35,9 @@ export class CheckoutPage extends ComponentBase {
 
   async onPlaceOrderClick() {
     console.log('Place Order!');
-    /**
-     * Pay Systems for PayMaster:
-     * 21 - Visa/MasterCard;
-     * 1  - WebMoney;
-     * 6  - MoneXy
-     **/
+
     if (this.pmtMethodID === 2) {
-      this.formInput = await this.repo.getDataForRedirectToPaymaster(this.cart.order.id, this.cart.cartGrandTotal, 21);
-      this.navCtrl.push('PaymentPage',this.formInput);
-      /*const modal = this.modalCtrl.create('PaymentPage',this.formInput);
-      modal.present();
-      modal.onDidDismiss(() => {console.log('dismissed')});*/
-      /*const body = Object.keys(this.formInput).map((key) => {
-        return encodeURIComponent(key) + '=' + encodeURIComponent(this.formInput[key]);
-      }).join('&');
-      let headers = new Headers();
-      headers.set('Content-Type',
-        'application/x-www-form-urlencoded');
-      const val = await this.http.post(
-        'https://lmi.paymaster.ua/',
-        body,
-        {headers: headers}
-      ).toPromise().catch(err=>console.log(err));
-      console.log(JSON.stringify(val));*/
+      this.navCtrl.push('PaymentResultPage').catch(err => console.error(err));
     }
   }
 

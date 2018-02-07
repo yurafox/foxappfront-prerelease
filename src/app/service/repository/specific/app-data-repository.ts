@@ -2336,21 +2336,6 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
 
-      /*const body = Object.keys(resp).map((key) => {
-        return encodeURIComponent(key) + '=' + encodeURIComponent(resp[key]);
-      }).join('&');
-      let headers = new Headers();
-      headers.set('Content-Type',
-        'application/x-www-form-urlencoded');
-      let url = `https://lmi.paymaster.ua/?callback=JSONP_CALLBACK`;
-      let res = await this.jsonp.request(url,{
-        url: url,
-        headers: headers,
-        body: body
-      }).map((response: any) =>
-        response.json()
-      ).toPromise().catch(err=>console.error(err));
-      console.log(res);*/
       return resp;
     } catch (err) {
       return await this.handleError(err);

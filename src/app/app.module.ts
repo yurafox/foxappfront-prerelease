@@ -4,7 +4,8 @@ import {ErrorHandler, NgModule, Injector} from '@angular/core';
 import {IonicApp, IonicErrorHandler, IonicModule, IonicPageModule} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {StatusBar} from '@ionic-native/status-bar';
-import {HttpModule} from '@angular/http';
+import {HttpModule, JsonpModule} from '@angular/http';
+import {HttpClientJsonpModule} from "@angular/common/http";
 import {FormsModule} from '@angular/forms';
 import {InAppBrowser} from '@ionic-native/in-app-browser';
 import {GoogleMaps} from '@ionic-native/google-maps';
@@ -86,9 +87,7 @@ import {
   PollPageModule,
   NoveltyPageModule,
   OrderDetailsPageModule,
-  PaymentPageModule,
-  PaymentSuccessPageModule,
-  PaymentFailPageModule,
+  PaymentResultPageModule,
   WarningViewPageModule
 } from '../pages/index-modules';
 import {NgxQRCodeModule} from 'ngx-qrcode2';
@@ -104,6 +103,8 @@ import {LocalNotifications} from '@ionic-native/local-notifications';
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
+    JsonpModule,
+    HttpClientJsonpModule,
     InMemoryWebApiModule.forRoot(WebApiService, {delay: 0, post204: false, put204: false}),
     IonicModule.forRoot(FoxApp),
     IonicPageModule.forChild(HomePage),
@@ -154,9 +155,7 @@ import {LocalNotifications} from '@ionic-native/local-notifications';
     PollPageModule,
     NoveltyPageModule,
     OrderDetailsPageModule,
-    PaymentPageModule,
-    PaymentSuccessPageModule,
-    PaymentFailPageModule,
+    PaymentResultPageModule,
     WarningViewPageModule
   ],
   bootstrap: [IonicApp],
