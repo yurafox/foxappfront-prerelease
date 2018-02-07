@@ -212,34 +212,23 @@
       </dataTypeUsage>
       <notNull>false</notNull>
     </column>
+    <column>
+      <name>WARNING_READ</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">1</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>VARCHAR2</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
   </columns>
   <constraints>
-    <constraint class="oracle.javatools.db.PKConstraint">
-      <name>ORDER_SPEC_PRODUCT_PK</name>
-      <columnIDs>
-        <columnID class="oracle.javatools.db.NameBasedID">
-          <name>ID</name>
-          <parent class="oracle.javatools.db.NameBasedID">
-            <name>ORDER_SPEC_PRODUCTS</name>
-            <schemaName>FOXSTORE</schemaName>
-            <type>TABLE</type>
-          </parent>
-          <schemaName>FOXSTORE</schemaName>
-          <type>COLUMN</type>
-        </columnID>
-      </columnIDs>
-      <enabled>true</enabled>
-      <indexID class="oracle.javatools.db.NameBasedID">
-        <name>ORDER_SPEC_PRODUCT_PK</name>
-        <parent class="oracle.javatools.db.NameBasedID">
-          <name>ORDER_SPEC_PRODUCTS</name>
-          <schemaName>FOXSTORE</schemaName>
-          <type>TABLE</type>
-        </parent>
-        <schemaName>FOXSTORE</schemaName>
-        <type>INDEX</type>
-      </indexID>
-    </constraint>
     <constraint class="oracle.javatools.db.FKConstraint">
       <name>ORDER_SPEC_PRODUCTS_FK1</name>
       <columnIDs>
@@ -343,6 +332,32 @@
         <schemaName>FOXSTORE</schemaName>
         <type>CONSTRAINT</type>
       </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.PKConstraint">
+      <name>ORDER_SPEC_PRODUCT_PK</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.NameBasedID">
+          <name>ID</name>
+          <parent class="oracle.javatools.db.NameBasedID">
+            <name>ORDER_SPEC_PRODUCTS</name>
+            <schemaName>FOXSTORE</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>FOXSTORE</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <indexID class="oracle.javatools.db.NameBasedID">
+        <name>ORDER_SPEC_PRODUCT_PK</name>
+        <parent class="oracle.javatools.db.NameBasedID">
+          <name>ORDER_SPEC_PRODUCTS</name>
+          <schemaName>FOXSTORE</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>FOXSTORE</schemaName>
+        <type>INDEX</type>
+      </indexID>
     </constraint>
   </constraints>
   <indexes>

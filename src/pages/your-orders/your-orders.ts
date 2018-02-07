@@ -3,6 +3,7 @@ import {IonicPage, NavController} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {AbstractDataRepository} from '../../app/service';
 import {ClientOrder} from '../../app/model';
+import {ClientOrderProducts} from '../../app/model/client-order-products';
 
 @IonicPage()
 @Component({
@@ -50,8 +51,8 @@ export class OrdersPage extends ComponentBase {
     this.navCtrl.push('ItemReviewWritePage', product);
   }
 
-  onReturnReplaceItemClick() {
-    //TODO
+  onTrackItemClick(orderSpec: ClientOrderProducts) {
+    this.navCtrl.push('LoTrackItemPage', orderSpec);
   }
 
 }

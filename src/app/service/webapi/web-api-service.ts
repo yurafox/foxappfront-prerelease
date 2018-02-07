@@ -3223,7 +3223,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       qty: 1,
       idStorePlace: null,
       idLoEntity: null,
-      loTrackTicket: null,
+      loTrackTicket: "ZXC-1234567-VN",
       loDeliveryCost: null,
       loDeliveryCompleted: null,
       loEstimatedDeliveryDate: null,
@@ -3234,6 +3234,13 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     }
   ];
 
+  specLOTrackingLog = [
+    {id: 1, idOrderSpecProd: 7, trackDate: new Date(new Date().getTime() - 117*24 * 3600 * 1000), trackString: "На складе отправителя" },
+    {id: 2, idOrderSpecProd: 7, trackDate: new Date(new Date().getTime() - 116*24 * 3600 * 1000), trackString: "На складе Новая Почта" },
+    {id: 3, idOrderSpecProd: 7, trackDate: new Date(new Date().getTime() - 115*24 * 3600 * 1000), trackString: "Отправлено на отделение 123" },
+    {id: 4, idOrderSpecProd: 7, trackDate: new Date(new Date().getTime() - 113*24 * 3600 * 1000), trackString: "Доставлено на отделение 123" },
+    {id: 5, idOrderSpecProd: 7, trackDate: new Date(new Date().getTime() - 112*24 * 3600 * 1000), trackString: "Доставлено получателю" }
+  ];
   //<editor-fold desc="Tokens">
   tokens = [
     {token: "fdtefdetfdwytdfetfdtewyfdeyt"},
@@ -3668,6 +3675,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mnoveltyDetails = this.noveltyDetails;
     const mclientBonuses = this.clientBonuses;
     const mpersons = this.persons;
+    const mspecLOTrackingLog = this.specLOTrackingLog;
 
     return {
       mquotationProducts,
@@ -3708,7 +3716,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mclientPollAnswers,
       mnoveltyDetails,
       mclientBonuses,
-      mpersons
+      mpersons,
+      mspecLOTrackingLog
     };
   }
 

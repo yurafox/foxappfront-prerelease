@@ -41,16 +41,16 @@
             </ion-col>
           </ion-row>
 
-          <ion-row class="f-padding-lr-5" (click)="onWriteReviewClick(spec?.quotationproduct?.product)">
-            <ion-item class="f-border-ligthgray" detail-push>Write a product review</ion-item>
-          </ion-row>
-
           <ion-row class="f-padding-lr-5" (click)="onViewOrderDetailsClick(ord)">
             <ion-item class="f-border-ligthgray" detail-push>View order details</ion-item>
           </ion-row>
 
-          <ion-row class="f-padding-lr-5" (click)="onReturnReplaceItemClick()">
-            <ion-item class="f-border-ligthgray" detail-push>Return or replace item</ion-item>
+          <ion-row class="f-padding-lr-5" *ngIf="spec.loTrackTicket" (click)="onTrackItemClick(spec)">
+            <ion-item class="f-border-ligthgray" detail-push>Track item</ion-item>
+          </ion-row>
+
+          <ion-row class="f-padding-lr-5" (click)="onWriteReviewClick(spec?.quotationproduct?.product)">
+            <ion-item class="f-border-ligthgray" detail-push>Write a product review</ion-item>
           </ion-row>
 
         </ion-grid>

@@ -35,14 +35,12 @@ import {
   DeviceData,
   ReviewAnswer,
   Poll,PollQuestion,PollQuestionAnswer,
-  ClientPollAnswer
+  ClientPollAnswer, CreditProduct, ClientBonus, PersonInfo,
+  LoTrackLog
 } from '../../../model/index';
 
-import {CreditProduct} from '../../../model/credit-product';
 import { AbstractDataRepository } from '../../index';
 import { Providers, System } from "../../../core/app-core";
-import {ClientBonus} from '../../../model/client-bonus';
-import {PersonInfo} from '../../../model/person';
 
 // <editor-fold desc="url const">
 const currenciesUrl = "/api/mcurrencies";
@@ -91,6 +89,7 @@ const noveltyDynamicUrl = "/api/mnovelties";
 const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
 const deviceDataUrl = "/api/mdeviceData";
 const redirectToPaymasterUrl = "/api/mredirectToPaymaster";
+const specLOTrackingLogUrl = '/api/mspecLOTrackingLog';
 // </editor-fold
 
 @Injectable()
@@ -359,6 +358,46 @@ export class AppDataRepository extends AbstractDataRepository {
           data.id,
           data.name
         );
+    } catch (err) {
+      return await this.handleError(err);
+    }
+
+  }
+
+  public async getLoTrackLogByOrderSpecId(id: number): Promise<LoTrackLog[]> {
+    try {
+      const response = await this.http
+        .get(specLOTrackingLogUrl, {
+          search: this.createSearchParams([
+            {key: "idOrderSpecProd", value: id.toString()}
+          ])
+        })
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const arr = new Array<LoTrackLog>();
+      if (data != null) {
+        data.forEach(val =>
+          arr.push(
+            new LoTrackLog(
+              val.id,
+              val.idOrderSpecProd,
+              val.trackDate,
+              val.trackString
+            )
+          )
+        );
+
+        arr.sort((x,y) => {
+            return (+new Date(y.trackDate) - +new Date(x.trackDate));
+          }
+        );
+      }
+
+      return arr;
     } catch (err) {
       return await this.handleError(err);
     }

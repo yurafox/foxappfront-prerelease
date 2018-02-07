@@ -51,27 +51,31 @@ export class CartService  {
   public cartValidationNeeded = false;
   public person = new PersonInfo();
 
-  private navCtrl: NavController;
-
   constructor(private userService: UserService, public repo: AbstractDataRepository,
               private evServ: EventService, private app: App) {
-    this.navCtrl = app.getActiveNav();
+
+
 
     this.evServ.events['logonEvent'].subscribe(() => {
-        console.log('logonEvent');
         this.initCart().then (() => {
+/*
+
             if ((this.cartValidationNeeded) && (this.cartErrors)) {
+              this.navCtrl = app.getActiveNav();
+              console.log(this.navCtrl);
               const startIndex = this.navCtrl.getActive().index - 1;
               this.navCtrl.remove(startIndex, 2);
+              this.navCtrl.push('CartPage');
             };
             this.cartValidationNeeded = false;
-          }
+*/
+
+        }
         );
       }
     );
 
     this.evServ.events['logOffEvent'].subscribe(() => {
-      console.log('logoffEvent');
       this.orderProducts = [];
       this.initCart();
       }
@@ -88,8 +92,6 @@ export class CartService  {
   public async calculateCart(){
     let calcRes = await this.repo.calculateCart(this.promoCode, this.bonus, this.payByPromoBonus,
                                     this.orderProducts);
-    console.log('calcRes: ' + calcRes);
-
     calcRes.forEach(i => {
       let _found = false;
       let _prod: ClientOrderProducts = null;

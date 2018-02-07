@@ -25,12 +25,11 @@ import { QuotationProduct,
           LoSupplEntity,
           EnumPaymentMethod,
           Poll,PollQuestion,PollQuestionAnswer,
-          ClientPollAnswer
+          ClientPollAnswer, PersonInfo, CreditProduct, ClientBonus,
+          LoTrackLog
+
        } from '../../../model/index';
 
-import {CreditProduct} from '../../../model/credit-product';
-import {ClientBonus} from '../../../model/client-bonus';
-import {PersonInfo} from '../../../model/person';
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
@@ -56,6 +55,7 @@ export abstract class AbstractDataRepository {
 
   public async abstract getLoEntitiesForSupplier(supplierId: number):Promise<LoSupplEntity[]>;
   public async abstract getLoEntitiyById(entityId: number):Promise<LoEntity>;
+  public async abstract getLoTrackLogByOrderSpecId(id: number): Promise<LoTrackLog[]>;
   public async abstract getDeliveryDate(order: ClientOrderProducts, loEntityId: number): Promise<Date>;
   public async abstract getDeliveryCost(order: ClientOrderProducts, loEntityId: number): Promise<number>;
   public async abstract getProductCreditSize(idProduct: number, isSupplier: number): Promise<any>;
