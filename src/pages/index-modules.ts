@@ -38,5 +38,5 @@ export * from './balance/balance.module';
 export * from './poll/poll.module';
 export * from './novelty/novelty.module';
 export * from './order-details/order-details.module';
-export * from './payment-result/payment-result.module';
+export * from './payment/payment.module';
 export * from './warning-view/warning-view.module';

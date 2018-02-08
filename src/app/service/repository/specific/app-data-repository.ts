@@ -1,6 +1,6 @@
 import { RequestFactory } from './../../../core/app-core';
 import { Injectable } from "@angular/core";
-import { Http, URLSearchParams, Headers} from "@angular/http";
+import { Http, URLSearchParams} from "@angular/http";
 import "rxjs/add/operator/toPromise";
 import CacheProvider = Providers.CacheProvider;
 import {
@@ -2322,12 +2322,12 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getDataForRedirectToPaymaster(orderID: number, cartTotal: number, paySystem: number): Promise<any> {
+  public async getDataForRedirectToPaymaster(orderID: number, cartTotal: number): Promise<any> {
     try {
       const response = await this.http
         .post(
           redirectToPaymasterUrl,
-          {id: orderID, total: cartTotal, paySys: paySystem},
+          {id: orderID, total: cartTotal},
           RequestFactory.makeAuthHeader()
         ).toPromise();
       const resp = response.json();

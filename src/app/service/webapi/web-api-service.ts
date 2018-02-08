@@ -3819,154 +3819,26 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       }
 
       case "mredirectToPaymaster": {
-        /*let reqData = (<any>info.req)._body;
+        let reqData = (<any>info.req)._body;
         resOpt.body = {
-          LMI_MERCHANT_ID: 1984,
-          LMI_PAYMENT_AMOUNT: reqData.total,
-          LMI_SYS_PAYMENT_ID: reqData.id,
-          LMI_SUCCESS_URL: '',
-          LMI_FAIL_URL: '',
-          LMI_PAYMENT_NO: reqData.id,
-          LMI_PAYMENT_DESC: `Payment for order in Foxtrot for amount of ${reqData.total}UAH`,
-          //LMI_SIM_MODE: '0', //TODO: Remove Simulation Mode
-          //LMI_ALLOW_SDP: string,
-          LMI_PAYMENT_SYSTEM: reqData.paySys
-        };*/
-        resOpt.body = {
-          pay: `<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>PayMaster.ua Merchant</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="/css/premerchant/redesign/bootstrap.min.css">
-		<link rel="stylesheet" href="/css/premerchant/redesign/font-awesome.min.css">
-		<link rel="stylesheet" href="/css/premerchant/redesign/custom.css">
-		<link rel="stylesheet" href="/css/premerchant/redesign/style-default.css?v20170712">
-		<link rel="stylesheet" href="/css/premerchant/redesign/full-brendeng-mag.css">
-		<link rel="stylesheet" href="/css/premerchant/redesign/media.css">
-				<link rel="stylesheet" href="/css/premerchant/redesign/second-page.css">
-		<link rel="stylesheet" href="/css/premerchant/redesign/config-pay-ok.css">
-		<link rel="stylesheet" href="/css/premerchant/redesign/error-style.css?v20180126">
-		<link rel="stylesheet" href="/css/premerchant/redesign/error-media.css">
-						<link rel="shortcut icon" href="https://merchant.paymaster.ua/favicon.ico?v2" />
-		        		<script src="/js/premerchant/redesign/jquery-1.11.0.min.js"></script>
-		<script src="/js/premerchant/redesign/bootstrap.min.js"></script>
-		<script src="/js/premerchant/redesign/tooltipsy.min.js"></script>
-		<script src="/js/premerchant/redesign/tooptips.js"></script>
-					<script type="text/javascript">
-				$(document).ready(function() {
-					var LocalizedURLTemplate = '/.SelectedLanguage.';
-					$(document).on('click', '.LanguageSwitcherController', function() {
-						$('#LanguageSwitcher')
-								.prop('action', LocalizedURLTemplate.replace(/\\/\\.SelectedLanguage\\./, $(this).data('suffix')).replace('//', '/'))
-								.submit();
-						return false;
-					});
-				});
-				</script>
-			</head>
-	<body>
-		<div class="content full-brending">
-						<div class="above-header">
-									<form action="#" method="post" id="LanguageSwitcher">
-											</form>
-					<div class="dropdown lang-select">
-						<button class="btn dropdown-toggle" type="button" data-toggle="dropdown">
-							РУС &#9660;
-						</button>
-						<ul class="dropdown-menu" id="lang">
-															<li>
-									<a class="locales LanguageSwitcherController" href="#" id="locale_ru" data-suffix="/">
-										РУС									</a>
-								</li>
-															<li>
-									<a class="locales LanguageSwitcherController" href="#" id="locale_uk" data-suffix="/uk">
-										УКР									</a>
-								</li>
-															<li>
-									<a class="locales LanguageSwitcherController" href="#" id="locale_en" data-suffix="/en">
-										ENG									</a>
-								</li>
-													</ul>
-					</div>
-							</div>
-						<div class="header">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-lg-offset-1 col-md-offset-1 col-md-10 col-sm-12 col-lg-10 col-xs-12">
-							<div class="pay-master pull-right">
-								<img src="/img/premerchant/redesign/pay-master-logo.png" class="visible-lg img-responsive" alt="">
-								<img src="/img/premerchant/redesign/pay-master.png" class="hidden-lg  img-responsive" alt="">
-							</div>
-														<div class="col-sm-12 col-md-12 col-xs-12 col-lg-12 absolute-center">
-								<h1 class="text-center">Онлайн оплата заказа</h1>
-							</div>
-
-						</div>
-					</div>
-				</div>
-			</div>
-						<div class="main">
-				<div class="container">
-					<!--@ todo Добавить вывод ошибки JavaScript и Cookies-->
-										<div class="table-body col-sm-12 col-md-12 col-xs-12 col-lg-12">
-						<div class="ok-center col-sm-12 col-md-12 col-xs-12 col-lg-12" style="min-height: unset;">
-							<div class="warning col-md-6 col-md-offset-3 col-xs-12 col-xs-offset-0">
-								<img src="/img/premerchant/redesign/warning.png" class="col-xs-2" alt="">
-								<div class="col-xs-10" style="line-height: 30px; margin-top: -10px;">Используется некорректный протокол</div>
-							</div>
-														</div>
-					</div>
-									</div>
-			</div>
-			<div class="fixed-lg footer">
-				<div class="container-fluid">
-					<div class="col-lg-offset-1 col-md-offset-1 col-xs-12 col-sm-12 col-md-10 col-lg-10">
-						<div class="row">
-							<div class="footer-logos col-xs-12 col-sm-12 col-lg-5 col-md-12">
-								<div class="row">
-									<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-										<img src="/img/premerchant/redesign/footer-visa-unactive.png" class="img-responsive" alt="">
-									</div>
-									<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-										<img src="/img/premerchant/redesign/footer-MC-active.png" class="img-responsive" alt="">
-									</div>
-									<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-										<img src="/img/premerchant/redesign/footer-PCI-unactive.png" class="img-responsive" alt="">
-									</div>
-									<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-										<img src="/img/premerchant/redesign/footer-geotrust-unactive.png" class="img-responsive" alt="">
-									</div>
-								</div>
-							</div>
-							<ul class="adress col-xs-12 col-lg-7 col-md-12">
-								<li class="copywrite hidden-xs">© PayMaster.ua</li>
-								<li class="phone "><i class="fa fa-phone-square"></i> +38 (044) 390-03-99 <span>  (Пн-Пт  9:00-18:00) </span> </li>
-								<li class="mail"><i class="fa fa-envelope"></i> support@paymaster.ua</li>
-							</ul>
-							<p class="text-center hidden-sm hidden-md hidden-lg">© PayMaster.ua </p>
-						</div>
-					</div>
-				</div>
-
-				<div class="under-footer"></div>
-			</div>
-		</div>
-		
-					<script>
-				(function(i,s,o,g,r,a,m){
-					i['GoogleAnalyticsObject'] = r;
-					i[r] = i[r] || function() {(i[r].q = i[r].q || []).push(arguments)}, i[r].l = 1 * new Date();
-					a = s.createElement(o), m = s.getElementsByTagName(o)[0];
-					a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-				})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-				ga('create', 'UA-44008289-1', 'paymaster.ua');
-				ga('send', 'pageview');
-			</script>
-
-			</body>
-</html>`
+          form: `
+        <form action="https://lmi.paymaster.ua/" method="post" id="paymaster" name="paymaster">
+          <input type="hidden" name="LMI_MERCHANT_ID" value="1984" />
+          <input type="hidden" name="LMI_PAYMENT_NO" value="${reqData.id}" />
+          <input type="hidden" name="LMI_PAYMENT_AMOUNT" value="${reqData.total}" />
+          <input type="hidden" name="LMI_PAYMENT_DESC" value="Payment for order in Foxtrot for amount of ${reqData.total}UAH" />
+          <input type="hidden" name="LMI_SYS_PAYMENT_ID" value="${reqData.id}" />
+          <input type="hidden" name="LMI_SUCCESS_URL" value="" />
+          <input type="hidden" name="LMI_FAIL_URL" value="" />
+          <input type="hidden" name="LMI_PAYMENT_NOTIFICATION_URL" value="" />
+          <!--<input type="hidden" name="LMI_PAYMENT_SYSTEM" value="21" />-->
+          <!--<input type="hidden" name="LMI_SIM_MODE" value="0" />-->
+        </form>
+        <script type="text/javascript">
+        window.onload = function() {
+           document.forms["paymaster"].submit();
+        }
+        </script>`
         };
         return info.utils.createResponse$(() => resOpt);
       }

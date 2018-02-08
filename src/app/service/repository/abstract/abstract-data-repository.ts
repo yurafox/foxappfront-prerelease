@@ -115,5 +115,5 @@ export abstract class AbstractDataRepository {
   public async abstract getNoveltyDetailsByNoveltyId(id: number): Promise<NoveltyDetails[]>;
   public async abstract postProductView(idProduct: number, params: string);
   public async abstract postDeviceData(deviceData: DeviceData): Promise<DeviceData>
-  public async abstract getDataForRedirectToPaymaster(orderID: number, cartTotal: number, paySystem: number): Promise<any>;
+  public async abstract getDataForRedirectToPaymaster(orderID: number, cartTotal: number): Promise<any>;
 }

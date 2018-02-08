@@ -4,8 +4,6 @@ import {ComponentBase} from '../../components/component-extension/component-base
 import {CartService} from '../../app/service/cart-service';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
-declare var PMWidget: any;
-
 @IonicPage()
 @Component({
   selector: 'page-checkout',
@@ -37,7 +35,7 @@ export class CheckoutPage extends ComponentBase {
     console.log('Place Order!');
 
     if (this.pmtMethodID === 2) {
-      this.navCtrl.push('PaymentResultPage').catch(err => console.error(err));
+      this.navCtrl.push('PaymentPage').catch(err => console.error(err));
     }
   }
 

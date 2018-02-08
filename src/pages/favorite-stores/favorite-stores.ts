@@ -3,7 +3,6 @@ import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angula
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {City, Store, User} from "../../app/model";
 import {AbstractAccountRepository, AbstractDataRepository} from "../../app/service";
-import {MapPage} from "../";
 
 @IonicPage()
 @Component({
@@ -16,8 +15,6 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
   stores: Array<{ city: City, store: Store, hasReviews?: boolean }>;
   foxStores: Array<{ id: number, stores: Store[] }>;
   cities: City[];
-
-  mapPage: MapPage;
 
   constructor(private navCtrl: NavController, private navParams: NavParams, private repo: AbstractDataRepository,
               private _account: AbstractAccountRepository, private alertCtrl: AlertController) {

@@ -2,7 +2,6 @@ import {Component, ViewChild} from '@angular/core';
 import {App, NavController, IonicPage} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {AbstractDataRepository} from "../../app/service/index";
-import {Product} from '../../app/model/product';
 import {SearchService} from '../../app/service/search-service';
 
 export enum PageMode {
@@ -17,6 +16,7 @@ export enum PageMode {
   templateUrl: 'home.html',
 })
 export class HomePage extends ComponentBase {
+  test = false; // For testing payment system TODO: Remove this
 
 //  searchMode = false;
 
@@ -94,6 +94,11 @@ export class HomePage extends ComponentBase {
     this.content = await this._repo.getPageContent(1);
     this.baseProducts = await this.srchService.searchResults;
 
+  }
+
+  // For testing payment system TODO: Remove this
+  testPaymentResult() {
+    this.nav.push('PaymentPage').catch(err => console.error(err));
   }
 
 
