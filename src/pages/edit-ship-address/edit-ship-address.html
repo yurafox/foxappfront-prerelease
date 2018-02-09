@@ -47,14 +47,14 @@
       <div *ngIf="delivery === 0">
         <ion-row>
           <ion-col>
-            <button class="f-btn-add-cart" ion-button block (click)="saveAddress()">Save this address</button>
+            <button class="f-btn-action" ion-button block (click)="saveAddress()">Save this address</button>
           </ion-col>
         </ion-row>
       </div>
       <div *ngIf="delivery === 1">
         <ion-row>
           <ion-col>
-            <button class="f-btn-add-cart" ion-button block (click)="saveAddress()">Deliver to this address</button>
+            <button class="f-btn-action" ion-button block (click)="saveAddress()">Deliver to this address</button>
           </ion-col>
         </ion-row>
       </div>

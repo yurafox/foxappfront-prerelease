@@ -5440,23 +5440,26 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       case "mredirectToPaymaster": {
         let reqData = (<any>info.req)._body;
         resOpt.body = {
-          LMI_MERCHANT_ID: 1984,
-          LMI_PAYMENT_AMOUNT: reqData.total,
-          LMI_SYS_PAYMENT_ID: reqData.id,
-          LMI_SUCCESS_URL: '',
-          LMI_FAIL_URL: '',
-          LMI_PAYMENT_NO: reqData.id,
-          LMI_PAYMENT_DESC: `Payment for order in Foxtrot for amount of ${reqData.total}UAH`,
-          LMI_SIM_MODE: '0', //TODO: Remove Simulation Mode
-          //LMI_ALLOW_SDP: string,
-          LMI_PAYMENT_SYSTEM: reqData.paySys
+          form: `
+        <form action="https://lmi.paymaster.ua/" method="post" id="paymaster" name="paymaster">
+          <input type="hidden" name="LMI_MERCHANT_ID" value="1984" />
+          <input type="hidden" name="LMI_PAYMENT_NO" value="${reqData.id}" />
+          <input type="hidden" name="LMI_PAYMENT_AMOUNT" value="${reqData.total}" />
+          <input type="hidden" name="LMI_PAYMENT_DESC" value="Payment for order in Foxtrot for amount of ${reqData.total}UAH" />
+          <input type="hidden" name="LMI_SYS_PAYMENT_ID" value="${reqData.id}" />
+          <input type="hidden" name="LMI_SUCCESS_URL" value="" />
+          <input type="hidden" name="LMI_FAIL_URL" value="" />
+          <input type="hidden" name="LMI_PAYMENT_NOTIFICATION_URL" value="" />
+          <!--<input type="hidden" name="LMI_PAYMENT_SYSTEM" value="21" />-->
+          <!--<input type="hidden" name="LMI_SIM_MODE" value="0" />-->
+        </form>
+        <script type="text/javascript">
+        window.onload = function() {
+           document.forms["paymaster"].submit();
+        }
+        </script>`
         };
-        if (reqData.id >= 0) {
-          return info.utils.createResponse$(() => resOpt);
-        }
-        else {
-          return null;
-        }
+        return info.utils.createResponse$(() => resOpt);
       }
 
       default:

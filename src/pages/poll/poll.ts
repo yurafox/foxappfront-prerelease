@@ -83,7 +83,7 @@ export class PollPage extends ComponentBase{
         buttons:[
           {
             text: 'OK',
-            handler: () => {this.navCtrl.push('HomePage')}
+            handler: () => {this.navCtrl.setRoot('HomePage')}
           }
         ]
       });

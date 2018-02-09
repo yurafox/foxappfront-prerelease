@@ -167,14 +167,22 @@ export class CartService  {
   }
 
   public get cartGrandTotal(): number {
-    return (this.orderTotal - this.promoCodeDiscount
-              - this.itemsBonusDisc - this.itemsPromoBonusDisc);
+    return +(this.orderTotal - this.promoCodeDiscount
+              - this.itemsBonusDisc - this.itemsPromoBonusDisc).toFixed(2);
   }
 
   public async initBonusData() {
     let cl = await (<any>this.userService).profile.client_p;
-    this.availBonus = cl.bonusBalance;
-    this.availPromoBonus = cl.actionBonusBalance;
+    if (cl.bonusBalance) {
+      this.availBonus = cl.bonusBalance;
+    } else {
+      this.availBonus = 0;
+    }
+    if (cl.actionBonusBalance) {
+      this.availPromoBonus = cl.actionBonusBalance;
+    } else {
+      this.availPromoBonus = 0;
+    }
   }
 
   public get mostExpensiveItem(): ClientOrderProducts {

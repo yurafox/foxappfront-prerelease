@@ -15,7 +15,7 @@ import {FoxApp} from './app.component';
 
 import {ReactiveFormsModule} from '@angular/forms';
 
-import {HomePage} from '../pages/index';
+import {HomePage} from '../pages/home/home';
 
 import {AppConstants} from './app-constants';
 import {

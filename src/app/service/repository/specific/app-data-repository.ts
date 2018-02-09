@@ -1,7 +1,7 @@
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import { Injectable } from "@angular/core";
-import { Http, URLSearchParams, Headers } from "@angular/http";
+import { Http, URLSearchParams} from "@angular/http";
 import "rxjs/add/operator/toPromise";
 import CacheProvider = Providers.CacheProvider;
 import {
@@ -2399,12 +2399,12 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getDataForRedirectToPaymaster(orderID: number, cartTotal: number, paySystem: number): Promise<any> {
+  public async getDataForRedirectToPaymaster(orderID: number, cartTotal: number): Promise<any> {
     try {
       const response = await this.http
         .post(
           redirectToPaymasterUrl,
-          {id: orderID, total: cartTotal, paySys: paySystem},
+          {id: orderID, total: cartTotal},
           RequestFactory.makeAuthHeader()
         ).toPromise();
       const resp = response.json();
@@ -2413,24 +2413,6 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
 
-      /*const body = Object.keys(resp).map((key) => {
-        return encodeURIComponent(key) + '=' + encodeURIComponent(resp[key]);
-      }).join('&');*/
-      /*let headers = new Headers();
-      headers.set('Content-Type',
-        'application/x-www-form-urlencoded');
-      const val = await this.http.post('https://lmi.paymaster.ua/', body, {headers: headers}
-      ).toPromise().catch(err=>console.log(err));*/
-      /*const val = await fetch('https://lmi.paymaster.ua/', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: body
-      }).catch(err=>console.log(err));
-      if (val) {
-        return val;
-      } else {
-        return resp;
-      }*/
       return resp;
     } catch (err) {
       return await this.handleError(err);

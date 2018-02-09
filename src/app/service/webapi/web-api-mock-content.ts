@@ -110,11 +110,10 @@ const SAMSUNGGS8 = `<h3 class="f-novelty-h3">{{name}}</h3>
 //#endregion
 //#region ACTION
 const ACTION = `<div style="padding: 20px 20px;">
-  <span style="font-size:18px;"><b>Акция</b></span>
   <div style="text-align: center">
     <div style="width: 214px;margin:0px auto">
      <img style="margin-top:10px;width: auto;max-width: 100%;height: auto;max-height: 100%" src='{{img_url}}.jpg'>
-     <div style="margin-top:10px"><span style="font-size: 16px;"><b>{{name}}</b></span></div>
+     <div style="margin-top:10px"><span style="font-size: 16px;"><b>Акция {{name}}</b></span></div>
     </div>
   <div style="margin-top:10px;"><span style="font-size: 14px"><b>Осталось</b> <b>{{expire?.days}}</b> дн. <b>{{expire?.hours}}</b> ч. <b>{{expire?.minutes}}</b> м. <b>{{expire?.seconds}}</b> с.</span>
 </div>

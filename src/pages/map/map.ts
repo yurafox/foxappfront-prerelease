@@ -1,5 +1,5 @@
 import {Component, ViewChild, ElementRef, OnInit, ChangeDetectorRef} from '@angular/core';
-import {Platform, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {Platform, IonicPage, NavController, NavParams, AlertController} from 'ionic-angular';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {/*GoogleMap,*/ LatLng} from '@ionic-native/google-maps';
 import {City, Store} from "../../app/model/index";
@@ -55,7 +55,8 @@ export class MapPage extends ComponentBase implements OnInit {
 
   constructor(private nav: NavController, private navParams: NavParams, private platform: Platform,
               private repo: AbstractDataRepository, private geolocation: Geolocation,
-              private launchNavigator: LaunchNavigator, private changeDetector: ChangeDetectorRef) {
+              private launchNavigator: LaunchNavigator, private changeDetector: ChangeDetectorRef,
+              private alertCtrl: AlertController) {
     super();
     this.defaultCityId = 0;
     this.shopList = [{label: '', value: null}];
@@ -294,7 +295,17 @@ export class MapPage extends ComponentBase implements OnInit {
         console.log(`Couldn't get available navigation apps: ${err}`);
       });
     } catch (err) {
-      window.alert('Error occurred: ' + err);
+      let alert = this.alertCtrl.create({
+        title: 'Something wrong with map',
+        message: 'Please, check your internet connection.',
+        buttons: [
+          {
+            text: 'OK',
+            handler: () => {this.nav.pop().catch((err) => console.log(`Couldn't pop: ${err}`))}
+          }
+        ]
+      });
+      alert.present().catch((err) => console.log(`Alert error: ${err}`));
     }
   }
 
@@ -451,7 +462,7 @@ export class MapPage extends ComponentBase implements OnInit {
             success => console.log('Launched navigator'),
             error => window.alert('Error launching navigator: ' + error)
           );
-        /*this.launchNavigator.navigate([endpoint.lat, endpoint.lng],{
+        this.launchNavigator.navigate([endpoint.lat, endpoint.lng],{
           app: this.launchNavigator.APP.USER_SELECT,
           transportMode: this.launchNavigator.TRANSPORT_MODE.WALKING,
           appSelection: {
@@ -469,7 +480,7 @@ export class MapPage extends ComponentBase implements OnInit {
           }
         })
           .then(success => console.log('Launched navigator'))
-          .catch(error => console.error('Error launching navigator: ' + JSON.stringify(error, null, 2)));*/
+          .catch(error => console.error('Error launching navigator: ' + JSON.stringify(error, null, 2)));
       }
     });
   }

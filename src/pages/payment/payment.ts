@@ -1,58 +1,37 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
-
-declare var PMWidget: any;
+import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
+import {CartService} from "../../app/service/cart-service";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @IonicPage()
 @Component({
   selector: 'page-payment',
   templateUrl: 'payment.html',
 })
-export class PaymentPage extends ComponentBase implements AfterViewInit {
+export class PaymentPage extends ComponentBase implements OnInit {
+  document: any;
+  formInput: any;
+  fail: boolean;
+  error: boolean;
+  success: boolean;
 
-  frameInput: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private repo: AbstractDataRepository,
+              private cart: CartService, private sanitizer: DomSanitizer) {
     super();
-    this.frameInput = this.navParams.data;
   }
 
-  ngAfterViewInit() {
-    let lang: string;
-    switch(this.userService.lang) {
-      case 1: {lang = 'ru'; break;}
-      case 2: {lang = 'uk'; break;}
-      case 3: {lang = 'en'; break;}
-      default: lang = 'ru';
+  async ngOnInit() {
+    this.document = await this.repo.getDataForRedirectToPaymaster(this.cart.order.id, this.cart.cartGrandTotal);
+    //this.document = await this.repo.getDataForRedirectToPaymaster(1000, 5499); // For testing payment system TODO: Remove this
+    if (this.document.form && (this.document.pay !== null)) {
+      this.formInput = await this.sanitizer.bypassSecurityTrustHtml(this.document.form);
     }
-    PMWidget.init({
-      embedTarget: '#paymaster',
-      closeOnSuccess: true,
-      closeOnFail: true,
-      mode: 'embed',
-      params: {
-        "LMI_MERCHANT_ID":    this.frameInput.LMI_MERCHANT_ID,
-        "LMI_PAYMENT_NO":     this.frameInput.LMI_PAYMENT_NO,
-        "LMI_PAYMENT_AMOUNT": this.frameInput.LMI_PAYMENT_AMOUNT,
-        "LMI_PAYMENT_DESC":   this.frameInput.LMI_PAYMENT_DESC
-      },
-      language: lang
-    })
-      .on('ready', function() {
-        console.log('READY');
-      })
-      .on('success', function() {
-        console.log('SUCCESS');
-      })
-      .on('fail', function(params) {
-        console.log('FAIL ' + params.message);
-      })
-      .on('close', function() {
-        console.log('CLOSE');
-      })
-      .on('error', function() {
-        console.log('ERROR');
-      })
-    ;
   }
+
+  toHomePage() {
+    this.navCtrl.setRoot('HomePage').catch(err => console.error(err));
+  }
+
 }
