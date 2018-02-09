@@ -35,15 +35,21 @@ export class ItemBase extends ComponentBase implements OnInit {
 
   async ngOnInit() {
     super.ngOnInit();
-    this.quotes = await this.repo.getQuotationProductsByProductId(this.product.id);
-    this.noOfQuotes = this.quotes.length;
 
-    // Определяем самое дешевое предложение и сохраняем его в св-во valueQuot
-    this.quotes.forEach(val => {
-      if ((val.price < this.Price) || !(this.valueQuot)) {
-          this.valueQuot = val;
-      }
-    });
+    this.quotes = await this.repo.getQuotationProductsByProductId(this.product.id);
+    this.noOfQuotes = this.quotes.filter((i) => {return (i.stockQuant>0);}).length;
+    this.valueQuot = await this.repo.getValueQuotByProduct(this.product.id);
+
+    /*
+
+        // Определяем самое дешевое предложение и сохраняем его в св-во valueQuot
+        this.quotes.forEach(val => {
+          if ((val.price < this.Price) || !(this.valueQuot)) {
+              this.valueQuot = val;
+          }
+        });
+
+    */
     if (this.valueQuot) {
       this.productStorePlaces = await this.repo.getProductStorePlacesByQuotId(this.valueQuot.id);
     };

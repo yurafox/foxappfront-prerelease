@@ -40,7 +40,10 @@ export abstract class AbstractDataRepository {
   public async abstract getCurrencies(cacheForce: boolean): Promise<Currency[]>;
   public async abstract getLocale(cacheForce: boolean): Promise<Lang[]>;
 
-  public async abstract getQuotationProductById(qpId: number): Promise<QuotationProduct>
+  public async abstract getQuotationProductById(qpId: number): Promise<QuotationProduct>;
+  public async abstract getByItAgainQP(originalQP: QuotationProduct): Promise<QuotationProduct>;
+  public async abstract getValueQuotByProduct(id: number): Promise<QuotationProduct>;
+
   public async abstract getQuotationProductsByProductId(productId: number): Promise<QuotationProduct[]>;
   public async abstract getQuotationProductsByQuotationId(quotationId:number) : Promise<QuotationProduct[]>;
   public async abstract getProductStorePlacesByQuotId(quotId: number): Promise<ProductStorePlace[]>;

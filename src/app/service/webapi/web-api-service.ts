@@ -208,7 +208,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6293680,
       price: 349.0,
       maxDeliveryDays: 2,
-      stockQuant: 102.0,
+      stockQuant: 0, //102
       actionPrice: null
     },
     {
@@ -217,7 +217,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6280637,
       price: 5220.0,
       maxDeliveryDays: 5,
-      stockQuant: 25,
+      stockQuant: 2,
       actionPrice: 5100.0
     },
     {
@@ -226,7 +226,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       idProduct: 6293680,
       price: 330.0,
       maxDeliveryDays: 2,
-      stockQuant: 85.0,
+      stockQuant: 0, //50
       actionPrice: null
     },
     {

@@ -25,7 +25,8 @@ export class ItemQuotesPage extends ComponentBase implements OnInit {
   }
 
   async ngOnInit() {
-    this.quotes = await this.repo.getQuotationProductsByProductId(this.product.id);
+    this.quotes = (await this.repo.getQuotationProductsByProductId(this.product.id))
+                    .filter((i) => {return (i.stockQuant>0);});
   }
 
   onAddToCart(quote: QuotationProduct, price: number) {
