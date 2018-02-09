@@ -53,3 +53,4 @@ export * from './client-bonus';
 export * from './lo-track-log';
 export * from './person';
 export * from './client-bonus';
+export * from './category';

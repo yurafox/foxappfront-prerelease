@@ -291,7 +291,6 @@ export class RequestFactory {
 
     let searchParams = new URLSearchParams();
     params.forEach(val => {searchParams.set(val.key, val.value);});
-
     return {search: searchParams};
    }
    /** only auth headers (token,uid)

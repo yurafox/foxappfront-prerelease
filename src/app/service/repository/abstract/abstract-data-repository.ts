@@ -26,8 +26,8 @@ import { QuotationProduct,
           EnumPaymentMethod,
           Poll,PollQuestion,PollQuestionAnswer,
           ClientPollAnswer, PersonInfo, CreditProduct, ClientBonus,
-          LoTrackLog
-
+          LoTrackLog,
+          Category
        } from '../../../model/index';
 
 
@@ -119,4 +119,5 @@ export abstract class AbstractDataRepository {
   public async abstract postProductView(idProduct: number, params: string);
   public async abstract postDeviceData(deviceData: DeviceData): Promise<DeviceData>
   public async abstract getDataForRedirectToPaymaster(orderID: number, cartTotal: number, paySystem: number): Promise<any>;
+  public async abstract getCategories(): Promise<Category[]>;
 }

@@ -1,4 +1,4 @@
-import {Component, Renderer2, AfterViewInit, AfterViewChecked,ElementRef} from '@angular/core';
+import {Component, Renderer2, AfterViewInit,ElementRef} from '@angular/core';
 import {NavController, NavParams, ViewController} from "ionic-angular"
 import {DropdownListComponent} from "../dropdown-list/dropdown-list";
 
@@ -6,7 +6,7 @@ import {DropdownListComponent} from "../dropdown-list/dropdown-list";
   selector: 'dropdown-view',
   templateUrl: 'dropdown-view.html'
 })
-export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
+export class DropdownViewComponent implements AfterViewInit{
   public parent:DropdownListComponent;
   private proxyObj:any;
   constructor(private nav: NavController,
@@ -36,13 +36,9 @@ export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
          }
       }
     }
+    
+    this.scrollToIdentity();
   }
-
-  ngAfterViewChecked() {
-    let node:HTMLElement=document.getElementById(this.currentIdentifier);
-    if(node)
-      node.scrollIntoView();
- }
 
   public isActive(item: any): boolean {
     return item[this.valueName] === this.bindedObject[this.valueName];
@@ -126,7 +122,12 @@ export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
       }
     }
   }
-
+  
+  private scrollToIdentity():void {
+    let node:HTMLElement=document.getElementById(this.currentIdentifier);
+    if(node)
+      node.scrollIntoView();
+  }
   public getImportantStyle(){
     return (this.bindedStore.length < 10) ? {'height':'auto'}: null;
   }
