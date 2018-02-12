@@ -16,7 +16,7 @@ export enum PageMode {
   templateUrl: 'home.html',
 })
 export class HomePage extends ComponentBase {
-  test = false; // For testing payment system TODO: Remove this
+  test = true; // For testing payment system TODO: Remove this
 
 //  searchMode = false;
 

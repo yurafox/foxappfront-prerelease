@@ -1,6 +1,6 @@
 import { RequestFactory } from './../../../core/app-core';
 import { Injectable } from "@angular/core";
-import { Http, URLSearchParams} from "@angular/http";
+import { Http, URLSearchParams, Headers} from "@angular/http";
 import "rxjs/add/operator/toPromise";
 import CacheProvider = Providers.CacheProvider;
 import {
@@ -2335,7 +2335,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 201 && response.status !== 200) {
         throw new Error("server side status error");
       }
-
+      console.log(response);
       return resp;
     } catch (err) {
       return await this.handleError(err);

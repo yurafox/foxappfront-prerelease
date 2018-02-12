@@ -27,6 +27,7 @@ import { BonusPayComponent } from './bonus-pay/bonus-pay';
 import { ErrorComponent } from './error/error';
 import { PollBannerComponent } from './poll-banner/poll-banner';
 import { GridHrComponent } from './grid-hr/grid-hr';
+import { ProgressBarComponent } from './progress-bar/progress-bar';
 
 @NgModule({
   declarations: [
@@ -54,12 +55,13 @@ import { GridHrComponent } from './grid-hr/grid-hr';
     BonusPayComponent,
     ErrorComponent,
     PollBannerComponent,
-    GridHrComponent
+    GridHrComponent,
+    ProgressBarComponent
   ],
   entryComponents: [
     CustomPopupComponent,
     DropdownViewComponent,
-    DropdownListComponent
+    DropdownListComponent,
   ],
 
   imports: [
@@ -92,7 +94,8 @@ import { GridHrComponent } from './grid-hr/grid-hr';
     BonusPayComponent,
     ErrorComponent,
     PollBannerComponent,
-    GridHrComponent
+    GridHrComponent,
+    ProgressBarComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

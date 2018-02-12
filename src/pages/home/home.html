@@ -22,6 +22,7 @@
   </div>
 
   <div *ngIf="pageMode === 3">
+    <progress-bar [active]="srchService.progressBarStatus"></progress-bar>
     <items-list [products]="baseProducts"></items-list>
   </div>
 
