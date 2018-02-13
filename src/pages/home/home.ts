@@ -16,7 +16,6 @@ export enum PageMode {
   templateUrl: 'home.html',
 })
 export class HomePage extends ComponentBase {
-  test = true; // For testing payment system TODO: Remove this
 
 //  searchMode = false;
 
@@ -95,11 +94,4 @@ export class HomePage extends ComponentBase {
     this.baseProducts = await this.srchService.searchResults;
 
   }
-
-  // For testing payment system TODO: Remove this
-  testPaymentResult() {
-    this.nav.push('PaymentPage').catch(err => console.error(err));
-  }
-
-
 }

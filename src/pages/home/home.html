@@ -4,9 +4,6 @@
 </ion-header>
 
 <ion-content>
-  <!-- For testing payment system TODO: Remove this -->
-  <button ion-button block class="f-btn-action" (click)="testPaymentResult()" *ngIf="test === true">Test Payment</button>
-
   <div *ngIf="content && (pageMode === 1)">
       <html-outlet [html]="content" [context]="this"></html-outlet>
   </div>

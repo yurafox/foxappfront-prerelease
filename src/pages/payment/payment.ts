@@ -21,20 +21,15 @@ export class PaymentPage extends ComponentBase implements OnInit {
   constructor(public navCtrl: NavController, public navParams: NavParams, private cart: CartService,
               private sanitizer: DomSanitizer, private changeDetector: ChangeDetectorRef) {
     super();
-    (<any>window).windowLocation = window.location.href;
     (<any>window).appPage = this;
     this.formInput = '';
     if (this.cart.order) {
-      if (this.cart.order.id && this.cart.cartGrandTotal) { // for test purpose TODO: Remove this 2 if
+      if (this.cart.order.id && this.cart.cartGrandTotal) {
         this.id = this.cart.order.id;
         this.total = this.cart.cartGrandTotal;
-      } else { // for test purpose TODO: Remove this else
-        this.id = 1;
-        this.total = 1.99;
       }
-    } else { // for test purpose TODO: Remove this else
-      this.id = 1;
-      this.total = 1.99;
+    } else {
+      this.navCtrl.pop();
     }
   }
 
@@ -54,25 +49,25 @@ export class PaymentPage extends ComponentBase implements OnInit {
     }
     switch (event.data) {
       case 'success': {
-        console.log('success'); //TODO: Remove
-        //window.location.href = (<any>window).windowLocation;
-        console.log((<any>window).appPage);
         (<any>window).appPage.success = true;
         (<any>window).appPage.formInput = null;
         (<any>window).appPage.changeDetector.detectChanges();
         break;
       }
       case 'fail': {
-        console.log('fail'); //TODO: Remove
-        window.location.href = (<any>window).windowLocation;
+        (<any>window).appPage.fail = true;
+        (<any>window).appPage.formInput = null;
+        (<any>window).appPage.changeDetector.detectChanges();
         break;
       }
       case 'error': {
-        console.log('error'); //TODO: Remove
-        window.location.href = (<any>window).windowLocation;
+        (<any>window).appPage.error = true;
+        (<any>window).appPage.formInput = null;
+        (<any>window).appPage.changeDetector.detectChanges();
         break;
       }
       default: {
+        (<any>window).appPage.toHomePage();
         console.log('Inappropriate data received');
         break;
       }
