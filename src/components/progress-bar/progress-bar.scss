@@ -1,128 +1,8 @@
 progress-bar {
-  /*// IONIC DEFAULT THEME COLORS
-  $colors: (
-    primary:    #ffad42,
-    danger:     #f53d3d,
-    light:      #f4f4f4,
-    dark:       #222
-  );
-
-  // https://css-tricks.com/html5-progress-element/
-  .progress, progress[value] {
-    width:              100%;
-    border:             none;
-    margin:             5px 0;
-    height:             5px;
-    display:            block;
-    appearance:         none;
-    -webkit-appearance: none;
-    background-color:  lighten( orangered, 35% );
-    &::-webkit-progress-bar {
-      background: lighten(map-get($colors, primary), 35%);
-    }
-    &::-webkit-progress-value {
-      background-color: map-get($colors, primary);
-    }
-  }
-
-  progress-bar .progress-materializecss {
-    background-color: lighten( map-get($colors, danger), 35% );
-  }
-
-  // http://materializecss.com/preloader.html
-  // https://github.com/Dogfalo/materialize/blob/master/dist/css/materialize.css
-  .progress-materializecss {
-    margin:             5px 0;
-    position: relative;
-    height: 4px;
-    display: block;
-    width: 100%;
-    background-color:  lighten( map-get($colors, primary), 35% );
-    border-radius: 2px;
-    margin: 0.5rem 0 1rem 0;
-    overflow: hidden;
-    .indeterminate {
-      background-color: map-get($colors, primary);
-      &:before{
-        content:          '';
-        position:         absolute;
-        background-color: inherit;
-        top:              0;
-        left:             0;
-        bottom:           0;
-        will-change:      left, right;
-        animation:        indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
-      }
-      &:after {
-        content:          '';
-        position:         absolute;
-        background-color: inherit;
-        top:              0;
-        left:             0;
-        bottom:           0;
-        will-change:      left, right;
-        animation:        indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
-        animation-delay: 1.15s;
-      }
-    }
-  }
-
-  @keyframes indeterminate {
-    0% {
-      left: -35%;
-      right: 100%;
-    }
-    60% {
-      left: 100%;
-      right: -90%;
-    }
-    100% {
-      left: 100%;
-      right: -90%;
-    }
-  }
-
-  @keyframes indeterminate-short {
-    0% {
-      left: -200%;
-      right: 100%;
-    }
-    60% {
-      left: 107%;
-      right: -8%;
-    }
-    100% {
-      left: 107%;
-      right: -8%;
-    }
-  }
-  // http://materializecss.com/preloader.html
-  // https://github.com/Dogfalo/materialize/blob/master/dist/css/materialize.css
-
-  ///////////////////////////
-  //  IRRELEVANTS STYLES  //
-  html, body {
-    height:  100vh;
-    margin:  0;
-    padding: 0;
-  }
-
-  body {
-    display:         flex;
-    align-items:     center;
-    justify-content: center;
-  }
-
-  .progress-container{
-    width: 75%;
-  }
-  //  IRRELEVANTS STYLES  //
-  /////////////////////////*/
-
   .progress-bar {
     //background-color: #1a1a1a;
     margin: 0;
-    height: 8px;
+    height: 6px;
     padding: 0;
     width: 100%;
     //margin: 70px 0 20px 0;
@@ -153,10 +33,6 @@ progress-bar {
 
   /*---------------------------*/
 
-  .blue span {
-    background-color: #34c2e3;
-  }
-
   .orange span {
     background-color: #fecf23;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#fecf23), to(#fd9215));
@@ -165,16 +41,6 @@ progress-bar {
     background-image: -ms-linear-gradient(top, #fecf23, #fd9215);
     background-image: -o-linear-gradient(top, #fecf23, #fd9215);
     background-image: linear-gradient(top, #fecf23, #fd9215);
-  }
-
-  .green span {
-    background-color: #a5df41;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#a5df41), to(#4ca916));
-    background-image: -webkit-linear-gradient(top, #a5df41, #4ca916);
-    background-image: -moz-linear-gradient(top, #a5df41, #4ca916);
-    background-image: -ms-linear-gradient(top, #a5df41, #4ca916);
-    background-image: -o-linear-gradient(top, #a5df41, #4ca916);
-    background-image: linear-gradient(top, #a5df41, #4ca916);
   }
 
   /*---------------------------*/
@@ -221,6 +87,7 @@ progress-bar {
 
   .shine span {
     position: relative;
+    top: -6px;
   }
 
   .shine span::after {
@@ -243,14 +110,14 @@ progress-bar {
   @-webkit-keyframes animate-shine {
     0% {opacity: 0; width: 0;}
     50% {opacity: .5;}
-    100% {opacity: 0; width: 95%;}
+    100% {opacity: 0; width: 100%;}
   }
 
 
   @-moz-keyframes animate-shine {
     0% {opacity: 0; width: 0;}
     50% {opacity: .5;}
-    100% {opacity: 0; width: 95%;}
+    100% {opacity: 0; width: 100%;}
   }
 
   /*---------------------------*/

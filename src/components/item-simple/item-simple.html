@@ -1,0 +1,41 @@
+<ion-grid class="f-no-padding" (click)="openItemDetails(product)">
+  <ion-col col-auto>
+
+    <ion-row style="text-align: center">
+      <div style="width:250px;margin:0px auto;padding:10px;text-align: center;">
+        <img style="margin-top:10px;width: auto;max-width: 100%;height: auto;max-height: 100%" [src]="product.imageUrl">
+      </div>
+    </ion-row>
+
+    <ion-row *ngIf="1 <= simplicity">
+      <ion-col class="f-item-col">
+        <span class="f-size-small">{{product?.manufacturer?.name}}</span>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col class="f-item-col f-product">
+        {{product?.name}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="3 === simplicity">
+      <ion-col nowrap class="f-item-col">
+        <product-rating [product]=product></product-rating>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="2 <= simplicity">
+      <ion-col class="f-item-col f-product">
+        <b>{{product.price | localeCurrency:userService.currency}}</b>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="(3 === simplicity) && product.bonuses">
+      <ion-col class="f-item-col">
+        <bonus [bonusCnt]="product.bonuses"></bonus>
+      </ion-col>
+    </ion-row>
+
+  </ion-col>
+</ion-grid>

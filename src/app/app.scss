@@ -260,6 +260,10 @@ ion-header {
   }
 }
 
+ion-header.header.header-md::after {
+  height: 0;
+}
+
 
 ////// FONTS
 .f-page-header {

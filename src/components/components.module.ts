@@ -28,6 +28,7 @@ import { ErrorComponent } from './error/error';
 import { PollBannerComponent } from './poll-banner/poll-banner';
 import { GridHrComponent } from './grid-hr/grid-hr';
 import { ProgressBarComponent } from './progress-bar/progress-bar';
+import { ItemSimpleComponent } from './item-simple/item-simple';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { ProgressBarComponent } from './progress-bar/progress-bar';
     ErrorComponent,
     PollBannerComponent,
     GridHrComponent,
-    ProgressBarComponent
+    ProgressBarComponent,
+    ItemSimpleComponent
   ],
   entryComponents: [
     CustomPopupComponent,
@@ -95,7 +97,8 @@ import { ProgressBarComponent } from './progress-bar/progress-bar';
     ErrorComponent,
     PollBannerComponent,
     GridHrComponent,
-    ProgressBarComponent
+    ProgressBarComponent,
+    ItemSimpleComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
