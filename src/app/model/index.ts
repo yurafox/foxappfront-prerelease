@@ -50,3 +50,7 @@ export * from './client-poll-answer';
 export * from './novelty-det';
 export * from './device-data';
 export * from './client-bonus';
+export * from './lo-track-log';
+export * from './person';
+export * from './client-bonus';
+export * from './category';

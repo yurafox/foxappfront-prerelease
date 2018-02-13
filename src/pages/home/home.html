@@ -23,7 +23,10 @@
 
   <div *ngIf="pageMode === 3">
     <progress-bar [active]="srchService.progressBarStatus"></progress-bar>
-    <items-list [products]="baseProducts"></items-list>
+    <div class="f-color-secondary f-padding-lr-10 f-padding-t-10" *ngIf="(baseProducts) && (baseProducts.length == 0)">
+      Your search "{{srchService.lastSearch}}" did not match any products
+    </div>
+    <items-list [products]="baseProducts" *ngIf="(baseProducts) && (baseProducts.length > 0)"></items-list>
   </div>
 
 </ion-content>

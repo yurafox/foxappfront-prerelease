@@ -4,11 +4,11 @@
 <ion-content padding>
   <ion-grid>
     <ion-row wrap>
-      <ion-col col-6 col-md-6 col-lg-3 col-xl-3 (click)="onCategoryClick(item.url)" *ngFor="let item of categoriesArray">
+      <ion-col col-6 col-md-6 col-lg-3 col-xl-3 (click)="onCategoryClick(item.prefix)" *ngFor="let item of categoryForShow">
         <div text-center>
-          <img [src]="item.categoryImg" class="cat-icon">
+          <img [src]='convertImg(item.icon)' class="cat-icon">
           <br>
-          <span class="cat-item-caption">{{item.caption}}</span>
+          <span class="cat-item-caption">{{item.name}}</span>
         </div>
       </ion-col>
     </ion-row>

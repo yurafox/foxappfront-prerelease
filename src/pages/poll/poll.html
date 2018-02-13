@@ -25,10 +25,8 @@
           <div *ngIf='qa.questionObj.answerType==listTextType'>
             <ion-row >
               <ion-col col-2 text-center>
-                <div class="pure-radiobutton">
                   <input type="radio" class="radio" name=`${radiogroup}-{{qa.questionObj.id}}`
                                       (change)="onSelectionOwnerChange(qa)">
-                </div>
               </ion-col>
                 <ion-col>
                  <span>Ваш вариант</span>

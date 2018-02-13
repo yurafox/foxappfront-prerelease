@@ -1,3 +1,4 @@
+import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import { Injectable } from "@angular/core";
 import { Http, URLSearchParams, Headers} from "@angular/http";
@@ -35,14 +36,13 @@ import {
   DeviceData,
   ReviewAnswer,
   Poll,PollQuestion,PollQuestionAnswer,
-  ClientPollAnswer
+  ClientPollAnswer, CreditProduct, ClientBonus, PersonInfo,
+  LoTrackLog,
+  Category
 } from '../../../model/index';
 
-import {CreditProduct} from '../../../model/credit-product';
 import { AbstractDataRepository } from '../../index';
 import { Providers, System } from "../../../core/app-core";
-import {ClientBonus} from '../../../model/client-bonus';
-import {PersonInfo} from '../../../model/person';
 
 // <editor-fold desc="url const">
 const currenciesUrl = "/api/mcurrencies";
@@ -91,6 +91,9 @@ const noveltyDynamicUrl = "/api/mnovelties";
 const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
 const deviceDataUrl = "/api/mdeviceData";
 const redirectToPaymasterUrl = "/api/mredirectToPaymaster";
+const specLOTrackingLogUrl = '/api/mspecLOTrackingLog';
+
+const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/api/catalog`:"/api/mcategories";
 // </editor-fold
 
 @Injectable()
@@ -359,6 +362,46 @@ export class AppDataRepository extends AbstractDataRepository {
           data.id,
           data.name
         );
+    } catch (err) {
+      return await this.handleError(err);
+    }
+
+  }
+
+  public async getLoTrackLogByOrderSpecId(id: number): Promise<LoTrackLog[]> {
+    try {
+      const response = await this.http
+        .get(specLOTrackingLogUrl, {
+          search: this.createSearchParams([
+            {key: "idOrderSpecProd", value: id.toString()}
+          ])
+        })
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const arr = new Array<LoTrackLog>();
+      if (data != null) {
+        data.forEach(val =>
+          arr.push(
+            new LoTrackLog(
+              val.id,
+              val.idOrderSpecProd,
+              val.trackDate,
+              val.trackString
+            )
+          )
+        );
+
+        arr.sort((x,y) => {
+            return (+new Date(y.trackDate) - +new Date(x.trackDate));
+          }
+        );
+      }
+
+      return arr;
     } catch (err) {
       return await this.handleError(err);
     }
@@ -1322,6 +1365,40 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async getValueQuotByProduct(id: number): Promise<QuotationProduct> {
+    let _qps = await this.getQuotationProductsByProductId(id);
+    if (_qps.length === 0)
+      return null;
+
+    // Возвращаем предложение с минимальной ценой
+    return _qps.sort((x,y) => {
+      return (x.price - y.price);
+    })
+      .find((i) => {return (i.stockQuant > 0)});
+  }
+
+  public async getByItAgainQP(originalQP: QuotationProduct): Promise<QuotationProduct> {
+    //Если исходный QP все еще актуальный - возвращаем его
+    if (originalQP.stockQuant > 0)
+      return originalQP;
+
+    //среди текущих предложений продавцов находим предложение того же продавца и возвращаем его
+    const _orQuot = await (<any>originalQP).quotation_p;
+    const _qps = await this.getQuotationProductsByProductId(originalQP.idProduct);
+    let _foundQuot: QuotationProduct = null;
+    for (let i of _qps) {
+      let _q = await (<any>i).quotation_p;
+      if ((_q.idSupplier === _orQuot.idSupplier) && (i.stockQuant > 0)) {
+        return _foundQuot;
+      }
+    }
+
+    // находим valueQuot и возвращаем его
+    return await this.getValueQuotByProduct(originalQP.idProduct);
+  }
+
+  //TODO при реализации бекенда возвращать в этом методе только те QuotationProducts, по которым остаток > 0
+  // и не закрытые (т.е. актуальные на сейчас предложения продавцов, а не позавчерашние)
   public async getQuotationProductsByProductId(productId: number): Promise<QuotationProduct[]> {
     try {
       const response = await this.http
@@ -2337,6 +2414,29 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       console.log(response);
       return resp;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getCategories(): Promise<Category[]> {
+    try {
+      const response = await this.http
+        .get(categoriesUrl).toPromise();
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const categories: Category[] = new Array<Category>();
+      if (data != null) {
+        data.forEach(val =>
+          categories.push(
+            new Category(val.id,val.name,val.parentId,val.idProductCat,val.prefix,
+                         val.icon,val.isShow,val.priorityIndex,val.priorityShow)
+          )
+        );
+      }
+      return categories;
     } catch (err) {
       return await this.handleError(err);
     }

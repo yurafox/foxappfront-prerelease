@@ -15,7 +15,7 @@ export class ItemReviewWritePage extends ComponentBase {
   product: Product;
   store: Store;
   rating: number;
-  reviewText: string;
+  reviewText: string ;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private changeDetector: ChangeDetectorRef) {
     super();

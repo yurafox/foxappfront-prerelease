@@ -25,12 +25,11 @@ import { QuotationProduct,
           LoSupplEntity,
           EnumPaymentMethod,
           Poll,PollQuestion,PollQuestionAnswer,
-          ClientPollAnswer
+          ClientPollAnswer, PersonInfo, CreditProduct, ClientBonus,
+          LoTrackLog,
+          Category
        } from '../../../model/index';
 
-import {CreditProduct} from '../../../model/credit-product';
-import {ClientBonus} from '../../../model/client-bonus';
-import {PersonInfo} from '../../../model/person';
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
@@ -41,7 +40,10 @@ export abstract class AbstractDataRepository {
   public async abstract getCurrencies(cacheForce: boolean): Promise<Currency[]>;
   public async abstract getLocale(cacheForce: boolean): Promise<Lang[]>;
 
-  public async abstract getQuotationProductById(qpId: number): Promise<QuotationProduct>
+  public async abstract getQuotationProductById(qpId: number): Promise<QuotationProduct>;
+  public async abstract getByItAgainQP(originalQP: QuotationProduct): Promise<QuotationProduct>;
+  public async abstract getValueQuotByProduct(id: number): Promise<QuotationProduct>;
+
   public async abstract getQuotationProductsByProductId(productId: number): Promise<QuotationProduct[]>;
   public async abstract getQuotationProductsByQuotationId(quotationId:number) : Promise<QuotationProduct[]>;
   public async abstract getProductStorePlacesByQuotId(quotId: number): Promise<ProductStorePlace[]>;
@@ -56,6 +58,7 @@ export abstract class AbstractDataRepository {
 
   public async abstract getLoEntitiesForSupplier(supplierId: number):Promise<LoSupplEntity[]>;
   public async abstract getLoEntitiyById(entityId: number):Promise<LoEntity>;
+  public async abstract getLoTrackLogByOrderSpecId(id: number): Promise<LoTrackLog[]>;
   public async abstract getDeliveryDate(order: ClientOrderProducts, loEntityId: number): Promise<Date>;
   public async abstract getDeliveryCost(order: ClientOrderProducts, loEntityId: number): Promise<number>;
   public async abstract getProductCreditSize(idProduct: number, isSupplier: number): Promise<any>;
@@ -115,5 +118,6 @@ export abstract class AbstractDataRepository {
   public async abstract getNoveltyDetailsByNoveltyId(id: number): Promise<NoveltyDetails[]>;
   public async abstract postProductView(idProduct: number, params: string);
   public async abstract postDeviceData(deviceData: DeviceData): Promise<DeviceData>
+  public async abstract getCategories(): Promise<Category[]>;
   public async abstract getDataForRedirectToPaymaster(orderID: number, cartTotal: number): Promise<any>;
 }

@@ -1,0 +1,48 @@
+<ion-header>
+  <main-toolbar></main-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid>
+
+    <ion-row>
+      <ion-col class="f-section-header">Track item
+        <br>
+        <span class="f-size-default" style="font-weight: normal;">Tracking #:  {{navParams.data.loTrackTicket}}</span>
+      </ion-col>
+    </ion-row>
+
+    <div *ngIf="dataLoaded">
+      <ion-grid class="f-padding-lr-5 f-size-small" >
+
+          <ion-grid>
+            <ion-row>
+              <ion-col col-4>
+                <b>Date/Time</b>
+              </ion-col>
+              <ion-col col-8>
+                <b>Tracking status</b>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        <grid-hr></grid-hr>
+
+          <div *ngFor="let logItem of trackArr">
+            <ion-grid >
+              <ion-row>
+                <ion-col col-4>
+                  {{logItem.trackDate | date: 'medium'}}
+                </ion-col>
+                <ion-col col-8>
+                  {{logItem.trackString}}
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            <grid-hr></grid-hr>
+          </div>
+
+      </ion-grid>
+    </div>
+  </ion-grid>
+
+
+</ion-content>
