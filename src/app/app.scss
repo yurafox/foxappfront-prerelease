@@ -98,8 +98,9 @@ ion-list ion-icon {
 
 // left menu bg
 .menu-bg {
-  background: url("../assets/img/head-bg.png");
-  background-size: 100% auto;
+  background: url("../assets/img/bg.jpg");
+  background-size: cover;
+  opacity: 1;
 }
 
 .profile-picture {
