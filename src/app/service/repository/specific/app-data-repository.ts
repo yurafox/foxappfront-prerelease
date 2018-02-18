@@ -45,13 +45,21 @@ import { AbstractDataRepository } from '../../index';
 import { Providers, System } from "../../../core/app-core";
 
 // <editor-fold desc="url const">
-const currenciesUrl = "/api/mcurrencies";
-const productsUrl = "/api/mproducts";
-const quotationProductsUrl = "/api/mquotationProducts";
+//PRODUCTION URLS
+const productsUrl = "http://localhost:58471/api/product";
+const currenciesUrl = "http://localhost:58471/api/currency";
+const manufacturersUrl = "http://localhost:58471/api/manufacturer";
+const quotationProductsUrl = "http://localhost:58471/api/quotationproduct";
+const suppliersUrl = "http://localhost:58471/api/supplier";
+
+//DEV URLS
+//const currenciesUrl = "/api/mcurrencies";
+//const productsUrl = "/api/mproducts";
+//const manufacturersUrl = "/api/manufacturers";
+//const quotationProductsUrl = "/api/mquotationProducts";
+//const suppliersUrl = "/api/msuppliers";
 const quotationsUrl = "/api/mquotation";
-const suppliersUrl = "/api/msuppliers";
 const productReviewsUrl = "/api/mproductReviews";
-const manufacturersUrl = "/api/manufacturers";
 const citiesUrl = "/api/mcities";
 const storesUrl = "/api/mstores";
 const storePlacesUrl = "/api/mstorePlaces";
@@ -1437,6 +1445,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+
   public async getProductById(productId: number): Promise<Product> {
     try {
       const prod: Product = new Product();
@@ -1447,11 +1456,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
         // http request
         const response = await this.http
-          .get(productsUrl, {
-            search: this.createSearchParams([
-              {key: "id", value: productId.toString()}
-            ])
-          })
+          .get(productsUrl + `/${id}`)
           .toPromise();
 
         // response data binding
@@ -1461,7 +1466,7 @@ export class AppDataRepository extends AbstractDataRepository {
         }
 
         if (data != null && data.length !== 0) {
-          data = data[0]; // ---> single data make Array container
+          //data = data[0]; // ---> single data make Array container
           let props = new Array<ProductPropValue>();
           if (data.props && data.props.length !== 0) {
             props = this.getPropValuefromProduct(data);

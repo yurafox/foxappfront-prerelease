@@ -16,7 +16,8 @@
 
     <ion-row>
       <ion-col text-center *ngIf="!product.slideImageUrls">
-        <img class="f-img-item-lg" [src]="product.imageUrl">
+        <img class="f-img-item-lg" *ngIf="product.imageUrl" [src]="product.imageUrl">
+        <img class="f-img-item-lg" *ngIf="!product.imageUrl" src="assets/imgs/nophoto.png">
       </ion-col>
       <ion-col text-center *ngIf="product.slideImageUrls">
         <ion-slides pager>

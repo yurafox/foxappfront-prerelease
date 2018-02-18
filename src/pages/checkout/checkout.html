@@ -183,7 +183,11 @@
           <ion-row>
             <ion-col col-auto>
               <div>
-                <img class="f-img-item-80" [src]="item?.quotationproduct?.product?.imageUrl">
+                <img *ngIf="item?.quotationproduct?.product?.imageUrl" class="f-img-item-80"
+                     [src]="item?.quotationproduct?.product?.imageUrl">
+                <img *ngIf="!item?.quotationproduct?.product?.imageUrl" class="f-img-item-80"
+                     src="assets/imgs/nophoto.png">
+
               </div>
             </ion-col>
             <ion-col no-padding>

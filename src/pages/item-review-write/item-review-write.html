@@ -12,7 +12,9 @@
       <ion-row>
         <ion-col col-auto no-padding *ngIf="product">
           <div>
-            <img class="f-img-item" [src]="product?.imageUrl">
+            <img *ngIf="product?.imageUrl" class="f-img-item" [src]="product?.imageUrl">
+            <img *ngIf="!product?.imageUrl" class="f-img-item" src="assets/imgs/nophoto.png">
+
           </div>
         </ion-col>
         <ion-col no-padding>

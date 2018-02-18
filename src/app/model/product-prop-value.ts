@@ -27,8 +27,7 @@ export class ProductPropValue {
     };
 
     if (this.id_Prop.prop_type == 4 ) {
-      return this.prop_Value_Enum.name;
-      //return this.model.getEnumValue(this.prop_Value_Enum);
+      return (this.prop_Value_Enum) ? this.prop_Value_Enum.name : null;
     };
 
 

@@ -7,7 +7,9 @@
     <ion-row>
       <ion-col col-auto>
         <div>
-          <img class="f-img-item" width="60" height="60" [src]="product?.imageUrl">
+          <img *ngIf="product?.imageUrl" class="f-img-item" width="60" height="60" [src]="product?.imageUrl">
+          <img *ngIf="!product?.imageUrl" class="f-img-item" width="60" height="60" src="assets/imgs/nophoto.png">
+
         </div>
       </ion-col>
       <ion-col no-padding>

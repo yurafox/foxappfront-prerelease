@@ -21,7 +21,10 @@
             <ion-grid class="f-border-ligthgray">
               <ion-row class="f-padding-tb-10">
                 <ion-col col-4 no-padding>
-                  <img class="f-img-item-80" [src]="spec?.quotationproduct?.product?.imageUrl">
+                  <img *ngIf="spec?.quotationproduct?.product?.imageUrl" class="f-img-item-80"
+                       [src]="spec?.quotationproduct?.product?.imageUrl">
+                  <img *ngIf="!spec?.quotationproduct?.product?.imageUrl" class="f-img-item-80"
+                       src="assets/imgs/nophoto.png">
                 </ion-col>
                 <ion-col col-8 no-padding>
                   <div class="f-product f-padding-t-10"><b>{{spec?.quotationproduct?.product?.name}}</b></div>
