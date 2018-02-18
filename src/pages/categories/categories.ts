@@ -37,9 +37,14 @@ export class CategoriesPage extends ComponentBase   {
   async ngOnInit(){
     super.ngOnInit()
     this.categoriesArray = await this._repo.getCategories();
-    this.categoryForShow = this.categoriesArray.filter((value:Category): boolean => {
-       return value.isShow;
-    });
+    
+    if(this.categoriesArray.length!=0) {
+      this.categoryForShow = this.categoriesArray.filter((value:Category): boolean => {
+        return value.isShow;
+     });
+    
+      this.sortDesc();
+    }
   }
 
   onCategoryClick(urlQueryString: string): void {
@@ -50,5 +55,10 @@ export class CategoriesPage extends ComponentBase   {
   public convertImg(imgTxt:string):any {
     let header:string = 'data:image/svg+xml;charset=utf-8;base64,';
     return this._sanitizer.bypassSecurityTrustResourceUrl(`${header}${imgTxt}`);
+  }
+
+  private sortDesc():void {
+    this.categoriesArray.sort((x,y)=>{return y.priorityIndex-x.priorityIndex;});
+    this.categoryForShow.sort((x,y)=>{return y.priorityShow-x.priorityShow;});
   }
 }
