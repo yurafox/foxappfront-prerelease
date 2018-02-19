@@ -6,7 +6,7 @@
   <ion-grid>
 
     <ion-row>
-      <ion-col class="f-section-header">Get it for a loan
+      <ion-col class="f-section-header"><span loc="" name="GetForLoan">{{locale['GetForLoan']}}</span>
       </ion-col>
     </ion-row>
 
@@ -17,7 +17,7 @@
     </ion-row>
     <ion-row>
       <ion-col class="f-padding-15">
-        <span *ngIf="!quotProduct"><b>Cart total: </b></span>
+        <span *ngIf="!quotProduct"><b><span loc="Сумма корзины" name="CartTotal">{{locale['CartTotal']}}</span>: </b></span>
         <b><span class="f-color-red">{{loanAmount | localeCurrency:userService.currency}}</span>
         </b>
       </ion-col>
@@ -33,10 +33,10 @@ General Credits
 
         <ion-grid no-padding>
           <ion-row  padding-top padding-bottom class="f-row-odd f-fond-bold f-size-small">
-            <ion-col col-5 text-center>Название кредита</ion-col>
-            <ion-col col-2 text-center>Льготный период, мес</ion-col>
-            <ion-col col-2 text-center>Срок кредита, мес</ion-col>
-            <ion-col col-3 text-center>Ежемесячный платёж **</ion-col>
+            <ion-col col-5 text-center><span loc="Название кредита" name="LoanName">{{locale['LoanName']}}</span></ion-col>
+            <ion-col col-2 text-center><span loc="Льготный период, мес" name="GracePeriod">{{locale['GracePeriod']}}</span></ion-col>
+            <ion-col col-2 text-center><span loc="Срок кредита, мес" name="LoanTerm">{{locale['LoanTerm']}}</span></ion-col>
+            <ion-col col-3 text-center><span loc="Ежемесячный платёж" name="MonthlyPayment">{{locale['MonthlyPayment']}}</span> **</ion-col>
           </ion-row>
 
           <ion-row padding-top padding-bottom
@@ -87,7 +87,7 @@ General Credits
 
                 [attr.disabled]="!validatePage()?'':null"
 
-                (click)="onContinueClick()">Continue</button>
+                (click)="onContinueClick()"><span loc="Далее" name="Continue">{{locale['Continue']}}</span></button>
       </ion-col>
     </ion-row>
   </ion-grid>

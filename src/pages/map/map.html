@@ -22,7 +22,8 @@
 
 <ion-content>
   <!--GMap-->
-  <div [ngStyle]="{'height': 100 + '%'}" #mapCanvas id="map_canvas"></div>
+  <!--<div [ngStyle]="{'height': 100 + '%' - 60 + 'px', 'z-index': -1}" #mapCanvas id="map_canvas"></div>-->
+  <div style="height: calc(100% - 45px); top: 45px;" #mapCanvas id="map_canvas"></div>
 
 </ion-content>
 

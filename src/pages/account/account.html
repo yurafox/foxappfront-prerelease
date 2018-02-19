@@ -19,7 +19,7 @@
 
 
         <ion-item>
-          <ion-label floating>Password</ion-label>
+          <ion-label floating><span loc="Пароль" name="Password">{{locale['Password']}}</span></ion-label>
           <ion-input type="password"  formControlName="password"></ion-input>
         </ion-item>
         <ion-item class='alertDanger' *ngIf="formErrors.password">
@@ -27,7 +27,7 @@
         </ion-item>
 
         <ion-item>
-          <ion-label floating>Name</ion-label>
+          <ion-label floating><span loc="Имя" name="Name">{{locale['Name']}}</span></ion-label>
           <ion-input type="text" formControlName="name"></ion-input>
         </ion-item>
         <ion-item class='alertDanger' *ngIf="formErrors.name">
@@ -35,7 +35,7 @@
         </ion-item>
 
         <ion-item>
-          <ion-label floating>App key</ion-label>
+          <ion-label floating><span loc="Ключ" name="AppKey">{{locale['AppKey']}}</span></ion-label>
           <ion-input type="text" formControlName="appKey"></ion-input>
         </ion-item>
         <ion-item class='alertDanger' *ngIf="formErrors.appKey">
@@ -45,13 +45,14 @@
         <ion-grid class="f-top20">
           <ion-row>
            <ion-col col-7>
-             <ion-label class="f-label-drop-field">Currency</ion-label>
+             <ion-label class="f-label-drop-field"><span loc="Валюта" name="Currency">{{locale['Currency']}}</span></ion-label>
            </ion-col>
             <ion-col col-4>
               <dropdown-list [reference]="currentCurrency"
                              [store]="currencies"
                              [map]="{valueName:'id',displayName:'shortName'}"
-                             [afterUpdate]="currencyUpdate">
+                             [afterUpdate]="currencyUpdate"
+                             [options]="{popupHeader:locale['Currency']}">
               </dropdown-list>
             </ion-col>
           </ion-row>
@@ -60,24 +61,25 @@
         <ion-grid class="f-top20">
           <ion-row>
             <ion-col col-7>
-              <ion-label class="f-label-drop-field">Language</ion-label>
+              <ion-label class="f-label-drop-field"><span loc="Язык" name="Language">{{locale['Language']}}</span></ion-label>
             </ion-col>
             <ion-col col-4>
               <dropdown-list [reference]="currentLang"
                              [store]="langs"
                              [map]="{valueName:'id',displayName:'name'}"
-                             [afterUpdate]="langUpdate">
+                             [afterUpdate]="langUpdate"
+                             [options]="{popupHeader:locale['Language']}">
               </dropdown-list>
             </ion-col>
           </ion-row>
         </ion-grid>
 
-        <button style="background: #ffbc2e" ion-button block color="fox" (click)="edit()">Apply</button>
+        <button style="background: #ffbc2e" ion-button block color="fox" (click)="edit()"><span loc="Применить" name="Apply">{{locale['Apply']}}</span></button>
       </form>
 
     </ion-list>
 
     <div *ngIf="onLoad" class="align-bottom" padding text-center>
-      <span class="bold" (click)="logout()">Logoff</span>
+      <span class="bold" (click)="logout()"><span loc="Выйти" name="Logoff">{{locale['Logoff']}}</span></span>
     </div>
   </ion-content>

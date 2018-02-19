@@ -2,11 +2,11 @@
   <main-toolbar></main-toolbar>
 </ion-header>
 
-<ion-content class="menu-bg">
+<ion-content class="barcode-bg">
   <ion-grid style="height: 100%">
     <ion-row justify-content-center align-items-center style="height: 100%">
       <ion-card>
-        <h1 text-center class="h1">Картка комфорту</h1><br/>
+        <h1 text-center class="h1"><span loc="Виртуальная карта ФоксКлуб" name="FoxClubCard">{{locale['FoxClubCard']}}</span></h1><br/>
         <h6 text-center class="h6">{{clientBarcode}}</h6>
         <img src="assets/icon/logo.svg" id="logo"/>
         <span class="barcode" text-center><img id="image" #image/></span>

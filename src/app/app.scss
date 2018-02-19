@@ -98,6 +98,11 @@ ion-list ion-icon {
 
 // left menu bg
 .menu-bg {
+  background: url("../assets/img/head-bg.png");
+  background-size: cover;
+  opacity: 1;
+}
+.barcode-bg {
   background: url("../assets/img/bg.jpg");
   background-size: cover;
   opacity: 1;

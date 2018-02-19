@@ -116,8 +116,8 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
 
   deleteStore(item: { city: City, store: Store, hasReviews: boolean }) {
     let alert = this.alertCtrl.create({
-      title: 'Confirmation',
-      message: 'Are you sure you want to delete this store from your favorite stores?',
+      title: this.locale['Confirmation'],
+      message: this.locale['AreYouSure'],
       buttons: [
         {
           text: 'OK',

@@ -51,8 +51,8 @@ export class EditShipAddressPage extends ComponentBase  {
   saveAddress() {
     if (!this.addressEditForm.valid) {
       let alert = this.alertCtrl.create({
-        title: 'Error',
-        message: 'Please review your data!',
+        title: this.locale['Error'],
+        message: this.locale['ReviewYourData'],
         buttons: [
           {
             text: 'OK',
@@ -69,7 +69,7 @@ export class EditShipAddressPage extends ComponentBase  {
       this.shippingAddress.isPrimary = true;
       this.addressSelectorPage.shippingAddresses.push(this.shippingAddress);
       this.navCtrl.pop().catch(err => {
-        console.log(`Error while going back: ${err}`)
+        console.log(`Error navigating back: ${err}`)
       });
     } else if (this.mode === 'edit') {
       this.originalAddr.recName = this.shippingAddress.recName;
@@ -80,7 +80,7 @@ export class EditShipAddressPage extends ComponentBase  {
       this.originalAddr.phone = this.shippingAddress.phone;
       this.originalAddr.idCountry = this.shippingAddress.idCountry;
       this.navCtrl.pop().catch(err => {
-        console.log(`Error while going back: ${err}`)
+        console.log(`Error navigating back: ${err}`)
       });
     }
 

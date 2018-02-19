@@ -6,13 +6,14 @@ import {UserService} from '../../app/service/bll/user-service';
 import {CreditProduct} from '../../app/model/credit-product';
 import {CreditCalc} from '../../app/model/credit-calc';
 import {EnumPaymentMethod} from '../../app/model/enum-payment-method';
+import {ComponentBase} from "../../components/component-extension/component-base";
 
 @IonicPage()
 @Component({
   selector: 'page-credit-calc',
   templateUrl: 'credit-calc.html',
 })
-export class CreditCalcPage {
+export class CreditCalcPage extends ComponentBase {
 
   creditsLoaded: boolean;
   quotProduct: QuotationProduct = null;
@@ -25,7 +26,7 @@ export class CreditCalcPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController, public cart: CartService,
               public userService: UserService, public loadingCtrl: LoadingController) {
-
+    super();
     this.quotProduct = this.navParams.data.quotProduct;
     this.initCreditCalcData();
   }
@@ -37,8 +38,16 @@ export class CreditCalcPage {
     if (this.lastQp === _qp)
       return;
 
+    let content: string;
+    if (this.userService.lang === 1) {
+      content = 'Пожалуйста, подождите'
+    } else if (this.userService.lang === 2) {
+      content = 'Будь-ласка, зачекайте'
+    } else if (this.userService.lang === 3) {
+      content = 'Please, wait'
+    }
     let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content:  content+'...'
     });
     loading.present();
     try {
@@ -55,7 +64,7 @@ export class CreditCalcPage {
       this.credits = [];
       let _cpOplataChastyami = new CreditProduct();
       _cpOplataChastyami.sId = -2;
-      _cpOplataChastyami.sName = "Приват банк \"Оплата частями\"";
+      _cpOplataChastyami.sName = await this.locale['PrivatInstallments'];
       _cpOplataChastyami.firstPay = 0;
       _cpOplataChastyami.maxTerm = pInfo.partsPmtCnt;
       _cpOplataChastyami.monthCommissionPct = 0;
@@ -65,7 +74,7 @@ export class CreditCalcPage {
 
       let _cpMgnovCredit = new CreditProduct();
       _cpMgnovCredit.sId = -1;
-      _cpMgnovCredit.sName = "Приват банк \"Мгновенная рассрочка\"";
+      _cpMgnovCredit.sName = await this.locale['PrivatInstant'];
       _cpMgnovCredit.firstPay = 0;
       _cpMgnovCredit.maxTerm = pInfo.creditSize;
       _cpMgnovCredit.monthCommissionPct = 2.9;
@@ -95,12 +104,12 @@ export class CreditCalcPage {
     this.dArray = [];
     for (let i = 2; i <= this._cProd.creditProduct.maxTerm; i++) {
       this.dArray.push({value: i, displayValue: i.toString()});
-    };
+    }
   }
 
   public get loanAmount(): number {
     if (this.quotProduct)
-      return this.quotProduct.price
+      return this.quotProduct.price;
     else
       return this.cart.cartGrandTotal;
   }
@@ -111,8 +120,8 @@ export class CreditCalcPage {
       if (i.isChecked) {
         res = i;
         break;
-      };
-    };
+      }
+    }
     return res;
   }
 
@@ -124,11 +133,11 @@ export class CreditCalcPage {
     if(this.navParams.data.itemPage) {
 
       if (this.cart.pmtMethod)
-        this.cart.pmtMethod.id = 3
+        this.cart.pmtMethod.id = 3;
       else {
         let _p = new EnumPaymentMethod(3, null);
         this.cart.pmtMethod = _p;
-      };
+      }
       this.navParams.data.itemPage.onAddToCart();
 
       if (!this.userService.isAuth) {
@@ -136,8 +145,8 @@ export class CreditCalcPage {
       }
       else {
         data = {nextPage: 'SelectShipAddressPage', params: {fromCart: 1}};
-      };
-    };
+      }
+    }
     this.viewCtrl.dismiss(data);
 
   }
@@ -158,7 +167,7 @@ export class CreditCalcPage {
         res = true;
         break;
       }
-    };
+    }
     return res;
   }
 

@@ -43,7 +43,7 @@ export class CartPage extends ComponentBase {
     let err = this.cart.cartErrors;
     if (err) {
       let alert = this.alertCtrl.create({
-        message: 'Some items in your order needs your attention. Please review your order and try again',
+        message: this.locale['CartAlertMessage'],
         buttons: [
           {
             text: 'OK',
