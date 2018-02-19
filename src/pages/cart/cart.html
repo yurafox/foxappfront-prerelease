@@ -6,7 +6,7 @@
     <ion-row>
       <ion-col text-center class="f-item-padding-bottom">
         <span class="f-color-secondary f-size-larger">Cart subtotal ({{cart.cartItemsCount}} items):</span>
-        <span class="f-size-large f-color-red">{{cart.orderTotal | localeCurrency:userService.currency}}</span>
+        <span class="f-size-large f-color-red">{{cart.itemsTotal | localeCurrency:userService.currency}}</span>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -48,10 +48,7 @@
       <ion-row>
         <ion-col col-auto>
           <div *ngIf="item?.quotationproduct?.product">
-            <img *ngIf="item?.quotationproduct?.product?.imageUrl" class="f-img-item" width="60" height="60"
-                 [src]="item?.quotationproduct?.product?.imageUrl">
-            <img *ngIf="!item?.quotationproduct?.product?.imageUrl" class="f-img-item" width="60" height="60"
-                 src="assets/imgs/nophoto.png">
+            <img class="f-img-item" width="60" height="60" [src]="item?.quotationproduct?.product?.imageUrl">
           </div>
         </ion-col>
         <ion-col no-padding>

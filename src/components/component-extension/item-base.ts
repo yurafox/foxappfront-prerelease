@@ -8,12 +8,13 @@ import {AbstractDataRepository} from '../../app/service/repository/abstract/abst
 export class ItemBase extends ComponentBase implements OnInit {
 
   @Input() product: Product;
+  @Input() preloadQuotes: boolean = false;
 
   quotes: QuotationProduct[];
   valueQuot: QuotationProduct;
   productStorePlaces: ProductStorePlace[];
 
-  noOfQuotes = 0;
+  _noOfQuotes = 0;
   resolved = false;
 
   public get Price(): number {
@@ -33,23 +34,28 @@ export class ItemBase extends ComponentBase implements OnInit {
 
   }
 
+  public get noOfQuotes(): number {
+    if ((this.preloadQuotes) && this.quotes) {
+      return this.quotes.filter((i) => {return (i.stockQuant>0);}).length;
+    } else {
+      return this.product.supplOffers;
+    }
+  }
+
   async ngOnInit() {
     super.ngOnInit();
+    if (this.preloadQuotes) {
+      this.quotes = await this.repo.getQuotationProductsByProductId(this.product.id);
+      this._noOfQuotes = this.quotes.filter((i) => {return (i.stockQuant>0);}).length;
 
-    this.quotes = await this.repo.getQuotationProductsByProductId(this.product.id);
-    this.noOfQuotes = this.quotes.filter((i) => {return (i.stockQuant>0);}).length;
-    this.valueQuot = await this.repo.getValueQuotByProduct(this.product.id);
+      // Возвращаем предложение с минимальной ценой
+      this.valueQuot = this.quotes.sort((x,y) => {
+        return (x.price - y.price);
+      })
+        .find((i) => {return (i.stockQuant > 0)});
 
-    /*
-
-        // Определяем самое дешевое предложение и сохраняем его в св-во valueQuot
-        this.quotes.forEach(val => {
-          if ((val.price < this.Price) || !(this.valueQuot)) {
-              this.valueQuot = val;
-          }
-        });
-
-    */
+      //this.valueQuot = await this.repo.getValueQuotByProduct(this.product.id);
+    }
     if (this.valueQuot) {
       this.productStorePlaces = await this.repo.getProductStorePlacesByQuotId(this.valueQuot.id);
     };

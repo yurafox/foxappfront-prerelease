@@ -31,12 +31,13 @@ export class ItemDetailPage extends ItemBase implements OnInit {
               public modalCtrl: ModalController, public toastCtrl: ToastController,
               public evServ: EventService) {
     super(navCtrl, navParams, repo);
-    this.product = this.navParams.data;
+    this.product = this.navParams.data.prod;
+    this.preloadQuotes = this.navParams.data.loadQuotes;
     this.qty.value = 1;
   }
 
   async ngOnInit() {
-    super.ngOnInit();
+    await super.ngOnInit();
     this.reviews = await this.repo.getProductReviewsByProductId(this.product.id);
     if (this.userService.isAuth)
       this.repo.postProductView(this.product.id, null);
@@ -71,7 +72,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   }
 
   onShowMoreQuotesClick(): void {
-    this.navCtrl.push('ItemQuotesPage', this.product);
+    this.navCtrl.push('ItemQuotesPage', {prod: this.product, quotesArr: this.quotes});
   }
 
   onAddToCart() {

@@ -20,7 +20,7 @@ export class ItemComponent extends ItemBase {
 
 
   openItemDetails(data: Product): void {
-    this.navCtrl.push('ItemDetailPage', this.product);
+    this.navCtrl.push('ItemDetailPage', {prod: this.product, loadQuotes: true});
   }
 
 }

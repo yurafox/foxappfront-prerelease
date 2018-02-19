@@ -281,20 +281,13 @@ export class CartService  {
   }
 
   async addItem(item: QuotationProduct, qty: number, price: number, storePlace: StorePlace, page: any) {
-    let foundQuot: ClientOrderProducts = null;
-    let foundIndex = 0;
-    for (let i of this.orderProducts) {
-      if (i.idQuotationProduct === item.id) {
-        foundQuot = i;
-        break;
-      }
-      foundIndex ++;
-    };
+    const _f = this.orderProducts.filter(i => {return (i.idQuotationProduct === item.id);});
+    let foundQuot: ClientOrderProducts = (_f) ? _f[0] : null;
 
     if (foundQuot) {
       foundQuot.qty += qty;
       foundQuot.price = price;
-      this.updateItem(foundIndex);
+      this.updateItem(foundQuot);
     } else {
       let orderItem = new ClientOrderProducts();
       orderItem.idQuotationProduct = item.id;
@@ -339,7 +332,7 @@ export class CartService  {
     }
   }
 
-  async updateItem(itemIndex: number) {
+  async updateItem(item: ClientOrderProducts) {
     //TODO implement update method
 
   }

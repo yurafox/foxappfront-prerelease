@@ -12,7 +12,7 @@ import {CartService} from '../../app/service/cart-service';
   templateUrl: 'item-quotes.html',
 })
 
-export class ItemQuotesPage extends ComponentBase implements OnInit {
+export class ItemQuotesPage extends ComponentBase {
 
   product: Product;
 
@@ -21,12 +21,8 @@ export class ItemQuotesPage extends ComponentBase implements OnInit {
   constructor(public navCtrl: NavController, public navParams: NavParams,
                 public repo: AbstractDataRepository, public cart: CartService, public toastCtrl: ToastController) {
     super();
-    this.product = this.navParams.data;
-  }
-
-  async ngOnInit() {
-    this.quotes = (await this.repo.getQuotationProductsByProductId(this.product.id))
-                    .filter((i) => {return (i.stockQuant>0);});
+    this.product = this.navParams.data.prod;
+    this.quotes = this.navParams.data.quotesArr;
   }
 
   onAddToCart(quote: QuotationProduct, price: number) {

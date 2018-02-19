@@ -918,7 +918,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       rating: 1,
       recall: 0,
       supplOffers: 2,
-      url: "led_televizory.html"
+      url: "led_televizory.html",
+      barcode: "294157438438"
     }
   ];
   // </editor-fold>
