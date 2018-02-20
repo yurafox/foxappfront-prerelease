@@ -37,10 +37,9 @@ export class CategoriesPage extends ComponentBase   {
   async ngOnInit(){
     super.ngOnInit()
     this.categoriesArray = await this._repo.getCategories();
-    
     if(this.categoriesArray.length!=0) {
       this.categoryForShow = this.categoriesArray.filter((value:Category): boolean => {
-        return value.isShow;
+        return value.is_show;
      });
     
       this.sortDesc();
@@ -58,7 +57,7 @@ export class CategoriesPage extends ComponentBase   {
   }
 
   private sortDesc():void {
-    this.categoriesArray.sort((x,y)=>{return y.priorityIndex-x.priorityIndex;});
-    this.categoryForShow.sort((x,y)=>{return y.priorityShow-x.priorityShow;});
+    //this.categoriesArray.sort((x,y)=>{return y.priority_index-x.priority_index;});
+    this.categoryForShow.sort((x,y)=>{return y.priority_show-x.priority_show;});
   }
 }

@@ -1,13 +1,13 @@
 export class Category {
     constructor(public id?: number,
                 public name?: string,
-                public parentId?:number,
-                public idProductCat?:number,
+                public parent_id?:number,
+                public id_product_cat?:number,
                 public prefix?:string,
                 public icon?:string,
-                public isShow?:boolean,
-                public priorityIndex?:number,
-                public priorityShow?:number
+                public is_show?:boolean,
+                public priority_index?:number,
+                public priority_show?:number
                 ) {
     }
   }

@@ -2370,8 +2370,8 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data != null) {
         data.forEach(val =>
           categories.push(
-            new Category(val.id,val.name,val.parentId,val.idProductCat,val.prefix,
-                         val.icon,val.isShow,val.priorityIndex,val.priorityShow)
+            new Category(val.id,val.name,val.parent_id,val.id_product_cat,val.prefix,
+                         val.icon,val.is_show,val.priority_index,val.priority_show)
           )
         );
       }
