@@ -4,19 +4,19 @@
 
 
 <ion-content text-center>
-  <div *ngIf="fail" padding>
-    <h3 style="color:red">Sorry, but your purchase has not ended successfully</h3>
-    <button ion-button block class="f-btn-secondary" (click)="toHomePage()">To home page</button>
+  <div [hidden]="!fail" padding>
+    <h3 style="color:red"><span loc="К сожалению, оплата Вашего заказа не прошла успешно" name="NotSuccessful">{{locale['NotSuccessful']}}</span></h3>
+    <button ion-button block class="f-btn-secondary" (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']}}</span></button>
   </div>
-  <div *ngIf="error" padding>
-    <h3 style="color:red">Sorry, but your purchase has ended with error</h3>
-    <button ion-button block class="f-btn-secondary" (click)="toHomePage()">To home page</button>
+  <div [hidden]="!error" padding>
+    <h3 style="color:red"><span loc="К сожалению, возникла ошибка во время оплаты Вашего заказа" name="WithError">{{locale['WithError']}}</span></h3>
+    <button ion-button block class="f-btn-secondary" (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']}}</span></button>
   </div>
-  <div *ngIf="success" padding>
-    <h3 text-center style="color:green">Thank you for your purchase!
+  <div [hidden]="!success" padding>
+    <h3 text-center style="color:green"><span loc="Спасибо Вам за покупку! Заказ отправлен в обработку" name="Successful">{{locale['Successful']}}</span>
       <ion-icon name="ios-checkmark-outline" style="font-size: 70px;vertical-align: -15px;"></ion-icon>
     </h3>
-    <button ion-button block class="f-btn-secondary" (click)="toHomePage()">To home page</button>
+    <button ion-button block class="f-btn-secondary" (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']}}</span></button>
   </div>
 
   <iframe height="100%" width="100%" [src]="formInput" *ngIf="formInput" frameborder="0" allowfullscreen id="iframe" name="iframe"></iframe>

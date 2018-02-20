@@ -45,6 +45,8 @@ export class CreditCalcPage extends ComponentBase {
       content = 'Будь-ласка, зачекайте'
     } else if (this.userService.lang === 3) {
       content = 'Please, wait'
+    } else {
+      content = 'Пожалуйста, подождите'
     }
     let loading = this.loadingCtrl.create({
       content:  content+'...'

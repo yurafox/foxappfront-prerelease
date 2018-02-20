@@ -10,48 +10,48 @@
       </ion-item>
 
       <ion-item>
-        <ion-input type="text" placeholder="Электронная почта" formControlName="email"></ion-input>
+        <ion-input type="text" placeholder="{{locale['Email'] ? locale['Email'] : 'Электронная почта'}}" formControlName="email"></ion-input>
       </ion-item>
       <ion-item class='alertDanger' *ngIf="formErrors.email">
         <span>{{formErrors.email}}</span>
       </ion-item>
 
       <ion-item>
-        <ion-input type="text" placeholder="Пароль" formControlName="password"></ion-input>
+        <ion-input type="text" placeholder="{{locale['Password'] ? locale['Password'] : 'Пароль'}}" formControlName="password"></ion-input>
       </ion-item>
       <ion-item class='alertDanger' *ngIf="formErrors.password">
         <span>{{formErrors.password}}</span>
       </ion-item>
 
       <ion-item>
-        <ion-input type="text" placeholder="Имя" formControlName="name"></ion-input>
+        <ion-input type="text" placeholder="{{locale['Name'] ? locale['Name'] : 'Имя'}}" formControlName="name"></ion-input>
       </ion-item>
       <ion-item class='alertDanger' *ngIf="formErrors.name">
         <span>{{formErrors.name}}</span>
       </ion-item>
 
     <ion-item>
-    <ion-label style="margin-left: 5px">Валюта</ion-label>
-    <ion-select formControlName="currency" multiple="false" cancelText="Отмена" okText="Выбрать">
+    <ion-label style="margin-left: 5px"><span loc="Валюта" name="Currency">{{locale['Currency']}}</span></ion-label>
+    <ion-select formControlName="currency" multiple="false" cancelText="{{locale['Cancel'] ? locale['Cancel'] : 'Отмена'}}" okText="{{locale['Chose'] ? locale['Chose'] : 'Выбрать'}}">
       <ion-option *ngFor="let currency of currencies;"
                   value="{{currency.id}}">{{currency.shortName}}</ion-option>
     </ion-select>
     </ion-item>
 
       <ion-item>
-        <ion-label style="margin-left: 5px">Локализация</ion-label>
-        <ion-select formControlName="lang" multiple="false" cancelText="Отмена" okText="Выбрать">
+        <ion-label style="margin-left: 5px"><span loc="Локализация" name="Localization">{{locale['Localization']}}</span></ion-label>
+        <ion-select formControlName="lang" multiple="false" cancelText="{{locale['Cancel'] ? locale['Cancel'] : 'Отмена'}}" okText="{{locale['Chose'] ? locale['Chose'] : 'Выбрать'}}">
           <ion-option  value="1">Рус</ion-option>
           <ion-option  value="2">Укр</ion-option>
-          <ion-option  value="3">Анг</ion-option>
+          <ion-option  value="3">Eng</ion-option>
         </ion-select>
       </ion-item>
 
-      <button style="background: #ffbc2e" ion-button block color="fox" (click)="register()">Создать аккаунт</button>
+      <button style="background: #ffbc2e" ion-button block color="fox" (click)="register()"><span loc="Создать аккаунт" name="CreateAccount">{{locale['CreateAccount']}}</span></button>
     </form>
   </ion-list>
 
   <div *ngIf="onLoad" class="align-bottom" padding text-center>
-    Уже имеете аккаунт? <span class="bold" (click)="login()">Войти</span>
+    <span loc="Уже имеете аккаунт" name="HaveAccount">{{locale['HaveAccount']}}</span>? <span class="bold" (click)="login()"><span loc="Войти" name="Login">{{locale['Login']}}</span></span>
   </div>
 </ion-content>

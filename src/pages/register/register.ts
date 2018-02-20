@@ -5,13 +5,14 @@ import {Currency} from "../../app/model/index";
 import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
 import {UserService} from "../../app/service/bll/user-service";
 import {User} from "../../app/model/index";
+import {ComponentBase} from "../../components/component-extension/component-base";
 
 @IonicPage()
 @Component({
   selector: 'page-register',
   templateUrl: 'register.html'
 })
-export class RegisterPage implements OnInit{
+export class RegisterPage extends ComponentBase implements OnInit{
   public currencies:Array<Currency>;
   public registerForm: FormGroup;
   public onLoad = false;
@@ -23,7 +24,7 @@ export class RegisterPage implements OnInit{
   };
 
   public errorMessages = {
-    'email': {
+    /*'email': {
       'required': 'Обязательное поле',
       'pattern': 'Не правильный формат email адреса'
     },
@@ -35,7 +36,7 @@ export class RegisterPage implements OnInit{
     'name':{
       'required': 'Обязательное поле',
       'maxlength': 'Значение должно быть не более 20ти символов'
-    }
+    }*/
   };
 
 
@@ -44,12 +45,28 @@ export class RegisterPage implements OnInit{
               private repo: AbstractDataRepository,
               private formBuilder: FormBuilder,
               private account:UserService) {
+    super();
     this.buildForm();
   }
 
   async ngOnInit(){
     this.currencies = await this.repo.getCurrencies(true);
     this.onLoad=true;
+    this.errorMessages = {
+      'email': {
+        'required': this.locale['RequiredField'],
+        'pattern': this.locale['WrongEMailFormat']
+      },
+      'password': {
+        'required': this.locale['RequiredField'],
+        'minlength': this.locale['LengthNLT6'],
+        'maxlength': this.locale['LengthNGT128']
+      },
+      'name':{
+        'required': this.locale['RequiredField'],
+        'maxlength': this.locale['LengthNGT20']
+      }
+    };
   }
 
   // go to login page
@@ -80,7 +97,7 @@ export class RegisterPage implements OnInit{
 
       'password': ['', [Validators.required,
         Validators.minLength(6),
-        Validators.maxLength(12)]],
+        Validators.maxLength(128)]],
 
       'name':['',[Validators.required, Validators.maxLength(20)]],
       'currency':['0', [Validators.required]],
@@ -98,7 +115,6 @@ export class RegisterPage implements OnInit{
     if (!this.registerForm) {
       return;
     }
-    ;
     let form = this.registerForm;
 
     for (let err in this.formErrors) {

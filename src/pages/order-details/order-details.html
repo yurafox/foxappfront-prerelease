@@ -6,7 +6,7 @@
   <ion-grid>
 
     <ion-row>
-      <ion-col class="f-page-header">View order details
+      <ion-col class="f-page-header"><span loc="Просмотр деталей заказа" name="ViewOrderDetails">{{locale['ViewOrderDetails']}}</span>
       </ion-col>
     </ion-row>
 
@@ -15,7 +15,7 @@
 
         <ion-row>
           <ion-col col-4>
-            Order date
+            <span loc="Дата заказа" name="OrderDate">{{locale['OrderDate']}}</span>
           </ion-col>
           <ion-col>
             {{order.orderDate | date: 'mediumDate'}}
@@ -23,7 +23,7 @@
         </ion-row>
         <ion-row>
           <ion-col col-4>
-            Order #
+            <span loc="№ заказа" name="OrderNumber">{{locale['OrderNumber']}}</span>
           </ion-col>
           <ion-col>
             {{order.id}}
@@ -31,10 +31,10 @@
         </ion-row>
         <ion-row>
           <ion-col col-4>
-            Order total
+            <span loc="Сумма заказа" name="OrderTotal">{{locale['OrderTotal']}}</span>
           </ion-col>
           <ion-col>
-            {{order.total | localeCurrency:userService.currency}}  ({{order.orderProducts.length}} items)
+            {{order.total | localeCurrency:userService.currency}}  ({{order.orderProducts.length}} <span loc="товар(-а/-ов)" name="Items">{{locale['Items']}}</span>)
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -42,7 +42,7 @@
 
 
     <ion-row>
-      <ion-col class="f-section-header"><b>Shipment details</b>
+      <ion-col class="f-section-header"><b><span loc="Детали доставки" name="ShipmentDetails">{{locale['ShipmentDetails']}}</span></b>
       </ion-col>
     </ion-row>
 
@@ -50,7 +50,7 @@
     <div class="f-size-larger" *ngFor="let spec of order.orderProducts; let i = index">
       <ion-row>
         <ion-col class="f-section-subheader">
-          Shipment {{i+1}} of {{order.orderProducts.length}}
+          <span loc="Посылка" name="Shipment">{{locale['Shipment']}}</span> {{i+1}} <span loc="из" name="Of">{{locale['Of']}}</span> {{order.orderProducts.length}}
         </ion-col>
       </ion-row>
 
@@ -65,7 +65,7 @@
 
           <ion-row *ngIf="spec.loDeliveryCompletedDate">
             <ion-col>
-              <b>Shipped</b>
+              <b><span loc="Доставлено" name="Shipped">{{locale['Shipped']}}</span></b>
               <br>
               <span class="f-color-green">{{spec.loDeliveryCompletedDate | date: 'mediumDate'}}</span>
             </ion-col>
@@ -73,7 +73,7 @@
 
           <ion-row *ngIf="!spec.loDeliveryCompletedDate && spec.loEstimatedDeliveryDate">
             <ion-col>
-              <span>Est. delivery date</span>
+              <span loc="Предполагаемая дата доставки" name="EstDeliveryDate">{{locale['EstDeliveryDate']}}</span>
               <br>
               <span class="f-color-green">{{spec.loEstimatedDeliveryDate | date: 'mediumDate'}}</span>
             </ion-col>
@@ -95,13 +95,13 @@
 
                 <ion-row>
                   <ion-col class="f-item-padding-bottom f-product f-size-default">
-                    Qty: {{spec?.qty}}
+                    <span loc="Кол-во" name="Qty">{{locale['Qty']}}</span>: {{spec?.qty}}
                   </ion-col>
                 </ion-row>
 
                 <ion-row>
                   <ion-col class="f-size-13">
-                    Sold by: {{spec?.quotationproduct?.quotation?.supplier?.name}}
+                    <span loc="Продавец" name="SoldBy">{{locale['SoldBy']}}</span>: {{spec?.quotationproduct?.quotation?.supplier?.name}}
                   </ion-col>
                 </ion-row>
 
@@ -134,7 +134,7 @@ PAYMENT INFO
 -->
 
     <ion-row>
-      <ion-col class="f-section-header"><b>Payment information</b>
+      <ion-col class="f-section-header"><b><span loc="Информация об оплате" name="PaymentInfo">{{locale['PaymentInfo']}}</span></b>
       </ion-col>
     </ion-row>
 
@@ -142,7 +142,7 @@ PAYMENT INFO
       <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
         <ion-row>
           <ion-col>
-            <b>Payment method</b>
+            <b><span loc="Способ оплаты" name="PaymentMethod">{{locale['PaymentMethod']}}</span></b>
             <br>
             {{order?.enumpaymentmethod?.name}}
           </ion-col>
@@ -155,7 +155,7 @@ SHIPPING ADDRESS INFO
 -->
 
     <ion-row>
-      <ion-col class="f-section-header"><b>Shipping address</b>
+      <ion-col class="f-section-header"><b><span loc="Адрес доставки" name="ShippingAddress">{{locale['ShippingAddress']}}</span></b>
       </ion-col>
     </ion-row>
 
@@ -177,7 +177,7 @@ ORDER SUMMARY AREA
 -->
 
     <ion-row>
-      <ion-col class="f-section-header"><b>Order summary</b>
+      <ion-col class="f-section-header"><b><span loc="Итог заказа" name="OrderSummary">{{locale['OrderSummary']}}</span></b>
       </ion-col>
     </ion-row>
 
@@ -186,7 +186,7 @@ ORDER SUMMARY AREA
 
         <ion-row>
           <ion-col>
-            Items:
+            <span loc="Товары" name="Items">{{locale['Items']}}</span>:
           </ion-col>
           <ion-col text-right col-auto>
             {{order.itemsTotal | localeCurrency:userService.currency}}
@@ -194,7 +194,7 @@ ORDER SUMMARY AREA
         </ion-row>
         <ion-row>
           <ion-col>
-            Shipping:
+            <span loc="Доставка" name="Shipping">{{locale['Shipping']}}</span>:
           </ion-col>
           <ion-col text-right col-auto>
             {{order.shippingTotal | localeCurrency:userService.currency}}
@@ -204,7 +204,7 @@ ORDER SUMMARY AREA
 
         <ion-row *ngIf="!(order.bonusTotal === 0)">
           <ion-col>
-            Bonuses paid:
+            <span loc="Использованные бонусы" name="BonusesPaid">{{locale['BonusesPaid']}}</span>:
           </ion-col>
           <ion-col text-right col-auto>
             - {{order.bonusTotal | localeCurrency:userService.currency}}
@@ -213,7 +213,7 @@ ORDER SUMMARY AREA
 
         <ion-row *ngIf="!(order.promoBonusTotal === 0)">
           <ion-col>
-            Promobonuses paid:
+            <span loc="Использованные акционные бонусы" name="PromoBonusesPaid">{{locale['PromoBonusesPaid']}}</span>:
           </ion-col>
           <ion-col text-right col-auto>
             - {{order.promoBonusTotal | localeCurrency:userService.currency}}
@@ -222,7 +222,7 @@ ORDER SUMMARY AREA
 
         <ion-row *ngIf="(!(order.promoCodeDiscTotal === 0))">
           <ion-col>
-            Promocode discount:
+            <span loc="Скидка промокода" name="PromocodeDiscount">{{locale['PromocodeDiscount']}}</span>:
           </ion-col>
           <ion-col text-right col-auto>
             - {{order.promoCodeDiscTotal | localeCurrency:userService.currency}}
@@ -232,7 +232,7 @@ ORDER SUMMARY AREA
 
         <ion-row>
           <ion-col>
-            <b>Order Total:</b>
+            <b><span loc="Сумма заказа" name="OrderTotal">{{locale['OrderTotal']}}</span>:</b>
           </ion-col>
           <ion-col text-right col-auto>
             <span class="f-color-red"><b>{{order.total | localeCurrency:userService.currency}}</b></span>
@@ -241,7 +241,7 @@ ORDER SUMMARY AREA
 
         <ion-row *ngIf="!(order.bonusEarned === 0)">
           <ion-col>
-            Bonuses earned:
+            <span loc="Полученные бонусы" name="BonusesEarned">{{locale['BonusesEarned']}}</span>:
           </ion-col>
           <ion-col text-right col-auto>
             <bonus [bonusCnt]="order.bonusEarned"></bonus>

@@ -5,7 +5,7 @@
 <ion-content class="f-size-larger">
   <ion-grid>
     <ion-row>
-      <ion-col class="f-section-header">Choose your shipping options
+      <ion-col class="f-section-header"><span loc="Выберите доставку" name="ChooseShippingOptions">{{locale['ChooseShippingOptions']}}</span>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -13,7 +13,7 @@
   <ion-grid>
     <ion-row padding *ngIf="dataLoaded">
       <ion-col>
-        <span>Shipment {{itemIndex+1}} of {{cart.orderProducts.length}}</span>
+        <span><span loc="Посылка" name="Shipment">{{locale['Shipment']}}</span> {{itemIndex+1}} <span loc="из" name="Of">{{locale['Of']}}</span> {{cart.orderProducts.length}}</span>
         <br>
         <span class="f-size-default"><b>{{cart.orderProducts[itemIndex]?.quotationproduct?.product?.name}}</b></span>
       </ion-col>
@@ -21,7 +21,7 @@
 
     <ion-row *ngIf="dataLoaded">
       <ion-col class="f-padding-lr-15">
-        <b><span>Choose a delivery option:</span></b>
+        <b><span><span loc="Выберите вариант доставки" name="ChooseDeliveryOption">{{locale['ChooseDeliveryOption']}}</span>:</span></b>
       </ion-col>
     </ion-row>
 
@@ -38,16 +38,16 @@
               </div>
             </ion-col>
             <ion-col class="f-size-larger">
-              Get it <span class="f-color-green">{{opt.deliveryDate | date: 'fullDate'}}</span>
+              <span loc="Получите" name="GetIt">{{locale['GetIt']}}</span> <span class="f-color-green">{{opt.deliveryDate | date: 'fullDate'}}</span>
               <br>
               <span *ngIf="!(opt.deliveryCost === 0)">
-                Delivery Cost <span class="f-color-green" >{{opt.deliveryCost | localeCurrency:userService.currency}} </span>
+                <span loc="Стоимость доставки" name="DeliveryCost">{{locale['DeliveryCost']}}</span> <span class="f-color-green" >{{opt.deliveryCost | localeCurrency:userService.currency}} </span>
               </span>
               <span *ngIf="(opt.deliveryCost === 0)">
-                <span class="f-color-green"><b>FREE delivery</b></span>
+                <span class="f-color-green"><b><span loc="БЕСПЛАТНАЯ доставка" name="FreeDelivery">{{locale['FreeDelivery']}}</span></b></span>
               </span>
               <br>
-              Delivery by <span class="f-color-green">{{opt.loName}}</span>
+              <span loc="Доставляется" name="DeliveryBy">{{locale['DeliveryBy']}}</span> <span class="f-color-green">{{opt.loName}}</span>
             </ion-col>
           </ion-row>
 
@@ -60,7 +60,7 @@
       <ion-col class="f-padding-lr-5">
         <button class="f-btn-action" ion-button block
                 [attr.disabled]="!isAnyOptionSelected()?'':null"
-                (click)="onContinueClick()">Continue</button>
+                (click)="onContinueClick()"><span loc="Далее" name="Continue">{{locale['Continue']}}</span></button>
       </ion-col>
     </ion-row>
 

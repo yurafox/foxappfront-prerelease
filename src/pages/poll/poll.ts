@@ -78,8 +78,19 @@ export class PollPage extends ComponentBase{
   public async sendAnswers() {
     const clientAnswer:ClientPollAnswer = await this._repo.postClientPoolAnswers(this.pollresults);
     if(clientAnswer) {
+      let lang = this.userService.lang;
+      let message: string;
+      if (lang === 1) {
+        message = 'Спасибо за участие. Ваше мнение важно для нас'
+      } else if (lang === 2) {
+        message = 'Дякуємо за участь. Ваша думка важлива для нас'
+      } else if (lang === 3) {
+        message = 'Thank you for taking a part. Your opinion is important to us'
+      } else {
+		message = 'Спасибо за участие. Ваше мнение важно для нас'
+	  }
       let alert = this.alertCtrl.create({
-        message: 'Спасибо за участие. Ваше мнение важно для нас',
+        message: message,
         buttons:[
           {
             text: 'OK',

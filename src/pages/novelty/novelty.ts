@@ -105,8 +105,19 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
   }
 
   showNotAddedToCartConfirmToast() {
+    let lang: number = this.userService.lang;
+    let message: string;
+    if (lang === 1) {
+      message = 'Что-то пошло не так'
+    } else if (lang === 2) {
+      message = 'Щось пішло не так'
+    } else if (lang === 3) {
+      message = 'Something went wrong'
+    } else {
+      message = 'Что-то пошло не так'
+    }
     let toast = this.toastCtrl.create({
-      message: 'Something went wrong',
+      message: message,
       duration: 2000,
       position: 'bottom',
       cssClass: 'toast-message'

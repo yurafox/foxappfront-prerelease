@@ -22,8 +22,19 @@ export class ShippingOptionsPage extends ComponentBase {
   }
 
   async getDeliveryOptions() {
+    let lang: number = this.userService.lang;
+    let content: string;
+    if (lang === 1) {
+      content = 'Пожалуйста, подождите'
+    } else if (lang === 2) {
+      content = 'Будь-ласка, зачекайте'
+    } else if (lang === 3) {
+      content = 'Please wait...'
+    } else {
+      content = 'Пожалуйста, подождите'
+    }
     let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: content
     });
 
     loading.present();

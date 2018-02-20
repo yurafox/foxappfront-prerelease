@@ -67,7 +67,8 @@ export class PaymentPage extends ComponentBase implements OnInit {
         break;
       }
       default: {
-        (<any>window).appPage.toHomePage();
+        (<any>window).appPage.formInput = null;
+        (<any>window).appPage.changeDetector.detectChanges();
         console.log('Inappropriate data received');
         break;
       }

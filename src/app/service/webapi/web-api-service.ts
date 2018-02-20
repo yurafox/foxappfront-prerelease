@@ -385,7 +385,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   // <editor-fold desc='prop'>
   private prop1 = {
     id: 7,
-    name: "Количество SIM",
+    name: "Number of SIM",
     prop_type: 2,
     is_Multi_Select: true,
     url: null,
@@ -393,7 +393,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   };
   private prop2 = {
     id: 12,
-    name: "Встроенная память",
+    name: "Built-in memory",
     prop_type: 4,
     is_Multi_Select: null,
     url: null,
@@ -401,7 +401,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   };
   private prop3 = {
     id: 13,
-    name: "Диагональ дисплея",
+    name: "Diagonal of display",
     prop_type: 4,
     is_Multi_Select: null,
     url: null,
@@ -409,7 +409,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   };
   private prop4 = {
     id: 10,
-    name: "Тип сетевой вилки",
+    name: "Type of power plug",
     prop_type: 4,
     is_Multi_Select: null,
     url: null,

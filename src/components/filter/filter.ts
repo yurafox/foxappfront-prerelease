@@ -50,12 +50,12 @@ class FilterCategory {
 
   public get filterExpr(): string {
     let exp = '';
-    const delim = ', '
+    const delim = ', ';
 
     for (let item of this.items) {
       if (item.isChecked)
         exp = exp + item.name + delim;
-    };
+    }
     if (!(exp === ''))
       exp = exp.substr(0, exp.length-2);
     return exp;
@@ -101,7 +101,7 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     this.parentComponent.products = [];
     for (let p of this.baseProducts) {
       this.parentComponent.products.push(p);
-    };
+    }
     await this.initData();
   }
 
@@ -110,7 +110,7 @@ export class FilterComponent extends  ComponentBase implements OnInit {
   }
 
   initFilter() {
-    this.propFilterCondition = []
+    this.propFilterCondition = [];
     //////// Props ///////
     let fItems = null;
     let fCat = null;
@@ -118,7 +118,7 @@ export class FilterComponent extends  ComponentBase implements OnInit {
       if (!(p.prop.name == p.prevPropName) || !(p.prevPropName)) {
         fCat = new FilterCategory(p.prop.name);
         fItems = new Array<FilterItem>();
-      };
+      }
 
       fItems.push(new FilterItem(p.prop.id, p.value, false, p.count, 'prop', p));
 
@@ -147,13 +147,12 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     for (let p of this.baseProducts) {
       const i = this.filteredManufacturers.findIndex(z => (z.mnf.id == p.manufacturerId));
       if (i !== -1)
-        this.filteredManufacturers[i].count++
+        this.filteredManufacturers[i].count++;
       else {
         let mnf = new MnfFilterStruct(await this.repo.getManufacturerById(p.manufacturerId), 1, false);
         this.filteredManufacturers.push(mnf);
       }
-      ;
-    };
+    }
     this.filteredManufacturers.sort((a, b) => (a.mnf.name.localeCompare(b.mnf.name)));
 
     ////////////Заполняем модель формьі фильтра брендами////////////////
@@ -173,12 +172,11 @@ export class FilterComponent extends  ComponentBase implements OnInit {
           const i = this.filteredProps.findIndex(z => ((z.prop.id === a.id_Prop.id)
                                                                     && (z.value == a.value)));
           if (i !== -1)
-            this.filteredProps[i].count++
+            this.filteredProps[i].count++;
           else {
             const pt = new PropsFilterStruct(a.id_Prop, a.value, 1, false, null, (a.id_Prop.prop_type == 4) ? a.prop_Value_Enum.list_Index : null);
             this.filteredProps.push(pt);
           }
-          ;
         }
       });
     });
@@ -186,7 +184,7 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     this.filteredProps.sort((x, y) => {
       if (x.prop.name.localeCompare(y.prop.name) == 0) {
         if (x.prop.prop_type == 4)
-          return (x.listIndex - y.listIndex)
+          return (x.listIndex - y.listIndex);
         else
           return x.value.toString().localeCompare(y.value.toString());
       } else
@@ -194,11 +192,10 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     });
     // Заполняем значение название предыдущей группы для создания закладок с названиями групп
     let prevName = null;
-    for (var i = 0; i < this.filteredProps.length; i++) {
+    for (let i = 0; i < this.filteredProps.length; i++) {
       this.filteredProps[i].prevPropName = prevName;
       prevName = this.filteredProps[i].prop.name;
     }
-    ;
   }
 
   filterRun() {
@@ -266,14 +263,14 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     if (!this.dataInitialized) {
       for (let p of this.filteredProducts) {
         this.baseProducts.push(p);
-      };
+      }
       this.dataInitialized = true;
       await this.initData();
-    };
+    }
 
     for (let i of this.fCategories) {
       i.isOpened = false;
-    };
+    }
 
     let popover = this.popoverCtrl.create(FilterPopoverPage, {filterControl: this});
 //    (<any>popover).filter = this;

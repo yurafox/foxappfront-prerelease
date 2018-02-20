@@ -48,8 +48,19 @@ export class OrdersPage extends ComponentBase {
       this.cart.addItem(valQ,  1, valQ.price, null, this)
     }
     else {
+      let lang: number = this.userService.lang;
+      let message: string;
+      if (lang === 1) {
+        message = 'К сожалению, этого товара сейчас нет в наличии'
+      } else if (lang === 2) {
+        message = 'Нажаль, цього товару наразі немає в наявності'
+      } else if (lang === 3) {
+        message = 'Unfortunately, this item is currently out of stock'
+      } else {
+        message = 'К сожалению, этого товара сейчас нет в наличии'
+      }
       let alert = this.alertCtrl.create({
-        message: 'Sorry, but this item is currently out of stock',
+        message: message,
         buttons: [
           {
             text: 'OK',

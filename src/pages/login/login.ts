@@ -25,7 +25,7 @@ export class LoginPage extends ComponentBase {
   };
 
   public errorMessages = {
-    'email': {
+    /*'email': {
       'required': 'Обязательное поле',
       'pattern': 'Не правильный формат email адреса'
     },
@@ -33,7 +33,7 @@ export class LoginPage extends ComponentBase {
       'required': 'Обязательное поле',
       'minlength': 'Значение должно быть не менее 6ти символов',
       'maxlength': 'Значение должно быть не более 12ти символов'
-    }
+    }*/
   };
 
   constructor(public nav: NavController, public navParams: NavParams,
@@ -45,6 +45,17 @@ export class LoginPage extends ComponentBase {
   ngOnInit(){
     super.ngOnInit();
     this.buildForm();
+    this.errorMessages = {
+      'email': {
+        'required': this.locale['RequiredField'],
+        'pattern': this.locale['WrongEMailFormat']
+      },
+      'password': {
+        'required': this.locale['RequiredField'],
+        'minlength': this.locale['LengthNLT6'],
+        'maxlength': this.locale['LengthNGT128']
+      }
+    };
   }
 
   // go to register page
@@ -86,7 +97,7 @@ export class LoginPage extends ComponentBase {
 
       'password': ['', [Validators.required,
         Validators.minLength(6),
-        Validators.maxLength(12)]]
+        Validators.maxLength(128)]]
     });
 
     this.loginForm.valueChanges
@@ -100,7 +111,6 @@ export class LoginPage extends ComponentBase {
     if (!this.loginForm) {
       return;
     }
-    ;
     let form = this.loginForm;
 
     for (let err in this.formErrors) {

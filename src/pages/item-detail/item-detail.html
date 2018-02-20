@@ -43,24 +43,24 @@
     </ion-row>
     <ion-row *ngIf="OnStock && resolved">
       <ion-col>
-        <span class="f-color-green f-item-nopadding">In Stock</span>
+        <span class="f-color-green f-item-nopadding"><span loc="В наличии" name="InStock">{{locale['InStock']}}</span></span>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="valueQuot?.quotation?.supplier">
       <ion-col>
-        <span class="f-item-nopadding">Sold by {{valueQuot?.quotation?.supplier?.name}}</span>
+        <span class="f-item-nopadding"><span loc="Продавец" name="SoldBy">{{locale['SoldBy']}}</span> {{valueQuot?.quotation?.supplier?.name}}</span>
       </ion-col>
     </ion-row>
     <!-- Pickup places -->
     <ion-row *ngIf="productStorePlaces?.length > 0" (click)="showLocationPopover()">
       <ion-col>
-        <span class="f-color-info f-item-nopadding">Available for FREE pickup in {{productStorePlaces.length}} places</span>
+        <span class="f-color-info f-item-nopadding"><span loc="Доступно для бесплатного получения в" name="AvailableForFreePickup">{{locale['AvailableForFreePickup']}}</span> {{productStorePlaces.length}} <span loc="местах" name="Places">{{locale['Places']}}</span></span>
       </ion-col>
     </ion-row>
     <!-- Selected pickup place -->
     <ion-row *ngIf="selectedStorePlace">
       <ion-col>
-        <span class="f-item-nopadding">FREE Pickup at</span>
+        <span class="f-item-nopadding"><span loc="Заберите бесплатно в" name="FreePickupAt">{{locale['FreePickupAt']}}</span></span>
         <span class="f-color-green f-item-nopadding">{{selectedStorePlace.name}}, {{selectedStorePlace.address_line}}
           {{selectedStorePlace?.city?.name}} </span>
       </ion-col>
@@ -69,7 +69,7 @@
       <ion-col class="f-item-padding-bottom">
         <dropdown-list id="btnQty"
                        [reference]="qty"
-                       [options]="{popupHeader:'Quantity', buttonHeader:'Qty'}"
+                       [options]="{popupHeader:locale['Quantity'], buttonHeader:locale['Qty']}"
                        [isQty]="true">
         </dropdown-list>
 
@@ -79,14 +79,14 @@
     <ion-row>
       <ion-col>
         <button class="f-btn-action" ion-button block [attr.disabled]="!valueQuot?'':null"
-                (click)="onAddToCart()">Add to Cart</button>
+                (click)="onAddToCart()"><span loc="Добавить в корзину" name="AddToCart">{{locale['AddToCart']}}</span></button>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="valueQuot && (valueQuot.price >= minLoanAmt)
                               && (valueQuot.price <= maxLoanAmt)">
       <ion-col>
         <button class="f-btn-secondary" ion-button block [attr.disabled]="!valueQuot?'':null"
-                (click)="onGetForLoan()">Get it for a loan</button>
+                (click)="onGetForLoan()"><span loc="Взять в кредит" name="GetForLoan">{{locale['GetForLoan']}}</span></button>
       </ion-col>
     </ion-row>
 
@@ -97,7 +97,7 @@
   <ion-grid class="f-item-nopadding-tb" *ngIf="noOfQuotes>1" (click)="onShowMoreQuotesClick()">
     <ion-row>
       <ion-col>
-        <span class="f-color-info">{{noOfQuotes}} more quotes from {{Price | localeCurrency:userService.currency}}</span>
+        <span class="f-color-info">{{noOfQuotes}} <span loc="больше предложений от" name="MoreQuotes">{{locale['MoreQuotes']}}</span> {{Price | localeCurrency:userService.currency}}</span>
         <hr>
       </ion-col>
     </ion-row>
@@ -105,7 +105,7 @@
 
   <ion-grid class="f-item-nopadding-tb">
     <ion-row>
-      <ion-col class="f-item-section-header">About this item
+      <ion-col class="f-item-section-header"><span loc="Об этом товаре" name="AboutItem">{{locale['AboutItem']}}</span>
       </ion-col>
     </ion-row>
 
@@ -126,14 +126,14 @@
   <ion-grid class="f-item-nopadding-tb" *ngIf="reviews.length >0">
 
     <ion-row>
-      <ion-col class="f-item-section-header">Customer reviews
+      <ion-col class="f-item-section-header"><span loc="Отзывы покупателей" name="CustomerReviews">{{locale['CustomerReviews']}}</span>
       </ion-col>
     </ion-row>
 
 
     <ion-row (click)="onShowReviewsClick({reviews: reviews, product: product})">
       <ion-item class="f-border-ligthgray" detail-push text-wrap>
-        <b class="f-size-larger">{{reviews.length}} customer reviews</b><br>
+        <b class="f-size-larger">{{reviews.length}} <span loc="отзывов покупателей" name="customerReviews">{{locale['customerReviews']}}</span></b><br>
         <rating class="rating-large" [ngModel]="product.rating"
                 readOnly="true">
         </rating>
@@ -142,7 +142,7 @@
 
 
     <ion-row>
-      <ion-col class="f-item-section-header">Top reviews
+      <ion-col class="f-item-section-header"><span loc="Лучшие отзывы" name="TopReviews">{{locale['TopReviews']}}</span>
       </ion-col>
     </ion-row>
 
@@ -156,7 +156,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <button text-center class="f-btn-secondary" ion-item block (click)="onWriteReview(product)">Write a Review</button>
+        <button text-center class="f-btn-secondary" ion-item block (click)="onWriteReview(product)"><span loc="Оставить Отзыв" name="WriteReview">{{locale['WriteReview']}}</span></button>
       </ion-col>
     </ion-row>
   </ion-grid>

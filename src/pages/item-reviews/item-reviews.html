@@ -6,7 +6,7 @@
   <ion-grid>
 
     <ion-row>
-      <ion-col class="f-item-section-header">Customer reviews
+      <ion-col class="f-item-section-header"><span loc="Отзывы покупателей" name="CustomerReviews">{{locale['CustomerReviews']}}</span>
       </ion-col>
     </ion-row>
 
@@ -22,10 +22,10 @@
 
     <ion-row>
       <ion-col class="f-item-nopadding-tb">
-        <span class="f-color-info">{{item?.rating}} of 5 stars</span>
+        <span class="f-color-info">{{item?.rating}} <span loc="из 5 звёзд" name="Of5Stars">{{locale['Of5Stars']}}</span></span>
       </ion-col>
       <ion-col text-end class="f-item-nopadding-tb">
-        <span class="f-color-info" (click)="onWriteReviewClick()">Write a review</span>
+        <span class="f-color-info" (click)="onWriteReviewClick()"><span loc="Оставить отзыв" name="WriteReview">{{locale['WriteReview']}}</span></span>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -39,7 +39,7 @@
         <item-review [review]=rev [displayTextLength]="250" [collapsibleMode]="true"></item-review>
         <button ion-button (click)="onShowReviewClick(rev)" class="f-btn-secondary"
                 *ngIf="rev.reviewAnswers.length > 0">
-          Show answers
+          <span loc="Показать ответы" name="ShowAnswers">{{locale['ShowAnswers']}}</span>
         </button>
       </ion-col>
     </ion-row>
