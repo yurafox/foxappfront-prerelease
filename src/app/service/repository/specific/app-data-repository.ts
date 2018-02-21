@@ -47,15 +47,15 @@ import { Providers, System } from "../../../core/app-core";
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
-//const productsUrl = "http://localhost:58471/api/product";
-const currenciesUrl = "http://localhost:58471/api/currency";
-const manufacturersUrl = "http://localhost:58471/api/manufacturer";
-const quotationProductsUrl = "http://localhost:58471/api/quotationproduct";
-const suppliersUrl = "http://localhost:58471/api/supplier";
+const productsUrl = "https://localhost:44374/api/product";
+const currenciesUrl = "https://localhost:44374/api/currency";
+const manufacturersUrl = "https://localhost:44374/api/manufacturer";
+const quotationProductsUrl = "https://localhost:44374/api/quotationproduct";
+const suppliersUrl = "https://localhost:44374/api/supplier";
 
 //DEV URLS
 //const currenciesUrl = "/api/mcurrencies";
-const productsUrl = "/api/mproducts";
+//const productsUrl = "/api/mproducts";
 //const manufacturersUrl = "/api/manufacturers";
 //const quotationProductsUrl = "/api/mquotationProducts";
 //const suppliersUrl = "/api/msuppliers";
