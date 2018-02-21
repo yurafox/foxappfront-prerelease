@@ -730,9 +730,9 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'WithError', lang:1, text:'К сожалению, возникла ошибка во время оплаты Вашего заказа'},
       { tagName:'WithError', lang:2, text:'Нажаль, виникла помилка під час оплати Вашого замовлення'},
       { tagName:'WithError', lang:3, text:'Unfortunately, Your purchase has ended with error'},
-      { tagName:'Successful', lang:1, text:'Спасибо Вам за покупку! Заказ отправлен в обработку'},
-      { tagName:'Successful', lang:2, text:'Дякуємо Вам за замовлення! Замовлення відправлено в опрацювання'},
-      { tagName:'Successful', lang:3, text:'Thank You for your purchase! Order sent for processing '},
+      { tagName:'Successful', lang:1, text:'Оплата прошла успешно. Заказ отправлен в обработку'},
+      { tagName:'Successful', lang:2, text:'Оплата пройшла успішно. Замовлення відправлено в опрацювання'},
+      { tagName:'Successful', lang:3, text:'Payment was successful. Order sent for processing '},
     ];
 
     this._mockLocalizationStore['PollPage'] = [

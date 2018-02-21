@@ -34,6 +34,7 @@ export class PaymentPage extends ComponentBase implements OnInit {
   }
 
   async ngOnInit() {
+    super.ngOnInit();
     this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(`https://mobile.foxtrot.com.ua/paymaster/payment/?id=${this.id}&total=${this.total}`);
     window.addEventListener('message', this.receiveMessage);
   }
@@ -51,6 +52,7 @@ export class PaymentPage extends ComponentBase implements OnInit {
       case 'success': {
         (<any>window).appPage.success = true;
         (<any>window).appPage.formInput = null;
+        (<any>window).appPage.cart.emptyCart();
         (<any>window).appPage.changeDetector.detectChanges();
         break;
       }

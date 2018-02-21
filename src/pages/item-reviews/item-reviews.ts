@@ -34,12 +34,14 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
   }
 
   async ngOnInit () {
-    if (!(this.navParams.data.reviews))
+    super.ngOnInit();
+    if (!(this.navParams.data.reviews)) {
       if (this.navParams.data.product) {
         this.reviews = await this.repo.getProductReviewsByProductId(this.product.id);
       } else if (this.navParams.data.store) {
         this.reviews = await this.repo.getStoreReviewsByStoreId(this.store.id);
       }
+    }
   }
 
   onWriteReviewClick(): void {

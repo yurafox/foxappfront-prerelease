@@ -4,17 +4,17 @@
 
 
 <ion-content text-center>
-  <div [hidden]="!fail" padding>
+  <div *ngIf="fail" padding>
     <h3 style="color:red"><span loc="К сожалению, оплата Вашего заказа не прошла успешно" name="NotSuccessful">{{locale['NotSuccessful']}}</span></h3>
     <button ion-button block class="f-btn-secondary" (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']}}</span></button>
   </div>
-  <div [hidden]="!error" padding>
+  <div *ngIf="error" padding>
     <h3 style="color:red"><span loc="К сожалению, возникла ошибка во время оплаты Вашего заказа" name="WithError">{{locale['WithError']}}</span></h3>
     <button ion-button block class="f-btn-secondary" (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']}}</span></button>
   </div>
-  <div [hidden]="!success" padding>
-    <h3 text-center style="color:green"><span loc="Спасибо Вам за покупку! Заказ отправлен в обработку" name="Successful">{{locale['Successful']}}</span>
-      <ion-icon name="ios-checkmark-outline" style="font-size: 70px;vertical-align: -15px;"></ion-icon>
+  <div *ngIf="success" padding>
+    <h3 text-center style="color:green"><span loc="Оплата прошла успешно. Заказ отправлен в обработку" name="Successful">{{locale['Successful']}}</span>
+      <!--<ion-icon name="ios-checkmark-outline" style="font-size: 70px;vertical-align: -15px;"></ion-icon>-->
     </h3>
     <button ion-button block class="f-btn-secondary" (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']}}</span></button>
   </div>
