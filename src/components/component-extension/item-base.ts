@@ -52,7 +52,7 @@ export class ItemBase extends ComponentBase implements OnInit {
     */
     if (this.valueQuot) {
       this.productStorePlaces = await this.repo.getProductStorePlacesByQuotId(this.valueQuot.id);
-    };
+    }
 
     this.resolved = true;
   }

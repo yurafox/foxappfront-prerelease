@@ -947,6 +947,201 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'WriteProductReview', lang:2, text:'Залишити відгук про товар'},
       { tagName:'WriteProductReview', lang:3, text:'Write a product review'},
     ];
+
+    this._mockLocalizationStore['BonusComponent'] = [
+      { tagName:'bonuses', lang:1, text:'бонусов'},
+      { tagName:'bonuses', lang:2, text:'бонусів'},
+      { tagName:'bonuses', lang:3, text:'bonuses'},
+    ];
+
+    this._mockLocalizationStore['BonusPayComponent'] = [
+      { tagName:'CouldPayUpTo', lang:1, text:'Вы можете использовать'},
+      { tagName:'CouldPayUpTo', lang:2, text:'Ви можете використати'},
+      { tagName:'CouldPayUpTo', lang:3, text:'You could pay up to'},
+      { tagName:'BonusesForThisPurchase', lang:1, text:'бонусов для этой покупки'},
+      { tagName:'BonusesForThisPurchase', lang:2, text:'бонусів для цієї купівлі'},
+      { tagName:'BonusesForThisPurchase', lang:3, text:'bonuses for this purchase'},
+      { tagName:'TickPayBonuses', lang:1, text:'Выберите "Изпользовать акционные бонусы", если Вы хотите заплатить бонусами'},
+      { tagName:'TickPayBonuses', lang:2, text:'Оберіть "Використати акційні бонуси", якщо Ви бажаєте сплатити бонусами'},
+      { tagName:'TickPayBonuses', lang:3, text:'Tick "Pay promotional bonuses" option, if you want to pay promotional bonuses.'},
+      { tagName:'PayBonuses', lang:1, text:'Изпользовать бонусы'},
+      { tagName:'PayBonuses', lang:2, text:'Використати бонуси'},
+      { tagName:'PayBonuses', lang:3, text:'Pay bonuses'},
+      { tagName:'EnterBonusQuantity', lang:1, text:'Введите количество бонусов'},
+      { tagName:'EnterBonusQuantity', lang:2, text:'Введіть кількість бонусів'},
+      { tagName:'EnterBonusQuantity', lang:3, text:'Enter bonus quantity'},
+      { tagName:'OnlyDigits', lang:1, text:'Допустимы только цифры'},
+      { tagName:'OnlyDigits', lang:2, text:'Дозволені лише цифри'},
+      { tagName:'OnlyDigits', lang:3, text:'Only digits allowed'},
+      { tagName:'PayPromotionalBonuses', lang:1, text:'Изпользовать акционные бонусы'},
+      { tagName:'PayPromotionalBonuses', lang:2, text:'Використати акційні бонуси'},
+      { tagName:'PayPromotionalBonuses', lang:3, text:'Pay promotional bonuses'},
+    ];
+
+    this._mockLocalizationStore['CreditComponent'] = [
+      { tagName:'MaxLoanPeriod', lang:1, text:'Максимальный срок кредита - до'},
+      { tagName:'MaxLoanPeriod', lang:2, text:'Максимальний срок кредиту - до'},
+      { tagName:'MaxLoanPeriod', lang:3, text:'Maximum loan period - up to'},
+      { tagName:'months', lang:1, text:'месяцев'},
+      { tagName:'months', lang:2, text:'місяців'},
+      { tagName:'months', lang:3, text:'months'},
+      { tagName:'GracePeriod', lang:1, text:'Льготный период'},
+      { tagName:'GracePeriod', lang:2, text:'Пільговий період'},
+      { tagName:'GracePeriod', lang:3, text:'Grace period'},
+      { tagName:'FirstPayment', lang:1, text:'Первый взнос'},
+      { tagName:'FirstPayment', lang:2, text:'Перший внесок'},
+      { tagName:'FirstPayment', lang:3, text:'First payment'},
+      { tagName:'MonthlyFee', lang:1, text:'Ежемесячная комиссия'},
+      { tagName:'MonthlyFee', lang:2, text:'Щомісячна комісія'},
+      { tagName:'MonthlyFee', lang:3, text:'Monthly fee'},
+      { tagName:'AfterGracePeriod', lang:1, text:'после льготного периода'},
+      { tagName:'AfterGracePeriod', lang:2, text:'після пільгового періоду'},
+      { tagName:'AfterGracePeriod', lang:3, text:'after grace period'},
+      { tagName:'OfLoanAmount', lang:1, text:'от суммы кредита'},
+      { tagName:'OfLoanAmount', lang:2, text:'від суми кредиту'},
+      { tagName:'OfLoanAmount', lang:3, text:'of the loan amount'},
+      { tagName:'MaxLoanAmount', lang:1, text:'Максимальная сумма кредита'},
+      { tagName:'MaxLoanAmount', lang:2, text:'Максимальна сума кредиту'},
+      { tagName:'MaxLoanAmount', lang:3, text:'Maximum loan amount'},
+      { tagName:'AnnualRate', lang:1, text:'Годовая % ставка'},
+      { tagName:'AnnualRate', lang:2, text:'Річна % ставка'},
+      { tagName:'AnnualRate', lang:3, text:'Annual % rate'},
+      { tagName:'TermOfLoan', lang:1, text:'Срок кредита, мес'},
+      { tagName:'TermOfLoan', lang:2, text:'Термін кредиту, міс'},
+      { tagName:'TermOfLoan', lang:3, text:'Term of loan, months'},
+      { tagName:'MonthsPopHeader', lang:1, text:'Месяцев'},
+      { tagName:'MonthsPopHeader', lang:2, text:'Місяців'},
+      { tagName:'MonthsPopHeader', lang:3, text:'Months'},
+      { tagName:'MonthlyPayment', lang:1, text:'Ежемесячный платеж'},
+      { tagName:'MonthlyPayment', lang:2, text:'Щомісячний платіж'},
+      { tagName:'MonthlyPayment', lang:3, text:'Monthly payment'},
+    ];
+
+    this._mockLocalizationStore['CreditBriefComponent'] = [
+      { tagName:'LoanPeriod', lang:1, text:'Период кредитования'},
+      { tagName:'LoanPeriod', lang:2, text:'Період кредитування'},
+      { tagName:'LoanPeriod', lang:3, text:'Loan period'},
+      { tagName:'Months', lang:1, text:'месяцев'},
+      { tagName:'Months', lang:2, text:'місяців'},
+      { tagName:'Months', lang:3, text:'months'},
+      { tagName:'MonthlyPayment', lang:1, text:'Ежемесячный платеж'},
+      { tagName:'MonthlyPayment', lang:2, text:'Щомісячний платіж'},
+      { tagName:'MonthlyPayment', lang:3, text:'Monthly payment'},
+      { tagName:'ApproxCalculation', lang:1, text:'Расчёт ежемесячного платежа приблизительный. Окончательная сумма будет определена кредитным манеджером'},
+      { tagName:'ApproxCalculation', lang:2, text:'Розрахунок щомісячного платежу приблизний. Кінцева сума буде визначена крединтим менеджером'},
+      { tagName:'ApproxCalculation', lang:3, text:'The calculation of the monthly payment is approximate. The final value will be defined by the credit manager'},
+    ];
+
+    this._mockLocalizationStore['CustomPopupComponent'] = [
+      { tagName:'SelectPickupPlace', lang:1, text:'Выберите пункт выдачи'},
+      { tagName:'SelectPickupPlace', lang:2, text:'Оберіть пункт видачі'},
+      { tagName:'SelectPickupPlace', lang:3, text:'Select pickup place'},
+    ];
+
+    this._mockLocalizationStore['FilterComponent'] = [
+      { tagName:'Items', lang:1, text:'товаров'},
+      { tagName:'Items', lang:2, text:'товарів'},
+      { tagName:'Items', lang:3, text:'items'},
+      { tagName:'Filter', lang:1, text:'Фильтр'},
+      { tagName:'Filter', lang:2, text:'Фільтр'},
+      { tagName:'Filter', lang:3, text:'Filter'},
+    ];
+
+    this._mockLocalizationStore['ItemComponent'] = [
+      { tagName:'OffersFrom', lang:1, text:'предложений от'},
+      { tagName:'OffersFrom', lang:2, text:'пропозицій від'},
+      { tagName:'OffersFrom', lang:3, text:'offers from'},
+      { tagName:'InStock', lang:1, text:'В наличии'},
+      { tagName:'InStock', lang:2, text:'В наявності'},
+      { tagName:'InStock', lang:3, text:'In Stock'},
+      { tagName:'SeeMoreChoices', lang:1, text:'Посмотреть другие варианты'},
+      { tagName:'SeeMoreChoices', lang:2, text:'Переглянути інші варіанти'},
+      { tagName:'SeeMoreChoices', lang:3, text:'In See more choices'},
+    ];
+
+    this._mockLocalizationStore['ItemPropsComponent'] = [
+      { tagName:'FeaturesDetails', lang:1, text:'Особенности и Детали'},
+      { tagName:'FeaturesDetails', lang:2, text:'Особливості та Деталі'},
+      { tagName:'FeaturesDetails', lang:3, text:'Features & Details'},
+    ];
+
+    this._mockLocalizationStore['ItemReviewComponent'] = [
+      { tagName:'by', lang:1, text:'от'},
+      { tagName:'by', lang:2, text:'від'},
+      { tagName:'by', lang:3, text:'by'},
+      { tagName:'on', lang:1, text:''},
+      { tagName:'on', lang:2, text:''},
+      { tagName:'on', lang:3, text:'on'},
+      { tagName:'Advantages', lang:1, text:'Преимущества'},
+      { tagName:'Advantages', lang:2, text:'Переваги'},
+      { tagName:'Advantages', lang:3, text:'Advantages'},
+      { tagName:'Disadvantages', lang:1, text:'Недостатки'},
+      { tagName:'Disadvantages', lang:2, text:'Недоліки'},
+      { tagName:'Disadvantages', lang:3, text:'Disadvantages'},
+      { tagName:'WasHelpful', lang:1, text:'Полезен ли был Вам этот отзыв'},
+      { tagName:'WasHelpful', lang:2, text:'Чи цей відгук був корисним для Вас'},
+      { tagName:'WasHelpful', lang:3, text:'Was this review helpful to you'},
+      { tagName:'Helpful', lang:1, text:'Полезный'},
+      { tagName:'Helpful', lang:2, text:'Корисний'},
+      { tagName:'Helpful', lang:3, text:'Helpful'},
+      { tagName:'NotHelpful', lang:1, text:'Не Полезный'},
+      { tagName:'NotHelpful', lang:2, text:'Не Корисний'},
+      { tagName:'NotHelpful', lang:3, text:'Not Helpful'},
+      { tagName:'Thanks', lang:1, text:'Спасибо Вам за отзыв'},
+      { tagName:'Thanks', lang:2, text:'Дякуємо Вам за відгук'},
+      { tagName:'Thanks', lang:3, text:'Thank you for your feedback'},
+      { tagName:'PeopleFound', lang:1, text:'людям это помогло'},
+      { tagName:'PeopleFound', lang:2, text:'людям це допомогло'},
+      { tagName:'PeopleFound', lang:3, text:'people found this helpful'},
+      { tagName:'Answers', lang:1, text:'Ответы'},
+      { tagName:'Answers', lang:2, text:'Відповіді'},
+      { tagName:'Answers', lang:3, text:'Answers'},
+    ];
+
+    this._mockLocalizationStore['PromoCodeComponent'] = [
+      { tagName:'PromoCode', lang:1, text:'Промокод'},
+      { tagName:'PromoCode', lang:2, text:'Промокод'},
+      { tagName:'PromoCode', lang:3, text:'Promotional Code'},
+      { tagName:'EnterCode', lang:1, text:'Введите код'},
+      { tagName:'EnterCode', lang:2, text:'Введіть код'},
+      { tagName:'EnterCode', lang:3, text:'Enter code'},
+      { tagName:'Apply', lang:1, text:'Применить'},
+      { tagName:'Apply', lang:2, text:'Застосувати'},
+      { tagName:'Apply', lang:3, text:'Apply'},
+    ];
+
+    this._mockLocalizationStore['ReadMoreComponent'] = [
+      { tagName:'Read', lang:1, text:'Читать'},
+      { tagName:'Read', lang:2, text:'Читати'},
+      { tagName:'Read', lang:3, text:'Read'},
+      { tagName:'More', lang:1, text:'больше'},
+      { tagName:'More', lang:2, text:'більше'},
+      { tagName:'More', lang:3, text:'more'},
+      { tagName:'Less', lang:1, text:'меньше'},
+      { tagName:'Less', lang:2, text:'менше'},
+      { tagName:'Less', lang:3, text:'less'},
+    ];
+
+    this._mockLocalizationStore['SearchBtnComponent'] = [
+      { tagName:'What', lang:1, text:'Что Вы ищете'},
+      { tagName:'What', lang:2, text:'Що Ви шукаєте'},
+      { tagName:'What', lang:3, text:'What are you looking for'},
+    ];
+
+    this._mockLocalizationStore['ShippingAddressComponent'] = [
+      { tagName:'Phone', lang:1, text:'Телефон'},
+      { tagName:'Phone', lang:2, text:'Телефон'},
+      { tagName:'Phone', lang:3, text:'Phone'},
+      { tagName:'DeliverToThis', lang:1, text:'Доставить по этому адресу'},
+      { tagName:'DeliverToThis', lang:2, text:'Доставити за цією адресою'},
+      { tagName:'DeliverToThis', lang:3, text:'Deliver to this address'},
+      { tagName:'Edit', lang:1, text:'Редактировать'},
+      { tagName:'Edit', lang:2, text:'Редактувати'},
+      { tagName:'Edit', lang:3, text:'Edit'},
+      { tagName:'Delete', lang:1, text:'Удалить'},
+      { tagName:'Delete', lang:2, text:'Видалити'},
+      { tagName:'Delete', lang:3, text:'Delete'},
+    ];
   }
 
   public getLocalization(data: { componentName: string, lang: number }): Promise<IDictionary<string>> {

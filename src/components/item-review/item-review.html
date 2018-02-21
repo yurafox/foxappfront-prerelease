@@ -3,53 +3,53 @@
 </rating>
 <p *ngIf="displayTextLength === -1"></p> <!-- фиксим баг верстки -->
 <div *ngIf="collapsibleMode">
-  <span>by </span><span class="f-review-user-name">{{review.user}}</span><span> on </span><span>{{review.reviewDate | date:'longDate'}}</span>
+  <span loc="от" name="by">{{locale['by']}}</span> <span class="f-review-user-name">{{review.user}}</span> <span loc="" name="on">{{locale['on']}}</span> <span>{{review.reviewDate | date:'longDate'}}</span>
   <read-more [text]="review.reviewText" [maxLength]="displayTextLength"></read-more>
-  <span *ngIf="review.advantages"><b>Advantages:</b> {{review.advantages}}<br/></span>
-  <span *ngIf="review.disadvantages"><b>Disadvantages:</b> {{review.disadvantages}}<br/></span>
+  <span *ngIf="review.advantages"><b><span loc="Преимущества" name="Advantages">{{locale['Advantages']}}</span>:</b> {{review.advantages}}<br/></span>
+  <span *ngIf="review.disadvantages"><b><span loc="Недостатки" name="Disadvantages">{{locale['Disadvantages']}}</span>:</b> {{review.disadvantages}}<br/></span>
   <span *ngIf="review.upvotes && (review.upvotes > 0)">
-      {{review.upvotes ? review.upvotes + ' people found this helpful' : ''}}<br>
+      {{review.upvotes ? review.upvotes + ' '+(locale['PeopleFound']?locale['PeopleFound']:'людям это помогло') : ''}}<br>
   </span>
   <span *ngIf="!review.upvotes || (review.upvotes === 0)">
-      <span>Was this review helpful to you?</span><br>
+      <span loc="Полезен ли был Вам этот отзыв" name="WasHelpful">{{locale['WasHelpful']}}</span>?<br>
   </span>
   <span style="display: inline-block" *ngIf="!helpfulClicked">
-    <button ion-button class="f-btn-secondary" (click)="onHelpfulClick()">Helpful</button>
-    <button ion-button class="f-btn-secondary" (click)="onNotHelpfulClick()">Not Helpful</button>
+    <button ion-button class="f-btn-secondary" (click)="onHelpfulClick()"><span loc="Полезный" name="Helpful">{{locale['Helpful']}}</span></button>
+    <button ion-button class="f-btn-secondary" (click)="onNotHelpfulClick()"><span loc="Не Полезный" name="NotHelpful">{{locale['NotHelpful']}}</span></button>
   <br></span>
   <span *ngIf="helpfulClicked">
     <span class="f-review-feedback-thanks" icon-start>
-      <ion-icon name="ios-checkmark-outline"></ion-icon> Thank you for your feedback.</span>
+      <ion-icon name="ios-checkmark-outline"></ion-icon><span loc="Спасибо Вам за отзыв" name="Thanks">{{locale['Thanks']}}</span>.</span>
   </span>
 </div>
 <div *ngIf="!collapsibleMode">
   <div *ngIf="!(displayTextLength === -1); else elseBlock">
     <span [innerHTML]="review.reviewText | truncate : displayTextLength"></span><br>
-    <span>by </span><span class="f-review-user-name">{{review.user}}</span><br>
+    <span loc="от" name="by">{{locale['by']}}</span> <span class="f-review-user-name">{{review.user}}</span><br>
   </div>
   <ng-template #elseBlock>
-    <span>by </span><span class="f-review-user-name">{{review.user}}</span><br>
+    <span loc="от" name="by">{{locale['by']}}</span> <span class="f-review-user-name">{{review.user}}</span><br>
     <span [innerHTML]="review.reviewText"></span><br/>
-    <span *ngIf="review.advantages"><b>Advantages:</b> {{review.advantages}}<br/></span>
-    <span *ngIf="review.disadvantages"><b>Disadvantages:</b> {{review.disadvantages}}<br/></span>
+    <span *ngIf="review.advantages"><b><span loc="Преимущества" name="Advantages">{{locale['Advantages']}}</span>:</b> {{review.advantages}}<br/></span>
+    <span *ngIf="review.disadvantages"><b><span loc="Недостатки" name="Disadvantages">{{locale['Disadvantages']}}</span>:</b> {{review.disadvantages}}<br/></span>
     <span *ngIf="review.upvotes && (review.upvotes > 0)">
-      {{review.upvotes ? review.upvotes + ' people found this helpful' : ''}}<br>
+      {{review.upvotes ? review.upvotes + ' '+(locale['PeopleFound']?locale['PeopleFound']:'людям это помогло') : ''}}<br>
     </span>
     <span *ngIf="!review.upvotes || (review.upvotes === 0)">
-      <span>Was this review helpful to you?</span><br>
+      <span loc="Полезен ли был Вам этот отзыв" name="WasHelpful">{{locale['WasHelpful']}}</span>?<br>
     </span>
     <span style="display: inline-block" *ngIf="!helpfulClicked">
-      <button ion-button class="f-btn-secondary" (click)="onHelpfulClick()">Helpful</button>
-      <button ion-button class="f-btn-secondary" (click)="onNotHelpfulClick()">Not Helpful</button><br>
+      <button ion-button class="f-btn-secondary" (click)="onHelpfulClick()"><span loc="Полезный" name="Helpful">{{locale['Helpful']}}</span></button>
+      <button ion-button class="f-btn-secondary" (click)="onNotHelpfulClick()"><span loc="Не Полезный" name="NotHelpful">{{locale['NotHelpful']}}</span></button><br>
     </span>
     <span *ngIf="helpfulClicked">
       <span class="f-review-feedback-thanks">
-        <ion-icon name="ios-checkmark-outline"></ion-icon> Thank you for your feedback.</span>
+        <ion-icon name="ios-checkmark-outline"></ion-icon><span loc="Спасибо Вам за отзыв" name="Thanks">{{locale['Thanks']}}</span>.</span>
     </span>
     <div *ngIf="review.reviewAnswers && (review.reviewAnswers.length > 0)">
-      <span style="font-size: 18px"><b>Answers:</b></span><br>
+      <span style="font-size: 18px"><b><span loc="Ответы" name="Answers">{{locale['Answers']}}</span>:</b></span><br>
       <div *ngFor="let answer of review.reviewAnswers" class="f-review-answer">
-        <span>by </span><span class="f-review-user-name">{{answer?.user}}</span><span> on </span><span>{{answer?.answerDate  | date:'longDate'}}</span><br>
+        <span loc="от" name="by">{{locale['by']}}</span> <span class="f-review-user-name">{{answer?.user}}</span> <span loc="" name="on">{{locale['on']}}</span> <span>{{answer?.answerDate  | date:'longDate'}}</span><br>
         <span>{{answer?.answerText}}</span><br>
       </div>
     </div>

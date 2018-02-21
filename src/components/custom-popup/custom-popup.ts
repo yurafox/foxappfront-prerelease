@@ -28,6 +28,10 @@ export class CustomPopupComponent extends ComponentBase {
     );
   }
 
+  ngOnInit() {
+    super.ngOnInit();
+  }
+
   close() {
     this.viewCtrl.dismiss();
   }
@@ -41,9 +45,30 @@ export class CustomPopupComponent extends ComponentBase {
 
   async selectPickupStorePlace(sPlace: ProductStorePlace) {
     let sp = await (<any>sPlace).storeplace;
+    let lang: number = this.userService.lang;
+    let title: string;
+    let message: string;
+    let cancel: string;
+    if (lang === 1) {
+      title = 'Подтверждение';
+      message = 'Вы действительно хотите выбрать '+sp.name +' чтобы забрать этот товар?';
+      cancel = 'Отмена';
+    } else if (lang === 2) {
+      title = 'Підтвердження';
+      message = 'Ви дійсно бажаєте вибрати '+sp.name +' щоб забрати цей товар?';
+      cancel = 'Відміна';
+    } else if (lang === 3) {
+      title = 'Confirmation';
+      message = 'Are you about to select '+sp.name +' for pickup this item?';
+      cancel = 'Cancel';
+    } else {
+      title = 'Подтверждение';
+      message = 'Вы действительно хотите выбрать '+sp.name +' чтобы забрать этот товар?';
+      cancel = 'Отмена';
+    }
     let alert = this.alertCtrl.create({
-      title: 'Confirmation',
-      message: 'Are you about to select '+sp.name +' for pickup this item?',
+      title: title,
+      message: message,
       buttons: [
         {
           text: 'OK',
@@ -53,7 +78,7 @@ export class CustomPopupComponent extends ComponentBase {
           }
         },
         {
-          text: 'Cancel',
+          text: cancel,
           handler: () => {
             this.viewCtrl.dismiss();
           }

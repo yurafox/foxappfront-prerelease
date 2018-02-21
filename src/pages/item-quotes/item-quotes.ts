@@ -25,6 +25,7 @@ export class ItemQuotesPage extends ComponentBase implements OnInit {
   }
 
   async ngOnInit() {
+    super.ngOnInit();
     this.quotes = (await this.repo.getQuotationProductsByProductId(this.product.id))
                     .filter((i) => {return (i.stockQuant>0);});
   }

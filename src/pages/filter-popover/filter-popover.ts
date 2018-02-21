@@ -60,7 +60,7 @@ export class FilterPopoverPage extends ComponentBase {
         return false;
       //////////////////////////////////////////
 
-    };
+    }
   }
 
 
@@ -100,6 +100,10 @@ export class FilterPopoverPage extends ComponentBase {
       }
     );
 
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
   }
 
   close(): void {

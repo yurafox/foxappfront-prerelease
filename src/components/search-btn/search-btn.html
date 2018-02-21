@@ -5,10 +5,10 @@
         <ion-icon name="ios-search"></ion-icon>
       </button>
     </ion-buttons>
-    <input type="text" placeholder="What are you looking for?" #input id="input" [(ngModel)]="searchValue"
+    <input type="text" placeholder="{{locale['What']?locale['What']:'Что Вы ищете'}}?" #input id="input" [(ngModel)]="searchValue"
            (keyup.enter)="searchByText(input.value)" (keyup)="onKeyUp($event)">
 <!--
-    <ion-input #input placeholder="What are you looking for?" [attr.disabled]="disabled?'':null"
+    <ion-input #input placeholder="{{locale['What']?locale['What']:'Что Вы ищете'}}?" [attr.disabled]="disabled?'':null"
                [(ngModel)]="searchValue"
                (keyup.enter)="searchByText(input.value)" (keyup)="onKeyUp($event)"></ion-input>
 -->

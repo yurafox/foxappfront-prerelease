@@ -24,6 +24,10 @@ export class ItemSimpleComponent extends ItemBase {
     super(navCtrl, navParams, repo);
   }
 
+  async ngOnInit() {
+    super.ngOnInit();
+  }
+
   openItemDetails(data: Product): void {
     this.navCtrl.push('ItemDetailPage', this.product);
   }

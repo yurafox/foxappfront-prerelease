@@ -30,4 +30,8 @@ export class BonusPayComponent extends ComponentBase {
 
   }
 
+  ngOnInit() {
+    super.ngOnInit();
+  }
+
 }

@@ -1,13 +1,15 @@
-import { Component, Input, ElementRef, OnChanges} from '@angular/core';
+import {Component, Input, ElementRef, OnChanges} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 
 @Component({
   selector: 'read-more',
   template: `
-        <div [innerHTML]="currentText">
-        </div>
-        <a class="f-color-info" *ngIf="!this.hideToggle" (click)="toggleView()">Read {{isCollapsed? 'more':'less'}}<br></a>
-    `
+    <div [innerHTML]="currentText">
+    </div>
+    <a class="f-color-info" *ngIf="!this.hideToggle" (click)="toggleView()"><span loc="Читать"
+                                                                                  name="Read">{{locale['Read']}}</span>
+      {{isCollapsed ? (locale['More'] ? locale['More'] : 'больше') : (locale['Less'] ? locale['Less'] : 'меньше')}}<br></a>
+  `
 })
 
 export class ReadMoreComponent extends ComponentBase implements OnChanges {
@@ -20,12 +22,17 @@ export class ReadMoreComponent extends ComponentBase implements OnChanges {
 
   constructor(private elementRef: ElementRef) {
     super();
-}
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+  }
 
   toggleView() {
     this.isCollapsed = !this.isCollapsed;
     this.determineView();
   }
+
   determineView() {
     if (this.text.length <= this.maxLength) {
       this.currentText = this.text;
@@ -37,11 +44,12 @@ export class ReadMoreComponent extends ComponentBase implements OnChanges {
     }
     if (this.isCollapsed == true) {
       this.currentText = this.text.substring(0, this.maxLength) + "...";
-    } else if(this.isCollapsed == false)  {
+    } else if (this.isCollapsed == false) {
       this.currentText = this.text;
     }
 
   }
+
   ngOnChanges() {
     this.determineView();
   }

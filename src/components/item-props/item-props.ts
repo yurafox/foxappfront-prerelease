@@ -24,5 +24,6 @@ export class ItemPropsComponent extends ComponentBase implements OnInit {
 
     ngOnInit () {
       this.showPeriod = (!(this.displayPropCount == -1) && (this.product.Props.length > this.displayPropCount));
+      super.ngOnInit();
     }
 }

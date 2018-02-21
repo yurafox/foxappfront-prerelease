@@ -11,6 +11,7 @@ import {App, NavController} from 'ionic-angular';
 import {PersonInfo} from '../model/person';
 import {CreditCalc} from '../model/credit-calc';
 import {AppConstants} from '../app-constants';
+import {ComponentBase} from "../../components/component-extension/component-base";
 
 
 export class LoDeliveryOption {
@@ -26,7 +27,7 @@ export class LoDeliveryOption {
 }
 
 @Injectable()
-export class CartService  {
+export class CartService extends ComponentBase {
 
   public lastItemCreditCalc: ClientOrderProducts = null;
   private cKey = 'cartItems';
@@ -51,10 +52,9 @@ export class CartService  {
   public cartValidationNeeded = false;
   public person = new PersonInfo();
 
-  constructor(private userService: UserService, public repo: AbstractDataRepository,
-              private evServ: EventService, private app: App) {
-
-
+  constructor(public userService: UserService, public repo: AbstractDataRepository,
+              public evServ: EventService, private app: App) {
+    super();
 
     this.evServ.events['logonEvent'].subscribe(() => {
         this.initCart().then (() => {
@@ -87,7 +87,7 @@ export class CartService  {
     );
 
     this.initCart();
-  };
+  }
 
   public async calculateCart(){
     let calcRes = await this.repo.calculateCart(this.promoCode, this.bonus, this.payByPromoBonus,
@@ -102,12 +102,12 @@ export class CartService  {
             _found = true;
             break;
           }
-        };
+        }
       if (_found) {
         _prod.payBonusCnt = i.bonusDisc;
         _prod.payPromoCodeDiscount = i.promoCodeDisc;
         _prod.payPromoBonusCnt = i.promoBonusDisc;
-      };
+      }
       }
     );
 
@@ -205,11 +205,27 @@ export class CartService  {
   }
 
   validateLoan (loanAmt: number): {isValid:boolean, validationErrors:string[]} {
+    let lang: number = this.userService.lang;
+    let maxLoan: string;
+    let minLoan: string;
+    if (lang === 1) {
+      maxLoan = 'Максимальный лимит кредита превышен';
+      minLoan = 'Сумма кредита ниже лимита';
+    } else if (lang === 2) {
+      maxLoan = 'Максимальний кредитний ліміт перевищено';
+      minLoan = 'Сума кредиту нижча за межу';
+    } else if (lang === 3) {
+      maxLoan = 'Max loan limit exceeded';
+      minLoan = 'The loan amount is below limit';
+    } else {
+      maxLoan = 'Максимальный лимит кредита превышен';
+      minLoan = 'Сумма кредита ниже лимита';
+    }
     let errs = [];
-    let mes = (loanAmt > AppConstants.MAX_LOAN_AMT) ? "Max loan limit exceeded" : null;
+    let mes = (loanAmt > AppConstants.MAX_LOAN_AMT) ? maxLoan : null;
     if (mes)
       errs.push(mes);
-    mes = (loanAmt < AppConstants.MIN_LOAN_AMT) ? "The loan amount is below limit" : null;
+    mes = (loanAmt < AppConstants.MIN_LOAN_AMT) ? minLoan : null;
     if (mes)
       errs.push(mes);
     return {isValid: !(errs.length > 0), validationErrors: errs};
@@ -244,7 +260,7 @@ export class CartService  {
           spec.idStorePlace = val.storePlace;
           this.orderProducts.push(spec);
         });
-      };
+      }
     }
   }
 
@@ -306,15 +322,27 @@ export class CartService  {
         orderItem = await this.repo.saveCartProduct(orderItem);
       }
       this.orderProducts.push(orderItem);
-    };
+    }
 
     this.saveToLocalStorage();
     this.lastItemCreditCalc = null;
 
     this.evServ.events['cartUpdateEvent'].emit();
 
+    let lang: number = this.userService.lang;
+    let message: string;
+    if (lang === 1) {
+      message = 'Товар добавлен в корзину';
+    } else if (lang === 2) {
+      message = 'Товар додано до кошика';
+    } else if (lang === 3) {
+      message = 'Item added to cart';
+    } else {
+      message = 'Товар добавлен в корзину';
+    }
+
     let toast = page.toastCtrl.create({
-      message: 'Item added to cart',
+      message: message,
       duration: 2000,
       position: 'bottom',
       cssClass: 'toast-message'

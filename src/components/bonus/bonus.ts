@@ -14,4 +14,8 @@ export class BonusComponent extends ComponentBase {
     super();
   }
 
+  ngOnInit() {
+    super.ngOnInit();
+  }
+
 }
