@@ -27,9 +27,9 @@ import { QuotationProduct,
           Poll,PollQuestion,PollQuestionAnswer,
           ClientPollAnswer, PersonInfo, CreditProduct, ClientBonus,
           LoTrackLog,
-          Category
+          Category,
+          MeasureUnit
        } from '../../../model/index';
-
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
@@ -120,4 +120,6 @@ export abstract class AbstractDataRepository {
   public async abstract postDeviceData(deviceData: DeviceData): Promise<DeviceData>
   public async abstract getCategories(): Promise<Category[]>;
   public async abstract getDataForRedirectToPaymaster(orderID: number, cartTotal: number): Promise<any>;
+  public async abstract getMeasureUnitById(unitId: number): Promise<MeasureUnit>;
+
 }

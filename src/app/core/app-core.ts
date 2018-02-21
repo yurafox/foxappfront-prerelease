@@ -5,6 +5,7 @@ import {Manufacturer} from "../model/manufacturer";
 import {City} from '../model/city';
 import {StorePlace} from '../model/store-place';
 import {Lang} from "../model/lang";
+import {MeasureUnit} from '../model/measure-unit';
 import { RequestOptionsArgs,Headers,URLSearchParams} from '@angular/http';
 
 export interface IDictionary<T> {
@@ -133,6 +134,7 @@ export namespace Providers {
     private _cacheManufacturer: IKeyedCollection<Manufacturer> = null;
     private _cacheCity: IKeyedCollection<City> = null;
     private _cacheStorePlace: IKeyedCollection<StorePlace> = null;
+    private _cacheMeasureUnit: IKeyedCollection<MeasureUnit> = null;
 
     public get Products(): IKeyedCollection<Product> {
       if (this._cacheProduct == null)
@@ -183,6 +185,12 @@ export namespace Providers {
       return this._cacheStorePlace;
     }
 
+    public get MeasureUnit(): IKeyedCollection<MeasureUnit> {
+      if (this._cacheMeasureUnit == null)
+        this._cacheMeasureUnit = new CacheItems<MeasureUnit>(200);
+
+      return this._cacheMeasureUnit;
+    }
 
   }
 }

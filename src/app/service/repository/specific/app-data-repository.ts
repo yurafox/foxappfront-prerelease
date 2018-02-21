@@ -38,7 +38,8 @@ import {
   Poll,PollQuestion,PollQuestionAnswer,
   ClientPollAnswer, CreditProduct, ClientBonus, PersonInfo,
   LoTrackLog,
-  Category
+  Category,
+  MeasureUnit
 } from '../../../model/index';
 
 import { AbstractDataRepository } from '../../index';
@@ -46,7 +47,7 @@ import { Providers, System } from "../../../core/app-core";
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
-const productsUrl = "http://localhost:58471/api/product";
+//const productsUrl = "http://localhost:58471/api/product";
 const currenciesUrl = "http://localhost:58471/api/currency";
 const manufacturersUrl = "http://localhost:58471/api/manufacturer";
 const quotationProductsUrl = "http://localhost:58471/api/quotationproduct";
@@ -54,7 +55,7 @@ const suppliersUrl = "http://localhost:58471/api/supplier";
 
 //DEV URLS
 //const currenciesUrl = "/api/mcurrencies";
-//const productsUrl = "/api/mproducts";
+const productsUrl = "/api/mproducts";
 //const manufacturersUrl = "/api/manufacturers";
 //const quotationProductsUrl = "/api/mquotationProducts";
 //const suppliersUrl = "/api/msuppliers";
@@ -100,6 +101,7 @@ const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
 const deviceDataUrl = "/api/mdeviceData";
 const redirectToPaymasterUrl = "/api/mredirectToPaymaster";
 const specLOTrackingLogUrl = '/api/mspecLOTrackingLog';
+const measureUnitUrl = '/api/mmeasureUnits';
 
 const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/api/catalog`:"/api/mcategories";
 // </editor-fold
@@ -1836,7 +1838,8 @@ export class AppDataRepository extends AbstractDataRepository {
           val.prop_Value_Number,
           val.prop_Value_Bool,
           enumVal,
-          val.prop_Value_Long
+          val.prop_Value_Long,
+          val.id_Measure_Unit
         )
       );
     });
@@ -2446,4 +2449,41 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+
+  public async getMeasureUnitById(unitId: number): Promise<MeasureUnit> {
+    try {
+        const munit: MeasureUnit = new MeasureUnit();
+        const id: string = unitId.toString();
+
+        // <editor-fold desc = "id in cache is empty"
+        if (this.isEmpty(this.cache.MeasureUnit.Item(id))) {
+          this.cache.MeasureUnit.Add(id, munit);
+
+          const response = await this.http
+            .get(measureUnitUrl + `/${id}`)
+            .toPromise();
+
+          const data = response.json();
+          if (response.status !== 200) {
+            throw new Error("server side status error");
+          }
+
+          if (data != null) {
+            munit.id = data.id;
+            munit.name = data.name;
+
+            this.cache.MeasureUnit.Add(id, munit);
+          }
+          return munit;
+        } else {
+          // </editor-fold>
+
+          return this.cache.MeasureUnit.Item(id);
+        }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+
 }

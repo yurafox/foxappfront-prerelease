@@ -381,6 +381,156 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   ];
   // </editor-fold>
 
+  measureUnits = [
+    { id:8796093088356, name:'В'},
+    { id:8796093055588, name:'дБА'},
+    { id:8796093383268, name:'м2'},
+    { id:8796093416036, name:'Дж'},
+    { id:8796093579876, name:'сек'},
+    { id:8796093612644, name:'м3'},
+    { id:8796093776484, name:'грн.'},
+    { id:8796093809252, name:'Лм'},
+    { id:8796093940324, name:'кг/м2'},
+    { id:8796094005860, name:'листов'},
+    { id:8796094169700, name:'мл'},
+    { id:8796094202468, name:'мВ/Па'},
+    { id:8796094333540, name:'pix'},
+    { id:8796094399076, name:'л/ч'},
+    { id:8796094464612, name:'мс'},
+    { id:8796094595684, name:'кратный'},
+    { id:8796094693988, name:'песен'},
+    { id:8796094759524, name:'мин'},
+    { id:8796094988900, name:'Вт/канал'},
+    { id:8796094956132, name:'x'},
+    { id:8796095021668, name:'кВт/24 ч'},
+    { id:8796095152740, name:'MT/s (MHz)'},
+    { id:8796095185508, name:'куб.м./ч'},
+    { id:8796095316580, name:'л/цикл'},
+    { id:8796095382116, name:'люкс'},
+    { id:8796095513188, name:'л'},
+    { id:8796095578724, name:'БТЕ/ч'},
+    { id:8796095775332, name:'МБ/с'},
+    { id:8796095939172, name:'у.е.'},
+    { id:8796095906404, name:'номеров'},
+    { id:8796096103012, name:'стр.'},
+    { id:8796096168548, name:'GHz'},
+    { id:8796096299620, name:'кВт.ч/Год'},
+    { id:8796096365156, name:'г/ч'},
+    { id:8796096528996, name:'г/мин'},
+    { id:8796096561764, name:'строк/мин'},
+    { id:8796096692836, name:'мА'},
+    { id:8796096758372, name:'ВА'},
+    { id:8796096954980, name:'°C'},
+    { id:8796097151588, name:'градус'},
+    { id:8796097118820, name:'А'},
+    { id:8796097348196, name:'мес.'},
+    { id:8796097380964, name:'комплектов посуды'},
+    { id:8796097479268, name:'х'},
+    { id:8796158689892, name:'мс/строка'},
+    { id:8796093186660, name:'тыс.слов'},
+    { id:8796093317732, name:'Мбит/сек'},
+    { id:8796093514340, name:'К'},
+    { id:8796093710948, name:'бит'},
+    { id:8796093907556, name:'кГц'},
+    { id:8796094136932, name:'ч'},
+    { id:8796094300772, name:'кг'},
+    { id:8796094530148, name:'нот'},
+    { id:8796094726756, name:'режима'},
+    { id:8796094857828, name:'мл/час'},
+    { id:8796095054436, name:'Мб'},
+    { id:8796095283812, name:'NULL'},
+    { id:8796095480420, name:'г'},
+    { id:8796095677028, name:'°'},
+    { id:8796095709796, name:'мБар'},
+    { id:8796095873636, name:'ShA'},
+    { id:8796096070244, name:'dpi'},
+    { id:8796096266852, name:'lb'},
+    { id:8796096463460, name:'м3/г'},
+    { id:8796096660068, name:'мАч'},
+    { id:8796096856676, name:'кд/м2'},
+    { id:8796096987748, name:'л.с/Вт'},
+    { id:8796097053284, name:'гГц'},
+    { id:8796097249892, name:'мм рт ст'},
+    { id:8796097446500, name:'мм Н20'},
+    { id:8796158820964, name:'кВт/ч'},
+    { id:8796158886500, name:'м3/ч'},
+    { id:8796158722660, name:'мВт'},
+    { id:8796158657124, name:'M'},
+    { id:8796158853732, name:'зн/сек'},
+    { id:8796093153892, name:'дюйм'},
+    { id:8796093252196, name:'Нм'},
+    { id:8796093448804, name:'K'},
+    { id:8796093645412, name:'А/4Ом'},
+    { id:8796093874788, name:'Вт'},
+    { id:8796094071396, name:'ANSI Lm'},
+    { id:8796094268004, name:'Мб/сек'},
+    { id:8796094562916, name:'мм/H2O'},
+    { id:8796094792292, name:'кг/ч'},
+    { id:8796094923364, name:'cм'},
+    { id:8796095119972, name:'адресатов'},
+    { id:8796095349348, name:'кВт'},
+    { id:8796095545956, name:'пл'},
+    { id:8796095742564, name:'градусов'},
+    { id:8796095971940, name:'bar/psi'},
+    { id:8796096135780, name:'колебаний/мин'},
+    { id:8796096332388, name:'см'},
+    { id:8796096496228, name:'Гб'},
+    { id:8796096725604, name:'кг/мин'},
+    { id:8796096889444, name:'км'},
+    { id:8796097184356, name:'л/сутки'},
+    { id:8796097315428, name:'см3'},
+    { id:8796093121124, name:'г/м?'},
+    { id:8796093219428, name:'км/ч'},
+    { id:8796093284964, name:'записей'},
+    { id:8796093350500, name:'кг/сп.м'},
+    { id:8796093481572, name:'м/с'},
+    { id:8796093547108, name:'Вт/кг'},
+    { id:8796093678180, name:'об./мин'},
+    { id:8796093743716, name:'стр./мин'},
+    { id:8796093842020, name:'С'},
+    { id:8796093973092, name:'см2'},
+    { id:8796094038628, name:'уд/мин'},
+    { id:8796094104164, name:'л.с.'},
+    { id:8796094235236, name:'от/до'},
+    { id:8796094366308, name:'А/ч'},
+    { id:8796094431844, name:'пикс.'},
+    { id:8796094497380, name:'мм/Вт'},
+    { id:8796094628452, name:'MHz'},
+    { id:8796094661220, name:'комплектов'},
+    { id:8796094825060, name:'Ач'},
+    { id:8796094890596, name:'° Л'},
+    { id:8796095087204, name:'Гц'},
+    { id:8796095218276, name:'разрядов'},
+    { id:8796095251044, name:'м2/ч'},
+    { id:8796095414884, name:'бар'},
+    { id:8796095447652, name:'Мп'},
+    { id:8796095611492, name:'дней'},
+    { id:8796095644260, name:'шт'},
+    { id:8796095808100, name:'вызовов'},
+    { id:8796095840868, name:'%'},
+    { id:8796096004708, name:'м/мин'},
+    { id:8796096037476, name:'"'},
+    { id:8796096201316, name:'МГц'},
+    { id:8796096234084, name:'измерений'},
+    { id:8796096397924, name:'кОм'},
+    { id:8796096430692, name:'±°'},
+    { id:8796096594532, name:'кВт/сутки'},
+    { id:8796096627300, name:'м'},
+    { id:8796096791140, name:'мм'},
+    { id:8796096823908, name:'кбит/сек'},
+    { id:8796096922212, name:'(стр. A4 при 5%-ном заполнении)'},
+    { id:8796097020516, name:'кВт/год'},
+    { id:8796097086052, name:'Сим/сек'},
+    { id:8796097217124, name:'Мбит/с'},
+    { id:8796097282660, name:'бар/мПа'},
+    { id:8796097413732, name:'В (Гц)'},
+    { id:8796097512036, name:'Ом'},
+    { id:8796125823588, name:'.'},
+    { id:8796158591588, name:'кадр/сек'},
+    { id:8796158755428, name:'л/мин'},
+    { id:8796158624356, name:'дБ'},
+    { id:8796158788196, name:'DIN'}
+  ];
   // <editor-fold desc="products">
   // <editor-fold desc='prop'>
   private prop1 = {
@@ -491,7 +641,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Number: null,
     prop_Value_Bool: null,
     prop_Value_Enum: this.propEnumList1,
-    prop_Value_Long: null
+    prop_Value_Long: null,
+    id_Measure_Unit: 8796097184356
   };
   private productPropValue2 = {
     id: 2,
@@ -501,7 +652,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Number: null,
     prop_Value_Bool: null,
     prop_Value_Enum: this.propEnumList1,
-    prop_Value_Long: null
+    prop_Value_Long: null,
+    id_Measure_Unit: 8796093743716
+
   };
   private productPropValue3 = {
     id: 3,
@@ -511,7 +664,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Number: null,
     prop_Value_Bool: null,
     prop_Value_Enum: this.propEnumList1,
-    prop_Value_Long: null
+    prop_Value_Long: null,
+    id_Measure_Unit: 8796095644260
   };
   private productPropValue4 = {
     id: 4,
@@ -521,7 +675,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Number: null,
     prop_Value_Bool: null,
     prop_Value_Enum: this.propEnumList3,
-    prop_Value_Long: null
+    prop_Value_Long: null,
+    id_Measure_Unit: 8796095644260
   };
   private productPropValue5 = {
     id: 5,
@@ -531,7 +686,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Number: null,
     prop_Value_Bool: null,
     prop_Value_Enum: this.propEnumList4,
-    prop_Value_Long: null
+    prop_Value_Long: null,
+    id_Measure_Unit: 8796095447652
   };
   private productPropValue6 = {
     id: 6,
@@ -541,7 +697,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Number: null,
     prop_Value_Bool: null,
     prop_Value_Enum: this.propEnumList5,
-    prop_Value_Long: null
+    prop_Value_Long: null,
+    id_Measure_Unit: 8796095644260
   };
   private productPropValue7 = {
     id: 7,
@@ -551,7 +708,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Number: 1,
     prop_Value_Bool: null,
     prop_Value_Enum: null,
-    prop_Value_Long: null
+    prop_Value_Long: null,
+    id_Measure_Unit: 8796095644260
   };
   private productPropValue8 = {
     id: 8,
@@ -561,7 +719,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Number: 2,
     prop_Value_Bool: null,
     prop_Value_Enum: null,
-    prop_Value_Long: null
+    prop_Value_Long: null,
+    id_Measure_Unit: 8796096823908
   };
   private productPropValue9 = {
     id: 9,
@@ -571,7 +730,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Number: 2,
     prop_Value_Bool: null,
     prop_Value_Enum: null,
-    prop_Value_Long: null
+    prop_Value_Long: null,
+    id_Measure_Unit: 8796095644260
   };
   private productPropValue10 = {
     id: 10,
@@ -581,7 +741,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Number: null,
     prop_Value_Bool: null,
     prop_Value_Enum: this.propEnumList6,
-    prop_Value_Long: null
+    prop_Value_Long: null,
+    id_Measure_Unit: 8796158755428
   };
   // </editor-fold>
   products = [
@@ -5286,6 +5447,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mpersons = this.persons;
     const mspecLOTrackingLog = this.specLOTrackingLog;
     const mcategories = this.categories;
+    const mmeasureUnits = this.measureUnits;
 
     return {
       mquotationProducts,
@@ -5328,7 +5490,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mclientBonuses,
       mpersons,
       mspecLOTrackingLog,
-      mcategories
+      mcategories,
+      mmeasureUnits
     };
   }
 
