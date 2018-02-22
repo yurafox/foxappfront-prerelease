@@ -105,6 +105,7 @@ const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
 const deviceDataUrl = "/api/mdeviceData";
 const redirectToPaymasterUrl = "/api/mredirectToPaymaster";
 const specLOTrackingLogUrl = '/api/mspecLOTrackingLog';
+const productDescriptionsUrl = 'api/mproductDescriptions';
 
 
 const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/api/catalog`:"/api/mcategories";
@@ -2486,7 +2487,20 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async getProductDescription(id: number): Promise<string> {
-    return null;
+    //productDescriptionsUrl
+    try {
+      const _id = id.toString();
+      const response = await this.http.get(productDescriptionsUrl + `/${_id}`).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        return data.description;
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
   }
 
 }

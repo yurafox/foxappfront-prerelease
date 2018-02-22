@@ -746,6 +746,11 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   };
   // </editor-fold>
 
+  productDescriptions = [
+    {id: 6280637, description: 'Description1'},
+    {id: 6294898, description: 'Description2'}
+  ];
+
   products = [
     {
       id: 6280637,
@@ -5438,6 +5443,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mspecLOTrackingLog = this.specLOTrackingLog;
     const mcategories = this.categories;
     const mmeasureUnits = this.measureUnits;
+    const mproductDescriptions = this.productDescriptions;
 
     return {
       mquotationProducts,
@@ -5481,7 +5487,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mpersons,
       mspecLOTrackingLog,
       mcategories,
-      mmeasureUnits
+      mmeasureUnits,
+      mproductDescriptions
     };
   }
 
