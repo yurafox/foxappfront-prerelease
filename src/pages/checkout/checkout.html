@@ -8,7 +8,7 @@
       <ion-col class="f-padding-lr-5">
         <button class="f-btn-action" ion-button block
                 [attr.disabled]="!validatePage().isValid?'':null"
-                (click)="onPlaceOrderClick()">Place your order</button>
+                (click)="onPlaceOrderClick()"><span loc="Разместить заказ" name="PlaceYourOrder">{{locale['PlaceYourOrder']}}</span></button>
       </ion-col>
     </ion-row>
 
@@ -16,7 +16,7 @@
     SUMMARY AREA
 -->
     <ion-row>
-      <ion-col class="f-page-header">Order summary
+      <ion-col class="f-page-header"><span loc="Итог заказа" name="OrderSummary">{{locale['OrderSummary']}}</span>
       </ion-col>
     </ion-row>
 
@@ -25,7 +25,7 @@
       <ion-grid class="f-grid-error-border-red" *ngIf="!validatePage().isValid">
         <ion-row>
           <ion-col>
-            Your order contains errors. Please review order details below
+            <span loc="Ваш заказ содержит ошибки. Пожалуйста, ознакомьтесь с деталями заказа ниже" name="OrderContainsErrors">{{locale['OrderContainsErrors']}}</span>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -33,7 +33,7 @@
       <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
         <ion-row>
           <ion-col>
-            Shipping to:
+            <span loc="Доставка на" name="ShippingTo">{{locale['ShippingTo']}}</span>:
             <b>{{cart.order?.clientaddress?.recName}}</b>, {{cart.order?.clientaddress?.addressString}}
             <hr>
           </ion-col>
@@ -41,7 +41,7 @@
 
         <ion-row>
           <ion-col>
-            Items ({{cart.cartItemsCount}}):
+            <span loc="Товары" name="Items">{{locale['Items']}}</span> ({{cart.cartItemsCount}}):
           </ion-col>
           <ion-col text-right col-auto>
             {{cart.itemsTotal | localeCurrency:userService.currency}}
@@ -49,7 +49,7 @@
         </ion-row>
         <ion-row>
           <ion-col>
-            Shipping:
+            <span loc="Доставка" name="Shipping">{{locale['Shipping']}}</span>:
           </ion-col>
           <ion-col text-right col-auto>
             {{cart.shippingCost | localeCurrency:userService.currency}}
@@ -58,7 +58,7 @@
 
         <ion-row>
           <ion-col>
-            Order Total:
+            <span loc="Сумма заказа" name="OrderTotal">{{locale['OrderTotal']}}</span>:
           </ion-col>
           <ion-col text-right col-auto>
             <span class="f-color-red">{{cart.orderTotal | localeCurrency:userService.currency}}</span>
@@ -68,7 +68,7 @@
 
         <ion-row *ngIf="(cart.promoCodeDiscount>0)">
           <ion-col>
-            Promocode discount:
+            <span loc="Скидка промокода" name="PromocodeDiscount">{{locale['PromocodeDiscount']}}</span>:
           </ion-col>
           <ion-col text-right col-auto>
             - {{cart.promoCodeDiscount | localeCurrency:userService.currency}}
@@ -78,7 +78,7 @@
 
         <ion-row *ngIf="(cart.itemsBonusDisc>0)">
           <ion-col>
-            Bonuses:
+            <span loc="Бонусы" name="Bonuses">{{locale['Bonuses']}}</span>:
           </ion-col>
           <ion-col text-right col-auto>
             - {{cart.itemsBonusDisc | localeCurrency:userService.currency}}
@@ -87,7 +87,7 @@
 
         <ion-row *ngIf="cart.payByPromoBonus && (!(cart.availBonus === 0))">
           <ion-col>
-            Promo bonuses:
+            <span loc="Акционные бонусы" name="PromoBonuses">{{locale['PromoBonuses']}}</span>:
           </ion-col>
           <ion-col text-right col-auto>
             - {{cart.itemsPromoBonusDisc | localeCurrency:userService.currency}}
@@ -96,7 +96,7 @@
 
         <ion-row>
           <ion-col>
-            <b>Grand Total:</b>
+            <b><span loc="Окончательная стоимость" name="GrandTotal">{{locale['GrandTotal']}}</span>:</b>
           </ion-col>
           <ion-col text-right col-auto>
             <span class="f-color-red"><b>{{cart.cartGrandTotal | localeCurrency:userService.currency}}</b></span>
@@ -110,7 +110,7 @@
 -->
 
     <ion-row>
-      <ion-col class="f-section-header"><b>Payment information</b>
+      <ion-col class="f-section-header"><b><span loc="Информация об оплате" name="PaymentInfo">{{locale['PaymentInfo']}}</span></b>
       </ion-col>
     </ion-row>
 
@@ -118,7 +118,7 @@
       <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
         <ion-row>
           <ion-col>
-            <b>Payment method</b>
+            <b><span loc="Способ оплаты" name="PaymentMethod">{{locale['PaymentMethod']}}</span></b>
             <br>
             {{ cart.pmtMethod.name }}
           </ion-col>
@@ -138,9 +138,9 @@
     <div *ngFor="let item of cart.orderProducts; let i = index">
       <ion-row>
         <ion-col class="f-section-header">
-          <b>Shipment {{i+1}} of {{cart.orderProducts.length}}</b>
+          <b><span loc="Доставка" name="Shipment">{{locale['Shipment']}}</span> {{i+1}} <span loc="из" name="Of">{{locale['Of']}}</span> {{cart.orderProducts.length}}</b>
           <br>
-          <span class="f-size-default">Item shipped from {{item?.quotationproduct?.quotation?.supplier?.name}}</span>
+          <span class="f-size-default"><span loc="Товар поставляется" name="ItemShippedFrom">{{locale['ItemShippedFrom']}}</span> {{item?.quotationproduct?.quotation?.supplier?.name}}</span>
         </ion-col>
       </ion-row>
 
@@ -165,7 +165,7 @@
 
           <ion-row *ngIf="item.idStorePlace">
             <ion-col>
-              Pickup at --
+              <span loc="Получение в" name="PickupAt">{{locale['PickupAt']}}</span> --
               <span class="f-color-green">{{item?.storeplace?.name}}, {{item?.storeplace?.address_line}}
                 {{item?.storeplace?.city?.name}}</span>
               <hr>
@@ -174,7 +174,7 @@
 
           <ion-row>
             <ion-col>
-              Est. delivery date --
+              <span loc="Предполагаемая дата доставки" name="EstDeliveryDate">{{locale['EstDeliveryDate']}}</span> --
               <span class="f-color-green">{{cart.loResultDeliveryOptions[i].deliveryDate | date: 'fullDate'}}</span>
               <hr>
             </ion-col>
@@ -231,7 +231,7 @@
               <dropdown-list id="btnQty" [reference]="item"
                              [afterUpdate] = "onAfterQtyUpdate"
                              [map]="{valueName:'qty', displayName:'qty'}"
-                             [options]="{popupHeader:'Quantity', buttonHeader:'Qty', buttonClass:'f-drop-button-block'}"
+                             [options]="{popupHeader:locale['Quantity'], buttonHeader:locale['Qty'], buttonClass:'f-drop-button-block'}"
                              [isQty]="true">
               </dropdown-list>
             </ion-col>
@@ -247,7 +247,7 @@
       <ion-col class="f-padding-lr-5">
         <button class="f-btn-action" ion-button block
                 [attr.disabled]="!validatePage().isValid?'':null"
-                (click)="onPlaceOrderClick()">Place your order</button>
+                (click)="onPlaceOrderClick()"><span loc="Разместить заказ" name="PlaceYourOrder">{{locale['PlaceYourOrder']}}</span></button>
       </ion-col>
     </ion-row>
 

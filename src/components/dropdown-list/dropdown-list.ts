@@ -115,6 +115,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { PopoverController } from "ionic-angular";
 import { DropdownViewComponent } from "../dropdown-view/dropdown-view";
 import { ViewContainerRef } from '@angular/core';
+  import {ComponentBase} from "../component-extension/component-base";
 
 const popupDefaultClass = 'f-small-dictionary';
 const buttonDefaultClass = 'f-drop-button-small';
@@ -125,7 +126,7 @@ const buttonDefaultHeader = '';
   selector: 'dropdown-list',
   templateUrl: 'dropdown-list.html'
 })
-export class DropdownListComponent implements OnChanges {
+export class DropdownListComponent extends ComponentBase implements OnChanges {
 
   @Input()
   options?: {
@@ -154,7 +155,7 @@ export class DropdownListComponent implements OnChanges {
   placeholder:string = '';
 
   @Input()
-  ref?:{bindRef: any,bindName:string}
+  ref?:{bindRef: any,bindName:string};
 
   @Input()
   beforeUpdate: (oldItem: any, newItem: any) => boolean;
@@ -171,13 +172,17 @@ export class DropdownListComponent implements OnChanges {
 
   constructor(public popoverCtrl: PopoverController,
     private _viewCtnr: ViewContainerRef) {
-
+    super();
     // <editor-fold desc="check input behavior init list">
     //this.verifyBehaviorList.push({ fn: this.verifyReference, errText: 'отсутствуют значения для binding поле' });
     this.verifyBehaviorList.push({ fn: this.verifyMap, errText: 'несоответствие имен полей привязки с целевым обьектом' });
     this.verifyBehaviorList.push({ fn: this.verifyStore, errText: 'входящая коллекция [store] пустая' });
     // </editor-fold>
     this.sourceContext = (<any>this._viewCtnr.parentInjector).view.component;
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
   }
 
   // hook on input fields binding
@@ -198,7 +203,16 @@ export class DropdownListComponent implements OnChanges {
     if(this.options.buttonHeader)
        return `${this.options.buttonHeader}: ${dataValue}`;
 
-    return (!this.isQty) ? dataValue || this.placeholder : `Qty: ${dataValue}`;
+    let lang = this.userService.lang;
+    if (lang === 1) {
+      return (!this.isQty) ? dataValue || this.placeholder : `Кол-во: ${dataValue}`;
+    } else if (lang === 2) {
+      return (!this.isQty) ? dataValue || this.placeholder : `Кіл-ть: ${dataValue}`;
+    } else if (lang === 3) {
+      return (!this.isQty) ? dataValue || this.placeholder : `Qty: ${dataValue}`;
+    } else {
+      return (!this.isQty) ? dataValue || this.placeholder : `Кол-во: ${dataValue}`;
+    }
   }
 
   public get displayParam():string {

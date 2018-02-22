@@ -5,7 +5,7 @@
   <div *ngIf="product || store">
     <ion-grid>
       <ion-row>
-        <ion-col class="f-item-section-header">Your review
+        <ion-col class="f-item-section-header"><span loc="Ваш отзыв" name="YourReview">{{locale['YourReview']}}</span>
         </ion-col>
       </ion-row>
 
@@ -24,7 +24,7 @@
                 {{product?.name}}
               </ion-col>
               <ion-col no-padding class="f-item-padding-bottom" class="f-size-large" *ngIf="store">
-                <span>Store by address: </span><br><span>{{store?.address}}</span>
+                <span><span loc="Магазин по адресу" name="StoreByAddress">{{locale['StoreByAddress']}}</span>: </span><br><span>{{store?.address}}</span>
               </ion-col>
             </ion-row>
 
@@ -39,14 +39,14 @@
       </ion-row>
       <ion-row>
         <ion-col class="f-size-larger f-padding-5 f-border-ligthgray">
-          <ion-textarea placeholder="Write your review here" rows="15" [(ngModel)]="reviewText"></ion-textarea>
+          <ion-textarea placeholder="{{locale['WriteYourReview'] ? locale['WriteYourReview'] : 'Напишите свой отзыв здесь'}}" rows="15" [(ngModel)]="reviewText"></ion-textarea>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
           <button class="f-btn-action" ion-button block (click)="onSubmitClick()"
                   [attr.disabled]="((reviewText === '') || !(reviewText))?'':null">
-            Submit
+            <span loc="Отправить" name="Submit">{{locale['Submit']}}</span>
           </button>
         </ion-col>
       </ion-row>

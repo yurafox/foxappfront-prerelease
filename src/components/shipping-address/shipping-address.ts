@@ -25,6 +25,9 @@ export class ShippingAddressComponent extends ComponentBase {
     super();
   }
 
+  ngOnInit() {
+    super.ngOnInit();
+  }
 
   onIsPrimaryClick(item: any, event: any) {
     for (let i of this.addresses) {
@@ -53,9 +56,30 @@ export class ShippingAddressComponent extends ComponentBase {
   }
 
   deleteAddress(item: ClientAddress) {
+    let lang: number = this.uService.lang;
+    let title: string;
+    let message: string;
+    let cancel: string;
+    if (lang === 1) {
+      title = 'Подтверждение';
+      message = 'Вы действительно хотите удалить этот адрес из избранных?';
+      cancel = 'Отмена';
+    } else if (lang === 2) {
+      title = 'Підтвердження';
+      message = 'Ви дійсно бажаєте видалити цю адресу з обраних?';
+      cancel = 'Відміна';
+    } else if (lang === 3) {
+      title = 'Confirmation';
+      message = 'Are you sure you want to delete this address from favorites?';
+      cancel = 'Cancel';
+    } else {
+      title = 'Подтверждение';
+      message = 'Вы действительно хотите удалить этот адрес из избранных?';
+      cancel = 'Отмена';
+    }
     let alert = this.alertCtrl.create({
-      title: 'Confirmation',
-      message: 'Are you sure you want to delete this address from your address book?',
+      title: title,
+      message: message,
       buttons: [
         {
           text: 'OK',
@@ -67,7 +91,7 @@ export class ShippingAddressComponent extends ComponentBase {
           }
         },
         {
-          text: 'Cancel',
+          text: cancel,
           handler: () => {
           }
         }

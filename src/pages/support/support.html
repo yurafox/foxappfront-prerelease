@@ -8,18 +8,18 @@
   <form #submitForm="ngForm" novalidate (ngSubmit)="submit(submitForm)">
     <ion-list no-lines>
       <ion-item>
-        <ion-label stacked color="fox">Укажите ваше сообщение ниже</ion-label>
+        <ion-label stacked color="fox"><span loc="Укажите Ваше сообщение ниже" name="SpecifyProblem">{{locale['SpecifyProblem']}}</span></ion-label>
         <ion-textarea [(ngModel)]="supportMessage" name="supportQuestion" #supportQuestion="ngModel" rows="6"
                       required></ion-textarea>
       </ion-item>
     </ion-list>
 
     <p ion-text [hidden]="supportQuestion.valid || submitted === false" color="danger" padding-left>
-      Вы не ввели сообщение
+      <span loc="Вы не ввели сообщение" name="NoMessage">{{locale['NoMessage']}}</span>
     </p>
 
     <div padding>
-      <button ion-button block type="submit" color="fox">Отправить</button>
+      <button ion-button block class="f-btn-action"><span loc="Отправить" name="Submit">{{locale['Submit']}}</span></button>
     </div>
   </form>
 </ion-content>

@@ -36,6 +36,10 @@ export class SearchBtnComponent extends ComponentBase {
 
   }
 
+  ngOnInit() {
+    super.ngOnInit();
+  }
+
   async searchByText(searchString: string) {
     if (searchString) {
       this.searchValue = searchString;

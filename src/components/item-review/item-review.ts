@@ -18,6 +18,10 @@ export class ItemReviewComponent extends ComponentBase {
     super();
   }
 
+  ngOnInit() {
+    super.ngOnInit();
+  }
+
   onHelpfulClick() {
     console.log('"Helpful" clicked');
     this.helpfulClicked = true;

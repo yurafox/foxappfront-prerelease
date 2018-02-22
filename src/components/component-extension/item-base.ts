@@ -19,7 +19,7 @@ export class ItemBase extends ComponentBase implements OnInit {
 
   public get Price(): number {
     if (this.valueQuot)
-      return this.valueQuot.price
+      return this.valueQuot.price;
     else
       return this.product.price;
   }
@@ -58,7 +58,7 @@ export class ItemBase extends ComponentBase implements OnInit {
     }
     if (this.valueQuot) {
       this.productStorePlaces = await this.repo.getProductStorePlacesByQuotId(this.valueQuot.id);
-    };
+    }
 
     this.resolved = true;
   }

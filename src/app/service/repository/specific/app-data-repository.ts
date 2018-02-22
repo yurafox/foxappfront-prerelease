@@ -1,7 +1,7 @@
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import { Injectable } from "@angular/core";
-import { Http, URLSearchParams} from "@angular/http";
+import { Http, URLSearchParams, Headers} from "@angular/http";
 import "rxjs/add/operator/toPromise";
 import CacheProvider = Providers.CacheProvider;
 import {
@@ -47,20 +47,22 @@ import { Providers, System } from "../../../core/app-core";
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
+/*
 const productsUrl = "https://localhost:44374/api/product";
 const currenciesUrl = "https://localhost:44374/api/currency";
 const manufacturersUrl = "https://localhost:44374/api/manufacturer";
 const quotationProductsUrl = "https://localhost:44374/api/quotationproduct";
 const suppliersUrl = "https://localhost:44374/api/supplier";
-const measureUnitUrl = 'https://localhost:44374/api/measureUnit';
+*/
+//const measureUnitUrl = 'https://localhost:44374/api/measureUnit';
 
 //DEV URLS
-//const currenciesUrl = "/api/mcurrencies";
-//const productsUrl = "/api/mproducts";
-//const manufacturersUrl = "/api/manufacturers";
-//const quotationProductsUrl = "/api/mquotationProducts";
-//const suppliersUrl = "/api/msuppliers";
-//const measureUnitUrl = '/api/mmeasureUnits';
+const currenciesUrl = "/api/mcurrencies";
+const productsUrl = "/api/mproducts";
+const manufacturersUrl = "/api/manufacturers";
+const quotationProductsUrl = "/api/mquotationProducts";
+const suppliersUrl = "/api/msuppliers";
+const measureUnitUrl = '/api/mmeasureUnits';
 const quotationsUrl = "/api/mquotation";
 const productReviewsUrl = "/api/mproductReviews";
 const citiesUrl = "/api/mcities";
@@ -2422,7 +2424,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 201 && response.status !== 200) {
         throw new Error("server side status error");
       }
-
+      console.log(response);
       return resp;
     } catch (err) {
       return await this.handleError(err);
@@ -2441,8 +2443,8 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data != null) {
         data.forEach(val =>
           categories.push(
-            new Category(val.id,val.name,val.parentId,val.idProductCat,val.prefix,
-                         val.icon,val.isShow,val.priorityIndex,val.priorityShow)
+            new Category(val.id,val.name,val.parent_id,val.id_product_cat,val.prefix,
+                         val.icon,val.is_show,val.priority_index,val.priority_show)
           )
         );
       }

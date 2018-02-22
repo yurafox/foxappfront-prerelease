@@ -29,13 +29,13 @@
                                       (change)="onSelectionOwnerChange(qa)">
               </ion-col>
                 <ion-col>
-                 <span>Ваш вариант</span>
+                 <span loc="Ваш вариант" name="YourVariant">{{locale['YourVariant']}}</span>
               </ion-col>
             </ion-row>
 
             <ion-row [hidden]='!qa.showOpt'>
               <ion-col class="questionRadioArea">
-                <textarea class="poll-textarea" [(ngModel)]='qa.usrOptVal' (input)='onSelectionOwnerChange(qa)' placeholder="Свой вариант" rows="5"></textarea>
+                <textarea class="poll-textarea" [(ngModel)]='qa.usrOptVal' (input)='onSelectionOwnerChange(qa)' placeholder="{{locale['OwnVariant'] ? locale['OwnVariant'] : 'Свой вариант'}}" rows="5"></textarea>
               </ion-col>
             </ion-row>
           </div>
@@ -46,7 +46,7 @@
          <ion-grid>
             <ion-row>
                 <ion-col class="questionRadioArea">
-                  <textarea class="poll-textarea" [(ngModel)]='qa.usrOptVal' (input)='onSelectionOwnerChange(qa)' placeholder="Свой вариант" rows="5"></textarea>
+                  <textarea class="poll-textarea" [(ngModel)]='qa.usrOptVal' (input)='onSelectionOwnerChange(qa)' placeholder="{{locale['OwnVariant'] ? locale['OwnVariant'] : 'Свой вариант'}}" rows="5"></textarea>
                 </ion-col>
             </ion-row>
           </ion-grid>
@@ -54,7 +54,7 @@
     </div>
     <!-- post -->
    <div *ngIf='canView' class='f-btn-post-container'>
-     <button [disabled]='!getSenderBtnVisible()' (click)='sendAnswers()' class="f-btn-post-questions" ion-button block>Отправить</button>
+     <button [disabled]='!getSenderBtnVisible()' (click)='sendAnswers()' class="f-btn-post-questions" ion-button block><span loc="Отправить" name="Submit">{{locale['Submit']}}</span></button>
    </div>
 
   </div>

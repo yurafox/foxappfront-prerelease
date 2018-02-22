@@ -24,6 +24,10 @@ export class CreditComponent extends ComponentBase implements OnChanges {
     super();
   }
 
+  ngOnInit() {
+    super.ngOnInit();
+  }
+
   ngOnChanges() {
     this.initData();
   }

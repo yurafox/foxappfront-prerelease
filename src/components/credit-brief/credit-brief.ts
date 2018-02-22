@@ -20,4 +20,8 @@ export class CreditBriefComponent extends ComponentBase {
     super();
   }
 
+  ngOnInit() {
+    super.ngOnInit();
+  }
+
 }

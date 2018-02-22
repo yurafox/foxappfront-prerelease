@@ -3,27 +3,27 @@
 
       <ion-row *ngIf="cart.promocodeInvalid">
         <ion-col>
-          <error [errorText]="'Cart content has been updated. Please apply promocode again'"></error>
+          <error [errorText]="errorText"></error>
         </ion-col>
       </ion-row>
 
 
       <ion-row>
         <ion-col>
-          <span>Promotional Code</span>
+          <span loc="Промокод" name="PromoCode">{{locale['PromoCode']}}</span>
         </ion-col>
       </ion-row>
 
       <ion-row>
         <ion-col>
-          <input type="text" [(ngModel)]="cart.promoCode" placeholder="Enter code" name="promoCode" #promoCode="ngModel">
+          <input type="text" [(ngModel)]="cart.promoCode" placeholder="{{locale['EnterCode'] ? locale['EnterCode'] : 'Введите код'}}" name="promoCode" #promoCode="ngModel">
         </ion-col>
       </ion-row>
 
     <ion-row *ngIf="promoCode.value" >
       <ion-col style="padding-bottom: 15px;">
         <button class="f-btn-secondary" ion-button block
-                (click)="onApplyPromoCodeClick()">Apply</button>
+                (click)="onApplyPromoCodeClick()"><span loc="Применить" name="Apply">{{locale['Apply']}}</span></button>
       </ion-col>
     </ion-row>
 

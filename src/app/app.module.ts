@@ -153,7 +153,7 @@ import {LocalNotifications} from '@ionic-native/local-notifications';
     NoveltyPageModule,
     OrderDetailsPageModule,
     PaymentPageModule,
-    WarningViewPageModule
+    WarningViewPageModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [

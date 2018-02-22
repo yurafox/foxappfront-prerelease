@@ -4,9 +4,6 @@
 </ion-header>
 
 <ion-content>
-  <!-- For testing payment system TODO: Remove this -->
-  <button ion-button block class="f-btn-action" (click)="testPaymentResult()" *ngIf="test === true">Test Payment</button>
-
   <div *ngIf="content && (pageMode === 1)">
       <html-outlet [html]="content" [context]="this"></html-outlet>
   </div>
@@ -22,8 +19,9 @@
   </div>
 
   <div *ngIf="pageMode === 3">
+    <progress-bar [active]="srchService.progressBarStatus"></progress-bar>
     <div class="f-color-secondary f-padding-lr-10 f-padding-t-10" *ngIf="(baseProducts) && (baseProducts.length == 0)">
-      Your search "{{srchService.lastSearch}}" did not match any products
+      <span loc="Ваш поиск" name="YourSearch">{{locale['YourSearch']}}</span> "{{srchService.lastSearch}}" <span loc="" name="DidNotMatch">{{locale['DidNotMatch']}}</span>
     </div>
     <items-list [products]="baseProducts" *ngIf="(baseProducts) && (baseProducts.length > 0)"></items-list>
   </div>

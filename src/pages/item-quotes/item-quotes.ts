@@ -25,6 +25,12 @@ export class ItemQuotesPage extends ComponentBase {
     this.quotes = this.navParams.data.quotesArr;
   }
 
+  async ngOnInit() {
+    super.ngOnInit();
+    this.quotes = (await this.repo.getQuotationProductsByProductId(this.product.id))
+                    .filter((i) => {return (i.stockQuant>0);});
+  }
+
   onAddToCart(quote: QuotationProduct, price: number) {
     this.cart.addItem(quote, 1, price, null, this);
   }

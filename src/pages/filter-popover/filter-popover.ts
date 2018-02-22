@@ -29,11 +29,11 @@ export class FilterPopoverPage extends ComponentBase {
     if (item.type === 'prop') {
       item.item.isChecked = item.isChecked;
       this.filter.onPropsClick(item.item);
-    };
+    }
     if (item.type === 'mnf') {
       item.item.isChecked = item.isChecked;
       this.filter.onMnfClick(item.item);
-    };
+    }
 
     if (item.type === 'sort') {
 
@@ -53,14 +53,14 @@ export class FilterPopoverPage extends ComponentBase {
           this.filter.sortByPriceDesc();
         if (item.id == 2)
           this.filter.sortByRating();
-      };
+      }
 
       ///// Prevent default checkbox behavior///
       if (_isChecked)
         return false;
       //////////////////////////////////////////
 
-    };
+    }
   }
 
 
@@ -100,6 +100,10 @@ export class FilterPopoverPage extends ComponentBase {
       }
     );
 
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
   }
 
   close(): void {

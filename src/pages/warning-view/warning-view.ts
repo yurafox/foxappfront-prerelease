@@ -1,19 +1,20 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {CartService} from '../../app/service/cart-service';
+import {ComponentBase} from "../../components/component-extension/component-base";
 
 @IonicPage()
 @Component({
   selector: 'page-warning-view',
   templateUrl: 'warning-view.html',
 })
-export class WarningViewPage {
+export class WarningViewPage extends ComponentBase {
   warnArr = [];
   dataLoaded = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
                 public cart: CartService) {
-
+    super();
     this.initData();
   }
 

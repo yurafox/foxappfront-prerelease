@@ -99,7 +99,13 @@ ion-list ion-icon {
 // left menu bg
 .menu-bg {
   background: url("../assets/img/head-bg.png");
-  background-size: 100% auto;
+  background-size: cover;
+  opacity: 1;
+}
+.barcode-bg {
+  background: url("../assets/img/bg.jpg");
+  background-size: cover;
+  opacity: 1;
 }
 
 .profile-picture {
@@ -258,6 +264,10 @@ ion-header {
     -webkit-margin-start: 0 !important;
     -webkit-margin-end: 0 !important;
   }
+}
+
+ion-header.header.header-md::after {
+  height: 0;
 }
 
 

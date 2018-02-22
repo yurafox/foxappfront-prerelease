@@ -1,5 +1,5 @@
 import { System } from './../../app/core/app-core';
-import {Component, OnInit, Type} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController, IonicPage} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Currency, User, Lang} from "../../app/model/index";
@@ -28,24 +28,7 @@ export class AccountPage extends ComponentBase {
     'appKey':''
   };
 
-  public errorMessages = {
-    'email': {
-      'required': 'Обязательное поле',
-      'pattern': 'Не правильный формат email адреса'
-    },
-    'password': {
-      'minlength': 'Значение должно быть не менее 6ти символов',
-      'maxlength': 'Значение должно быть не более 12ти символов'
-    },
-    'name':{
-      'required': 'Обязательное поле',
-      'maxlength': 'Значение должно быть не более 20ти символов'
-    },
-    'appKey':{
-      'minlength': 'Значение должно быть не менее 6ти символов',
-      'maxlength': 'Значение должно быть не более 20ти символов'
-    },
-  };
+  public errorMessages = {};
 
   constructor(public nav: NavController,
               private alertCtrl: AlertController,
@@ -72,6 +55,25 @@ export class AccountPage extends ComponentBase {
             serviceItemName:'lang'});
 
     this.onLoad=true;
+
+    this.errorMessages = {
+      'email': {
+        'required': this.locale['RequiredField'],
+          'pattern': this.locale['WrongEMailFormat']
+      },
+      'password': {
+        'minlength': this.locale['LengthNLT6'],
+          'maxlength': this.locale['LengthNGT128']
+      },
+      'name':{
+        'required': this.locale['RequiredField'],
+          'maxlength': this.locale['LengthNGT20']
+      },
+      'appKey':{
+        'minlength': this.locale['LengthNLT6'],
+          'maxlength': this.locale['LengthNGT20']
+      },
+    };
   }
 
   currencyUpdate(item:any):void {
@@ -94,12 +96,31 @@ export class AccountPage extends ComponentBase {
     (async ()=>{
       const result = await this.userService.edit(user);
       if(result) {
+          await this.evServ.events['localeChangeEvent'].emit(this.userService.lang);
+
           let alert = this.alertCtrl.create({
-            subTitle: 'профайл успешно изменен',
-            buttons: ['Ok'],
+            subTitle: this.locale['ProfileChangedSuccessfully'],
+            buttons: ['OK'],
             cssClass: 'alertCustomCss'
           });
-          this.evServ.events['localeChangeEvent'].emit(this.userService.lang);
+          this.errorMessages = {
+            'email': {
+              'required': this.locale['RequiredField'],
+              'pattern': this.locale['WrongEMailFormat']
+            },
+            'password': {
+              'minlength': this.locale['LengthNLT6'],
+              'maxlength': this.locale['LengthNGT128']
+            },
+            'name':{
+              'required': this.locale['RequiredField'],
+              'maxlength': this.locale['LengthNGT20']
+            },
+            'appKey':{
+              'minlength': this.locale['LengthNLT6'],
+              'maxlength': this.locale['LengthNGT20']
+            },
+          };
           alert.present();
         }
     })();
@@ -116,7 +137,7 @@ export class AccountPage extends ComponentBase {
       'email': [this.userService.email, [Validators.required,
         Validators.pattern('^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]],
 
-      'password': ['', [Validators.minLength(6), Validators.maxLength(12)]],
+      'password': ['', [Validators.minLength(6), Validators.maxLength(128)]],
       'name':[this.userService.name,[Validators.required, Validators.maxLength(20)]],
       'lang':[this.userService.lang, [Validators.required]],
       'appKey':[this.userService.appKey,[Validators.minLength(6), Validators.maxLength(20)]]
@@ -133,7 +154,7 @@ export class AccountPage extends ComponentBase {
     if (!this.editForm) {
       return;
     }
-    ;
+
     let form = this.editForm;
 
     for (let err in this.formErrors) {

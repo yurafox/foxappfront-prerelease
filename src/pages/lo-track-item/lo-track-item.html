@@ -5,9 +5,9 @@
   <ion-grid>
 
     <ion-row>
-      <ion-col class="f-section-header">Track item
+      <ion-col class="f-section-header"><span loc="Отслеживание заказа" name="TrackItem">{{locale['TrackItem']}}</span>
         <br>
-        <span class="f-size-default" style="font-weight: normal;">Tracking #:  {{navParams.data.loTrackTicket}}</span>
+        <span class="f-size-default" style="font-weight: normal;"><span loc="№ заказа" name="TrackingNumber">{{locale['TrackingNumber']}}</span>:  {{navParams.data.loTrackTicket}}</span>
       </ion-col>
     </ion-row>
 
@@ -17,10 +17,10 @@
           <ion-grid>
             <ion-row>
               <ion-col col-4>
-                <b>Date/Time</b>
+                <b><span loc="Дата/Время" name="DateTime">{{locale['DateTime']}}</span></b>
               </ion-col>
               <ion-col col-8>
-                <b>Tracking status</b>
+                <b><span loc="Статус доставки" name="TrackingStatus">{{locale['TrackingStatus']}}</span></b>
               </ion-col>
             </ion-row>
           </ion-grid>

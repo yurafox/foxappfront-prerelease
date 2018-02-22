@@ -530,7 +530,6 @@ export class MapPage extends ComponentBase implements OnInit {
       this.makeShopList();
       this.selectedMarker = {label: store.address, value: store.position};
       this.changeDetector.detectChanges();
-      // this.calculateAndDisplayRoute(this.userPos, store.position);
       this.handleListSelect();
     }
   }

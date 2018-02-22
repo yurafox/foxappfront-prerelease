@@ -4,7 +4,6 @@ import {ComponentBase} from '../../components/component-extension/component-base
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {CartService} from '../../app/service/cart-service';
 import {NgForm} from '@angular/forms';
-import {CreditCalcPage} from '../credit-calc/credit-calc';
 
 
 @IonicPage()
@@ -79,12 +78,12 @@ export class SelectPmtMethodPage extends ComponentBase {
         this.cart.pmtMethod = option.method;
         if ((this.cart.pmtMethod.id === 1) || (this.cart.pmtMethod.id === 2))
           this.cart.loan = null;
-      };
-    };
+      }
+    }
   }
 
   onShowCreditCalculatorClick() {
-    let calcModal = this.modalCtrl.create(CreditCalcPage, {quotProduct: null});
+    let calcModal = this.modalCtrl.create('CreditCalcPage', {quotProduct: null});
     calcModal.present();
   }
 

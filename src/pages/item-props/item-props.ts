@@ -18,6 +18,6 @@ export class ItemPropsPage extends ComponentBase implements OnInit {
   }
 
   async ngOnInit() {
-
+    super.ngOnInit();
   }
 }

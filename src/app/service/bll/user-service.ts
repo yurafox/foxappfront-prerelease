@@ -97,12 +97,28 @@ export class UserService {
 
   public addFavoriteStoresId(id:number) {
     let count = 0;
+    let lang: number = this.lang;
     for (let favSoreID of this.user.favoriteStoresId) {
       if (id === favSoreID) {
         count++;
+        let message: string;
+        let title: string;
+        if (lang === 1) {
+          title = 'Ошибка';
+          message = 'Этот магазин уже есть в Ваших избранных';
+        } else if (lang === 2) {
+          title = 'Помилка';
+          message = 'Ця крамниця вже є у Ваших обраних';
+        } else if (lang === 3) {
+          title = 'Sorry';
+          message = 'You already have this address in favorites';
+        } else {
+          title = 'Ошибка';
+          message = 'Этот магазин уже есть в Ваших избранных';
+        }
         let alert = this.alertCtrl.create({
-          title: 'Sorry',
-          message: 'You already have this address in favorites',
+          title: title,
+          message: message,
           buttons: [
             {
               text: 'OK'
@@ -114,8 +130,18 @@ export class UserService {
     }
     if (count === 0) {
       this.user.favoriteStoresId.push(id);
+      let message: string;
+      if (lang === 1) {
+        message = 'Магазин добавлен в избранные';
+      } else if (lang === 2) {
+        message = 'Крамниця додана до обраних';
+      } else if (lang === 3) {
+        message = 'Store added to favorites';
+      } else {
+        message = 'Магазин добавлен в избранные';
+      }
       let toast = this.toastCtrl.create({
-        message: 'Store added to favorites',
+        message: message,
         duration: 2000,
         position: 'bottom',
         cssClass: 'toast-message'

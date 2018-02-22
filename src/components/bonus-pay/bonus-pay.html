@@ -3,27 +3,27 @@
   <ion-grid class="f-border-ligthgray">
     <ion-row>
       <ion-col class="f-size-default f-color-info">
-        You could pay up to <span class="f-color-red"><b>{{cart.availBonus}}</b></span> bonuses for this purchase.
+        <span loc="Вы можете использовать" name="CouldPayUpTo">{{locale['CouldPayUpTo']}}</span> <span class="f-color-red"><b>{{cart.availBonus}}</b></span> <span loc="бонусов для этой покупки" name="BonusesForThisPurchase">{{locale['BonusesForThisPurchase']}}</span>.
         <br>
-        Tick "Pay promotional bonuses" option if you want to pay promotional bonuses.
+        <span loc='Выберите "Изпользовать акционные бонусы", если Вы хотите заплатить бонусами' name="TickPayBonuses">{{locale['TickPayBonuses']}}</span>
       </ion-col>
     </ion-row>
 
     <ion-row>
       <ion-col class="f-padding-t-10">
-        <span>Pay bonuses</span>
+        <span><span loc="Изпользовать бонусы" name="PayBonuses">{{locale['PayBonuses']}}</span></span>
       </ion-col>
     </ion-row>
 
     <ion-row>
       <ion-col>
-        <input type="number" [(ngModel)]="cart.bonus" placeholder="Enter bonus quantity" name="bonus" id="bonus"
+        <input type="number" [(ngModel)]="cart.bonus" placeholder="{{locale['EnterBonusQuantity'] ? locale['EnterBonusQuantity'] : 'Введите количество бонусов'}}" name="bonus" id="bonus"
                pattern="[0-9]*"
                (keyup)="bonusInputStream$.next($event.target.value)"
                #bonus="ngModel">
         <div *ngIf="!bonus.valid && bonus.touched">
                   <span *ngIf="bonus.hasError('pattern')"
-                        class="f-color-validation-error">Only digits allowed</span>
+                        class="f-color-validation-error"><span loc="Допустимы только цифры" name="OnlyDigits">{{locale['OnlyDigits']}}</span></span>
         </div>
       </ion-col>
     </ion-row>
@@ -34,7 +34,7 @@
         <div class="pure-checkbox">
           <input type="checkbox" [checked]="cart.payByPromoBonus" name="payByPromoBonus" id="payByPromoBonus"
                  (change)="cart.payByPromoBonus = !cart.payByPromoBonus">
-          <label for="payByPromoBonus">Pay promotional bonuses</label>
+          <label for="payByPromoBonus"><span loc="Изпользовать акционные бонусы" name="PayPromotionalBonuses">{{locale['PayPromotionalBonuses']}}</span></label>
         </div>
       </ion-col>
     </ion-row>

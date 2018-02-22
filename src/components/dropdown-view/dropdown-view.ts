@@ -36,7 +36,7 @@ export class DropdownViewComponent implements AfterViewInit{
          }
       }
     }
-    
+
     this.scrollToIdentity();
   }
 
@@ -113,7 +113,7 @@ export class DropdownViewComponent implements AfterViewInit{
       this.parent.reference[this.parent.map.displayName] = item[this.parent.map.displayName];
     }
     else{
-      this.proxyObj[this.parent.map.valueName] = item[this.parent.map.valueName];;
+      this.proxyObj[this.parent.map.valueName] = item[this.parent.map.valueName];
       this.proxyObj[this.parent.map.displayName] = item[this.parent.map.displayName];
 
       this.parent.param = item[this.parent.map.valueName];
@@ -122,7 +122,7 @@ export class DropdownViewComponent implements AfterViewInit{
       }
     }
   }
-  
+
   private scrollToIdentity():void {
     let node:HTMLElement=document.getElementById(this.currentIdentifier);
     if(node)
