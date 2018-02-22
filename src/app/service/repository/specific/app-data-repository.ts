@@ -1270,7 +1270,6 @@ export class AppDataRepository extends AbstractDataRepository {
             val.rating,
             val.recall,
             val.supplOffers,
-            val.description,
             val.slideImageUrls,
             val.barcode
           );
@@ -1278,7 +1277,6 @@ export class AppDataRepository extends AbstractDataRepository {
           let mnf = await (<any>productItem).manufacturer_p;
           if (
             this.search(mnf.name, srchString) ||
-            this.search(productItem.description, srchString) ||
             this.search(productItem.id.toString(), srchString) ||
             this.search(productItem.name, srchString) ||
             this.search(productItem.barcode, srchString)
@@ -1329,7 +1327,6 @@ export class AppDataRepository extends AbstractDataRepository {
               val.rating,
               val.recall,
               val.supplOffers,
-              val.description,
               val.slideImageUrls,
               val.barcode
             );
@@ -1490,7 +1487,6 @@ export class AppDataRepository extends AbstractDataRepository {
           prod.rating = data.rating;
           prod.recall = data.recall;
           prod.supplOffers = data.supplOffers;
-          prod.description = data.description;
           prod.slideImageUrls = data.slideImageUrls;
           prod.barcode = data.barcode;
 
@@ -2489,5 +2485,8 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async getProductDescription(id: number): Promise<string> {
+    return null;
+  }
 
 }

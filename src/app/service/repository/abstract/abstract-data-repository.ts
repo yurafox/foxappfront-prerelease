@@ -121,5 +121,6 @@ export abstract class AbstractDataRepository {
   public async abstract getCategories(): Promise<Category[]>;
   public async abstract getDataForRedirectToPaymaster(orderID: number, cartTotal: number): Promise<any>;
   public async abstract getMeasureUnitById(unitId: number): Promise<MeasureUnit>;
+  public async abstract getProductDescription(id: number): Promise<string>;
 
 }
