@@ -2,10 +2,10 @@
 <p></p>
 <ion-grid no-padding>
   <ion-row  *ngFor="let prop of product.Props; let i = index">
-    <ion-col style="padding: 5px; border: 1px solid #EBEBEC; background-color: #EFEFF0" col-4 *ngIf="(i<displayPropCount) || (displayPropCount ==-1)">
-      {{prop.id_Prop.name}}<span *ngIf="prop">, {{prop?.measureunit?.name}}</span>
+    <ion-col class="f-border-ligthgray" style="padding: 5px; background-color: #EFEFF0" col-4 *ngIf="(i<displayPropCount) || (displayPropCount ==-1)">
+      {{prop.id_Prop.name}}<span *ngIf="prop && prop.measureunit">, {{prop?.measureunit?.name}}</span>
     </ion-col>
-    <ion-col style="padding: 5px; border: 1px solid #EBEBEC;" col-8 *ngIf="(i<displayPropCount) || (displayPropCount ==-1) ">
+    <ion-col class="f-border-ligthgray" style="padding: 5px;" col-8 *ngIf="(i<displayPropCount) || (displayPropCount ==-1) ">
       {{prop.value}}
     </ion-col>
   </ion-row>

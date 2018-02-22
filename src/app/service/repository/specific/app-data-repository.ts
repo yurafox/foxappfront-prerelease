@@ -52,6 +52,7 @@ const currenciesUrl = "https://localhost:44374/api/currency";
 const manufacturersUrl = "https://localhost:44374/api/manufacturer";
 const quotationProductsUrl = "https://localhost:44374/api/quotationproduct";
 const suppliersUrl = "https://localhost:44374/api/supplier";
+const measureUnitUrl = 'https://localhost:44374/api/measureUnit';
 
 //DEV URLS
 //const currenciesUrl = "/api/mcurrencies";
@@ -59,6 +60,7 @@ const suppliersUrl = "https://localhost:44374/api/supplier";
 //const manufacturersUrl = "/api/manufacturers";
 //const quotationProductsUrl = "/api/mquotationProducts";
 //const suppliersUrl = "/api/msuppliers";
+//const measureUnitUrl = '/api/mmeasureUnits';
 const quotationsUrl = "/api/mquotation";
 const productReviewsUrl = "/api/mproductReviews";
 const citiesUrl = "/api/mcities";
@@ -101,7 +103,7 @@ const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
 const deviceDataUrl = "/api/mdeviceData";
 const redirectToPaymasterUrl = "/api/mredirectToPaymaster";
 const specLOTrackingLogUrl = '/api/mspecLOTrackingLog';
-const measureUnitUrl = '/api/mmeasureUnits';
+
 
 const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/api/catalog`:"/api/mcategories";
 // </editor-fold
