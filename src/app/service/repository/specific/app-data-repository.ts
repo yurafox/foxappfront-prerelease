@@ -47,32 +47,35 @@ import { Providers, System } from "../../../core/app-core";
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
-/*
+const productDescriptionsUrl = "https://localhost:44374/api/product/getProductDescription";
 const productsUrl = "https://localhost:44374/api/product";
 const currenciesUrl = "https://localhost:44374/api/currency";
 const manufacturersUrl = "https://localhost:44374/api/manufacturer";
 const quotationProductsUrl = "https://localhost:44374/api/quotationproduct";
 const suppliersUrl = "https://localhost:44374/api/supplier";
-*/
-//const measureUnitUrl = 'https://localhost:44374/api/measureUnit';
+const measureUnitUrl = 'https://localhost:44374/api/measureUnit';
+const LangUrl = "https://localhost:44374/api/localization/lang";
+const countriesUrl = "https://localhost:44374/api/geo/country";
+const citiesUrl = "https://localhost:44374/api/geo/city";
 
 //DEV URLS
-const currenciesUrl = "/api/mcurrencies";
-const productsUrl = "/api/mproducts";
-const manufacturersUrl = "/api/manufacturers";
-const quotationProductsUrl = "/api/mquotationProducts";
-const suppliersUrl = "/api/msuppliers";
-const measureUnitUrl = '/api/mmeasureUnits';
+//const productDescriptionsUrl = 'api/mproductDescriptions';
+// const currenciesUrl = "/api/mcurrencies";
+// const productsUrl = "/api/mproducts";
+// const manufacturersUrl = "/api/manufacturers";
+// const quotationProductsUrl = "/api/mquotationProducts";
+// const suppliersUrl = "/api/msuppliers";
+// const measureUnitUrl = '/api/mmeasureUnits';
+// const LangUrl = "/api/mlocalization";
+//const countriesUrl = "/api/mcountries";
+//const citiesUrl = "/api/mcities";
 const quotationsUrl = "/api/mquotation";
 const productReviewsUrl = "/api/mproductReviews";
-const citiesUrl = "/api/mcities";
 const storesUrl = "/api/mstores";
 const storePlacesUrl = "/api/mstorePlaces";
 const productStorePlacesUrl = "/api/mproductStorePlaces";
-const LangUrl = "/api/mlocalization";
 const clientsUrl = "/api/mclients";
 const clientAddressesUrl = "/api/mclientAddresses";
-const countriesUrl = "/api/mcountries";
 const clientOrdersUrl = "/api/mclientOrders";
 const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
 const clientOrderSpecProductsOfClientUrl = "/api/mclientOrderSpecProductsOfClient";
@@ -105,7 +108,7 @@ const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
 const deviceDataUrl = "/api/mdeviceData";
 const redirectToPaymasterUrl = "/api/mredirectToPaymaster";
 const specLOTrackingLogUrl = '/api/mspecLOTrackingLog';
-const productDescriptionsUrl = 'api/mproductDescriptions';
+
 
 
 const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/api/catalog`:"/api/mcategories";
@@ -2496,7 +2499,7 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
       if (data != null) {
-        return data.description;
+        return data;
       }
     } catch (err) {
       return await this.handleError(err);

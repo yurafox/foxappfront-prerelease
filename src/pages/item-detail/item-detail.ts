@@ -37,10 +37,15 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   }
 
   async ngOnInit() {
-    await super.ngOnInit();
-
-    this.reviews = await this.repo.getProductReviewsByProductId(this.product.id);
-    this.description = await this.repo.getProductDescription(this.product.id);
+    super.ngOnInit();
+    this.repo.getProductReviewsByProductId(this.product.id).then( x => {
+        this.reviews = x;
+      }
+    );
+    this.repo.getProductDescription(this.product.id).then( x => {
+        this.description = x;
+      }
+    );
     if (this.userService.isAuth)
       this.repo.postProductView(this.product.id, null);
   }
