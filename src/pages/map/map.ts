@@ -33,7 +33,7 @@ export class MapPage extends ComponentBase implements OnInit {
   cities: Array<City>;
   selectedCity: City = {id: 0, name: ' '};
   selectedMarker: SelectItem;
-  markersArr: Array<{ id: number, stores: Store[] }>;
+  markersArr: Array<{ idCity: number, stores: Store[] }>;
   shopList: Array<SelectItem>;
   options: any;
   userPos: LatLng;
@@ -206,8 +206,8 @@ export class MapPage extends ComponentBase implements OnInit {
             }*/
 
             this.selectedMarker = {label: markerData.address, value: markerPosition};
-            if (markerArr.id !== this.selectedCity.id) {
-              this.selectedCity = {id: this.cities[markerArr.id - 1].id, name: this.cities[markerArr.id - 1].name};
+            if (markerArr.idCity !== this.selectedCity.id) {
+              this.selectedCity = {id: this.cities[markerArr.idCity - 1].id, name: this.cities[markerArr.idCity - 1].name};
               {
                 for (const city of this.cities) {
                   if (city.name === this.selectedCity.name) {

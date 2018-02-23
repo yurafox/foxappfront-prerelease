@@ -1894,7 +1894,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getStores(): Promise<Array<{ id: number; stores: Store[] }>> {
+  public async getStores(): Promise<Array<{ idCity: number; stores: Store[] }>> {
     try {
       const response = await this.http.get(storesUrl).toPromise();
 
@@ -1902,7 +1902,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      const stores = new Array<{ id: number; stores: Store[] }>();
+      const stores = new Array<{ idCity: number; stores: Store[] }>();
       if (data != null) {
         data.forEach(val => {
           const storeArr = new Array<Store>();
@@ -1941,7 +1941,7 @@ export class AppDataRepository extends AbstractDataRepository {
               storeArr.push(new Store(store.id, store.position, store.address));
             }
           });
-          stores.push({id: val.id, stores: storeArr});
+          stores.push({idCity: val.id, stores: storeArr});
         });
       }
       return stores;
@@ -1950,7 +1950,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getStoreById(id: number): Promise<Store> {
+  public async getStoreById(id: number): Promise<{idCity: number, store: Store}> {
     try {
       const response = await this.http.get(storesUrl).toPromise();
 
@@ -1981,7 +1981,7 @@ export class AppDataRepository extends AbstractDataRepository {
       for (let i = 0; i < stores.length; i++) {
         for (let j = 0; j < stores[i].stores.length; j++) {
           if (stores[i].stores[j].id === id) {
-            return stores[i].stores[j];
+            return {idCity: stores[i].id, store: stores[i].stores[j]};
           }
         }
       }

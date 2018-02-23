@@ -90,8 +90,10 @@ export class AccountPage extends ComponentBase {
     }
 
     const data = this.editForm.value;
-    const user: User= new User(data.name,data.email,
-      data.password,this.userService.uid,data.appKey,{'currency': `${this.currentCurrency.id}`, 'lang': `${this.currentLang.id}`});
+    const user: User= new User(data.name, data.email, data.password, this.userService.uid, data.appKey,
+      {'currency': `${this.currentCurrency.id}`, 'lang': `${this.currentLang.id}`},
+      this.userService.profile.idClient,
+      this.userService.profile.favoriteStoresId);
 
     (async ()=>{
       const result = await this.userService.edit(user);

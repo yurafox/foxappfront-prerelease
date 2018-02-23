@@ -29,8 +29,10 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
               private _repo:AbstractDataRepository, public toastCtrl: ToastController, public evServ: EventService) {
     super(navCtrl, navParams, _repo);
     this.noveltyId = this.navParams.data.id;
+    this.productId = this.navParams.data.productId;
     this.novelty = this.navParams.data.novelty;
     this.product = this.navParams.data.product;
+    this.preloadQuotes = true;
     this.qty.value = 1;
   }
 
@@ -78,16 +80,13 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
 
   public addToCart(): void {
     if (this.noveltyDetails.length <= 1) {
-      if (this.product && (this.available !== false)) {
+      if (this.OnStock) {
         this.cart.addItem( this.valueQuot,
                             this.qty.value,
-                            this.product.price,
+                            this.Price,
                             this.selectedStorePlace,
                             this
-                          ).then(() => {}).catch(
-          err => {
-            console.log(`Error adding product to cart: ${err}`);
-          });
+                          );
       } else {
         this.showNotAddedToCartConfirmToast();
       }
@@ -108,17 +107,17 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
     let lang: number = this.userService.lang;
     let message: string;
     if (lang === 1) {
-      message = 'Что-то пошло не так'
+      message = 'Что-то пошло не так. Возможно товара уже нет в наличии'
     } else if (lang === 2) {
-      message = 'Щось пішло не так'
+      message = 'Щось пішло не так. Можливо товару вже немає в наявності'
     } else if (lang === 3) {
-      message = 'Something went wrong'
+      message = 'Something went wrong. Maybe the item is no longer in stock'
     } else {
-      message = 'Что-то пошло не так'
+      message = 'Что-то пошло не так. Возможно товара уже нет в наличии'
     }
     let toast = this.toastCtrl.create({
       message: message,
-      duration: 2000,
+      duration: 2500,
       position: 'bottom',
       cssClass: 'toast-message'
     });

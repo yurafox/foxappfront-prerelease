@@ -58,7 +58,7 @@ export class ShippingOptionsPage extends ComponentBase {
         item.loName = ent.name;
         item.isChecked = false;
         this.cart.loDeliveryOptions.push(item);
-      };
+      }
       i++;
     }
     this.dataLoaded = true;
@@ -89,7 +89,7 @@ export class ShippingOptionsPage extends ComponentBase {
 
   onContinueClick() {
     if (this.itemIndex < this.cart.orderProducts.length-1)
-      this.itemIndex++
+      this.itemIndex++;
     else {
       // Выбранные опции запихиваем в массив выбранных опций
       this.cart.loResultDeliveryOptions = [];
@@ -101,6 +101,6 @@ export class ShippingOptionsPage extends ComponentBase {
         }
       );
       this.navCtrl.push('SelectPmtMethodPage');
-    };
+    }
   }
 }

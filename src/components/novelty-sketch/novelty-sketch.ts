@@ -11,12 +11,10 @@ import {ComponentBase} from "../component-extension/component-base";
   animations: [fadeInAnimation]
 })
 export class NoveltySketchComponent extends ComponentBase implements AfterViewInit{
-  @Input()
-  public innerId:number;
-  public content:string='';
-  @Input()
-  public novelty: Novelty;
-  public product: Product;
+  @Input() public innerId:number;
+  @Input() public content:string='';
+  @Input() public novelty: Novelty;
+  @Input() public product: Product;
   private productId: number;
 
   constructor(public navCtrl: NavController, private _repo:AbstractDataRepository) {

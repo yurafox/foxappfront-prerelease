@@ -385,12 +385,6 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
     ];
 
     this._mockLocalizationStore['FavoriteStoresPage'] = [
-      { tagName:'Confirmation', lang:1, text:'Подтверждение'},
-      { tagName:'Confirmation', lang:2, text:'Підтвердження'},
-      { tagName:'Confirmation', lang:3, text:'Confirmation'},
-      { tagName:'AreYouSure', lang:1, text:'Вы уверены, что хотите удалить магазин из своих избранных магазинов'},
-      { tagName:'AreYouSure', lang:2, text:'Ви впевнені, що бажаєте видалити крамницю зі своїх обраних крамниць'},
-      { tagName:'AreYouSure', lang:3, text:'Are you sure you want to delete this store from your favorite stores'},
       { tagName:'SelectFavStore', lang:1, text:'Выберите избранный магазин'},
       { tagName:'SelectFavStore', lang:2, text:'Виберіть обрану крамницю'},
       { tagName:'SelectFavStore', lang:3, text:'Select a favorite store'},
@@ -731,7 +725,7 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'WithError', lang:2, text:'Нажаль, виникла помилка під час оплати Вашого замовлення'},
       { tagName:'WithError', lang:3, text:'Unfortunately, Your purchase has ended with error'},
       { tagName:'Successful', lang:1, text:'Оплата прошла успешно. Заказ отправлен в обработку'},
-      { tagName:'Successful', lang:2, text:'Оплата пройшла успішно. Замовлення відправлено в опрацювання'},
+      { tagName:'Successful', lang:2, text:'Оплата пройшла успішно. Замовлення відправлено на опрацювання'},
       { tagName:'Successful', lang:3, text:'Payment was successful. Order sent for processing '},
     ];
 
@@ -778,8 +772,8 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'Localization', lang:1, text:'Локализация'},
       { tagName:'Localization', lang:2, text:'Локалізація'},
       { tagName:'Localization', lang:3, text:'Localization'},
-      { tagName:'Cancel', lang:1, text:'Отмена'},
-      { tagName:'Cancel', lang:2, text:'Відміна'},
+      { tagName:'Cancel', lang:1, text:'Отменить'},
+      { tagName:'Cancel', lang:2, text:'Відмінити'},
       { tagName:'Cancel', lang:3, text:'Cancel'},
       { tagName:'Chose', lang:1, text:'Выбрать'},
       { tagName:'Chose', lang:2, text:'Обрати'},

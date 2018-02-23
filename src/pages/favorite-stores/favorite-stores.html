@@ -10,7 +10,7 @@
         <b><span class="f-size-large"><span loc="Выберите избранный магазин" name="SelectFavStore">{{locale['SelectFavStore']}}</span></span></b>
       </ion-col>
     </ion-row>
-    <div *ngIf="(dataLoaded === true) && stores && (stores.length > 0)">
+    <div *ngIf="stores && (stores.length > 0)">
       <ion-row *ngFor="let store of stores">
 
         <ion-grid class="f-border-ligthgray">
@@ -47,8 +47,12 @@
         </ion-grid>
       </ion-row>
     </div>
+    <div *ngIf="!stores || (stores.length === 0)">
+      <ion-row padding>
+        <ion-col>
+          <span class="f-size-large"><span loc="Вы пока не имеете избранных магазинов" name="NoFavStoresYet">{{locale['NoFavStoresYet']}}</span><br/><span loc="Или они ещё загружаются" name="OrLoading">{{locale['OrLoading']}}</span></span>
+        </ion-col>
+      </ion-row>
+    </div>
   </ion-grid>
-  <div *ngIf="(dataLoaded === false) || !stores">
-    <span class="f-size-large"><span loc="Вы пока не имеете избранных магазинов" name="NoFavStoresYet">{{locale['NoFavStoresYet']}}</span><br/><span loc="Или они ещё загружаются" name="OrLoading">{{locale['OrLoading']}}</span></span>
-  </div>
 </ion-content>

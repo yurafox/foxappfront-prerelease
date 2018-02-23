@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
-import {City, Store, User} from "../../app/model";
-import {AbstractAccountRepository, AbstractDataRepository} from "../../app/service";
+import {City, Store} from "../../app/model";
+import {AbstractDataRepository} from "../../app/service";
 
 @IonicPage()
 @Component({
@@ -11,48 +11,46 @@ import {AbstractAccountRepository, AbstractDataRepository} from "../../app/servi
 })
 export class FavoriteStoresPage extends ComponentBase implements OnInit {
 
-  dataLoaded: boolean;
   stores: Array<{ city: City, store: Store, hasReviews?: boolean }>;
-  foxStores: Array<{ id: number, stores: Store[] }>;
   cities: City[];
 
-  constructor(private navCtrl: NavController, private navParams: NavParams, private repo: AbstractDataRepository,
-              private _account: AbstractAccountRepository, private alertCtrl: AlertController) {
+  constructor(private navCtrl: NavController, private repo: AbstractDataRepository, private alertCtrl: AlertController)
+  {
     super();
     this.stores = [];
   }
 
+  ngOnInit() {
+    super.ngOnInit();
+  }
+
   async ionViewDidLoad() {
-    await this.getCitiesAndFoxStores().catch(err => {
-      console.log(`Couldn't retrieve cities and foxStores: ${err}`);
-    });
-    await this.getFavStoresId().then(data => {
-        this.dataLoaded = true;
-        if (data) {
-          let clen = this.cities.length;
-          let fslen = this.foxStores.length;
-          for (let id of data) {
-            for (let i = 0; i < clen; i++) {
-              for (let j = 0; j < fslen; j++) {
-                for (let k = 0; k < this.foxStores[j].stores.length; k++) {
-                  let fstores = this.foxStores[j];
-                  if (id === fstores.stores[k].id && fstores.id === this.cities[i].id) {
-                    this.stores.push({city: this.cities[i], store: fstores.stores[k]});
-                  }
-                }
-              }
-            }
-          }
+    this.cities = await this.repo.getCities();
+    let favStoresIDs: number[] = this.userService.profile.favoriteStoresId;
+    let favStores: Array<{ idCity: number, store: Store }> = [];
+    if (favStoresIDs && (favStoresIDs.length > 0)) {
+      let clen = this.cities.length;
+
+      for (let i = 0; i < favStoresIDs.length; i++) {
+        let store = await this.repo.getStoreById(favStoresIDs[i]);
+        if (store) {
+          favStores.push(store);
         } else {
-          console.log(`Didn't load favoriteStoresId from storage`);
-          this.navCtrl.pop().catch(err => console.log(`Couldn't go back: ${err}`));
+          console.log(`Couldn\'t get store with id: ${favStoresIDs[i]}`);
         }
       }
-    ).catch(err => {
-      console.log(`Error: ${err}`);
-      this.navCtrl.pop().catch(err => console.log(`Couldn't go back: ${err}`));
-      return;
-    });
+
+      for (let i = 0; i < favStores.length; i++) {
+        for (let j = 1; j < clen; j++) {
+          if (this.cities[j].id === favStores[i].idCity) {
+            this.stores.push({city: this.cities[j], store: favStores[i].store});
+          }
+        }
+      }
+    } else {
+      console.log(`Didn't load favoriteStoresId from storage`);
+      //this.navCtrl.pop().catch(err => console.log(`Couldn't go back: ${err}`));
+    }
 
     for (let store of this.stores) {
       await this.repo.getStoreReviewsByStoreId(store.store.id).then((revs) => {
@@ -65,47 +63,6 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
     }
   }
 
-  ngOnInit() {
-    super.ngOnInit();
-  }
-
-  async getCitiesAndFoxStores() {
-    try {
-      await this.repo.getCities().then(citiesArr => {
-        this.cities = citiesArr;
-      }).catch(err => {
-        console.log(`Error loading cities: ${err}`);
-      });
-      await this.repo.getStores().then(storesArr => {
-        this.foxStores = storesArr;
-      }).catch(err => {
-        console.log(`Error loading foxStores: ${err}`);
-      });
-    } catch (err) {
-      console.log(`Error loading cities or foxStores: ${err}`);
-      this.navCtrl.pop().catch(err => {
-        console.log(`Couldn't go back: ${err}`);
-      });
-    }
-  }
-
-  async getFavStoresId(): Promise<number[]> {
-    let user: User = await this._account.getUserById(+localStorage.getItem('id'), localStorage.getItem('token'));
-    return user.favoriteStoresId;
-  }
-
-  getStore(id: number): Store {
-    let storeById: Store = null;
-    for (let i = 0; i < this.foxStores.length; i++) {
-      for (let j = 0; j < this.foxStores[i].stores.length; j++) {
-        if (this.foxStores[i].stores[j].id === id) {
-          storeById = this.foxStores[i].stores[j];
-        }
-      }
-    }
-    return storeById;
-  }
-
   onIsPrimaryClick(item: Store) {
     this.stores.forEach(i => {
         i.store.isPrimary = false;
@@ -115,9 +72,30 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
   }
 
   deleteStore(item: { city: City, store: Store, hasReviews: boolean }) {
+    let lang: number = this.userService.lang;
+    let title: string;
+    let message: string;
+    let cancel: string;
+    if (lang === 1) {
+      title = 'Подтверждение';
+      message = 'Вы уверены, что хотите удалить магазин из своих избранных магазинов?';
+      cancel = 'Отменить';
+    } else if (lang === 2) {
+      title = 'Підтвердження';
+      message = 'Ви впевнені, що бажаєте видалити крамницю зі своїх обраних крамниць?';
+      cancel = 'Відмінити';
+    } else if (lang === 3) {
+      title = 'Confirmation';
+      message = 'Are you sure you want to delete this store from your favorite stores?';
+      cancel = 'Cancel';
+    } else {
+      title = 'Подтверждение';
+      message = 'Вы уверены, что хотите удалить магазин из своих избранных магазинов?';
+      cancel = 'Отменить';
+    }
     let alert = this.alertCtrl.create({
-      title: this.locale['Confirmation'],
-      message: this.locale['AreYouSure'],
+      title: title,
+      message: message,
       buttons: [
         {
           text: 'OK',
@@ -127,7 +105,7 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
           }
         },
         {
-          text: 'Cancel',
+          text: cancel,
           handler: () => {
           }
         }

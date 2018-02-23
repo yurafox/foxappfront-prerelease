@@ -30,6 +30,8 @@ export class MainToolbarComponent {
     if (this.host) {
       this.host.pageMode = PageMode.HomeMode;
       this.host.searchButtonControl.clearInput(null);
+    } else if (this.showCloseIcon === true) {
+      this.viewCtrl.dismiss();
     }
     else
       this.navCtrl.setRoot('HomePage');

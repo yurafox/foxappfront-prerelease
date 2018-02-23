@@ -19,7 +19,7 @@ export class UserService {
     'register':'',
     'edit':''
 
-  }
+  };
 
   // <editor-fold desc='.ctor'>
   constructor(private _account: AbstractAccountRepository,
