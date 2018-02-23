@@ -273,9 +273,30 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
     switch (target) {
       case 'novelty': {
         if (data.id) {
+          let lang: number = this.userService.lang;
+          let message: string;
+          let title: string;
+          let cancel: string;
+          if (lang === 1) {
+            title = 'Новый товар в Фокстрот!';
+            message = 'Хотите взглянуть?';
+            cancel = 'ОТМЕНИТЬ';
+          } else if (lang === 2) {
+            title = 'Новий товар у Фокстрот!';
+            message = 'Бажаєте подивитись?';
+            cancel = 'СКАСУВАТИ';
+          } else if (lang === 3) {
+            title = 'New product in Foxtrot!';
+            message = 'Do you want to check it?';
+            cancel = 'CANCEL';
+          } else {
+            title = 'Новый товар в Фокстрот!';
+            message = 'Хотите взглянуть?';
+            cancel = 'ОТМЕНИТЬ';
+          }
           let alert = this.alertCtrl.create({
-            title: 'New product in Foxtrot!',
-            message: 'Do you want to check it?',
+            title: title,
+            message: message,
             buttons: [
               {
                 text: 'OK',
@@ -287,7 +308,7 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
                 }
               },
               {
-                text: 'CANCEL'
+                text: cancel
               }
             ]
           });
@@ -297,9 +318,30 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
       }
       case 'action' || 'promotion' || 'promo': {
         if (data.id) {
+          let lang: number = this.userService.lang;
+          let message: string;
+          let title: string;
+          let cancel: string;
+          if (lang === 1) {
+            title = 'Новая акция в Фокстрот!';
+            message = 'Хотите взглянуть?';
+            cancel = 'ОТМЕНИТЬ';
+          } else if (lang === 2) {
+            title = 'Нова акція в Фокстрот!';
+            message = 'Бажаєте подивитись?';
+            cancel = 'СКАСУВАТИ';
+          } else if (lang === 3) {
+            title = 'New promotion in Foxtrot!';
+            message = 'Do you want to check it?';
+            cancel = 'CANCEL';
+          } else {
+            title = 'Новая акция в Фокстрот!';
+            message = 'Хотите взглянуть?';
+            cancel = 'ОТМЕНИТЬ';
+          }
           let alert = this.alertCtrl.create({
-            title: 'New promotion!',
-            message: 'Do you want to check it?',
+            title: title,
+            message: message,
             buttons: [
               {
                 text: 'OK',
@@ -311,7 +353,7 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
                 }
               },
               {
-                text: 'CANCEL'
+                text: cancel
               }
             ]
           });
@@ -329,9 +371,30 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
           }
           this.evServ.events['cartUpdateEvent'].emit();
           this.evServ.events['cartItemsUpdateEvent'].emit();
+          let lang: number = this.userService.lang;
+          let message: string;
+          let title: string;
+          let cancel: string;
+          if (lang === 1) {
+            title = 'Проверьте свою корзину';
+            message = 'Мы добавили скидку к вашему заказу';
+            cancel = 'ОТМЕНИТЬ';
+          } else if (lang === 2) {
+            title = 'Перевірте свій кошик';
+            message = 'Ми додали знижку до вашого замовлення';
+            cancel = 'СКАСУВАТИ';
+          } else if (lang === 3) {
+            title = 'Check your cart';
+            message = 'We have added a discount to your order';
+            cancel = 'CANCEL';
+          } else {
+            title = 'Проверьте свою корзину';
+            message = 'Мы добавили скидку к вашему заказу';
+            cancel = 'ОТМЕНИТЬ';
+          }
           let alert = this.alertCtrl.create({
-            title: 'Check your cart',
-            message: 'We have added a discount to your order',
+            title: title,
+            message: message,
             buttons: [
               {
                 text: 'OK',
@@ -342,7 +405,7 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
                 }
               },
               {
-                text: 'CANCEL'
+                text: cancel
               }
             ]
           });
