@@ -52,6 +52,7 @@ export class CheckoutPage extends ComponentBase {
         this.cart.loResultDeliveryOptions[j].deliveryCost = r;
       }
     );
+    this.cart.updateItem(objRef);
     this.evServ.events['cartUpdateEvent'].emit();
   }
 

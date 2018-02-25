@@ -173,16 +173,8 @@ export class CartService extends ComponentBase {
 
   public async initBonusData() {
     let cl = await (<any>this.userService).profile.client_p;
-    if (cl.bonusBalance) {
-      this.availBonus = cl.bonusBalance;
-    } else {
-      this.availBonus = 0;
-    }
-    if (cl.actionBonusBalance) {
-      this.availPromoBonus = cl.actionBonusBalance;
-    } else {
-      this.availPromoBonus = 0;
-    }
+    this.availBonus = (cl.bonusBalance) ? cl.bonusBalance : 0;
+    this.availPromoBonus = (cl.actionBonusBalance) ? cl.actionBonusBalance : 0;
   }
 
   public get mostExpensiveItem(): ClientOrderProducts {
@@ -312,7 +304,7 @@ export class CartService extends ComponentBase {
       orderItem.idStorePlace = (storePlace ? storePlace.id : null);
 
       if (this.userService.isAuth) {
-        orderItem = await this.repo.saveCartProduct(orderItem);
+        orderItem = await this.repo.insertCartProduct(orderItem);
       }
       this.orderProducts.push(orderItem);
     }
@@ -361,7 +353,9 @@ export class CartService extends ComponentBase {
   }
 
   async updateItem(item: ClientOrderProducts) {
-    //TODO implement update method
+    if (this.userService.isAuth) {
+      item = await this.repo.saveCartProduct(item);
+    }
 
   }
 
