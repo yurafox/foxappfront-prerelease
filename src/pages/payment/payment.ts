@@ -21,7 +21,6 @@ export class PaymentPage extends ComponentBase implements OnInit {
   constructor(public navCtrl: NavController, public navParams: NavParams, private cart: CartService,
               private sanitizer: DomSanitizer, private changeDetector: ChangeDetectorRef) {
     super();
-    console.log(this.navParams.data.result);
     (<any>window).appPage = this;
     this.formInput = '';
     if (this.cart.order) {

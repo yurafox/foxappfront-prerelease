@@ -52,6 +52,33 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'FoxOnFB', lang:1, text:'Фокстрот на Facebook'},
       { tagName:'FoxOnFB', lang:2, text:'Фокстрот на Facebook'},
       { tagName:'FoxOnFB', lang:3, text:'Foxtrot on Facebook'},
+      { tagName:'Cancel', lang:1, text:'ОТМЕНИТЬ'},
+      { tagName:'Cancel', lang:2, text:'СКАСУВАТИ'},
+      { tagName:'Cancel', lang:3, text:'CANCEL'},
+      { tagName:'NoveltyTitle', lang:1, text:'Новый товар в Фокстрот!'},
+      { tagName:'NoveltyTitle', lang:2, text:'Новий товар у Фокстрот!'},
+      { tagName:'NoveltyTitle', lang:3, text:'New product in Foxtrot!'},
+      { tagName:'NoveltyMessage', lang:1, text:'Хотите взглянуть?'},
+      { tagName:'NoveltyMessage', lang:2, text:'Бажаєте переглянути?'},
+      { tagName:'NoveltyMessage', lang:3, text:'Do you want to check it?'},
+      { tagName:'PromoTitle', lang:1, text:'Новая акция в Фокстрот!'},
+      { tagName:'PromoTitle', lang:2, text:'Нова акція у Фокстрот!'},
+      { tagName:'PromoTitle', lang:3, text:'New promotion in Foxtrot!'},
+      { tagName:'PromoMessage', lang:1, text:'Хотите взглянуть?'},
+      { tagName:'PromoMessage', lang:2, text:'Бажаєте переглянути?'},
+      { tagName:'PromoMessage', lang:3, text:'Do you want to check it?'},
+      { tagName:'PromocodeTitle', lang:1, text:'Проверьте свою корзину'},
+      { tagName:'PromocodeTitle', lang:2, text:'Перевірте свій кошик'},
+      { tagName:'PromocodeTitle', lang:3, text:'Check your cart'},
+      { tagName:'PromocodeMessage', lang:1, text:'Мы добавили скидку к Вашему заказу'},
+      { tagName:'PromocodeMessage', lang:2, text:'Ми додали знижку до Вашого замовлення'},
+      { tagName:'PromocodeMessage', lang:3, text:'We have added a discount to your order'},
+      { tagName:'OnlineMessage', lang:1, text:'Теперь Вы в сети через'},
+      { tagName:'OnlineMessage', lang:2, text:'Тепер Ви в мережі через'},
+      { tagName:'OnlineMessage', lang:3, text:'You are now online via'},
+      { tagName:'OfflineMessage', lang:1, text:'Теперь Вы'},
+      { tagName:'OfflineMessage', lang:2, text:'Тепер Ви'},
+      { tagName:'OfflineMessage', lang:3, text:'You are now'},
     ];
 
     this._mockLocalizationStore['AccountPage'] = [
@@ -104,7 +131,7 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'YourFoxClubBalance', lang:2, text:'Ваш баланс користувача ФоксКлуб'},
       { tagName:'YourFoxClubBalance', lang:3, text:'Your FoxClub member\'s balance'},
       { tagName:'YourFoxClubCard', lang:1, text:'Ваша виртуальная карта ФоксКлуб'},
-      { tagName:'YourFoxClubCard', lang:2, text:'Ваша віртуальна карта ФоксКлуб'},
+      { tagName:'YourFoxClubCard', lang:2, text:'Ваша віртуальна картка ФоксКлуб'},
       { tagName:'YourFoxClubCard', lang:3, text:'Your virtual FoxClub card'},
       { tagName:'Login&Security', lang:1, text:'Авторизация и Безопасность'},
       { tagName:'Login&Security', lang:2, text:'Авторизація і Безпека'},
@@ -122,7 +149,7 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
 
     this._mockLocalizationStore['BarcodePage'] = [
     { tagName:'FoxClubCard', lang:1, text:'Виртуальная карта ФоксКлуб'},
-    { tagName:'FoxClubCard', lang:2, text:'Віртуальна карта ФоксКлуб'},
+    { tagName:'FoxClubCard', lang:2, text:'Віртуальна картка ФоксКлуб'},
     { tagName:'FoxClubCard', lang:3, text:'Virtual FoxClub card'},
     ];
 
@@ -325,6 +352,9 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'Continue', lang:1, text:'Далее'},
       { tagName:'Continue', lang:2, text:'Далі'},
       { tagName:'Continue', lang:3, text:'Continue'},
+      { tagName:'LoadingContent', lang:1, text:'Пожалуйста, подождите...'},
+      { tagName:'LoadingContent', lang:2, text:'Будь-ласка, зачекайте...'},
+      { tagName:'LoadingContent', lang:3, text:'Please wait...'},
     ];
 
     this._mockLocalizationStore['EditShipAddressPage'] = [
@@ -403,6 +433,15 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'OrLoading', lang:1, text:'Или они ещё загружаются'},
       { tagName:'OrLoading', lang:2, text:'Або вони ще завантажуються'},
       { tagName:'OrLoading', lang:3, text:'Or they are loading'},
+      { tagName:'AlertTitle', lang:1, text:'Подтверждение'},
+      { tagName:'AlertTitle', lang:2, text:'Підтвердження'},
+      { tagName:'AlertTitle', lang:3, text:'Confirmation'},
+      { tagName:'AlertMessage', lang:1, text:'Вы уверены, что хотите удалить этот магазин из своих избранных магазинов?'},
+      { tagName:'AlertMessage', lang:2, text:'Ви впевнені, що бажаєте видалити цю крамницю зі своїх обраних крамниць?'},
+      { tagName:'AlertMessage', lang:3, text:'Are you sure you want to delete this store from your favorite stores?'},
+      { tagName:'Cancel', lang:1, text:'Отменить'},
+      { tagName:'Cancel', lang:2, text:'Відмінити'},
+      { tagName:'Cancel', lang:3, text:'Cancel'},
     ];
 
     this._mockLocalizationStore['FilterPopoverPage'] = [
@@ -645,6 +684,12 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'Address', lang:3, text:'Address'},
     ];
 
+    this._mockLocalizationStore['NoveltyPage'] = [
+      { tagName:'ToastMessage', lang:1, text:'Что-то пошло не так. Возможно товара уже нет в наличии'},
+      { tagName:'ToastMessage', lang:2, text:'Щось пішло не так. Можливо товару вже немає в наявності'},
+      { tagName:'ToastMessage', lang:3, text:'Something went wrong. Maybe the item is no longer in stock'},
+    ];
+
     this._mockLocalizationStore['OrderDetailsPage'] = [
       { tagName:'ViewOrderDetails', lang:1, text:'Просмотр деталей заказа'},
       { tagName:'ViewOrderDetails', lang:2, text:'Перегляд деталей замовлення'},
@@ -739,6 +784,9 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'Submit', lang:1, text:'Отправить'},
       { tagName:'Submit', lang:2, text:'Відправити'},
       { tagName:'Submit', lang:3, text:'Submit'},
+      { tagName:'AlertMessage', lang:1, text:'Спасибо за участие! Ваше мнение важно для нас'},
+      { tagName:'AlertMessage', lang:2, text:'Дякуємо за участь! Ваша думка важлива для нас'},
+      { tagName:'AlertMessage', lang:3, text:'Thank you for taking a part! Your opinion is important to us'},
     ];
 
     this._mockLocalizationStore['RegisterPage'] = [
@@ -874,6 +922,9 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
     ];
 
     this._mockLocalizationStore['ShippingOptionsPage'] = [
+      { tagName:'LoadingContent', lang:1, text:'Пожалуйста, подождите...'},
+      { tagName:'LoadingContent', lang:2, text:'Будь-ласка, зачекайте...'},
+      { tagName:'LoadingContent', lang:3, text:'Please, wait...'},
       { tagName:'ChooseShippingOptions', lang:1, text:'Выберите доставку'},
       { tagName:'ChooseShippingOptions', lang:2, text:'Оберіть доставку'},
       { tagName:'ChooseShippingOptions', lang:3, text:'Choose your shipping options'},
@@ -913,6 +964,9 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'Submit', lang:1, text:'Отправить'},
       { tagName:'Submit', lang:2, text:'Відправити'},
       { tagName:'Submit', lang:3, text:'Submit'},
+      { tagName:'ToastMessage', lang:1, text:'Ваша просьба о поддержке отправлена'},
+      { tagName:'ToastMessage', lang:2, text:'Ваше прохання про підтримку відправлено'},
+      { tagName:'ToastMessage', lang:3, text:'Your support request has been sent'},
     ];
 
     this._mockLocalizationStore['WarningViewPage'] = [
@@ -940,6 +994,9 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'WriteProductReview', lang:1, text:'Оставить отзыв о товаре'},
       { tagName:'WriteProductReview', lang:2, text:'Залишити відгук про товар'},
       { tagName:'WriteProductReview', lang:3, text:'Write a product review'},
+      { tagName:'AlertMessage', lang:1, text:'К сожалению, этого товара сейчас нет в наличии'},
+      { tagName:'AlertMessage', lang:2, text:'Нажаль, цього товару наразі немає в наявності'},
+      { tagName:'AlertMessage', lang:3, text:'Unfortunately, this item is currently out of stock'},
     ];
 
     this._mockLocalizationStore['BonusComponent'] = [
@@ -1030,6 +1087,21 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'SelectPickupPlace', lang:1, text:'Выберите пункт выдачи'},
       { tagName:'SelectPickupPlace', lang:2, text:'Оберіть пункт видачі'},
       { tagName:'SelectPickupPlace', lang:3, text:'Select pickup place'},
+      { tagName:'AlertTitle', lang:1, text:'Подтверждение'},
+      { tagName:'AlertTitle', lang:2, text:'Підтвердження'},
+      { tagName:'AlertTitle', lang:3, text:'Confirmation'},
+      { tagName:'AlertMessage', lang:1, text:'Вы действительно хотите выбрать этот пункт выдачи?'},
+      { tagName:'AlertMessage', lang:2, text:'Ви дійсно бажаєте обрати цей пункт видачі?'},
+      { tagName:'AlertMessage', lang:3, text:'Are you about to select this place to pickup from?'},
+      { tagName:'Cancel', lang:1, text:'Отменить'},
+      { tagName:'Cancel', lang:2, text:'Відмінити'},
+      { tagName:'Cancel', lang:3, text:'Cancel'},
+    ];
+
+    this._mockLocalizationStore['DropdownListComponent'] = [
+      { tagName:'Qty', lang:1, text:'Кол-во'},
+      { tagName:'Qty', lang:2, text:'Кіл-ть'},
+      { tagName:'Qty', lang:3, text:'Qty'},
     ];
 
     this._mockLocalizationStore['FilterComponent'] = [
@@ -1102,6 +1174,9 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'Apply', lang:1, text:'Применить'},
       { tagName:'Apply', lang:2, text:'Застосувати'},
       { tagName:'Apply', lang:3, text:'Apply'},
+      { tagName:'ErrorText', lang:1, text:'Содержимое корзины было обновлено. Пожалуйста, примените промокод снова'},
+      { tagName:'ErrorText', lang:2, text:'Вміст кошика було оновлено. Будь-ласка, застосуйте промокод знову'},
+      { tagName:'ErrorText', lang:3, text:'Cart content has been updated. Please, apply promocode again'},
     ];
 
     this._mockLocalizationStore['ReadMoreComponent'] = [
@@ -1135,6 +1210,42 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'Delete', lang:1, text:'Удалить'},
       { tagName:'Delete', lang:2, text:'Видалити'},
       { tagName:'Delete', lang:3, text:'Delete'},
+      { tagName:'AlertTitle', lang:1, text:'Подтверждение'},
+      { tagName:'AlertTitle', lang:2, text:'Підтвердження'},
+      { tagName:'AlertTitle', lang:3, text:'Confirmation'},
+      { tagName:'AlertMessage', lang:1, text:'Вы уверены, что хотите удалить этот адрес из своих избранных адресов?'},
+      { tagName:'AlertMessage', lang:2, text:'Ви впевнені, що бажаєте видалити цю адресу зі своїх обраних адрес?'},
+      { tagName:'AlertMessage', lang:3, text:'Are you sure you want to delete this address from your favorite addresses?'},
+      { tagName:'Cancel', lang:1, text:'Отменить'},
+      { tagName:'Cancel', lang:2, text:'Відмінити'},
+      { tagName:'Cancel', lang:3, text:'Cancel'},
+    ];
+
+    this._mockLocalizationStore['CartService'] = [
+      { tagName:'MaxLoan', lang:1, text:'Максимальный лимит кредита превышен'},
+      { tagName:'MaxLoan', lang:2, text:'Максимальний кредитний ліміт перевищено'},
+      { tagName:'MaxLoan', lang:3, text:'Max loan limit exceeded'},
+      { tagName:'MinLoan', lang:1, text:'Сумма кредита ниже лимита'},
+      { tagName:'MinLoan', lang:2, text:'Сума кредиту нижча за межу'},
+      { tagName:'MinLoan', lang:3, text:'The loan amount is below limit'},
+      { tagName:'AddedToCart', lang:1, text:'Товар добавлен в корзину'},
+      { tagName:'AddedToCart', lang:2, text:'Товар додано до кошика'},
+      { tagName:'AddedToCart', lang:3, text:'Item added to cart'},
+      { tagName:'SomethingWrong', lang:1, text:'Что-то пошло не так'},
+      { tagName:'SomethingWrong', lang:2, text:'Щось пішло не так'},
+      { tagName:'SomethingWrong', lang:3, text:'Something went wrong'},
+    ];
+
+    this._mockLocalizationStore['UserService'] = [
+      { tagName:'AlertTitle', lang:1, text:'Ошибка'},
+      { tagName:'AlertTitle', lang:2, text:'Помилка'},
+      { tagName:'AlertTitle', lang:3, text:'Sorry'},
+      { tagName:'AlertMessage', lang:1, text:'Этот магазин уже есть в Ваших избранных'},
+      { tagName:'AlertMessage', lang:2, text:'Ця крамниця вже є у Ваших обраних'},
+      { tagName:'AlertMessage', lang:3, text:'You already have this address in favorites'},
+      { tagName:'ToastMessage', lang:1, text:'Магазин добавлен в избранные'},
+      { tagName:'ToastMessage', lang:2, text:'Крамницю додано до обраних'},
+      { tagName:'ToastMessage', lang:3, text:'Store added to favorites'},
     ];
   }
 

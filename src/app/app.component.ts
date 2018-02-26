@@ -1,5 +1,5 @@
 import {Component, ViewChild, OnDestroy, AfterViewInit} from '@angular/core';
-import {Nav, Platform, MenuController, AlertController} from 'ionic-angular';
+import {Nav, Platform, MenuController, AlertController, ToastController} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {AbstractDataRepository} from "./service/index";
 import {ComponentBase} from "../components/component-extension/component-base";
@@ -8,6 +8,8 @@ import {Device} from '@ionic-native/device';
 import {DeviceData} from "./model/index";
 import {System} from "./core/app-core";
 import {CartService} from "./service/cart-service";
+import {Network} from '@ionic-native/network';
+import {Subscription} from 'rxjs/Subscription';
 
 export interface PageInterface {
   title: string;
@@ -55,10 +57,13 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
   private noveltyPushEventDescriptor: any;
   private actionPushEventDescriptor: any;
 
-  constructor(private platform: Platform, private alertCtrl: AlertController,
-              private splashScreen: SplashScreen, public menuCtrl: MenuController,
-              private repo: AbstractDataRepository, private appAvailability: AppAvailability,
-              private device: Device, private cartService: CartService) {
+  connected: Subscription;
+  disconnected: Subscription;
+
+  constructor(private platform: Platform, private alertCtrl: AlertController, private splashScreen: SplashScreen,
+              public menuCtrl: MenuController, private repo: AbstractDataRepository,
+              private appAvailability: AppAvailability, private device: Device, private cartService: CartService,
+              private network: Network, private toast: ToastController) {
     super();
     // Setting up external app params
     // TODO: Change these params to Foxtrot game's
@@ -84,6 +89,7 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
     });
 
     if (this.device.cordova) {
+      this.checkAndHandleConnectionState();
       // Getting FCM device token and send device data
       FCMPlugin.getToken((token) => {
         if (token) {
@@ -115,6 +121,8 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.noveltyPushEventDescriptor.unsubscribe();
     this.actionPushEventDescriptor.unsubscribe();
+    this.connected.unsubscribe();
+    this.disconnected.unsubscribe();
   }
 
   openPage(page: PageInterface) {
@@ -266,37 +274,22 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
     });
   }
 
-
   // Handling incoming PUSH-notifications
   private async pushNotificationHandling(data) {
     let target = data.target;
+    let noveltyTitle = this.locale['NoveltyTitle'];
+    let noveltyMessage = this.locale['NoveltyMessage'];
+    let promoTitle = this.locale['PromoTitle'];
+    let promoMessage = this.locale['PromoMessage'];
+    let promocodeTitle = this.locale['PromocodeTitle'];
+    let promocodeMessage = this.locale['PromocodeMessage'];
+    let cancel = this.locale['Cancel'];
     switch (target) {
       case 'novelty': {
         if (data.id) {
-          let lang: number = this.userService.lang;
-          let message: string;
-          let title: string;
-          let cancel: string;
-          if (lang === 1) {
-            title = 'Новый товар в Фокстрот!';
-            message = 'Хотите взглянуть?';
-            cancel = 'ОТМЕНИТЬ';
-          } else if (lang === 2) {
-            title = 'Новий товар у Фокстрот!';
-            message = 'Бажаєте подивитись?';
-            cancel = 'СКАСУВАТИ';
-          } else if (lang === 3) {
-            title = 'New product in Foxtrot!';
-            message = 'Do you want to check it?';
-            cancel = 'CANCEL';
-          } else {
-            title = 'Новый товар в Фокстрот!';
-            message = 'Хотите взглянуть?';
-            cancel = 'ОТМЕНИТЬ';
-          }
           let alert = this.alertCtrl.create({
-            title: title,
-            message: message,
+            title: noveltyTitle,
+            message: noveltyMessage,
             buttons: [
               {
                 text: 'OK',
@@ -318,30 +311,9 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
       }
       case 'action' || 'promotion' || 'promo': {
         if (data.id) {
-          let lang: number = this.userService.lang;
-          let message: string;
-          let title: string;
-          let cancel: string;
-          if (lang === 1) {
-            title = 'Новая акция в Фокстрот!';
-            message = 'Хотите взглянуть?';
-            cancel = 'ОТМЕНИТЬ';
-          } else if (lang === 2) {
-            title = 'Нова акція в Фокстрот!';
-            message = 'Бажаєте подивитись?';
-            cancel = 'СКАСУВАТИ';
-          } else if (lang === 3) {
-            title = 'New promotion in Foxtrot!';
-            message = 'Do you want to check it?';
-            cancel = 'CANCEL';
-          } else {
-            title = 'Новая акция в Фокстрот!';
-            message = 'Хотите взглянуть?';
-            cancel = 'ОТМЕНИТЬ';
-          }
           let alert = this.alertCtrl.create({
-            title: title,
-            message: message,
+            title: promoTitle,
+            message: promoMessage,
             buttons: [
               {
                 text: 'OK',
@@ -371,30 +343,9 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
           }
           this.evServ.events['cartUpdateEvent'].emit();
           this.evServ.events['cartItemsUpdateEvent'].emit();
-          let lang: number = this.userService.lang;
-          let message: string;
-          let title: string;
-          let cancel: string;
-          if (lang === 1) {
-            title = 'Проверьте свою корзину';
-            message = 'Мы добавили скидку к вашему заказу';
-            cancel = 'ОТМЕНИТЬ';
-          } else if (lang === 2) {
-            title = 'Перевірте свій кошик';
-            message = 'Ми додали знижку до вашого замовлення';
-            cancel = 'СКАСУВАТИ';
-          } else if (lang === 3) {
-            title = 'Check your cart';
-            message = 'We have added a discount to your order';
-            cancel = 'CANCEL';
-          } else {
-            title = 'Проверьте свою корзину';
-            message = 'Мы добавили скидку к вашему заказу';
-            cancel = 'ОТМЕНИТЬ';
-          }
           let alert = this.alertCtrl.create({
-            title: title,
-            message: message,
+            title: promocodeTitle,
+            message: promocodeMessage,
             buttons: [
               {
                 text: 'OK',
@@ -418,6 +369,39 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
         break;
       }
     }
+  }
+
+
+  /**
+   * Checking network status
+   */
+  checkAndHandleConnectionState() {
+    this.connected = this.network.onConnect().subscribe(data => {
+      //console.log(data);
+      if (data) {
+        this.displayNetworkUpdate(data.type);
+      }
+    }, error => console.error(error));
+
+    this.disconnected = this.network.onDisconnect().subscribe(data => {
+      //console.log(data);
+      if (data) {
+        this.displayNetworkUpdate(data.type);
+      }
+    }, error => console.error(error))
+  }
+  displayNetworkUpdate(connectionState: string){
+    let networkType = this.network.type;
+    let message: string;
+    if (connectionState === 'online') {
+      message = `${this.locale['OnlineMessage']} ${networkType}`;
+    } else {
+      message = `${this.locale['OfflineMessage']} ${connectionState}`;
+    }
+    this.toast.create({
+      message: message,
+      duration: 3000
+    }).present();
   }
 }
 

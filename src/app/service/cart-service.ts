@@ -85,7 +85,10 @@ export class CartService extends ComponentBase {
         this.calculateCart();
       }
     );
+  }
 
+  ngOnInit() {
+    super.ngOnInit();
     this.initCart();
   }
 
@@ -205,22 +208,8 @@ export class CartService extends ComponentBase {
   }
 
   validateLoan (loanAmt: number): {isValid:boolean, validationErrors:string[]} {
-    let lang: number = this.userService.lang;
-    let maxLoan: string;
-    let minLoan: string;
-    if (lang === 1) {
-      maxLoan = 'Максимальный лимит кредита превышен';
-      minLoan = 'Сумма кредита ниже лимита';
-    } else if (lang === 2) {
-      maxLoan = 'Максимальний кредитний ліміт перевищено';
-      minLoan = 'Сума кредиту нижча за межу';
-    } else if (lang === 3) {
-      maxLoan = 'Max loan limit exceeded';
-      minLoan = 'The loan amount is below limit';
-    } else {
-      maxLoan = 'Максимальный лимит кредита превышен';
-      minLoan = 'Сумма кредита ниже лимита';
-    }
+    let maxLoan = this.locale['MaxLoan'];
+    let minLoan = this.locale['MinLoan'];
     let errs = [];
     let mes = (loanAmt > AppConstants.MAX_LOAN_AMT) ? maxLoan : null;
     if (mes)
@@ -325,18 +314,7 @@ export class CartService extends ComponentBase {
 
       this.evServ.events['cartUpdateEvent'].emit();
 
-      let lang: number = this.userService.lang;
-      let message: string;
-      if (lang === 1) {
-        message = 'Товар добавлен в корзину';
-      } else if (lang === 2) {
-        message = 'Товар додано до кошика';
-      } else if (lang === 3) {
-        message = 'Item added to cart';
-      } else {
-        message = 'Товар добавлен в корзину';
-      }
-
+      let message = this.locale['AddedToCart'];
       let toast = page.toastCtrl.create({
         message: message,
         duration: 2000,
@@ -349,18 +327,7 @@ export class CartService extends ComponentBase {
 
       toast.present();
     } else {
-      let lang: number = this.userService.lang;
-      let message: string;
-      if (lang === 1) {
-        message = 'Что-то пошло не так';
-      } else if (lang === 2) {
-        message = 'Щось пішло не так';
-      } else if (lang === 3) {
-        message = 'Something went wrong';
-      } else {
-        message = 'Что-то пошло не так';
-      }
-
+      let message = this.locale['SomethingWrong'];
       let toast = page.toastCtrl.create({
         message: message,
         duration: 2500,

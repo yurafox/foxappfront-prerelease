@@ -17,22 +17,16 @@ export class ShippingOptionsPage extends ComponentBase {
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
                 public repo: AbstractDataRepository, public loadingCtrl: LoadingController) {
     super();
+    this.initLocalization();
     this.cart.loDeliveryOptions = [];
+  }
+
+  ngOnInit() {
     this.getDeliveryOptions();
   }
 
   async getDeliveryOptions() {
-    let lang: number = this.userService.lang;
-    let content: string;
-    if (lang === 1) {
-      content = 'Пожалуйста, подождите'
-    } else if (lang === 2) {
-      content = 'Будь-ласка, зачекайте'
-    } else if (lang === 3) {
-      content = 'Please wait...'
-    } else {
-      content = 'Пожалуйста, подождите'
-    }
+    let content = this.locale['LoadingContent'];
     let loading = this.loadingCtrl.create({
       content: content
     });

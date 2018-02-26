@@ -6,12 +6,14 @@ import {LoginTemplate} from "../../model/index";
 import {IDictionary} from "../../core/app-core";
 import {EventService} from "../event-service";
 import {AlertController, ToastController} from "ionic-angular";
+import {AbstractLocalizationRepository} from "../repository/abstract/abstract-localization-repository";
 
 @Injectable()
 export class UserService {
   private user: User;
   private _auth: boolean;
   private _token: string;
+  private localization: IDictionary<string> = {};
 
   public errorMessages:IDictionary<string> = {  // field for user service error log
     'login':'',
@@ -25,8 +27,8 @@ export class UserService {
   constructor(private _account: AbstractAccountRepository,
               private evServ:EventService,
               private alertCtrl:AlertController,
-              private toastCtrl:ToastController) {
-
+              private toastCtrl:ToastController,
+              private locRepo: AbstractLocalizationRepository) {
     this.callDefaultUser();
   }
 
@@ -95,27 +97,14 @@ export class UserService {
     this.trySendSettings();
   }
 
+  // <editor-fold desc='favorite stores'>
   public addFavoriteStoresId(id:number) {
     let count = 0;
-    let lang: number = this.lang;
     for (let favSoreID of this.user.favoriteStoresId) {
       if (id === favSoreID) {
         count++;
-        let message: string;
-        let title: string;
-        if (lang === 1) {
-          title = 'Ошибка';
-          message = 'Этот магазин уже есть в Ваших избранных';
-        } else if (lang === 2) {
-          title = 'Помилка';
-          message = 'Ця крамниця вже є у Ваших обраних';
-        } else if (lang === 3) {
-          title = 'Sorry';
-          message = 'You already have this address in favorites';
-        } else {
-          title = 'Ошибка';
-          message = 'Этот магазин уже есть в Ваших избранных';
-        }
+        let message = this.localization['AlertMessage'];
+        let title = this.localization['AlertTitle'];
         let alert = this.alertCtrl.create({
           title: title,
           message: message,
@@ -130,16 +119,7 @@ export class UserService {
     }
     if (count === 0) {
       this.user.favoriteStoresId.push(id);
-      let message: string;
-      if (lang === 1) {
-        message = 'Магазин добавлен в избранные';
-      } else if (lang === 2) {
-        message = 'Крамниця додана до обраних';
-      } else if (lang === 3) {
-        message = 'Store added to favorites';
-      } else {
-        message = 'Магазин добавлен в избранные';
-      }
+      let message = this.localization['ToastMessage'];
       let toast = this.toastCtrl.create({
         message: message,
         duration: 2000,
@@ -158,6 +138,8 @@ export class UserService {
     this.user.favoriteStoresId.splice(indx,1);
     this.trySendSettings();
   }
+  // </editor-fold>
+
   // </editor-fold>
 
   // <editor-fold desc='methods'>
@@ -200,6 +182,7 @@ export class UserService {
     try {
       let returnUser: User = await this._account.register(user);
       this.errorClear('register');
+      this.localeUserService();
       return (returnUser) ? true: false;
 
     } catch (err) {
@@ -216,6 +199,7 @@ export class UserService {
         this.user = resUser;
         this.changeAuthStatus(['appKey']);
         this.errorClear('edit');
+        this.localeUserService();
         return true;
      }
     } catch (err) {
@@ -232,7 +216,7 @@ export class UserService {
       localStorage.setItem('token',loginModel.token);
       this.changeAuthStatus(['id','appKey']);
       this.errorClear('login');
-
+      this.localeUserService();
     } catch (err) {
       this.errorMessages['login'] = err.message;
     }
@@ -266,13 +250,14 @@ export class UserService {
 
   }
 
-  // crete default user
+  // create default user
   private callDefaultUser() {
     this.user = new User();
     this._auth = false;
     const lang: string = AppConstants.LOCALE_DEFAULT_VALUE.toString();
     const currency: string = AppConstants.CURRENCY_DEFAULT_VALUE.toString();
     this.firstOrDefaults(['lang', 'currency'],[lang, currency]);
+    this.localeUserService();
   }
 
   // add data to storage and check user status
@@ -308,4 +293,13 @@ export class UserService {
     this.errorMessages[actionName]='';
   }
   // </editor-fold>
+
+  // making localization for user service
+  private localeUserService() {
+    this.locRepo.getLocalization({componentName: (<any> this).constructor.name, lang: (this.lang ? this.lang : 1)}).then((loc) => {
+      if (loc && (Object.keys(loc).length !== 0)) {
+        this.localization = loc;
+      }
+    });
+  }
 }

@@ -53,13 +53,8 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
     }
 
     for (let store of this.stores) {
-      await this.repo.getStoreReviewsByStoreId(store.store.id).then((revs) => {
-        if (revs && revs.length > 0) {
-          store.hasReviews = true;
-        } else {
-          store.hasReviews = false;
-        }
-      });
+      let revs = await this.repo.getStoreReviewsByStoreId(store.store.id);
+      store.hasReviews = !!(revs && (revs.length > 0));
     }
   }
 
@@ -72,27 +67,9 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
   }
 
   deleteStore(item: { city: City, store: Store, hasReviews: boolean }) {
-    let lang: number = this.userService.lang;
-    let title: string;
-    let message: string;
-    let cancel: string;
-    if (lang === 1) {
-      title = 'Подтверждение';
-      message = 'Вы уверены, что хотите удалить магазин из своих избранных магазинов?';
-      cancel = 'Отменить';
-    } else if (lang === 2) {
-      title = 'Підтвердження';
-      message = 'Ви впевнені, що бажаєте видалити крамницю зі своїх обраних крамниць?';
-      cancel = 'Відмінити';
-    } else if (lang === 3) {
-      title = 'Confirmation';
-      message = 'Are you sure you want to delete this store from your favorite stores?';
-      cancel = 'Cancel';
-    } else {
-      title = 'Подтверждение';
-      message = 'Вы уверены, что хотите удалить магазин из своих избранных магазинов?';
-      cancel = 'Отменить';
-    }
+    let title = this.locale['AlertTitle'];
+    let message = this.locale['AlertMessage'];
+    let cancel = this.locale['Cancel'];
     let alert = this.alertCtrl.create({
       title: title,
       message: message,

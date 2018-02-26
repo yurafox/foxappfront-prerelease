@@ -27,7 +27,11 @@ export class CreditCalcPage extends ComponentBase {
               public viewCtrl: ViewController, public cart: CartService,
               public userService: UserService, public loadingCtrl: LoadingController) {
     super();
+    this.initLocalization();
     this.quotProduct = this.navParams.data.quotProduct;
+  }
+
+  async ngOnInit() {
     this.initCreditCalcData();
   }
 
@@ -38,18 +42,9 @@ export class CreditCalcPage extends ComponentBase {
     if (this.lastQp === _qp)
       return;
 
-    let content: string;
-    if (this.userService.lang === 1) {
-      content = 'Пожалуйста, подождите'
-    } else if (this.userService.lang === 2) {
-      content = 'Будь-ласка, зачекайте'
-    } else if (this.userService.lang === 3) {
-      content = 'Please, wait'
-    } else {
-      content = 'Пожалуйста, подождите'
-    }
+    let content = this.locale['LoadingContent'];
     let loading = this.loadingCtrl.create({
-      content:  content+'...'
+      content:  content
     });
     loading.present();
     try {
