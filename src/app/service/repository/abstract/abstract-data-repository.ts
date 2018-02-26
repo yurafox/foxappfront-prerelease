@@ -47,9 +47,11 @@ export abstract class AbstractDataRepository {
   public async abstract getQuotationProductsByProductId(productId: number): Promise<QuotationProduct[]>;
   public async abstract getQuotationProductsByQuotationId(quotationId:number) : Promise<QuotationProduct[]>;
   public async abstract getProductStorePlacesByQuotId(quotId: number): Promise<ProductStorePlace[]>;
+  public async abstract loadStorePlaceCache();
   public async abstract getStorePlaceById(id: number): Promise<StorePlace>;
   public async abstract getProductById(productId: number): Promise<Product>;
   public async abstract getQuotationById(quotationId: number): Promise<Quotation>;
+  public async abstract loadSuppliersCache();
   public async abstract getSupplierById(supplierId: number): Promise<Supplier>;
   public async abstract getPersonById(personId: number): Promise<PersonInfo>;
   public async abstract getCurrencyById(currencyId: number): Promise<Currency>;
@@ -98,6 +100,7 @@ export abstract class AbstractDataRepository {
   public async abstract getStores(): Promise<Array<{id: number, stores: Store[]}>>;
   public async abstract getStoreById(id: number): Promise<Store>;
   public async abstract getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]>;
+  public async abstract loadCityCache();
   public async abstract getCityById(id: number): Promise<City>;
   public async abstract getPageContent(id:number):Promise<string>;
   public async abstract getAction(id:number):Promise<Action>;
@@ -120,6 +123,7 @@ export abstract class AbstractDataRepository {
   public async abstract postDeviceData(deviceData: DeviceData): Promise<DeviceData>
   public async abstract getCategories(): Promise<Category[]>;
   public async abstract getDataForRedirectToPaymaster(orderID: number, cartTotal: number): Promise<any>;
+  public async abstract loadMeasureUnitCache();
   public async abstract getMeasureUnitById(unitId: number): Promise<MeasureUnit>;
   public async abstract getProductDescription(id: number): Promise<string>;
 

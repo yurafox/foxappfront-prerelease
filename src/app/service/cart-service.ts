@@ -86,6 +86,11 @@ export class CartService extends ComponentBase {
       }
     );
 
+    repo.loadStorePlaceCache();
+    repo.loadSuppliersCache();
+    repo.loadCityCache();
+    repo.loadMeasureUnitCache();
+
     this.initCart();
   }
 

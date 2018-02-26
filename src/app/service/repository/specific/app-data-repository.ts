@@ -62,11 +62,9 @@ const loEntitiesUrl = "https://localhost:44374/api/lo/loentity";
 const quotationsUrl = "https://localhost:44374/api/quotation";
 const clientsUrl = "https://localhost:44374/api/client";
 const cartProductsUrl = "https://localhost:44374/api/cart/CartProducts";
-// const productStorePlacesUrl = "https://localhost:44374/api/storeplace/productstoreplaces";
-// const storePlacesUrl = "https://localhost:44374/api/storeplace/storeplace";
+const productStorePlacesUrl = "https://localhost:44374/api/storeplace/productstoreplaces";
+const storePlacesUrl = "https://localhost:44374/api/storeplace/storeplace";
 
-//https://localhost:44374/api/storeplace/productstoreplaces
-//https://localhost:44374/api/storeplace/storeplace
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -84,8 +82,8 @@ const cartProductsUrl = "https://localhost:44374/api/cart/CartProducts";
 // const quotationsUrl = "/api/mquotation";
 // const clientsUrl = "/api/mclients";
 // const cartProductsUrl = "/api/mcartProducts";
-const productStorePlacesUrl = "/api/mproductStorePlaces";
-const storePlacesUrl = "/api/mstorePlaces";
+// const productStorePlacesUrl = "/api/mproductStorePlaces";
+// const storePlacesUrl = "/api/mstorePlaces";
 
 const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
 const productReviewsUrl = "/api/mproductReviews";
@@ -1205,6 +1203,40 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async loadStorePlaceCache() {
+    try {
+      const response = await this.http
+        .get(storePlacesUrl).toPromise();
+
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      if (data != null) {
+        data.forEach(val => {
+          let storeplace = new StorePlace();
+          storeplace.id = val.id;
+          storeplace.name = val.name;
+          storeplace.idSupplier = val.idSupplier;
+          storeplace.idCity = val.idCity;
+          storeplace.zip = val.zip;
+          storeplace.address_line = val.address_line;
+          storeplace.lat = val.lat;
+          storeplace.lng = val.lng;
+          storeplace.type = val.type;
+          if (this.isEmpty(this.cache.StorePlace.Item(val.id.toString()))) {
+            this.cache.StorePlace.Add(val.id.toString(), storeplace);
+            };
+          }
+        );
+      }
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
   public async getStorePlaceById(id: number): Promise<StorePlace> {
     try {
       const _id: string = id.toString();
@@ -1246,6 +1278,34 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async loadCityCache() {
+    try {
+      const response = await this.http
+        .get(citiesUrl).toPromise();
+
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      if (data != null) {
+        data.forEach(val => {
+            let city = new City();
+            city.id = val.id;
+            city.name = val.name;
+            if (this.isEmpty(this.cache.City.Item(val.id.toString()))) {
+              this.cache.City.Add(val.id.toString(), city);
+            };
+          }
+        );
+      }
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+
   public async getCityById(id: number): Promise<City> {
     if (!id) return null;
     try {
@@ -1263,7 +1323,6 @@ export class AppDataRepository extends AbstractDataRepository {
         }
 
         if (data != null) {
-          //city = new City();
           city.id = id;
           city.name = data.name;
 
@@ -1616,6 +1675,36 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async loadSuppliersCache() {
+    try {
+      const response = await this.http
+        .get(suppliersUrl).toPromise();
+
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      if (data != null) {
+        data.forEach(val => {
+            let supplier = new Supplier();
+            supplier.id = val.id;
+            supplier.name = val.name;
+            supplier.paymentMethodId = val.paymentMethodId;
+            supplier.rating = val.rating;
+            supplier.positiveFeedbackPct = val.positiveFeedbackPct;
+            supplier.refsCount = val.refsCount;
+            if (this.isEmpty(this.cache.Suppliers.Item(val.id.toString()))) {
+              this.cache.Suppliers.Add(val.id.toString(), supplier);
+            };
+          }
+        );
+      }
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
 
   public async getSupplierById(supplierId: number): Promise<Supplier> {
     try {
@@ -2511,6 +2600,34 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+
+  public async loadMeasureUnitCache() {
+    try {
+      const response = await this.http
+        .get(measureUnitUrl).toPromise();
+
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      if (data != null) {
+        data.forEach(val => {
+            let mUnit = new MeasureUnit();
+            mUnit.id = val.id;
+            mUnit.name = val.name;
+            if (this.isEmpty(this.cache.MeasureUnit.Item(val.id.toString()))) {
+              this.cache.MeasureUnit.Add(val.id.toString(), mUnit);
+            };
+          }
+        );
+      }
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 
   public async getMeasureUnitById(unitId: number): Promise<MeasureUnit> {
     try {

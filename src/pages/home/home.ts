@@ -44,7 +44,7 @@ export class HomePage extends ComponentBase {
   public content: string = '';
 
   constructor(public app: App, public nav: NavController,
-              private _repo:AbstractDataRepository, public srchService: SearchService) {
+              private _repo: AbstractDataRepository, public srchService: SearchService) {
     super();
     this.srchService.lastSearch = null;
  }
