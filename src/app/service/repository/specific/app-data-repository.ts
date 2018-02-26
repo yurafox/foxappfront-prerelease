@@ -62,7 +62,11 @@ const loEntitiesUrl = "https://localhost:44374/api/lo/loentity";
 const quotationsUrl = "https://localhost:44374/api/quotation";
 const clientsUrl = "https://localhost:44374/api/client";
 const cartProductsUrl = "https://localhost:44374/api/cart/CartProducts";
+// const productStorePlacesUrl = "https://localhost:44374/api/storeplace/productstoreplaces";
+// const storePlacesUrl = "https://localhost:44374/api/storeplace/storeplace";
 
+//https://localhost:44374/api/storeplace/productstoreplaces
+//https://localhost:44374/api/storeplace/storeplace
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -80,12 +84,12 @@ const cartProductsUrl = "https://localhost:44374/api/cart/CartProducts";
 // const quotationsUrl = "/api/mquotation";
 // const clientsUrl = "/api/mclients";
 // const cartProductsUrl = "/api/mcartProducts";
+const productStorePlacesUrl = "/api/mproductStorePlaces";
+const storePlacesUrl = "/api/mstorePlaces";
 
 const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
 const productReviewsUrl = "/api/mproductReviews";
 const storesUrl = "/api/mstores";
-const storePlacesUrl = "/api/mstorePlaces";
-const productStorePlacesUrl = "/api/mproductStorePlaces";
 const clientAddressesUrl = "/api/mclientAddresses";
 const clientOrderSpecProductsOfClientUrl = "/api/mclientOrderSpecProductsOfClient";
 const pagesDynamicUrl = "/api/mpages";
