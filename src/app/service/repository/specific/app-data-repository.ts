@@ -64,7 +64,11 @@ const clientsUrl = "https://localhost:44374/api/client";
 const cartProductsUrl = "https://localhost:44374/api/cart/CartProducts";
 const productStorePlacesUrl = "https://localhost:44374/api/storeplace/productstoreplaces";
 const storePlacesUrl = "https://localhost:44374/api/storeplace/storeplace";
-
+const loSupplEntitiesUrl = "https://localhost:44374/api/lo/losupplentity";
+const specLOTrackingLogUrl = "https://localhost:44374/api/lo/specLOTrackingLog";
+const clientDraftOrderUrl = "https://localhost:44374/api/Cart/getClientDraftOrder";
+const personsUrl = "https://localhost:44374/api/client/person";
+//https://localhost:44374/api/client/person
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -84,29 +88,33 @@ const storePlacesUrl = "https://localhost:44374/api/storeplace/storeplace";
 // const cartProductsUrl = "/api/mcartProducts";
 // const productStorePlacesUrl = "/api/mproductStorePlaces";
 // const storePlacesUrl = "/api/mstorePlaces";
-
+// const loSupplEntitiesUrl = "/api/mloSupplEntities";
+// const specLOTrackingLogUrl = '/api/mspecLOTrackingLog';
+// const clientDraftOrderUrl = "/api/mclientDraftOrder";
+// const personsUrl = "/api/mpersons";
+const creditProductsUrl = "/api/mcreditProducts";
+const getPromocodeDiscountUrl = "/api/mgetPromocodeDiscount";
+const calculateCartUrl = "/api/mcalculateCart";
+const getClientBonuses = "/api/mclientBonuses";
+const getDeliveryCostUrl = "/api/mgetDeliveryCost";
+const getBonusesInfoForCheckoutUrl = "/api/mgetBonusesInfoForCheckout";
+const getDeliveryDateUrl = "/api/mgetDeliveryDate";
+const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
 const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
-const productReviewsUrl = "/api/mproductReviews";
+//Данньіе нужно забирать из Т22
+const clientOrdersUrl = "/api/mclientOrders";
 const storesUrl = "/api/mstores";
+
+
+
+const productReviewsUrl = "/api/mproductReviews";
 const clientAddressesUrl = "/api/mclientAddresses";
 const clientOrderSpecProductsOfClientUrl = "/api/mclientOrderSpecProductsOfClient";
 const pagesDynamicUrl = "/api/mpages";
 const actionDynamicUrl = "/api/mactions";
 const actionOffersUrl = "/api/mactionOffers";
 const storeReviewsUrl = "/api/mstoreReviews";
-const loSupplEntitiesUrl = "/api/mloSupplEntities";
-const getDeliveryCostUrl = "/api/mgetDeliveryCost";
-const getBonusesInfoForCheckoutUrl = "/api/mgetBonusesInfoForCheckout";
-const getDeliveryDateUrl = "/api/mgetDeliveryDate";
-const clientDraftOrderUrl = "/api/mclientDraftOrder";
-const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
-const creditProductsUrl = "/api/mcreditProducts";
-const getPromocodeDiscountUrl = "/api/mgetPromocodeDiscount";
-const calculateCartUrl = "/api/mcalculateCart";
-const getClientBonuses = "/api/mclientBonuses";
-const personsUrl = "/api/mpersons";
 const postProductViewUrl = "/api/mpostProductView";
-
 const pollsUrl='/api/mpolls';
 const pollQuestionUrl='/api/mpollQuestion';
 const pollQuestionAnswerUrl = '/api/mpollQuestionAnswer';
@@ -115,14 +123,10 @@ const noveltyDynamicUrl = "/api/mnovelties";
 const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
 const deviceDataUrl = "/api/mdeviceData";
 const redirectToPaymasterUrl = "/api/mredirectToPaymaster";
-const specLOTrackingLogUrl = '/api/mspecLOTrackingLog';
-
-
 
 const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/api/catalog`:"/api/mcategories";
 
-//Данньіе нужно забирать из Т22
-const clientOrdersUrl = "/api/mclientOrders";
+
 
 // </editor-fold
 
@@ -494,24 +498,24 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       if (data != null) {
         let cClientOrder = new ClientOrder(
-          data[0].id,
-          data[0].orderDate,
-          data[0].idCur,
-          data[0].idClient,
-          data[0].total,
-          data[0].idPaymentMethod,
-          data[0].idPaymentStatus,
-          data[0].idStatus,
+          data.id,
+          data.orderDate,
+          data.idCur,
+          data.idClient,
+          data.total,
+          data.idPaymentMethod,
+          data.idPaymentStatus,
+          data.idStatus,
           null,
-          data[0].loIdEntity,
-          data[0].loIdClientAddress,
-          data[0].itemsTotal,
-          data[0].shippingTotal,
-          data[0].bonusTotal,
-          data[0].promoBonusTotal,
-          data[0].bonusEarned,
-          data[0].promoCodeDiscTotal,
-          data[0].idPerson
+          data.loIdEntity,
+          data.loIdClientAddress,
+          data.itemsTotal,
+          data.shippingTotal,
+          data.bonusTotal,
+          data.promoBonusTotal,
+          data.bonusEarned,
+          data.promoCodeDiscTotal,
+          data.idPerson
         );
         return cClientOrder;
       }

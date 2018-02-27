@@ -2998,7 +2998,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     {id: 5, idSupplier: 3, idLoEntity: 150}
   ];
 
-  clientDraftOrder = [
+  clientDraftOrder =
     {
       id: 1000,
       orderDate: new Date(),
@@ -3018,7 +3018,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       promoCodeDiscTotal: null
 
     }
-  ];
+  ;
 
 
   clientOrders = [
