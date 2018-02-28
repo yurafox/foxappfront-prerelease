@@ -34,6 +34,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
     this.product = this.navParams.data.prod;
     this.preloadQuotes = this.navParams.data.loadQuotes;
     this.qty.value = 1;
+    repo.getProductImages(this.product.id).then(x => this.product.slideImageUrls = x);
   }
 
   async ngOnInit() {

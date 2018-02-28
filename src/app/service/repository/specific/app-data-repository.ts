@@ -68,7 +68,7 @@ const loSupplEntitiesUrl = "https://localhost:44374/api/lo/losupplentity";
 const specLOTrackingLogUrl = "https://localhost:44374/api/lo/specLOTrackingLog";
 const clientDraftOrderUrl = "https://localhost:44374/api/Cart/getClientDraftOrder";
 const personsUrl = "https://localhost:44374/api/client/person";
-//https://localhost:44374/api/client/person
+const productImagesUrl = "https://localhost:44374/api/product/getProductImages";
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -92,12 +92,15 @@ const personsUrl = "https://localhost:44374/api/client/person";
 // const specLOTrackingLogUrl = '/api/mspecLOTrackingLog';
 // const clientDraftOrderUrl = "/api/mclientDraftOrder";
 // const personsUrl = "/api/mpersons";
+// const productImagesUrl = "/api/mgetProductImages";
+
+
+const getClientBonuses = "/api/mclientBonuses";
+const getBonusesInfoForCheckoutUrl = "/api/mgetBonusesInfoForCheckout";
 const creditProductsUrl = "/api/mcreditProducts";
 const getPromocodeDiscountUrl = "/api/mgetPromocodeDiscount";
 const calculateCartUrl = "/api/mcalculateCart";
-const getClientBonuses = "/api/mclientBonuses";
 const getDeliveryCostUrl = "/api/mgetDeliveryCost";
-const getBonusesInfoForCheckoutUrl = "/api/mgetBonusesInfoForCheckout";
 const getDeliveryDateUrl = "/api/mgetDeliveryDate";
 const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
 const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
@@ -2678,9 +2681,31 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
       if (data != null) {
-        return data;
+        return data.description;
       }
     } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getProductImages(id: number): Promise<string[]> {
+    try {
+      let res = [];
+      const _id = id.toString();
+      const response = await this.http.get(productImagesUrl + `/${_id}`).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        data.images.forEach(x => {
+            res.push(x);
+          }
+        );
+        return res;
+      }
+    }
+    catch (err) {
       return await this.handleError(err);
     }
   }
