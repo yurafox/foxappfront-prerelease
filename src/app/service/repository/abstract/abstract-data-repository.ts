@@ -74,7 +74,7 @@ export abstract class AbstractDataRepository {
   public async abstract saveCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
   public async abstract insertCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
   public async abstract deleteCartProduct(prod: ClientOrderProducts);
-  public async abstract getBonusesInfoForCheckout(): Promise<{bonusLimit: number, actionBonusLimit: number}>;
+  public async abstract getBonusesInfo(clientId: number): Promise<{bonusLimit: number, actionBonusLimit: number}>;
   public async abstract calculateCart(promoCode: string,
                                       maxBonusCnt: number,
                                       usePromoBonus: boolean,
@@ -83,7 +83,7 @@ export abstract class AbstractDataRepository {
                                                                           promoCodeDisc: number, bonusDisc: number,
                                                                           promoBonusDisc: number}[]>;
 
-  public async abstract getClientBonuses(clientId: number): Promise <ClientBonus[]>;
+  public async abstract getClientBonusesExpireInfo(clientId: number): Promise <ClientBonus[]>;
   public async abstract getClientDraftOrderSpecProductsById(id: number): Promise<ClientOrderProducts>;
   public async abstract getClientDraftOrderSpecProducts(): Promise<Array<ClientOrderProducts>>;
   public async abstract getClientOrderSpecProductsByClientId(clientId: number): Promise<Array<ClientOrderProducts>>;

@@ -178,8 +178,10 @@ export class CartService extends ComponentBase {
 
   public async initBonusData() {
     let cl = await (<any>this.userService).profile.client_p;
-    this.availBonus = (cl.bonusBalance) ? cl.bonusBalance : 0;
-    this.availPromoBonus = (cl.actionBonusBalance) ? cl.actionBonusBalance : 0;
+    let bonusData = await this.repo.getBonusesInfo(11049778713/*cl.id*/); //TODO
+
+    this.availBonus = (bonusData.bonusLimit) ? bonusData.bonusLimit : 0;
+    this.availPromoBonus = (bonusData.actionBonusLimit) ? bonusData.actionBonusLimit : 0;
   }
 
   public get mostExpensiveItem(): ClientOrderProducts {

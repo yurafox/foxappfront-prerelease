@@ -17,8 +17,10 @@ export class Client {
     public email?: string,
     public fname?: string,
     public lname?: string,
-    public barcode?: string,
+    public barcode?: string
+    /*,
     public bonusBalance?: number,
     public actionBonusBalance?: number
+    */
   ){this._repo = RefInjector.pull(AbstractDataRepository);}
 }

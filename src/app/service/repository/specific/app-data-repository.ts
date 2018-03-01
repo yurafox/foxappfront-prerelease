@@ -69,6 +69,9 @@ const specLOTrackingLogUrl = "https://localhost:44374/api/lo/specLOTrackingLog";
 const clientDraftOrderUrl = "https://localhost:44374/api/Cart/getClientDraftOrder";
 const personsUrl = "https://localhost:44374/api/client/person";
 const productImagesUrl = "https://localhost:44374/api/product/getProductImages";
+const getBonusesInfoUrl = "https://localhost:44374/api/client/getBonusesInfo";
+const getClientBonusesExpireInfoUrl = "https://localhost:44374/api/client/GetBonusesExpireInfo";
+
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -93,10 +96,9 @@ const productImagesUrl = "https://localhost:44374/api/product/getProductImages";
 // const clientDraftOrderUrl = "/api/mclientDraftOrder";
 // const personsUrl = "/api/mpersons";
 // const productImagesUrl = "/api/mgetProductImages";
+// const getBonusesInfoForCheckoutUrl = "/api/mgetBonusesInfoForCheckout";
+// const getClientBonusesExpireInfoUrl = "/api/mclientBonuses";
 
-
-const getClientBonuses = "/api/mclientBonuses";
-const getBonusesInfoForCheckoutUrl = "/api/mgetBonusesInfoForCheckout";
 const creditProductsUrl = "/api/mcreditProducts";
 const getPromocodeDiscountUrl = "/api/mgetPromocodeDiscount";
 const calculateCartUrl = "/api/mcalculateCart";
@@ -141,10 +143,10 @@ export class AppDataRepository extends AbstractDataRepository {
     super();
   }
 
-  public async getClientBonuses(clientId: number): Promise <ClientBonus[]> {
+  public async getClientBonusesExpireInfo(clientId: number): Promise <ClientBonus[]> {
     try {
       const response = await this.http
-        .get(getClientBonuses, {
+        .get(getClientBonusesExpireInfoUrl, {
           search: this.createSearchParams([
             {key: "clientId", value: clientId.toString()}
           ])
@@ -231,16 +233,17 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
 
-  public async getBonusesInfoForCheckout(): Promise<{ bonusLimit: number, actionBonusLimit: number }> {
+  public async getBonusesInfo(clientId: number): Promise<{ bonusLimit: number, actionBonusLimit: number }> {
     try {
+      let _id = clientId.toString();
       const response = await this.http
-        .get(getBonusesInfoForCheckoutUrl).toPromise();
+        .get(getBonusesInfoUrl + `/${_id}`).toPromise();
       const val = response.json();
 
       if (response.status !== 201 && response.status !== 200) {
         throw new Error("server side status error");
       }
-      return val.BonusInfo;
+      return val;
     } catch (err) {
       return await this.handleError(err);
     }
@@ -1070,8 +1073,8 @@ export class AppDataRepository extends AbstractDataRepository {
         client.fname = data.fname;
         client.lname = data.lname;
         client.barcode = data.barcode;
-        client.bonusBalance = data.bonusBalance;
-        client.actionBonusBalance = data.actionBonusBalance;
+        // client.bonusBalance = data.bonusBalance;
+        // client.actionBonusBalance = data.actionBonusBalance;
         return client;
       }
     } catch (err) {
