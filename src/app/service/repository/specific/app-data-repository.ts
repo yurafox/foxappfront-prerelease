@@ -100,7 +100,6 @@ const getClientBonusesExpireInfoUrl = "https://localhost:44374/api/client/GetBon
 // const getClientBonusesExpireInfoUrl = "/api/mclientBonuses";
 
 const creditProductsUrl = "/api/mcreditProducts";
-const getPromocodeDiscountUrl = "/api/mgetPromocodeDiscount";
 const calculateCartUrl = "/api/mcalculateCart";
 const getDeliveryCostUrl = "/api/mgetDeliveryCost";
 const getDeliveryDateUrl = "/api/mgetDeliveryDate";
@@ -183,21 +182,6 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-
-  public async getDiscountByPromocode(promoCode: string): Promise<number> {
-    try {
-      const response = await this.http
-        .post(getPromocodeDiscountUrl, {promoCode: promoCode}).toPromise();
-      const val = response.json();
-
-      if (response.status !== 201 && response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      return val.discount;
-    } catch (err) {
-      return await this.handleError(err);
-    }
-  }
 
   public async calculateCart(promoCode: string, maxBonusCnt: number, usePromoBonus: boolean,
                              cartContent: ClientOrderProducts[]):
