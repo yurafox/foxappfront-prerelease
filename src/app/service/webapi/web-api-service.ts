@@ -5556,7 +5556,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
         return info.utils.createResponse$(() => resOpt);
       }
 
-      case "mgetBonusesInfoForCheckoutUrl": {
+      case "mgetBonusesInfoForCheckout": {
         resOpt.body = {bonusLimit: 500, actionBonusLimit: 1000};
         return info.utils.createResponse$(() => resOpt);
       }

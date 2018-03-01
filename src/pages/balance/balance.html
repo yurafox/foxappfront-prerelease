@@ -81,12 +81,12 @@
 
         </div>
 
-        <ion-row>
+        <ion-row *ngIf="cart.availPromoBonus > 0">
           <ion-col no-padding>
             <hr>
           </ion-col>
         </ion-row>
-        <ion-row>
+        <ion-row *ngIf="cart.availPromoBonus > 0">
           <ion-col class="f-size-large">
             <span loc="Акционный бонус" name="PromoBonus">{{locale['PromoBonus']}}</span>:
           </ion-col>

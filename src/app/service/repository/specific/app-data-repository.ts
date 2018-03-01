@@ -96,14 +96,17 @@ const getClientBonusesExpireInfoUrl = "https://localhost:44374/api/client/GetBon
 // const clientDraftOrderUrl = "/api/mclientDraftOrder";
 // const personsUrl = "/api/mpersons";
 // const productImagesUrl = "/api/mgetProductImages";
-// const getBonusesInfoForCheckoutUrl = "/api/mgetBonusesInfoForCheckout";
+// const getBonusesInfoUrl = "/api/mgetBonusesInfoForCheckout";
 // const getClientBonusesExpireInfoUrl = "/api/mclientBonuses";
 
+
+
 const creditProductsUrl = "/api/mcreditProducts";
+const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
+
 const calculateCartUrl = "/api/mcalculateCart";
 const getDeliveryCostUrl = "/api/mgetDeliveryCost";
 const getDeliveryDateUrl = "/api/mgetDeliveryDate";
-const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
 const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
 //Данньіе нужно забирать из Т22
 const clientOrdersUrl = "/api/mclientOrders";

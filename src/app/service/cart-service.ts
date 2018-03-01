@@ -231,11 +231,11 @@ export class CartService extends ComponentBase {
   }
 
   async initCart() {
-    console.log('CartInit call. Is auth: '+ this.userService.isAuth);
+    //console.log('CartInit call. Is auth: '+ this.userService.isAuth);
     if (this.userService.isAuth) {
       this.order = await this.repo.getClientDraftOrder();
 
-      let op = await this.repo.getCartProducts();
+      let op = await this.repo.getCartProducts();``
       for (let i of this.orderProducts) {
         await this.repo.saveCartProduct(i);
         op.push(i);

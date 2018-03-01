@@ -10,6 +10,8 @@ import {ClientAddress} from "../../app/model/client-address";
 import {AlertController, NavController, NavParams} from "ionic-angular";
 import {UserService} from "../../app/service/bll/user-service";
 import {ComponentBase} from "../component-extension/component-base";
+import {CartService} from '../../app/service/cart-service';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 @Component({
   selector: 'shipping-address',
@@ -21,7 +23,8 @@ export class ShippingAddressComponent extends ComponentBase {
   @Input() addresses?: ClientAddress[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public uService: UserService, public alertCtrl: AlertController) {
+              public uService: UserService, public alertCtrl: AlertController,
+              public cart: CartService) {
     super();
   }
 
@@ -37,10 +40,8 @@ export class ShippingAddressComponent extends ComponentBase {
   }
 
   deliverToThisAddress(item: any) {
-    if (this.withDelivery) {
-      this.navCtrl.push('ShippingOptionsPage', {data: item});
-
-    }
+    this.cart.order.loIdClientAddress = item.id;
+    this.navCtrl.push('ShippingOptionsPage', {data: item});
   }
 
   editAddress(item: ClientAddress) {
