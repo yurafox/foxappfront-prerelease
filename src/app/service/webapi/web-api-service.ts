@@ -748,12 +748,47 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
 
   productDescriptions = [
     {id: 6280637, description: 'Description1'},
-    {id: 6294898, description: 'Description2'}
+    {id: 6294898, description: 'Description2'},
+    {id: 6293680, description: 'Description2'},
+    {id: 6325585, description: 'Description2'},
+    {id: 6324182, description: 'Description2'},
+    {id: 6252121, description: 'Description2'},
+    {id: 6202929, description: 'Description2'},
+    {id: 6324216, description: 'Description2'},
+    {id: 6324213, description: 'Description2'},
+    {id: 6161537, description: 'Description2'},
+    {id: 6307814, description: 'Description2'},
+    {id: 6343804, description: 'Description2'},
+    {id: 6337167, description: 'Description2'},
+    {id: 6291460, description: 'Description2'},
+    {id: 6316576, description: 'Description2'},
+    {id: 6310491, description: 'Description2'},
+    {id: 6312913, description: 'Description2'},
+    {id: 6363302, description: 'Description2'},
+    {id: 6337781, description: 'Description2'}
+
   ];
 
-  getProductImages = [
+  productImages = [
     {id: 6280637, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
-    {id: 6294898, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']}
+    {id: 6294898, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6293680, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6325585, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6324182, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6252121, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6202929, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6324216, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6324213, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6161537, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6307814, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6343804, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6337167, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6291460, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6316576, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6310491, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6312913, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6363302, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6337781, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']}
   ];
 
   products = [
@@ -5449,7 +5484,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mcategories = this.categories;
     const mmeasureUnits = this.measureUnits;
     const mproductDescriptions = this.productDescriptions;
-    const mgetProductImages = this.getProductImages;
+    const mProductImages = this.productImages;
 
     return {
       mquotationProducts,
@@ -5495,7 +5530,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mcategories,
       mmeasureUnits,
       mproductDescriptions,
-      mgetProductImages
+      mProductImages
     };
   }
 

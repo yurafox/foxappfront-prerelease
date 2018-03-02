@@ -71,7 +71,8 @@ const personsUrl = "https://localhost:44374/api/client/person";
 const productImagesUrl = "https://localhost:44374/api/product/getProductImages";
 const getBonusesInfoUrl = "https://localhost:44374/api/client/getBonusesInfo";
 const getClientBonusesExpireInfoUrl = "https://localhost:44374/api/client/GetBonusesExpireInfo";
-
+const creditProductsUrl = "https://localhost:44374/api/credit/creditproduct";
+const productSupplCreditGradesUrl = "https://localhost:44374/api/credit/GetProductCreditSize";
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -95,14 +96,14 @@ const getClientBonusesExpireInfoUrl = "https://localhost:44374/api/client/GetBon
 // const specLOTrackingLogUrl = '/api/mspecLOTrackingLog';
 // const clientDraftOrderUrl = "/api/mclientDraftOrder";
 // const personsUrl = "/api/mpersons";
-// const productImagesUrl = "/api/mgetProductImages";
+// const productImagesUrl = "/api/mProductImages";
 // const getBonusesInfoUrl = "/api/mgetBonusesInfoForCheckout";
 // const getClientBonusesExpireInfoUrl = "/api/mclientBonuses";
+// const creditProductsUrl = "/api/mcreditProducts";
+// const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
 
 
 
-const creditProductsUrl = "/api/mcreditProducts";
-const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
 
 const calculateCartUrl = "/api/mcalculateCart";
 const getDeliveryCostUrl = "/api/mgetDeliveryCost";
@@ -2662,7 +2663,6 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async getProductDescription(id: number): Promise<string> {
-    //productDescriptionsUrl
     try {
       const _id = id.toString();
       const response = await this.http.get(productDescriptionsUrl + `/${_id}`).toPromise();
@@ -2681,19 +2681,22 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getProductImages(id: number): Promise<string[]> {
     try {
       let res = [];
+      let data: any = null;
       const _id = id.toString();
       const response = await this.http.get(productImagesUrl + `/${_id}`).toPromise();
-      let data: any = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
+      if (response) {
+        data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        if (data != null) {
+          data.images.forEach(x => {
+              res.push(x);
+            }
+          );
+        }
       }
-      if (data != null) {
-        data.images.forEach(x => {
-            res.push(x);
-          }
-        );
-        return res;
-      }
+      return res;
     }
     catch (err) {
       return await this.handleError(err);

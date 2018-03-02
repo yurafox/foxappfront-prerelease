@@ -15,17 +15,19 @@
     </ion-row>
 
     <ion-row>
+
       <ion-col text-center *ngIf="product?.slideImageUrls?.length === 0">
         <img *ngIf="product?.imageUrl" class="f-img-item-lg" [src]="product.imageUrl">
         <img *ngIf="!product?.imageUrl" class="f-img-item-lg" src="assets/imgs/nophoto.png">
       </ion-col>
-      <ion-col text-center *ngIf="!(product?.slideImageUrls?.length === 0)">
+      <ion-col text-center *ngIf="!(product?.slideImageUrls?.length === 0) && product.slideImageUrls">
         <ion-slides pager>
           <ion-slide *ngFor="let slide of product.slideImageUrls">
             <img src="{{ slide }}" alt="">
           </ion-slide>
         </ion-slides>
       </ion-col>
+
     </ion-row>
     <ion-row *ngIf="product.oldPrice">
       <ion-col class="f-item-nopadding f-padding-l-5 f-old-price f-size-20" >
