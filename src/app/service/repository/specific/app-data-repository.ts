@@ -73,6 +73,8 @@ const getBonusesInfoUrl = "https://localhost:44374/api/client/getBonusesInfo";
 const getClientBonusesExpireInfoUrl = "https://localhost:44374/api/client/GetBonusesExpireInfo";
 const creditProductsUrl = "https://localhost:44374/api/credit/creditproduct";
 const productSupplCreditGradesUrl = "https://localhost:44374/api/credit/GetProductCreditSize";
+const postProductViewUrl = "https://localhost:44374/api/client/LogProductView";
+const clientAddressesUrl = "https://localhost:44374/api/client/clientAddress";
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -101,14 +103,16 @@ const productSupplCreditGradesUrl = "https://localhost:44374/api/credit/GetProdu
 // const getClientBonusesExpireInfoUrl = "/api/mclientBonuses";
 // const creditProductsUrl = "/api/mcreditProducts";
 // const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
+// const postProductViewUrl = "/api/mpostProductView";
+// const clientAddressesUrl = "/api/mclientAddresses";
 
 
-
-
-const calculateCartUrl = "/api/mcalculateCart";
 const getDeliveryCostUrl = "/api/mgetDeliveryCost";
 const getDeliveryDateUrl = "/api/mgetDeliveryDate";
+const calculateCartUrl = "/api/mcalculateCart";
 const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
+const clientOrderSpecProductsOfClientUrl = "/api/mclientOrderSpecProductsOfClient";
+
 //Данньіе нужно забирать из Т22
 const clientOrdersUrl = "/api/mclientOrders";
 const storesUrl = "/api/mstores";
@@ -116,13 +120,10 @@ const storesUrl = "/api/mstores";
 
 
 const productReviewsUrl = "/api/mproductReviews";
-const clientAddressesUrl = "/api/mclientAddresses";
-const clientOrderSpecProductsOfClientUrl = "/api/mclientOrderSpecProductsOfClient";
 const pagesDynamicUrl = "/api/mpages";
 const actionDynamicUrl = "/api/mactions";
 const actionOffersUrl = "/api/mactionOffers";
 const storeReviewsUrl = "/api/mstoreReviews";
-const postProductViewUrl = "/api/mpostProductView";
 const pollsUrl='/api/mpolls';
 const pollQuestionUrl='/api/mpollQuestion';
 const pollQuestionAnswerUrl = '/api/mpollQuestionAnswer';
@@ -176,9 +177,7 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
       const response = await this.http
         .post(postProductViewUrl, {idProduct: idProduct.toString(), params: params}).toPromise();
-      const val = response.json();
-
-      if (response.status !== 201 && response.status !== 200) {
+      if (response.status !== 201) {
         throw new Error("server side status error");
       }
     } catch (err) {

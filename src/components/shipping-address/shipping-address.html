@@ -21,8 +21,8 @@
             {{sa?.city}}, {{sa?.zip}}
             <span *ngIf="sa?.idCountry"><br>
                   {{sa?.country?.name}} </span>
-            <br>
-            <span loc="Телефон" name="Phone">{{locale['Phone']}}</span>: {{sa?.phone}}
+
+            <span *ngIf="sa?.phone" loc="Телефон" name="Phone"><br>{{locale['Phone']}}: {{sa?.phone}} </span>
           </ion-col>
         </ion-row>
         <div *ngIf="sa.isPrimary">
