@@ -80,10 +80,14 @@ export namespace Providers {
     }
 
     public Add(key: string, value: T) {
-      if (!this.items.hasOwnProperty(key))
-        this.count++;
+      if (key && value) {
+        if ((<any>value).id) {
+          if (!this.items.hasOwnProperty(key))
+            this.count++;
 
-      this.items[key] = value;
+          this.items[key] = value;
+        }
+      }
     }
 
     public Remove(key: string): T {

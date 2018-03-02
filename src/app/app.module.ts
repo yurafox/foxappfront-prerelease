@@ -32,7 +32,8 @@ import {
   UserService,
   CurrencyStore,
   CartService,
-  SearchService
+  SearchService,
+  ConnectivityService
 } from '../app/service/index';
 
 import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
@@ -71,6 +72,7 @@ import {
   LoginPageModule,
   ManagePlacesMenuPageModule,
   MapPageModule,
+  NoConnectionPageModule,
   OrdersPageModule,
   RegisterPageModule,
   SearchPageModule,
@@ -138,6 +140,7 @@ import {Network} from "@ionic-native/network";
     LoginPageModule,
     ManagePlacesMenuPageModule,
     MapPageModule,
+    NoConnectionPageModule,
     OrdersPageModule,
     RegisterPageModule,
     SearchPageModule,
@@ -186,7 +189,8 @@ import {Network} from "@ionic-native/network";
     AppConstants,
     CurrencyStore,
     SearchService,
-    CartService
+    CartService,
+    ConnectivityService
   ]
 })
 export class AppModule {

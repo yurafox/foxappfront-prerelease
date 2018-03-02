@@ -19,6 +19,12 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
     ];
 
     this._mockLocalizationStore['FoxApp'] = [
+      { tagName:'Hello', lang:1, text:'Привет'},
+      { tagName:'Hello', lang:2, text:'Привіт'},
+      { tagName:'Hello', lang:3, text:'Hello'},
+      { tagName:'SignIn', lang:1, text:'Войти'},
+      { tagName:'SignIn', lang:2, text:'Увійти'},
+      { tagName:'SignIn', lang:3, text:'Sign in'},
       { tagName:'MainMenu', lang:1, text:'Меню'},
       { tagName:'MainMenu', lang:2, text:'Меню'},
       { tagName:'MainMenu', lang:3, text:'Menu'},
@@ -73,12 +79,6 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'PromocodeMessage', lang:1, text:'Мы добавили скидку к Вашему заказу'},
       { tagName:'PromocodeMessage', lang:2, text:'Ми додали знижку до Вашого замовлення'},
       { tagName:'PromocodeMessage', lang:3, text:'We have added a discount to your order'},
-      { tagName:'OnlineMessage', lang:1, text:'Теперь Вы в сети через'},
-      { tagName:'OnlineMessage', lang:2, text:'Тепер Ви в мережі через'},
-      { tagName:'OnlineMessage', lang:3, text:'You are now online via'},
-      { tagName:'OfflineMessage', lang:1, text:'Теперь Вы'},
-      { tagName:'OfflineMessage', lang:2, text:'Тепер Ви'},
-      { tagName:'OfflineMessage', lang:3, text:'You are now'},
     ];
 
     this._mockLocalizationStore['AccountPage'] = [
@@ -112,11 +112,11 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'WrongEMailFormat', lang:1, text:'Не правильный формат email адреса'},
       { tagName:'WrongEMailFormat', lang:2, text:'Не вірний формат email адреси'},
       { tagName:'WrongEMailFormat', lang:3, text:'Wrong email address format'},
-      { tagName:'LengthNLT6', lang:1, text:'Значение должно быть не менее 6-ти символов'},
-      { tagName:'LengthNLT6', lang:2, text:'Значення повинно бути не менше 6-ти символів'},
+      { tagName:'LengthNLT6', lang:1, text:'Значение должно быть не менее 6-и символов'},
+      { tagName:'LengthNLT6', lang:2, text:'Значення повинно бути не менше 6-и символів'},
       { tagName:'LengthNLT6', lang:3, text:'Value length shouldn\'t be less than 6 symbols'},
-      { tagName:'LengthNGT20', lang:1, text:'Значение должно быть не более 20-ти символов'},
-      { tagName:'LengthNGT20', lang:2, text:'Значення повинно бути не більше 20-ти символів'},
+      { tagName:'LengthNGT20', lang:1, text:'Значение должно быть не более 20-и символов'},
+      { tagName:'LengthNGT20', lang:2, text:'Значення повинно бути не більше 20-и символів'},
       { tagName:'LengthNGT20', lang:3, text:'Value length shouldn\'t be grater than 20 symbols'},
       { tagName:'LengthNGT128', lang:1, text:'Значение должно быть не более 128-и символов'},
       { tagName:'LengthNGT128', lang:2, text:'Значення повинно бути не більше 128-и символів'},
@@ -404,7 +404,7 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'PleaseSelectCountry', lang:2, text:'Будь-ласка, оберіть країну'},
       { tagName:'PleaseSelectCountry', lang:3, text:'Please, select country'},
       { tagName:'SelectCountry', lang:1, text:'Выберите страну'},
-      { tagName:'SelectCountry', lang:2, text:'Виберіть країну'},
+      { tagName:'SelectCountry', lang:2, text:'Оберіть країну'},
       { tagName:'SelectCountry', lang:3, text:'Select country'},
       { tagName:'SaveThisAddress', lang:1, text:'Сохранить этот адрес'},
       { tagName:'SaveThisAddress', lang:2, text:'Зберегти цю адресу'},
@@ -415,9 +415,9 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
     ];
 
     this._mockLocalizationStore['FavoriteStoresPage'] = [
-      { tagName:'SelectFavStore', lang:1, text:'Выберите избранный магазин'},
-      { tagName:'SelectFavStore', lang:2, text:'Виберіть обрану крамницю'},
-      { tagName:'SelectFavStore', lang:3, text:'Select a favorite store'},
+      { tagName:'SelectFavStore', lang:1, text:'Выберите магазин'},
+      { tagName:'SelectFavStore', lang:2, text:'Оберіть крамницю'},
+      { tagName:'SelectFavStore', lang:3, text:'Select a store'},
       { tagName:'ShowOnMap', lang:1, text:'Показать на карте'},
       { tagName:'ShowOnMap', lang:2, text:'Показати на карті'},
       { tagName:'ShowOnMap', lang:3, text:'Show on map'},
@@ -440,7 +440,7 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'AlertMessage', lang:2, text:'Ви впевнені, що бажаєте видалити цю крамницю зі своїх обраних крамниць?'},
       { tagName:'AlertMessage', lang:3, text:'Are you sure you want to delete this store from your favorite stores?'},
       { tagName:'Cancel', lang:1, text:'Отменить'},
-      { tagName:'Cancel', lang:2, text:'Відмінити'},
+      { tagName:'Cancel', lang:2, text:'Скасувати'},
       { tagName:'Cancel', lang:3, text:'Cancel'},
     ];
 
@@ -616,8 +616,8 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'WrongEMailFormat', lang:1, text:'Не правильный формат email адреса'},
       { tagName:'WrongEMailFormat', lang:2, text:'Не вірний формат email адреси'},
       { tagName:'WrongEMailFormat', lang:3, text:'Wrong email address format'},
-      { tagName:'LengthNLT6', lang:1, text:'Значение должно быть не менее 6-ти символов'},
-      { tagName:'LengthNLT6', lang:2, text:'Значення повинно бути не менше 6-ти символів'},
+      { tagName:'LengthNLT6', lang:1, text:'Значение должно быть не менее 6-и символов'},
+      { tagName:'LengthNLT6', lang:2, text:'Значення повинно бути не менше 6-и символів'},
       { tagName:'LengthNLT6', lang:3, text:'Value length shouldn\'t be less than 6 symbols'},
       { tagName:'LengthNGT128', lang:1, text:'Значение должно быть не более 128-и символов'},
       { tagName:'LengthNGT128', lang:2, text:'Значення повинно бути не більше 128-и символів'},
@@ -632,7 +632,7 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'Password', lang:2, text:'Пароль'},
       { tagName:'Password', lang:3, text:'Password'},
       { tagName:'Login', lang:1, text:'Войти'},
-      { tagName:'Login', lang:2, text:'Війти'},
+      { tagName:'Login', lang:2, text:'Увійти'},
       { tagName:'Login', lang:3, text:'Sign in'},
       { tagName:'NoAccount', lang:1, text:'Нет аккаунта'},
       { tagName:'NoAccount', lang:2, text:'Відсутній акаунт'},
@@ -668,7 +668,7 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'WriteReview', lang:2, text:'Залишити відгук'},
       { tagName:'WriteReview', lang:3, text:'Write a review'},
       { tagName:'toFav', lang:1, text:'В избранное'},
-      { tagName:'toFav', lang:2, text:'У відбірне'},
+      { tagName:'toFav', lang:2, text:'До обраних'},
       { tagName:'toFav', lang:3, text:'To favorite'},
       { tagName:'inNav', lang:1, text:'В навигаторе'},
       { tagName:'inNav', lang:2, text:'У навігаторі'},
@@ -682,6 +682,21 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'Address', lang:1, text:'Адрес'},
       { tagName:'Address', lang:2, text:'Адреса'},
       { tagName:'Address', lang:3, text:'Address'},
+      { tagName:'AlertTitle', lang:1, text:'Что-то пошло не так'},
+      { tagName:'AlertTitle', lang:2, text:'Щось пішло не так'},
+      { tagName:'AlertTitle', lang:3, text:'Something went wrong'},
+      { tagName:'AlertMessage', lang:1, text:'Пожалуйста, проверьте соединение с сетью и попробуйте перезапустить приложение'},
+      { tagName:'AlertMessage', lang:2, text:'Будь ласка, перевірте з\'єднання з мережею та спробуйте перезапустити програму'},
+      { tagName:'AlertMessage', lang:3, text:'Please check the connection to the network and try to restart the application'},
+    ];
+
+    this._mockLocalizationStore['NoConnectionPage'] = [
+      { tagName:'CouldntReach', lang:1, text:'Ууупс, не получилось связаться с сервером'},
+      { tagName:'CouldntReach', lang:2, text:'Ууупс, не вийшло зв\'язатися з сервером'},
+      { tagName:'CouldntReach', lang:3, text:'Ooops, couldn\'t reach the server'},
+      { tagName:'Check', lang:1, text:'Пожалуйста, проверьте соединение с сетью'},
+      { tagName:'Check', lang:2, text:'Будь ласка, перевірте з\'єднання з мережею'},
+      { tagName:'Check', lang:3, text:'Please, check your network connection'},
     ];
 
     this._mockLocalizationStore['NoveltyPage'] = [
@@ -796,11 +811,11 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'WrongEMailFormat', lang:1, text:'Не правильный формат email адреса'},
       { tagName:'WrongEMailFormat', lang:2, text:'Не вірний формат email адреси'},
       { tagName:'WrongEMailFormat', lang:3, text:'Wrong email address format'},
-      { tagName:'LengthNLT6', lang:1, text:'Значение должно быть не менее 6-ти символов'},
-      { tagName:'LengthNLT6', lang:2, text:'Значення повинно бути не менше 6-ти символів'},
+      { tagName:'LengthNLT6', lang:1, text:'Значение должно быть не менее 6-и символов'},
+      { tagName:'LengthNLT6', lang:2, text:'Значення повинно бути не менше 6-и символів'},
       { tagName:'LengthNLT6', lang:3, text:'Value length shouldn\'t be less than 6 symbols'},
-      { tagName:'LengthNGT20', lang:1, text:'Значение должно быть не более 20-ти символов'},
-      { tagName:'LengthNGT20', lang:2, text:'Значення повинно бути не більше 20-ти символів'},
+      { tagName:'LengthNGT20', lang:1, text:'Значение должно быть не более 20-и символов'},
+      { tagName:'LengthNGT20', lang:2, text:'Значення повинно бути не більше 20-и символів'},
       { tagName:'LengthNGT20', lang:3, text:'Value length shouldn\'t be grater than 20 symbols'},
       { tagName:'LengthNGT128', lang:1, text:'Значение должно быть не более 128-и символов'},
       { tagName:'LengthNGT128', lang:2, text:'Значення повинно бути не більше 128-и символів'},
@@ -821,7 +836,7 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'Localization', lang:2, text:'Локалізація'},
       { tagName:'Localization', lang:3, text:'Localization'},
       { tagName:'Cancel', lang:1, text:'Отменить'},
-      { tagName:'Cancel', lang:2, text:'Відмінити'},
+      { tagName:'Cancel', lang:2, text:'Скасувати'},
       { tagName:'Cancel', lang:3, text:'Cancel'},
       { tagName:'Chose', lang:1, text:'Выбрать'},
       { tagName:'Chose', lang:2, text:'Обрати'},
@@ -833,7 +848,7 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'HaveAccount', lang:2, text:'Вже маєте акаунт'},
       { tagName:'HaveAccount', lang:3, text:'Already have an account'},
       { tagName:'Login', lang:1, text:'Войти'},
-      { tagName:'Login', lang:2, text:'Війти'},
+      { tagName:'Login', lang:2, text:'Увійти'},
       { tagName:'Login', lang:3, text:'Sign in'},
     ];
 
@@ -1094,7 +1109,7 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'AlertMessage', lang:2, text:'Ви дійсно бажаєте обрати цей пункт видачі?'},
       { tagName:'AlertMessage', lang:3, text:'Are you about to select this place to pickup from?'},
       { tagName:'Cancel', lang:1, text:'Отменить'},
-      { tagName:'Cancel', lang:2, text:'Відмінити'},
+      { tagName:'Cancel', lang:2, text:'Скасувати'},
       { tagName:'Cancel', lang:3, text:'Cancel'},
     ];
 
@@ -1217,7 +1232,7 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'AlertMessage', lang:2, text:'Ви впевнені, що бажаєте видалити цю адресу зі своїх обраних адрес?'},
       { tagName:'AlertMessage', lang:3, text:'Are you sure you want to delete this address from your favorite addresses?'},
       { tagName:'Cancel', lang:1, text:'Отменить'},
-      { tagName:'Cancel', lang:2, text:'Відмінити'},
+      { tagName:'Cancel', lang:2, text:'Скасувати'},
       { tagName:'Cancel', lang:3, text:'Cancel'},
     ];
 

@@ -35,13 +35,13 @@ export class CategoriesPage extends ComponentBase   {
   }
 
   async ngOnInit(){
-    super.ngOnInit()
+    super.ngOnInit();
     this.categoriesArray = await this._repo.getCategories();
-    if(this.categoriesArray.length!=0) {
+    if(this.categoriesArray && this.categoriesArray.length!=0) {
       this.categoryForShow = this.categoriesArray.filter((value:Category): boolean => {
         return value.is_show;
      });
-    
+
       this.sortDesc();
     }
   }
@@ -50,7 +50,7 @@ export class CategoriesPage extends ComponentBase   {
     if (urlQueryString)
       this.navCtrl.push('CategoryPage', urlQueryString); // {animate: true, direction: 'forward', duration: 500});
   }
- 
+
   public convertImg(imgTxt:string):any {
     let header:string = 'data:image/svg+xml;charset=utf-8;base64,';
     return this._sanitizer.bypassSecurityTrustResourceUrl(`${header}${imgTxt}`);

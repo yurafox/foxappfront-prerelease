@@ -7,12 +7,12 @@
       <div padding class="menu-bg f-main-menu-header" [hidden]="!userService.isAuth">
         <img class="profile-picture" src="http://www.gravatar.com/avatar?d=mm&s=140"/>
           <p class="f-main-menu-header-content-text">
-           Hello, {{userService.name}}
+           <span loc="Привет" name="Hello">{{locale['Hello']}}</span>, {{userService.name}}
           </p>
       </div>
       <div padding class="menu-bg f-main-menu-header" [hidden]="userService.isAuth">
         <p menuClose class="f-main-menu-header-content-text" (click)="toLogIn()">
-          Hello. Sign in
+          <span loc="Привет" name="Hello">{{locale['Hello']}}</span>. <span loc="Войти" name="SignIn">{{locale['SignIn']}}</span>
         </p>
       </div>
     </ion-header>

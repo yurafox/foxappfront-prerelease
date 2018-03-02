@@ -7,11 +7,12 @@ import {UserService} from './bll/user-service';
 import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
 import {EventService} from './event-service';
 import {EnumPaymentMethod} from '../model/enum-payment-method';
-import {App, NavController} from 'ionic-angular';
+import {App} from 'ionic-angular';
 import {PersonInfo} from '../model/person';
 import {CreditCalc} from '../model/credit-calc';
 import {AppConstants} from '../app-constants';
-import {ComponentBase} from "../../components/component-extension/component-base";
+import {AbstractLocalizationRepository} from "./repository/abstract/abstract-localization-repository";
+import {IDictionary} from "../core/app-core";
 
 
 export class LoDeliveryOption {
@@ -27,7 +28,7 @@ export class LoDeliveryOption {
 }
 
 @Injectable()
-export class CartService extends ComponentBase {
+export class CartService {
 
   public lastItemCreditCalc: ClientOrderProducts = null;
   private cKey = 'cartItems';
@@ -52,9 +53,10 @@ export class CartService extends ComponentBase {
   public cartValidationNeeded = false;
   public person = new PersonInfo();
 
+  private localization: IDictionary<string> = {};
+
   constructor(public userService: UserService, public repo: AbstractDataRepository,
-              public evServ: EventService, private app: App) {
-    super();
+              public evServ: EventService, private app: App, private locRepo: AbstractLocalizationRepository) {
 
     this.evServ.events['logonEvent'].subscribe(() => {
         this.initCart().then (() => {
@@ -85,10 +87,7 @@ export class CartService extends ComponentBase {
         this.calculateCart();
       }
     );
-  }
 
-  ngOnInit() {
-    super.ngOnInit();
     this.initCart();
   }
 
@@ -208,8 +207,8 @@ export class CartService extends ComponentBase {
   }
 
   validateLoan (loanAmt: number): {isValid:boolean, validationErrors:string[]} {
-    let maxLoan = this.locale['MaxLoan'];
-    let minLoan = this.locale['MinLoan'];
+    let maxLoan = this.localization['MaxLoan'];
+    let minLoan = this.localization['MinLoan'];
     let errs = [];
     let mes = (loanAmt > AppConstants.MAX_LOAN_AMT) ? maxLoan : null;
     if (mes)
@@ -251,6 +250,7 @@ export class CartService extends ComponentBase {
         });
       }
     }
+    this.localeUserService();
   }
 
   public get cartItemsCount(): number {
@@ -314,7 +314,7 @@ export class CartService extends ComponentBase {
 
       this.evServ.events['cartUpdateEvent'].emit();
 
-      let message = this.locale['AddedToCart'];
+      let message = this.localization['AddedToCart'];
       let toast = page.toastCtrl.create({
         message: message,
         duration: 2000,
@@ -327,7 +327,7 @@ export class CartService extends ComponentBase {
 
       toast.present();
     } else {
-      let message = this.locale['SomethingWrong'];
+      let message = this.localization['SomethingWrong'];
       let toast = page.toastCtrl.create({
         message: message,
         duration: 2500,
@@ -384,4 +384,12 @@ export class CartService extends ComponentBase {
     return (arr.length === 0) ? null : arr;
   }
 
+  // making localization for user service
+  private localeUserService() {
+    this.locRepo.getLocalization({componentName: (<any> this).constructor.name, lang: (this.userService.lang ? this.userService.lang : 1)}).then((loc) => {
+      if (loc && (Object.keys(loc).length !== 0)) {
+        this.localization = loc;
+      }
+    });
+  }
 }

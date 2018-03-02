@@ -1,5 +1,5 @@
 import {Component, ViewChild, OnDestroy, AfterViewInit} from '@angular/core';
-import {Nav, Platform, MenuController, AlertController, ToastController} from 'ionic-angular';
+import {Nav, Platform, MenuController, AlertController} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {AbstractDataRepository} from "./service/index";
 import {ComponentBase} from "../components/component-extension/component-base";
@@ -8,8 +8,7 @@ import {Device} from '@ionic-native/device';
 import {DeviceData} from "./model/index";
 import {System} from "./core/app-core";
 import {CartService} from "./service/cart-service";
-import {Network} from '@ionic-native/network';
-import {Subscription} from 'rxjs/Subscription';
+import {ConnectivityService} from "./service/connectivity-service";
 
 export interface PageInterface {
   title: string;
@@ -57,13 +56,10 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
   private noveltyPushEventDescriptor: any;
   private actionPushEventDescriptor: any;
 
-  connected: Subscription;
-  disconnected: Subscription;
-
   constructor(private platform: Platform, private alertCtrl: AlertController, private splashScreen: SplashScreen,
               public menuCtrl: MenuController, private repo: AbstractDataRepository,
               private appAvailability: AppAvailability, private device: Device, private cartService: CartService,
-              private network: Network, private toast: ToastController) {
+              private connService: ConnectivityService) {
     super();
     // Setting up external app params
     // TODO: Change these params to Foxtrot game's
@@ -74,6 +70,7 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
 
   async ngOnInit() {
     super.ngOnInit();
+    this.connService.nav = this.nav;
     if (!this.userService.isAuth && this.userService.isNotSignOutSelf()) {
       await this.userService.shortLogin();
     }
@@ -89,7 +86,6 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
     });
 
     if (this.device.cordova) {
-      this.checkAndHandleConnectionState();
       // Getting FCM device token and send device data
       FCMPlugin.getToken((token) => {
         if (token) {
@@ -121,8 +117,6 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.noveltyPushEventDescriptor.unsubscribe();
     this.actionPushEventDescriptor.unsubscribe();
-    this.connected.unsubscribe();
-    this.disconnected.unsubscribe();
   }
 
   openPage(page: PageInterface) {
@@ -369,39 +363,6 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
         break;
       }
     }
-  }
-
-
-  /**
-   * Checking network status
-   */
-  checkAndHandleConnectionState() {
-    this.connected = this.network.onConnect().subscribe(data => {
-      //console.log(data);
-      if (data) {
-        this.displayNetworkUpdate(data.type);
-      }
-    }, error => console.error(error));
-
-    this.disconnected = this.network.onDisconnect().subscribe(data => {
-      //console.log(data);
-      if (data) {
-        this.displayNetworkUpdate(data.type);
-      }
-    }, error => console.error(error))
-  }
-  displayNetworkUpdate(connectionState: string){
-    let networkType = this.network.type;
-    let message: string;
-    if (connectionState === 'online') {
-      message = `${this.locale['OnlineMessage']} ${networkType}`;
-    } else {
-      message = `${this.locale['OfflineMessage']} ${connectionState}`;
-    }
-    this.toast.create({
-      message: message,
-      duration: 3000
-    }).present();
   }
 }
 

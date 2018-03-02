@@ -1,7 +1,7 @@
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import { Injectable } from "@angular/core";
-import { Http, URLSearchParams, Headers} from "@angular/http";
+import { Http, URLSearchParams} from "@angular/http";
 import "rxjs/add/operator/toPromise";
 import CacheProvider = Providers.CacheProvider;
 import {
@@ -44,6 +44,7 @@ import {
 
 import { AbstractDataRepository } from '../../index';
 import { Providers, System } from "../../../core/app-core";
+import {ConnectivityService} from "../../connectivity-service";
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
@@ -114,7 +115,7 @@ const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/ap
 export class AppDataRepository extends AbstractDataRepository {
   private cache: CacheProvider = new CacheProvider();
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private connServ: ConnectivityService) {
     super();
   }
 
@@ -1801,8 +1802,11 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   // <editor-fold desc="error handler"
-  private handleError(error: any): Promise<any> {
-    return Promise.reject(error.messages || error);
+  private handleError(error?: Error): any /*Promise<any>*/ {
+    if (this.connServ.counter < 1) {
+      this.connServ.checkConnection(error);
+    }
+    //return Promise.reject(error.message || error);
   }
 
   // </editor-fold>

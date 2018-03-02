@@ -9,7 +9,7 @@ import {CartService} from '../../app/service/cart-service';
   selector: 'page-login',
   templateUrl: 'login.html'
 })
-export class LoginPage extends ComponentBase {
+export class LoginPage extends ComponentBase implements OnInit {
 
   private _authError = false;
   public loginForm: FormGroup;
@@ -39,21 +39,21 @@ export class LoginPage extends ComponentBase {
   constructor(public nav: NavController, public navParams: NavParams,
               private formBuilder: FormBuilder, public cart: CartService) {
     super();
+    this.initLocalization();
   }
 
   // application hook
-  ngOnInit(){
-    super.ngOnInit();
+  async ngOnInit(){
     this.buildForm();
     this.errorMessages = {
       'email': {
-        'required': this.locale['RequiredField'],
-        'pattern': this.locale['WrongEMailFormat']
+        'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+        'pattern': this.locale['WrongEMailFormat'] ? this.locale['WrongEMailFormat'] : 'Не правильный формат email адреса'
       },
       'password': {
-        'required': this.locale['RequiredField'],
-        'minlength': this.locale['LengthNLT6'],
-        'maxlength': this.locale['LengthNGT128']
+        'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+        'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
+        'maxlength': this.locale['LengthNGT128'] ? this.locale['LengthNGT128'] : 'Значение должно быть не более 128-и символов'
       }
     };
   }
