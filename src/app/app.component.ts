@@ -69,7 +69,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
 
   async ngOnInit() {
     super.ngOnInit();
-    if (!this.userService.isAuth && this.userService.isNotSignOutSelf()) {
+    if (!this.userService.isAuth /*&& this.userService.isNotSignOutSelf()*/) {
       await this.userService.shortLogin();
     }
 
@@ -125,7 +125,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     this.actionPushEventDescriptor.unsubscribe();
   }
 
-  openPage(page: PageInterface) {
+  openPage(page: PageInterface) {   
     if ((this.userService.isAuth === false) && (page.component === 'AccountMenuPage')) {
       this.nav.push('LoginPage', {continuePage: 'AccountMenuPage'}).catch((err: any) => {
         console.log(`Couldn't navigate to LoginPage: ${err}`);

@@ -13,26 +13,26 @@ export class LoginPage extends ComponentBase {
 
   private _authError = false;
   public loginForm: FormGroup;
-
+  
   public get authError() {
     return this._authError;
   }
 
 
   public formErrors = {
-    'email': '',
+    'phone': '',
     'password': ''
   };
 
   public errorMessages = {
-    'email': {
+    'phone': {
       'required': 'Обязательное поле',
-      'pattern': 'Не правильный формат email адреса'
+      'pattern': 'Не правильный формат номера'
     },
     'password': {
       'required': 'Обязательное поле',
       'minlength': 'Значение должно быть не менее 6ти символов',
-      'maxlength': 'Значение должно быть не более 12ти символов'
+      'maxlength': 'Значение должно быть не более 25ти символов'
     }
   };
 
@@ -43,6 +43,7 @@ export class LoginPage extends ComponentBase {
 
   // application hook
   ngOnInit(){
+    console.log();
     super.ngOnInit();
     this.buildForm();
   }
@@ -60,7 +61,7 @@ export class LoginPage extends ComponentBase {
 
     const data = this.loginForm.value;
 
-    await this.userService.login(data.email,data.password);
+    await this.userService.login(data.phone,data.password);
     if(this.userService.isAuth) {
       this.evServ.events['localeChangeEvent'].emit(this.userService.lang);
       if (this.navParams.data.continuePage) {
@@ -81,12 +82,13 @@ export class LoginPage extends ComponentBase {
   // <editor-fold desc="form builder">
   private buildForm(): void {
     this.loginForm = this.formBuilder.group({
-      'email': ['', [Validators.required,
-        Validators.pattern('^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]],
+      'phone': ['', [Validators.required,
+        // obsolete email regex^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$
+        Validators.pattern('^380\\d{2}\\d{7}$')]],
 
       'password': ['', [Validators.required,
         Validators.minLength(6),
-        Validators.maxLength(12)]]
+        Validators.maxLength(25)]]
     });
 
     this.loginForm.valueChanges

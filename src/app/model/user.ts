@@ -12,11 +12,11 @@ export class User {
   constructor(public name?: string,
               public email?: string,
               public password?: string,
-              public id?: number,
+              //public id?: number,
               public appKey?: string, // private application key
               public userSetting: IDictionary<string> = {},
-              public idClient?: number,
-              public favoriteStoresId?: number[]) {
+              public favoriteStoresId?: number[],
+              public phone?: string) {
     this._repo = RefInjector.pull(AbstractDataRepository);
   }
 }

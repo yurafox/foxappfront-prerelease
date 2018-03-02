@@ -65,7 +65,7 @@ export class RegisterPage implements OnInit{
 
     const data = this.registerForm.value;
     const user: User= new User(data.name,data.email,
-                               data.password,null,null,{'currency':data.currency,'lang':data.lang});
+                               data.password,null,{'currency':data.currency,'lang':data.lang});
     (async ()=>{
       const result = await this.account.register(user);
       if(result) this.login();
