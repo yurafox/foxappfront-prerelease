@@ -23,7 +23,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   reviews = new Array<ProductReview>();
   minLoanAmt = AppConstants.MIN_LOAN_AMT;
   maxLoanAmt = AppConstants.MAX_LOAN_AMT;
-
+  description: string;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -34,17 +34,28 @@ export class ItemDetailPage extends ItemBase implements OnInit {
     this.product = this.navParams.data.prod;
     this.preloadQuotes = this.navParams.data.loadQuotes;
     this.qty.value = 1;
+    repo.getProductImages(this.product.id).then(
+        x =>
+          this.product.slideImageUrls = x
+    );
   }
 
   async ngOnInit() {
-    await super.ngOnInit();
-    this.reviews = await this.repo.getProductReviewsByProductId(this.product.id);
+    super.ngOnInit();
+    this.repo.getProductReviewsByProductId(this.product.id).then( x => {
+        this.reviews = x;
+      }
+    );
+    this.repo.getProductDescription(this.product.id).then( x => {
+        this.description = x;
+      }
+    );
     if (this.userService.isAuth)
       this.repo.postProductView(this.product.id, null);
   }
 
   onShowProductDescription(): void {
-    this.navCtrl.push('ItemDescriptionPage', this.product.description);
+    this.navCtrl.push('ItemDescriptionPage', this.description);
   }
 
   onShowProductProps(): void {

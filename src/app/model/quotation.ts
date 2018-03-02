@@ -8,11 +8,11 @@ import {RefInjector, LazyLoad} from '../core/app-core';
 ])
 export class Quotation {
   private _repo: AbstractDataRepository;
-  constructor(public id: number,
-              public idSupplier: number,
-              public dateStart: Date,
-              public dateEnd: Date,
-              public currencyId: number) {
+  constructor(public id?: number,
+              public idSupplier?: number,
+              public dateStart?: Date,
+              public dateEnd?: Date,
+              public currencyId?: number) {
     this._repo = RefInjector.pull(AbstractDataRepository);
   }
 }

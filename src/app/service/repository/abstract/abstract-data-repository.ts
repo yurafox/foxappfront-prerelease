@@ -47,9 +47,11 @@ export abstract class AbstractDataRepository {
   public async abstract getQuotationProductsByProductId(productId: number): Promise<QuotationProduct[]>;
   public async abstract getQuotationProductsByQuotationId(quotationId:number) : Promise<QuotationProduct[]>;
   public async abstract getProductStorePlacesByQuotId(quotId: number): Promise<ProductStorePlace[]>;
+  public async abstract loadStorePlaceCache();
   public async abstract getStorePlaceById(id: number): Promise<StorePlace>;
   public async abstract getProductById(productId: number): Promise<Product>;
   public async abstract getQuotationById(quotationId: number): Promise<Quotation>;
+  public async abstract loadSuppliersCache();
   public async abstract getSupplierById(supplierId: number): Promise<Supplier>;
   public async abstract getPersonById(personId: number): Promise<PersonInfo>;
   public async abstract getCurrencyById(currencyId: number): Promise<Currency>;
@@ -70,9 +72,9 @@ export abstract class AbstractDataRepository {
 
   public async abstract getCartProducts(): Promise<ClientOrderProducts[]>;
   public async abstract saveCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
-  public async abstract updateCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
+  public async abstract insertCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
   public async abstract deleteCartProduct(prod: ClientOrderProducts);
-  public async abstract getBonusesInfoForCheckout(): Promise<{bonusLimit: number, actionBonusLimit: number}>;
+  public async abstract getBonusesInfo(clientId: number): Promise<{bonusLimit: number, actionBonusLimit: number}>;
   public async abstract calculateCart(promoCode: string,
                                       maxBonusCnt: number,
                                       usePromoBonus: boolean,
@@ -81,7 +83,7 @@ export abstract class AbstractDataRepository {
                                                                           promoCodeDisc: number, bonusDisc: number,
                                                                           promoBonusDisc: number}[]>;
 
-  public async abstract getClientBonuses(clientId: number): Promise <ClientBonus[]>;
+  public async abstract getClientBonusesExpireInfo(clientId: number): Promise <ClientBonus[]>;
   public async abstract getClientDraftOrderSpecProductsById(id: number): Promise<ClientOrderProducts>;
   public async abstract getClientDraftOrderSpecProducts(): Promise<Array<ClientOrderProducts>>;
   public async abstract getClientOrderSpecProductsByClientId(clientId: number): Promise<Array<ClientOrderProducts>>;
@@ -98,6 +100,7 @@ export abstract class AbstractDataRepository {
   public async abstract getStores(): Promise<Array<{idCity: number, stores: Store[]}>>;
   public async abstract getStoreById(id: number): Promise<{idCity: number, store: Store}>;
   public async abstract getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]>;
+  public async abstract loadCityCache();
   public async abstract getCityById(id: number): Promise<City>;
   public async abstract getPageContent(id:number):Promise<string>;
   public async abstract getAction(id:number):Promise<Action>;
@@ -106,7 +109,6 @@ export abstract class AbstractDataRepository {
   public async abstract getPmtMethods(): Promise<EnumPaymentMethod[]>;
   public async abstract getPmtMethodById(id: number): Promise<EnumPaymentMethod>;
   public async abstract getCreditProducts(): Promise<CreditProduct[]>;
-  public async abstract getDiscountByPromocode(promoCode: string): Promise<number>;
 
   public async abstract getNovelty(id: number): Promise<Novelty>;
   public async abstract getNovelties(): Promise<Novelty[]>;
@@ -120,6 +122,9 @@ export abstract class AbstractDataRepository {
   public async abstract postDeviceData(deviceData: DeviceData): Promise<DeviceData>
   public async abstract getCategories(): Promise<Category[]>;
   public async abstract getDataForRedirectToPaymaster(orderID: number, cartTotal: number): Promise<any>;
+  public async abstract loadMeasureUnitCache();
   public async abstract getMeasureUnitById(unitId: number): Promise<MeasureUnit>;
+  public async abstract getProductDescription(id: number): Promise<string>;
+  public async abstract getProductImages(id: number): Promise<string[]>;
 
 }

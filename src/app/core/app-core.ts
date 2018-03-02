@@ -7,6 +7,8 @@ import {StorePlace} from '../model/store-place';
 import {Lang} from "../model/lang";
 import {MeasureUnit} from '../model/measure-unit';
 import { RequestOptionsArgs,Headers,URLSearchParams} from '@angular/http';
+import {Quotation} from '../model/quotation';
+import {LoEntity} from '../model/lo-entity';
 
 export interface IDictionary<T> {
   [k: string]: T;
@@ -139,6 +141,9 @@ export namespace Providers {
     private _cacheCity: IKeyedCollection<City> = null;
     private _cacheStorePlace: IKeyedCollection<StorePlace> = null;
     private _cacheMeasureUnit: IKeyedCollection<MeasureUnit> = null;
+    private _cacheQuotation: IKeyedCollection<Quotation> = null;
+    private _cacheLoEntity: IKeyedCollection<LoEntity> = null;
+
 
     public get Products(): IKeyedCollection<Product> {
       if (this._cacheProduct == null)
@@ -196,6 +201,19 @@ export namespace Providers {
       return this._cacheMeasureUnit;
     }
 
+    public get Quotation(): IKeyedCollection<Quotation> {
+      if (this._cacheQuotation == null)
+        this._cacheQuotation = new CacheItems<Quotation>(100);
+
+      return this._cacheQuotation;
+    }
+
+    public get LoEntity(): IKeyedCollection<LoEntity> {
+      if (this._cacheLoEntity == null)
+        this._cacheLoEntity = new CacheItems<LoEntity>(10);
+
+      return this._cacheLoEntity;
+    }
   }
 }
 

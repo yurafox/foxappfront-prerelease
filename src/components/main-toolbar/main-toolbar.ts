@@ -18,6 +18,9 @@ export class MainToolbarComponent {
   @Input()
   host = null;
 
+  @Input()
+  disableHeaderClickHandler = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
                 public cart: CartService, public viewCtrl: ViewController) {}
 
@@ -27,11 +30,12 @@ export class MainToolbarComponent {
   }
 
   goToHome() {
+    if (this.disableHeaderClickHandler)
+      return;
+
     if (this.host) {
       this.host.pageMode = PageMode.HomeMode;
       this.host.searchButtonControl.clearInput(null);
-    } else if (this.showCloseIcon === true) {
-      this.viewCtrl.dismiss();
     }
     else
       this.navCtrl.setRoot('HomePage');

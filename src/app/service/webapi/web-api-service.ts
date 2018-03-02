@@ -745,6 +745,52 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     id_Measure_Unit: 8796158755428
   };
   // </editor-fold>
+
+  productDescriptions = [
+    {id: 6280637, description: 'Description1'},
+    {id: 6294898, description: 'Description2'},
+    {id: 6293680, description: 'Description2'},
+    {id: 6325585, description: 'Description2'},
+    {id: 6324182, description: 'Description2'},
+    {id: 6252121, description: 'Description2'},
+    {id: 6202929, description: 'Description2'},
+    {id: 6324216, description: 'Description2'},
+    {id: 6324213, description: 'Description2'},
+    {id: 6161537, description: 'Description2'},
+    {id: 6307814, description: 'Description2'},
+    {id: 6343804, description: 'Description2'},
+    {id: 6337167, description: 'Description2'},
+    {id: 6291460, description: 'Description2'},
+    {id: 6316576, description: 'Description2'},
+    {id: 6310491, description: 'Description2'},
+    {id: 6312913, description: 'Description2'},
+    {id: 6363302, description: 'Description2'},
+    {id: 6337781, description: 'Description2'}
+
+  ];
+
+  productImages = [
+    {id: 6280637, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6294898, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6293680, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6325585, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6324182, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6252121, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6202929, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6324216, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6324213, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6161537, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6307814, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6343804, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6337167, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6291460, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6316576, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6310491, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6312913, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6363302, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']},
+    {id: 6337781, images: ['assets/imgs/p1.jpg', 'assets/imgs/p3.jpg']}
+  ];
+
   products = [
     {
       id: 6280637,
@@ -763,9 +809,6 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       recall: 3,
       supplOffers: 3,
       url: "mobilnye_telefony.html",
-      description:
-      "Этот смартфон порадует обладателя своей функциональностью и стильным дизайном. Благодаря эргономичной конструкции модель <b>SAMSUNG SM-J510H Galaxy J5 Duos ZDD</b> комфортно лежит в ладони, а ее компактные габариты позволяют управлять устройством одной рукой. Смартфон оснащен большим сенсорным экраном <b>Super AMOLED</b> диагональю 5.2 дюйма, который способен передать до 16 миллионов цветов и оттенков.<br><br>Устройство с легкостью справиться с поставленными задачами благодаря мощному <b>4-ядерному процессору</b> с тактовой частотой 1.2 ГГц. Смартфон получил <b>2&nbsp;Гб оперативной памяти</b>, которой вполне достаточно для использования современных мультимедийных приложений. Встроенные <b>Wi-Fi и Bluetooth</b> модули обеспечат беспроводную передачу данных и подключение к сети Интернет. Стоит отметить, что модель комплектуется аккумулятором, ёмкость которого составляет <b>3100&nbsp;мАч</b>. Он обеспечит многочасовую, бесперебойную работу устройства без необходимости подзарядки. Для хранения музыки, фильмов, фотографий и других файлов предусмотрен накопитель объемом <b>16&nbsp;Гб</b>.\n" +
-      "<p>Запечатлейте интересные моменты жизни в невероятном качестве с помощью камеры с разрешением матрицы <b>13 Мп</b> и объективом f/1.9. Для получения ярких селфи, групповых снимков и участия в видеочатах предусмотрена фронтальная камера с разрешением <b>5 Мп</b>. Функция автофокус и наличие вспышки обеспечат качественными фотографиями даже в условиях низкой освещенности.</p>",
       slideImageUrls: [
         "assets/imgs/product-images/medium/6280637-0.jpg",
         "assets/imgs/product-images/medium/6280637-1.jpg",
@@ -808,14 +851,6 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       recall: 1,
       supplOffers: 2,
       url: "mobilnye_telefony.html",
-      description:
-      "<h2>Описание HUAWEI Y6II Dual Sim (black)</h2>\n" +
-      "<h3>Производительность и память</h3>\n" +
-      "<p>Смартфон от производителя <b>HUAWEI</b> работает под управлением 8-ядерного процессора с графический ускорителем Mali-450MP4. Для обеспечения быстродействия системы во время игр и работы с приложениями модель оснащена 2 Гб оперативной памяти. Объема встроенной памяти (16 Гб) будет достаточно для хранения большого количества игр, программ и файлов мультимедиа. При желании объем встроенной памяти можно расширить до 128 Гб при помощи карты памяти micro-SD. Устройство работает на базе операционной системы ОС Android 6.0 Marshmallow с удобным и доступным для понимания интерфейсом, который позволяет быстро находить необходимую информацию, изменять настройки, скачивать приложения в Play Market, изменять оформление рабочего стола и много другое.</p>\n" +
-      "<h3>Качество изображения</h3>\n" +
-      "<p>Вся информация в <b>HUAWEI Y6II Dual Sim (black)</b> выводится на экран диагональю 5.5 дюймов, который построен на базе IPS-матрицы. Картинка на таком дисплее отличается яркими и насыщенными цветами, а разрешающая способность 1280 x 720 пикселей обеспечит точное отображение каждой детали. Теперь качественным изображением во время просмотра фильмов и фото можно наслаждаться под любым углом обзора.</p>\n" +
-      "<h3>Камера</h3>\n" +
-      "<p>Модель <b>HUAWEI Y6II Dual Sim (black)</b> имеет фронтальную камеру с разрешением 13 Мп, которая не только оснащена одинарной светодиодной вспышкой, но также поддерживает режим съемки HDR, дает возможность вручную настраивать ISO, регулировать скорость затвора и много другое. Фронтальная камера с разрешающей способностью 8 Мп позволит делать яркие и детализированные автопортреты. Кроме того, при помощи основной камеры можно снимать видео в формате FullHD.</p>",
       slideImageUrls: [
         "assets/imgs/product-images/medium/6294898-0.jpg",
         "assets/imgs/product-images/medium/6294898-1.jpg",
@@ -3003,7 +3038,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     {id: 5, idSupplier: 3, idLoEntity: 150}
   ];
 
-  clientDraftOrder = [
+  clientDraftOrder =
     {
       id: 1000,
       orderDate: new Date(),
@@ -3023,7 +3058,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       promoCodeDiscTotal: null
 
     }
-  ];
+  ;
 
 
   clientOrders = [
@@ -5448,6 +5483,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mspecLOTrackingLog = this.specLOTrackingLog;
     const mcategories = this.categories;
     const mmeasureUnits = this.measureUnits;
+    const mproductDescriptions = this.productDescriptions;
+    const mProductImages = this.productImages;
 
     return {
       mquotationProducts,
@@ -5491,7 +5528,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mpersons,
       mspecLOTrackingLog,
       mcategories,
-      mmeasureUnits
+      mmeasureUnits,
+      mproductDescriptions,
+      mProductImages
     };
   }
 
@@ -5552,8 +5591,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
         return info.utils.createResponse$(() => resOpt);
       }
 
-      case "mgetBonusesInfoForCheckoutUrl": {
-        resOpt.body = {BonusInfo: {bonusLimit: 500, actionBonusLimit: 1000}};
+      case "mgetBonusesInfoForCheckout": {
+        resOpt.body = {bonusLimit: 500, actionBonusLimit: 1000};
         return info.utils.createResponse$(() => resOpt);
       }
 

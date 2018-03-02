@@ -86,8 +86,12 @@ export class CreditCalcPage extends ComponentBase {
 
       arr.forEach(i => {
         if ((i.kpcPct < pInfo.creditSize)
-          && (i.sPartPay === 0) && (i.sDefProdId))
-          this.credits.push(new CreditCalc(false, i));
+          && (i.sPartPay === 0) && (i.sDefProdId)) {
+            if (!(i.minTerm)) {
+              i.minTerm = 2;
+            }
+            this.credits.push(new CreditCalc(false, i));
+        }
       });
       this.lastQp = _qp;
     }

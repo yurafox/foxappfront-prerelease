@@ -88,6 +88,11 @@ export class CartService {
       }
     );
 
+    repo.loadStorePlaceCache();
+    repo.loadSuppliersCache();
+    repo.loadCityCache();
+    repo.loadMeasureUnitCache();
+
     this.initCart();
   }
 
@@ -175,16 +180,10 @@ export class CartService {
 
   public async initBonusData() {
     let cl = await (<any>this.userService).profile.client_p;
-    if (cl.bonusBalance) {
-      this.availBonus = cl.bonusBalance;
-    } else {
-      this.availBonus = 0;
-    }
-    if (cl.actionBonusBalance) {
-      this.availPromoBonus = cl.actionBonusBalance;
-    } else {
-      this.availPromoBonus = 0;
-    }
+    let bonusData = await this.repo.getBonusesInfo(11049778713/*cl.id*/); //TODO
+
+    this.availBonus = (bonusData.bonusLimit) ? bonusData.bonusLimit : 0;
+    this.availPromoBonus = (bonusData.actionBonusLimit) ? bonusData.actionBonusLimit : 0;
   }
 
   public get mostExpensiveItem(): ClientOrderProducts {
@@ -220,7 +219,7 @@ export class CartService {
   }
 
   async initCart() {
-    console.log('CartInit call. Is auth: '+ this.userService.isAuth);
+    //console.log('CartInit call. Is auth: '+ this.userService.isAuth);
     if (this.userService.isAuth) {
       this.order = await this.repo.getClientDraftOrder();
 
@@ -287,9 +286,7 @@ export class CartService {
 
   async addItem(item: QuotationProduct, qty: number, price: number, storePlace: StorePlace, page: any) {
     if (item && qty && price) {
-      const _f = this.orderProducts.filter(i => {
-        return (i.idQuotationProduct === item.id);
-      });
+      const _f = this.orderProducts.filter(i => {return (i.idQuotationProduct === item.id);});
       let foundQuot: ClientOrderProducts = (_f) ? _f[0] : null;
 
       if (foundQuot) {
@@ -304,7 +301,7 @@ export class CartService {
         orderItem.idStorePlace = (storePlace ? storePlace.id : null);
 
         if (this.userService.isAuth) {
-          orderItem = await this.repo.saveCartProduct(orderItem);
+          orderItem = await this.repo.insertCartProduct(orderItem);
         }
         this.orderProducts.push(orderItem);
       }
@@ -356,7 +353,9 @@ export class CartService {
   }
 
   async updateItem(item: ClientOrderProducts) {
-    //TODO implement update method
+    if (this.userService.isAuth) {
+      item = await this.repo.saveCartProduct(item);
+    }
 
   }
 
