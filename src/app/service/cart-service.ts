@@ -90,6 +90,7 @@ export class CartService extends ComponentBase {
     repo.loadSuppliersCache();
     repo.loadCityCache();
     repo.loadMeasureUnitCache();
+    repo.getCountries();
 
     this.initCart();
   }
@@ -178,7 +179,7 @@ export class CartService extends ComponentBase {
 
   public async initBonusData() {
     let cl = await (<any>this.userService).profile.client_p;
-    let bonusData = await this.repo.getBonusesInfo(11049778713/*cl.id*/); //TODO
+    let bonusData = await this.repo.getBonusesInfo( 11049778713/*cl.id*/); //TODO
 
     this.availBonus = (bonusData.bonusLimit) ? bonusData.bonusLimit : 0;
     this.availPromoBonus = (bonusData.actionBonusLimit) ? bonusData.actionBonusLimit : 0;

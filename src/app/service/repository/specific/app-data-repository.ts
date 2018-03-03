@@ -75,6 +75,9 @@ const creditProductsUrl = "https://localhost:44374/api/credit/creditproduct";
 const productSupplCreditGradesUrl = "https://localhost:44374/api/credit/GetProductCreditSize";
 const postProductViewUrl = "https://localhost:44374/api/client/LogProductView";
 const clientAddressesUrl = "https://localhost:44374/api/client/clientAddress";
+const clientOrderSpecProductsUrl = "https://localhost:44374/api/Cart/GetCartProductsByOrderId";
+const clientOrdersUrl = "https://localhost:44374/api/Cart/GetClientOrders";
+
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -105,18 +108,16 @@ const clientAddressesUrl = "https://localhost:44374/api/client/clientAddress";
 // const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
 // const postProductViewUrl = "/api/mpostProductView";
 // const clientAddressesUrl = "/api/mclientAddresses";
+// const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
+// const clientOrdersUrl = "/api/mclientOrders";
 
 
 const getDeliveryCostUrl = "/api/mgetDeliveryCost";
 const getDeliveryDateUrl = "/api/mgetDeliveryDate";
 const calculateCartUrl = "/api/mcalculateCart";
-const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
-const clientOrderSpecProductsOfClientUrl = "/api/mclientOrderSpecProductsOfClient";
 
 //Данньіе нужно забирать из Т22
-const clientOrdersUrl = "/api/mclientOrders";
 const storesUrl = "/api/mstores";
-
 
 
 const productReviewsUrl = "/api/mproductReviews";
@@ -226,7 +227,8 @@ export class AppDataRepository extends AbstractDataRepository {
       const response = await this.http
         .get(getBonusesInfoUrl + `/${_id}`).toPromise();
       const val = response.json();
-
+      if (response.status == 204)
+        return {bonusLimit: 0, actionBonusLimit: 0};
       if (response.status !== 201 && response.status !== 200) {
         throw new Error("server side status error");
       }
@@ -851,50 +853,6 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getClientOrderSpecProductsByClientId(clientId: number): Promise<Array<ClientOrderProducts>> {
-    try {
-      let orderProducts = [];
-      const response = await this.http
-        .get(clientOrderSpecProductsOfClientUrl, {
-          search: this.createSearchParams([
-            {key: "idClient", value: clientId.toString()}
-          ])
-        })
-        .toPromise();
-
-      const val = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      val.forEach(product => {
-        let p = new ClientOrderProducts();
-        p.id = product.id;
-        p.idOrder = product.idOrder;
-        p.idQuotationProduct = product.idQuotationProduct;
-        p.price = product.price;
-        p.qty = product.qty;
-        p.idStorePlace = product.idStorePlace;
-        p.idLoEntity = product.idLoEntity;
-        p.loTrackTicket = product.loTrackTicket;
-        p.loDeliveryCost = product.loDeliveryCost;
-        p.loDeliveryCompleted = product.loDeliveryCompleted;
-        p.loEstimatedDeliveryDate = product.loEstimatedDeliveryDate;
-        p.loDeliveryCompletedDate = product.loDeliveryCompletedDate;
-        p.errorMessage = product.errorMessage;
-        p.payPromoCode = product.payPromoCode;
-        p.payPromoCodeDiscount = product.payPromoCodeDiscount;
-        p.payBonusCnt = product.payBonusCnt;
-        p.payPromoBonusCnt = product.payPromoBonusCnt;
-        p.earnedBonusCnt = product.earnedBonusCnt;
-        p.warningRead = product.warningRead;
-        orderProducts.push(p);
-      });
-      return orderProducts;
-    } catch (err) {
-      return await this.handleError(err);
-    }
-  }
-
   public async getProductReviewsByProductId(productId: number): Promise<ProductReview[]> {
     try {
       const response = await this.http
@@ -990,6 +948,8 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async getCountries(): Promise<Country[]> {
+    if (this.cache.Country.Count() > 0)
+      return this.cache.Country.Values();
     try {
       const response = await this.http.get(countriesUrl).toPromise();
 
@@ -1003,8 +963,8 @@ export class AppDataRepository extends AbstractDataRepository {
           let p = new Country();
           p.id = val.id;
           p.name = val.name;
-
           cCountries.push(p);
+          this.cache.Country.Add(p.id.toString(), p);
         });
       }
       return cCountries;
@@ -1018,18 +978,24 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
       const _id = id.toString();
       let country = new Country();
-      const response = await this.http
-        .get(countriesUrl + `/${_id}`)
-        .toPromise();
-      let data: any = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
+      if (this.isEmpty(this.cache.Country.Item(_id))) {
+        const response = await this.http
+          .get(countriesUrl + `/${_id}`).toPromise();
+        let data: any = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
 
-      if (data != null) {
-        country.id = data.id;
-        country.name = data.name;
-        return country;
+        if (data != null) {
+          country.id = data.id;
+          country.name = data.name;
+          this.cache.Country.Add(_id, country);
+          return country;
+        }
+      }
+      else
+      {
+        return this.cache.Country.Item(_id);
       }
     } catch (err) {
       return await this.handleError(err);
@@ -1123,6 +1089,86 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+
+  public async createClientAddress(address: ClientAddress): Promise<ClientAddress> {
+    try {
+      const response = await this.http
+        .post(clientAddressesUrl, address.dto)
+        .toPromise();
+      const data = response.json();
+
+      if (response.status !== 201) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        let clientAddress = new ClientAddress();
+        clientAddress.id = data.id;
+        clientAddress.idClient = data.idClient;
+        clientAddress.idCity = data.idCity;
+        clientAddress.zip = data.zip;
+        clientAddress.street = data.street;
+        clientAddress.lat = data.lat;
+        clientAddress.lng = data.lng;
+        clientAddress.isPrimary = data.isPrimary;
+        clientAddress.idCountry = data.idCountry;
+        clientAddress.city = data.city;
+        clientAddress.bldApp = data.bldApp;
+        clientAddress.recName = data.recName;
+        clientAddress.phone = data.phone;
+        return clientAddress;
+      }
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async deleteClientAddress(address: ClientAddress) {
+    try {
+      const response = await this.http
+        .delete(clientAddressesUrl + `/${address.id}`)
+        .toPromise();
+      if (response.status !== 204) {
+        throw new Error("server side status error");
+      }
+    } catch (err) {
+      await this.handleError(err);
+    }
+  }
+
+  public async saveClientAddress(address: ClientAddress): Promise<ClientAddress> {
+    try {
+      const response = await this.http
+        .put(clientAddressesUrl, address.dto)
+        .toPromise();
+      const data = response.json();
+
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        let clientAddress = new ClientAddress();
+        clientAddress.id = data.id;
+        clientAddress.idClient = data.idClient;
+        clientAddress.idCity = data.idCity;
+        clientAddress.zip = data.zip;
+        clientAddress.street = data.street;
+        clientAddress.lat = data.lat;
+        clientAddress.lng = data.lng;
+        clientAddress.isPrimary = data.isPrimary;
+        clientAddress.idCountry = data.idCountry;
+        clientAddress.city = data.city;
+        clientAddress.bldApp = data.bldApp;
+        clientAddress.recName = data.recName;
+        clientAddress.phone = data.phone;
+        return clientAddress;
+      }
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 
   public async getClientAddressById(id: number): Promise<ClientAddress> {
     if (!id)

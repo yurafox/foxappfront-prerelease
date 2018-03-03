@@ -9,6 +9,7 @@ import {MeasureUnit} from '../model/measure-unit';
 import { RequestOptionsArgs,Headers,URLSearchParams} from '@angular/http';
 import {Quotation} from '../model/quotation';
 import {LoEntity} from '../model/lo-entity';
+import {Country} from '../model/country';
 
 export interface IDictionary<T> {
   [k: string]: T;
@@ -139,6 +140,7 @@ export namespace Providers {
     private _cacheMeasureUnit: IKeyedCollection<MeasureUnit> = null;
     private _cacheQuotation: IKeyedCollection<Quotation> = null;
     private _cacheLoEntity: IKeyedCollection<LoEntity> = null;
+    private _cacheCountry: IKeyedCollection<Country> = null;
 
 
     public get Products(): IKeyedCollection<Product> {
@@ -210,6 +212,15 @@ export namespace Providers {
 
       return this._cacheLoEntity;
     }
+
+    public get Country(): IKeyedCollection<Country> {
+      if (this._cacheCountry == null)
+        this._cacheCountry = new CacheItems<Country>(10);
+
+      return this._cacheCountry;
+    }
+
+
   }
 }
 

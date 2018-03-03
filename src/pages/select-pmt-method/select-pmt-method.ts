@@ -88,7 +88,12 @@ export class SelectPmtMethodPage extends ComponentBase {
   }
 
   onContinueClick() {
-    this.navCtrl.push('BalancePage', {checkoutMode: true});
+    if ((this.cart.availBonus > 0) || (this.cart.availPromoBonus > 0)) {
+      this.navCtrl.push('BalancePage', {checkoutMode: true});
+    }
+    else {
+      this.navCtrl.push('CheckoutPage');
+    };
   }
 
   onApplyPromoCodeClick() {

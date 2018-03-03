@@ -24,7 +24,7 @@ export class ShippingAddressComponent extends ComponentBase {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public uService: UserService, public alertCtrl: AlertController,
-              public cart: CartService) {
+              public cart: CartService, public repo: AbstractDataRepository) {
     super();
   }
 
@@ -85,7 +85,10 @@ export class ShippingAddressComponent extends ComponentBase {
         {
           text: 'OK',
           handler: () => {
-            this.addresses.splice(this.addresses.indexOf(item), 1);
+            this.repo.deleteClientAddress(item).then(i => {
+                this.addresses.splice(this.addresses.indexOf(item), 1);
+              }
+            );
             /*if (this.addresses.length > 0) {
               this.addresses[0].isPrimary = true;
             }*/
