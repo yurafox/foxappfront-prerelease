@@ -43,7 +43,6 @@ export class LoginPage extends ComponentBase {
 
   // application hook
   ngOnInit(){
-    console.log();
     super.ngOnInit();
     this.buildForm();
   }

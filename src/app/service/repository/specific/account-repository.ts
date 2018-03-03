@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AbstractAccountRepository} from '../../index';
 import {Headers, Http, RequestOptionsArgs} from '@angular/http';
-import {User} from '../../../model/index';
+import {User,IUserVerifyAccountData} from '../../../model/index';
 import {LoginTemplate} from "../../../model/index";
 import {HttpHeaders} from "@angular/common/http";
 import {AppConstants} from "../../../app-constants"
@@ -9,7 +9,7 @@ import { RequestFactory } from '../../../core/app-core';
 // server url
 const loginUrl = `${AppConstants.BASE_URL}/api/account/login`;
 const accountUrl = `${AppConstants.BASE_URL}/api/account`;
-
+const verifyAccountUrl = `${AppConstants.BASE_URL}/api/account/verify`;
 // mock url
 //const loginUrl = '/api/mtoken';
 //const accountUrl = '/api/musers';
@@ -46,7 +46,15 @@ export class AccountRepository extends AbstractAccountRepository {
 
   public async register(user: User): Promise<User> {
     try {
-      const response = await this.http.post(accountUrl, user).toPromise();
+
+      const response = await this.http.post(accountUrl,{
+        name:user.name,
+        phone:user.phone,
+        email:user.email,
+        fname:user.fname,
+        lname:user.lname,
+        userSetting:user.userSetting
+      }).toPromise();
 
       const data = response.json();
 
@@ -111,6 +119,28 @@ export class AccountRepository extends AbstractAccountRepository {
       const currentUser: User = new User(data.name, data.email,null,
         data.appKey,data.userSetting, data.favoriteStoresId,data.phone);
       return currentUser;
+    }
+
+    catch (err) {
+      return await this.errorHandler(err);
+    }
+  }
+
+  public async verifyAccount(phone: string): Promise<IUserVerifyAccountData> {
+    try {
+      const response = await this.http.post(verifyAccountUrl, {phone}).toPromise();
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error(`${response.status} ${response.statusText }`);
+      }
+
+      if(!data) {
+        throw new Error('ошибка проверки аккаунта');
+      }
+
+      const verifyResult: IUserVerifyAccountData = {message:data.message, status:data.status };
+
+      return verifyResult;
     }
 
     catch (err) {

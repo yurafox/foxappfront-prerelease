@@ -1,3 +1,11 @@
-.alertDanger{
-  color: #a94442;
+page-register {
+  .alertDanger{
+    color: #a94442;
+  }
+
+  .header-label {
+    color: green;
+    font-size: 16px;
+    text-align: center;
+  }
 }

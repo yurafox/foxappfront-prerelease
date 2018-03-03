@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {User} from '../../model/index';
+import {User,IUserVerifyAccountData} from '../../model/index';
 import {AbstractAccountRepository} from "../index";
 import {AppConstants} from "../../app-constants";
 import {LoginTemplate} from "../../model/index";
@@ -212,9 +212,10 @@ export class UserService {
       this.errorMessages['login'] = err.message;
     }
   }
-  // </editor-fold>
 
-  // <editor-fold desc='private behavior'>
+  public async verifyAccount(phone: string): Promise<IUserVerifyAccountData> {
+     return await this._account.verifyAccount(phone);
+  }
 
   // send fastswiching data
   private trySendSettings(): void {
