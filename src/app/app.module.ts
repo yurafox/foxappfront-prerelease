@@ -9,6 +9,7 @@ import {FormsModule} from '@angular/forms';
 import {InAppBrowser} from '@ionic-native/in-app-browser';
 import {GoogleMaps} from '@ionic-native/google-maps';
 import {Ionic2Rating, Ionic2RatingModule} from 'ionic2-rating';
+import { LazyLoadImagesModule } from 'ngx-lazy-load-images';
 import {BarcodeScanner} from '@ionic-native/barcode-scanner';
 
 import {FoxApp} from './app.component';
@@ -105,6 +106,7 @@ import {LocalNotifications} from '@ionic-native/local-notifications';
     InMemoryWebApiModule.forRoot(WebApiService, {delay: 200, passThruUnknownUrl: true,post204: false, put204: false}),
     IonicModule.forRoot(FoxApp),
     IonicPageModule.forChild(HomePage),
+    LazyLoadImagesModule,
     ComponentsModule,
     Ionic2RatingModule,
     PipesModule,
