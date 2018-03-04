@@ -28,7 +28,12 @@ export class ClientAddress {
   public get addressString(): string {
     const cntry = ((<any>this).country) ? (<any>this).country.name : '';
     const phone = this.phone ? ', Phone: ' + this.phone : '';
-    return this.street +' ' + this.bldApp + ', ' + this.city + ', ' + this.zip + ' ' + cntry + phone;
+    return ((this.street) ? this.street : '') + ' ' +
+      ((this.bldApp) ? this.bldApp : '') + ', ' +
+      ((this.city) ? this.city : '') + ', ' +
+      ((this.zip) ? this.zip : '') + ' ' +
+      cntry + ' ' +
+      phone;
   }
 
   constructor (
