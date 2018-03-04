@@ -35,7 +35,7 @@ export class CartService extends ComponentBase {
   public orderProducts: Array<ClientOrderProducts> = [];
   public loDeliveryOptions: Array<LoDeliveryOption>=[];
   public loResultDeliveryOptions: Array<LoDeliveryOption>=[];
-  public pmtMethod: EnumPaymentMethod = null;
+  //public pmtMethod: EnumPaymentMethod = null;
 
   public loan: CreditCalc = null;
 
@@ -90,7 +90,7 @@ export class CartService extends ComponentBase {
     repo.loadSuppliersCache();
     repo.loadCityCache();
     repo.loadMeasureUnitCache();
-    repo.getCountries();
+    repo.getCountries(); //<--- this loads countries cache
 
     this.initCart();
   }
@@ -140,7 +140,7 @@ export class CartService extends ComponentBase {
   }
 
   calLoan() {
-    if ((this.pmtMethod) && (this.pmtMethod.id === 3) && (this.loan)) {
+    if ((this.order.idPaymentMethod === 3) && (this.loan)) {
       let cObj = this.loan;
 
       cObj.clMonthAmt = this.calculateLoan(this.cartGrandTotal, cObj.clMonths,
@@ -235,6 +235,8 @@ export class CartService extends ComponentBase {
     //console.log('CartInit call. Is auth: '+ this.userService.isAuth);
     if (this.userService.isAuth) {
       this.order = await this.repo.getClientDraftOrder();
+      if (this.order.idPerson)
+        this.person = await this.repo.getPersonById(this.order.idPerson);
 
       let op = await this.repo.getCartProducts();``
       for (let i of this.orderProducts) {
@@ -369,7 +371,7 @@ export class CartService extends ComponentBase {
 
   async removeItem(itemIndex: number) {
     if (this.userService.isAuth)
-      this.repo.deleteCartProduct(this.orderProducts[itemIndex]);
+      await this.repo.deleteCartProduct(this.orderProducts[itemIndex]);
     this.orderProducts.splice(itemIndex, 1);
     this.saveToLocalStorage();
     this.lastItemCreditCalc = null;

@@ -41,11 +41,11 @@ Credit Products
         </ion-col>
       </ion-row>
 
-      <ion-row *ngIf="cart.loan && (cart.pmtMethod.id === 3)"
+      <ion-row *ngIf="cart.loan && (cart.order.idPaymentMethod === 3)"
                class="f-padding-lr-5">
 
         <ion-grid no-padding class="f-border-ligthgray">
-          <ion-row *ngIf="(cart.pmtMethod.id === 3)"
+          <ion-row *ngIf="(cart.order.idPaymentMethod === 3)"
                    (click)="onShowCreditCalculatorClick()">
             <ion-col>
               <ion-item  detail-push text-wrap>
@@ -157,11 +157,11 @@ Passport Data
                         class="f-color-validation-error"><span loc="Идентификационный номер должен состоять из 10 цифер" name="ShouldBe10D">{{locale['ShouldBe10D']}}</span></span>
                 </div>
                 <label for="birthDate"><span loc="Дата рождения" name="BirthDate">{{locale['BirthDate']}}</span>:*</label>
-                <input type="date" [(ngModel)]="cart.person.birthDate"
+                <input type="date" [ngModel]="cart.person.birthDate | date: 'yyyy-MM-dd'" (ngModelChange)="birthDateChanged($event)"
                        id="birthDate" name="birthDate"
                        required #birthDate="ngModel">
 
-                <div *ngIf="!birthDate.valid && birthDate.touched">
+                <div *ngIf="!birthDate.valid && birthDate.touched ">
                 <span *ngIf="birthDate.hasError('required')"
                       class="f-color-validation-error"><span loc="Пожалуйста, введите дату рождения" name="EnterBirthDate">{{locale['EnterBirthDate']}}</span></span>
                 </div>

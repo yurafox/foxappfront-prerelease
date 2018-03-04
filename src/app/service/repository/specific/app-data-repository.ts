@@ -66,7 +66,7 @@ const productStorePlacesUrl = "https://localhost:44374/api/storeplace/productsto
 const storePlacesUrl = "https://localhost:44374/api/storeplace/storeplace";
 const loSupplEntitiesUrl = "https://localhost:44374/api/lo/losupplentity";
 const specLOTrackingLogUrl = "https://localhost:44374/api/lo/specLOTrackingLog";
-const clientDraftOrderUrl = "https://localhost:44374/api/Cart/getClientDraftOrder";
+const clientDraftOrderUrl = "https://localhost:44374/api/Cart/ClientDraftOrder";
 const personsUrl = "https://localhost:44374/api/client/person";
 const productImagesUrl = "https://localhost:44374/api/product/getProductImages";
 const getBonusesInfoUrl = "https://localhost:44374/api/client/getBonusesInfo";
@@ -77,6 +77,7 @@ const postProductViewUrl = "https://localhost:44374/api/client/LogProductView";
 const clientAddressesUrl = "https://localhost:44374/api/client/clientAddress";
 const clientOrderSpecProductsUrl = "https://localhost:44374/api/Cart/GetCartProductsByOrderId";
 const clientOrdersUrl = "https://localhost:44374/api/Cart/GetClientOrders";
+const citiesWithStoresUrl = "https://localhost:44374/api/geo/citiesWithStores";
 
 
 //DEV URLS
@@ -110,16 +111,14 @@ const clientOrdersUrl = "https://localhost:44374/api/Cart/GetClientOrders";
 // const clientAddressesUrl = "/api/mclientAddresses";
 // const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
 // const clientOrdersUrl = "/api/mclientOrders";
-
+// const citiesWithStoresUrl = "/api/mcities";
 
 const getDeliveryCostUrl = "/api/mgetDeliveryCost";
 const getDeliveryDateUrl = "/api/mgetDeliveryDate";
 const calculateCartUrl = "/api/mcalculateCart";
 
-//Данньіе нужно забирать из Т22
+
 const storesUrl = "/api/mstores";
-
-
 const productReviewsUrl = "/api/mproductReviews";
 const pagesDynamicUrl = "/api/mpages";
 const actionDynamicUrl = "/api/mactions";
@@ -475,6 +474,46 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       return cloSupplEntArr;
     } catch (err) {
+      return await this.handleError(err);
+    }
+
+  }
+
+  public async saveClientDraftOrder(order: ClientOrder): Promise<ClientOrder> {
+    try {
+      const response = await this.http
+        .put(clientDraftOrderUrl, order.dto)
+        .toPromise();
+      const data = response.json();
+
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        let cClientOrder = new ClientOrder(
+          data.id,
+          data.orderDate,
+          data.idCur,
+          data.idClient,
+          data.total,
+          data.idPaymentMethod,
+          data.idPaymentStatus,
+          data.idStatus,
+          null,
+          data.loIdEntity,
+          data.loIdClientAddress,
+          data.itemsTotal,
+          data.shippingTotal,
+          data.bonusTotal,
+          data.promoBonusTotal,
+          data.bonusEarned,
+          data.promoCodeDiscTotal,
+          data.idPerson
+        );
+        return cClientOrder;
+      }
+    }
+    catch (err) {
       return await this.handleError(err);
     }
 
@@ -1693,6 +1732,63 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async insertPerson(person: PersonInfo): Promise<PersonInfo> {
+    try {
+      let p = new PersonInfo();
+
+      const response = await this.http
+        .post(personsUrl, person).toPromise();
+      const data = response.json();
+
+      if (response.status !== 201) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        p.id = data.id;
+        p.firstName = data.firstName;
+        p.lastName= data.lastName;
+        p.middleName= data.middleName;
+        p.passportSeries= data.passportSeries;
+        p.passportNum= data.passportNum;
+        p.issuedAuthority= data.issuedAuthority;
+        p.taxNumber= data.taxNumber;
+        p.birthDate= data.birthDate;
+        return p;
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+
+  public async updatePerson(person: PersonInfo): Promise<PersonInfo> {
+    try {
+      let p = new PersonInfo();
+
+      const response = await this.http
+        .put(personsUrl, person).toPromise();
+      const data = response.json();
+
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        p.id = data.id;
+        p.firstName = data.firstName;
+        p.lastName= data.lastName;
+        p.middleName= data.middleName;
+        p.passportSeries= data.passportSeries;
+        p.passportNum= data.passportNum;
+        p.issuedAuthority= data.issuedAuthority;
+        p.taxNumber= data.taxNumber;
+        p.birthDate= data.birthDate;
+        return p;
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
   public async getPersonById(personId: number): Promise<PersonInfo> {
     try {
       const _id = personId.toString();
@@ -1703,6 +1799,7 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
       if (data != null) {
+        p.id = data.id;
         p.firstName = data.firstName;
         p.lastName= data.lastName;
         p.middleName= data.middleName;
@@ -2061,6 +2158,29 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   // </editor-fold>
+
+  public async getCitiesWithStores(): Promise<City[]> {
+    try {
+      const response = await this.http.get(citiesWithStoresUrl).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const cities = new Array<City>();
+      if (data != null) {
+        data.forEach(val => {
+          // create current city
+          const cityItem: City = new City(val.id, val.name);
+          cities.push(cityItem);
+        });
+      }
+      return cities;
+    } catch (err) {
+      await this.handleError(err);
+    }
+  }
+
 
   public async getCities(): Promise<City[]> {
     try {

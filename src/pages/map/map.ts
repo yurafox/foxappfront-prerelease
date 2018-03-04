@@ -99,7 +99,7 @@ export class MapPage extends ComponentBase implements OnInit {
       this.isAuthorized = true;
     }
     try {
-      [this.markersArr, this.cities] = await Promise.all([this.repo.getStores(), this.repo.getCities()]);
+      [this.markersArr, this.cities] = await Promise.all([this.repo.getStores(), this.repo.getCitiesWithStores()]);
 
       /**
        * Set defaultCityId to id of the city with name 'Киев'/'Київ'/'Kiev'/'Kyiv'

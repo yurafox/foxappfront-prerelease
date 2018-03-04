@@ -72,7 +72,7 @@ export class CartPage extends ComponentBase {
   }
 
   async onAfterQtyUpdate(item: any, objRef: any) {
-    this.cart.updateItem(objRef);
+    await this.cart.updateItem(objRef);
     this.evServ.events['cartUpdateEvent'].emit();
   }
 

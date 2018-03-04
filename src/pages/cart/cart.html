@@ -5,7 +5,7 @@
   <ion-grid>
     <ion-row>
       <ion-col text-center class="f-item-padding-bottom">
-        <span class="f-color-secondary f-size-larger"><span loc="Сумма корзины" name="CartSubtotal">{{locale['CartSubtotal']}}</span> ({{cart.cartItemsCount}} <span loc="товар(-а/-ов)" name="Items">{{locale['Items']}}</span>):</span>
+        <span class="f-color-secondary f-size-larger"><span loc="Сумма корзины" name="CartSubtotal">{{locale['CartSubtotal']}}</span> {{cart.cartItemsCount}} <span loc="товар(-а/-ов)" name="Items">{{locale['Items']}}</span>:</span>
         <span class="f-size-large f-color-red">{{cart.itemsTotal | localeCurrency:userService.currency}}</span>
       </ion-col>
     </ion-row>

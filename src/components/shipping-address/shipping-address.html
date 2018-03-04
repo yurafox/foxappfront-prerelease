@@ -7,7 +7,7 @@
         <ion-row (click)="onIsPrimaryClick(sa, $event)">
           <ion-col col-2 text-center>
             <div class="pure-radiobutton">
-              <input type="radio" id="radioButton" class="radio" [checked]="sa.isPrimary">
+              <input type="radio" id="radioButton" class="radio" [checked]="isChecked(sa)">
               <label for="radioButton"></label>
             </div>
           </ion-col>
@@ -25,7 +25,7 @@
             <span *ngIf="sa?.phone" loc="Телефон" name="Phone"><br>{{locale['Phone']}}: {{sa?.phone}} </span>
           </ion-col>
         </ion-row>
-        <div *ngIf="sa.isPrimary">
+        <div *ngIf="isChecked(sa)">
           <div *ngIf="withDelivery === true">
             <ion-row>
               <ion-col class="f-padding-lr-10">

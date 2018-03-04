@@ -12,17 +12,17 @@ import {AbstractDataRepository} from '../../app/service/repository/abstract/abst
 export class CheckoutPage extends ComponentBase {
 
   dataLoaded = true;
-  pmtMethodID: number;
+  pmtMethodName = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
               public repo: AbstractDataRepository) {
     super();
-    this.pmtMethodID = this.cart.pmtMethod.id;
+    this.repo.getPmtMethodById(cart.order.idPaymentMethod).then(x => {this.pmtMethodName = x.name});
   }
 
   validatePage(): {isValid: boolean, errors: string[]} {
     let err = [];
-    if (this.cart.pmtMethod.id === 3)
+    if (this.cart.order.idPaymentMethod === 3)
       this.cart.validateLoan(this.cart.cartGrandTotal).validationErrors.forEach(i => {err.push(i)});
     this.cart.orderProducts.forEach(i => {
       if(i.errorMessage)
@@ -34,7 +34,7 @@ export class CheckoutPage extends ComponentBase {
   async onPlaceOrderClick() {
     console.log('Place Order!');
 
-    if (this.pmtMethodID === 2) {
+    if (this.cart.order.idPaymentMethod === 2) {
       this.navCtrl.push('PaymentPage').catch(err => console.error(err));
     }
   }

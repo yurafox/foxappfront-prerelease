@@ -32,10 +32,24 @@ export class ShippingAddressComponent extends ComponentBase {
     super.ngOnInit();
   }
 
+  isChecked(address: ClientAddress): boolean
+  {
+    const res = false;
+    if (!this.cart.order.loIdClientAddress) {
+      return address.isPrimary;
+    }
+    else {
+      if (address.id === this.cart.order.loIdClientAddress)
+        return true;
+    }
+    return res;
+  }
+
   onIsPrimaryClick(item: any, event: any) {
     for (let i of this.addresses) {
       i.isPrimary = (i === item);
     }
+    this.cart.order.loIdClientAddress = item.id;
     event.preventDefault();
   }
 

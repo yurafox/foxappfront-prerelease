@@ -54,6 +54,11 @@ export abstract class AbstractDataRepository {
   public async abstract loadSuppliersCache();
   public async abstract getSupplierById(supplierId: number): Promise<Supplier>;
   public async abstract getPersonById(personId: number): Promise<PersonInfo>;
+  public async abstract insertPerson(person: PersonInfo): Promise<PersonInfo>;
+  public async abstract updatePerson(person: PersonInfo): Promise<PersonInfo>;
+
+
+
   public async abstract getCurrencyById(currencyId: number): Promise<Currency>;
   public async abstract getManufacturerById(manufacturerId: number): Promise<Manufacturer>;
   public async abstract getManufacturers(cacheForce: boolean): Promise<Manufacturer[]>;
@@ -66,6 +71,7 @@ export abstract class AbstractDataRepository {
   public async abstract getProductCreditSize(idProduct: number, isSupplier: number): Promise<any>;
 
   public async abstract getClientDraftOrder(): Promise<ClientOrder>;
+  public async abstract saveClientDraftOrder(order: ClientOrder): Promise<ClientOrder>;
   public async abstract getClientOrders(): Promise<ClientOrder[]>;
   public async abstract getClientOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]>;
   public async abstract getClientOrderById(id: number): Promise<ClientOrder>;
@@ -99,6 +105,7 @@ export abstract class AbstractDataRepository {
   public async abstract deleteClientAddress(address: ClientAddress);
 
   public async abstract getCities(): Promise<City[]>;
+  public async abstract getCitiesWithStores(): Promise<City[]>;
   public async abstract getStores(): Promise<Array<{id: number, stores: Store[]}>>;
   public async abstract getStoreById(id: number): Promise<Store>;
   public async abstract getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]>;

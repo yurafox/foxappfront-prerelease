@@ -92,9 +92,7 @@ export class CreditCalcPage extends ComponentBase {
       arr.forEach(i => {
         if ((i.kpcPct < pInfo.creditSize)
           && (i.sPartPay === 0) && (i.sDefProdId)) {
-            if (!(i.minTerm)) {
-              i.minTerm = 2;
-            }
+            if (i.minTerm)
             this.credits.push(new CreditCalc(false, i));
         }
       });
@@ -137,13 +135,15 @@ export class CreditCalcPage extends ComponentBase {
     this.cart.loan = this.selectedLoan;
 
     if(this.navParams.data.itemPage) {
-
+/*
       if (this.cart.pmtMethod)
         this.cart.pmtMethod.id = 3;
       else {
         let _p = new EnumPaymentMethod(3, null);
         this.cart.pmtMethod = _p;
       }
+*/
+      this.cart.order.idPaymentMethod = 3;
       this.navParams.data.itemPage.onAddToCart();
 
       if (!this.userService.isAuth) {

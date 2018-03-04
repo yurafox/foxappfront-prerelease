@@ -120,10 +120,10 @@
           <ion-col>
             <b><span loc="Способ оплаты" name="PaymentMethod">{{locale['PaymentMethod']}}</span></b>
             <br>
-            {{ cart.pmtMethod.name }}
+            {{ pmtMethodName }}
           </ion-col>
         </ion-row>
-        <div *ngIf="cart.loan && (cart.pmtMethod.id === 3)">
+        <div *ngIf="cart.loan && (cart.order.idPaymentMethod === 3)">
           <hr>
           <credit-brief [creditAmt]="cart.cartGrandTotal" [credit]="cart.loan"></credit-brief>
         </div>

@@ -22,7 +22,7 @@ export class BonusPayComponent extends ComponentBase {
       .distinctUntilChanged()
       .subscribe(inputValue =>
         {
-          const _intval: number = parseInt(inputValue);
+          const _intval: number = parseFloat(inputValue);
           this.cart.bonus = isNaN(_intval)? null : _intval;
           this.evServ.events['cartUpdateEvent'].emit();
         }
