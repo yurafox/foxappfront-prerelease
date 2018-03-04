@@ -270,23 +270,54 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-
-  public async getPmtMethods(): Promise<EnumPaymentMethod[]> {
+  public async loadPmtMethodsCache() {
     try {
       const response = await this.http.get(getPaymentMethodsUrl).toPromise();
 
-      const data = response.json();
+      let data: any = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      const cItems = new Array<EnumPaymentMethod>();
+
       if (data != null) {
         data.forEach(val => {
-          cItems.push(new EnumPaymentMethod(val.id, val.name));
-        });
+            let pmtMethod = new EnumPaymentMethod();
+            pmtMethod.id = val.id;
+            pmtMethod.name = val.name;
+            if (this.isEmpty(this.cache.EnumPaymentMethod.Item(val.id.toString()))) {
+              this.cache.EnumPaymentMethod.Add(val.id.toString(), pmtMethod);
+            };
+          }
+        );
       }
-      return cItems;
-    } catch (err) {
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+
+  public async getPmtMethods(): Promise<EnumPaymentMethod[]> {
+    try {
+      if (this.cache.EnumPaymentMethod.Count() === 0) {
+
+        const response = await this.http.get(getPaymentMethodsUrl).toPromise();
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        const cItems = new Array<EnumPaymentMethod>();
+        if (data != null) {
+          data.forEach(val => {
+            cItems.push(new EnumPaymentMethod(val.id, val.name));
+          });
+        }
+        return cItems;
+      }
+      else
+        return this.cache.EnumPaymentMethod.Values();
+    }
+    catch (err) {
       return await this.handleError(err);
     }
 
@@ -294,23 +325,30 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getPmtMethodById(id: number): Promise<EnumPaymentMethod> {
     try {
-      let _id = id.toString();
-      const response = await this.http
-        .get(getPaymentMethodsUrl + `/${_id}`)
-        .toPromise();
+      const _id = id.toString();
+      const pmtMethod = new EnumPaymentMethod();
+      if (this.isEmpty(this.cache.EnumPaymentMethod.Item(_id))) {
+        const response = await this.http
+          .get(getPaymentMethodsUrl + `/${_id}`).toPromise();
 
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        if (data)
+        {
+          pmtMethod.id = data.id;
+          pmtMethod.name = data.name;
+          this.cache.EnumPaymentMethod.Add(_id, pmtMethod);
+        }
+        return pmtMethod;
       }
-      if (data)
-        return new EnumPaymentMethod(
-          data.id,
-          data.name
-        )
       else
-        return null;
-    } catch (err) {
+      {
+        return this.cache.EnumPaymentMethod.Item(_id);
+      };
+    }
+    catch (err) {
       return await this.handleError(err);
     }
   }

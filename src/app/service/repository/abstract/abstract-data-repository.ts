@@ -115,6 +115,7 @@ export abstract class AbstractDataRepository {
   public async abstract getAction(id:number):Promise<Action>;
   public async abstract getActions():Promise<Action[]>;
   public async abstract getActionOffersByActionId(id:number):Promise<ActionOffer[]>;
+  public async abstract loadPmtMethodsCache();
   public async abstract getPmtMethods(): Promise<EnumPaymentMethod[]>;
   public async abstract getPmtMethodById(id: number): Promise<EnumPaymentMethod>;
   public async abstract getCreditProducts(): Promise<CreditProduct[]>;

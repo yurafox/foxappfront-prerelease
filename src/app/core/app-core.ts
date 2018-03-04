@@ -10,6 +10,7 @@ import { RequestOptionsArgs,Headers,URLSearchParams} from '@angular/http';
 import {Quotation} from '../model/quotation';
 import {LoEntity} from '../model/lo-entity';
 import {Country} from '../model/country';
+import {EnumPaymentMethod} from '../model/enum-payment-method';
 
 export interface IDictionary<T> {
   [k: string]: T;
@@ -141,6 +142,7 @@ export namespace Providers {
     private _cacheQuotation: IKeyedCollection<Quotation> = null;
     private _cacheLoEntity: IKeyedCollection<LoEntity> = null;
     private _cacheCountry: IKeyedCollection<Country> = null;
+    private _cacheEnumPaymentMethod: IKeyedCollection<EnumPaymentMethod> = null;
 
 
     public get Products(): IKeyedCollection<Product> {
@@ -218,6 +220,13 @@ export namespace Providers {
         this._cacheCountry = new CacheItems<Country>(10);
 
       return this._cacheCountry;
+    }
+
+    public get EnumPaymentMethod(): IKeyedCollection<EnumPaymentMethod> {
+      if (this._cacheEnumPaymentMethod == null)
+        this._cacheEnumPaymentMethod = new CacheItems<EnumPaymentMethod>(10);
+
+      return this._cacheEnumPaymentMethod;
     }
 
 

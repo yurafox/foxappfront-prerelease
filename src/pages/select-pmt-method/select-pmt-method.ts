@@ -28,7 +28,9 @@ export class SelectPmtMethodPage extends ComponentBase {
 
 
   async getPmtMethods () {
+
     let pmt = await this.repo.getPmtMethods();
+
     pmt.forEach(i => {
         this.pmtMethods.push({isChecked: ((this.cart.order.idPaymentMethod === i.id)), method: i});
       }
