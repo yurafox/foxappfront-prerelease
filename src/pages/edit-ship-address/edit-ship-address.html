@@ -28,9 +28,16 @@
                  placeholder="{{locale['Zip']}}" #zip="ngModel">
           <span *ngIf="!zip.valid && zip.touched" class="f-color-validation-error"><span loc="Пожалуйста, введите индекс" name="EnterZip">{{locale['EnterZip']}}</span></span>
           <br>
-          <input [(ngModel)]="shippingAddress.phone" name="phone"
-                 placeholder="{{locale['Phone']}}" required #phone="ngModel">
-          <span *ngIf="!phone.valid && phone.touched" class="f-color-validation-error"><span loc="Пожалуйста, введите номер телефона" name="EnterPhone">{{locale['EnterPhone']}}</span></span>
+          <input [(ngModel)]="shippingAddress.phone" id="phone" name="phone"
+                 placeholder="{{locale['Phone']}}"
+                 pattern="[0-9]{12}"
+                 minlength="12"
+                 maxlength="12"
+                 required #phone="ngModel">
+          <div *ngIf="!phone.valid && phone.touched">
+            <span *ngIf="phone.hasError('required')"  class="f-color-validation-error"><span loc="Пожалуйста, введите номер телефона" name="EnterPhone">{{locale['EnterPhone']}}</span></span>
+            <span *ngIf="phone.hasError('pattern')"  class="f-color-validation-error"><span loc="№ телефона должен содержать 12 цифр в формате 38XXXXXXXXXX" name="PhoneFormat">{{locale['PhoneFormat']}}</span></span>
+          </div>
           <br>
 
           <dropdown-list id="btnCountry" *ngIf="countries" [param]="shippingAddress.idCountry"

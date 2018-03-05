@@ -79,18 +79,8 @@ export class EditShipAddressPage extends ComponentBase  {
         console.log(`Error navigating back: ${err}`)
       });
     } else if (this.mode === 'edit') {
-      let addr = await this.repo.saveClientAddress(this.shippingAddress);
-      this.originalAddr = addr;
-/*
-      this.originalAddr.recName = this.shippingAddress.recName;
-      this.originalAddr.street = this.shippingAddress.street;
-      this.originalAddr.bldApp = this.shippingAddress.bldApp;
-      this.originalAddr.city = this.shippingAddress.city;
-      this.originalAddr.zip = this.shippingAddress.zip;
-      this.originalAddr.phone = this.shippingAddress.phone;
-      this.originalAddr.idCountry = this.shippingAddress.idCountry;
-*/
-
+      const addr: ClientAddress = await this.repo.saveClientAddress(this.shippingAddress);
+      Object.assign(this.originalAddr, addr);
       this.navCtrl.pop().catch(err => {
         console.log(`Error navigating back: ${err}`)
       });

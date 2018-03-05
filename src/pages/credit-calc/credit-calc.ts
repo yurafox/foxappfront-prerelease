@@ -178,6 +178,6 @@ export class CreditCalcPage extends ComponentBase {
   }
 
   validatePage(): boolean {
-    return this.isAnyItemSelected();
+    return  ((this.isAnyItemSelected()) && (this.selectedLoan) && (this.selectedLoan.clMonths>0));
   }
 }
