@@ -203,16 +203,7 @@ export class DropdownListComponent extends ComponentBase implements OnChanges {
     if(this.options.buttonHeader)
        return `${this.options.buttonHeader}: ${dataValue}`;
 
-    let lang = this.userService.lang;
-    if (lang === 1) {
-      return (!this.isQty) ? dataValue || this.placeholder : `Кол-во: ${dataValue}`;
-    } else if (lang === 2) {
-      return (!this.isQty) ? dataValue || this.placeholder : `Кіл-ть: ${dataValue}`;
-    } else if (lang === 3) {
-      return (!this.isQty) ? dataValue || this.placeholder : `Qty: ${dataValue}`;
-    } else {
-      return (!this.isQty) ? dataValue || this.placeholder : `Кол-во: ${dataValue}`;
-    }
+    return (!this.isQty) ? dataValue || this.placeholder : `${this.locale['Qty']}: ${dataValue}`;
   }
 
   public get displayParam():string {

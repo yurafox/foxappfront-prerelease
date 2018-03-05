@@ -6,7 +6,7 @@
   <ion-list>
     <form [formGroup]='loginForm'>
       <ion-item *ngIf='authError' class='alertDanger'>
-        <span><span loc="Неверный email или пароль" name="WrongLoginOrPass">{{locale['WrongLoginOrPass']}}</span></span>
+        <span loc="Неверный email или пароль" name="WrongLoginOrPass">{{locale['WrongLoginOrPass']}}</span>
       </ion-item>
 
       <ion-item>

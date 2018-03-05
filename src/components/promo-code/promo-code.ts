@@ -17,16 +17,7 @@ export class PromoCodeComponent extends ComponentBase {
 
   ngOnInit() {
     super.ngOnInit();
-    let lang = this.userService.lang;
-    if (lang === 1) {
-      this.errorText = 'Содержимое корзины было обновлено. Пожалуйста, примените промокод снова';
-    } else if (lang === 2) {
-      this.errorText = 'Вміст кошика було оновлено. Будь-ласка, застосуйте промокод знову';
-    } else if (lang === 3) {
-      this.errorText = 'Cart content has been updated. Please, apply promocode again';
-    } else {
-      this.errorText = 'Содержимое корзины было обновлено. Пожалуйста, примените промокод снова';
-    }
+    this.errorText = this.locale['ErrorText'];
   }
 
   onApplyPromoCodeClick() {

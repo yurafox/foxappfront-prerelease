@@ -1,7 +1,7 @@
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import { Injectable } from "@angular/core";
-import { Http, URLSearchParams, Headers} from "@angular/http";
+import { Http, URLSearchParams} from "@angular/http";
 import "rxjs/add/operator/toPromise";
 import CacheProvider = Providers.CacheProvider;
 import {
@@ -44,6 +44,7 @@ import {
 
 import { AbstractDataRepository } from '../../index';
 import { Providers, System } from "../../../core/app-core";
+import {ConnectivityService} from "../../connectivity-service";
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
@@ -143,7 +144,7 @@ const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/ap
 export class AppDataRepository extends AbstractDataRepository {
   private cache: CacheProvider = new CacheProvider();
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private connServ: ConnectivityService) {
     super();
   }
 
@@ -2126,8 +2127,11 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   // <editor-fold desc="error handler"
-  private handleError(error: any): Promise<any> {
-    return Promise.reject(error.messages || error);
+  private handleError(error?: Error): any /*Promise<any>*/ {
+    if (this.connServ.counter < 1) {
+      this.connServ.checkConnection(error);
+    }
+    //return Promise.reject(error.message || error);
   }
 
   // </editor-fold>
@@ -2242,7 +2246,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getStores(): Promise<Array<{ id: number; stores: Store[] }>> {
+  public async getStores(): Promise<Array<{ idCity: number; stores: Store[] }>> {
     try {
       const response = await this.http.get(storesUrl).toPromise();
 
@@ -2250,7 +2254,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      const stores = new Array<{ id: number; stores: Store[] }>();
+      const stores = new Array<{ idCity: number; stores: Store[] }>();
       if (data != null) {
         data.forEach(val => {
           const storeArr = new Array<Store>();
@@ -2289,7 +2293,7 @@ export class AppDataRepository extends AbstractDataRepository {
               storeArr.push(new Store(store.id, store.position, store.address));
             }
           });
-          stores.push({id: val.id, stores: storeArr});
+          stores.push({idCity: val.id, stores: storeArr});
         });
       }
       return stores;
@@ -2298,7 +2302,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getStoreById(id: number): Promise<Store> {
+  public async getStoreById(id: number): Promise<{idCity: number, store: Store}> {
     try {
       const response = await this.http.get(storesUrl).toPromise();
 
@@ -2329,7 +2333,7 @@ export class AppDataRepository extends AbstractDataRepository {
       for (let i = 0; i < stores.length; i++) {
         for (let j = 0; j < stores[i].stores.length; j++) {
           if (stores[i].stores[j].id === id) {
-            return stores[i].stores[j];
+            return {idCity: stores[i].id, store: stores[i].stores[j]};
           }
         }
       }

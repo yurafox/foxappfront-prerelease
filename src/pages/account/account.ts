@@ -58,30 +58,30 @@ export class AccountPage extends ComponentBase {
 
     this.errorMessages = {
       'email': {
-        'required': this.locale['RequiredField'],
-          'pattern': this.locale['WrongEMailFormat']
+        'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+          'pattern': this.locale['WrongEMailFormat'] ? this.locale['WrongEMailFormat'] : 'Не правильный формат email адреса'
       },
       'password': {
-        'minlength': this.locale['LengthNLT6'],
-          'maxlength': this.locale['LengthNGT128']
+        'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
+          'maxlength': this.locale['LengthNGT128'] ? this.locale['LengthNGT128'] : 'Значение должно быть не более 128-и символов'
       },
       'name':{
-        'required': this.locale['RequiredField'],
-          'maxlength': this.locale['LengthNGT20']
+        'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+          'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
       },
       'appKey':{
-        'minlength': this.locale['LengthNLT6'],
-          'maxlength': this.locale['LengthNGT20']
+        'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
+          'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
       },
     };
   }
 
   currencyUpdate(item:any):void {
-    this.userService.currency = item.id;
+    this.currentCurrency.id = item.id;
   }
 
   langUpdate(item:any):void {
-    this.userService.lang = item.id;
+    this.currentLang.id = item.id;
   }
 
   edit(){
@@ -90,8 +90,10 @@ export class AccountPage extends ComponentBase {
     }
 
     const data = this.editForm.value;
-    const user: User= new User(data.name,data.email,
-      data.password,this.userService.uid,data.appKey,{'currency': `${this.currentCurrency.id}`, 'lang': `${this.currentLang.id}`});
+    const user: User= new User(data.name, data.email, data.password, this.userService.uid, data.appKey,
+      {'currency': `${this.currentCurrency.id}`, 'lang': `${this.currentLang.id}`},
+      this.userService.profile.idClient,
+      this.userService.profile.favoriteStoresId);
 
     (async ()=>{
       const result = await this.userService.edit(user);
@@ -105,20 +107,20 @@ export class AccountPage extends ComponentBase {
           });
           this.errorMessages = {
             'email': {
-              'required': this.locale['RequiredField'],
-              'pattern': this.locale['WrongEMailFormat']
+              'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+              'pattern': this.locale['WrongEMailFormat'] ? this.locale['WrongEMailFormat'] : 'Не правильный формат email адреса'
             },
             'password': {
-              'minlength': this.locale['LengthNLT6'],
-              'maxlength': this.locale['LengthNGT128']
+              'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
+              'maxlength': this.locale['LengthNGT128'] ? this.locale['LengthNGT128'] : 'Значение должно быть не более 128-и символов'
             },
             'name':{
-              'required': this.locale['RequiredField'],
-              'maxlength': this.locale['LengthNGT20']
+              'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+              'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
             },
             'appKey':{
-              'minlength': this.locale['LengthNLT6'],
-              'maxlength': this.locale['LengthNGT20']
+              'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
+              'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
             },
           };
           alert.present();

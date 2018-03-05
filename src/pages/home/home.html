@@ -4,6 +4,13 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)" [snapbackDuration]="1000" [closeDuration]="1000">
+    <ion-refresher-content
+      pullingIcon="ios-refresh-outline"
+      refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
+
   <div *ngIf="content && (pageMode === 1)">
       <html-outlet [html]="content" [context]="this"></html-outlet>
   </div>

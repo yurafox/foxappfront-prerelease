@@ -8,6 +8,7 @@ import {Device} from '@ionic-native/device';
 import {DeviceData} from "./model/index";
 import {System} from "./core/app-core";
 import {CartService} from "./service/cart-service";
+import {ConnectivityService} from "./service/connectivity-service";
 
 export interface PageInterface {
   title: string;
@@ -55,10 +56,10 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
   private noveltyPushEventDescriptor: any;
   private actionPushEventDescriptor: any;
 
-  constructor(private platform: Platform, private alertCtrl: AlertController,
-              private splashScreen: SplashScreen, public menuCtrl: MenuController,
-              private repo: AbstractDataRepository, private appAvailability: AppAvailability,
-              private device: Device, private cartService: CartService) {
+  constructor(private platform: Platform, private alertCtrl: AlertController, private splashScreen: SplashScreen,
+              public menuCtrl: MenuController, private repo: AbstractDataRepository,
+              private appAvailability: AppAvailability, private device: Device, private cartService: CartService,
+              private connService: ConnectivityService) {
     super();
     // Setting up external app params
     // TODO: Change these params to Foxtrot game's
@@ -69,6 +70,7 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
 
   async ngOnInit() {
     super.ngOnInit();
+    this.connService.nav = this.nav;
     if (!this.userService.isAuth && this.userService.isNotSignOutSelf()) {
       await this.userService.shortLogin();
     }
@@ -266,16 +268,22 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
     });
   }
 
-
   // Handling incoming PUSH-notifications
   private async pushNotificationHandling(data) {
     let target = data.target;
+    let noveltyTitle = this.locale['NoveltyTitle'];
+    let noveltyMessage = this.locale['NoveltyMessage'];
+    let promoTitle = this.locale['PromoTitle'];
+    let promoMessage = this.locale['PromoMessage'];
+    let promocodeTitle = this.locale['PromocodeTitle'];
+    let promocodeMessage = this.locale['PromocodeMessage'];
+    let cancel = this.locale['Cancel'];
     switch (target) {
       case 'novelty': {
         if (data.id) {
           let alert = this.alertCtrl.create({
-            title: 'New product in Foxtrot!',
-            message: 'Do you want to check it?',
+            title: noveltyTitle,
+            message: noveltyMessage,
             buttons: [
               {
                 text: 'OK',
@@ -287,7 +295,7 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
                 }
               },
               {
-                text: 'CANCEL'
+                text: cancel
               }
             ]
           });
@@ -298,8 +306,8 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
       case 'action' || 'promotion' || 'promo': {
         if (data.id) {
           let alert = this.alertCtrl.create({
-            title: 'New promotion!',
-            message: 'Do you want to check it?',
+            title: promoTitle,
+            message: promoMessage,
             buttons: [
               {
                 text: 'OK',
@@ -311,7 +319,7 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
                 }
               },
               {
-                text: 'CANCEL'
+                text: cancel
               }
             ]
           });
@@ -330,8 +338,8 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
           this.evServ.events['cartUpdateEvent'].emit();
           this.evServ.events['cartItemsUpdateEvent'].emit();
           let alert = this.alertCtrl.create({
-            title: 'Check your cart',
-            message: 'We have added a discount to your order',
+            title: promocodeTitle,
+            message: promocodeMessage,
             buttons: [
               {
                 text: 'OK',
@@ -342,7 +350,7 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
                 }
               },
               {
-                text: 'CANCEL'
+                text: cancel
               }
             ]
           });

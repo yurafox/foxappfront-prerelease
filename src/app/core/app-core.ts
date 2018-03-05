@@ -84,10 +84,14 @@ export namespace Providers {
     }
 
     public Add(key: string, value: T) {
-      if (!this.items.hasOwnProperty(key))
-        this.count++;
+      if (key && value) {
+        if ((<any>value).id) {
+          if (!this.items.hasOwnProperty(key))
+            this.count++;
 
-      this.items[key] = value;
+          this.items[key] = value;
+        }
+      }
     }
 
     public Remove(key: string): T {
@@ -139,6 +143,7 @@ export namespace Providers {
     private _cacheCity: IKeyedCollection<City> = null;
     private _cacheStorePlace: IKeyedCollection<StorePlace> = null;
     private _cacheMeasureUnit: IKeyedCollection<MeasureUnit> = null;
+
     private _cacheQuotation: IKeyedCollection<Quotation> = null;
     private _cacheLoEntity: IKeyedCollection<LoEntity> = null;
     private _cacheCountry: IKeyedCollection<Country> = null;

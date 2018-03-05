@@ -17,22 +17,16 @@ export class ShippingOptionsPage extends ComponentBase {
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
                 public repo: AbstractDataRepository, public loadingCtrl: LoadingController) {
     super();
+    this.initLocalization();
     this.cart.loDeliveryOptions = [];
+  }
+
+  ngOnInit() {
     this.getDeliveryOptions();
   }
 
   async getDeliveryOptions() {
-    let lang: number = this.userService.lang;
-    let content: string;
-    if (lang === 1) {
-      content = 'Пожалуйста, подождите'
-    } else if (lang === 2) {
-      content = 'Будь-ласка, зачекайте'
-    } else if (lang === 3) {
-      content = 'Please wait...'
-    } else {
-      content = 'Пожалуйста, подождите'
-    }
+    let content = this.locale['LoadingContent'];
     let loading = this.loadingCtrl.create({
       content: content
     });
@@ -58,7 +52,7 @@ export class ShippingOptionsPage extends ComponentBase {
         item.loName = ent.name;
         item.isChecked = false;
         this.cart.loDeliveryOptions.push(item);
-      };
+      }
       i++;
     }
     this.dataLoaded = true;
@@ -89,7 +83,7 @@ export class ShippingOptionsPage extends ComponentBase {
 
   onContinueClick() {
     if (this.itemIndex < this.cart.orderProducts.length-1)
-      this.itemIndex++
+      this.itemIndex++;
     else {
       // Выбранные опции запихиваем в массив выбранных опций
       this.cart.loResultDeliveryOptions = [];
@@ -101,6 +95,6 @@ export class ShippingOptionsPage extends ComponentBase {
         }
       );
       this.navCtrl.push('SelectPmtMethodPage');
-    };
+    }
   }
 }

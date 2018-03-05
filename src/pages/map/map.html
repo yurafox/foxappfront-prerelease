@@ -6,7 +6,8 @@
       [reference]="selectedCity"
       [store]="cities"
       [map]="{valueName:'name',displayName:'name'}"
-      [afterUpdate]="changeMarkers">
+      [afterUpdate]="changeMarkers"
+      *ngIf="cities">
     </dropdown-list>
     <div *ngIf="(shopList[0].value !== null) && (shopList !== [])">
       <dropdown-list

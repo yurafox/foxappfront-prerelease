@@ -28,17 +28,7 @@ export class SupportPage extends ComponentBase {
       this.supportMessage = '';
       this.submitted = false;
 
-      let lang: number = this.userService.lang;
-      let message: string;
-      if (lang === 1) {
-        message = 'Ваша просьба о поддержке отправлена'
-      } else if (lang === 2) {
-        message = 'Ваше прохання про підтримку відправлено'
-      } else if (lang === 3) {
-        message = 'Your support request has been sent'
-      } else {
-        message = 'Ваша просьба о поддержке отправлена'
-      }
+      let message = this.locale['ToastMessage'];
       let toast = this.toastCtrl.create({
         message: message,
         duration: 3000

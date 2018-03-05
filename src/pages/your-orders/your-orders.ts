@@ -44,21 +44,11 @@ export class OrdersPage extends ComponentBase {
 
   async onBuyItAgainClick(orderSpec: ClientOrderProducts){
     const valQ = await this.repo.getByItAgainQP(await (<any>orderSpec).quotationproduct_p);
+    let message = this.locale['AlertMessage'];
     if (valQ) {
       this.cart.addItem(valQ,  1, valQ.price, null, this)
     }
     else {
-      let lang: number = this.userService.lang;
-      let message: string;
-      if (lang === 1) {
-        message = 'К сожалению, этого товара сейчас нет в наличии'
-      } else if (lang === 2) {
-        message = 'Нажаль, цього товару наразі немає в наявності'
-      } else if (lang === 3) {
-        message = 'Unfortunately, this item is currently out of stock'
-      } else {
-        message = 'К сожалению, этого товара сейчас нет в наличии'
-      }
       let alert = this.alertCtrl.create({
         message: message,
         buttons: [
@@ -70,7 +60,7 @@ export class OrdersPage extends ComponentBase {
         ]
       });
       alert.present();
-    };
+    }
   }
 
   onViewOrderDetailsClick(order: ClientOrder) {

@@ -54,7 +54,7 @@ export class AccountRepository extends AbstractAccountRepository {
         throw new Error(`некорректные пользовательские данные`);
       }
       const currentUser: User = new User(data.name, data.email,null,data.id,
-        data.appKey,data.userSetting,data.idClient);
+        data.appKey,data.userSetting,data.idClient,null);
 
       return currentUser;
     }
@@ -79,7 +79,7 @@ export class AccountRepository extends AbstractAccountRepository {
         throw new Error(`ошибка правки данных`);
       }
       const currentUser: User = new User(data.name, data.email,null,data.id,
-        data.appKey,data.userSetting,data.idClient);
+        data.appKey,data.userSetting,data.idClient,data.favoriteStoresId);
 
       return currentUser;
     }

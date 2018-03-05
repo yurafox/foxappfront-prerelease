@@ -35,8 +35,23 @@ export class PaymentPage extends ComponentBase implements OnInit {
 
   async ngOnInit() {
     super.ngOnInit();
-    this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(`https://mobile.foxtrot.com.ua/paymaster/payment/?id=${this.id}&total=${this.total}`);
-    window.addEventListener('message', this.receiveMessage);
+    if (this.navParams.data.result === 0) {
+      this.success = true;
+      this.formInput = null;
+      this.cart.emptyCart();
+      this.changeDetector.detectChanges();
+    } else if (this.navParams.data.result === 1) {
+      this.fail = true;
+      this.formInput = null;
+      this.changeDetector.detectChanges();
+    } else if (this.navParams.data.result === 2) {
+      this.error = true;
+      this.formInput = null;
+      this.changeDetector.detectChanges();
+    } else {
+      this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(`https://mobile.foxtrot.com.ua/paymaster/payment/?id=${this.id}&total=${this.total}`);
+      window.addEventListener('message', this.receiveMessage);
+    }
   }
 
   toHomePage() {
@@ -50,28 +65,23 @@ export class PaymentPage extends ComponentBase implements OnInit {
     }
     switch (event.data) {
       case 'success': {
-        (<any>window).appPage.success = true;
+        (<any>window).appPage.navCtrl.setRoot('PaymentPage',{result:0});
+        /*(<any>window).appPage.success = true;
         (<any>window).appPage.formInput = null;
         (<any>window).appPage.cart.emptyCart();
-        (<any>window).appPage.changeDetector.detectChanges();
+        (<any>window).appPage.changeDetector.detectChanges();*/
         break;
       }
       case 'fail': {
-        (<any>window).appPage.fail = true;
-        (<any>window).appPage.formInput = null;
-        (<any>window).appPage.changeDetector.detectChanges();
+        (<any>window).appPage.navCtrl.setRoot('PaymentPage',{result:1});
         break;
       }
       case 'error': {
-        (<any>window).appPage.error = true;
-        (<any>window).appPage.formInput = null;
-        (<any>window).appPage.changeDetector.detectChanges();
+        (<any>window).appPage.navCtrl.setRoot('PaymentPage',{result:2});
         break;
       }
       default: {
-        (<any>window).appPage.formInput = null;
-        (<any>window).appPage.changeDetector.detectChanges();
-        console.log('Inappropriate data received');
+        (<any>window).appPage.navCtrl.setRoot('PaymentPage',{result:2});
         break;
       }
     }

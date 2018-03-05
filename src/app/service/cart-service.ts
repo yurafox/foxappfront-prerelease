@@ -7,11 +7,12 @@ import {UserService} from './bll/user-service';
 import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
 import {EventService} from './event-service';
 import {EnumPaymentMethod} from '../model/enum-payment-method';
-import {App, NavController} from 'ionic-angular';
+import {App} from 'ionic-angular';
 import {PersonInfo} from '../model/person';
 import {CreditCalc} from '../model/credit-calc';
 import {AppConstants} from '../app-constants';
-import {ComponentBase} from "../../components/component-extension/component-base";
+import {AbstractLocalizationRepository} from "./repository/abstract/abstract-localization-repository";
+import {IDictionary} from "../core/app-core";
 
 
 export class LoDeliveryOption {
@@ -27,7 +28,7 @@ export class LoDeliveryOption {
 }
 
 @Injectable()
-export class CartService extends ComponentBase {
+export class CartService {
 
   public lastItemCreditCalc: ClientOrderProducts = null;
   private cKey = 'cartItems';
@@ -52,9 +53,10 @@ export class CartService extends ComponentBase {
   public cartValidationNeeded = false;
   public person = new PersonInfo();
 
+  private localization: IDictionary<string> = {};
+
   constructor(public userService: UserService, public repo: AbstractDataRepository,
-              public evServ: EventService, private app: App) {
-    super();
+              public evServ: EventService, private app: App, private locRepo: AbstractLocalizationRepository) {
 
     this.evServ.events['logonEvent'].subscribe(() => {
         this.initCart().then (() => {
@@ -206,22 +208,8 @@ export class CartService extends ComponentBase {
   }
 
   validateLoan (loanAmt: number): {isValid:boolean, validationErrors:string[]} {
-    let lang: number = this.userService.lang;
-    let maxLoan: string;
-    let minLoan: string;
-    if (lang === 1) {
-      maxLoan = 'Максимальный лимит кредита превышен';
-      minLoan = 'Сумма кредита ниже лимита';
-    } else if (lang === 2) {
-      maxLoan = 'Максимальний кредитний ліміт перевищено';
-      minLoan = 'Сума кредиту нижча за межу';
-    } else if (lang === 3) {
-      maxLoan = 'Max loan limit exceeded';
-      minLoan = 'The loan amount is below limit';
-    } else {
-      maxLoan = 'Максимальный лимит кредита превышен';
-      minLoan = 'Сумма кредита ниже лимита';
-    }
+    let maxLoan = this.localization['MaxLoan'];
+    let minLoan = this.localization['MinLoan'];
     let errs = [];
     let mes = (loanAmt > AppConstants.MAX_LOAN_AMT) ? maxLoan : null;
     if (mes)
@@ -265,6 +253,7 @@ export class CartService extends ComponentBase {
         });
       }
     }
+    this.localeUserService();
   }
 
   public get cartItemsCount(): number {
@@ -295,24 +284,25 @@ export class CartService extends ComponentBase {
       this.orderProducts.forEach(item => {
         _s += item.price*item.qty
       });
-    };
+    }
     return _s;
   }
 
   async addItem(item: QuotationProduct, qty: number, price: number, storePlace: StorePlace, page: any) {
-    const _f = this.orderProducts.filter(i => {return (i.idQuotationProduct === item.id);});
-    let foundQuot: ClientOrderProducts = (_f) ? _f[0] : null;
+    if (item && qty && price) {
+      const _f = this.orderProducts.filter(i => {return (i.idQuotationProduct === item.id);});
+      let foundQuot: ClientOrderProducts = (_f) ? _f[0] : null;
 
-    if (foundQuot) {
-      foundQuot.qty += qty;
-      foundQuot.price = price;
-      this.updateItem(foundQuot);
-    } else {
-      let orderItem = new ClientOrderProducts();
-      orderItem.idQuotationProduct = item.id;
-      orderItem.price = price;
-      orderItem.qty = qty;
-      orderItem.idStorePlace = (storePlace ? storePlace.id : null);
+      if (foundQuot) {
+        foundQuot.qty += qty;
+        foundQuot.price = price;
+        this.updateItem(foundQuot);
+      } else {
+        let orderItem = new ClientOrderProducts();
+        orderItem.idQuotationProduct = item.id;
+        orderItem.price = price;
+        orderItem.qty = qty;
+        orderItem.idStorePlace = (storePlace ? storePlace.id : null);
 
       if (this.userService.isAuth) {
         orderItem = await this.repo.insertCartProduct(orderItem);
@@ -320,34 +310,37 @@ export class CartService extends ComponentBase {
       this.orderProducts.push(orderItem);
     }
 
-    this.saveToLocalStorage();
-    this.lastItemCreditCalc = null;
+      this.saveToLocalStorage();
+      this.lastItemCreditCalc = null;
 
-    this.evServ.events['cartUpdateEvent'].emit();
+      this.evServ.events['cartUpdateEvent'].emit();
 
-    let lang: number = this.userService.lang;
-    let message: string;
-    if (lang === 1) {
-      message = 'Товар добавлен в корзину';
-    } else if (lang === 2) {
-      message = 'Товар додано до кошика';
-    } else if (lang === 3) {
-      message = 'Item added to cart';
+      let message = this.localization['AddedToCart'];
+      let toast = page.toastCtrl.create({
+        message: message,
+        duration: 2000,
+        position: 'bottom',
+        cssClass: 'toast-message'
+      });
+
+      toast.onDidDismiss(() => {
+      });
+
+      toast.present();
     } else {
-      message = 'Товар добавлен в корзину';
+      let message = this.localization['SomethingWrong'];
+      let toast = page.toastCtrl.create({
+        message: message,
+        duration: 2500,
+        position: 'bottom',
+        cssClass: 'toast-message'
+      });
+
+      toast.onDidDismiss(() => {
+      });
+
+      toast.present();
     }
-
-    let toast = page.toastCtrl.create({
-      message: message,
-      duration: 2000,
-      position: 'bottom',
-      cssClass: 'toast-message'
-    });
-
-    toast.onDidDismiss(() => {
-    });
-
-    toast.present();
   }
 
 
@@ -390,8 +383,16 @@ export class CartService extends ComponentBase {
       if (i.errorMessage) {
         arr.push({idQuotProduct: i.idQuotationProduct, errorMessage: i.errorMessage});
       }
-    };
+    }
     return (arr.length === 0) ? null : arr;
   }
 
+  // making localization for user service
+  private localeUserService() {
+    this.locRepo.getLocalization({componentName: (<any> this).constructor.name, lang: (this.userService.lang ? this.userService.lang : 1)}).then((loc) => {
+      if (loc && (Object.keys(loc).length !== 0)) {
+        this.localization = loc;
+      }
+    });
+  }
 }

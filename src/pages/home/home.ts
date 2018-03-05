@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import {App, NavController, IonicPage} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {AbstractDataRepository} from "../../app/service/index";
@@ -43,8 +43,8 @@ export class HomePage extends ComponentBase {
 
   public content: string = '';
 
-  constructor(public app: App, public nav: NavController,
-              private _repo: AbstractDataRepository, public srchService: SearchService) {
+  constructor(public app: App, public nav: NavController, private _repo:AbstractDataRepository,
+              public srchService: SearchService, private changeDet: ChangeDetectorRef) {
     super();
     this.srchService.lastSearch = null;
  }
@@ -90,8 +90,15 @@ export class HomePage extends ComponentBase {
 
   async ngOnInit() {
     super.ngOnInit();
+    this.doRefresh(0);
+  }
+
+  async doRefresh(refresher) {
     this.content = await this._repo.getPageContent(1);
     this.baseProducts = await this.srchService.searchResults;
-
+    if (refresher !== 0) {
+      this.changeDet.detectChanges();
+      refresher.complete();
+    }
   }
 }

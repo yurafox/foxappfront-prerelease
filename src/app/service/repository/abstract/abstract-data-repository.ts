@@ -106,8 +106,8 @@ export abstract class AbstractDataRepository {
 
   public async abstract getCities(): Promise<City[]>;
   public async abstract getCitiesWithStores(): Promise<City[]>;
-  public async abstract getStores(): Promise<Array<{id: number, stores: Store[]}>>;
-  public async abstract getStoreById(id: number): Promise<Store>;
+  public async abstract getStores(): Promise<Array<{idCity: number, stores: Store[]}>>;
+  public async abstract getStoreById(id: number): Promise<{idCity: number, store: Store}>;
   public async abstract getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]>;
   public async abstract loadCityCache();
   public async abstract getCityById(id: number): Promise<City>;
