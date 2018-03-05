@@ -7,37 +7,44 @@
       <ion-row>
         <ion-col style="padding-bottom: 10px;">
           <input [(ngModel)]="shippingAddress.recName" name="recName"
-                 placeholder="First and last name" required #recName="ngModel">
+                 placeholder="{{locale['FirstLastName']}}" required #recName="ngModel">
           <span *ngIf="!recName.valid && recName.touched"
-                style="color: red;">Please enter your first and last name</span>
+                class="f-color-validation-error"><span loc="Пожалуйста, введите своё имя и фамилию" name="EnterFirstLastName">{{locale['EnterFirstLastName']}}</span></span>
           <br>
           <input [(ngModel)]="shippingAddress.street" name="street"
-                 placeholder="Street" required #street="ngModel">
-          <span *ngIf="!street.valid && street.touched" style="color: red;">Please enter your street</span>
+                 placeholder="{{locale['Street']}}" required #street="ngModel">
+          <span *ngIf="!street.valid && street.touched" class="f-color-validation-error"><span loc="Пожалуйста, введите улицу" name="EnterStreet">{{locale['EnterStreet']}}</span></span>
           <br>
           <input [(ngModel)]="shippingAddress.bldApp" name="bldApp"
-                 placeholder="Building and apartment" required #bldApp="ngModel">
+                 placeholder="{{locale['BuildingAndApartment']}}" required #bldApp="ngModel">
           <span *ngIf="!bldApp.valid && bldApp.touched"
-                style="color: red;">Please enter your building and apartment</span>
+                class="f-color-validation-error"><span loc="Пожалуйста, введите здание и квартиру" name="EnterBuildingAndApartment">{{locale['EnterBuildingAndApartment']}}</span></span>
           <br>
           <input [(ngModel)]="shippingAddress.city" name="city"
-                 placeholder="City" required #city="ngModel">
-          <span *ngIf="!city.valid && city.touched" style="color: red;">Please enter your city</span>
+                 placeholder="{{locale['City']}}" required #city="ngModel">
+          <span *ngIf="!city.valid && city.touched" class="f-color-validation-error"><span loc="Пожалуйста, введите город" name="EnterCity">{{locale['EnterCity']}}</span></span>
           <br>
           <input [(ngModel)]="shippingAddress.zip" name="zip"
-                 placeholder="Zip" #zip="ngModel">
-          <span *ngIf="!zip.valid && zip.touched" style="color: red;">Please enter your zip</span>
+                 placeholder="{{locale['Zip']}}" #zip="ngModel">
+          <span *ngIf="!zip.valid && zip.touched" class="f-color-validation-error"><span loc="Пожалуйста, введите индекс" name="EnterZip">{{locale['EnterZip']}}</span></span>
           <br>
-          <input [(ngModel)]="shippingAddress.phone" name="phone"
-                 placeholder="Phone" required #phone="ngModel">
-          <span *ngIf="!phone.valid && phone.touched" style="color: red;">Please enter your phone</span>
+          <input [(ngModel)]="shippingAddress.phone" id="phone" name="phone"
+                 placeholder="{{locale['Phone']}}"
+                 pattern="[0-9]{12}"
+                 minlength="12"
+                 maxlength="12"
+                 required #phone="ngModel">
+          <div *ngIf="!phone.valid && phone.touched">
+            <span *ngIf="phone.hasError('required')"  class="f-color-validation-error"><span loc="Пожалуйста, введите номер телефона" name="EnterPhone">{{locale['EnterPhone']}}</span></span>
+            <span *ngIf="phone.hasError('pattern')"  class="f-color-validation-error"><span loc="№ телефона должен содержать 12 цифр в формате 38XXXXXXXXXX" name="PhoneFormat">{{locale['PhoneFormat']}}</span></span>
+          </div>
           <br>
 
           <dropdown-list id="btnCountry" *ngIf="countries" [param]="shippingAddress.idCountry"
                          [ref]="{bindRef:shippingAddress,bindName:'idCountry'}"
-                         [placeholder]="'Please select country'"
+                         [placeholder]="locale['PleaseSelectCountry']"
                          [store]="countries"
-                         [options]="{popupClass: 'f-large-dictionary', popupHeader: 'Select country'}"
+                         [options]="{popupClass: 'f-large-dictionary', popupHeader: locale['SelectCountry']}"
                          [map]="{valueName:'id', displayName:'name'}">
           </dropdown-list>
 
@@ -47,14 +54,14 @@
       <div *ngIf="delivery === 0">
         <ion-row>
           <ion-col>
-            <button class="f-btn-add-cart" ion-button block (click)="saveAddress()">Save this address</button>
+            <button class="f-btn-action" ion-button block (click)="saveAddress()"><span loc="Сохранить этот адрес" name="SaveThisAddress">{{locale['SaveThisAddress']}}</span></button>
           </ion-col>
         </ion-row>
       </div>
       <div *ngIf="delivery === 1">
         <ion-row>
           <ion-col>
-            <button class="f-btn-add-cart" ion-button block (click)="saveAddress()">Deliver to this address</button>
+            <button class="f-btn-action" ion-button block (click)="saveAddress()"><span loc="Доставить по этому адресу" name="DeliverToThisAddress">{{locale['DeliverToThisAddress']}}</span></button>
           </ion-col>
         </ion-row>
       </div>

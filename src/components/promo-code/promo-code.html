@@ -1,22 +1,29 @@
-<ion-row style="padding-left: 5px; padding-right: 5px;">
-  <ion-grid class="f-border-ligthgray">
+<ion-row class="f-padding-lr-5">
+    <ion-grid class="f-border-ligthgray">
 
-    <ion-row>
-      <ion-col class="f-size-larger">
-        <span>Promotional Code</span>
-      </ion-col>
-    </ion-row>
+      <ion-row *ngIf="cart.promocodeInvalid">
+        <ion-col>
+          <error [errorText]="errorText"></error>
+        </ion-col>
+      </ion-row>
 
-    <ion-row >
-      <ion-col class="f-size-larger" >
-        <input [(ngModel)]="cart.promoCode" placeholder="Enter code" name="promoCode" #promoCode="ngModel">
-      </ion-col>
-    </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <span loc="Промокод" name="PromoCode">{{locale['PromoCode']}}</span>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <input type="text" [(ngModel)]="cart.promoCode" placeholder="{{locale['EnterCode'] ? locale['EnterCode'] : 'Введите код'}}" name="promoCode" #promoCode="ngModel">
+        </ion-col>
+      </ion-row>
 
     <ion-row *ngIf="promoCode.value" >
       <ion-col style="padding-bottom: 15px;">
         <button class="f-btn-secondary" ion-button block
-                (click)="onApplyPromoCodeClick()">Apply</button>
+                (click)="onApplyPromoCodeClick()"><span loc="Применить" name="Apply">{{locale['Apply']}}</span></button>
       </ion-col>
     </ion-row>
 

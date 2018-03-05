@@ -1,32 +1,178 @@
 <ion-header>
-  <main-toolbar [showCartIcon] = "false"></main-toolbar>
+  <main-toolbar [showCartIcon]="false"></main-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-grid class="f-color-secondary">
+<ion-content class="f-size-larger">
+  <ion-grid>
+
     <ion-row>
-      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
-        <b><span class="f-size-large f-color-secondary">Select a payment method</span></b>
+      <ion-col class="f-section-header"><span loc="Выберите способ оплаты" name="SelectPmtMethod">{{locale['SelectPmtMethod']}}</span>
       </ion-col>
     </ion-row>
 
     <div *ngFor="let mtd of pmtMethods" >
-      <ion-row style="padding-left: 5px; padding-right: 5px;">
+      <ion-row class="f-padding-lr-5">
 
         <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
 
           <ion-row (click)="onSelectOptionClick(mtd)">
             <ion-col col-2 text-center>
-              <input type="radio" id="radioButton" [checked]="mtd.isChecked">
+              <div class="pure-radiobutton">
+                <input type="radio" id="radioButton" class="radio" [checked]="mtd.isChecked">
+                <label for="radioButton"></label>
+              </div>
             </ion-col>
-            <ion-col class="f-size-larger">
-              <span >{{mtd.method.name}}</span>
+            <ion-col class="f-padding-tb-10">
+              {{mtd.method.name}}
             </ion-col>
           </ion-row>
 
         </ion-grid>
       </ion-row>
     </div>
+<!--
+Credit Products
+-->
+    <div *ngIf="dataLoaded && ((pmtMethods[2].isChecked))">
+      <ion-row *ngIf="!cart.loan">
+        <ion-col>
+          <button text-center class="f-btn-secondary" ion-item block
+                  (click)="onShowCreditCalculatorClick()"><span loc="Выберите кредит" name="SelectLoan">{{locale['SelectLoan']}}</span></button>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="cart.loan && (cart.order.idPaymentMethod === 3)"
+               class="f-padding-lr-5">
+
+        <ion-grid no-padding class="f-border-ligthgray">
+          <ion-row *ngIf="(cart.order.idPaymentMethod === 3)"
+                   (click)="onShowCreditCalculatorClick()">
+            <ion-col>
+              <ion-item  detail-push text-wrap>
+                <credit-brief *ngIf="cart.loan"
+                              [creditAmt]="cart.cartGrandTotal" [credit]="cart.loan">
+                </credit-brief>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+      </ion-row>
+    </div>
+<!--
+Passport Data
+-->
+    <div *ngIf="dataLoaded && cart.loan && ((pmtMethods[2].isChecked))">
+      <ion-row class="f-padding-lr-5">
+        <ion-grid class="f-border-ligthgray">
+          <form #f="ngForm">
+            <ion-row>
+              <ion-col style="padding-bottom: 10px;">
+                <label for="lastName"><span loc="Фамилия" name="LastName">{{locale['LastName']}}</span>:*</label>
+                <input type="text" [(ngModel)]="cart.person.lastName" id="lastName" name="lastName"
+                       pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,']+"
+                       required #lastName="ngModel">
+                <div *ngIf="!lastName.valid && lastName.touched">
+                <span *ngIf="lastName.hasError('required')"
+                      class="f-color-validation-error"><span loc="Пожалуйста, введите свою фамилию" name="EnterLastName">{{locale['EnterLastName']}}</span></span>
+                  <span *ngIf="lastName.hasError('pattern')"
+                        class="f-color-validation-error"><span loc="Допустимы только буквы" name="OnlyAlphabets">{{locale['OnlyAlphabets']}}</span></span>
+                </div>
+                <label for="firstName"><span loc="Имя" name="FirstName">{{locale['FirstName']}}</span>:*</label>
+                <input type="text" [(ngModel)]="cart.person.firstName" id="firstName" name="firstName"
+                       pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,']+"
+                       required #firstName="ngModel">
+                <div *ngIf="!firstName.valid && firstName.touched">
+                <span *ngIf="firstName.hasError('required')"
+                      class="f-color-validation-error"><span loc="Пожалуйста, введите своё имя" name="EnterFirstName">{{locale['EnterFirstName']}}</span></span>
+                  <span *ngIf="firstName.hasError('pattern')"
+                        class="f-color-validation-error"><span loc="Допустимы только буквы" name="OnlyAlphabets">{{locale['OnlyAlphabets']}}</span></span>
+                </div>
+                <label for="middleName"><span loc="По отчеству" name="MiddleName">{{locale['MiddleName']}}</span>:*</label>
+                <input type="text" [(ngModel)]="cart.person.middleName" id="middleName" name="middleName"
+                       pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,']+"
+                       required #middleName="ngModel">
+                <div *ngIf="!middleName.valid && middleName.touched">
+                <span *ngIf="middleName.hasError('required')"
+                      class="f-color-validation-error"><span loc="Пожалуйста, введите своё имя по отчеству" name="EnterMiddleName">{{locale['EnterMiddleName']}}</span></span>
+                  <span *ngIf="middleName.hasError('pattern')"
+                        class="f-color-validation-error"><span loc="Допустимы только буквы" name="OnlyAlphabets">{{locale['OnlyAlphabets']}}</span></span>
+                </div>
+                <ion-grid no-padding>
+                  <ion-row no-padding>
+                    <label for="passportSeries"><span loc="Серия и номер паспорта" name="PassportSerAndNum">{{locale['PassportSerAndNum']}}</span>:*</label>
+                  </ion-row>
+                  <ion-row no-padding>
+                    <ion-col col-2 no-padding>
+                      <input type="text" [(ngModel)]="cart.person.passportSeries" id="passportSeries" name="passportSeries"
+                             pattern="[А-ЯA-Za-яa-z]{2}"
+                             minlength="2"
+                             maxlength="2"
+                             required #passportSeries="ngModel">
+                    </ion-col>
+                    <ion-col col-10 no-padding>
+                      <input type="number" [(ngModel)]="cart.person.passportNum" id="passportNum" name="passportNum"
+                             pattern="[0-9]{6}"
+                             minlength="6"
+                             maxlength="6"
+                             required #passportNum="ngModel">
+                    </ion-col>
+                  </ion-row>
+                  <ion-row no-padding>
+                    <ion-col no-padding>
+
+                      <div *ngIf="!passportSeries.valid && passportSeries.touched">
+                        <span *ngIf="passportSeries.hasError('required')" class="f-color-validation-error"><span loc="Пожалуйста, введите серию паспорта" name="EnterPassportSer">{{locale['EnterPassportSer']}}</span></span>
+                        <span *ngIf="passportSeries.hasError('pattern')" class="f-color-validation-error"><span loc="Только 2 большие буквы разрешены" name="Only2UL">{{locale['Only2UL']}}</span></span>
+                      </div>
+
+                      <div *ngIf="!passportNum.valid && passportNum.touched">
+                        <span *ngIf="passportNum.hasError('required')" class="f-color-validation-error"><span loc="Пожалуйста, введите номер паспорта" name="EnterPassportNum">{{locale['EnterPassportNum']}}</span></span>
+                        <span *ngIf="passportNum.hasError('pattern')" class="f-color-validation-error"><span loc="Только 6 цифер разрешены" name="Only6D">{{locale['Only6D']}}</span></span>
+                        <span *ngIf="passportNum.hasError('minlength')"
+                              class="f-color-validation-error"><br><span loc="Номер паспорта должен содержать 6 цифер" name="ShouldBe6D">{{locale['ShouldBe6D']}}</span></span>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+                <label for="issuedAuthority"><span loc="Выдавший орган" name="IssuedAuthority">{{locale['IssuedAuthority']}}</span>:*</label>
+                <input type="text" [(ngModel)]="cart.person.issuedAuthority" id="issuedAuthority" name="issuedAuthority"
+                       required #issuedAuthority="ngModel">
+                <div *ngIf="!issuedAuthority.valid && issuedAuthority.touched">
+                <span *ngIf="issuedAuthority.hasError('required')"
+                      class="f-color-validation-error"><span loc="Пожалуйста, введите выдавший орган" name="EnterIssuedAuthority">{{locale['EnterIssuedAuthority']}}</span></span>
+                </div>
+                <label for="taxNumber"><span loc="Идентификационный номер" name="TaxNumber">{{locale['TaxNumber']}}</span>:*</label>
+                <input type="number" [(ngModel)]="cart.person.taxNumber" id="taxNumber" name="taxNumber"
+                       pattern="[0-9]{10}"
+                       minlength="10"
+                       maxlength="10"
+                       required #taxNumber="ngModel">
+                <div *ngIf="!taxNumber.valid && taxNumber.touched">
+                <span *ngIf="taxNumber.hasError('required')"
+                      class="f-color-validation-error"><span loc="Пожалуйста, введите идентификационный номер" name="EnterTaxNumber">{{locale['EnterTaxNumber']}}</span></span>
+                  <span *ngIf="taxNumber.hasError('pattern')"
+                        class="f-color-validation-error"><span loc="Только 10 цифер разрешены" name="Only10D">{{locale['Only10D']}}</span></span>
+                  <span *ngIf="taxNumber.hasError('minlength')"
+                        class="f-color-validation-error"><span loc="Идентификационный номер должен состоять из 10 цифер" name="ShouldBe10D">{{locale['ShouldBe10D']}}</span></span>
+                </div>
+                <label for="birthDate"><span loc="Дата рождения" name="BirthDate">{{locale['BirthDate']}}</span>:*</label>
+                <input type="date" [ngModel]="cart.person.birthDate | date: 'yyyy-MM-dd'" (ngModelChange)="birthDateChanged($event)"
+                       id="birthDate" name="birthDate"
+                       required #birthDate="ngModel">
+
+                <div *ngIf="!birthDate.valid && birthDate.touched ">
+                <span *ngIf="birthDate.hasError('required')"
+                      class="f-color-validation-error"><span loc="Пожалуйста, введите дату рождения" name="EnterBirthDate">{{locale['EnterBirthDate']}}</span></span>
+                </div>
+              </ion-col>
+
+            </ion-row>
+          </form>
+        </ion-grid>
+      </ion-row>
+    </div>
+
 
     <ion-row padding-top>
       <ion-col></ion-col>
@@ -35,10 +181,12 @@
     <promo-code *ngIf="dataLoaded"></promo-code>
 
     <ion-row *ngIf="dataLoaded">
-      <ion-col style="padding-left: 5px; padding-right: 5px;">
-        <button class="f-btn-add-cart" ion-button block
-                [attr.disabled]="!isAnyOptionSelected()?'':null"
-                (click)="onContinueClick()">Continue</button>
+      <ion-col class="f-padding-lr-5">
+        <button class="f-btn-action" ion-button block
+
+                [attr.disabled]="!validatePage()?'':null"
+
+                (click)="onContinueClick()"><span loc="Далее" name="Continue">{{locale['Continue']}}</span></button>
       </ion-col>
     </ion-row>
 

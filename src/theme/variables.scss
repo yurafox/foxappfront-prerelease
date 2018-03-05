@@ -22,9 +22,10 @@ $app-direction: ltr;
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
 
-$text-color: #000;
+$text-color: #4e4e4e;
 $background-color: #fff;
 $item-md-detail-push-show: true;
+$item-md-detail-push-color: #888888;
 
 // Named Color Variables
 // --------------------------------------------------
@@ -51,7 +52,8 @@ $colors: (
   orange: #F44336,
   foxclear: white,
   foxbadges: #ffad42,
-  foxrating: #ffb400
+  foxrating: #ffb400,
+  gridlines: #EBEBEC
 );
 
 

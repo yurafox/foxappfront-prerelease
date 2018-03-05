@@ -1,7 +1,14 @@
-import { Component} from '@angular/core';
+import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import {App, NavController, IonicPage} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {AbstractDataRepository} from "../../app/service/index";
+import {SearchService} from '../../app/service/search-service';
+
+export enum PageMode {
+  HomeMode = 1,
+  SearchMode = 2,
+  SearchResultsMode =3
+}
 
 @IonicPage({name: 'HomePage', segment: 'home'})
 @Component({
@@ -9,6 +16,11 @@ import {AbstractDataRepository} from "../../app/service/index";
   templateUrl: 'home.html',
 })
 export class HomePage extends ComponentBase {
+
+//  searchMode = false;
+
+  private _pageMode: PageMode = PageMode.HomeMode;
+  public baseProducts = []; // new Array<Product>();
 
   // list slides for slider
   public slides = [
@@ -23,11 +35,26 @@ export class HomePage extends ComponentBase {
     }
   ];
 
-  public content:string='';
+  @ViewChild('srch')
+  searchButtonControl;
 
-  constructor(public app: App, public nav: NavController,
-              private _repo:AbstractDataRepository) {
+  @ViewChild('resultsList')
+  public resultsList;
+
+  public content: string = '';
+
+  constructor(public app: App, public nav: NavController, private _repo:AbstractDataRepository,
+              public srchService: SearchService, private changeDet: ChangeDetectorRef) {
     super();
+    this.srchService.lastSearch = null;
+ }
+
+  public set pageMode(val: PageMode) {
+    this._pageMode = val;
+  }
+
+  public get pageMode(): PageMode {
+    return this._pageMode;
   }
 
   // view categories
@@ -46,11 +73,32 @@ export class HomePage extends ComponentBase {
   }
 
   onSearchClick() {
-    this.nav.push('SearchPage');
+    if (!(this.pageMode == PageMode.SearchMode)) {
+      this.pageMode = PageMode.SearchMode;
+      this.searchButtonControl.inputMode = true;
+    }
+  }
+
+  deleteSearchItem(event: any, item: string) {
+    event.stopPropagation();
+    this.searchButtonControl.removeSearchItem(item);
+  }
+
+  search(srchString: string): void {
+    this.searchButtonControl.searchByText(srchString);
   }
 
   async ngOnInit() {
     super.ngOnInit();
+    this.doRefresh(0);
+  }
+
+  async doRefresh(refresher) {
     this.content = await this._repo.getPageContent(1);
+    this.baseProducts = await this.srchService.searchResults;
+    if (refresher !== 0) {
+      this.changeDet.detectChanges();
+      refresher.complete();
+    }
   }
 }

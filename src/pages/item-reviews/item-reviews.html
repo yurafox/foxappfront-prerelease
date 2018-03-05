@@ -3,24 +3,29 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid class="f-color-secondary">
+  <ion-grid>
+
+    <ion-row>
+      <ion-col class="f-item-section-header"><span loc="Отзывы покупателей" name="CustomerReviews">{{locale['CustomerReviews']}}</span>
+      </ion-col>
+    </ion-row>
+
     <ion-row>
       <ion-col class="f-item-nopadding-tb">
-        <span class="f-size-large">Customer reviews</span>
-        <p></p>
-        <rating id="rating-large" style="display: inline-block;" [ngModel]="item?.rating"
+        <rating class="rating-large" [ngModel]="item?.rating"
                 readOnly="true">
         </rating>
         &nbsp;<b class="f-size-larger">{{reviews?.length}}</b>
         <br>
       </ion-col>
     </ion-row>
+
     <ion-row>
       <ion-col class="f-item-nopadding-tb">
-        <span class="f-color-blue">{{item?.rating}} of 5 stars</span>
+        <span class="f-color-info">{{item?.rating}} <span loc="из 5 звёзд" name="Of5Stars">{{locale['Of5Stars']}}</span></span>
       </ion-col>
       <ion-col text-end class="f-item-nopadding-tb">
-        <span class="f-color-blue" (click)="onWriteReviewClick()">Write a review</span>
+        <span class="f-color-info" (click)="onWriteReviewClick()"><span loc="Оставить отзыв" name="WriteReview">{{locale['WriteReview']}}</span></span>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -29,12 +34,12 @@
       </ion-col>
 
     </ion-row>
-    <ion-row *ngFor="let rev of reviews" style="border: 1px solid #EBEBEC;">
+    <ion-row *ngFor="let rev of reviews" class="f-border-ligthgray">
       <ion-col>
         <item-review [review]=rev [displayTextLength]="250" [collapsibleMode]="true"></item-review>
         <button ion-button (click)="onShowReviewClick(rev)" class="f-btn-secondary"
                 *ngIf="rev.reviewAnswers.length > 0">
-          Show answers
+          <span loc="Показать ответы" name="ShowAnswers">{{locale['ShowAnswers']}}</span>
         </button>
       </ion-col>
     </ion-row>

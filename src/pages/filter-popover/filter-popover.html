@@ -1,25 +1,24 @@
-<div class="f-light-bkgrd f-grid-border">
+<div class="f-light-bkgrd f-border-ligthgray">
   <ion-grid>
-    <ion-row class="f-size-medium">
+    <ion-row class="f-size-default">
       <ion-col >
-        <b>FILTER</b>
+        <b><span loc="ФИЛЬТР" name="Filter">{{locale['Filter']}}</span></b>
       </ion-col>
       <ion-col col-auto >
-        <span class="f-color-blue f-size-small" (click)="filter.resetFilter()">Clear all</span>
+        <span class="f-color-info f-size-small" (click)="filter.resetFilter()"><span loc="Очистить всё" name="ClearAll">{{locale['ClearAll']}}</span></span>
       </ion-col>
     </ion-row>
   </ion-grid>
 </div>
 
-<!--<span class="f-size-small f-color-secondary">{{cat.filterExpr}}</span>-->
 
 
-<div  class="f-grid-border" *ngFor="let cat of filter.fCategories; let i = index">
+<div  class="f-border-ligthgray" *ngFor="let cat of filter.fCategories; let i = index">
   <ion-grid (click)="toggleOpen(i)">
-    <ion-row class="f-size-medium">
+    <ion-row class="f-size-default">
       <ion-col>
-        <b>{{cat.catName}}</b><br>
-        <span class="f-size-smaller f-color-secondary">{{cat.filterExpr | truncate: 40}}</span>
+        <b>{{locale[cat.catName] ? locale[cat.catName] : cat.catName}}</b><br>
+        <span class="f-size-smaller f-color-secondary">{{locale[cat.filterExpr] ? locale[cat.filterExpr] : cat.filterExpr | truncate: 40}}</span>
       </ion-col>
       <ion-col col-auto>
         <ion-icon item-end name="ios-arrow-up" *ngIf="cat.isOpened"></ion-icon>
@@ -29,11 +28,11 @@
   </ion-grid>
 
   <div class="f-light-bkgrd" *ngIf="cat.isOpened">
-    <div  class="f-grid-border" no-padding *ngFor="let item of cat.items">
+    <div  class="f-border-ligthgray" no-padding *ngFor="let item of cat.items">
       <ion-grid class="f-size-small">
         <ion-row >
           <ion-col padding-left>
-            {{item.name}}
+            {{locale[item.name] ? locale[item.name] : item.name}}
           </ion-col>
           <ion-col col-auto>
             <input type="checkbox" [(ngModel)]="item.isChecked" (click)="onFilterElementClick(item, cat.items, $event)">
@@ -44,53 +43,3 @@
   </div>
 
 </div>
-
-<!--
-
-<div class="f-light-bkgrd" *ngIf="brandsSectionOpened">
-  <div  class="f-grid-border" no-padding *ngFor="let mnf of filter.filteredManufacturers">
-   <ion-grid class="f-size-small">
-     <ion-row >
-       <ion-col padding-left>
-         {{mnf.mnf.name}} <span> (</span>{{mnf.count}})
-       </ion-col>
-       <ion-col col-auto>
-         <input type="checkbox" [(ngModel)]="mnf.isChecked" (click)="filter.onMnfClick(mnf)">
-       </ion-col>
-     </ion-row>
-   </ion-grid>
-  </div>
-</div>
-
-&lt;!&ndash; Props &ndash;&gt;
-<div *ngFor="let p of filter?.filteredProps; let i = index">
-    <div *ngIf="p.prop.name != p.prevPropName" (click)="toggleOpen('props', i)" class="f-grid-border">
-      <ion-grid>
-        <ion-row class="f-size-medium" >
-          <ion-col>
-            <b>{{p.prop.name}}</b>
-          </ion-col>
-          <ion-col col-auto>
-            <ion-icon item-end name="ios-arrow-up" *ngIf="p.isOpened"></ion-icon>
-            <ion-icon item-end name="ios-arrow-down" *ngIf="!p.isOpened"></ion-icon>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </div>
-
-  <div class="f-light-bkgrd" *ngIf="p.isOpened">
-    <div  class="f-grid-border" no-padding>
-      <ion-grid class="f-size-small">
-        <ion-row >
-          <ion-col padding-left>
-            {{p.value}} <span> (</span>{{p.count}})
-          </ion-col>
-          <ion-col col-auto>
-            <input type="checkbox" [(ngModel)]="p.isChecked" (click)="filter?.onPropsClick(p)">
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </div>
-  </div>
-</div>
--->

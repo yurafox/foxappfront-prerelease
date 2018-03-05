@@ -2,26 +2,14 @@ import {AbstractDataRepository} from '../service/index';
 import {RefInjector, LazyLoad, IDTO, System} from '../core/app-core';
 import {QuotationProduct} from './quotation-product';
 import {StorePlace} from './store-place';
+import {LoEntity} from './lo-entity';
 
 @LazyLoad([
   { options: {constructor: QuotationProduct}, action: 'getQuotationProductById', params: ['idQuotationProduct']},
-  { options: {constructor: StorePlace}, action: 'getStorePlaceById', params: ['idStorePlace']}
+  { options: {constructor: StorePlace}, action: 'getStorePlaceById', params: ['idStorePlace']},
+  { options: {constructor: LoEntity}, action: 'getLoEntitiyById', params: ['idLoEntity']}
+
 ])
-
-/*
-export class ClientOrderProducts extends ClientOrderProductsDTO {
-  private _repo: AbstractDataRepository;
-
-
-  constructor ( ){
-    super();
-    this._repo = RefInjector.pull(AbstractDataRepository);
-  }
-
-
-}
-*/
-
 
 export class ClientOrderProducts implements IDTO {
   private _repo: AbstractDataRepository;
@@ -31,9 +19,10 @@ export class ClientOrderProducts implements IDTO {
       idStorePlace: this.idStorePlace, idLoEntity: this.idLoEntity, loTrackTicket: this.loTrackTicket,
       loDeliveryCost: this.loDeliveryCost, loDeliveryCompleted: this.loDeliveryCompleted,
       loEstimatedDeliveryDate: this.loEstimatedDeliveryDate, loDeliveryCompletedDate: this.loDeliveryCompletedDate,
-      errorMessage: this.errorMessage, warningMessage: this.warningMessage};
+      errorMessage: this.errorMessage, warningMessage: this.warningMessage,  payPromoCode: this.payPromoCode,
+      payPromoCodeDiscount: this.payPromoCodeDiscount, payBonusCnt: this.payBonusCnt, payPromoBonusCnt: this.payPromoBonusCnt,
+      earnedBonusCnt: this.earnedBonusCnt, warningRead: this.warningRead};
   }
-
 
   constructor (
     public id?: number,
@@ -49,7 +38,13 @@ export class ClientOrderProducts implements IDTO {
     public loEstimatedDeliveryDate?: Date,
     public loDeliveryCompletedDate?: Date,
     public errorMessage?: string,
-    public warningMessage?: string
+    public warningMessage?: string,
+    public payPromoCode?: string,
+    public payPromoCodeDiscount?: number,
+    public payBonusCnt?: number,
+    public payPromoBonusCnt?: number,
+    public earnedBonusCnt?: number,
+    public warningRead?: boolean
   ){ this._repo = RefInjector.pull(AbstractDataRepository) }
 
 

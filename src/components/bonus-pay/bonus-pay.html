@@ -1,0 +1,42 @@
+<ion-row class="f-padding-lr-5 f-size-larger">
+
+  <ion-grid class="f-border-ligthgray">
+    <ion-row>
+      <ion-col class="f-size-default f-color-info">
+        <span loc="Вы можете использовать" name="CouldPayUpTo">{{locale['CouldPayUpTo']}}</span> <span class="f-color-red"><b>{{cart.availBonus}}</b></span> <span loc="бонусов для этой покупки" name="BonusesForThisPurchase">{{locale['BonusesForThisPurchase']}}</span>.
+        <br>
+        <span *ngIf="cart.availPromoBonus > 0" loc='Выберите "Иcпользовать акционные бонусы", если Вы хотите заплатить бонусами' name="TickPayBonuses">{{locale['TickPayBonuses']}}</span>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col class="f-padding-t-10">
+        <span><span loc="Изпользовать бонусы" name="PayBonuses">{{locale['PayBonuses']}}</span></span>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <input type="number" [(ngModel)]="cart.bonus" placeholder="{{locale['EnterBonusQuantity'] ? locale['EnterBonusQuantity'] : 'Введите количество бонусов'}}" name="bonus" id="bonus"
+               pattern="[0-9]+(\.[0-9][0-9]?)?"
+               (keyup)="bonusInputStream$.next($event.target.value)"
+               #bonus="ngModel">
+        <div *ngIf="!bonus.valid && bonus.touched">
+                  <span *ngIf="bonus.hasError('pattern')"
+                        class="f-color-validation-error"><span loc="Допустимы только цифры" name="OnlyDigits">{{locale['OnlyDigits']}}</span></span>
+        </div>
+      </ion-col>
+    </ion-row>
+
+
+    <ion-row *ngIf="cart.availPromoBonus > 0">
+      <ion-col class="f-padding-tb-10">
+        <div class="pure-checkbox">
+          <input type="checkbox" [checked]="cart.payByPromoBonus" name="payByPromoBonus" id="payByPromoBonus"
+                 (change)="cart.payByPromoBonus = !cart.payByPromoBonus">
+          <label for="payByPromoBonus"><span loc="Изпользовать акционные бонусы" name="PayPromotionalBonuses">{{locale['PayPromotionalBonuses']}}</span></label>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-row>

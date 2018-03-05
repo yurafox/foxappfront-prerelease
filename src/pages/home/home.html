@@ -1,10 +1,36 @@
 <ion-header>
-  <main-toolbar></main-toolbar>
-  <search-btn (click)="onSearchClick()"></search-btn>
+  <main-toolbar [host]="this"></main-toolbar>
+  <search-btn #srch [hostPage]="this" (click)="onSearchClick()"></search-btn>
 </ion-header>
 
 <ion-content>
-  <div *ngIf=content>
+  <ion-refresher (ionRefresh)="doRefresh($event)" [snapbackDuration]="1000" [closeDuration]="1000">
+    <ion-refresher-content
+      pullingIcon="ios-refresh-outline"
+      refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="content && (pageMode === 1)">
       <html-outlet [html]="content" [context]="this"></html-outlet>
   </div>
+
+  <div *ngIf="pageMode === 2">
+    <ion-item *ngFor="let sItem of searchButtonControl.tmpSearchArray; let i=index" (click)="search(sItem)">
+      <ion-icon name="md-close" item-left color="gray" (click)="deleteSearchItem($event, sItem)"></ion-icon>
+      <div>
+        {{sItem}}
+      </div>
+      <ion-icon name="arrow-up-left" item-right color="gray"></ion-icon>
+    </ion-item>
+  </div>
+
+  <div *ngIf="pageMode === 3">
+    <progress-bar [active]="srchService.progressBarStatus"></progress-bar>
+    <div class="f-color-secondary f-padding-lr-10 f-padding-t-10" *ngIf="(baseProducts) && (baseProducts.length == 0)">
+      <span loc="Ваш поиск" name="YourSearch">{{locale['YourSearch']}}</span> "{{srchService.lastSearch}}" <span loc="" name="DidNotMatch">{{locale['DidNotMatch']}}</span>
+    </div>
+    <items-list [products]="baseProducts" *ngIf="(baseProducts) && (baseProducts.length > 0)"></items-list>
+  </div>
+
 </ion-content>

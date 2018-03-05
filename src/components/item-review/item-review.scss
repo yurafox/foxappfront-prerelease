@@ -6,6 +6,7 @@ item-review {
     -webkit-margin-after: 0em;
 
     &.rating li {
+      display: inline-block;
       padding: 0px 0px !important;
       background: none;
       color: color($colors, foxrating);

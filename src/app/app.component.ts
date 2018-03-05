@@ -1,10 +1,14 @@
-import {Component, ViewChild} from '@angular/core';
-import {Nav, Platform, MenuController} from 'ionic-angular';
-import {StatusBar} from '@ionic-native/status-bar';
+import {Component, ViewChild, OnDestroy, AfterViewInit} from '@angular/core';
+import {Nav, Platform, MenuController, AlertController} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {AbstractDataRepository} from "./service/index";
 import {ComponentBase} from "../components/component-extension/component-base";
 import {AppAvailability} from "@ionic-native/app-availability";
+import {Device} from '@ionic-native/device';
+import {DeviceData} from "./model/index";
+import {System} from "./core/app-core";
+import {CartService} from "./service/cart-service";
+import {ConnectivityService} from "./service/connectivity-service";
 
 export interface PageInterface {
   title: string;
@@ -15,30 +19,32 @@ export interface PageInterface {
 }
 
 declare var ExoPlayer: any;
+declare var FCMPlugin: any;
 
 @Component({
   templateUrl: 'app.html'
 })
-export class FoxApp extends ComponentBase {
+export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
   // the root nav is a child of the root app component
   // @ViewChild(Nav) gets a reference to the app's root nav
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = 'HomePage';
 
-  readonly LOCAL_VIDEO_URL = 'file:///android_asset/www/assets/video/'; // Default path if file located in assets/video
-  videoFileName = 'video';  // Set the name of video file
+  // Default path if file located in assets/video
+  readonly LOCAL_VIDEO_URL = 'file:///android_asset/www/assets/video/';
+  // Set name of the video file
+  videoFileName = 'video';
 
   // Parameters of the external app
   scheme: string;
   appUrl: string;
-  userToken: string;
+  _token: string;
 
   appPages: PageInterface[] = [
     {title: 'Главная', name: 'Home', component: 'HomePage', index: 0, icon: 'ios-home-outline'},
     {title: 'Категории', name: 'Categories', component: 'CategoriesPage', index: 1, icon: 'ios-list-outline'},
-    /*{title: 'Ваши Заказы', name: 'Orders', component: 'MyOrderPage', index: 2, icon: 'ios-cart-outline'},*/
-    {title: 'Профиль', name: 'Account', component: 'AccountMenuPage', index: 3, icon: 'ios-person-outline'},
+    {title: 'Профиль', name: 'Account', component: 'AccountMenuPage', index: 2, icon: 'ios-person-outline'},
   ];
   infoPages: PageInterface[] = [
     {title: 'Магазины на карте', name: 'Map', component: 'MapPage', index: 0, icon: 'ios-map-outline'},
@@ -47,38 +53,75 @@ export class FoxApp extends ComponentBase {
     {title: 'Поддержка', name: 'Support', component: 'SupportPage', index: 3, icon: 'ios-text-outline'}
   ];
 
-  constructor(private platform: Platform, statusBar: StatusBar,
-              private splashScreen: SplashScreen, public menuCtrl: MenuController,
-              private repo: AbstractDataRepository, private appAvailability: AppAvailability) {
+  private noveltyPushEventDescriptor: any;
+  private actionPushEventDescriptor: any;
+
+  constructor(private platform: Platform, private alertCtrl: AlertController, private splashScreen: SplashScreen,
+              public menuCtrl: MenuController, private repo: AbstractDataRepository,
+              private appAvailability: AppAvailability, private device: Device, private cartService: CartService,
+              private connService: ConnectivityService) {
     super();
-    //this.rootPage = HomePage;
-    platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-    });
     // Setting up external app params
+    // TODO: Change these params to Foxtrot game's
     this.scheme = 'com.facebook.katana';
     this.appUrl = 'fb://page/';
-    this.userToken = '192385130800097';
+    this._token = '192385130800097';
   }
 
-  ionViewDidLoad() {
+  async ngOnInit() {
+    super.ngOnInit();
+    this.connService.nav = this.nav;
+    if (!this.userService.isAuth /*&& this.userService.isNotSignOutSelf()*/) {
+      await this.userService.shortLogin();
+    }
+
+    /**
+     * Subscribing to the push events and putting our dynamic components to special pushStore dictionary in PushContainer
+     */
+    this.noveltyPushEventDescriptor = this.evServ.events['noveltyPushEvent'].subscribe(data => {
+      System.PushContainer.pushStore[`novelty${data.innerId}`] = data;
+    });
+    this.actionPushEventDescriptor = this.evServ.events['actionPushEvent'].subscribe(data => {
+      System.PushContainer.pushStore[`action${data.innerId}`] = data;
+    });
+
+    if (this.device.cordova) {
+      // Getting FCM device token and send device data
+      FCMPlugin.getToken((token) => {
+        if (token) {
+          // Collecting and send data about device including device FCM token
+          this.collectAndSendDeviceData(token).catch((err) => console.log(`Sending device's data err: ${err}`));
+        }
+      });
+      // Subscribing this device to the main topic to send PUSH-notifications to this topic
+      FCMPlugin.subscribeToTopic('main');
+      // Handling incoming PUSH-notifications
+      FCMPlugin.onNotification((data) => {
+        if (data.wasTapped) {
+          //Notification was received on device tray and tapped by the user.
+          this.pushNotificationHandling(data);
+        } else {
+          //Notification was received in foreground. Maybe the user needs to be notified.
+          this.pushNotificationHandling(data);
+        }
+      });
+    }
+  }
+
+  ngAfterViewInit() {
     this.platform.ready().then(() => {
       this.splashScreen.hide();
     });
   }
 
-  async ngOnInit() {
-    super.ngOnInit();
-    if (!this.userService.isAuth && this.userService.isNotSignOutSelf()) {
-      await this.userService.shortLogin();
-    }
+  ngOnDestroy() {
+    this.noveltyPushEventDescriptor.unsubscribe();
+    this.actionPushEventDescriptor.unsubscribe();
   }
 
   openPage(page: PageInterface) {
-
     if ((this.userService.isAuth === false) && (page.component === 'AccountMenuPage')) {
-      this.nav.push('LoginPage').catch((err: any) => {
+      this.nav.push('LoginPage', {continuePage: 'AccountMenuPage'}).catch((err: any) => {
         console.log(`Couldn't navigate to LoginPage: ${err}`);
       });
     } else {
@@ -92,7 +135,7 @@ export class FoxApp extends ComponentBase {
         case 'About': {
           try {
             this.playVideo();
-          } catch(err) {
+          } catch (err) {
             console.log(err);
           }
           break;
@@ -100,7 +143,7 @@ export class FoxApp extends ComponentBase {
         case 'Game': {
           try {
             this.openExternalApp();
-          } catch(err) {
+          } catch (err) {
             console.log(err);
           }
           break;
@@ -126,7 +169,7 @@ export class FoxApp extends ComponentBase {
   }
 
   // To play video when device is ready
-  playVideo() {
+  private playVideo() {
     this.platform.ready().then(() => {
       // ExoPlayer
       this.playExoPlayer();
@@ -136,7 +179,7 @@ export class FoxApp extends ComponentBase {
   }
 
   // Function to play Google's ExoPlayer
-  playExoPlayer() {
+  private playExoPlayer() {
     let successCallback = json => {
       // Exit player on phones BACK button
       if (json.eventType === 'KEY_EVENT' && json.eventKeycode === 'KEYCODE_BACK') {
@@ -182,23 +225,23 @@ export class FoxApp extends ComponentBase {
   }
 
   // Opens external application
-  openExternalApp() {
+  private openExternalApp() {
     let scheme: string = this.scheme;
     let appUrl: string = this.appUrl;
-    let userToken: string = this.userToken;
+    let token: string = this._token;
     this.platform.ready().then(() => {
       this.appAvailability.check(scheme).then(
-        ()=> {  // Success callback
-          window.open(appUrl + userToken, '_system', 'location=no');
+        () => {  // Success callback
+          window.open(appUrl + token, '_system', 'location=no');
           console.log('App is available');
         },
         () => {  // Error callback
-          window.open('https://www.facebook.com/' + userToken, '_system', 'location=yes');
+          window.open('https://www.facebook.com/' + token, '_system', 'location=yes');
           console.log('App is not installed');
           return;
         })
     }).catch((err) => {
-      window.open('https://www.facebook.com/' + userToken, '_system', 'location=yes');
+      window.open('https://www.facebook.com/' + token, '_system', 'location=yes');
       console.log(`Error occurred while opening external app: ${err}`);
       return;
     });
@@ -209,6 +252,116 @@ export class FoxApp extends ComponentBase {
       this.nav.push('LoginPage').catch((err: any) => {
         console.log(`Couldn't navigate to LoginPage: ${err}`);
       });
+    }
+  }
+
+  // Collects and sends device's data about model, operation system + it's version and screen size, and FCM device token
+  private async collectAndSendDeviceData(pushDeviceToken: any) {
+    let model = this.device.model;
+    let os = this.device.platform + ' ' + this.device.version;
+    let height = this.platform.height();
+    let width = this.platform.width();
+    let userToken = this.userService.token;
+    let deviceData = new DeviceData(model, os, height, width, pushDeviceToken, userToken);
+    this.repo.postDeviceData(deviceData).catch(err => {
+      console.log(`Couldn't send device data: ${err}`);
+    });
+  }
+
+  // Handling incoming PUSH-notifications
+  private async pushNotificationHandling(data) {
+    let target = data.target;
+    let noveltyTitle = this.locale['NoveltyTitle'];
+    let noveltyMessage = this.locale['NoveltyMessage'];
+    let promoTitle = this.locale['PromoTitle'];
+    let promoMessage = this.locale['PromoMessage'];
+    let promocodeTitle = this.locale['PromocodeTitle'];
+    let promocodeMessage = this.locale['PromocodeMessage'];
+    let cancel = this.locale['Cancel'];
+    switch (target) {
+      case 'novelty': {
+        if (data.id) {
+          let alert = this.alertCtrl.create({
+            title: noveltyTitle,
+            message: noveltyMessage,
+            buttons: [
+              {
+                text: 'OK',
+                handler: () => {
+                  let noveltySketch = System.PushContainer.pushStore[`novelty${data.id}`];
+                  if (noveltySketch.novelty && noveltySketch.product) {
+                    noveltySketch.openNovelty();
+                  }
+                }
+              },
+              {
+                text: cancel
+              }
+            ]
+          });
+          alert.present().catch((err) => console.log(`Alert error: ${err}`));
+        }
+        break;
+      }
+      case 'action' || 'promotion' || 'promo': {
+        if (data.id) {
+          let alert = this.alertCtrl.create({
+            title: promoTitle,
+            message: promoMessage,
+            buttons: [
+              {
+                text: 'OK',
+                handler: () => {
+                  let actionSketch = System.PushContainer.pushStore[`action${data.id}`];
+                  if (actionSketch.action) {
+                    actionSketch.openAction();
+                  }
+                }
+              },
+              {
+                text: cancel
+              }
+            ]
+          });
+          alert.present().catch((err) => console.log(`Alert error: ${err}`));
+        }
+        break;
+      }
+      case 'promocode': {
+        if (data.promocode) {
+          this.cartService.promoCode = data.promocode;
+          if (this.cartService.cartItemsCount > 0) {
+            this.cartService.calculateCart().catch((err) => {
+              console.log(`Couldn't get discount:${err}`);
+            });
+          }
+          this.evServ.events['cartUpdateEvent'].emit();
+          this.evServ.events['cartItemsUpdateEvent'].emit();
+          let alert = this.alertCtrl.create({
+            title: promocodeTitle,
+            message: promocodeMessage,
+            buttons: [
+              {
+                text: 'OK',
+                handler: () => {
+                  this.nav.push('CartPage').catch((err: any) => {
+                    console.log(`Couldn't navigate to CartPage: ${err}`);
+                  })
+                }
+              },
+              {
+                text: cancel
+              }
+            ]
+          });
+          alert.present().catch((err) => console.log(`Alert error: ${err}`));
+        }
+        break;
+      }
+      default: {
+        console.log('The target is not valid');
+        break;
+      }
     }
   }
 }

@@ -1,4 +1,5 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import { LazyLoadImagesModule } from 'ngx-lazy-load-images';
 import {SearchBtnComponent} from './search-btn/search-btn';
 import {IonicModule} from 'ionic-angular';
 import {MainToolbarComponent} from './main-toolbar/main-toolbar';
@@ -20,6 +21,15 @@ import {HtmlOutlet} from './html-outlet/html-outlet';
 import {ShippingAddressComponent} from './shipping-address/shipping-address';
 import { PromoCodeComponent } from './promo-code/promo-code';
 import { NoveltySketchComponent } from './novelty-sketch/novelty-sketch';
+import { CreditComponent } from './credit/credit';
+import { CreditBriefComponent } from './credit-brief/credit-brief';
+import { BonusComponent } from './bonus/bonus';
+import { BonusPayComponent } from './bonus-pay/bonus-pay';
+import { ErrorComponent } from './error/error';
+import { PollBannerComponent } from './poll-banner/poll-banner';
+import { GridHrComponent } from './grid-hr/grid-hr';
+import { ProgressBarComponent } from './progress-bar/progress-bar';
+import { ItemSimpleComponent } from './item-simple/item-simple';
 
 @NgModule({
   declarations: [
@@ -40,18 +50,28 @@ import { NoveltySketchComponent } from './novelty-sketch/novelty-sketch';
     HtmlOutlet,
     ShippingAddressComponent,
     PromoCodeComponent,
-    NoveltySketchComponent
+    NoveltySketchComponent,
+    CreditComponent,
+    CreditBriefComponent,
+    BonusComponent,
+    BonusPayComponent,
+    ErrorComponent,
+    PollBannerComponent,
+    GridHrComponent,
+    ProgressBarComponent,
+    ItemSimpleComponent
   ],
   entryComponents: [
     CustomPopupComponent,
     DropdownViewComponent,
-    DropdownListComponent
+    DropdownListComponent,
   ],
 
   imports: [
     IonicModule,
     PipesModule,
-    Ionic2RatingModule
+    Ionic2RatingModule,
+    LazyLoadImagesModule
   ],
   exports: [
     SearchBtnComponent,
@@ -71,7 +91,16 @@ import { NoveltySketchComponent } from './novelty-sketch/novelty-sketch';
     HtmlOutlet,
     ShippingAddressComponent,
     PromoCodeComponent,
-    NoveltySketchComponent
+    NoveltySketchComponent,
+    CreditComponent,
+    CreditBriefComponent,
+    BonusComponent,
+    BonusPayComponent,
+    ErrorComponent,
+    PollBannerComponent,
+    GridHrComponent,
+    ProgressBarComponent,
+    ItemSimpleComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

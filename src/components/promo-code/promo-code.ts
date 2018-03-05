@@ -9,12 +9,20 @@ import {AbstractDataRepository} from '../../app/service/repository/abstract/abst
 })
 export class PromoCodeComponent extends ComponentBase {
 
+  errorText: string;
+
   constructor(public cart: CartService, public repo: AbstractDataRepository) {
     super();
   }
 
+  ngOnInit() {
+    super.ngOnInit();
+    this.errorText = this.locale['ErrorText'];
+  }
+
   onApplyPromoCodeClick() {
-    console.log('ApplyPromoCode click.. ');
+    this.evServ.events['cartUpdateEvent'].emit();
+    //this.cart.getPromocodeDiscount();
   }
 
 }

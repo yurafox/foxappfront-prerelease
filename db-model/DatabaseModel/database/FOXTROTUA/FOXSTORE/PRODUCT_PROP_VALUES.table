@@ -48,6 +48,21 @@
       <notNull>true</notNull>
     </column>
     <column>
+      <name>ID_MEASURE_UNIT</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">18</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+    </column>
+    <column>
       <name>PROP_VALUE_STR</name>
       <dataTypeUsage>
         <attributeValues>
@@ -167,6 +182,32 @@
         <name>PROP_ENUMS_LISTS_PK</name>
         <parent class="oracle.javatools.db.NameBasedID">
           <name>PROP_ENUMS_LISTS</name>
+          <schemaName>FOXSTORE</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>FOXSTORE</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <name>PRODUCT_PROP_VALUES_FK2</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.NameBasedID">
+          <name>ID_MEASURE_UNIT</name>
+          <parent class="oracle.javatools.db.NameBasedID">
+            <name>PRODUCT_PROP_VALUES</name>
+            <schemaName>FOXSTORE</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>FOXSTORE</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <referenceID class="oracle.javatools.db.NameBasedID">
+        <name>MEASURE_UNIT_PK</name>
+        <parent class="oracle.javatools.db.NameBasedID">
+          <name>MEASURE_UNIT</name>
           <schemaName>FOXSTORE</schemaName>
           <type>TABLE</type>
         </parent>

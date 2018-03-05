@@ -11,13 +11,15 @@ export class Product {
   constructor(public id?: number,
               public name?: string,
               public price?: number,
+              public oldPrice?: number,
+              public bonuses?: number,
               public manufacturerId?: number,
               public Props?: ProductPropValue[],
               public imageUrl?: string,
               public rating: number = 0,
               public recall: number = 0,
               public supplOffers: number = 1,
-              public description?: string,
+              //public description?: string,
               public slideImageUrls?: string[],
               public barcode?: string
   )  { this._repo = RefInjector.pull(AbstractDataRepository);}

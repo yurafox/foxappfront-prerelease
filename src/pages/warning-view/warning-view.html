@@ -1,0 +1,29 @@
+<ion-header>
+  <main-toolbar [showCartIcon]="false"></main-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid>
+
+    <ion-row>
+      <ion-col class="f-section-header"><span loc="Сообщения о товарах в Вашей корзине" name="Messages">{{locale['Messages']}}</span>
+      </ion-col>
+    </ion-row>
+<!--
+    && (i.warningMessage)
+
+ -->
+    <div *ngIf="dataLoaded">
+      <div *ngFor="let i of warnArr;">
+        <ion-row class="f-padding-lr-10 f-padding-t-10">
+          <ion-col>
+            <span class="f-size-larger">{{i.product.name}}:</span>
+            <br>
+            <div [innerHTML]="i.warningMessage"></div>
+            <br>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+
+  </ion-grid>
+</ion-content>

@@ -4,16 +4,16 @@
 
 
 <ion-content>
-  <ion-grid class="f-item-nopadding-tb f-color-secondary">
+  <ion-grid class="f-item-nopadding-tb">
     <ion-row padding>
       <ion-col>
-        <b><span class="f-size-large">Select a favorite store</span></b>
+        <b><span class="f-size-large"><span loc="Выберите избранный магазин" name="SelectFavStore">{{locale['SelectFavStore']}}</span></span></b>
       </ion-col>
     </ion-row>
-    <div *ngIf="(dataLoaded === true) && stores && (stores.length > 0)">
+    <div *ngIf="stores && (stores.length > 0)">
       <ion-row *ngFor="let store of stores">
 
-        <ion-grid style="border: 1px solid #EBEBEC;">
+        <ion-grid class="f-border-ligthgray">
           <ion-row (click)="onIsPrimaryClick(store.store)">
             <ion-col style="padding: 10px 5px;" class="f-size-larger">
                 <span *ngIf="store?.store.address">
@@ -34,21 +34,25 @@
           <div *ngIf="store.store.isPrimary">
             <ion-row>
               <ion-col>
-                <button class="f-btn-add-cart" ion-button block (click)="navToMap(store.store, store.city)">Show on map</button>
+                <button class="f-btn-action" ion-button block (click)="navToMap(store.store, store.city)"><span loc="Показать на карте" name="ShowOnMap">{{locale['ShowOnMap']}}</span></button>
               </ion-col>
               <ion-col *ngIf="store.hasReviews === true">
-                <button class="f-btn-add-cart" ion-button block (click)="onShowReviewsClick(store.store)">Reviews</button>
+                <button class="f-btn-action" ion-button block (click)="onShowReviewsClick(store.store)"><span loc="Отзывы" name="Reviews">{{locale['Reviews']}}</span></button>
               </ion-col>
               <ion-col *ngIf="store.hasReviews === false">
-                <button class="f-btn-add-cart" ion-button block (click)="onWriteReviewClick(store.store)">Write review</button>
+                <button class="f-btn-action" ion-button block (click)="onWriteReviewClick(store.store)"><span loc="Написать отзыв" name="WriteReview">{{locale['WriteReview']}}</span></button>
               </ion-col>
             </ion-row>
           </div>
         </ion-grid>
       </ion-row>
     </div>
+    <div *ngIf="!stores || (stores.length === 0)">
+      <ion-row padding>
+        <ion-col>
+          <span class="f-size-large"><span loc="Вы пока не имеете избранных магазинов" name="NoFavStoresYet">{{locale['NoFavStoresYet']}}</span><br/><span loc="Или они ещё загружаются" name="OrLoading">{{locale['OrLoading']}}</span></span>
+        </ion-col>
+      </ion-row>
+    </div>
   </ion-grid>
-  <div *ngIf="(dataLoaded === false) || !stores">
-    <span class="f-size-large">You have no favorite stores yet<br/>Or they are loading</span>
-  </div>
 </ion-content>

@@ -1,0 +1,46 @@
+<hr>
+<ion-row class="f-padding-lr-5">
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12>
+        <span class="f-size-small"><span loc="Максимальный срок кредита - до" name="MaxLoanPeriod">{{locale['MaxLoanPeriod']}}</span> <b>{{cProduct.creditProduct.maxTerm}}</b> <span loc="месяцев" name="months">{{locale['months']}}</span>;</span>
+        <span class="f-size-small" *ngIf="cProduct.creditProduct.sGracePeriod">
+        <span loc="Льготный период" name="GracePeriod">{{locale['GracePeriod']}}</span> – <b>{{cProduct.creditProduct.sGracePeriod}}</b> <span loc="месяцев" name="months">{{locale['months']}}</span>;
+        </span>
+        <span class="f-size-small">
+        <span loc="Первый взнос" name="FirstPayment">{{locale['FirstPayment']}}</span> – <b>
+          <span *ngIf="!cProduct.creditProduct.firstPay; else elseBlock">0</span>
+          <ng-template #elseBlock>{{cProduct.creditProduct.firstPay}}</ng-template>
+        </b>%;
+        </span>
+        <span class="f-size-small"><span loc="Ежемесячная комиссия" name="MonthlyFee">{{locale['MonthlyFee']}}</span>
+           <span *ngIf="cProduct.creditProduct.sGracePeriod && !(cProduct.creditProduct.sGracePeriod == 0)"> <span loc="после льготного периода" name="AfterGracePeriod">{{locale['AfterGracePeriod']}}</span> </span>
+           – <b>{{cProduct.creditProduct.monthCommissionPct}}</b>% <span loc="от суммы кредита" name="OfLoanAmount">{{locale['OfLoanAmount']}}</span>; </span>
+        <span class="f-size-small" *ngIf="cProduct.creditProduct.maxAmt">
+        <span loc="Максимальная сумма кредита" name="MaxLoanAmount">{{locale['MaxLoanAmount']}}</span> – <b>{{cProduct.creditProduct.maxAmt | localeCurrency:userService.currency}}</b>;
+        </span>
+        <span class="f-size-small" *ngIf="cProduct.creditProduct.yearPct">
+        <span loc="Годовая % ставка" name="AnnualRate">{{locale['AnnualRate']}}</span> – <b>{{cProduct.creditProduct.yearPct}}</b>%
+        </span>
+
+        <hr>
+        <span><span loc="Срок кредита, мес" name="TermOfLoan">{{locale['TermOfLoan']}}</span></span>
+        <dropdown-list *ngIf="partsPmtArray && (partsPmtArray.length > 0)"
+                       [reference]="cProduct"
+                       [store]="partsPmtArray"
+                       [afterUpdate] = "onAfterCreditSelect"
+                       [options]="{popupHeader: locale['MonthsPopHeader']?locale['MonthsPopHeader']:'Месяцев', buttonClass:'f-drop-button-block'}"
+                       [map]="{valueName:'clMonths',displayName:'clMonths'}">
+        </dropdown-list>
+        <span *ngIf="cProduct.clMonths"><hr><span loc="Ежемесячный платеж" name="MonthlyPayment">{{locale['MonthlyPayment']}}</span> --
+          <b> <span class="f-color-green">
+            {{cart.calculateLoan(loanAmount, cProduct.clMonths,
+                  cProduct.creditProduct.monthCommissionPct, cProduct.creditProduct.sGracePeriod)
+                  | localeCurrency:userService.currency}}
+          </span></b>
+        </span>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-row>

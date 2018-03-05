@@ -3,23 +3,25 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid class="f-color-secondary">
+  <ion-grid>
     <ion-row>
       <ion-col col-auto>
         <div>
-          <img class="f-img-item" width="60" height="60" [src]="product?.imageUrl">
+          <img *ngIf="product?.imageUrl" class="f-img-item" width="60" height="60" [src]="product?.imageUrl">
+          <img *ngIf="!product?.imageUrl" class="f-img-item" width="60" height="60" src="assets/imgs/nophoto.png">
+
         </div>
       </ion-col>
       <ion-col no-padding>
         <ion-grid class="f-item-nopadding">
           <ion-row>
             <ion-col no-padding class="f-item-padding-bottom">
-              <span class="f-size-medium">{{product?.name | truncate : 40 }}</span>
+              {{product?.name | truncate : 40 }}
             </ion-col>
           </ion-row>
           <ion-row>
-            <ion-col nowrap no-padding class="f-item-padding-bottom f-size-medium">
-              <product-rating id="rating-large" [product]=product></product-rating>
+            <ion-col nowrap no-padding class="f-item-padding-bottom">
+              <product-rating class="rating-large" [product]=product></product-rating>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -29,7 +31,7 @@
   <hr>
 
   <div *ngFor="let quote of quotes">
-    <ion-grid class="f-item-nopadding-tb f-color-secondary">
+    <ion-grid class="f-item-nopadding-tb">
       <ion-row>
         <ion-col class="f-item-nopadding f-item-padding-left">
 
@@ -42,7 +44,7 @@
 
             <ion-row *ngIf="quote?.freeShipping">
               <ion-col no-padding>
-                <b><span class="f-item-nopadding f-size-small">FREE shipping</span></b>
+                <b><span class="f-item-nopadding f-size-small"><span loc="БЕСПЛАТНАЯ доставка" name="FreeShipping">{{locale['FreeShipping']}}</span></span></b>
               </ion-col>
             </ion-row>
 
@@ -54,16 +56,16 @@
             <ion-row>
               <ion-col no-padding col-auto>
                 <b>
-                  <span class="f-item-nopadding f-size-small">{{quote?.quotation?.supplier?.positiveFeedbackPct}}% positive</span>
+                  <span class="f-item-nopadding f-size-small">{{quote?.quotation?.supplier?.positiveFeedbackPct}}% <span loc="положительных" name="Positive">{{locale['Positive']}}</span></span>
                 </b>
-                <span class="f-item-nopadding f-size-smaller">  ({{quote?.quotation?.supplier?.refsCount}} seller ratings)</span>
+                <span class="f-item-nopadding f-size-smaller">  ({{quote?.quotation?.supplier?.refsCount}} <span loc="рейтинг продавца" name="SellerRatings">{{locale['SellerRatings']}}</span>)</span>
               </ion-col>
             </ion-row>
 
           </ion-grid>
         </ion-col>
         <ion-col text-end col-auto>
-          <button class="f-btn-add-cart" ion-button (click)="onAddToCart(quote, quote.price)">Add to Cart</button>
+          <button class="f-btn-action" ion-button (click)="onAddToCart(quote, quote.price)"><span loc="Добавить в корзину" name="AddToCart">{{locale['AddToCart']}}</span></button>
         </ion-col>
       </ion-row>
 

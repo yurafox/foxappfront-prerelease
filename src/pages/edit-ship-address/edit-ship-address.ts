@@ -38,21 +38,26 @@ export class EditShipAddressPage extends ComponentBase  {
     this.originalAddr = this.navParams.data.data;
 
     if (this.mode === 'edit') {
+      this.shippingAddress.id = this.originalAddr.id;
+      this.shippingAddress.idClient = this.originalAddr.idClient;
       this.shippingAddress.recName = this.originalAddr.recName;
       this.shippingAddress.street = this.originalAddr.street;
       this.shippingAddress.bldApp = this.originalAddr.bldApp;
       this.shippingAddress.city = this.originalAddr.city;
+      this.shippingAddress.lat = this.originalAddr.lat;
+      this.shippingAddress.lng = this.originalAddr.lng;
+      this.shippingAddress.isPrimary = this.originalAddr.isPrimary;
       this.shippingAddress.zip = this.originalAddr.zip;
       this.shippingAddress.phone = this.originalAddr.phone;
       this.shippingAddress.idCountry = this.originalAddr.idCountry;
     }
   }
 
-  saveAddress() {
+  async saveAddress() {
     if (!this.addressEditForm.valid) {
       let alert = this.alertCtrl.create({
-        title: 'Error',
-        message: 'Please review your data!',
+        title: this.locale['Error'],
+        message: this.locale['ReviewYourData'],
         buttons: [
           {
             text: 'OK',
@@ -67,20 +72,17 @@ export class EditShipAddressPage extends ComponentBase  {
     if (this.mode === 'create') {
       this.addressSelectorPage.shippingAddresses.forEach(i => i.isPrimary = false);
       this.shippingAddress.isPrimary = true;
-      this.addressSelectorPage.shippingAddresses.push(this.shippingAddress);
+      let addr = await this.repo.createClientAddress(this.shippingAddress);
+
+      this.addressSelectorPage.shippingAddresses.push(addr);
       this.navCtrl.pop().catch(err => {
-        console.log(`Error while going back: ${err}`)
+        console.log(`Error navigating back: ${err}`)
       });
     } else if (this.mode === 'edit') {
-      this.originalAddr.recName = this.shippingAddress.recName;
-      this.originalAddr.street = this.shippingAddress.street;
-      this.originalAddr.bldApp = this.shippingAddress.bldApp;
-      this.originalAddr.city = this.shippingAddress.city;
-      this.originalAddr.zip = this.shippingAddress.zip;
-      this.originalAddr.phone = this.shippingAddress.phone;
-      this.originalAddr.idCountry = this.shippingAddress.idCountry;
+      const addr: ClientAddress = await this.repo.saveClientAddress(this.shippingAddress);
+      Object.assign(this.originalAddr, addr);
       this.navCtrl.pop().catch(err => {
-        console.log(`Error while going back: ${err}`)
+        console.log(`Error navigating back: ${err}`)
       });
     }
 

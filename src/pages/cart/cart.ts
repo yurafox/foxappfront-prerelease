@@ -24,35 +24,56 @@ export class CartPage extends ComponentBase {
     this.cart.removeItem(itemIndex);
   }
 
+  async onShowWarningsClick() {
+    this.navCtrl.push('WarningViewPage');
+  }
+
+  get containsWarnings(): boolean {
+    let res = false;
+    for (let i of this.cart.orderProducts) {
+      res = (!(i.warningRead) && !(i.warningMessage == null));
+      if (res)
+        break;
+    }
+    return res;
+  }
+
+  validateStep(): boolean {
+    // Proceed to checkout rule
+    let err = this.cart.cartErrors;
+    if (err) {
+      let alert = this.alertCtrl.create({
+        message: this.locale['CartAlertMessage'],
+        buttons: [
+          {
+            text: 'OK',
+            handler: () => {
+            }
+          }
+        ]
+      });
+      alert.present();
+      return false;
+    }
+    else
+      return true;
+  }
+
   checkout() {
+    if (!this.validateStep())
+      return;
+
     if (!this.uService.isAuth) {
       this.navCtrl.push('LoginPage', {continuePage: 'SelectShipAddressPage'});
     }
     else {
-      let hasErrors = false;
-
-      for (let i of this.cart.orderProducts) {
-        if (i.errorMessage) {
-          hasErrors = true;
-          break;
-        }
-      };
-
-      if (hasErrors){
-        let alert = this.alertCtrl.create({
-          message: 'Some items in your order needs your attention. Please review your order and try again',
-          buttons: [
-            {
-              text: 'OK',
-              handler: () => {}
-            }
-          ]
-        });
-        alert.present();
-      }
-      else
-        this.navCtrl.push('SelectShipAddressPage', {fromCart: 1});
+      this.navCtrl.push('SelectShipAddressPage', {fromCart: 1});
     };
+  }
+
+  async onAfterQtyUpdate(item: any, objRef: any) {
+    await this.cart.updateItem(objRef);
+    this.evServ.events['cartUpdateEvent'].emit();
   }
 
 }

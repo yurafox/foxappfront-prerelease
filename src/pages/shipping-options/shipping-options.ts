@@ -17,13 +17,18 @@ export class ShippingOptionsPage extends ComponentBase {
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
                 public repo: AbstractDataRepository, public loadingCtrl: LoadingController) {
     super();
+    this.initLocalization();
     this.cart.loDeliveryOptions = [];
+  }
+
+  ngOnInit() {
     this.getDeliveryOptions();
   }
 
   async getDeliveryOptions() {
+    let content = this.locale['LoadingContent'];
     let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: content
     });
 
     loading.present();
@@ -39,14 +44,15 @@ export class ShippingOptionsPage extends ComponentBase {
       for (let loEnt of supplLoEnt) {
         let ent = await this.repo.getLoEntitiyById(loEnt.idLoEntity);
         let item = new LoDeliveryOption();
+        item.idClientOrderProduct = ci.id;
         item.loEntityId = loEnt.idLoEntity;
         item.itemIdx = i;
-        item.deliveryCost = await this.repo.getDeliveryCost(ci.id, loEnt.idLoEntity);
-        item.deliveryDate = await this.repo.getDeliveryDate(ci.id, loEnt.idLoEntity);
+        item.deliveryCost = await this.repo.getDeliveryCost(ci, loEnt.idLoEntity);
+        item.deliveryDate = await this.repo.getDeliveryDate(ci, loEnt.idLoEntity);
         item.loName = ent.name;
         item.isChecked = false;
         this.cart.loDeliveryOptions.push(item);
-      };
+      }
       i++;
     }
     this.dataLoaded = true;
@@ -77,8 +83,18 @@ export class ShippingOptionsPage extends ComponentBase {
 
   onContinueClick() {
     if (this.itemIndex < this.cart.orderProducts.length-1)
-      this.itemIndex++
-    else
+      this.itemIndex++;
+    else {
+      // Выбранные опции запихиваем в массив выбранных опций
+      this.cart.loResultDeliveryOptions = [];
+      this.cart.loDeliveryOptions.forEach(i => {
+          if (i.isChecked) {
+            this.cart.loResultDeliveryOptions.push(i);
+            this.evServ.events['cartUpdateEvent'].emit();
+          }
+        }
+      );
       this.navCtrl.push('SelectPmtMethodPage');
+    }
   }
 }

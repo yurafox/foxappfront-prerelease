@@ -1,15 +1,17 @@
 <ion-header>
-  <main-toolbar></main-toolbar>
+  <main-toolbar [showCartIcon] = "false"></main-toolbar>
 </ion-header>
 
 <ion-content padding class="menu-content">
   <ion-list>
     <div *ngFor="let menuP of accountMenu">
       <ion-label>
-        <span>{{menuP.title}}</span>
+        <span loc=menuP.name name=menuP.title>{{locale[menuP.title]}}</span>
       </ion-label>
       <button ion-item detail-push *ngFor="let p of menuP.pages" (click)="openPage(p)">
-        <ion-label>{{p.title}}</ion-label>
+        <ion-label>
+          <span loc=p.name name=p.title>{{locale[p.title]}}</span>
+        </ion-label>
       </button>
     </div>
   </ion-list>

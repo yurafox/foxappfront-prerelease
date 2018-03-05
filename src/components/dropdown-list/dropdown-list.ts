@@ -19,6 +19,7 @@
      - f-drop-button-small
      - f-drop-button-middle
      - f-drop-button-large
+     - f-drop-button-block
      Значение по умолчанию если не задан класс - f-drop-button-small
 
     options.popupHeader? - имя заголовка pop up окна
@@ -63,8 +64,8 @@
     Возврвщаемое значение данного метода определяет изменять целевой обьект reference или нет.
     @param(клиентский обработчик)
     Необязательный параметр
-    afterUpdate: (item: any) => void -  метод для клиентского кода, который срабатывает после обновления целевого обьекта.
-    Метод принимает новое (выбранное пользователем значение).
+    afterUpdate: (item: any, objRef:any) => void -  метод для клиентского кода, который срабатывает после обновления целевого обьекта.
+    Метод принимает новое (выбранное пользователем значение) и целевой обьект.
 
     Условные примеры: Для компонента Account
      Код - async ngOnInit(){
@@ -114,6 +115,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { PopoverController } from "ionic-angular";
 import { DropdownViewComponent } from "../dropdown-view/dropdown-view";
 import { ViewContainerRef } from '@angular/core';
+  import {ComponentBase} from "../component-extension/component-base";
 
 const popupDefaultClass = 'f-small-dictionary';
 const buttonDefaultClass = 'f-drop-button-small';
@@ -124,7 +126,7 @@ const buttonDefaultHeader = '';
   selector: 'dropdown-list',
   templateUrl: 'dropdown-list.html'
 })
-export class DropdownListComponent implements OnChanges {
+export class DropdownListComponent extends ComponentBase implements OnChanges {
 
   @Input()
   options?: {
@@ -153,7 +155,7 @@ export class DropdownListComponent implements OnChanges {
   placeholder:string = '';
 
   @Input()
-  ref?:{bindRef: any,bindName:string}
+  ref?:{bindRef: any,bindName:string};
 
   @Input()
   beforeUpdate: (oldItem: any, newItem: any) => boolean;
@@ -170,13 +172,17 @@ export class DropdownListComponent implements OnChanges {
 
   constructor(public popoverCtrl: PopoverController,
     private _viewCtnr: ViewContainerRef) {
-
+    super();
     // <editor-fold desc="check input behavior init list">
     //this.verifyBehaviorList.push({ fn: this.verifyReference, errText: 'отсутствуют значения для binding поле' });
     this.verifyBehaviorList.push({ fn: this.verifyMap, errText: 'несоответствие имен полей привязки с целевым обьектом' });
     this.verifyBehaviorList.push({ fn: this.verifyStore, errText: 'входящая коллекция [store] пустая' });
     // </editor-fold>
     this.sourceContext = (<any>this._viewCtnr.parentInjector).view.component;
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
   }
 
   // hook on input fields binding
@@ -197,7 +203,7 @@ export class DropdownListComponent implements OnChanges {
     if(this.options.buttonHeader)
        return `${this.options.buttonHeader}: ${dataValue}`;
 
-    return (!this.isQty) ? dataValue || this.placeholder : `Qty: ${dataValue}`;
+    return (!this.isQty) ? dataValue || this.placeholder : `${this.locale['Qty']}: ${dataValue}`;
   }
 
   public get displayParam():string {
@@ -229,7 +235,7 @@ export class DropdownListComponent implements OnChanges {
   private verifyStore(): boolean {
     const me = this;
     if(this.isQty){
-      const range:System.IRange = {min:1,max:30}; //this.reference['range'];
+      const range:System.IRange = {min:1,max:31}; //this.reference['range'];
       this.store = function(){
         const array:Array<any>=[];
         for(let i = range.min, max= range.max; i< max;i++) {

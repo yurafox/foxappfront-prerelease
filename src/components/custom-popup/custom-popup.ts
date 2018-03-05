@@ -28,6 +28,10 @@ export class CustomPopupComponent extends ComponentBase {
     );
   }
 
+  ngOnInit() {
+    super.ngOnInit();
+  }
+
   close() {
     this.viewCtrl.dismiss();
   }
@@ -41,9 +45,12 @@ export class CustomPopupComponent extends ComponentBase {
 
   async selectPickupStorePlace(sPlace: ProductStorePlace) {
     let sp = await (<any>sPlace).storeplace;
+    let title = this.locale['AlertTitle'];
+    let message = this.locale['AlertMessage'] + ' ' + sp.name;
+    let cancel = this.locale['Cancel'];
     let alert = this.alertCtrl.create({
-      title: 'Confirmation',
-      message: 'Are you about to select '+sp.name +' for pickup this item?',
+      title: title,
+      message: message,
       buttons: [
         {
           text: 'OK',
@@ -53,7 +60,7 @@ export class CustomPopupComponent extends ComponentBase {
           }
         },
         {
-          text: 'Cancel',
+          text: cancel,
           handler: () => {
             this.viewCtrl.dismiss();
           }

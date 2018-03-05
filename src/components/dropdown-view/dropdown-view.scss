@@ -16,7 +16,7 @@ dropdown-view {
   }
 
 
-  .f-table-striped tbody tr:nth-of-type(odd) {
+  .f-table-striped tbody tr:nth-of-type(even) {
     background-color: rgba(0, 0, 0, 0.05);
   }
 
@@ -40,7 +40,7 @@ dropdown-view {
 
   .f-close {
     position: absolute;
-    top: 9px;
+    top: 7px;
     right: 11px;
     outline: none;
     font-size: 22px;

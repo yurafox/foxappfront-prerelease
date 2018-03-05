@@ -1,5 +1,5 @@
 import { System } from './../../app/core/app-core';
-import {Component, OnInit, Type} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController, IonicPage} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Currency, User, Lang} from "../../app/model/index";
@@ -28,24 +28,7 @@ export class AccountPage extends ComponentBase {
     'appKey':''
   };
 
-  public errorMessages = {
-    'email': {
-      'required': 'Обязательное поле',
-      'pattern': 'Не правильный формат email адреса'
-    },
-    'password': {
-      'minlength': 'Значение должно быть не менее 6ти символов',
-      'maxlength': 'Значение должно быть не более 12ти символов'
-    },
-    'name':{
-      'required': 'Обязательное поле',
-      'maxlength': 'Значение должно быть не более 20ти символов'
-    },
-    'appKey':{
-      'minlength': 'Значение должно быть не менее 6ти символов',
-      'maxlength': 'Значение должно быть не более 20ти символов'
-    },
-  };
+  public errorMessages = {};
 
   constructor(public nav: NavController,
               private alertCtrl: AlertController,
@@ -72,14 +55,33 @@ export class AccountPage extends ComponentBase {
             serviceItemName:'lang'});
 
     this.onLoad=true;
+
+    this.errorMessages = {
+      'email': {
+        'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+          'pattern': this.locale['WrongEMailFormat'] ? this.locale['WrongEMailFormat'] : 'Не правильный формат email адреса'
+      },
+      'password': {
+        'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
+          'maxlength': this.locale['LengthNGT128'] ? this.locale['LengthNGT128'] : 'Значение должно быть не более 128-и символов'
+      },
+      'name':{
+        'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+          'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
+      },
+      'appKey':{
+        'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
+          'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
+      },
+    };
   }
 
   currencyUpdate(item:any):void {
-    this.userService.currency = item.id;
+    this.currentCurrency.id = item.id;
   }
 
   langUpdate(item:any):void {
-    this.userService.lang = item.id;
+    this.currentLang.id = item.id;
   }
 
   edit(){
@@ -89,17 +91,37 @@ export class AccountPage extends ComponentBase {
 
     const data = this.editForm.value;
     const user: User= new User(data.name,data.email,
-      data.password,this.userService.uid,data.appKey,{'currency': `${this.currentCurrency.id}`, 'lang': `${this.currentLang.id}`});
+      data.password,data.appKey,{'currency': `${this.currentCurrency.id}`, 'lang': `${this.currentLang.id}`},
+      this.userService.profile.favoriteStoresId);
 
     (async ()=>{
       const result = await this.userService.edit(user);
       if(result) {
+          await this.evServ.events['localeChangeEvent'].emit(this.userService.lang);
+
           let alert = this.alertCtrl.create({
-            subTitle: 'профайл успешно изменен',
-            buttons: ['Ok'],
+            subTitle: this.locale['ProfileChangedSuccessfully'],
+            buttons: ['OK'],
             cssClass: 'alertCustomCss'
           });
-          this.evServ.events['localeChangeEvent'].emit(this.userService.lang);
+          this.errorMessages = {
+            'email': {
+              'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+              'pattern': this.locale['WrongEMailFormat'] ? this.locale['WrongEMailFormat'] : 'Не правильный формат email адреса'
+            },
+            'password': {
+              'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
+              'maxlength': this.locale['LengthNGT128'] ? this.locale['LengthNGT128'] : 'Значение должно быть не более 128-и символов'
+            },
+            'name':{
+              'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+              'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
+            },
+            'appKey':{
+              'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
+              'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
+            },
+          };
           alert.present();
         }
     })();
@@ -116,7 +138,7 @@ export class AccountPage extends ComponentBase {
       'email': [this.userService.email, [Validators.required,
         Validators.pattern('^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]],
 
-      'password': ['', [Validators.minLength(6), Validators.maxLength(12)]],
+      'password': ['', [Validators.minLength(6), Validators.maxLength(128)]],
       'name':[this.userService.name,[Validators.required, Validators.maxLength(20)]],
       'lang':[this.userService.lang, [Validators.required]],
       'appKey':[this.userService.appKey,[Validators.minLength(6), Validators.maxLength(20)]]
@@ -133,7 +155,7 @@ export class AccountPage extends ComponentBase {
     if (!this.editForm) {
       return;
     }
-    ;
+
     let form = this.editForm;
 
     for (let err in this.formErrors) {

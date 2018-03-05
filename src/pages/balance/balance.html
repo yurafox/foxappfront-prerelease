@@ -1,0 +1,114 @@
+<ion-header>
+  <main-toolbar [showCartIcon] = "false"></main-toolbar>
+</ion-header>
+
+<ion-content class="f-size-larger">
+  <ion-grid *ngIf="dataLoaded">
+
+    <ion-row>
+      <ion-col class="f-section-header">
+        <span loc="Ваш текущий баланс бонусов ФоксКлуб" name="YourCurrentBonusBalance">{{locale['YourCurrentBonusBalance']}}</span>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="f-padding-lr-5" *ngIf="dataLoaded">
+      <ion-grid class="f-border-ligthgray">
+
+        <ion-row>
+          <ion-col class="f-size-large">
+            <span loc="Бонус" name="Bonus">{{locale['Bonus']}}</span>:
+          </ion-col>
+
+          <ion-col  text-right col-auto (click)="toggleBonusDetails()">
+            <ion-grid no-padding>
+              <ion-row>
+                <ion-col class="f-size-large f-color-green" >
+                  <b>{{cart.availBonus | localeCurrency:userService.currency}}</b>
+                </ion-col>
+              </ion-row>
+              <div class="f-size-default" *ngIf="clientBonusArr.length>0">
+                <ion-row>
+                  <ion-col class="f-padding-t-5">
+                    <span loc="Только" name="Only">{{locale['Only']}}</span> <b>{{bonusDaysLeft}}</b> <span loc="день(дней) осталось" name="DaysLeft">{{locale['DaysLeft']}}</span>. <span class="f-color-red"><span loc="Поторопитесь" name="HurryUp">{{locale['HurryUp']}}</span>!</span>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col class="f-size-small" class="f-item-nopadding-tb">
+                    <a class="f-color-info">{{!showBonusDetails? locale['More']+' >>':locale['Less']+' <<'}}</a>
+                  </ion-col>
+                </ion-row>
+              </div>
+
+            </ion-grid>
+
+          </ion-col>
+        </ion-row>
+
+        <div class="f-size-default" *ngIf="(clientBonusArr.length>0) && showBonusDetails">
+          <ion-row>
+            <ion-col col-5>
+            </ion-col>
+            <ion-col col-7 no-padding>
+              <ion-grid no-padding>
+                <ion-row>
+                  <ion-col>
+                    <hr>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col col-5 text-end class="f-padding-right-15"><b><span loc="Бонус" name="Bonus">{{locale['Bonus']}}</span>:</b></ion-col>
+                  <ion-col col-7 text-end class="f-padding-right-15"><b><span loc="Действителен до" name="ValidTill">{{locale['ValidTill']}}</span>:</b></ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <hr>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row *ngFor="let bInfo of clientBonusArr">
+                  <ion-col col-5 text-end class="f-padding-rb-10">
+                    {{bInfo.bonus | localeCurrency:userService.currency}}
+                  </ion-col>
+                  <ion-col col-7 text-end class="f-padding-rb-10">
+                    {{bInfo.dueDate | date: 'mediumDate'}}
+                  </ion-col>
+                </ion-row>
+
+              </ion-grid>
+            </ion-col>
+
+          </ion-row>
+
+        </div>
+
+        <ion-row *ngIf="cart.availPromoBonus > 0">
+          <ion-col no-padding>
+            <hr>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="cart.availPromoBonus > 0">
+          <ion-col class="f-size-large">
+            <span loc="Акционный бонус" name="PromoBonus">{{locale['PromoBonus']}}</span>:
+          </ion-col>
+          <ion-col class="f-size-large f-color-green" text-right col-auto>
+            <b>{{cart.availPromoBonus | localeCurrency:userService.currency}}</b>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-row>
+
+    <bonus-pay *ngIf="checkoutMode"></bonus-pay>
+
+
+    <ion-row *ngIf="checkoutMode">
+      <ion-col class="f-padding-lr-5 f-padding-t-10">
+        <button class="f-btn-action" ion-button block
+                [attr.disabled]="!validatePage()?'':null"
+                (click)="onContinueClick()"><span loc="Далее" name="Continue">{{locale['Continue']}}</span></button>
+      </ion-col>
+    </ion-row>
+
+
+
+  </ion-grid>
+</ion-content>

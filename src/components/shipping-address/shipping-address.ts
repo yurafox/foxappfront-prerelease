@@ -10,6 +10,8 @@ import {ClientAddress} from "../../app/model/client-address";
 import {AlertController, NavController, NavParams} from "ionic-angular";
 import {UserService} from "../../app/service/bll/user-service";
 import {ComponentBase} from "../component-extension/component-base";
+import {CartService} from '../../app/service/cart-service';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 @Component({
   selector: 'shipping-address',
@@ -21,23 +23,39 @@ export class ShippingAddressComponent extends ComponentBase {
   @Input() addresses?: ClientAddress[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public uService: UserService, public alertCtrl: AlertController) {
+              public uService: UserService, public alertCtrl: AlertController,
+              public cart: CartService, public repo: AbstractDataRepository) {
     super();
   }
 
-  onIsPrimaryClick(item: any) {
-    this.addresses.forEach(i => {
-        i.isPrimary = false;
-      }
-    );
-    item.isPrimary = true;
+  ngOnInit() {
+    super.ngOnInit();
+  }
+
+  isChecked(address: ClientAddress): boolean
+  {
+    const res = false;
+    if (!this.cart.order.loIdClientAddress) {
+      return address.isPrimary;
+    }
+    else {
+      if (address.id === this.cart.order.loIdClientAddress)
+        return true;
+    }
+    return res;
+  }
+
+  onIsPrimaryClick(item: any, event: any) {
+    for (let i of this.addresses) {
+      i.isPrimary = (i === item);
+    }
+    this.cart.order.loIdClientAddress = item.id;
+    event.preventDefault();
   }
 
   deliverToThisAddress(item: any) {
-    if (this.withDelivery) {
-      this.navCtrl.push('ShippingOptionsPage', {data: item});
-
-    }
+    this.cart.order.loIdClientAddress = item.id;
+    this.navCtrl.push('ShippingOptionsPage', {data: item});
   }
 
   editAddress(item: ClientAddress) {
@@ -53,21 +71,27 @@ export class ShippingAddressComponent extends ComponentBase {
   }
 
   deleteAddress(item: ClientAddress) {
+    let title = this.locale['AlertTitle'];
+    let message = this.locale['AlertMessage'];
+    let cancel = this.locale['Cancel'];
     let alert = this.alertCtrl.create({
-      title: 'Confirmation',
-      message: 'Are you sure you want to delete this address from your address book?',
+      title: title,
+      message: message,
       buttons: [
         {
           text: 'OK',
           handler: () => {
-            this.addresses.splice(this.addresses.indexOf(item), 1);
+            this.repo.deleteClientAddress(item).then(i => {
+                this.addresses.splice(this.addresses.indexOf(item), 1);
+              }
+            );
             /*if (this.addresses.length > 0) {
               this.addresses[0].isPrimary = true;
             }*/
           }
         },
         {
-          text: 'Cancel',
+          text: cancel,
           handler: () => {
           }
         }

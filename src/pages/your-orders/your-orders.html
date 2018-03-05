@@ -1,37 +1,66 @@
 <ion-header>
-    <main-toolbar></main-toolbar>
+  <main-toolbar></main-toolbar>
 </ion-header>
 
-
 <ion-content>
-    <ion-grid class="f-item-nopadding-tb f-color-secondary">
-        <ion-row padding>
-            <ion-col>
-                <b><span class="f-size-large">Your orders</span></b>
-            </ion-col>
-        </ion-row>
-        <span *ngIf="loaded === true">
-      <ion-row padding *ngFor="let product of productArr; let i = index">
-        <b><span>Order #{{i+1}}</span></b>
-        <div *ngFor="let p of product?.products">
-            <span *ngIf="p?.id">
-            <item [product]="p"></item><br>
-          </span>
-        </div>
-        <br>
-        <ion-col>
-            <b><span>Date: {{product?.order?.orderDate}}</span></b><br>
-        </ion-col>
-        <ion-col>
-            <b><span>Total: {{product?.order?.total | localeCurrency:userService.currency}}</span></b>
-        </ion-col><br>
-        </ion-row>
-        </span>
-        <span *ngIf="loaded === false">
-      <ion-row>
-        <span class="f-size-larger">You have no orders yet</span>
-        </ion-row>
-        </span>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="f-page-header"><span loc="Ваши заказы" name="YourOrders">{{locale['YourOrders']}}</span>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-    </ion-grid>
+  <div *ngIf="dataLoaded">
+    <div *ngFor="let ord of orders">
+      <div *ngFor="let spec of ord.orderProducts">
+
+        <ion-grid class="f-item-nopadding-tb" *ngIf="spec?.quotationproduct?.product?.imageUrl && spec?.quotationproduct?.product?.name">
+
+          <ion-row class="f-padding-lr-5">
+
+            <ion-grid class="f-border-ligthgray">
+              <ion-row class="f-padding-tb-10">
+                <ion-col col-4 no-padding>
+                  <img *ngIf="spec?.quotationproduct?.product?.imageUrl" class="f-img-item-80"
+                       [src]="spec?.quotationproduct?.product?.imageUrl">
+                  <img *ngIf="!spec?.quotationproduct?.product?.imageUrl" class="f-img-item-80"
+                       src="assets/imgs/nophoto.png">
+                </ion-col>
+                <ion-col col-8 no-padding>
+                  <div class="f-product f-padding-t-10"><b>{{spec?.quotationproduct?.product?.name}}</b></div>
+                  <br>
+                  <div class="f-size-13"><span loc="Заказано" name="OrderedOn">{{locale['OrderedOn']}}</span> {{ord.orderDate | date: 'mediumDate'}}</div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-row>
+
+          <ion-row class="f-padding-lr-5" (click)="onBuyItAgainClick(spec)">
+            <ion-item class="f-border-ligthgray" detail-push><span loc="Купить снова" name="BuyItAgain">{{locale['BuyItAgain']}}</span></ion-item>
+          </ion-row>
+
+          <ion-row>
+            <ion-col class="f-padding-t-5">
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="f-padding-lr-5" (click)="onViewOrderDetailsClick(ord)">
+            <ion-item class="f-border-ligthgray" detail-push><span loc="Посмотреть детали заказа" name="ViewOrderDetails">{{locale['ViewOrderDetails']}}</span></ion-item>
+          </ion-row>
+
+          <ion-row class="f-padding-lr-5" *ngIf="spec.loTrackTicket" (click)="onTrackItemClick(spec)">
+            <ion-item class="f-border-ligthgray" detail-push><span loc="Отследить заказ" name="TrackItem">{{locale['TrackItem']}}</span></ion-item>
+          </ion-row>
+
+          <ion-row class="f-padding-lr-5" (click)="onWriteReviewClick(spec?.quotationproduct?.product)">
+            <ion-item class="f-border-ligthgray" detail-push><span loc="Оставить отзыв о товаре" name="WriteProductReview">{{locale['WriteProductReview']}}</span></ion-item>
+          </ion-row>
+
+        </ion-grid>
+        <hr>
+      </div>
+    </div>
+  </div>
+
+
 </ion-content>

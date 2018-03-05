@@ -1,0 +1,24 @@
+<ion-row *ngIf="!cart.validateLoan(creditAmt).isValid">
+  <ion-col>
+    <error [errorText]="cart.validateLoan(creditAmt).validationErrors[0]"></error>
+  </ion-col>
+</ion-row>
+
+<ion-row>
+  <ion-col>
+    <span class="f-size-larger">{{credit.creditProduct.sName}}</span>
+  </ion-col>
+</ion-row>
+<ion-row *ngIf="credit.clMonths">
+  <ion-col>
+    <span class="f-size-larger"><span loc="Период кредитования" name="LoanPeriod">{{locale['LoanPeriod']}}</span> -- <b>{{credit.clMonths}}</b> <span loc="месяцев" name="Months">{{locale['Months']}}</span></span>
+  </ion-col>
+</ion-row>
+
+<ion-row *ngIf="credit.clMonths">
+  <ion-col>
+    <span class="f-size-larger"><span loc="Ежемесячный платеж" name="MonthlyPayment">{{locale['MonthlyPayment']}}</span> -- <span class="f-color-green"><b>{{credit.clMonthAmt | localeCurrency:userService.currency}}</b></span></span>
+    <br>
+    <span class="f-size-smaller" *ngIf="credit.clMonths">*<span loc="Расчёт ежемесячного платежа приблизительный. Окончательная сумма будет определена кредитным манеджером" name="ApproxCalculation">{{locale['ApproxCalculation']}}</span></span>
+  </ion-col>
+</ion-row>

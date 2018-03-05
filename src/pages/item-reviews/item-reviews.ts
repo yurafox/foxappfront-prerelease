@@ -34,23 +34,37 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
   }
 
   async ngOnInit () {
-    if (!(this.navParams.data.reviews))
+    super.ngOnInit();
+    if (!(this.navParams.data.reviews)) {
       if (this.navParams.data.product) {
         this.reviews = await this.repo.getProductReviewsByProductId(this.product.id);
       } else if (this.navParams.data.store) {
         this.reviews = await this.repo.getStoreReviewsByStoreId(this.store.id);
       }
+    }
   }
 
   onWriteReviewClick(): void {
     if (this.product) {
-      this.navCtrl.push('ItemReviewWritePage', this.product).catch(err => {
-        console.log(`Error navigating to ItemReviewWritePage: ${err}`);
-      });
+      if (!this.userService.isAuth) {
+        this.navCtrl.push('LoginPage', {continuePage: 'ItemReviewWritePage', params:this.product}).catch((err) => {
+          console.log(`Couldn't navigate to LoginPage: ${err}`);
+        });
+      } else {
+        this.navCtrl.push('ItemReviewWritePage', this.product).catch(err => {
+          console.log(`Error navigating to ItemReviewWritePage: ${err}`);
+        });
+      }
     } else if (this.store) {
-      this.navCtrl.push('ItemReviewWritePage', this.store).catch(err => {
-        console.log(`Error navigating to ItemReviewWritePage: ${err}`);
-      });
+      if (!this.userService.isAuth) {
+        this.navCtrl.push('LoginPage', {continuePage: 'ItemReviewWritePage', params:this.store}).catch((err) => {
+          console.log(`Couldn't navigate to LoginPage: ${err}`);
+        });
+      } else {
+        this.navCtrl.push('ItemReviewWritePage', this.store).catch(err => {
+          console.log(`Error navigating to ItemReviewWritePage: ${err}`);
+        });
+      }
     }
   }
 

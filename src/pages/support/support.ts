@@ -1,29 +1,24 @@
-import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { IonicPage } from "ionic-angular";
+import {Component} from '@angular/core';
+import {NgForm} from '@angular/forms';
+import {IonicPage} from "ionic-angular";
 
-import { AlertController, NavController, ToastController } from 'ionic-angular';
+import {AlertController, NavController, ToastController} from 'ionic-angular';
+import {ComponentBase} from "../../components/component-extension/component-base";
 
 @IonicPage({name: 'SupportPage', segment: 'support'})
 @Component({
   selector: 'page-support',
   templateUrl: 'support.html'
 })
-export class SupportPage {
+export class SupportPage extends ComponentBase {
 
   submitted: boolean = false;
   supportMessage: string;
 
-  constructor(
-    public navCtrl: NavController,
-    public alertCtrl: AlertController,
-    public toastCtrl: ToastController
-  ) {
-
-  }
-
-  ionViewDidEnter() {
-
+  constructor(public navCtrl: NavController,
+              public alertCtrl: AlertController,
+              public toastCtrl: ToastController) {
+    super();
   }
 
   submit(form: NgForm) {
@@ -33,8 +28,9 @@ export class SupportPage {
       this.supportMessage = '';
       this.submitted = false;
 
+      let message = this.locale['ToastMessage'];
       let toast = this.toastCtrl.create({
-        message: 'Your support request has been sent.',
+        message: message,
         duration: 3000
       });
       toast.present();
@@ -43,23 +39,4 @@ export class SupportPage {
     }
   }
 
-  // If the user enters text in the support question and then navigates
-  // without submitting first, ask if they meant to leave the page
-  ionViewCanLeave(): boolean | Promise<boolean> {
-    // If the support message is empty we should just navigate
-    if (!this.supportMessage || this.supportMessage.trim().length === 0) {
-      return true;
-    }
-
-    return new Promise((resolve: any, reject: any) => {
-      let alert = this.alertCtrl.create({
-        title: 'Leave this page?',
-        message: 'Are you sure you want to leave this page? Your support message will not be submitted.'
-      });
-      alert.addButton({ text: 'Stay', handler: reject });
-      alert.addButton({ text: 'Leave', role: 'cancel', handler: resolve });
-
-      alert.present();
-    });
-  }
 }

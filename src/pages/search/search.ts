@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 
@@ -8,21 +8,12 @@ import {ComponentBase} from '../../components/component-extension/component-base
   templateUrl: 'search.html',
 })
 
-export class SearchPage extends ComponentBase implements OnInit {
+export class SearchPage extends ComponentBase {
 
   @ViewChild('srch') searchButtonControl;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     super();
-  }
-
-  ngOnInit() {
-    setTimeout(() =>
-        {
-          this.searchButtonControl.setFocus();
-          this.searchButtonControl.disabled = false;
-        },
-      150);
   }
 
   deleteSearchItem(event: any, item: string) {

@@ -15,4 +15,8 @@ export class ItemsListComponent extends ComponentBase {
     super();
   }
 
+  ngOnInit() {
+    super.ngOnInit();
+  }
+
 }

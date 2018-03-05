@@ -3,7 +3,7 @@
 </ion-header>
 <ion-content padding>
   <!--actions list-->
-<h2 style="text-align: center">Активные акции</h2>
+  <h2 style="text-align: center"><span loc="Активные акции" name="ActivePromotions">{{locale['ActivePromotions']}}</span></h2>
 <ion-card *ngFor='let curAction of actions'>
   <action-sketch [action]=curAction></action-sketch>
 </ion-card>

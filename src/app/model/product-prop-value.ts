@@ -1,6 +1,14 @@
 import { Prop, PropEnumList  } from './index';
+import {MeasureUnit} from './measure-unit';
+import {LazyLoad, RefInjector} from '../core/app-core';
+import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
 
+@LazyLoad([
+  { options:{constructor: MeasureUnit}, action: 'getMeasureUnitById', params: ['id_Measure_Unit']}
+])
 export class ProductPropValue {
+
+  private _repo: AbstractDataRepository;
 
   constructor (
     public id: number,
@@ -10,8 +18,9 @@ export class ProductPropValue {
     public prop_Value_Number?: number,
     public prop_Value_Bool?: boolean,
     public prop_Value_Enum?: PropEnumList,
-    public prop_Value_Long?: string
-  ) {}
+    public prop_Value_Long?: string,
+    public id_Measure_Unit?: number
+  ) { this._repo = RefInjector.pull(AbstractDataRepository); }
 
   public get value(): any {
     if (this.id_Prop.prop_type == 1 ) {
@@ -27,8 +36,7 @@ export class ProductPropValue {
     };
 
     if (this.id_Prop.prop_type == 4 ) {
-      return this.prop_Value_Enum.name;
-      //return this.model.getEnumValue(this.prop_Value_Enum);
+      return (this.prop_Value_Enum) ? this.prop_Value_Enum.name : null;
     };
 
 

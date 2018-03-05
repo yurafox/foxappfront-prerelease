@@ -1,4 +1,4 @@
-import {Component, Renderer2, AfterViewInit, AfterViewChecked,ElementRef} from '@angular/core';
+import {Component, Renderer2, AfterViewInit,ElementRef} from '@angular/core';
 import {NavController, NavParams, ViewController} from "ionic-angular"
 import {DropdownListComponent} from "../dropdown-list/dropdown-list";
 
@@ -6,7 +6,7 @@ import {DropdownListComponent} from "../dropdown-list/dropdown-list";
   selector: 'dropdown-view',
   templateUrl: 'dropdown-view.html'
 })
-export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
+export class DropdownViewComponent implements AfterViewInit{
   public parent:DropdownListComponent;
   private proxyObj:any;
   constructor(private nav: NavController,
@@ -36,13 +36,9 @@ export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
          }
       }
     }
-  }
 
-  ngAfterViewChecked() {
-    let node:HTMLElement=document.getElementById(this.currentIdentifier);
-    if(node)
-      node.scrollIntoView();
- }
+    this.scrollToIdentity();
+  }
 
   public isActive(item: any): boolean {
     return item[this.valueName] === this.bindedObject[this.valueName];
@@ -62,7 +58,7 @@ export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
       }
       case 2 : {
         this.makeChange(item);
-        this.parent.afterUpdate.call(this.parent.sourceContext,item);
+        this.parent.afterUpdate.call(this.parent.sourceContext,item,this.bindedObject);
         break;
       }
 
@@ -70,7 +66,7 @@ export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
         const beforeResult = this.parent.beforeUpdate.call(this.parent.sourceContext,this.bindedObject,item);
         if(beforeResult){
           this.makeChange(item);
-          this.parent.afterUpdate.call(this.parent.sourceContext,item);
+          this.parent.afterUpdate.call(this.parent.sourceContext,item,this.bindedObject);
         }
       }
     }
@@ -117,7 +113,7 @@ export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
       this.parent.reference[this.parent.map.displayName] = item[this.parent.map.displayName];
     }
     else{
-      this.proxyObj[this.parent.map.valueName] = item[this.parent.map.valueName];;
+      this.proxyObj[this.parent.map.valueName] = item[this.parent.map.valueName];
       this.proxyObj[this.parent.map.displayName] = item[this.parent.map.displayName];
 
       this.parent.param = item[this.parent.map.valueName];
@@ -127,6 +123,11 @@ export class DropdownViewComponent implements AfterViewInit,AfterViewChecked{
     }
   }
 
+  private scrollToIdentity():void {
+    let node:HTMLElement=document.getElementById(this.currentIdentifier);
+    if(node)
+      node.scrollIntoView();
+  }
   public getImportantStyle(){
     return (this.bindedStore.length < 10) ? {'height':'auto'}: null;
   }

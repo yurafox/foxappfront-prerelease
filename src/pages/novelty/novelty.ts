@@ -3,10 +3,11 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {AbstractDataRepository, CartService} from '../../app/service/index';
 import {Novelty} from './../../app/model/index';
-import {Observable} from 'rxjs';
 import 'rxjs/add/operator/takeWhile';
 import {ItemBase} from "../../components/component-extension/item-base";
 import {StorePlace} from "../../app/model/store-place";
+import {EventService} from '../../app/service/event-service';
+import {NoveltyDetails} from "../../app/model/novelty-det";
 
 @IonicPage()
 @Component({
@@ -15,8 +16,9 @@ import {StorePlace} from "../../app/model/store-place";
 })
 export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
   public noveltyId: number;
-  public content: string='';
+  public content: string = '';
   public novelty: Novelty;
+  public noveltyDetails: NoveltyDetails[];
   public productId: number;
   private available: boolean = true;
 
@@ -24,11 +26,13 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
   selectedStorePlace: StorePlace;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private cart: CartService,
-              private _repo:AbstractDataRepository, private toastCtrl: ToastController) {
+              private _repo:AbstractDataRepository, public toastCtrl: ToastController, public evServ: EventService) {
     super(navCtrl, navParams, _repo);
     this.noveltyId = this.navParams.data.id;
+    this.productId = this.navParams.data.productId;
     this.novelty = this.navParams.data.novelty;
     this.product = this.navParams.data.product;
+    this.preloadQuotes = true;
     this.qty.value = 1;
   }
 
@@ -42,6 +46,8 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
     }
     // get dynamic content
     this.content = this.novelty.novelty_content;
+
+    this.noveltyDetails = await this.repo.getNoveltyDetailsByNoveltyId(this.novelty.id);
   }
 
   ngOnDestroy():void {
@@ -73,37 +79,35 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
   }
 
   public addToCart(): void {
-    if (this.product && (this.available !== false)) {
-      this.cart.addItem(this.valueQuot, this.qty.value, this.product.price, this.selectedStorePlace).then(
-        () =>
-      {
-        this.showAddToCartConfirmToast();
-      }).catch(
-        err => {
-        console.log(`Error adding product to cart: ${err}`);
+    if (this.noveltyDetails.length <= 1) {
+      if (this.OnStock) {
+        this.cart.addItem( this.valueQuot,
+                            this.qty.value,
+                            this.Price,
+                            this.selectedStorePlace,
+                            this
+                          );
+      } else {
+        this.showNotAddedToCartConfirmToast();
+      }
+    } else if (this.noveltyDetails.length > 1) {
+      let productsIds: number[] = [];
+      for (let noveltyD of this.noveltyDetails) {
+        productsIds.push(noveltyD.idProduct);
+      }
+      this.navCtrl.push('CategoryPage', productsIds).catch(err => {
+        console.log(`Couldn't navigate to CategoryPage: ${err}`);
       });
     } else {
       this.showNotAddedToCartConfirmToast();
     }
   }
 
-  showAddToCartConfirmToast() {
-    let toast = this.toastCtrl.create({
-      message: 'Item added to cart',
-      duration: 2000,
-      position: 'bottom',
-      cssClass: 'toast-message'
-    });
-
-    toast.onDidDismiss(() => {
-    });
-
-    toast.present();
-  }
   showNotAddedToCartConfirmToast() {
+    let message = this.locale['ToastMessage'];
     let toast = this.toastCtrl.create({
-      message: 'Item didn\'t add to cart',
-      duration: 2000,
+      message: message,
+      duration: 2500,
       position: 'bottom',
       cssClass: 'toast-message'
     });
@@ -111,6 +115,6 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
     toast.onDidDismiss(() => {
     });
 
-    toast.present();
+    toast.present().catch((err) => console.log(`Unable to show toast: ${err}`));
   }
 }

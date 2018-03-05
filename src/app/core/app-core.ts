@@ -5,7 +5,12 @@ import {Manufacturer} from "../model/manufacturer";
 import {City} from '../model/city';
 import {StorePlace} from '../model/store-place';
 import {Lang} from "../model/lang";
+import {MeasureUnit} from '../model/measure-unit';
 import { RequestOptionsArgs,Headers,URLSearchParams} from '@angular/http';
+import {Quotation} from '../model/quotation';
+import {LoEntity} from '../model/lo-entity';
+import {Country} from '../model/country';
+import {EnumPaymentMethod} from '../model/enum-payment-method';
 
 export interface IDictionary<T> {
   [k: string]: T;
@@ -79,10 +84,14 @@ export namespace Providers {
     }
 
     public Add(key: string, value: T) {
-      if (!this.items.hasOwnProperty(key))
-        this.count++;
+      if (key && value) {
+        if ((<any>value).id) {
+          if (!this.items.hasOwnProperty(key))
+            this.count++;
 
-      this.items[key] = value;
+          this.items[key] = value;
+        }
+      }
     }
 
     public Remove(key: string): T {
@@ -133,6 +142,13 @@ export namespace Providers {
     private _cacheManufacturer: IKeyedCollection<Manufacturer> = null;
     private _cacheCity: IKeyedCollection<City> = null;
     private _cacheStorePlace: IKeyedCollection<StorePlace> = null;
+    private _cacheMeasureUnit: IKeyedCollection<MeasureUnit> = null;
+
+    private _cacheQuotation: IKeyedCollection<Quotation> = null;
+    private _cacheLoEntity: IKeyedCollection<LoEntity> = null;
+    private _cacheCountry: IKeyedCollection<Country> = null;
+    private _cacheEnumPaymentMethod: IKeyedCollection<EnumPaymentMethod> = null;
+
 
     public get Products(): IKeyedCollection<Product> {
       if (this._cacheProduct == null)
@@ -183,6 +199,41 @@ export namespace Providers {
       return this._cacheStorePlace;
     }
 
+    public get MeasureUnit(): IKeyedCollection<MeasureUnit> {
+      if (this._cacheMeasureUnit == null)
+        this._cacheMeasureUnit = new CacheItems<MeasureUnit>(200);
+
+      return this._cacheMeasureUnit;
+    }
+
+    public get Quotation(): IKeyedCollection<Quotation> {
+      if (this._cacheQuotation == null)
+        this._cacheQuotation = new CacheItems<Quotation>(100);
+
+      return this._cacheQuotation;
+    }
+
+    public get LoEntity(): IKeyedCollection<LoEntity> {
+      if (this._cacheLoEntity == null)
+        this._cacheLoEntity = new CacheItems<LoEntity>(10);
+
+      return this._cacheLoEntity;
+    }
+
+    public get Country(): IKeyedCollection<Country> {
+      if (this._cacheCountry == null)
+        this._cacheCountry = new CacheItems<Country>(10);
+
+      return this._cacheCountry;
+    }
+
+    public get EnumPaymentMethod(): IKeyedCollection<EnumPaymentMethod> {
+      if (this._cacheEnumPaymentMethod == null)
+        this._cacheEnumPaymentMethod = new CacheItems<EnumPaymentMethod>(10);
+
+      return this._cacheEnumPaymentMethod;
+    }
+
 
   }
 }
@@ -220,7 +271,12 @@ export function LazyLoad(options: Array<{ options:ILazyOption,
               this[loadingProp] = true;
               (async () => {
                 const repo = this['_repo'];
-                this[navProp] = await repo[fnName].apply(repo, lazyParamToValue(this, value.params));
+
+                let paramsConvertedList = lazyParamToValue(this, value.params);
+                if(paramsConvertedList.length!==0) {
+                  this[navProp] = await repo[fnName].apply(repo, paramsConvertedList);
+                }
+
                 this[loadingProp] = false;
               })();
             }
@@ -231,7 +287,14 @@ export function LazyLoad(options: Array<{ options:ILazyOption,
           configurable: false,
           get: () => {
             const repo = this['_repo'];
-            this[navProp+'_p'] = repo[fnName].apply(repo, lazyParamToValue(this, value.params));
+            var paramsConvertedList = lazyParamToValue(this, value.params);
+            if(paramsConvertedList.length!==0) {
+              this[navProp+'_p'] = repo[fnName].apply(repo, paramsConvertedList);
+
+            } else {
+              this[navProp+'_p'] = Promise.resolve(null);
+            }
+
             return this[navProp+'_p'];
           }
         });
@@ -259,7 +322,7 @@ export function LazyLoad(options: Array<{ options:ILazyOption,
 }
 function lazyParamToValue(pointer: any, params: string[]): any[] {
   const resultArr: any[] = [];
-  if (!params || params.length === 0) {
+  if (!params || params.length === 0 || !pointer[params[0]]) {
     return resultArr;
   }
 
@@ -279,7 +342,6 @@ export class RequestFactory {
 
     let searchParams = new URLSearchParams();
     params.forEach(val => {searchParams.set(val.key, val.value);});
-
     return {search: searchParams};
    }
    /** only auth headers (token,uid)
@@ -288,8 +350,8 @@ export class RequestFactory {
    public static makeAuthHeader(): RequestOptionsArgs{
     const h = new Headers();
 
-    h.set('Authorization', `Bearer: ${localStorage.getItem('token') || ''}`);
-    h.set('X-User',localStorage.getItem('id') || '');
+    h.set('Authorization', `Bearer ${localStorage.getItem('token') || ''}`);
+    // h.set('X-User',localStorage.getItem('id') || '');
 
     return {headers:h}
    }
@@ -338,4 +400,8 @@ export namespace System {
        source.push(target[i]);
     }
  }
+
+  export class PushContainer {
+    public static pushStore:IDictionary<any> = {};
+  }
 }

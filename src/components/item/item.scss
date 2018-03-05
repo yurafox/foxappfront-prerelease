@@ -1,38 +1,8 @@
 item {
-  .f-color-secondary {
-    color: dimgrey;
-  }
-
-  .f-color-green {
-    color: color($colors, green);
-  }
-
-  .f-size-small {
-    font-size: 12px;
-  }
-
-  .f-size-smaller {
-    font-size: 10px;
-  }
-
-
-  .f-img-item {
-    width: 100px; height: 100px;  padding: 6px 4px 2px;
-  }
-
-  .f-item-nopadding {
-    padding: 0px;
-  }
-
-  .f-item-padding-bottom {
-    padding-bottom: 2px;
-  }
-
-  .f-item-nopadding-tb {
-    padding-top: 0px;
+  .f-item-col {
+    padding-left: 0px;
+    padding-top: 2px;
     padding-bottom: 0px;
   }
-
-
 }
 

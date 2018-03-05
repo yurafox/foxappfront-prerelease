@@ -11,6 +11,7 @@ export class SearchService {
   public searchItems = new Array<string> ();
   public searchResults: Promise<Product[]>;
   private _ls: string = '';
+  private progressBarIsActive = false;
 
   public get lastSearch(): string {
     return this._ls;
@@ -20,6 +21,13 @@ export class SearchService {
     this._ls = value;
     this.lastSearchStringUpdated.emit(value);
   }
+
+  public get progressBarStatus(): boolean {
+    return this.progressBarIsActive;
+  }
+  /*public set progressBarStatus(value: boolean) {
+    this.progressBarIsActive = value;
+  }*/
 
 
   constructor(private repo: AbstractDataRepository) {
@@ -34,6 +42,7 @@ export class SearchService {
   lastSearchStringUpdated = new EventEmitter<string>();
 
   searchProducts(srchString: string): Promise<Product[]> {
+    this.progressBarIsActive = true;
     this.lastSearch = srchString;
 
     // Если такая строка поиска уже есть в списке - переносим ее в верх списка и обрезаем список до макс длиньі
@@ -48,6 +57,9 @@ export class SearchService {
 
     // Обращаемся за данньіми в бекенд
     this.searchResults = this.repo.searchProducts(srchString);
+    this.searchResults.then(() => {
+      this.progressBarIsActive = false;
+    });
     return this.searchResults;
   }
 

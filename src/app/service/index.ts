@@ -13,3 +13,5 @@ export * from './repository/abstract/abstract-news-subscribe-service';
 export * from './repository/specific/mock-news-subscribe.service';
 export * from './search-service';
 export * from './cart-service';
+export * from './connectivity-service';
+

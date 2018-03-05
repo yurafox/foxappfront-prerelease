@@ -1,0 +1,94 @@
+<ion-header>
+  <main-toolbar [disableHeaderClickHandler] = "true" [showCartIcon] = "false" [showCloseIcon] = "true"></main-toolbar>
+</ion-header>
+
+<ion-content class="f-size-larger">
+  <ion-grid>
+
+    <ion-row>
+      <ion-col class="f-section-header"><span loc="" name="GetForLoan">{{locale['GetForLoan']}}</span>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="quotProduct">
+      <ion-col class="f-padding-15">
+        <b><span class="f-size-larger f-color-secondary">{{quotProduct?.product?.name}}</span></b>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="f-padding-15">
+        <span *ngIf="!quotProduct"><b><span loc="Сумма корзины" name="CartTotal">{{locale['CartTotal']}}</span>: </b></span>
+        <b><span class="f-color-red">{{loanAmount | localeCurrency:userService.currency}}</span>
+        </b>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col></ion-col>
+    </ion-row>
+<!--
+General Credits
+-->
+    <div *ngIf="credits && creditsLoaded">
+      <ion-row class="f-padding-lr-5">
+
+        <ion-grid no-padding>
+          <ion-row  padding-top padding-bottom class="f-row-odd f-fond-bold f-size-small">
+            <ion-col col-5 text-center><span loc="Название кредита" name="LoanName">{{locale['LoanName']}}</span></ion-col>
+            <ion-col col-2 text-center><span loc="Льготный период, мес" name="GracePeriod">{{locale['GracePeriod']}}</span></ion-col>
+            <ion-col col-2 text-center><span loc="Срок кредита, мес" name="LoanTerm">{{locale['LoanTerm']}}</span></ion-col>
+            <ion-col col-3 text-center><span loc="Ежемесячный платёж" name="MonthlyPayment">{{locale['MonthlyPayment']}}</span> **</ion-col>
+          </ion-row>
+
+          <ion-row padding-top padding-bottom
+                   *ngFor="let cProd of credits odd as isOdd; even as isEven"
+                   [class.f-row-odd]="isOdd"
+                   [class.f-row-even]="isEven" (click)="onSelectItem(cProd)">
+            <ion-grid no-padding>
+              <ion-row>
+                <ion-col col-1 text-center>
+                    <input type="radio" id="radioButton" class="radio" [checked]="cProd.isChecked">
+                </ion-col>
+                <ion-col col-4>
+                  <span class="f-size-small">{{cProd.creditProduct.sName}}</span>
+                </ion-col>
+                <ion-col col-2 text-center>
+                  <span class="f-size-small">{{cProd.creditProduct.sGracePeriod}}</span>
+                </ion-col>
+                <ion-col col-2 text-center>
+                  <span class="f-size-small">{{cProd.creditProduct.minTerm}}</span>
+                </ion-col>
+                <ion-col col-3 text-end>
+              <span class="f-size-small" *ngIf="cProd.creditProduct.minTerm && !(cProd.creditProduct.minTerm === 0)">
+                {{ cart.calculateLoan(loanAmount, cProd.creditProduct.minTerm,
+                  cProd.creditProduct.monthCommissionPct, cProd.creditProduct.sGracePeriod)
+                  | localeCurrency:userService.currency}}
+              </span>
+                </ion-col>
+              </ion-row>
+              <ion-row class="f-size-small" *ngIf="cProd.isChecked">
+                <credit
+                  [cProduct]="cProd"
+                  [loanAmount]="loanAmount"
+                ></credit>
+              </ion-row>
+            </ion-grid>
+
+          </ion-row>
+        </ion-grid>
+      </ion-row>
+    </div>
+
+  </ion-grid>
+
+  <ion-grid *ngIf="credits && creditsLoaded" class="f-color-secondary">
+    <ion-row>
+      <ion-col class="f-padding-lr-5">
+        <button class="f-btn-action" ion-button block
+
+                [attr.disabled]="!validatePage()?'':null"
+
+                (click)="onContinueClick()"><span loc="Далее" name="Continue">{{locale['Continue']}}</span></button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

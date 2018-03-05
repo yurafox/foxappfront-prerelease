@@ -4,28 +4,6 @@
 </ion-header>
 
 <ion-content>
-<!--
-
-<ion-grid>
-  <ion-row nowrap *ngFor="let sItem of input.searchService.searchItems; let i=index">
-    <ion-col text-left col-auto>
-      <ion-icon class="f-srch-icon" role="img" name="md-close" item-left color="gray"></ion-icon>
-    </ion-col>
-    <ion-col text-left >
-      <ion-label>
-        <div>{{sItem}}</div>
-      </ion-label>
-    </ion-col>
-    <ion-col text-right col-auto>
-      <ion-icon role="img" name="noun_816149" item-right color="gray"></ion-icon>
-    </ion-col>
-
-  </ion-row>
-</ion-grid>
-
--->
-
-
   <ion-item *ngFor="let sItem of searchButtonControl.tmpSearchArray; let i=index" (click)="search(sItem)">
     <ion-icon name="md-close" item-left color="gray" (click)="deleteSearchItem($event, sItem)"></ion-icon>
     <div>

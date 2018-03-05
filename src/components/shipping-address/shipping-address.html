@@ -1,14 +1,17 @@
 <div *ngIf="addresses && (addresses.length>0)">
-  <ion-grid class="f-item-nopadding-tb f-color-secondary">
+  <ion-grid class="f-item-nopadding-tb f-size-larger">
     <ion-row *ngFor="let sa of addresses">
 
-      <ion-grid style="border: 1px solid #EBEBEC;">
+      <ion-grid class="f-border-ligthgray">
 
-        <ion-row (click)="onIsPrimaryClick(sa)">
+        <ion-row (click)="onIsPrimaryClick(sa, $event)">
           <ion-col col-2 text-center>
-            <input type="radio" id="radioButton" [checked]="sa.isPrimary">
+            <div class="pure-radiobutton">
+              <input type="radio" id="radioButton" class="radio" [checked]="isChecked(sa)">
+              <label for="radioButton"></label>
+            </div>
           </ion-col>
-          <ion-col style="padding-bottom: 10px;" class="f-size-larger">
+          <ion-col class="f-padding-b-10" >
             <b>{{sa?.recName}}</b>
             <br>
             {{sa?.street}}
@@ -18,26 +21,28 @@
             {{sa?.city}}, {{sa?.zip}}
             <span *ngIf="sa?.idCountry"><br>
                   {{sa?.country?.name}} </span>
-            <br>
-            Phone: {{sa?.phone}}
+
+            <span *ngIf="sa?.phone" loc="Телефон" name="Phone"><br>{{locale['Phone']}}: {{sa?.phone}} </span>
           </ion-col>
         </ion-row>
-        <div *ngIf="sa.isPrimary">
+        <div *ngIf="isChecked(sa)">
           <div *ngIf="withDelivery === true">
             <ion-row>
-              <ion-col style="padding-left: 10px; padding-right: 10px;">
-                <button class="f-btn-add-cart" ion-button block (click)="deliverToThisAddress(sa)">Deliver to this
-                  address
+              <ion-col class="f-padding-lr-10">
+                <button class="f-btn-action" ion-button block (click)="deliverToThisAddress(sa)">
+                  <span loc="Доставить по этому адресу" name="DeliverToThis">{{locale['DeliverToThis']}}</span>
                 </button>
               </ion-col>
             </ion-row>
           </div>
           <ion-row>
-            <ion-col col-6 style="padding-left: 10px; padding-bottom: 15px;  padding-right: 10px;">
-              <button class="f-btn-secondary" ion-button block (click)="editAddress(sa)">Edit</button>
+            <ion-col col-6 class="f-padding-lr-10 f-padding-b-15">
+              <button class="f-btn-secondary" ion-button block (click)="editAddress(sa)">
+                <span loc="Редактировать" name="Edit">{{locale['Edit']}}</span></button>
             </ion-col>
-            <ion-col col-6 style="padding-right: 10px; padding-bottom: 15px; padding-left: 10px;">
-              <button class="f-btn-secondary" ion-button block (click)="deleteAddress(sa)">Delete</button>
+            <ion-col col-6 class="f-padding-lr-10 f-padding-b-15">
+              <button class="f-btn-secondary" ion-button block (click)="deleteAddress(sa)">
+                <span loc="Удалить" name="Delete">{{locale['Delete']}}</span></button>
             </ion-col>
           </ion-row>
         </div>

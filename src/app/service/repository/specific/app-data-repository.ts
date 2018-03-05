@@ -1,7 +1,7 @@
+import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
-import { Observable } from "rxjs/Observable";
 import { Injectable } from "@angular/core";
-import { Http, URLSearchParams, Headers } from "@angular/http";
+import { Http, URLSearchParams} from "@angular/http";
 import "rxjs/add/operator/toPromise";
 import CacheProvider = Providers.CacheProvider;
 import {
@@ -31,70 +31,294 @@ import {
   LoEntity,
   LoSupplEntity,
   EnumPaymentMethod,
-  ReviewAnswer
+  Novelty,
+  NoveltyDetails,
+  DeviceData,
+  ReviewAnswer,
+  Poll,PollQuestion,PollQuestionAnswer,
+  ClientPollAnswer, CreditProduct, ClientBonus, PersonInfo,
+  LoTrackLog,
+  Category,
+  MeasureUnit
 } from '../../../model/index';
+
 import { AbstractDataRepository } from '../../index';
 import { Providers, System } from "../../../core/app-core";
-import {Novelty} from "../../../model/novelty";
+import {ConnectivityService} from "../../connectivity-service";
 
 // <editor-fold desc="url const">
-const currenciesUrl = "/api/mcurrencies";
-const productsUrl = "/api/mproducts";
-const quotationProductsUrl = "/api/mquotationProducts";
-const quotationsUrl = "/api/mquotation";
-const suppliersUrl = "/api/msuppliers";
-const productReviewsUrl = "/api/mproductReviews";
-const manufacturersUrl = "/api/manufacturers";
-const citiesUrl = "/api/mcities";
+//PRODUCTION URLS
+const productDescriptionsUrl = "http://localhost:44374/api/product/getProductDescription";
+const productsUrl = "http://localhost:44374/api/product";
+const currenciesUrl = "http://localhost:44374/api/currency";
+const manufacturersUrl = "http://localhost:44374/api/manufacturer";
+const quotationProductsUrl = "http://localhost:44374/api/quotationproduct";
+const suppliersUrl = "http://localhost:44374/api/supplier";
+const measureUnitUrl = 'http://localhost:44374/api/measureUnit';
+const LangUrl = "http://localhost:44374/api/localization/lang";
+const countriesUrl = "http://localhost:44374/api/geo/country";
+const citiesUrl = "http://localhost:44374/api/geo/city";
+const getPaymentMethodsUrl = "http://localhost:44374/api/fin/pmtmethod";
+const loEntitiesUrl = "http://localhost:44374/api/lo/loentity";
+const quotationsUrl = "http://localhost:44374/api/quotation";
+const clientsUrl = "http://localhost:44374/api/client";
+const cartProductsUrl = "http://localhost:44374/api/cart/CartProducts";
+const productStorePlacesUrl = "http://localhost:44374/api/storeplace/productstoreplaces";
+const storePlacesUrl = "http://localhost:44374/api/storeplace/storeplace";
+const loSupplEntitiesUrl = "http://localhost:44374/api/lo/losupplentity";
+const specLOTrackingLogUrl = "http://localhost:44374/api/lo/specLOTrackingLog";
+const clientDraftOrderUrl = "http://localhost:44374/api/Cart/ClientDraftOrder";
+const personsUrl = "http://localhost:44374/api/client/person";
+const productImagesUrl = "http://localhost:44374/api/product/getProductImages";
+const getBonusesInfoUrl = "http://localhost:44374/api/client/getBonusesInfo";
+const getClientBonusesExpireInfoUrl = "http://localhost:44374/api/client/GetBonusesExpireInfo";
+const creditProductsUrl = "http://localhost:44374/api/credit/creditproduct";
+const productSupplCreditGradesUrl = "http://localhost:44374/api/credit/GetProductCreditSize";
+const postProductViewUrl = "http://localhost:44374/api/client/LogProductView";
+const clientAddressesUrl = "http://localhost:44374/api/client/clientAddress";
+const clientOrderSpecProductsUrl = "http://localhost:44374/api/Cart/GetCartProductsByOrderId";
+const clientOrdersUrl = "http://localhost:44374/api/Cart/GetClientOrders";
+const citiesWithStoresUrl = "http://localhost:44374/api/geo/citiesWithStores";
+
+
+//DEV URLS
+// const productDescriptionsUrl = 'api/mproductDescriptions';
+// const currenciesUrl = "/api/mcurrencies";
+// const productsUrl = "/api/mproducts";
+// const manufacturersUrl = "/api/manufacturers";
+// const quotationProductsUrl = "/api/mquotationProducts";
+// const suppliersUrl = "/api/msuppliers";
+// const measureUnitUrl = '/api/mmeasureUnits';
+// const LangUrl = "/api/mlocalization";
+// const countriesUrl = "/api/mcountries";
+// const citiesUrl = "/api/mcities";
+// const getPaymentMethodsUrl = "/api/mpaymentMethods";
+// const loEntitiesUrl = "/api/mloEntities";
+// const quotationsUrl = "/api/mquotation";
+// const clientsUrl = "/api/mclients";
+// const cartProductsUrl = "/api/mcartProducts";
+// const productStorePlacesUrl = "/api/mproductStorePlaces";
+// const storePlacesUrl = "/api/mstorePlaces";
+// const loSupplEntitiesUrl = "/api/mloSupplEntities";
+// const specLOTrackingLogUrl = '/api/mspecLOTrackingLog';
+// const clientDraftOrderUrl = "/api/mclientDraftOrder";
+// const personsUrl = "/api/mpersons";
+// const productImagesUrl = "/api/mProductImages";
+// const getBonusesInfoUrl = "/api/mgetBonusesInfoForCheckout";
+// const getClientBonusesExpireInfoUrl = "/api/mclientBonuses";
+// const creditProductsUrl = "/api/mcreditProducts";
+// const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
+// const postProductViewUrl = "/api/mpostProductView";
+// const clientAddressesUrl = "/api/mclientAddresses";
+// const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
+// const clientOrdersUrl = "/api/mclientOrders";
+// const citiesWithStoresUrl = "/api/mcities";
+
+const getDeliveryCostUrl = "/api/mgetDeliveryCost";
+const getDeliveryDateUrl = "/api/mgetDeliveryDate";
+const calculateCartUrl = "/api/mcalculateCart";
+
+
 const storesUrl = "/api/mstores";
-const storePlacesUrl = "/api/mstorePlaces";
-const productStorePlacesUrl = "/api/mproductStorePlaces";
-const LangUrl = "/api/mlocalization";
-const clientsUrl = "/api/mclients";
-const clientAddressesUrl = "/api/mclientAddresses";
-const countriesUrl = "/api/mcountries";
-const clientOrdersUrl = "/api/mclientOrders";
-const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
-const clientOrderSpecProductsOfClientUrl = "/api/mclientOrderSpecProductsOfClient";
-const cartProductsUrl = "/api/mcartProducts";
+const productReviewsUrl = "/api/mproductReviews";
 const pagesDynamicUrl = "/api/mpages";
 const actionDynamicUrl = "/api/mactions";
 const actionOffersUrl = "/api/mactionOffers";
 const storeReviewsUrl = "/api/mstoreReviews";
-const loEntitiesUrl = "/api/mloEntities";
-const loSupplEntitiesUrl = "/api/mloSupplEntities";
-const getDeliveryCostUrl = "/api/mgetDeliveryCost";
-const getDeliveryDateUrl = "/api/mgetDeliveryDate";
-const getPaymentMethodsUrl = "/api/mpaymentMethods";
-const clientDraftOrderUrl = "/api/mclientDraftOrder";
-
+const pollsUrl='/api/mpolls';
+const pollQuestionUrl='/api/mpollQuestion';
+const pollQuestionAnswerUrl = '/api/mpollQuestionAnswer';
+const clientPollAnswersUrl = '/api/mclientPollAnswers';
 const noveltyDynamicUrl = "/api/mnovelties";
+const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
+const deviceDataUrl = "/api/mdeviceData";
+const redirectToPaymasterUrl = "/api/mredirectToPaymaster";
+
+const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/api/catalog`:"/api/mcategories";
+
+
+
 // </editor-fold
 
 @Injectable()
 export class AppDataRepository extends AbstractDataRepository {
   private cache: CacheProvider = new CacheProvider();
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private connServ: ConnectivityService) {
     super();
   }
 
-  public async getPmtMethods(): Promise<EnumPaymentMethod[]> {
+  public async getClientBonusesExpireInfo(clientId: number): Promise <ClientBonus[]> {
     try {
-      const response = await this.http.get(getPaymentMethodsUrl).toPromise();
+      const response = await this.http
+        .get(getClientBonusesExpireInfoUrl, {
+          search: this.createSearchParams([
+            {key: "clientId", value: clientId.toString()}
+          ])
+        })
+        .toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      const cItems = new Array<EnumPaymentMethod>();
+      const arr = new Array<ClientBonus>();
+      if (data != null) {
+        data.forEach(val =>
+          arr.push(new ClientBonus(val.id,val.clientId, val.bonus, val.dueDate))
+          );
+      }
+      return arr;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async postProductView(idProduct: number, params: string) {
+    try {
+      const response = await this.http
+        .post(postProductViewUrl, {idProduct: idProduct.toString(), params: params}).toPromise();
+      if (response.status !== 201) {
+        throw new Error("server side status error");
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+
+  public async calculateCart(promoCode: string, maxBonusCnt: number, usePromoBonus: boolean,
+                             cartContent: ClientOrderProducts[]):
+      Promise<{clOrderSpecProdId: number, promoCodeDisc: number, bonusDisc: number, promoBonusDisc: number}[]>
+  {
+    try {
+      let _dtoContent = [];
+      cartContent.forEach(i => {
+          _dtoContent.push(i.dto);
+        }
+      );
+
+      const response = await this.http
+        .post(calculateCartUrl, {promoCode: promoCode, maxBonusCnt: maxBonusCnt,
+                                        usePromoBonus: usePromoBonus, cartContent: _dtoContent})
+        .toPromise();
+      const val = response.json();
+
+      if (response.status !== 201 && response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      let _res = [];
+      if (val) {
+        val.forEach(i => {
+          _res.push({clOrderSpecProdId: i.clOrderSpecProdId, promoCodeDisc: i.promoCodeDisc,
+            bonusDisc: i.bonusDisc, promoBonusDisc: i.promoBonusDisc});
+        });
+      }
+      return _res;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+
+  public async getBonusesInfo(clientId: number): Promise<{ bonusLimit: number, actionBonusLimit: number }> {
+    try {
+      let _id = clientId.toString();
+      const response = await this.http
+        .get(getBonusesInfoUrl + `/${_id}`).toPromise();
+      const val = response.json();
+      if (response.status == 204)
+        return {bonusLimit: 0, actionBonusLimit: 0};
+      if (response.status !== 201 && response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      return val;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getCreditProducts(): Promise<CreditProduct[]> {
+    try {
+      const response = await this.http.get(creditProductsUrl).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const cItems = new Array<CreditProduct>();
       if (data != null) {
         data.forEach(val => {
-          cItems.push(new EnumPaymentMethod(val.id, val.name));
+          let cp = new CreditProduct();
+          cp.sId = val.sId;
+          cp.sName = val.sName;
+          cp.sDefProdId = val.sDefProdId;
+          cp.sPartPay = val.sPartPay;
+          cp.sGracePeriod = val.sGracePeriod;
+          cp.maxTerm = val.maxTerm;
+          cp.firstPay = val.firstPay;
+          cp.monthCommissionPct = val.monthCommissionPct;
+          cp.yearPct = val.yearPct;
+          cp.kpcPct = val.kpcPct;
+          cp.minTerm = val.minTerm;
+
+          cItems.push(cp);
         });
       }
       return cItems;
     } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async loadPmtMethodsCache() {
+    try {
+      const response = await this.http.get(getPaymentMethodsUrl).toPromise();
+
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      if (data != null) {
+        data.forEach(val => {
+            let pmtMethod = new EnumPaymentMethod();
+            pmtMethod.id = val.id;
+            pmtMethod.name = val.name;
+            if (this.isEmpty(this.cache.EnumPaymentMethod.Item(val.id.toString()))) {
+              this.cache.EnumPaymentMethod.Add(val.id.toString(), pmtMethod);
+            };
+          }
+        );
+      }
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+
+  public async getPmtMethods(): Promise<EnumPaymentMethod[]> {
+    try {
+      if (this.cache.EnumPaymentMethod.Count() === 0) {
+
+        const response = await this.http.get(getPaymentMethodsUrl).toPromise();
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        const cItems = new Array<EnumPaymentMethod>();
+        if (data != null) {
+          data.forEach(val => {
+            cItems.push(new EnumPaymentMethod(val.id, val.name));
+          });
+        }
+        return cItems;
+      }
+      else
+        return this.cache.EnumPaymentMethod.Values();
+    }
+    catch (err) {
       return await this.handleError(err);
     }
 
@@ -102,31 +326,39 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getPmtMethodById(id: number): Promise<EnumPaymentMethod> {
     try {
-      const response = await this.http
-        .get(getPaymentMethodsUrl + `/${id.toString()}`)
-        .toPromise();
+      const _id = id.toString();
+      const pmtMethod = new EnumPaymentMethod();
+      if (this.isEmpty(this.cache.EnumPaymentMethod.Item(_id))) {
+        const response = await this.http
+          .get(getPaymentMethodsUrl + `/${_id}`).toPromise();
 
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        if (data)
+        {
+          pmtMethod.id = data.id;
+          pmtMethod.name = data.name;
+          this.cache.EnumPaymentMethod.Add(_id, pmtMethod);
+        }
+        return pmtMethod;
       }
-      if (data)
-        return new EnumPaymentMethod(
-          data.id,
-          data.name
-        )
       else
-        return null;
-    } catch (err) {
+      {
+        return this.cache.EnumPaymentMethod.Item(_id);
+      };
+    }
+    catch (err) {
       return await this.handleError(err);
     }
   }
 
 
-  public async getDeliveryDate(orderSpecId: number, loEntityId: number): Promise<Date> {
+  public async getDeliveryDate(order: ClientOrderProducts, loEntityId: number): Promise<Date> {
     try {
       const response = await this.http
-        .post(getDeliveryDateUrl, {id: orderSpecId, loEntity: loEntityId})
+        .post(getDeliveryDateUrl, {order: order, loEntity: loEntityId})
         .toPromise();
       const val = response.json();
 
@@ -139,10 +371,11 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getDeliveryCost(orderSpecId: number, loEntityId: number): Promise<number> {
+  public async getDeliveryCost(order: ClientOrderProducts, loEntityId: number): Promise<number> {
     try {
+      //console.log('orderSpecId: '+ orderSpecId + ', loEntityId: ' + loEntityId);
       const response = await this.http
-        .post(getDeliveryCostUrl, {id: orderSpecId, loEntity: loEntityId})
+        .post(getDeliveryCostUrl, {order: order, loEntity: loEntityId})
         .toPromise();
       const val = response.json();
 
@@ -155,33 +388,109 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getLoEntitiyById(entityId: number):Promise<LoEntity> {
+  public async getProductCreditSize(idProduct: number, isSupplier: number): Promise<any> {
     try {
       const response = await this.http
-        .get(loEntitiesUrl + `/${entityId}`)
+        .get(productSupplCreditGradesUrl, {
+          search: this.createSearchParams([
+            {key: "idProduct", value: idProduct.toString()},
+            {key: "idSupplier", value: isSupplier.toString()}
+          ])
+        })
         .toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      if (data)
-        return new LoEntity(
-          data.id,
-          data.name
-        );
+      if (data[0])
+        return {partsPmtCnt: data[0].partsPmtCnt, creditSize: data[0].creditSize}
+      else
+        return null;
+
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getLoEntitiyById(entityId: number): Promise<LoEntity> {
+    try {
+      const id = entityId.toString();
+      const loEntity = new LoEntity();
+      if (this.isEmpty(this.cache.LoEntity.Item(id))) {
+        const response = await this.http
+          .get(loEntitiesUrl + `/${entityId}`)
+          .toPromise();
+
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+
+        if (data) {
+          loEntity.id = data.id;
+          loEntity.name = data.name;
+          this.cache.LoEntity.Add(id, loEntity);
+        }
+        return loEntity;
+      }
+      else
+      {
+        return this.cache.LoEntity.Item(id);
+      }
+
     } catch (err) {
       return await this.handleError(err);
     }
 
   }
 
-  public async getLoEntitiesForSupplier(supplierId: number):Promise<LoSupplEntity[]> {
+  public async getLoTrackLogByOrderSpecId(id: number): Promise<LoTrackLog[]> {
+    try {
+      const response = await this.http
+        .get(specLOTrackingLogUrl, {
+          search: this.createSearchParams([
+            {key: "idOrderSpecProd", value: id.toString()}
+          ])
+        })
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const arr = new Array<LoTrackLog>();
+      if (data != null) {
+        data.forEach(val =>
+          arr.push(
+            new LoTrackLog(
+              val.id,
+              val.idOrderSpecProd,
+              val.trackDate,
+              val.trackString
+            )
+          )
+        );
+
+        arr.sort((x,y) => {
+            return (+new Date(y.trackDate) - +new Date(x.trackDate));
+          }
+        );
+      }
+
+      return arr;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+
+  }
+
+  public async getLoEntitiesForSupplier(supplierId: number): Promise<LoSupplEntity[]> {
     try {
       const response = await this.http
         .get(loSupplEntitiesUrl, {
           search: this.createSearchParams([
-            { key: "idSuppler", value: supplierId.toString() }
+            {key: "idSupplier", value: supplierId.toString()}
           ])
         })
         .toPromise();
@@ -209,6 +518,46 @@ export class AppDataRepository extends AbstractDataRepository {
 
   }
 
+  public async saveClientDraftOrder(order: ClientOrder): Promise<ClientOrder> {
+    try {
+      const response = await this.http
+        .put(clientDraftOrderUrl, order.dto)
+        .toPromise();
+      const data = response.json();
+
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        let cClientOrder = new ClientOrder(
+          data.id,
+          data.orderDate,
+          data.idCur,
+          data.idClient,
+          data.total,
+          data.idPaymentMethod,
+          data.idPaymentStatus,
+          data.idStatus,
+          null,
+          data.loIdEntity,
+          data.loIdClientAddress,
+          data.itemsTotal,
+          data.shippingTotal,
+          data.bonusTotal,
+          data.promoBonusTotal,
+          data.bonusEarned,
+          data.promoCodeDiscTotal,
+          data.idPerson
+        );
+        return cClientOrder;
+      }
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+
+  }
+
   // Метод должен возвращать 1 обїект - черновой заказ, которьій для каждого клиента может бьіть только в единсвенном єкземпляре.
   // Если чернового заказа в базе нет - то создавать и возвращать его
   public async getClientDraftOrder(): Promise<ClientOrder> {
@@ -221,22 +570,29 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
       if (data != null) {
-        console.log('data[0].loIdClientAddress :' + data[0].loIdClientAddress);
-          let cClientOrder = new ClientOrder(
-            data[0].id,
-            data[0].orderDate,
-            data[0].idCur,
-            data[0].idClient,
-            data[0].total,
-            data[0].idPaymentMethod,
-            data[0].idPaymentStatus,
-            data[0].idStatus,
-            null,
-            data[0].loIdEntity,
-            data[0].loIdClientAddress
-          );
-          return cClientOrder;
-      };
+        let cClientOrder = new ClientOrder(
+          data.id,
+          data.orderDate,
+          data.idCur,
+          data.idClient,
+          data.total,
+          data.idPaymentMethod,
+          data.idPaymentStatus,
+          data.idStatus,
+          null,
+          data.loIdEntity,
+          data.loIdClientAddress,
+          data.itemsTotal,
+          data.shippingTotal,
+          data.bonusTotal,
+          data.promoBonusTotal,
+          data.bonusEarned,
+          data.promoCodeDiscTotal,
+          data.idPerson
+        );
+        return cClientOrder;
+      }
+      ;
     } catch (err) {
       return await this.handleError(err);
     }
@@ -244,12 +600,13 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getClientOrders(): Promise<ClientOrder[]> {
     try {
+
       const response = await this.http
         .get(clientOrdersUrl, {
-          //TODO переделать этот метод (два одинаковых поисковых параметра - кривизна)
+          //TODO в реальном бекенде входящие параметры игнорить и возвращать все заказы клиента в статусе > 0
           search: this.createSearchParams([
-            { key: "idStatus", value: "1" },
-            { key: "idStatus", value: "2" }
+            {key: "idClient", value: "100"},
+            {key: "idStatus", value: "1"}
           ])
         })
         .toPromise();
@@ -271,47 +628,20 @@ export class AppDataRepository extends AbstractDataRepository {
               val.idPaymentMethod,
               val.idPaymentStatus,
               val.idStatus,
+              null,
               val.loIdEntity,
-              val.loIdClientAddress
+              val.loIdClientAddress,
+              val.itemsTotal,
+              val.shippingTotal,
+              val.bonusTotal,
+              val.promoBonusTotal,
+              val.bonusEarned,
+              val.promoCodeDiscTotal,
+              val.idPerson
             )
           )
         );
-      }
-      return cClientOrders;
-    } catch (err) {
-      return await this.handleError(err);
-    }
-  }
-
-  public async getClientOrdersAll(): Promise<ClientOrder[]> {
-    try {
-      const response = await this.http
-        .get(clientOrdersUrl)
-        .toPromise();
-
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      const cClientOrders = new Array<ClientOrder>();
-      if (data != null) {
-        data.forEach(val =>
-          cClientOrders.push(
-            new ClientOrder(
-              val.id,
-              val.orderDate,
-              val.idCur,
-              val.idClient,
-              val.total,
-              val.idPaymentMethod,
-              val.idPaymentStatus,
-              val.idStatus,
-              val.loIdEntity,
-              val.loIdClientAddress
-            )
-          )
-        );
-      }
+      };
       return cClientOrders;
     } catch (err) {
       return await this.handleError(err);
@@ -323,7 +653,7 @@ export class AppDataRepository extends AbstractDataRepository {
       const response = await this.http
         .get(clientOrdersUrl, {
           search: this.createSearchParams([
-            { key: "idStatus", value: id.toString() }
+            {key: "idStatus", value: id.toString()}
           ])
         })
         .toPromise();
@@ -341,31 +671,30 @@ export class AppDataRepository extends AbstractDataRepository {
         data.idPaymentMethod,
         data.idPaymentStatus,
         data.idStatus,
+        null,
         data.loIdEntity,
-        data.loIdClientAddress
+        data.loIdClientAddress,
+        data.itemsTotal,
+        data.shippingTotal,
+        data.bonusTotal,
+        data.promoBonusTotal,
+        data.bonusEarned,
+        data.promoCodeDiscTotal,
+        data.idPerson
       );
     } catch (err) {
       return await this.handleError(err);
     }
   }
 
-  public async updateCartProduct(
-    prod: ClientOrderProducts
-  ): Promise<ClientOrderProducts> {
-    //TODO
-    return null;
-  }
-
-  public async saveCartProduct(
-    prod: ClientOrderProducts
-  ): Promise<ClientOrderProducts> {
+  public async insertCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
     try {
       const response = await this.http
-        .post(clientOrderSpecProductsUrl, prod.dto /*obj*/)
+        .post(cartProductsUrl, prod.dto /*obj*/)
         .toPromise();
       const val = response.json();
 
-      if (response.status !== 201 && response.status !== 200) {
+      if (response.status !== 201) {
         throw new Error("server side status error");
       }
       let p = new ClientOrderProducts();
@@ -383,6 +712,39 @@ export class AppDataRepository extends AbstractDataRepository {
       p.loDeliveryCompletedDate = val.loDeliveryCompletedDate;
       p.errorMessage = val.errorMessage;
       p.warningMessage = val.warningMessage;
+      p.warningRead = val.warningRead;
+      return p;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async saveCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
+    try {
+      const response = await this.http
+        .put(cartProductsUrl, prod.dto /*obj*/)
+        .toPromise();
+      const val = response.json();
+
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      let p = new ClientOrderProducts();
+      p.id = val.id;
+      p.idOrder = val.idOrder;
+      p.idQuotationProduct = val.idQuotationProduct;
+      p.price = val.price;
+      p.qty = val.qty;
+      p.idStorePlace = val.idStorePlace;
+      p.idLoEntity = val.idLoEntity;
+      p.loTrackTicket = val.loTrackTicket;
+      p.loDeliveryCost = val.loDeliveryCost;
+      p.loDeliveryCompleted = val.loDeliveryCompleted;
+      p.loEstimatedDeliveryDate = val.loEstimatedDeliveryDate;
+      p.loDeliveryCompletedDate = val.loDeliveryCompletedDate;
+      p.errorMessage = val.errorMessage;
+      p.warningMessage = val.warningMessage;
+      p.warningRead = val.warningRead;
       return p;
     } catch (err) {
       return await this.handleError(err);
@@ -392,7 +754,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async deleteCartProduct(prod: ClientOrderProducts) {
     try {
       const response = await this.http
-        .delete(clientOrderSpecProductsUrl + `/${prod.id}`)
+        .delete(cartProductsUrl + `/${prod.id}`)
         .toPromise();
       if (response.status !== 204) {
         throw new Error("server side status error");
@@ -428,6 +790,12 @@ export class AppDataRepository extends AbstractDataRepository {
           p.loDeliveryCompletedDate = val.loDeliveryCompletedDate;
           p.errorMessage = val.errorMessage;
           p.warningMessage = val.warningMessage;
+          p.payPromoCode = val.payPromoCode;
+          p.payPromoCodeDiscount = val.payPromoCodeDiscount;
+          p.payBonusCnt = val.payBonusCnt;
+          p.payPromoBonusCnt = val.payPromoBonusCnt;
+          p.earnedBonusCnt = val.earnedBonusCnt;
+          p.warningRead = val.warningRead;
 
           cClientOrderProducts.push(p);
         });
@@ -438,9 +806,53 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getClientDraftOrderSpecProductsById(
-    id: number
-  ): Promise<ClientOrderProducts> {
+  public async getClientOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]> {
+    try {
+      const response = await this.http
+        .get(clientOrderSpecProductsUrl, {
+          search: this.createSearchParams([
+            {key: "idOrder", value: orderId.toString()}
+          ])
+        })
+        .toPromise();
+
+      let orderProducts = [];
+      const val = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      val.forEach(i => {
+        let p = new ClientOrderProducts();
+        p.id = i.id;
+        p.idOrder = i.idOrder;
+        p.idQuotationProduct = i.idQuotationProduct;
+        p.price = i.price;
+        p.qty = i.qty;
+        p.idStorePlace = i.idStorePlace;
+        p.idLoEntity = i.idLoEntity;
+        p.loTrackTicket = i.loTrackTicket;
+        p.loDeliveryCost = i.loDeliveryCost;
+        p.loDeliveryCompleted = i.loDeliveryCompleted;
+        p.loEstimatedDeliveryDate = i.loEstimatedDeliveryDate;
+        p.loDeliveryCompletedDate = i.loDeliveryCompletedDate;
+        p.errorMessage = i.errorMessage;
+        p.payPromoCode = i.payPromoCode;
+        p.payPromoCodeDiscount = i.payPromoCodeDiscount;
+        p.payBonusCnt = i.payBonusCnt;
+        p.payPromoBonusCnt = i.payPromoBonusCnt;
+        p.earnedBonusCnt = i.earnedBonusCnt;
+        p.warningRead = i.warningRead;
+        orderProducts.push(p);
+      });
+      return orderProducts;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+
+  }
+
+
+  public async getClientDraftOrderSpecProductsById(id: number): Promise<ClientOrderProducts> {
     try {
       const _id = id.toString();
       const response = await this.http
@@ -466,6 +878,12 @@ export class AppDataRepository extends AbstractDataRepository {
       p.loDeliveryCompletedDate = val.loDeliveryCompletedDate;
       p.errorMessage = val.errorMessage;
       p.warningMessage = val.warningMessage;
+      p.payPromoCode = val.payPromoCode;
+      p.payPromoCodeDiscount = val.payPromoCodeDiscount;
+      p.payBonusCnt = val.payBonusCnt;
+      p.payPromoBonusCnt = val.payPromoBonusCnt;
+      p.earnedBonusCnt = val.earnedBonusCnt;
+      p.warningRead = val.warningRead;
       return p;
     } catch (err) {
       return await this.handleError(err);
@@ -498,6 +916,13 @@ export class AppDataRepository extends AbstractDataRepository {
         p.loEstimatedDeliveryDate = product.loEstimatedDeliveryDate;
         p.loDeliveryCompletedDate = product.loDeliveryCompletedDate;
         p.errorMessage = product.errorMessage;
+        p.payPromoCode = product.payPromoCode;
+        p.payPromoCodeDiscount = product.payPromoCodeDiscount;
+        p.payBonusCnt = product.payBonusCnt;
+        p.payPromoBonusCnt = product.payPromoBonusCnt;
+        p.earnedBonusCnt = product.earnedBonusCnt;
+        p.warningRead = product.warningRead;
+
         orderProducts.push(p);
       });
       return orderProducts;
@@ -506,52 +931,12 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getClientOrderSpecProductsByClientId(clientId: number): Promise<Array<ClientOrderProducts>> {
-    try {
-      let orderProducts = [];
-      const response = await this.http
-        .get(clientOrderSpecProductsOfClientUrl, {
-          search: this.createSearchParams([
-            { key: "idClient", value: clientId.toString() }
-          ])
-        })
-        .toPromise();
-
-      const val = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      val.forEach(product => {
-        let p = new ClientOrderProducts();
-        p.id = product.id;
-        p.idOrder = product.idOrder;
-        p.idQuotationProduct = product.idQuotationProduct;
-        p.price = product.price;
-        p.qty = product.qty;
-        p.idStorePlace = product.idStorePlace;
-        p.idLoEntity = product.idLoEntity;
-        p.loTrackTicket = product.loTrackTicket;
-        p.loDeliveryCost = product.loDeliveryCost;
-        p.loDeliveryCompleted = product.loDeliveryCompleted;
-        p.loEstimatedDeliveryDate = product.loEstimatedDeliveryDate;
-        p.loDeliveryCompletedDate = product.loDeliveryCompletedDate;
-        p.errorMessage = product.errorMessage;
-        orderProducts.push(p);
-      });
-      return orderProducts;
-    } catch (err) {
-      return await this.handleError(err);
-    }
-  }
-
-  public async getProductReviewsByProductId(
-    productId: number
-  ): Promise<ProductReview[]> {
+  public async getProductReviewsByProductId(productId: number): Promise<ProductReview[]> {
     try {
       const response = await this.http
         .get(productReviewsUrl, {
           search: this.createSearchParams([
-            { key: "idProduct", value: productId.toString() }
+            {key: "idProduct", value: productId.toString()}
           ])
         })
         .toPromise();
@@ -600,14 +985,12 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getProductStorePlacesByQuotId(
-    quotId: number
-  ): Promise<ProductStorePlace[]> {
+  public async getProductStorePlacesByQuotId(quotId: number): Promise<ProductStorePlace[]> {
     try {
       const response = await this.http
         .get(productStorePlacesUrl, {
           search: this.createSearchParams([
-            { key: "idQuotationProduct", value: quotId.toString() }
+            {key: "idQuotationProduct", value: quotId.toString()}
           ])
         })
         .toPromise();
@@ -628,7 +1011,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
           let sp = await (<any>psp).storeplace_p;
           if (sp.type == 1)
-            //select only storeplaces with type of store
+          //select only storeplaces with type of store
             qProductsStorePlaces.push(psp);
         }
       }
@@ -643,6 +1026,8 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async getCountries(): Promise<Country[]> {
+    if (this.cache.Country.Count() > 0)
+      return this.cache.Country.Values();
     try {
       const response = await this.http.get(countriesUrl).toPromise();
 
@@ -656,8 +1041,8 @@ export class AppDataRepository extends AbstractDataRepository {
           let p = new Country();
           p.id = val.id;
           p.name = val.name;
-
           cCountries.push(p);
+          this.cache.Country.Add(p.id.toString(), p);
         });
       }
       return cCountries;
@@ -671,18 +1056,24 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
       const _id = id.toString();
       let country = new Country();
-      const response = await this.http
-        .get(countriesUrl + `/${_id}`)
-        .toPromise();
-      let data: any = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
+      if (this.isEmpty(this.cache.Country.Item(_id))) {
+        const response = await this.http
+          .get(countriesUrl + `/${_id}`).toPromise();
+        let data: any = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
 
-      if (data != null) {
-        country.id = data.id;
-        country.name = data.name;
-        return country;
+        if (data != null) {
+          country.id = data.id;
+          country.name = data.name;
+          this.cache.Country.Add(_id, country);
+          return country;
+        }
+      }
+      else
+      {
+        return this.cache.Country.Item(_id);
       }
     } catch (err) {
       return await this.handleError(err);
@@ -695,7 +1086,7 @@ export class AppDataRepository extends AbstractDataRepository {
       let client = new Client();
       const response = await this.http
         .get(clientsUrl, {
-          search: this.createSearchParams([{ key: "userId", value: _id }])
+          search: this.createSearchParams([{key: "userId", value: _id}])
         })
         .toPromise();
       let data: any = response.json();
@@ -713,6 +1104,8 @@ export class AppDataRepository extends AbstractDataRepository {
         client.fname = data.fname;
         client.lname = data.lname;
         client.barcode = data.barcode;
+        // client.bonusBalance = data.bonusBalance;
+        // client.actionBonusBalance = data.actionBonusBalance;
         return client;
       }
     } catch (err) {
@@ -751,7 +1144,7 @@ export class AppDataRepository extends AbstractDataRepository {
       let client = new Client();
       const response = await this.http
         .get(clientsUrl, {
-          search: this.createSearchParams([{ key: "email", value: email }])
+          search: this.createSearchParams([{key: "email", value: email}])
         })
         .toPromise();
       let data: any = response.json();
@@ -775,33 +1168,115 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async createClientAddress(address: ClientAddress): Promise<ClientAddress> {
+    try {
+      const response = await this.http
+        .post(clientAddressesUrl, address.dto)
+        .toPromise();
+      const data = response.json();
+
+      if (response.status !== 201) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        let clientAddress = new ClientAddress();
+        clientAddress.id = data.id;
+        clientAddress.idClient = data.idClient;
+        clientAddress.idCity = data.idCity;
+        clientAddress.zip = data.zip;
+        clientAddress.street = data.street;
+        clientAddress.lat = data.lat;
+        clientAddress.lng = data.lng;
+        clientAddress.isPrimary = data.isPrimary;
+        clientAddress.idCountry = data.idCountry;
+        clientAddress.city = data.city;
+        clientAddress.bldApp = data.bldApp;
+        clientAddress.recName = data.recName;
+        clientAddress.phone = data.phone;
+        return clientAddress;
+      }
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async deleteClientAddress(address: ClientAddress) {
+    try {
+      const response = await this.http
+        .delete(clientAddressesUrl + `/${address.id}`)
+        .toPromise();
+      if (response.status !== 204) {
+        throw new Error("server side status error");
+      }
+    } catch (err) {
+      await this.handleError(err);
+    }
+  }
+
+  public async saveClientAddress(address: ClientAddress): Promise<ClientAddress> {
+    try {
+      const response = await this.http
+        .put(clientAddressesUrl, address.dto)
+        .toPromise();
+      const data = response.json();
+
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        let clientAddress = new ClientAddress();
+        clientAddress.id = data.id;
+        clientAddress.idClient = data.idClient;
+        clientAddress.idCity = data.idCity;
+        clientAddress.zip = data.zip;
+        clientAddress.street = data.street;
+        clientAddress.lat = data.lat;
+        clientAddress.lng = data.lng;
+        clientAddress.isPrimary = data.isPrimary;
+        clientAddress.idCountry = data.idCountry;
+        clientAddress.city = data.city;
+        clientAddress.bldApp = data.bldApp;
+        clientAddress.recName = data.recName;
+        clientAddress.phone = data.phone;
+        return clientAddress;
+      }
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+
   public async getClientAddressById(id: number): Promise<ClientAddress> {
+    if (!id)
+      return Promise.resolve(null);
     try {
       let _id = id.toString();
 
       const response = await this.http
-        .get(clientAddressesUrl+ `/${_id}`).toPromise();
+        .get(clientAddressesUrl + `/${_id}`).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
       if (data != null) {
-          let clientAddress = new ClientAddress();
-          clientAddress.id = data.id;
-          clientAddress.idClient = data.idClient;
-          clientAddress.idCity = data.idCity;
-          clientAddress.zip = data.zip;
-          clientAddress.street = data.street;
-          clientAddress.lat = data.lat;
-          clientAddress.lng = data.lng;
-          clientAddress.isPrimary = data.isPrimary;
-          clientAddress.idCountry = data.idCountry;
-          clientAddress.city = data.city;
-          clientAddress.bldApp = data.bldApp;
-          clientAddress.recName = data.recName;
-          clientAddress.phone = data.phone;
-          return clientAddress;
+        let clientAddress = new ClientAddress();
+        clientAddress.id = data.id;
+        clientAddress.idClient = data.idClient;
+        clientAddress.idCity = data.idCity;
+        clientAddress.zip = data.zip;
+        clientAddress.street = data.street;
+        clientAddress.lat = data.lat;
+        clientAddress.lng = data.lng;
+        clientAddress.isPrimary = data.isPrimary;
+        clientAddress.idCountry = data.idCountry;
+        clientAddress.city = data.city;
+        clientAddress.bldApp = data.bldApp;
+        clientAddress.recName = data.recName;
+        clientAddress.phone = data.phone;
+        return clientAddress;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -816,7 +1291,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
       const response = await this.http
         .get(clientAddressesUrl, {
-          search: this.createSearchParams([{ key: "idClient", value: _id }])
+          search: this.createSearchParams([{key: "idClient", value: _id}])
         })
         .toPromise();
 
@@ -845,6 +1320,40 @@ export class AppDataRepository extends AbstractDataRepository {
         return clientAdresses;
       }
     } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async loadStorePlaceCache() {
+    try {
+      const response = await this.http
+        .get(storePlacesUrl).toPromise();
+
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      if (data != null) {
+        data.forEach(val => {
+          let storeplace = new StorePlace();
+          storeplace.id = val.id;
+          storeplace.name = val.name;
+          storeplace.idSupplier = val.idSupplier;
+          storeplace.idCity = val.idCity;
+          storeplace.zip = val.zip;
+          storeplace.address_line = val.address_line;
+          storeplace.lat = val.lat;
+          storeplace.lng = val.lng;
+          storeplace.type = val.type;
+          if (this.isEmpty(this.cache.StorePlace.Item(val.id.toString()))) {
+            this.cache.StorePlace.Add(val.id.toString(), storeplace);
+            };
+          }
+        );
+      }
+    }
+    catch (err) {
       return await this.handleError(err);
     }
   }
@@ -890,6 +1399,34 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async loadCityCache() {
+    try {
+      const response = await this.http
+        .get(citiesUrl).toPromise();
+
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      if (data != null) {
+        data.forEach(val => {
+            let city = new City();
+            city.id = val.id;
+            city.name = val.name;
+            if (this.isEmpty(this.cache.City.Item(val.id.toString()))) {
+              this.cache.City.Add(val.id.toString(), city);
+            };
+          }
+        );
+      }
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+
   public async getCityById(id: number): Promise<City> {
     if (!id) return null;
     try {
@@ -907,7 +1444,6 @@ export class AppDataRepository extends AbstractDataRepository {
         }
 
         if (data != null) {
-          //city = new City();
           city.id = id;
           city.name = data.name;
 
@@ -961,13 +1497,14 @@ export class AppDataRepository extends AbstractDataRepository {
             val.id,
             val.name,
             val.price,
+            val.oldPrice,
+            val.bonuses,
             val.manufacturerId,
             props,
             val.imageUrl,
             val.rating,
             val.recall,
             val.supplOffers,
-            val.description,
             val.slideImageUrls,
             val.barcode
           );
@@ -975,7 +1512,6 @@ export class AppDataRepository extends AbstractDataRepository {
           let mnf = await (<any>productItem).manufacturer_p;
           if (
             this.search(mnf.name, srchString) ||
-            this.search(productItem.description, srchString) ||
             this.search(productItem.id.toString(), srchString) ||
             this.search(productItem.name, srchString) ||
             this.search(productItem.barcode, srchString)
@@ -990,16 +1526,14 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getProducts(
-    urlQuery: string,
-    cacheForce: boolean
-  ): Promise<Product[]> {
+  public async getProducts(urlQuery: string,
+                           cacheForce: boolean): Promise<Product[]> {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
       if (this.cache.Products.Count() === 0 || cacheForce === true) {
         const response = await this.http
           .get(productsUrl, {
-            search: this.createSearchParams([{ key: "url", value: urlQuery }])
+            search: this.createSearchParams([{key: "url", value: urlQuery}])
           })
           .toPromise();
 
@@ -1020,13 +1554,14 @@ export class AppDataRepository extends AbstractDataRepository {
               val.id,
               val.name,
               val.price,
+              val.oldPrice,
+              val.bonuses,
               val.manufacturerId,
               props,
               val.imageUrl,
               val.rating,
               val.recall,
               val.supplOffers,
-              val.description,
               val.slideImageUrls,
               val.barcode
             );
@@ -1047,9 +1582,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getQuotationProductById(
-    qpId: number
-  ): Promise<QuotationProduct> {
+  public async getQuotationProductById(qpId: number): Promise<QuotationProduct> {
     try {
       const response = await this.http
         .get(quotationProductsUrl + `/${qpId}`)
@@ -1078,14 +1611,46 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getQuotationProductsByProductId(
-    productId: number
-  ): Promise<QuotationProduct[]> {
+  public async getValueQuotByProduct(id: number): Promise<QuotationProduct> {
+    let _qps = await this.getQuotationProductsByProductId(id);
+    if (_qps.length === 0)
+      return null;
+
+    // Возвращаем предложение с минимальной ценой
+    return _qps.sort((x,y) => {
+      return (x.price - y.price);
+    })
+      .find((i) => {return (i.stockQuant > 0)});
+  }
+
+  public async getByItAgainQP(originalQP: QuotationProduct): Promise<QuotationProduct> {
+    //Если исходный QP все еще актуальный - возвращаем его
+    if (originalQP.stockQuant > 0)
+      return originalQP;
+
+    //среди текущих предложений продавцов находим предложение того же продавца и возвращаем его
+    const _orQuot = await (<any>originalQP).quotation_p;
+    const _qps = await this.getQuotationProductsByProductId(originalQP.idProduct);
+    let _foundQuot: QuotationProduct = null;
+    for (let i of _qps) {
+      let _q = await (<any>i).quotation_p;
+      if ((_q.idSupplier === _orQuot.idSupplier) && (i.stockQuant > 0)) {
+        return _foundQuot;
+      }
+    }
+
+    // находим valueQuot и возвращаем его
+    return await this.getValueQuotByProduct(originalQP.idProduct);
+  }
+
+  //TODO при реализации бекенда возвращать в этом методе только те QuotationProducts, по которым остаток > 0
+  // и не закрытые (т.е. актуальные на сейчас предложения продавцов, а не позавчерашние)
+  public async getQuotationProductsByProductId(productId: number): Promise<QuotationProduct[]> {
     try {
       const response = await this.http
         .get(quotationProductsUrl, {
           search: this.createSearchParams([
-            { key: "idProduct", value: productId.toString() }
+            {key: "idProduct", value: productId.toString()}
           ])
         })
         .toPromise();
@@ -1118,6 +1683,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+
   public async getProductById(productId: number): Promise<Product> {
     try {
       const prod: Product = new Product();
@@ -1128,11 +1694,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
         // http request
         const response = await this.http
-          .get(productsUrl, {
-            search: this.createSearchParams([
-              { key: "id", value: productId.toString() }
-            ])
-          })
+          .get(productsUrl + `/${id}`)
           .toPromise();
 
         // response data binding
@@ -1142,7 +1704,7 @@ export class AppDataRepository extends AbstractDataRepository {
         }
 
         if (data != null && data.length !== 0) {
-          data = data[0]; // ---> single data make Array container
+          //data = data[0]; // ---> single data make Array container
           let props = new Array<ProductPropValue>();
           if (data.props && data.props.length !== 0) {
             props = this.getPropValuefromProduct(data);
@@ -1160,7 +1722,6 @@ export class AppDataRepository extends AbstractDataRepository {
           prod.rating = data.rating;
           prod.recall = data.recall;
           prod.supplOffers = data.supplOffers;
-          prod.description = data.description;
           prod.slideImageUrls = data.slideImageUrls;
           prod.barcode = data.barcode;
 
@@ -1179,26 +1740,147 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getQuotationById(quotationId: number): Promise<Quotation> {
     try {
-      const response = await this.http
-        .get(quotationsUrl + `/${quotationId}`)
-        .toPromise();
+      let quotation: Quotation = new Quotation();
+      const id: string = quotationId.toString();
+      if (this.isEmpty(this.cache.Quotation.Item(id))) {
+        this.cache.Quotation.Add(id, quotation);
 
+        const response = await this.http
+          .get(quotationsUrl + `/${quotationId}`)
+          .toPromise();
+
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+
+        if (data != null) {
+          quotation.id = data.id;
+          quotation.idSupplier = data.idSupplier;
+          quotation.dateStart = data.dateStart;
+          quotation.dateEnd =  data.dateEnd;
+          quotation.currencyId = data.currencyId;
+          this.cache.Quotation.Add(id, quotation);
+        }
+        return quotation;
+      } else {
+        return this.cache.Quotation.Item(id);
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async insertPerson(person: PersonInfo): Promise<PersonInfo> {
+    try {
+      let p = new PersonInfo();
+
+      const response = await this.http
+        .post(personsUrl, person).toPromise();
       const data = response.json();
+
+      if (response.status !== 201) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        p.id = data.id;
+        p.firstName = data.firstName;
+        p.lastName= data.lastName;
+        p.middleName= data.middleName;
+        p.passportSeries= data.passportSeries;
+        p.passportNum= data.passportNum;
+        p.issuedAuthority= data.issuedAuthority;
+        p.taxNumber= data.taxNumber;
+        p.birthDate= data.birthDate;
+        return p;
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+
+  public async updatePerson(person: PersonInfo): Promise<PersonInfo> {
+    try {
+      let p = new PersonInfo();
+
+      const response = await this.http
+        .put(personsUrl, person).toPromise();
+      const data = response.json();
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      let quotation: Quotation = null;
       if (data != null) {
-        quotation = new Quotation(
-          data.id,
-          data.idSupplier,
-          data.dateStart,
-          data.dateEnd,
-          data.currencyId
+        p.id = data.id;
+        p.firstName = data.firstName;
+        p.lastName= data.lastName;
+        p.middleName= data.middleName;
+        p.passportSeries= data.passportSeries;
+        p.passportNum= data.passportNum;
+        p.issuedAuthority= data.issuedAuthority;
+        p.taxNumber= data.taxNumber;
+        p.birthDate= data.birthDate;
+        return p;
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getPersonById(personId: number): Promise<PersonInfo> {
+    try {
+      const _id = personId.toString();
+      let p = new PersonInfo();
+      const response = await this.http.get(personsUrl + `/${_id}`).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        p.id = data.id;
+        p.firstName = data.firstName;
+        p.lastName= data.lastName;
+        p.middleName= data.middleName;
+        p.passportSeries= data.passportSeries;
+        p.passportNum= data.passportNum;
+        p.issuedAuthority= data.issuedAuthority;
+        p.taxNumber= data.taxNumber;
+        p.birthDate= data.birthDate;
+        return p;
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async loadSuppliersCache() {
+    try {
+      const response = await this.http
+        .get(suppliersUrl).toPromise();
+
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      if (data != null) {
+        data.forEach(val => {
+            let supplier = new Supplier();
+            supplier.id = val.id;
+            supplier.name = val.name;
+            supplier.paymentMethodId = val.paymentMethodId;
+            supplier.rating = val.rating;
+            supplier.positiveFeedbackPct = val.positiveFeedbackPct;
+            supplier.refsCount = val.refsCount;
+            if (this.isEmpty(this.cache.Suppliers.Item(val.id.toString()))) {
+              this.cache.Suppliers.Add(val.id.toString(), supplier);
+            };
+          }
         );
       }
-      return quotation;
-    } catch (err) {
+    }
+    catch (err) {
       return await this.handleError(err);
     }
   }
@@ -1375,9 +2057,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getManufacturerById(
-    manufacturerId: number
-  ): Promise<Manufacturer> {
+  public async getManufacturerById(manufacturerId: number): Promise<Manufacturer> {
     try {
       const manufacturer: Manufacturer = new Manufacturer();
       const id: string = manufacturerId.toString();
@@ -1447,15 +2127,16 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   // <editor-fold desc="error handler"
-  private handleError(error: any): Promise<any> {
-    return Promise.reject(error.messages || error);
+  private handleError(error?: Error): any /*Promise<any>*/ {
+    if (this.connServ.counter < 1) {
+      this.connServ.checkConnection(error);
+    }
+    //return Promise.reject(error.message || error);
   }
 
   // </editor-fold>
   // <editor-fold desc="url search factory">
-  private createSearchParams(
-    params: Array<{ key: string; value: string }>
-  ): URLSearchParams {
+  private createSearchParams(params: Array<{ key: string; value: string }>): URLSearchParams {
     const searchParams = new URLSearchParams();
     params.forEach(val => {
       searchParams.set(val.key, val.value);
@@ -1472,13 +2153,13 @@ export class AppDataRepository extends AbstractDataRepository {
       let enumVal =
         val.prop_Value_Enum !== null
           ? new PropEnumList(
-              val.prop_Value_Enum.id,
-              this.getSingleProp(val.prop_Value_Enum.id_Prop),
-              val.prop_Value_Enum.name,
-              val.prop_Value_Enum.list_Index,
-              val.prop_Value_Enum.bit_Index,
-              val.prop_Value_Enum.url
-            )
+          val.prop_Value_Enum.id,
+          this.getSingleProp(val.prop_Value_Enum.id_Prop),
+          val.prop_Value_Enum.name,
+          val.prop_Value_Enum.list_Index,
+          val.prop_Value_Enum.bit_Index,
+          val.prop_Value_Enum.url
+          )
           : null;
 
       props.push(
@@ -1490,7 +2171,8 @@ export class AppDataRepository extends AbstractDataRepository {
           val.prop_Value_Number,
           val.prop_Value_Bool,
           enumVal,
-          val.prop_Value_Long
+          val.prop_Value_Long,
+          val.id_Measure_Unit
         )
       );
     });
@@ -1519,6 +2201,29 @@ export class AppDataRepository extends AbstractDataRepository {
 
   // </editor-fold>
 
+  public async getCitiesWithStores(): Promise<City[]> {
+    try {
+      const response = await this.http.get(citiesWithStoresUrl).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const cities = new Array<City>();
+      if (data != null) {
+        data.forEach(val => {
+          // create current city
+          const cityItem: City = new City(val.id, val.name);
+          cities.push(cityItem);
+        });
+      }
+      return cities;
+    } catch (err) {
+      await this.handleError(err);
+    }
+  }
+
+
   public async getCities(): Promise<City[]> {
     try {
       const response = await this.http.get(citiesUrl).toPromise();
@@ -1541,7 +2246,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getStores(): Promise<Array<{ id: number; stores: Store[] }>> {
+  public async getStores(): Promise<Array<{ idCity: number; stores: Store[] }>> {
     try {
       const response = await this.http.get(storesUrl).toPromise();
 
@@ -1549,7 +2254,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      const stores = new Array<{ id: number; stores: Store[] }>();
+      const stores = new Array<{ idCity: number; stores: Store[] }>();
       if (data != null) {
         data.forEach(val => {
           const storeArr = new Array<Store>();
@@ -1588,7 +2293,7 @@ export class AppDataRepository extends AbstractDataRepository {
               storeArr.push(new Store(store.id, store.position, store.address));
             }
           });
-          stores.push({ id: val.id, stores: storeArr });
+          stores.push({idCity: val.id, stores: storeArr});
         });
       }
       return stores;
@@ -1597,7 +2302,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getStoreById(id: number): Promise<Store> {
+  public async getStoreById(id: number): Promise<{idCity: number, store: Store}> {
     try {
       const response = await this.http.get(storesUrl).toPromise();
 
@@ -1622,13 +2327,13 @@ export class AppDataRepository extends AbstractDataRepository {
               storeArr.push(new Store(store.id, store.position, store.address));
             }
           });
-          stores.push({ id: val.id, stores: storeArr });
+          stores.push({id: val.id, stores: storeArr});
         });
       }
       for (let i = 0; i < stores.length; i++) {
         for (let j = 0; j < stores[i].stores.length; j++) {
           if (stores[i].stores[j].id === id) {
-            return stores[i].stores[j];
+            return {idCity: stores[i].id, store: stores[i].stores[j]};
           }
         }
       }
@@ -1637,14 +2342,12 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getStoreReviewsByStoreId(
-    storeId: number
-  ): Promise<StoreReview[]> {
+  public async getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]> {
     try {
       const response = await this.http
         .get(storeReviewsUrl, {
           search: this.createSearchParams([
-            { key: "idStore", value: storeId.toString() }
+            {key: "idStore", value: storeId.toString()}
           ])
         })
         .toPromise();
@@ -1768,14 +2471,12 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getActionOffersByActionId(
-    idAction: number
-  ): Promise<ActionOffer[]> {
+  public async getActionOffersByActionId(idAction: number): Promise<ActionOffer[]> {
     try {
       const response = await this.http
         .get(actionOffersUrl, {
           search: this.createSearchParams([
-            { key: "idAction", value: idAction.toString() }
+            {key: "idAction", value: idAction.toString()}
           ])
         })
         .toPromise();
@@ -1798,14 +2499,12 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getQuotationProductsByQuotationId(
-    quotationId: number
-  ): Promise<QuotationProduct[]> {
+  public async getQuotationProductsByQuotationId(quotationId: number): Promise<QuotationProduct[]> {
     try {
       const response = await this.http
         .get(quotationProductsUrl, {
           search: this.createSearchParams([
-            { key: "idQuotation", value: quotationId.toString() }
+            {key: "idQuotation", value: quotationId.toString()}
           ])
         })
         .toPromise();
@@ -1894,4 +2593,321 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+
+  public async getPollById(id: number): Promise<Poll> {
+    try {
+      const response = await this.http
+        .get(`${pollsUrl}/${id}`, RequestFactory.makeAuthHeader())
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      let poll: Poll = null;
+      if (data != null) {
+        poll = new Poll(
+          data.id,
+          new Date(data.dateStart),
+          new Date(data.dateEnd),
+          data.urlBanner,
+          data.bannerText
+        );
+      }
+      return poll;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getPollQuestionsByPollId(pollId: number): Promise<PollQuestion[]> {
+    try {
+      const response = await this.http
+        .get(pollQuestionUrl, RequestFactory
+          .makeSearchAndAuth([{key: 'idPoll', value: pollId.toString()}]))
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      const pollQuestions = new Array<PollQuestion>();
+      if (data != null) {
+        data.forEach(val =>
+          pollQuestions.push(
+            new PollQuestion(val.id, val.idPoll, val.order, val.question, val.answerType)
+          )
+        );
+      }
+      return pollQuestions.sort((a: PollQuestion, b: PollQuestion): number => {
+        return b.order - a.order;
+      });
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getNoveltyDetailsByNoveltyId(id: number): Promise<NoveltyDetails[]> {
+    try {
+      const response = await this.http.get(`${noveltyDetailsDynamicUrl}`, {
+        search: this.createSearchParams([
+          {key: "noveltyId", value: id.toString()}
+        ])
+      }).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      let noveltyDetails: NoveltyDetails[] = [];
+      if (data != null) {
+        data.forEach(val => {
+          let detail: NoveltyDetails = new NoveltyDetails(
+            val.id,
+            val.noveltyId,
+            val.idProduct
+          );
+          noveltyDetails.push(detail);
+        });
+      }
+      return noveltyDetails;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getPollAnswersByQuestionId(idPollQuestion: number): Promise<PollQuestionAnswer[]> {
+    try {
+      const response = await this.http
+        .get(pollQuestionAnswerUrl, RequestFactory
+          .makeSearchAndAuth([{key: 'idPollQuestions', value: idPollQuestion.toString()}]))
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const pollQuestionAnswers: PollQuestionAnswer[] = new Array<PollQuestion>();
+      if (data != null) {
+        data.forEach(val =>
+          pollQuestionAnswers.push(
+            new PollQuestionAnswer(val.id, val.idPollQuestions, val.answer)
+          )
+        );
+      }
+      return pollQuestionAnswers;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async postClientPoolAnswers(pollAnswers: any): Promise<ClientPollAnswer> {
+    try {
+      const response = await this.http
+        .post(clientPollAnswersUrl, pollAnswers, RequestFactory.makeAuthHeader())
+        .toPromise();
+      const data = response.json();
+
+      if (response.status !== 201) {
+        throw new Error("server side status error");
+      }
+      const clientPollLast: ClientPollAnswer = new ClientPollAnswer
+      (data.id, data.userId, data.idPoll, data.idPollQuestions, data.clientAnswer);
+
+      return clientPollLast;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getClientPoolAnswersForUserByPollId(pollId: number): Promise<ClientPollAnswer[]> {
+    try {
+      const response = await this.http
+        .get(clientPollAnswersUrl, RequestFactory
+          .makeSearchAndAuth([{key: 'idPoll', value: pollId.toString()}]))
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const clientPollAnswer: ClientPollAnswer[] = new Array<ClientPollAnswer>();
+      if (data != null) {
+        data.forEach(val =>
+          clientPollAnswer.push(
+            new ClientPollAnswer(val.id, val.userId, val.idPoll, val.idPollQuestions, val.clientAnswer)
+          )
+        );
+      }
+      return clientPollAnswer;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async postDeviceData(deviceData: DeviceData): Promise<DeviceData> {
+    try {
+      const response = await this.http
+        .post(deviceDataUrl, deviceData, RequestFactory.makeAuthHeader())
+        .toPromise();
+      const val = response.json();
+
+      if (response.status !== 201 && response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      return val;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getDataForRedirectToPaymaster(orderID: number, cartTotal: number): Promise<any> {
+    try {
+      const response = await this.http
+        .post(
+          redirectToPaymasterUrl,
+          {id: orderID, total: cartTotal},
+          RequestFactory.makeAuthHeader()
+        ).toPromise();
+      const resp = response.json();
+
+      if (response.status !== 201 && response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      console.log(response);
+      return resp;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getCategories(): Promise<Category[]> {
+    try {
+      const response = await this.http
+        .get(categoriesUrl).toPromise();
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const categories: Category[] = new Array<Category>();
+      if (data != null) {
+        data.forEach(val =>
+          categories.push(
+            new Category(val.id,val.name,val.parent_id,val.id_product_cat,val.prefix,
+                         val.icon,val.is_show,val.priority_index,val.priority_show)
+          )
+        );
+      }
+      return categories;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async loadMeasureUnitCache() {
+    try {
+      const response = await this.http
+        .get(measureUnitUrl).toPromise();
+
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      if (data != null) {
+        data.forEach(val => {
+            let mUnit = new MeasureUnit();
+            mUnit.id = val.id;
+            mUnit.name = val.name;
+            if (this.isEmpty(this.cache.MeasureUnit.Item(val.id.toString()))) {
+              this.cache.MeasureUnit.Add(val.id.toString(), mUnit);
+            };
+          }
+        );
+      }
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+
+  public async getMeasureUnitById(unitId: number): Promise<MeasureUnit> {
+    try {
+        const munit: MeasureUnit = new MeasureUnit();
+        const id: string = unitId.toString();
+
+        // <editor-fold desc = "id in cache is empty"
+        if (this.isEmpty(this.cache.MeasureUnit.Item(id))) {
+          this.cache.MeasureUnit.Add(id, munit);
+
+          const response = await this.http
+            .get(measureUnitUrl + `/${id}`)
+            .toPromise();
+
+          const data = response.json();
+          if (response.status !== 200) {
+            throw new Error("server side status error");
+          }
+
+          if (data != null) {
+            munit.id = data.id;
+            munit.name = data.name;
+
+            this.cache.MeasureUnit.Add(id, munit);
+          }
+          return munit;
+        } else {
+          // </editor-fold>
+
+          return this.cache.MeasureUnit.Item(id);
+        }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getProductDescription(id: number): Promise<string> {
+    try {
+      const _id = id.toString();
+      const response = await this.http.get(productDescriptionsUrl + `/${_id}`).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        return data.description;
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getProductImages(id: number): Promise<string[]> {
+    try {
+      let res = [];
+      let data: any = null;
+      const _id = id.toString();
+      const response = await this.http.get(productImagesUrl + `/${_id}`).toPromise();
+      if (response) {
+        data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        if (data != null) {
+          data.images.forEach(x => {
+              res.push(x);
+            }
+          );
+        }
+      }
+      return res;
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 }

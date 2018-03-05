@@ -6,29 +6,29 @@
   <ion-list>
     <form [formGroup]='loginForm'>
       <ion-item *ngIf='authError' class='alertDanger'>
-        <span>Неверный логин или пароль</span>
+        <span>Неверный номер или пароль</span>
       </ion-item>
 
       <ion-item>
-        <ion-input type="text" placeholder="Электронная почта" formControlName="email"></ion-input>
+        <ion-input type="text"  placeholder="380xxxxxxxxx" formControlName="phone"></ion-input>
       </ion-item>
-      <ion-item class='alertDanger' *ngIf="formErrors.email">
-        <span>{{formErrors.email}}</span>
+      <ion-item class='alertDanger' *ngIf="formErrors.phone">
+        <span>{{formErrors.phone}}</span>
       </ion-item>
 
       <ion-item>
-        <ion-input  type="password" placeholder="Пароль" formControlName="password"></ion-input>
+        <ion-input  type="password" placeholder="{{locale['Password'] ? locale['Password'] : 'Пароль'}}" formControlName="password"></ion-input>
       </ion-item>
       <ion-item class='alertDanger' *ngIf="formErrors.password">
          <span>{{formErrors.password}}</span>
       </ion-item>
 
-      <button style="background: #ffbc2e" ion-button block (click)="login()">Войти</button>
+      <button style="background: #ffbc2e" ion-button block (click)="login()"><span loc="Войти" name="Login">{{locale['Login']}}</span></button>
     </form>
 
   </ion-list>
 
   <div class="align-bottom" padding text-center>
-    Нет аккаунта? <span class="bold" (click)="register()">Зарегистрироваться</span>
+    <span loc="Нет аккаунта" name="NoAccount">{{locale['NoAccount']}}</span>? <span class="bold" (click)="register()"><span loc="Зарегистрироваться" name="SignUp">{{locale['SignUp']}}</span></span>
   </div>
 </ion-content>

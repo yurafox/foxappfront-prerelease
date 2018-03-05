@@ -1,7 +1,4 @@
 page-barcode {
-  ion-content {
-    background: url("../../assets/imgs/head-bg.png");
-  }
   ion-card {
     position: relative;
     height: 300px;
@@ -32,7 +29,7 @@ page-barcode {
         display: block;
         margin: auto;
         height: 120px;
-        width: 300px;
+        width: 85%;
       }
     }
   }

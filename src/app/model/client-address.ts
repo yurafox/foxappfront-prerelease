@@ -3,10 +3,11 @@ import {Country} from './country';
 import {LazyLoad, RefInjector, System} from '../core/app-core';
 import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
 import FoxNumber = System.FoxNumber;
+import {Observable} from 'rxjs/Observable';
 
 @LazyLoad([
  /* { options: {constructor: City}, action: 'getCityById', params: ['idCity']},*/
-  { options: {constructor: Country}, action: 'getCountryById', params: ['idC']}
+  { options: {constructor: Country}, action: 'getCountryById', params: ['idCountry']}
 ])
 export class ClientAddress {
 
@@ -14,6 +15,23 @@ export class ClientAddress {
 
   public get idC(): number {
     return this.idCountry;
+  }
+
+  get dto(): any {
+    return  {id: this.id, idClient: this.idClient, idCity: this.idCity, zip: this.zip, street: this.street,
+      lat: this.lat, lng: this.lng, isPrimary: this.isPrimary,
+      idCountry: this.idCountry, city: this.city,
+      bldApp: this.bldApp, recName: this.recName,
+      phone: this.phone};
+  }
+
+  public get addressString(): string {
+    return ((this.street) ? this.street : '') + ' ' +
+      ((this.bldApp) ? this.bldApp : '') + ', ' +
+      ((this.city) ? this.city : '') + ', ' +
+      ((this.zip) ? this.zip : '') + ' ' +
+      (((<any>this).country) ? (<any>this).country.name : '') + ' ' +
+      ((this.phone) ? ', Phone: ' + this.phone : '');
   }
 
   constructor (
@@ -31,4 +49,6 @@ export class ClientAddress {
     public recName?: string,
     public phone?: string
   ) {this._repo = RefInjector.pull(AbstractDataRepository);}
+
+
 }

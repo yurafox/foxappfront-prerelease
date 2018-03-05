@@ -18,5 +18,9 @@ export class Client {
     public fname?: string,
     public lname?: string,
     public barcode?: string
+    /*,
+    public bonusBalance?: number,
+    public actionBonusBalance?: number
+    */
   ){this._repo = RefInjector.pull(AbstractDataRepository);}
 }

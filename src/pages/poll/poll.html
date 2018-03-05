@@ -1,0 +1,61 @@
+<ion-header>
+  <main-toolbar></main-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf='pollQuestAns.length!==0'>
+    <div *ngFor='let qa of pollQuestAns'>
+      <div class="questionHeader">
+        <span>
+          <b>{{qa.questionObj.question}}</b>
+        </span>
+      </div>
+      <div *ngIf='qa.questionObj.answerType!==textType'>
+        <ion-grid>
+          <ion-row *ngFor='let ans of qa.answers;let idx=index'>
+            <ion-col col-2 text-center>
+                <input type="radio" class="radio" name=`${radiogroup}-{{qa.questionObj.id}}`
+                                   (change)="onSelectionChange(qa,ans.id)">
+            </ion-col>
+            <ion-col>
+              <span>{{ans.answer}}</span>
+            </ion-col>
+          </ion-row>
+
+          <div *ngIf='qa.questionObj.answerType==listTextType'>
+            <ion-row >
+              <ion-col col-2 text-center>
+                  <input type="radio" class="radio" name=`${radiogroup}-{{qa.questionObj.id}}`
+                                      (change)="onSelectionOwnerChange(qa)">
+              </ion-col>
+                <ion-col>
+                 <span loc="Ваш вариант" name="YourVariant">{{locale['YourVariant']}}</span>
+              </ion-col>
+            </ion-row>
+
+            <ion-row [hidden]='!qa.showOpt'>
+              <ion-col class="questionRadioArea">
+                <textarea class="poll-textarea" [(ngModel)]='qa.usrOptVal' (input)='onSelectionOwnerChange(qa)' placeholder="{{locale['OwnVariant'] ? locale['OwnVariant'] : 'Свой вариант'}}" rows="5"></textarea>
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-grid>
+      </div>
+
+      <div *ngIf='qa.questionObj.answerType==textType'>
+         <ion-grid>
+            <ion-row>
+                <ion-col class="questionRadioArea">
+                  <textarea class="poll-textarea" [(ngModel)]='qa.usrOptVal' (input)='onSelectionOwnerChange(qa)' placeholder="{{locale['OwnVariant'] ? locale['OwnVariant'] : 'Свой вариант'}}" rows="5"></textarea>
+                </ion-col>
+            </ion-row>
+          </ion-grid>
+      </div>
+    </div>
+    <!-- post -->
+   <div *ngIf='canView' class='f-btn-post-container'>
+     <button [disabled]='!getSenderBtnVisible()' (click)='sendAnswers()' class="f-btn-post-questions" ion-button block><span loc="Отправить" name="Submit">{{locale['Submit']}}</span></button>
+   </div>
+
+  </div>
+</ion-content>

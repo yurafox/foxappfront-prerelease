@@ -2,5 +2,5 @@
 <p></p>
 <div [innerHTML]="description" *ngIf="displayTextLength === -1; else elseBlock"></div>
 <ng-template #elseBlock>
-  <div [innerHTML]="description | truncate : displayTextLength"></div>
+  <div [innerHTML]="description | truncate : displayTextLength | safeHtml"></div>
 </ng-template>

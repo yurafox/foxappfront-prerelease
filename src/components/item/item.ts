@@ -3,6 +3,7 @@ import {Product} from '../../app/model/product';
 import {NavController, NavParams} from "ionic-angular";
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {ItemBase} from '../component-extension/item-base';
+import {EventService} from '../../app/service/event-service';
 
 
 @Component({
@@ -17,9 +18,12 @@ export class ItemComponent extends ItemBase {
     super(navCtrl, navParams, repo);
   }
 
+  async ngOnInit() {
+    super.ngOnInit();
+  }
 
   openItemDetails(data: Product): void {
-    this.navCtrl.push('ItemDetailPage', this.product);
+    this.navCtrl.push('ItemDetailPage', {prod: this.product, loadQuotes: true});
   }
 
 }

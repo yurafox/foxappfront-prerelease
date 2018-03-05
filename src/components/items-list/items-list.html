@@ -1,4 +1,13 @@
 <filter [filteredProducts]="products" [parentComponent]="this"></filter>
+<div class="f-item-padding-top">
+  <div *ngFor="let productElement of products, let i=index">
+    <hr *ngIf="!(i == 0)">
+    <item
+      [product]="productElement">
+    </item>
+  </div>
+</div>
+<!--
 <ul class="f-item-padding-top">
   <li *ngFor="let productElement of products, let i=index">
     <hr *ngIf="!(i == 0)">
@@ -7,12 +16,4 @@
     </item>
   </li>
 </ul>
-<!--  <ion-grid>
-    <ion-row>
-      <ion-col *ngFor="let productElement of baseProducts" col-12>
-        <item
-          [product]="productElement">
-        </item>
-      </ion-col>
-    </ion-row>
-  </ion-grid>-->
+-->

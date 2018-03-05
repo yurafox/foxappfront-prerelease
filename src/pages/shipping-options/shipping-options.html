@@ -1,25 +1,27 @@
 <ion-header>
-  <main-toolbar [showCartIcon] = "false"></main-toolbar>
+  <main-toolbar [showCartIcon]="false"></main-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-grid class="f-color-secondary">
+<ion-content class="f-size-larger">
+  <ion-grid>
     <ion-row>
-      <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
-        <b><span class="f-size-large f-color-secondary">Choose your shipping options</span></b>
+      <ion-col class="f-section-header"><span loc="Выберите доставку" name="ChooseShippingOptions">{{locale['ChooseShippingOptions']}}</span>
       </ion-col>
     </ion-row>
+  </ion-grid>
+
+  <ion-grid>
     <ion-row padding *ngIf="dataLoaded">
       <ion-col>
-        <span class="f-size-larger">Shipment {{itemIndex+1}} of {{cart.orderProducts.length}}</span>
+        <span><span loc="Посылка" name="Shipment">{{locale['Shipment']}}</span> {{itemIndex+1}} <span loc="из" name="Of">{{locale['Of']}}</span> {{cart.orderProducts.length}}</span>
         <br>
-        <span class="f-size-medium"><b>{{cart.orderProducts[itemIndex]?.quotationproduct?.product?.name}}</b></span>
+        <span class="f-size-default"><b>{{cart.orderProducts[itemIndex]?.quotationproduct?.product?.name}}</b></span>
       </ion-col>
     </ion-row>
 
     <ion-row *ngIf="dataLoaded">
-      <ion-col style="padding-left: 15px; padding-right: 15px;">
-        <b><span class="f-size-larger f-color-secondary">Choose a delivery option:</span></b>
+      <ion-col class="f-padding-lr-15">
+        <b><span><span loc="Выберите вариант доставки" name="ChooseDeliveryOption">{{locale['ChooseDeliveryOption']}}</span>:</span></b>
       </ion-col>
     </ion-row>
 
@@ -30,14 +32,22 @@
 
           <ion-row (click)="onSelectOptionClick(opt)">
             <ion-col col-2 text-center>
-              <input type="radio" id="radioButton" [checked]="opt.isChecked">
+              <div class="pure-radiobutton">
+                <input type="radio" id="radioButton" class="radio" [checked]="opt.isChecked">
+                <label for="radioButton"></label>
+              </div>
             </ion-col>
             <ion-col class="f-size-larger">
-              Get it <span class="f-color-green">{{opt.deliveryDate | date: 'fullDate'}}</span>
+              <span loc="Получите" name="GetIt">{{locale['GetIt']}}</span> <span class="f-color-green">{{opt.deliveryDate | date: 'fullDate'}}</span>
               <br>
-              Delivery Cost <span class="f-color-green">{{opt.deliveryCost | localeCurrency:userService.currency}} </span>
+              <span *ngIf="!(opt.deliveryCost === 0)">
+                <span loc="Стоимость доставки" name="DeliveryCost">{{locale['DeliveryCost']}}</span> <span class="f-color-green" >{{opt.deliveryCost | localeCurrency:userService.currency}} </span>
+              </span>
+              <span *ngIf="(opt.deliveryCost === 0)">
+                <span class="f-color-green"><b><span loc="БЕСПЛАТНАЯ доставка" name="FreeDelivery">{{locale['FreeDelivery']}}</span></b></span>
+              </span>
               <br>
-              Delivery by <span class="f-color-green">{{opt.loName}}</span>
+              <span loc="Доставляется" name="DeliveryBy">{{locale['DeliveryBy']}}</span> <span class="f-color-green">{{opt.loName}}</span>
             </ion-col>
           </ion-row>
 
@@ -47,10 +57,10 @@
 
 
     <ion-row *ngIf="dataLoaded">
-      <ion-col style="padding-left: 5px; padding-right: 5px;">
-        <button class="f-btn-add-cart" ion-button block
+      <ion-col class="f-padding-lr-5">
+        <button class="f-btn-action" ion-button block
                 [attr.disabled]="!isAnyOptionSelected()?'':null"
-                (click)="onContinueClick()">Continue</button>
+                (click)="onContinueClick()"><span loc="Далее" name="Continue">{{locale['Continue']}}</span></button>
       </ion-col>
     </ion-row>
 

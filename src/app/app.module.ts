@@ -9,13 +9,14 @@ import {FormsModule} from '@angular/forms';
 import {InAppBrowser} from '@ionic-native/in-app-browser';
 import {GoogleMaps} from '@ionic-native/google-maps';
 import {Ionic2Rating, Ionic2RatingModule} from 'ionic2-rating';
+import { LazyLoadImagesModule } from 'ngx-lazy-load-images';
 import {BarcodeScanner} from '@ionic-native/barcode-scanner';
 
 import {FoxApp} from './app.component';
 
 import {ReactiveFormsModule} from '@angular/forms';
 
-import {HomePage} from '../pages/index';
+import {HomePage} from '../pages/home/home';
 
 import {AppConstants} from './app-constants';
 import {
@@ -32,7 +33,8 @@ import {
   UserService,
   CurrencyStore,
   CartService,
-  SearchService
+  SearchService,
+  ConnectivityService
 } from '../app/service/index';
 
 import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
@@ -71,6 +73,7 @@ import {
   LoginPageModule,
   ManagePlacesMenuPageModule,
   MapPageModule,
+  NoConnectionPageModule,
   OrdersPageModule,
   RegisterPageModule,
   SearchPageModule,
@@ -80,11 +83,20 @@ import {
   ActionsPageModule,
   ShippingOptionsPageModule,
   SelectPmtMethodPageModule,
-  CheckoutPageModule
-
+  CheckoutPageModule,
+  CreditCalcPageModule,
+  BalancePageModule,
+  PollPageModule,
+  NoveltyPageModule,
+  OrderDetailsPageModule,
+  PaymentPageModule,
+  WarningViewPageModule
 } from '../pages/index-modules';
 import {NgxQRCodeModule} from 'ngx-qrcode2';
 import {AppAvailability} from '@ionic-native/app-availability';
+import {Device} from "@ionic-native/device";
+import {LocalNotifications} from '@ionic-native/local-notifications';
+import {Network} from "@ionic-native/network";
 
 @NgModule({
   declarations: [
@@ -94,9 +106,10 @@ import {AppAvailability} from '@ionic-native/app-availability';
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
-    InMemoryWebApiModule.forRoot(WebApiService, {delay: 1000, post204: false, put204: false}),
+    InMemoryWebApiModule.forRoot(WebApiService, {delay: 200, passThruUnknownUrl: true,post204: false, put204: false}),
     IonicModule.forRoot(FoxApp),
     IonicPageModule.forChild(HomePage),
+    LazyLoadImagesModule,
     ComponentsModule,
     Ionic2RatingModule,
     PipesModule,
@@ -129,17 +142,24 @@ import {AppAvailability} from '@ionic-native/app-availability';
     LoginPageModule,
     ManagePlacesMenuPageModule,
     MapPageModule,
+    NoConnectionPageModule,
     OrdersPageModule,
     RegisterPageModule,
     SearchPageModule,
     SearchResultsPageModule,
     SelectShipAddressPageModule,
     SupportPageModule,
-    ActionPageModule,
     ActionsPageModule,
     ShippingOptionsPageModule,
     SelectPmtMethodPageModule,
-    CheckoutPageModule
+    CheckoutPageModule,
+    CreditCalcPageModule,
+    BalancePageModule,
+    PollPageModule,
+    NoveltyPageModule,
+    OrderDetailsPageModule,
+    PaymentPageModule,
+    WarningViewPageModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -158,6 +178,9 @@ import {AppAvailability} from '@ionic-native/app-availability';
     LaunchNavigator,
     AppAvailability,
     Ionic2Rating,
+    Device,
+    LocalNotifications,
+    Network,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
     {provide: AbstractAccountRepository, useClass: AccountRepository},
@@ -168,7 +191,8 @@ import {AppAvailability} from '@ionic-native/app-availability';
     AppConstants,
     CurrencyStore,
     SearchService,
-    CartService
+    CartService,
+    ConnectivityService
   ]
 })
 export class AppModule {
