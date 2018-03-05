@@ -6,14 +6,14 @@
   <ion-list>
     <form [formGroup]='loginForm'>
       <ion-item *ngIf='authError' class='alertDanger'>
-        <span loc="Неверный email или пароль" name="WrongLoginOrPass">{{locale['WrongLoginOrPass']}}</span>
+        <span>Неверный номер или пароль</span>
       </ion-item>
 
       <ion-item>
-        <ion-input type="text" placeholder="{{locale['Email'] ? locale['Email'] : 'Электронная почта'}}" formControlName="email"></ion-input>
+        <ion-input type="text"  placeholder="380xxxxxxxxx" formControlName="phone"></ion-input>
       </ion-item>
-      <ion-item class='alertDanger' *ngIf="formErrors.email">
-        <span>{{formErrors.email}}</span>
+      <ion-item class='alertDanger' *ngIf="formErrors.phone">
+        <span>{{formErrors.phone}}</span>
       </ion-item>
 
       <ion-item>

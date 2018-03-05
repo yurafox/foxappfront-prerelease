@@ -350,8 +350,8 @@ export class RequestFactory {
    public static makeAuthHeader(): RequestOptionsArgs{
     const h = new Headers();
 
-    h.set('Authorization', `Bearer: ${localStorage.getItem('token') || ''}`);
-    h.set('X-User',localStorage.getItem('id') || '');
+    h.set('Authorization', `Bearer ${localStorage.getItem('token') || ''}`);
+    // h.set('X-User',localStorage.getItem('id') || '');
 
     return {headers:h}
    }

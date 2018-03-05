@@ -47,9 +47,6 @@ export class ManagePlacesMenuPage extends ComponentBase {
 
   async ngOnInit() {
     super.ngOnInit();
-    if (!this.userService.isAuth && this.userService.isNotSignOutSelf()) {
-      await this.userService.shortLogin();
-    }
   }
 
   openPage(page: PageInterface) {

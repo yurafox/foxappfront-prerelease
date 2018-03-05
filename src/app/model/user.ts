@@ -12,11 +12,17 @@ export class User {
   constructor(public name?: string,
               public email?: string,
               public password?: string,
-              public id?: number,
               public appKey?: string, // private application key
               public userSetting: IDictionary<string> = {},
-              public idClient?: number,
-              public favoriteStoresId?: number[]) {
+              public favoriteStoresId?: number[],
+              public phone?: string,
+              public fname?: string,
+              public lname?: string) {
     this._repo = RefInjector.pull(AbstractDataRepository);
   }
+}
+
+export interface IUserVerifyAccountData {
+   message:string,
+   status: number
 }

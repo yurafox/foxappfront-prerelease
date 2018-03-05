@@ -12,6 +12,7 @@ import {AbstractDataRepository} from "../../app/service";
 export class FavoriteStoresPage extends ComponentBase implements OnInit {
 
   stores: Array<{ city: City, store: Store, hasReviews?: boolean }>;
+  foxStores: Array<{ id: number, stores: Store[] }>;
   cities: City[];
 
   constructor(private navCtrl: NavController, private repo: AbstractDataRepository, private alertCtrl: AlertController)
@@ -60,8 +61,8 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
 
   onIsPrimaryClick(item: Store) {
     this.stores.forEach(i => {
-        i.store.isPrimary = false;
-      }
+      i.store.isPrimary = false;
+    }
     );
     item.isPrimary = true;
   }
@@ -92,13 +93,13 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
   }
 
   navToMap(store: Store, city: City) {
-    this.navCtrl.push('MapPage', {store: store, city: city, page: this}).catch(err => {
+    this.navCtrl.push('MapPage', { store: store, city: city, page: this }).catch(err => {
       console.log(`Couldn't navigate to MapPage with selected params: ${err}`);
     });
   }
 
   onShowReviewsClick(store: any): void {
-    this.navCtrl.push('ItemReviewsPage', {store: store}).catch(err => {
+    this.navCtrl.push('ItemReviewsPage', { store: store }).catch(err => {
       console.log(`Error navigating to ItemReviewPage: ${err}`);
     });
   }
@@ -109,6 +110,6 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
         console.log(`Error navigating to ItemReviewWritePage: ${err}`);
       });
     }
-  }
 
+  }
 }

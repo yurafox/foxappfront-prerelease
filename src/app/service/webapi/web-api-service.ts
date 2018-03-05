@@ -3451,30 +3451,33 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   users = [
     {
       name: "sergey",
-      email: "sergce@fox.com",
+      email:"sergce@fox.com",
       password: "sergce",
       id: 1,
       appKey: '',
       userSetting: {'currency': '0', 'lang': '1'},
-      favoriteStoresId: [35, 41]
+      favoriteStoresId: [35, 41],
+      phone: "380671153816"
     },
     {
       name: "vladimir",
-      email: "dealio07@fox.com",
+      email:"dealio07@fox.com",
       password: "dealio07",
       id: 2,
       appKey: '',
       userSetting: {'currency': '1', 'lang': '2'},
-      favoriteStoresId: [36, 44, 40]
+      favoriteStoresId: [36, 44, 40],
+      phone: "380637652849"
     },
     {
       name: "Yuri",
-      email: "yurafox@fox.com",
+      email:"yurafox@fox.com",
       password: "yurafox",
       id: 3,
       appKey: '',
       userSetting: {'currency': '0', 'lang': '3'},
-      favoriteStoresId: [37, 39]
+      favoriteStoresId: [37, 39],
+      phone: "380504410081"
     },
   ];
 
@@ -5552,7 +5555,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
         if (!loginData) return info.utils.createResponse$(() => resOpt);
 
         const loginModel: { token: string; user: {} } = this.getTokenBehavior(
-          loginData.email,
+          loginData.phone,
           loginData.password
         );
         resOpt.body = loginModel;
@@ -5772,7 +5775,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
 
   private getEditBehavior(user: User): User {
     for (let i = 0; i < this.users.length; i++) {
-      if (this.users[i].id === user.id) {
+      if (this.users[i].phone=== user.phone) {
         for (let item in this.users[i]) {
           if (item === "password" || item === "appKey") {
             continue;

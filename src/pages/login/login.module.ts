@@ -12,7 +12,7 @@ import {ComponentsModule} from "../../components/components.module";
     ComponentsModule
   ],
   exports: [
-    LoginPage
+    LoginPage,
   ]
 })
 export class LoginPageModule {}
