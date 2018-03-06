@@ -5,7 +5,7 @@ import {Store} from "./store";
 
 
 @LazyLoad([
-  { options:{constructor: Client}, action: 'getClientByUserId', params: ['id']}
+  { options:{constructor: Client}, action: 'getClientByPhone', params: ['phone']}
 ])
 export class User {
   private _repo: AbstractDataRepository;

@@ -1,8 +1,8 @@
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
-import { Injectable } from "@angular/core";
-import { Http, URLSearchParams} from "@angular/http";
-import "rxjs/add/operator/toPromise";
+import { Injectable } from '@angular/core';
+import { Http, URLSearchParams} from '@angular/http';
+import 'rxjs/add/operator/toPromise';
 import CacheProvider = Providers.CacheProvider;
 import {
   QuotationProduct,
@@ -43,42 +43,42 @@ import {
 } from '../../../model/index';
 
 import { AbstractDataRepository } from '../../index';
-import { Providers, System } from "../../../core/app-core";
-import {ConnectivityService} from "../../connectivity-service";
+import { Providers } from '../../../core/app-core';
+import {ConnectivityService} from '../../connectivity-service';
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
-const productDescriptionsUrl = "http://localhost:44374/api/product/getProductDescription";
-const productsUrl = "http://localhost:44374/api/product";
-const currenciesUrl = "http://localhost:44374/api/currency";
-const manufacturersUrl = "http://localhost:44374/api/manufacturer";
-const quotationProductsUrl = "http://localhost:44374/api/quotationproduct";
-const suppliersUrl = "http://localhost:44374/api/supplier";
-const measureUnitUrl = 'http://localhost:44374/api/measureUnit';
-const LangUrl = "http://localhost:44374/api/localization/lang";
-const countriesUrl = "http://localhost:44374/api/geo/country";
-const citiesUrl = "http://localhost:44374/api/geo/city";
-const getPaymentMethodsUrl = "http://localhost:44374/api/fin/pmtmethod";
-const loEntitiesUrl = "http://localhost:44374/api/lo/loentity";
-const quotationsUrl = "http://localhost:44374/api/quotation";
-const clientsUrl = "http://localhost:44374/api/client";
-const cartProductsUrl = "http://localhost:44374/api/cart/CartProducts";
-const productStorePlacesUrl = "http://localhost:44374/api/storeplace/productstoreplaces";
-const storePlacesUrl = "http://localhost:44374/api/storeplace/storeplace";
-const loSupplEntitiesUrl = "http://localhost:44374/api/lo/losupplentity";
-const specLOTrackingLogUrl = "http://localhost:44374/api/lo/specLOTrackingLog";
-const clientDraftOrderUrl = "http://localhost:44374/api/Cart/ClientDraftOrder";
-const personsUrl = "http://localhost:44374/api/client/person";
-const productImagesUrl = "http://localhost:44374/api/product/getProductImages";
-const getBonusesInfoUrl = "http://localhost:44374/api/client/getBonusesInfo";
-const getClientBonusesExpireInfoUrl = "http://localhost:44374/api/client/GetBonusesExpireInfo";
-const creditProductsUrl = "http://localhost:44374/api/credit/creditproduct";
-const productSupplCreditGradesUrl = "http://localhost:44374/api/credit/GetProductCreditSize";
-const postProductViewUrl = "http://localhost:44374/api/client/LogProductView";
-const clientAddressesUrl = "http://localhost:44374/api/client/clientAddress";
-const clientOrderSpecProductsUrl = "http://localhost:44374/api/Cart/GetCartProductsByOrderId";
-const clientOrdersUrl = "http://localhost:44374/api/Cart/GetClientOrders";
-const citiesWithStoresUrl = "http://localhost:44374/api/geo/citiesWithStores";
+const productDescriptionsUrl = `${AppConstants.BASE_URL}/api/product/getProductDescription`;
+const productsUrl = `${AppConstants.BASE_URL}/api/product`;
+const currenciesUrl = `${AppConstants.BASE_URL}/api/currency`;
+const manufacturersUrl = `${AppConstants.BASE_URL}/api/manufacturer`;
+const quotationProductsUrl = `${AppConstants.BASE_URL}/api/quotationproduct`;
+const suppliersUrl = `${AppConstants.BASE_URL}/api/supplier`;
+const measureUnitUrl = `${AppConstants.BASE_URL}/api/measureUnit`;
+const LangUrl = `${AppConstants.BASE_URL}/api/localization/lang`;
+const countriesUrl = `${AppConstants.BASE_URL}/api/geo/country`;
+const citiesUrl = `${AppConstants.BASE_URL}/api/geo/city`;
+const getPaymentMethodsUrl = `${AppConstants.BASE_URL}/api/fin/pmtmethod`;
+const loEntitiesUrl = `${AppConstants.BASE_URL}/api/lo/loentity`;
+const quotationsUrl = `${AppConstants.BASE_URL}/api/quotation`;
+const clientsUrl = `${AppConstants.BASE_URL}/api/client`;
+const cartProductsUrl = `${AppConstants.BASE_URL}/api/cart/CartProducts`;
+const productStorePlacesUrl = `${AppConstants.BASE_URL}/api/storeplace/productstoreplaces`;
+const storePlacesUrl = `${AppConstants.BASE_URL}/api/storeplace/storeplace`;
+const loSupplEntitiesUrl = `${AppConstants.BASE_URL}/api/lo/losupplentity`;
+const specLOTrackingLogUrl = `${AppConstants.BASE_URL}/api/lo/specLOTrackingLog`;
+const clientDraftOrderUrl = `${AppConstants.BASE_URL}/api/Cart/ClientDraftOrder`;
+const personsUrl = `${AppConstants.BASE_URL}/api/client/person`;
+const productImagesUrl = `${AppConstants.BASE_URL}/api/product/getProductImages`;
+const getBonusesInfoUrl = `${AppConstants.BASE_URL}/api/client/getBonusesInfo`;
+const getClientBonusesExpireInfoUrl = `${AppConstants.BASE_URL}/api/client/GetBonusesExpireInfo`;
+const creditProductsUrl = `${AppConstants.BASE_URL}/api/credit/creditproduct`;
+const productSupplCreditGradesUrl = `${AppConstants.BASE_URL}/api/credit/GetProductCreditSize`;
+const postProductViewUrl = `${AppConstants.BASE_URL}/api/client/LogProductView`;
+const clientAddressesUrl = `${AppConstants.BASE_URL}/api/client/clientAddress`;
+const clientOrderSpecProductsUrl = `${AppConstants.BASE_URL}/api/Cart/GetCartProductsByOrderId`;
+const clientOrdersUrl = `${AppConstants.BASE_URL}/api/Cart/GetClientOrders`;
+const citiesWithStoresUrl = `${AppConstants.BASE_URL}/api/geo/citiesWithStores`;
 
 
 //DEV URLS
@@ -135,8 +135,6 @@ const deviceDataUrl = "/api/mdeviceData";
 const redirectToPaymasterUrl = "/api/mredirectToPaymaster";
 
 const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/api/catalog`:"/api/mcategories";
-
-
 
 // </editor-fold
 
@@ -1111,6 +1109,37 @@ export class AppDataRepository extends AbstractDataRepository {
     } catch (err) {
       return await this.handleError(err);
     }
+  }
+
+  public async getClientByPhone (phonenum: string ): Promise<Client> {
+    try
+    {
+      let client = new Client();
+      const response = await this.http
+        .get(clientsUrl, {
+          search: this.createSearchParams([{key: "phone", value: phonenum}])
+        })
+        .toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      if (data != null) {
+        data = data[0];
+        client.id = data.id;
+        client.name = data.name;
+        client.phone = data.phone;
+        client.login = data.login;
+        client.email = data.email;
+        client.fname = data.fname;
+        client.lname = data.lname;
+        return client;
+      }
+  } catch (err) {
+    return await this.handleError(err);
+  }
+
   }
 
   public async getClientById(id: number): Promise<Client> {

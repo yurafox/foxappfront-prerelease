@@ -254,6 +254,7 @@ export function LazyLoad(options: Array<{ options:ILazyOption,
         const baseName: string = (!value.options['navName']) ? value.options.constructor.name.toLowerCase()
                                                              : value.options['navName'];
 
+
         const loadingProp = `is${baseName}Loading`;
         const navProp = `_${baseName}`;
         const fnName = value.action;
@@ -286,6 +287,7 @@ export function LazyLoad(options: Array<{ options:ILazyOption,
         Object.defineProperty(this, baseName+'_p', {
           configurable: false,
           get: () => {
+            console.log(baseName);
             const repo = this['_repo'];
             var paramsConvertedList = lazyParamToValue(this, value.params);
             if(paramsConvertedList.length!==0) {
