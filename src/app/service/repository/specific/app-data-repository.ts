@@ -43,37 +43,38 @@ import {
 } from '../../../model/index';
 
 import { AbstractDataRepository } from '../../index';
-import { Providers, System } from "../../../core/app-core";
+import {IDictionary, Providers, System} from "../../../core/app-core";
 import {ConnectivityService} from "../../connectivity-service";
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
-// const productDescriptionsUrl = "https://localhost:44374/api/product/getProductDescription";
-// const productsUrl = "https://localhost:44374/api/product";
-// const currenciesUrl = "https://localhost:44374/api/currency";
-// const manufacturersUrl = "https://localhost:44374/api/manufacturer";
-// const quotationProductsUrl = "https://localhost:44374/api/quotationproduct";
-// const suppliersUrl = "https://localhost:44374/api/supplier";
-// const measureUnitUrl = 'https://localhost:44374/api/measureUnit';
-// const LangUrl = "https://localhost:44374/api/localization/lang";
-// const countriesUrl = "https://localhost:44374/api/geo/country";
-// const citiesUrl = "https://localhost:44374/api/geo/city";
-// const getPaymentMethodsUrl = "https://localhost:44374/api/fin/pmtmethod";
-// const loEntitiesUrl = "https://localhost:44374/api/lo/loentity";
-// const quotationsUrl = "https://localhost:44374/api/quotation";
-// const clientsUrl = "https://localhost:44374/api/client";
-// const cartProductsUrl = "https://localhost:44374/api/cart/CartProducts";
-// const productStorePlacesUrl = "https://localhost:44374/api/storeplace/productstoreplaces";
-// const storePlacesUrl = "https://localhost:44374/api/storeplace/storeplace";
-// const loSupplEntitiesUrl = "https://localhost:44374/api/lo/losupplentity";
-// const specLOTrackingLogUrl = "https://localhost:44374/api/lo/specLOTrackingLog";
-// const clientDraftOrderUrl = "https://localhost:44374/api/Cart/getClientDraftOrder";
-// const personsUrl = "https://localhost:44374/api/client/person";
-// const productImagesUrl = "https://localhost:44374/api/product/getProductImages";
-// const getBonusesInfoUrl = "https://localhost:44374/api/client/getBonusesInfo";
-// const getClientBonusesExpireInfoUrl = "https://localhost:44374/api/client/GetBonusesExpireInfo";
-// const creditProductsUrl = "https://localhost:44374/api/credit/creditproduct";
-// const productSupplCreditGradesUrl = "https://localhost:44374/api/credit/GetProductCreditSize";
+// const productDescriptionsUrl = "http://localhost:44374/api/product/getProductDescription";
+// const productsUrl = "http://localhost:44374/api/product";
+// const currenciesUrl = "http://localhost:44374/api/currency";
+// const manufacturersUrl = "http://localhost:44374/api/manufacturer";
+// const quotationProductsUrl = "http://localhost:44374/api/quotationproduct";
+// const suppliersUrl = "http://localhost:44374/api/supplier";
+// const measureUnitUrl = 'http://localhost:44374/api/measureUnit';
+// const LangUrl = "http://localhost:44374/api/localization/lang";
+// const countriesUrl = "http://localhost:44374/api/geo/country";
+const citiesUrl = "http://localhost:44374/api/geo/city";
+// const getPaymentMethodsUrl = "http://localhost:44374/api/fin/pmtmethod";
+// const loEntitiesUrl = "http://localhost:44374/api/lo/loentity";
+// const quotationsUrl = "http://localhost:44374/api/quotation";
+// const clientsUrl = "http://localhost:44374/api/client";
+// const cartProductsUrl = "http://localhost:44374/api/cart/CartProducts";
+// const productStorePlacesUrl = "http://localhost:44374/api/storeplace/productstoreplaces";
+const storePlacesUrl = "http://localhost:44374/api/storeplace/storeplace";
+const storesUrl = "http://localhost:44374/api/storeplace/stores";
+// const loSupplEntitiesUrl = "http://localhost:44374/api/lo/losupplentity";
+// const specLOTrackingLogUrl = "http://localhost:44374/api/lo/specLOTrackingLog";
+// const clientDraftOrderUrl = "http://localhost:44374/api/Cart/getClientDraftOrder";
+// const personsUrl = "http://localhost:44374/api/client/person";
+// const productImagesUrl = "http://localhost:44374/api/product/getProductImages";
+// const getBonusesInfoUrl = "http://localhost:44374/api/client/getBonusesInfo";
+// const getClientBonusesExpireInfoUrl = "http://localhost:44374/api/client/GetBonusesExpireInfo";
+// const creditProductsUrl = "http://localhost:44374/api/credit/creditproduct";
+// const productSupplCreditGradesUrl = "http://localhost:44374/api/credit/GetProductCreditSize";
 
 //DEV URLS
 const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -85,14 +86,14 @@ const suppliersUrl = "/api/msuppliers";
 const measureUnitUrl = '/api/mmeasureUnits';
 const LangUrl = "/api/mlocalization";
 const countriesUrl = "/api/mcountries";
-const citiesUrl = "/api/mcities";
+// const citiesUrl = "/api/mcities";
 const getPaymentMethodsUrl = "/api/mpaymentMethods";
 const loEntitiesUrl = "/api/mloEntities";
 const quotationsUrl = "/api/mquotation";
 const clientsUrl = "/api/mclients";
 const cartProductsUrl = "/api/mcartProducts";
 const productStorePlacesUrl = "/api/mproductStorePlaces";
-const storePlacesUrl = "/api/mstorePlaces";
+// const storePlacesUrl = "/api/mstorePlaces";
 const loSupplEntitiesUrl = "/api/mloSupplEntities";
 const specLOTrackingLogUrl = '/api/mspecLOTrackingLog';
 const clientDraftOrderUrl = "/api/mclientDraftOrder";
@@ -112,7 +113,7 @@ const getDeliveryDateUrl = "/api/mgetDeliveryDate";
 const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
 //Данньіе нужно забирать из Т22
 const clientOrdersUrl = "/api/mclientOrders";
-const storesUrl = "/api/mstores";
+// const storesUrl = "/api/mstores";
 
 
 
@@ -2043,7 +2044,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getStores(): Promise<Array<{ idCity: number; stores: Store[] }>> {
+  public async getStores(): Promise<IDictionary<Store[]>> {
     try {
       const response = await this.http.get(storesUrl).toPromise();
 
@@ -2051,46 +2052,32 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      const stores = new Array<{ idCity: number; stores: Store[] }>();
+      let stores: IDictionary<Store[]> = {};
       if (data != null) {
-        data.forEach(val => {
-          const storeArr = new Array<Store>();
-          const arr: Store[] = val.stores;
-          arr.forEach(store => {
-            if (
-              store.openTime !== null &&
-              store.closeTime !== null &&
-              store.rating === null
-            ) {
-              storeArr.push(
-                new Store(
-                  store.id,
-                  store.position,
-                  store.address,
-                  store.openTime,
-                  store.closeTime
-                )
-              );
-            } else if (
-              store.openTime !== null &&
-              store.closeTime !== null &&
-              store.rating !== null
-            ) {
-              storeArr.push(
-                new Store(
-                  store.id,
-                  store.position,
-                  store.address,
-                  store.openTime,
-                  store.closeTime,
-                  store.rating
-                )
-              );
-            } else {
-              storeArr.push(new Store(store.id, store.position, store.address));
+        let storeFiltered = [];
+        let cityID: number[] = [];
+        data.forEach(dataStore => {
+          if (!cityID.includes(dataStore.idCity)) {
+            cityID.push(dataStore.idCity);
+            storeFiltered = data.filter((value: Store): string => {
+              return value.idCity === dataStore.idCity ? dataStore.idCity.toString() : '';
+            });
+            let storeArr: Store[] = [];
+            for (let i=0; i< storeFiltered.length; i++) {
+              let store = storeFiltered[i];
+              let position = {lat: store.lat, lng: store.lng};
+              if (store.openTime !== null && store.closeTime !== null && store.rating === null && store.idFeedbacks === null) {
+                storeArr.push(new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime));
+              } else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.idFeedbacks === null) {
+                storeArr.push(new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime, store.rating));
+              } else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.idFeedbacks !== null) {
+                storeArr.push(new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime, store.rating, store.idFeedbacks));
+              } else {
+                storeArr.push(new Store(store.id, store.idCity, store.address, position));
+              }
             }
-          });
-          stores.push({idCity: val.id, stores: storeArr});
+            stores[dataStore.idCity.toString()] = storeArr;
+          }
         });
       }
       return stores;
@@ -2099,9 +2086,9 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getStoreById(id: number): Promise<{idCity: number, store: Store}> {
+  public async getStoreById(id: number): Promise<Store> {
     try {
-      const response = await this.http.get(storesUrl).toPromise();
+      /*const response = await this.http.get(storesUrl).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2133,7 +2120,22 @@ export class AppDataRepository extends AbstractDataRepository {
             return {idCity: stores[i].id, store: stores[i].stores[j]};
           }
         }
+      }*/
+      const response = await this.http.get(storePlacesUrl + `/${id}`).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
       }
+      let resultStore: Store;
+      if (data != null) {
+        let idCity = data.idCity.toString();
+        let position = {lat: data.lat, lng: data.lng};
+        if (data.id === id) {
+          resultStore = new Store(data.id, idCity, data.address_line, position);
+        }
+      }
+      return resultStore;
     } catch (err) {
       await this.handleError(err);
     }

@@ -132,7 +132,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   storeReviews = [
     {
       id: 1,
-      idStore: 36,
+      idStore: 101462,
       user: "Анастасия",
       reviewDate: new Date(2017, 11, 7),
       reviewText: 'Хороший магазин. Чисто и всегда понятно где что находится',
@@ -153,7 +153,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     },
     {
       id: 2,
-      idStore: 36,
+      idStore: 101462,
       user: "богдан зернов",
       reviewDate: new Date(2017, 4, 8),
       reviewText: 'в целом всё хорошо и легко нашел, что искал. Но обслуживание мне не понравилось',
@@ -1309,1532 +1309,3637 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   // </editor-fold>
 
   // <editor-fold desc="stores"
-  stores = [
-    // Александрия
-    {
-      id: 1,
-      stores: [
-        {
-          id: 1,
-          position: {lat: 48.6805, lng: 33.1154},
-          address: "просп. Соборний, 11",
-          openTime: "9:00",
-          closeTime: "21:00"
-        }
-      ]
-    },
-    // Бахмут
-    {
-      id: 2,
-      stores: [{
-        id: 2,
-        position: {lat: 48.586815, lng: 38.004897},
-        address: 'вул. Незалежності, 81',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Белая Церковь
-    {
-      id: 3, stores: [
-        {
-          id: 3,
-          position: {lat: 49.8093, lng: 30.0949},
-          address: 'бульв. Олександрійський, 115',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 4,
-          position: {lat: 49.797983, lng: 30.121724},
-          address: 'вул. Ярослава Мудрого, 40',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Белгород-Днестровский
-    {
-      id: 4,
-      stores: [{
-        id: 5,
-        position: {lat: 46.1764, lng: 30.3537},
-        address: 'вул. Тімчішина, 8',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Бердичев
-    {
-      id: 5,
-      stores: [{
-        id: 6,
-        position: {lat: 49.8916, lng: 28.5843},
-        address: 'вул. Вінницька, 18',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Бердянск
-    {
-      id: 6, stores: [
-        {
-          id: 7,
-          position: {lat: 46.755478, lng: 36.7872},
-          address: 'вул. Университетская, 43/ просп. Праці, 37',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 8,
-          position: {lat: 46.760454, lng: 36.80152},
-          address: 'вул. Комунарів, 75-З',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }]
-    },
-    // Борисполь
-    {
-      id: 7,
-      stores: [{
-        id: 9,
-        position: {lat: 50.363245, lng: 30.929128},
-        address: 'вул. Київський шлях, 67',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Бровары
-    {
-      id: 8,
-      stores: [{
-        id: 10,
-        position: {lat: 50.52629, lng: 30.79642},
-        address: 'вул. Київська, 316',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Васильков
-    {
-      id: 9,
-      stores: [{
-        id: 11,
-        position: {lat: 50.1771, lng: 30.3171},
-        address: 'вул. Соборна, 60',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Винница
-    {
-      id: 10, stores: [
-        {
-          id: 12,
-          position: {lat: 49.2261, lng: 28.4134},
-          address: 'вул. Келецька, 80',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 13,
-          position: {lat: 49.240307, lng: 28.505989},
-          address: 'вул. Євгена Пікуса, 1-А',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Вознесенск
-    {
-      id: 11,
-      stores: [{
-        id: 14,
-        position: {lat: 47.564, lng: 31.3409},
-        address: 'вул. Київська, 16',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Днепр
-    {
-      id: 12, stores: [
-        {
-          id: 15,
-          position: {lat: 48.47593, lng: 35.0208},
-          address: 'вул. Пастера, 6-А',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 16,
-          position: {lat: 48.4773, lng: 35.0139},
-          address: 'пл. Петрівського, 5',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 17,
-          position: {lat: 48.4837, lng: 34.9236},
-          address: 'вул. Кондратюка, 8',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 18,
-          position: {lat: 48.4291, lng: 35.0651},
-          address: 'вул. Набережна Перемоги, 86-А',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Дрогобыч
-    {
-      id: 13,
-      stores: [{
-        id: 19,
-        position: {lat: 49.3626, lng: 23.5136},
-        address: 'вул. Пилипа Орлика, 18-Б',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Дубно
-    {
-      id: 14,
-      stores: [{
-        id: 20,
-        position: {lat: 50.417962, lng: 25.745615},
-        address: 'пл. Незалежності, 3',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Житомир
-    {
-      id: 15, stores: [
-        {
-          id: 21,
-          position: {lat: 50.2664, lng: 28.6851},
-          address: 'вул. Київська, 77',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 22,
-          position: {lat: 50.2561, lng: 28.673},
-          address: 'пл. Житній Ринок, 1',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Запорожье
-    {
-      id: 16, stores: [
-        {
-          id: 23,
-          position: {lat: 47.8179, lng: 35.1746},
-          address: 'просп. Соборний, 53',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 24,
-          position: {lat: 47.8563, lng: 35.1067},
-          address: 'просп. Соборний, 175',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 25,
-          position: {lat: 47.8208, lng: 35.0513},
-          address: 'просп. Ювілейний, 16-А',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 26,
-          position: {lat: 47.835, lng: 35.122},
-          address: 'вул. Перемоги, 64',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Ивано-Франковск
-    {
-      id: 17, stores: [
-        {
-          id: 27,
-          position: {lat: 48.9257, lng: 24.7134},
-          address: 'вул. Дністровська, 26',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 28,
-          position: {lat: 48.907769, lng: 24.683458},
-          address: 'вул. Мазепи, 168-Б',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 29,
-          position: {lat: 48.932875, lng: 24.746035},
-          address: 'вул. Миколайчука, 2',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Измаил
-    {
-      id: 18,
-      stores: [{
-        id: 30,
-        position: {lat: 45.3573, lng: 28.8194},
-        address: 'просп. Леніна, 12',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Ирпень
-    {
-      id: 19,
-      stores: [{
-        id: 31,
-        position: {lat: 50.5197, lng: 30.2446},
-        address: 'вул. Шевченко, 4-Г',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Калуш
-    {
-      id: 20,
-      stores: [{
-        id: 32,
-        position: {lat: 49.041445, lng: 24.354076},
-        address: 'вул. Богдана Хмельницького, 50',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Каменец-Подольский
-    {
-      id: 21,
-      stores: [{
-        id: 33,
-        position: {lat: 48.679713, lng: 26.587617},
-        address: 'вул. Соборна, 25',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Каменское
-    {
-      id: 22,
-      stores: [{
-        id: 34,
-        position: {lat: 48.516057, lng: 34.606908},
-        address: 'просп. Тараса Шевченко, 9',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Киев
-    {
-      id: 23, stores: [
-        {
-          id: 35,
-          position: {lat: 50.4357, lng: 30.5164},
-          address: 'вул. В. Васильківська, 45',
-          openTime: '9:00',
-          closeTime: '21:00',
-          rating: 3
-        },
-        {
-          id: 36,
-          position: {lat: 50.4898, lng: 30.4927},
-          address: 'просп. Степана Бандери, 21',
-          openTime: '9:00',
-          closeTime: '22:00',
-          rating: 4
-        },
-        {
-          id: 37,
-          position: {lat: 50.4316, lng: 30.5131},
-          address: 'вул. Антоновича, 52',
-          openTime: '9:00',
-          closeTime: '21:00',
-          rating: 4
-        },
-        {
-          id: 38,
-          position: {lat: 50.5145, lng: 30.4986},
-          address: 'просп. Оболонський, 21Б',
-          openTime: '9:00',
-          closeTime: '21:00',
-          rating: 5
-        },
-        {
-          id: 39,
-          position: {lat: 50.381827, lng: 30.44093},
-          address: 'вул. Велика Кільцева, 110',
-          openTime: '9:00',
-          closeTime: '21:00',
-          rating: 3
-        },
-        {
-          id: 40,
-          position: {lat: 50.4605, lng: 30.3469},
-          address: 'вул. Чорнобильська, 16/80',
-          openTime: '9:00',
-          closeTime: '21:00',
-          rating: 4
-        },
-        {
-          id: 41,
-          position: {lat: 50.4083, lng: 30.6552},
-          address: 'вул. Вербицького, 18',
-          openTime: '9:00',
-          closeTime: '21:00',
-          rating: 4
-        },
-        {
-          id: 42,
-          position: {lat: 50.399, lng: 30.5107},
-          address: 'просп. Голосіївський, 68а',
-          openTime: '9:00',
-          closeTime: '21:00',
-          rating: 5
-        },
-        {
-          id: 43,
-          position: {lat: 50.4634, lng: 30.5992},
-          address: 'просп. Визволителів, 17',
-          openTime: '9:00',
-          closeTime: '21:00',
-          rating: 2
-        },
-        {
-          id: 44,
-          position: {lat: 50.454762, lng: 30.636051},
-          address: 'вул. Гната Хоткевича, 1-В',
-          openTime: '9:00',
-          closeTime: '21:00',
-          rating: 5
-        },
-        {
-          id: 45,
-          position: {lat: 50.4304, lng: 30.4552},
-          address: 'бульв. Чоколівський, 19',
-          openTime: '9:00',
-          closeTime: '21:00',
-          rating: 4
-        },
-        {
-          id: 46,
-          position: {lat: 50.4312, lng: 30.3836},
-          address: 'вул. Гната Юри, 20',
-          openTime: '9:00',
-          closeTime: '21:00',
-          rating: 3
-        },
-        {
-          id: 47,
-          position: {lat: 50.3976, lng: 30.6382},
-          address: 'вул. Олександра Мішуги, 4',
-          openTime: '9:00',
-          closeTime: '21:00',
-          rating: 2
-        },
-        {
-          id: 48,
-          position: {lat: 50.451, lng: 30.4416},
-          address: 'вул. Гетьмана, 6 (літери "Б,Б")',
-          openTime: '9:00',
-          closeTime: '21:00',
-          rating: 5
-        },
-        {
-          id: 49,
-          position: {lat: 50.4567, lng: 30.3832},
-          address: 'просп. Перемоги, 87',
-          openTime: '9:00',
-          closeTime: '21:00',
-          rating: 4
-        },
-        {
-          id: 50,
-          position: {lat: 50.49375, lng: 30.56128},
-          address: 'вул. Генерала Ватутіна, 2',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 51,
-          position: {lat: 50.5198, lng: 30.4656},
-          address: 'вул. Калнишевського, 2',
-          openTime: '9:00',
-          closeTime: '21:00',
-          rating: 3
-        },
-        {
-          id: 161,
-          position: {lat: 50.489967, lng: 30.495350},
-          address: 'просп. Степана Бандери, 23',
-          openTime: '9:00',
-          closeTime: '22:00'
-        }
-      ]
-    },
-    // Ковель
-    {
-      id: 24,
-      stores: [{
-        id: 52,
-        position: {lat: 51.214107, lng: 24.707476},
-        address: 'вул. Незалежності, 83',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Коломыя
-    {
-      id: 25,
-      stores: [{
-        id: 53,
-        position: {lat: 48.5257, lng: 25.0359},
-        address: 'просп. Грушевського, 12',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Конотоп
-    {
-      id: 26,
-      stores: [{
-        id: 54,
-        position: {lat: 51.2278, lng: 33.1973},
-        address: 'просп. Миру, 61',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Коростень
-    {
-      id: 27,
-      stores: [{
-        id: 55,
-        position: {lat: 50.9506, lng: 28.6395},
-        address: 'вул. Красіна, 5',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Краматорск
-    {
-      id: 28,
-      stores: [{
-        id: 56,
-        position: {lat: 48.736715, lng: 37.587819},
-        address: 'вул. Василя Стуса, 49',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Кременчуг
-    {
-      id: 29, stores: [
-        {
-          id: 57,
-          position: {lat: 49.0658, lng: 33.4236},
-          address: 'вул. Першотравнева, 44',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 58,
-          position: {lat: 49.091025, lng: 33.425882},
-          address: 'вул. Київська, 5-А',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Кривой Рог
-    {
-      id: 30, stores: [
-        {
-          id: 59,
-          position: {lat: 47.9022, lng: 33.3941},
-          address: 'просп. Металургів, 35/3',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 60,
-          position: {lat: 47.730983, lng: 33.250241},
-          address: 'вул. Неділіна, 43',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 61,
-          position: {lat: 47.9024, lng: 33.3588},
-          address: 'вул. Лермонтова, 26-А',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 62,
-          position: {lat: 47.935898, lng: 33.433841},
-          address: 'бульв. Вечірній, 31-А',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 63,
-          position: {lat: 48.021463, lng: 33.473223},
-          address: 'вул. Ватутіна, 39',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 64,
-          position: {lat: 47.9636, lng: 33.4369},
-          address: 'просп. 200-річчя Кривого Рогу, 7-Д',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Кропивницкий
-    {
-      id: 31, stores: [
-        {
-          id: 65,
-          position: {lat: 48.507581, lng: 32.264394},
-          address: 'вул. Велика Перспективна, 48',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 66,
-          position: {lat: 48.5015, lng: 32.2091},
-          address: 'вул. Юрія Коваленко, 6-А',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Ладыжин
-    {
-      id: 32,
-      stores: [{
-        id: 67,
-        position: {lat: 48.683368, lng: 29.233181},
-        address: 'вул. Будівельників, 15',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Лиман
-    {
-      id: 33,
-      stores: [{
-        id: 68,
-        position: {lat: 48.964797, lng: 37.822462},
-        address: 'вул. Привокзальна, 19-В',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Лисичанск
-    {
-      id: 34,
-      stores: [{
-        id: 69,
-        position: {lat: 48.9121, lng: 38.4274},
-        address: 'вул. Гарибальді, 50',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Лубны
-    {
-      id: 35,
-      stores: [{
-        id: 70,
-        position: {lat: 50.0213, lng: 32.9835},
-        address: 'просп. Володимирський, 98',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Луцк
-    {
-      id: 36, stores: [
-        {
-          id: 71,
-          position: {lat: 50.745798, lng: 25.338923},
-          address: 'просп. Волі, 27',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 72,
-          position: {lat: 50.75522, lng: 25.35552},
-          address: 'вул. Сухомлинського, 1',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Львов
-    {
-      id: 37, stores: [
-        {
-          id: 73,
-          position: {lat: 49.8435, lng: 24.023},
-          address: 'вул. Городоцька, 16',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 74,
-          position: {lat: 49.792, lng: 24.0576},
-          address: 'просп. Червоної Калини, 62',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 75,
-          position: {lat: 49.856, lng: 24.0213},
-          address: 'просп. Чорновола, 57',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 76,
-          position: {lat: 49.807337, lng: 23.978681},
-          address: 'вул. Кульпарковська, 226-А',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 77,
-          position: {lat: 49.8092, lng: 23.9979},
-          address: 'вул. Княгині Ольги, 106',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 78,
-          position: {lat: 49.8118, lng: 24.0615},
-          address: 'вул. Зелена, 147',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Мариуполь
-    {
-      id: 38, stores: [
-        {
-          id: 79,
-          position: {lat: 47.1075, lng: 37.5521},
-          address: 'просп. Металургів, 100',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 80,
-          position: {lat: 47.1007, lng: 37.5053},
-          address: 'просп. Миру, 149',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Мелитополь
-    {
-      id: 39,
-      stores: [{
-        id: 81,
-        position: {lat: 46.8479, lng: 35.3756},
-        address: 'просп. Богдана Хмельницького, 10',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Миргород
-    {
-      id: 40,
-      stores: [{
-        id: 82,
-        position: {lat: 49.966, lng: 33.61},
-        address: 'вул. Миколи Гоголя, 98/6',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Мукачево
-    {
-      id: 41,
-      stores: [{
-        id: 83,
-        position: {lat: 48.441785, lng: 22.73166},
-        address: 'вул. Миру, 151-Г',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Николаев
-    {
-      id: 42, stores: [
-        {
-          id: 84,
-          position: {lat: 46.9636, lng: 32.0252},
-          address: 'просп. Центральний, 259/1',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 85,
-          position: {lat: 46.9675, lng: 31.9744},
-          address: 'просп. Центральний, 27-ББ/1',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 86,
-          position: {lat: 46.8558, lng: 32.014},
-          address: 'просп. Корабелів, 14',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Надвирна
-    {
-      id: 43,
-      stores: [{
-        id: 87,
-        position: {lat: 48.63264, lng: 24.5687},
-        address: 'вул. Чорновола, 4',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Нежин
-    {
-      id: 44,
-      stores: [{
-        id: 88,
-        position: {lat: 51.051148, lng: 31.88917},
-        address: 'вул. Московська, 12',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Нетешин
-    {
-      id: 45,
-      stores: [{
-        id: 89,
-        position: {lat: 50.33518, lng: 26.64125},
-        address: 'просп. Незалежності, 11',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Никополь
-    {
-      id: 46,
-      stores: [{
-        id: 90,
-        position: {lat: 47.566237, lng: 34.393076},
-        address: 'вул. Електрометалургів, 42-Г',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Новая Каховка
-    {
-      id: 47,
-      stores: [{
-        id: 91,
-        position: {lat: 46.7579, lng: 33.3769},
-        address: 'вул. Французська, 26',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Новомосковск
-    {
-      id: 48,
-      stores: [{
-        id: 92,
-        position: {lat: 48.64049, lng: 35.25982},
-        address: 'вул. Гетьманська, 40-А',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Обухов
-    {
-      id: 49,
-      stores: [{
-        id: 93,
-        position: {lat: 50.126007, lng: 30.653335},
-        address: 'вул. Каштанова, 6/1',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Одесса
-    {
-      id: 50, stores: [
-        {
-          id: 94,
-          position: {lat: 46.4681, lng: 30.7356},
-          address: 'вул. Новощіпний Ряд, 2',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 95,
-          position: {lat: 46.470605, lng: 30.730999},
-          address: 'вул. Пантелеймонівська, 88/1',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 96,
-          position: {lat: 46.443, lng: 30.7048},
-          address: 'пл. Бориса Деревянко, 2',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 97,
-          position: {lat: 46.3979, lng: 30.7186},
-          address: 'просп. Академіка Глушка, 19',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 98,
-          position: {lat: 46.5827, lng: 30.8018},
-          address: 'вул. Дніпропетровська дорога, 125-Б',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 99,
-          position: {lat: 46.4162, lng: 30.7125},
-          address: 'просп. Маршала Жукова, 2',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Павлоград
-    {
-      id: 51,
-      stores: [{
-        id: 100,
-        position: {lat: 48.529933, lng: 35.870285},
-        address: 'вул. Тараса Шевченка, 118',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Первомайск
-    {
-      id: 52,
-      stores: [{
-        id: 101,
-        position: {lat: 48.041942, lng: 30.850899},
-        address: 'вул. Тараса Шевченка, 1',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Подольск
-    {
-      id: 53,
-      stores: [{
-        id: 102,
-        position: {lat: 47.748, lng: 29.5343},
-        address: 'вул. 50 років жовтня, 121-В',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Покров
-    {
-      id: 54,
-      stores: [{
-        id: 103,
-        position: {lat: 47.6561, lng: 34.1073},
-        address: 'вул. Центральна, 37',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Покровск
-    {
-      id: 55, stores: [
-        {
-          id: 104,
-          position: {lat: 48.265877, lng: 37.181286},
-          address: 'мікрорайон Південний, 41-А',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 105,
-          position: {lat: 48.27321, lng: 37.176236},
-          address: 'вул. Європейська, 90',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Полтава
-    {
-      id: 56, stores: [
-        {
-          id: 106,
-          position: {lat: 49.5842, lng: 34.5476},
-          address: 'вул. Тараса Шевченка, 44',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 107,
-          position: {lat: 49.601398, lng: 34.53096},
-          address: 'вул. Зіньківська, 6/1-А',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Прилуки
-    {
-      id: 57,
-      stores: [{
-        id: 108,
-        position: {lat: 50.6036, lng: 32.3856},
-        address: 'вул. Незалежності, 63',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Ровно
-    {
-      id: 58, stores: [
-        {
-          id: 109,
-          position: {lat: 50.626095, lng: 26.200207},
-          address: 'вул. Макарова, 23',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 110,
-          position: {lat: 50.6245, lng: 26.2499},
-          address: 'просп. Миру, 10',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 111,
-          position: {lat: 50.6162, lng: 26.2805},
-          address: 'вул. Київська, 67-А',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Ромны
-    {
-      id: 59,
-      stores: [{
-        id: 112,
-        position: {lat: 50.751274, lng: 33.476734},
-        address: 'бульв. Свободи, 10-В',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Рубежное
-    {
-      id: 60,
-      stores: [{
-        id: 113,
-        position: {lat: 49.026339, lng: 38.376377},
-        address: 'вул. Менделєєва, 31',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Самбор
-    {
-      id: 61,
-      stores: [{
-        id: 114,
-        position: {lat: 49.515090, lng: 23.196048},
-        address: 'вул. Валова, 24/1',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Северодонецк
-    {
-      id: 62,
-      stores: [{
-        id: 115,
-        position: {lat: 48.941857, lng: 38.518090},
-        address: 'просп. Гвардійський, 38-Б',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Славута
-    {
-      id: 63,
-      stores: [{
-        id: 116,
-        position: {lat: 50.296555, lng: 26.857033},
-        address: 'вул. Площа Шевченка, 12',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Славянск
-    {
-      id: 64,
-      stores: [{
-        id: 117,
-        position: {lat: 48.852007, lng: 37.604062},
-        address: 'пл. Соборна, 3',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Смела
-    {
-      id: 65,
-      stores: [{
-        id: 118,
-        position: {lat: 49.228423, lng: 31.865693},
-        address: 'вул. Леніна, 70',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Сокольники
-    {
-      id: 66,
-      stores: [{
-        id: 119,
-        position: {lat: 49.772609, lng: 24.009539},
-        address: 'вул. Стрийська, 30',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Старобельск
-    {
-      id: 67,
-      stores: [{
-        id: 120,
-        position: {lat: 49.283316, lng: 38.908971},
-        address: 'вул. Комунарів, 39-А',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Стрый
-    {
-      id: 68,
-      stores: [{
-        id: 121,
-        position: {lat: 49.2607146, lng: 23.8539935},
-        address: 'вул. Тараса Шевченка, 72',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Сумы
-    {
-      id: 69, stores: [
-        {
-          id: 122,
-          position: {lat: 50.903244, lng: 34.812884},
-          address: 'вул. Харківська, 9',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 123,
-          position: {lat: 50.904678, lng: 34.805757},
-          address: 'вул. Харківська, 2',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Тернополь
-    {
-      id: 70, stores: [
-        {
-          id: 124,
-          position: {lat: 49.545749, lng: 25.589506},
-          address: 'вул. Живова, 15-А',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 125,
-          position: {lat: 49.575467, lng: 25.639449},
-          address: 'вул. Текстильна, 28-Ч',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Токмак
-    {
-      id: 71,
-      stores: [{
-        id: 126,
-        position: {lat: 47.264227, lng: 35.713658},
-        address: 'вул. Шевченка, 54',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Ужгород
-    {
-      id: 72, stores: [
-        {
-          id: 127,
-          position: {lat: 48.619844, lng: 22.294909},
-          address: 'вул. Капушанська, 2',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 128,
-          position: {lat: 48.618344, lng: 22.289116},
-          address: 'просп. Свободи, 28',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Умань
-    {
-      id: 73,
-      stores: [{
-        id: 129,
-        position: {lat: 48.756094, lng: 30.221755},
-        address: 'вул. Велика Фонтанна, 31',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Фастов
-    {
-      id: 74,
-      stores: [{
-        id: 130,
-        position: {lat: 50.077378, lng: 29.913310},
-        address: 'вул. Зигмунда Козара, 5',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Харьков
-    {
-      id: 75, stores: [
-        {
-          id: 131,
-          position: {lat: 49.943075, lng: 36.301864},
-          address: 'просп. Героїв Сталінграду, 136/8',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 132,
-          position: {lat: 49.990327, lng: 36.290466},
-          address: 'вул. Академіка Павлова, 44-Б',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 133,
-          position: {lat: 49.986365, lng: 36.259809},
-          address: 'майдан Захисників України, 7/8',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 134,
-          position: {lat: 49.9822, lng: 36.2396},
-          address: 'вул. Вернадського, 2, літ. А-3',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 135,
-          position: {lat: 49.956403, lng: 36.361966},
-          address: 'просп. Московський, 256-Б',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 136,
-          position: {lat: 50.058932, lng: 36.204024},
-          address: 'просп. Перемоги, 62-З',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 137,
-          position: {lat: 49.996009, lng: 36.339274},
-          address: 'просп. Тракторобудівників, 59/56',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 138,
-          position: {lat: 49.9875, lng: 36.209},
-          address: 'вул. Полтавський Шлях, 56',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Херсон
-    {
-      id: 76, stores: [
-        {
-          id: 139,
-          position: {lat: 46.639193, lng: 32.615326},
-          address: 'просп. Ушакова, 26',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 140,
-          position: {lat: 46.672824, lng: 32.644061},
-          address: 'вул. Залаегерсег, 18',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Хмельницкий
-    {
-      id: 77, stores: [
-        {
-          id: 141,
-          position: {lat: 49.404766, lng: 26.958422},
-          address: 'вул. Кам\'янецька, 122',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 142,
-          position: {lat: 49.4204, lng: 26.9885},
-          address: 'вул. Свободи, 73',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Хуст
-    {
-      id: 78,
-      stores: [{
-        id: 143,
-        position: {lat: 48.1776, lng: 23.2925},
-        address: 'вул. Духновича, 17-А/2',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Червоноград
-    {
-      id: 79,
-      stores: [{
-        id: 144,
-        position: {lat: 50.391774, lng: 24.247073},
-        address: 'просп. Шевченка, 25',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Черкассы
-    {
-      id: 80, stores: [
-        {
-          id: 145,
-          position: {lat: 49.441, lng: 32.0665},
-          address: 'бульв. Тараса Шевченка, 207',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 146,
-          position: {lat: 49.424112, lng: 32.096021},
-          address: 'бульв. Тараса Шевченка, 385',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 147,
-          position: {lat: 49.4248, lng: 32.0147},
-          address: 'вул. 30-річчя Перемоги, 29',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Чернигов
-    {
-      id: 81, stores: [
-        {
-          id: 148,
-          position: {lat: 51.515306, lng: 31.306962},
-          address: 'вул. 77-ї Гвардійської Дивізії, 1',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 149,
-          position: {lat: 51.513528, lng: 31.324022},
-          address: 'вул. Рокоссовського, 18-А',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 150,
-          position: {lat: 51.495711, lng: 31.293263},
-          address: 'просп. Миру, 35',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Черновцы
-    {
-      id: 82, stores: [
-        {
-          id: 151,
-          position: {lat: 48.319616, lng: 25.962154},
-          address: 'вул. Калинівська, 13-А',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 152,
-          position: {lat: 48.2677, lng: 25.939},
-          address: 'просп. Незалежності, 80',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 153,
-          position: {lat: 48.258779, lng: 25.956744},
-          address: 'вул. Головна, 265-А',
-          openTime: '9:00',
-          closeTime: '21:00'
-        },
-        {
-          id: 154,
-          position: {lat: 48.2928, lng: 25.9346},
-          address: 'вул. Університецька, 2',
-          openTime: '9:00',
-          closeTime: '21:00'
-        }
-      ]
-    },
-    // Черноморск
-    {
-      id: 83,
-      stores: [{
-        id: 155,
-        position: {lat: 46.301214, lng: 30.654565},
-        address: 'вул. 1-го Травня, 5',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Шепетовка
-    {
-      id: 84,
-      stores: [{
-        id: 156,
-        position: {lat: 50.179083, lng: 27.067428},
-        address: 'вул. Героїв Небесної Сотні, 48',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Шостка
-    {
-      id: 85,
-      stores: [{
-        id: 157,
-        position: {lat: 51.866299, lng: 33.481032},
-        address: 'вул. Свободи, 30',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Энергодар
-    {
-      id: 86,
-      stores: [{
-        id: 158,
-        position: {lat: 47.500765, lng: 34.655972},
-        address: 'просп. Будівельників, 27-А',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Южноукраинск
-    {
-      id: 87,
-      stores: [{
-        id: 159,
-        position: {lat: 47.826007, lng: 31.172942},
-        address: 'просп. Незалежності, 25',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    },
-    // Южный
-    {
-      id: 88,
-      stores: [{
-        id: 160,
-        position: {lat: 46.626595, lng: 31.100375},
-        address: 'просп. Григорівського Десанту, 34',
-        openTime: '9:00',
-        closeTime: '21:00'
-      }]
-    }
-  ];
+  stores = [{
+    "id": 111687,
+    "idCity": 38044,
+    "address": "просп. Победы, 87",
+    "lat": 50.456652,
+    "lng": 30.383364,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 111690,
+    "idCity": 38044,
+    "address": "ул. Маршала Тимошенко, 29",
+    "lat": 50.512887,
+    "lng": 30.501184,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 113213,
+    "idCity": 38044,
+    "address": "ул. Инженерная, 1",
+    "lat": 50.401083,
+    "lng": 30.564406,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 116291,
+    "idCity": 38044,
+    "address": "ул. Шелковичная, 12",
+    "lat": 50.44442,
+    "lng": 30.532475,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1125038,
+    "idCity": 38044,
+    "address": "ул. Ревуцкого, 33",
+    "lat": 50.40654,
+    "lng": 30.650285,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1125039,
+    "idCity": 38044,
+    "address": "просп. Свободы, 26",
+    "lat": 50.513824,
+    "lng": 30.424669,
+    "openTime": "09:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1125040,
+    "idCity": 38044,
+    "address": "ул. Чернобыльская, 16/80",
+    "lat": 50.460521,
+    "lng": 30.346947,
+    "openTime": "09:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1125726,
+    "idCity": 3804463,
+    "address": "ул. Ярослава Мудрого, 40",
+    "lat": 49.798074,
+    "lng": 30.121703,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1135618,
+    "idCity": 38044,
+    "address": "ул. Вербицкого, 18",
+    "lat": 50.408347,
+    "lng": 30.655134,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1136013,
+    "idCity": 38053619,
+    "address": "ул. Ленина, 19",
+    "lat": 46.303266,
+    "lng": 30.655916,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1136014,
+    "idCity": 3804841,
+    "address": "просп. Суворова, 23",
+    "lat": 45.338127,
+    "lng": 28.833221,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1136015,
+    "idCity": 38048,
+    "address": "ул. Преображенская, 62",
+    "lat": 46.477658,
+    "lng": 30.731983,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1136017,
+    "idCity": 38048,
+    "address": "ул. Новощепной ряд (Эстонская ), 2",
+    "lat": 46.46902,
+    "lng": 30.73735,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1136018,
+    "idCity": 38048,
+    "address": "ул. Краснова, 12",
+    "lat": 46.432074,
+    "lng": 30.728775,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1136019,
+    "idCity": 38048,
+    "address": "ул. Семёна Палия, 125б",
+    "lat": 46.582641,
+    "lng": 30.801813,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1136020,
+    "idCity": 38048,
+    "address": "ул. Черноморского Казачества, 161",
+    "lat": 46.526337,
+    "lng": 30.728832,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1136021,
+    "idCity": 38048,
+    "address": "просп. Маршала Жукова , 4",
+    "lat": 46.412266,
+    "lng": 30.707576,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1138567,
+    "idCity": 3804841,
+    "address": "просп. Ленина, 12",
+    "lat": 45.35724,
+    "lng": 28.819278,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1139627,
+    "idCity": 38046,
+    "address": "просп. Мира, 35",
+    "lat": 51.495111,
+    "lng": 31.294175,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1139629,
+    "idCity": 38046,
+    "address": "просп. Мира, 49",
+    "lat": 51.499163,
+    "lng": 31.289415,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1140548,
+    "idCity": 38048,
+    "address": "ул. Пантелеймоновская, 25",
+    "lat": 46.469765,
+    "lng": 30.732542,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1140597,
+    "idCity": 38044,
+    "address": "просп. Освободителей, 17",
+    "lat": 50.463367,
+    "lng": 30.599076,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1141327,
+    "idCity": 38046,
+    "address": "ул. Рокоссовского, 18а",
+    "lat": 51.513535,
+    "lng": 31.323956,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1141562,
+    "idCity": 38051,
+    "address": "ул. Ленина, 177а",
+    "lat": 46.964551,
+    "lng": 32.017773,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1141563,
+    "idCity": 38051,
+    "address": "просп. Центральный, 259/1",
+    "lat": 46.963794,
+    "lng": 32.025583,
+    "openTime": "09:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1141565,
+    "idCity": 38051,
+    "address": "просп. Корабелов, 14",
+    "lat": 46.85527,
+    "lng": 32.013827,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1141567,
+    "idCity": 38051,
+    "address": "просп. Мира, 40а",
+    "lat": 46.946382,
+    "lng": 32.05073,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1143361,
+    "idCity": 380564,
+    "address": "просп. Мира, 37",
+    "lat": 47.91112,
+    "lng": 33.390833,
+    "openTime": "09:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1143362,
+    "idCity": 380564,
+    "address": "ул. Блюхера, 15",
+    "lat": 47.900849,
+    "lng": 33.419436,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1143363,
+    "idCity": 380564,
+    "address": "просп. Металлургов, 36/3",
+    "lat": 47.902192,
+    "lng": 33.394072,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1143366,
+    "idCity": 380564,
+    "address": "ул. Лермонтова, 26а",
+    "lat": 47.902452,
+    "lng": 33.358195,
+    "openTime": "08:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1143367,
+    "idCity": 380564,
+    "address": "ул. Днепропетровское шоссе, 20Г",
+    "lat": 47.910513,
+    "lng": 33.426097,
+    "openTime": "09:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1143403,
+    "idCity": 38055,
+    "address": "просп. Ушакова, 26",
+    "lat": 46.639122,
+    "lng": 32.616234,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1143404,
+    "idCity": 38055,
+    "address": "ул. Советская, 31",
+    "lat": 46.635919,
+    "lng": 32.60844,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1143767,
+    "idCity": 3804463,
+    "address": "бульв. Александрийский, 115",
+    "lat": 49.809387,
+    "lng": 30.094776,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1144538,
+    "idCity": 38051,
+    "address": "просп. Героев Сталинграда, 20а",
+    "lat": 47.003198,
+    "lng": 31.995781,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1144844,
+    "idCity": 38047,
+    "address": "бульв. Шевченко, 207",
+    "lat": 49.441214,
+    "lng": 32.065883,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1144859,
+    "idCity": 38047,
+    "address": "ул. Сумгаитская, 10",
+    "lat": 49.436712,
+    "lng": 32.016694,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1144860,
+    "idCity": 3804744,
+    "address": "ул. Большая Фонтанная, 31",
+    "lat": 48.755273,
+    "lng": 30.221134,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145000,
+    "idCity": 38041,
+    "address": "ул. Киевская, 28",
+    "lat": 50.257086,
+    "lng": 28.666826,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145001,
+    "idCity": 38041,
+    "address": "спуск Победы, 10",
+    "lat": 50.258756,
+    "lng": 28.656841,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145003,
+    "idCity": 38041,
+    "address": "ул. Киевская, 87",
+    "lat": 50.268085,
+    "lng": 28.690268,
+    "openTime": "08:30",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145004,
+    "idCity": 3804142,
+    "address": "ул. Красина, 5",
+    "lat": 50.949205,
+    "lng": 28.639567,
+    "openTime": "08:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145005,
+    "idCity": 3804143,
+    "address": "ул. Винницкая, 18",
+    "lat": 49.891374,
+    "lng": 28.583048,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145299,
+    "idCity": 38053625,
+    "address": "ул. Киевская, 16",
+    "lat": 47.563936,
+    "lng": 31.340407,
+    "openTime": "08:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145335,
+    "idCity": 38062,
+    "address": "ул. Артема, 143",
+    "lat": 48.016739,
+    "lng": 37.805051,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145336,
+    "idCity": 38062,
+    "address": "просп. Ленинский, 11б",
+    "lat": 47.986432,
+    "lng": 37.785785,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145339,
+    "idCity": 38062,
+    "address": "просп. Киевский, 5",
+    "lat": 48.040783,
+    "lng": 37.78023,
+    "openTime": "00:01",
+    "closeTime": "23:59",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145340,
+    "idCity": 38062,
+    "address": "просп. Ильича , 44",
+    "lat": 48.00268,
+    "lng": 37.840165,
+    "openTime": "09:00",
+    "closeTime": "23:59",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145341,
+    "idCity": 38062,
+    "address": "ул. Текстильщиков , 8а",
+    "lat": 47.950073,
+    "lng": 37.688899,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145342,
+    "idCity": 3806242,
+    "address": "ул. Победы, 36",
+    "lat": 48.301933,
+    "lng": 38.015872,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145343,
+    "idCity": 3806232,
+    "address": "ул. Московская, 2",
+    "lat": 48.04225,
+    "lng": 37.95876,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145346,
+    "idCity": 38053688,
+    "address": "ул. Независимости, 81",
+    "lat": 48.586597,
+    "lng": 38.004991,
+    "openTime": "08:00",
+    "closeTime": "17:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145347,
+    "idCity": 3806239,
+    "address": "ул. Европейская, 90",
+    "lat": 48.27335,
+    "lng": 37.1765,
+    "openTime": "08:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145349,
+    "idCity": 3806252,
+    "address": "просп. Ленина, 87б",
+    "lat": 48.217436,
+    "lng": 38.208668,
+    "openTime": "08:00",
+    "closeTime": "18:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145350,
+    "idCity": 38053630,
+    "address": "ул. Крупской, 1",
+    "lat": 48.042395,
+    "lng": 38.483571,
+    "openTime": "08:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145351,
+    "idCity": 3806242,
+    "address": "ул. Победы, 71",
+    "lat": 48.308912,
+    "lng": 37.989548,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145540,
+    "idCity": 38061,
+    "address": "просп. Соборный, 53",
+    "lat": 47.818026,
+    "lng": 35.174461,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1145678,
+    "idCity": 38048,
+    "address": "просп. Академика Глушко(Димитрова ), 19",
+    "lat": 46.39796,
+    "lng": 30.71835,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1147019,
+    "idCity": 38034,
+    "address": "ул. Днестровская, 26",
+    "lat": 48.925595,
+    "lng": 24.71328,
+    "openTime": "09:00",
+    "closeTime": "23:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1147091,
+    "idCity": 380564,
+    "address": "ул. Ватутина, 39",
+    "lat": 48.022731,
+    "lng": 33.474908,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1147102,
+    "idCity": 38056,
+    "address": "бульв. Театральный, 3",
+    "lat": 48.467278,
+    "lng": 35.044587,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1147105,
+    "idCity": 38056,
+    "address": "пл. Вокзальная, 5",
+    "lat": 48.476806,
+    "lng": 35.014193,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1147199,
+    "idCity": 3806153,
+    "address": "ул. Университетская, 43/ просп. Праці, 37",
+    "lat": 46.755415,
+    "lng": 36.787335,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1147471,
+    "idCity": 3806232,
+    "address": "просп. Генерала Данилова, 71а",
+    "lat": 48.045506,
+    "lng": 38.024342,
+    "openTime": "08:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1147541,
+    "idCity": 3805662,
+    "address": "ул. Електрометаллургов, 28",
+    "lat": 47.561647,
+    "lng": 34.394452,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1147554,
+    "idCity": 3806570,
+    "address": "ул. Шевченко, 118",
+    "lat": 48.529913,
+    "lng": 35.870346,
+    "openTime": "00:09",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1149618,
+    "idCity": 380626,
+    "address": "ул. Дворцовая, 31",
+    "lat": 48.734942,
+    "lng": 37.596437,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1149639,
+    "idCity": 38036,
+    "address": "просп. Мира, 10",
+    "lat": 50.624562,
+    "lng": 26.249744,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1149641,
+    "idCity": 38053626,
+    "address": "ул. Победы, 19",
+    "lat": 51.353122,
+    "lng": 25.856859,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1149710,
+    "idCity": 38038,
+    "address": "ул. Свободы, 73",
+    "lat": 49.419962,
+    "lng": 26.98754,
+    "openTime": "09:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1149711,
+    "idCity": 38038,
+    "address": "ул. Каменецкая, 122",
+    "lat": 49.402919,
+    "lng": 26.961674,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1149713,
+    "idCity": 38038,
+    "address": "ул. Проскуровская, 1",
+    "lat": 49.426104,
+    "lng": 26.981881,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1149714,
+    "idCity": 38038,
+    "address": "просп. Мира, 69",
+    "lat": 49.439619,
+    "lng": 27.002451,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1149718,
+    "idCity": 380626,
+    "address": "ул. Василия Стуса, 49",
+    "lat": 48.736741,
+    "lng": 37.587908,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1149720,
+    "idCity": 38053627,
+    "address": "ул. Космонавтов, 50",
+    "lat": 48.60288,
+    "lng": 37.52889,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1151738,
+    "idCity": 380629,
+    "address": "просп. Металлургов, 100",
+    "lat": 47.107625,
+    "lng": 37.55209,
+    "openTime": "08:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1151739,
+    "idCity": 380629,
+    "address": "ул. 130-й Таганрогской Дивизии, 7",
+    "lat": 47.108576,
+    "lng": 37.669094,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1151741,
+    "idCity": 380629,
+    "address": "ул. Ленина, 69",
+    "lat": 47.097258,
+    "lng": 37.545086,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1151742,
+    "idCity": 380629,
+    "address": "просп. Металлургов, 200",
+    "lat": 47.135741,
+    "lng": 37.566903,
+    "openTime": "08:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1151743,
+    "idCity": 380629,
+    "address": "просп. Мира, 149",
+    "lat": 47.101295,
+    "lng": 37.504669,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1151745,
+    "idCity": 380629,
+    "address": "просп. Победы, 21",
+    "lat": 47.106772,
+    "lng": 37.628745,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1151862,
+    "idCity": 38032,
+    "address": "ул. Княгини Ольги, 106",
+    "lat": 49.809215,
+    "lng": 23.998168,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1152048,
+    "idCity": 38032,
+    "address": "ул. Выговского, 100",
+    "lat": 49.812423,
+    "lng": 23.977359,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1152049,
+    "idCity": 38032,
+    "address": "ул. Городоцкая, 16",
+    "lat": 49.84347,
+    "lng": 24.02305,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1152051,
+    "idCity": 38053702,
+    "address": "просп. Шевченко, 25",
+    "lat": 50.392019,
+    "lng": 24.246431,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1152052,
+    "idCity": 38032,
+    "address": "просп. Черновола, 57",
+    "lat": 49.856015,
+    "lng": 24.021364,
+    "openTime": "10:00",
+    "closeTime": "23:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1152210,
+    "idCity": 38032,
+    "address": "ул. Зеленая, 147",
+    "lat": 49.81415,
+    "lng": 24.06333,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1152398,
+    "idCity": 38044,
+    "address": "ул. Миропольская, 19",
+    "lat": 50.467276,
+    "lng": 30.624139,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153448,
+    "idCity": 3806561,
+    "address": "ул. Сенная площадь, 1",
+    "lat": 45.361274,
+    "lng": 36.470956,
+    "openTime": "09:00",
+    "closeTime": "18:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153449,
+    "idCity": 3806561,
+    "address": "ул. Кирова, 2",
+    "lat": 45.353203,
+    "lng": 36.475289,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153454,
+    "idCity": 3805447,
+    "address": "просп. Мира, 1",
+    "lat": 51.241566,
+    "lng": 33.214232,
+    "openTime": "09:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153456,
+    "idCity": 3805366,
+    "address": "ул. Первомайская, 44",
+    "lat": 49.065849,
+    "lng": 33.423654,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153457,
+    "idCity": 3805366,
+    "address": "ул. 50-лет Октября, 39",
+    "lat": 49.13422,
+    "lng": 33.441773,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153459,
+    "idCity": 38053,
+    "address": "ул. Шевченко, 29",
+    "lat": 49.583869,
+    "lng": 34.546504,
+    "openTime": "08:00",
+    "closeTime": "18:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153460,
+    "idCity": 3805449,
+    "address": "ул. Свободы, 30",
+    "lat": 51.866425,
+    "lng": 33.481182,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153461,
+    "idCity": 38055423,
+    "address": "ул. Гоголя, 56",
+    "lat": 49.957728,
+    "lng": 33.615701,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153463,
+    "idCity": 38053711,
+    "address": "просп. Соборный, 11",
+    "lat": 48.680315,
+    "lng": 33.115308,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153464,
+    "idCity": 38064,
+    "address": "ул. Советская, 77",
+    "lat": 48.569325,
+    "lng": 39.31839,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153465,
+    "idCity": 38064,
+    "address": "ул. Титова, 9",
+    "lat": 48.574318,
+    "lng": 39.30616,
+    "openTime": "07:40",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153466,
+    "idCity": 38064,
+    "address": "ул. Оборонная, 9",
+    "lat": 48.558432,
+    "lng": 39.31876,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153467,
+    "idCity": 38061505,
+    "address": "ул. Менделеева, 31",
+    "lat": 49.028042,
+    "lng": 38.371941,
+    "openTime": "08:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153468,
+    "idCity": 38053635,
+    "address": "просп. Гвардейский, 40",
+    "lat": 48.941145,
+    "lng": 38.519278,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153470,
+    "idCity": 38053757,
+    "address": "ул. Гарибальди, 50",
+    "lat": 48.911736,
+    "lng": 38.427292,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153471,
+    "idCity": 3803352,
+    "address": "ул. Независимости, 83",
+    "lat": 51.21395,
+    "lng": 24.70737,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153472,
+    "idCity": 38033,
+    "address": "спуск Воли, 29",
+    "lat": 50.74561,
+    "lng": 25.340158,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153473,
+    "idCity": 38033,
+    "address": "ул. Ровенская, 48",
+    "lat": 50.743298,
+    "lng": 25.371786,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153474,
+    "idCity": 3803344,
+    "address": "ул. Победы, 2а",
+    "lat": 50.723562,
+    "lng": 24.164479,
+    "openTime": "09:30",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153475,
+    "idCity": 3806569,
+    "address": "ул. 9 Мая, 49",
+    "lat": 45.203889,
+    "lng": 33.346711,
+    "openTime": "10:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153477,
+    "idCity": 380692,
+    "address": "ул. Пожарова, 21",
+    "lat": 44.601773,
+    "lng": 33.499613,
+    "openTime": "10:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153478,
+    "idCity": 380692,
+    "address": "ул. Ковпака, 3",
+    "lat": 44.587397,
+    "lng": 33.51209,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153481,
+    "idCity": 38065,
+    "address": "ул. Маяковского , 12",
+    "lat": 44.948466,
+    "lng": 34.088516,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153482,
+    "idCity": 3806562,
+    "address": "ул. Крымская, 84",
+    "lat": 45.052528,
+    "lng": 35.376539,
+    "openTime": "09:00",
+    "closeTime": "18:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153483,
+    "idCity": 3806562,
+    "address": "ул. Базарная, 4",
+    "lat": 45.028408,
+    "lng": 35.378756,
+    "openTime": "09:00",
+    "closeTime": "18:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153484,
+    "idCity": 380654,
+    "address": "ул. Московская, 6",
+    "lat": 44.511863,
+    "lng": 34.170887,
+    "openTime": "10:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153485,
+    "idCity": 380654,
+    "address": "ул. Киевская, 4б",
+    "lat": 44.499399,
+    "lng": 34.168554,
+    "openTime": "10:00",
+    "closeTime": "23:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153487,
+    "idCity": 38053690,
+    "address": "ул. Крымская, 36а",
+    "lat": 45.710661,
+    "lng": 34.388758,
+    "openTime": "09:00",
+    "closeTime": "18:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153510,
+    "idCity": 3806560,
+    "address": "ул. Пионерская, 1",
+    "lat": 44.67685,
+    "lng": 34.40924,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153511,
+    "idCity": 3805447,
+    "address": "просп. Мира, 61",
+    "lat": 51.227529,
+    "lng": 33.197078,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153515,
+    "idCity": 38054,
+    "address": "ул. Металлургов, 17а",
+    "lat": 50.92596,
+    "lng": 34.789416,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153516,
+    "idCity": 38054,
+    "address": "ул. Харьковская, 1",
+    "lat": 50.905517,
+    "lng": 34.807716,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153517,
+    "idCity": 38035,
+    "address": "бульв. Шевченко, 12",
+    "lat": 49.553198,
+    "lng": 25.59417,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153518,
+    "idCity": 38035,
+    "address": "ул. Живова, 15а",
+    "lat": 49.54553,
+    "lng": 25.58953,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153519,
+    "idCity": 38057,
+    "address": "ул. Вернадского, 2, літ А-3",
+    "lat": 49.982259,
+    "lng": 36.23949,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153520,
+    "idCity": 38057,
+    "address": "просп. Победы, 62-З",
+    "lat": 50.058937,
+    "lng": 36.204142,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153521,
+    "idCity": 38057,
+    "address": "просп. Тракторостроителей        , 59/56",
+    "lat": 49.995488,
+    "lng": 36.339155,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153522,
+    "idCity": 38057,
+    "address": "пл. Конституции       , 1",
+    "lat": 49.988825,
+    "lng": 36.232391,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153524,
+    "idCity": 3803849,
+    "address": "ул. Соборная, 25",
+    "lat": 48.67949,
+    "lng": 26.587634,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153525,
+    "idCity": 38053670,
+    "address": "просп. Грушевского, 12",
+    "lat": 48.525627,
+    "lng": 25.035916,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153526,
+    "idCity": 38037,
+    "address": "ул. Университетская, 2",
+    "lat": 48.292882,
+    "lng": 25.934532,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153527,
+    "idCity": 38037,
+    "address": "просп. Независимости, 80",
+    "lat": 48.267694,
+    "lng": 25.939029,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153528,
+    "idCity": 38037,
+    "address": "ул. Калиновская, 13а",
+    "lat": 48.313325,
+    "lng": 25.959579,
+    "openTime": "08:00",
+    "closeTime": "16:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153531,
+    "idCity": 3804637,
+    "address": "ул. Независимости, 63",
+    "lat": 50.596246,
+    "lng": 32.384742,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153533,
+    "idCity": 3806442,
+    "address": "ул. Гмыри, 55",
+    "lat": 48.462401,
+    "lng": 38.832558,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1153534,
+    "idCity": 38053689,
+    "address": "ул. 8-го Марта, 7",
+    "lat": 48.084282,
+    "lng": 39.37411,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1156119,
+    "idCity": 38048,
+    "address": "ул. Глушко, 25",
+    "lat": 46.397723,
+    "lng": 30.715772,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1156378,
+    "idCity": 38053675,
+    "address": "пл. Ленина, 4",
+    "lat": 48.291094,
+    "lng": 39.74,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1158419,
+    "idCity": 38037,
+    "address": "ул. Калиновская, 13а",
+    "lat": 48.313325,
+    "lng": 25.959579,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1159778,
+    "idCity": 3804497,
+    "address": "ул. Шевченко, 4г",
+    "lat": 50.519873,
+    "lng": 30.243827,
+    "openTime": "09:00",
+    "closeTime": "20:30",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1160548,
+    "idCity": 38032,
+    "address": "ул. Зелена, 147",
+    "lat": 49.815389,
+    "lng": 24.062044,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1160923,
+    "idCity": 38057,
+    "address": "пл. Защитников Украины, 7/8",
+    "lat": 49.986204,
+    "lng": 36.259612,
+    "openTime": "09:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1161093,
+    "idCity": 38044,
+    "address": "ул. Академика Курчатова, 5",
+    "lat": 50.476479,
+    "lng": 30.624492,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1161129,
+    "idCity": 3806442,
+    "address": "ул. Гмыри, 37",
+    "lat": 48.467319,
+    "lng": 38.833685,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1161130,
+    "idCity": 3806442,
+    "address": "ул. Менжинского, 29а",
+    "lat": 48.477221,
+    "lng": 38.791969,
+    "openTime": "08:00",
+    "closeTime": "17:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1161888,
+    "idCity": 38053716,
+    "address": "ул. Магистральная, 39",
+    "lat": 48.135088,
+    "lng": 38.928116,
+    "openTime": "08:00",
+    "closeTime": "18:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1162862,
+    "idCity": 38034,
+    "address": "ул. Днестровская, 26",
+    "lat": 48.925595,
+    "lng": 24.71328,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1163232,
+    "idCity": 38032,
+    "address": "ул. Липинского, 50а",
+    "lat": 49.862861,
+    "lng": 24.036652,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1163265,
+    "idCity": 38053,
+    "address": "ул. Октябрьская, 72",
+    "lat": 49.598065,
+    "lng": 34.534516,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1163823,
+    "idCity": 3804463,
+    "address": "ул. Леваневского, 57",
+    "lat": 49.785564,
+    "lng": 30.158429,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1165281,
+    "idCity": 380692,
+    "address": "ул. Вакуленчука, 2",
+    "lat": 44.597571,
+    "lng": 33.488392,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1165282,
+    "idCity": 380692,
+    "address": "ул. Борисова, 5",
+    "lat": 44.58557,
+    "lng": 33.444557,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1166831,
+    "idCity": 38053715,
+    "address": "ул. Шевченко, 1",
+    "lat": 48.042011,
+    "lng": 30.850645,
+    "openTime": "09:00",
+    "closeTime": "18:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1166931,
+    "idCity": 38053,
+    "address": "ул. Шевченко, 29",
+    "lat": 49.583869,
+    "lng": 34.546504,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1167831,
+    "idCity": 3803849,
+    "address": "ул. Соборная, 25",
+    "lat": 48.67949,
+    "lng": 26.587634,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1167882,
+    "idCity": 3805366,
+    "address": "ул. Первомайская, 43",
+    "lat": 49.064364,
+    "lng": 33.417414,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1168812,
+    "idCity": 38065,
+    "address": "ул. Маяковского , 12",
+    "lat": 44.948466,
+    "lng": 34.088516,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1168921,
+    "idCity": 3806142,
+    "address": "спуск Кирова, 48",
+    "lat": 46.842806,
+    "lng": 35.362844,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1169181,
+    "idCity": 380629,
+    "address": "просп. Строителей, 125",
+    "lat": 47.099712,
+    "lng": 37.524942,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1170111,
+    "idCity": 38053623,
+    "address": "ул. Шевченко, 179",
+    "lat": 49.262758,
+    "lng": 23.85938,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1170701,
+    "idCity": 38044,
+    "address": "ул. Александра Мишуги, 4",
+    "lat": 50.397748,
+    "lng": 30.638302,
+    "openTime": "10:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1171041,
+    "idCity": 38065,
+    "address": "просп. Победы , 209",
+    "lat": 44.975607,
+    "lng": 34.13877,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1171771,
+    "idCity": 38061501,
+    "address": "ул. Луцкая, 13",
+    "lat": 50.8443,
+    "lng": 24.3207,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1172591,
+    "idCity": 3804631,
+    "address": "ул. Московская, 12",
+    "lat": 51.05109,
+    "lng": 31.889104,
+    "openTime": "09:00",
+    "closeTime": "23:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1172712,
+    "idCity": 38043,
+    "address": "ул. Кармелюка, 2",
+    "lat": 49.234676,
+    "lng": 28.484792,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1172713,
+    "idCity": 3806570,
+    "address": "ул. Гагарина, 12",
+    "lat": 48.491416,
+    "lng": 35.93105,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1172838,
+    "idCity": 38061506,
+    "address": "ул. Центральная, 37",
+    "lat": 47.655326,
+    "lng": 34.115165,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1172840,
+    "idCity": 38065,
+    "address": "ул. Ясная , 37",
+    "lat": 44.980723,
+    "lng": 34.13386,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1172848,
+    "idCity": 38062,
+    "address": "бульв. Шевченко, 58а",
+    "lat": 48.009861,
+    "lng": 37.847517,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1172849,
+    "idCity": 38064,
+    "address": "ул. Оборонная, 26",
+    "lat": 48.549007,
+    "lng": 39.329642,
+    "openTime": "08:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1172958,
+    "idCity": 3806232,
+    "address": "ул. Ленина, 140а",
+    "lat": 48.074297,
+    "lng": 37.960991,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1173608,
+    "idCity": 38044,
+    "address": "ул. Бальзака, 2а",
+    "lat": 50.497761,
+    "lng": 30.576832,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1173949,
+    "idCity": 38224673,
+    "address": "ул. Октябрьская, 34б",
+    "lat": 48.036322,
+    "lng": 38.154051,
+    "openTime": "08:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1175350,
+    "idCity": 38036,
+    "address": "ул. Грушевского, 2а",
+    "lat": 50.626854,
+    "lng": 26.270441,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1176171,
+    "idCity": 38056,
+    "address": "ул. Коммунаровская, 20",
+    "lat": 48.482522,
+    "lng": 34.924345,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1176370,
+    "idCity": 380692,
+    "address": "ул. Ленина, 39",
+    "lat": 44.603703,
+    "lng": 33.527062,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1176680,
+    "idCity": 38057,
+    "address": "ул. Полтавский Шлях      , 56",
+    "lat": 49.987334,
+    "lng": 36.207239,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1178596,
+    "idCity": 38044,
+    "address": "ул. Столичное шоссе, 101",
+    "lat": 50.343315,
+    "lng": 30.552182,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1178717,
+    "idCity": 38054,
+    "address": "ул. Харьковская, 9",
+    "lat": 50.903326,
+    "lng": 34.813006,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1178750,
+    "idCity": 3804862,
+    "address": "ул. Соборная, 121",
+    "lat": 47.748456,
+    "lng": 29.533973,
+    "openTime": "08:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1179050,
+    "idCity": 38032,
+    "address": "ул. Патона, 37",
+    "lat": 49.822523,
+    "lng": 23.95858,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1179051,
+    "idCity": 38061499,
+    "address": "ул. Фрунзе, 17",
+    "lat": 44.751577,
+    "lng": 33.850241,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1179497,
+    "idCity": 38043,
+    "address": "ул. Хмельницкое Шоссе, 145",
+    "lat": 49.234783,
+    "lng": 28.401817,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1180626,
+    "idCity": 3805662,
+    "address": "ул. Электрометаллургов, 42г",
+    "lat": 47.566271,
+    "lng": 34.39335,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1181034,
+    "idCity": 38057,
+    "address": "просп. Московский        , 199, літ \"С2\"",
+    "lat": 49.972633,
+    "lng": 36.302171,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1181288,
+    "idCity": 38055,
+    "address": "ул. Залаэгерсег, 25",
+    "lat": 46.666573,
+    "lng": 32.646754,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1181434,
+    "idCity": 38043,
+    "address": "ул. Келецкая, 80",
+    "lat": 49.226105,
+    "lng": 28.41329,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1185074,
+    "idCity": 38035,
+    "address": "ул. Текстильная, 28",
+    "lat": 49.575962,
+    "lng": 25.627753,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1186262,
+    "idCity": 3804465,
+    "address": "ул. Зигмунда Козара, 5",
+    "lat": 50.078064,
+    "lng": 29.908076,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1195204,
+    "idCity": 38057,
+    "address": "пл. Конституции       , 1",
+    "lat": 49.988825,
+    "lng": 36.232391,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1195645,
+    "idCity": 38048,
+    "address": "ул. Новощепной ряд, 2",
+    "lat": 46.469023,
+    "lng": 30.737348,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1196175,
+    "idCity": 38031,
+    "address": "ул. Капушанская, 2-4",
+    "lat": 48.619742,
+    "lng": 22.294698,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1196188,
+    "idCity": 3803131,
+    "address": "ул. Валенберга, 36",
+    "lat": 48.441913,
+    "lng": 22.713084,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1197235,
+    "idCity": 38044,
+    "address": "ул. Харьковское шоссе, 144а",
+    "lat": 50.421784,
+    "lng": 30.649728,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1198274,
+    "idCity": 38062,
+    "address": "просп. Ленинский, 11б",
+    "lat": 47.986432,
+    "lng": 37.785785,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1198278,
+    "idCity": 38062,
+    "address": "бульв. Шевченко, 58а",
+    "lat": 48.009861,
+    "lng": 37.847517,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1198281,
+    "idCity": 38032,
+    "address": "ул. Княгини Ольги, 106",
+    "lat": 49.809215,
+    "lng": 23.998168,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1198282,
+    "idCity": 380692,
+    "address": "ул. Пожарова, 21",
+    "lat": 44.601773,
+    "lng": 33.499613,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1198284,
+    "idCity": 38061,
+    "address": "спуск Ленина, 53",
+    "lat": 47.818026,
+    "lng": 35.174461,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1198290,
+    "idCity": 38043,
+    "address": "ул. Кармелюка, 2",
+    "lat": 49.234676,
+    "lng": 28.484792,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1198291,
+    "idCity": 38051,
+    "address": "ул. Ленина, 259",
+    "lat": 46.963794,
+    "lng": 32.025583,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 425,
+    "idCity": 38044,
+    "address": "просп. Победы, 73/1",
+    "lat": 50.457739,
+    "lng": 30.399875,
+    "openTime": "10:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 101462,
+    "idCity": 38044,
+    "address": "просп. Степана Бандеры, 21",
+    "lat": 50.489506,
+    "lng": 30.493326,
+    "openTime": "09:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 105122,
+    "idCity": 38044,
+    "address": "бульв. Чоколовский, 19",
+    "lat": 50.430616,
+    "lng": 30.455105,
+    "openTime": "09:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 105426,
+    "idCity": 38044,
+    "address": "ул. Б. Васильковская, 45",
+    "lat": 50.43569,
+    "lng": 30.51641,
+    "openTime": "09:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1500255,
+    "idCity": 3804494,
+    "address": "ул. Киевская, 316",
+    "lat": 50.52736,
+    "lng": 30.79511,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1500665,
+    "idCity": 3806442,
+    "address": "ул. Менжинского, 29А",
+    "lat": 48.47722,
+    "lng": 38.79197,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1500669,
+    "idCity": 3806442,
+    "address": "ул. Гмыри, 55",
+    "lat": 48.4624,
+    "lng": 38.83256,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1500687,
+    "idCity": 38064,
+    "address": "ул. Оборонная, 26",
+    "lat": 48.54901,
+    "lng": 39.32964,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1500688,
+    "idCity": 38064,
+    "address": "ул. Оборонная, 9",
+    "lat": 48.55843,
+    "lng": 39.31876,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1500689,
+    "idCity": 38053756,
+    "address": "ул. Петровско, 19",
+    "lat": 48.1118,
+    "lng": 39.08798,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1500690,
+    "idCity": 38053716,
+    "address": "ул. Магистральная, 39",
+    "lat": 48.13509,
+    "lng": 38.92812,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1500693,
+    "idCity": 3806444,
+    "address": "ул. Хмельницкого Богдана, 39",
+    "lat": 48.56056,
+    "lng": 38.64059,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1505949,
+    "idCity": 38054,
+    "address": "ул. Харьковская, 2/2",
+    "lat": 50.90416,
+    "lng": 34.80727,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1506872,
+    "idCity": 38062,
+    "address": "просп. Мира , 9",
+    "lat": 48.016739,
+    "lng": 37.805051,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1506873,
+    "idCity": 38062,
+    "address": "просп. Киевский, 5",
+    "lat": 48.040783,
+    "lng": 37.78023,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1506874,
+    "idCity": 38062,
+    "address": "просп. Ильича , 44",
+    "lat": 48.00268,
+    "lng": 37.840165,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1506875,
+    "idCity": 3806242,
+    "address": "ул. Победы, 36",
+    "lat": 48.301933,
+    "lng": 38.015872,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1506877,
+    "idCity": 3806252,
+    "address": "просп. Ленина, 87б",
+    "lat": 48.217436,
+    "lng": 38.208668,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1506878,
+    "idCity": 38053630,
+    "address": "ул. Крупской, 1",
+    "lat": 48.042395,
+    "lng": 38.483571,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1506879,
+    "idCity": 38062,
+    "address": "пл. Коммунаров , 1",
+    "lat": 48.308912,
+    "lng": 37.989548,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1506882,
+    "idCity": 3806232,
+    "address": "просп. Генерала Данилова, 71а",
+    "lat": 48.045506,
+    "lng": 38.024342,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1506883,
+    "idCity": 38224673,
+    "address": "ул. Октябрьская, 34б",
+    "lat": 48.036322,
+    "lng": 38.154051,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1506898,
+    "idCity": 38062,
+    "address": "ул. Петровского, 138",
+    "lat": 48.308912,
+    "lng": 37.989548,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1507409,
+    "idCity": 38057,
+    "address": "просп. Московский, 256Б",
+    "lat": 49.95638,
+    "lng": 36.35988,
+    "openTime": "10:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1509451,
+    "idCity": 38048,
+    "address": "просп. Академика Глушко(Димитрова ), 19",
+    "lat": 46.39796,
+    "lng": 30.71835,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1509710,
+    "idCity": 3803848,
+    "address": "просп. Независимости, 11",
+    "lat": 50.33353,
+    "lng": 26.64899,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1510272,
+    "idCity": 38032,
+    "address": "ул. Кульпарковская, 226-А",
+    "lat": 23.979861,
+    "lng": 49.802694,
+    "openTime": "10:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1512609,
+    "idCity": 3805692,
+    "address": "просп. Шевченко Тараса, 9",
+    "lat": 48.51606,
+    "lng": 34.60701,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1201486,
+    "idCity": 38053763,
+    "address": "спуск Шевченка, 15",
+    "lat": 50.58969,
+    "lng": 27.614903,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1201488,
+    "idCity": 38048,
+    "address": "ул. Ришельевская, 45",
+    "lat": 46.473523,
+    "lng": 30.739625,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1201490,
+    "idCity": 38048,
+    "address": "ул. Жуковского, 36",
+    "lat": 46.480113,
+    "lng": 30.735805,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1201525,
+    "idCity": 3806561,
+    "address": "ул. Ленина, 11",
+    "lat": 45.355489,
+    "lng": 36.469686,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1201621,
+    "idCity": 38062,
+    "address": "ул. Петровского, 113В",
+    "lat": 47.947779,
+    "lng": 37.687746,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1201636,
+    "idCity": 38061508,
+    "address": "ул. Первомайская, 6",
+    "lat": 48.04106,
+    "lng": 38.148306,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1201637,
+    "idCity": 3806570,
+    "address": "ул. Горького, 166",
+    "lat": 48.528373,
+    "lng": 35.867909,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1201638,
+    "idCity": 3805692,
+    "address": "ул. Сыровца, 2/28",
+    "lat": 48.516797,
+    "lng": 34.612226,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1201639,
+    "idCity": 380564,
+    "address": "ул. Тухачевского, 79",
+    "lat": 47.972645,
+    "lng": 33.436669,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1201644,
+    "idCity": 38035,
+    "address": "просп. Степана Бандеры, 72",
+    "lat": 49.54963,
+    "lng": 25.622486,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1202418,
+    "idCity": 38065422,
+    "address": "пл. Шевченко, 4",
+    "lat": 50.296919,
+    "lng": 26.857015,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1204285,
+    "idCity": 38053615,
+    "address": "просп. Владимирский, 98",
+    "lat": 50.02124,
+    "lng": 32.982087,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1204505,
+    "idCity": 38044,
+    "address": "ул. Победы, 47",
+    "lat": 50.45313,
+    "lng": 30.447415,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1204508,
+    "idCity": 38053691,
+    "address": "ул. Толбухина, 20",
+    "lat": 45.960836,
+    "lng": 33.792749,
+    "openTime": "09:00",
+    "closeTime": "18:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1204512,
+    "idCity": 3805692,
+    "address": "просп. Свободы, 37",
+    "lat": 48.519965,
+    "lng": 34.615886,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1204514,
+    "idCity": 38038,
+    "address": "ул. Проскуровская, 1",
+    "lat": 49.426104,
+    "lng": 26.981881,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1204518,
+    "idCity": 38357131,
+    "address": "пл. Независимости, 3",
+    "lat": 50.417899,
+    "lng": 25.745724,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1208501,
+    "idCity": 380692,
+    "address": "ул. Ковпака, 3",
+    "lat": 44.587397,
+    "lng": 33.51209,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1211889,
+    "idCity": 38056,
+    "address": "ул. Серова (Кировский), 2",
+    "lat": 48.468461,
+    "lng": 35.037358,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1213565,
+    "idCity": 38055,
+    "address": "ул. Патона, 12",
+    "lat": 46.661713,
+    "lng": 32.60302,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1215792,
+    "idCity": 38036,
+    "address": "ул. Грушевского, 2к",
+    "lat": 50.628918,
+    "lng": 26.270142,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1221484,
+    "idCity": 38047,
+    "address": "ул. 30-летия Победы, 29",
+    "lat": 49.425945,
+    "lng": 32.006989,
+    "openTime": "09:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1225244,
+    "idCity": 3804471,
+    "address": "ул. Соборная, 60",
+    "lat": 50.177092,
+    "lng": 30.317092,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1225745,
+    "idCity": 38053619,
+    "address": "ул. 1 Мая, 5/181-н",
+    "lat": 46.301114,
+    "lng": 30.653522,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1226495,
+    "idCity": 38048,
+    "address": "ул. Маршала Жукова, 4",
+    "lat": 46.412266,
+    "lng": 30.707576,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1226705,
+    "idCity": 3803475,
+    "address": "ул. Княгини Ольги, 4",
+    "lat": 48.63541,
+    "lng": 24.56882,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1227225,
+    "idCity": 38061,
+    "address": "спуск Ленина, 146",
+    "lat": 47.828377,
+    "lng": 35.163557,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1227568,
+    "idCity": 38057,
+    "address": "ул. Клочковская      , 134б",
+    "lat": 50.009507,
+    "lng": 36.219254,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1229045,
+    "idCity": 380629,
+    "address": "ул. Ленина, 149",
+    "lat": 47.101295,
+    "lng": 37.504669,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1231645,
+    "idCity": 38044,
+    "address": "просп. Победы, 23",
+    "lat": 50.449351,
+    "lng": 30.471019,
+    "openTime": "09:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1233106,
+    "idCity": 38047,
+    "address": "ул. 30-летия Победы, 29",
+    "lat": 49.425945,
+    "lng": 32.006989,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1234427,
+    "idCity": 38052,
+    "address": "ул. Маршала Конева, 6а",
+    "lat": 48.501464,
+    "lng": 32.209178,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1234443,
+    "idCity": 38065472,
+    "address": "ул. Небесной Сотни, 48",
+    "lat": 50.17898,
+    "lng": 27.06747,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1237855,
+    "idCity": 38056,
+    "address": "пер. Кирова, 11",
+    "lat": 48.44541,
+    "lng": 34.787107,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1241255,
+    "idCity": 38065432,
+    "address": "ул. Генерала Васильева, 2а",
+    "lat": 46.110543,
+    "lng": 33.686126,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1241348,
+    "idCity": 3804637,
+    "address": "ул. Киевская, 140",
+    "lat": 50.595987,
+    "lng": 32.375624,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1241545,
+    "idCity": 38051,
+    "address": "просп. Центральный, 27Б/1",
+    "lat": 46.967508,
+    "lng": 31.973147,
+    "openTime": "08:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1242275,
+    "idCity": 38064,
+    "address": "ул. Челюскинцев, 1-а",
+    "lat": 48.562345,
+    "lng": 39.310732,
+    "openTime": "07:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1244475,
+    "idCity": 380692,
+    "address": "ул. Вакуленчука, 29",
+    "lat": 44.588715,
+    "lng": 33.488388,
+    "openTime": "10:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1255415,
+    "idCity": 38064,
+    "address": "ул. Советская, 77",
+    "lat": 48.569325,
+    "lng": 39.31839,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1255416,
+    "idCity": 38064,
+    "address": "ул. 16 Линия, 48",
+    "lat": 48.567048,
+    "lng": 39.316406,
+    "openTime": "08:30",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1267455,
+    "idCity": 38056,
+    "address": "ул. Кондратюка, 8",
+    "lat": 48.483833,
+    "lng": 34.923243,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1269166,
+    "idCity": 3805366,
+    "address": "ул. Первомайская, 44",
+    "lat": 49.065849,
+    "lng": 33.423654,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1269345,
+    "idCity": 38052,
+    "address": "ул. Юрия Коваленко, 6а",
+    "lat": 48.501464,
+    "lng": 32.209178,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1269346,
+    "idCity": 38052,
+    "address": "ул. Большая Перспективная, 32/11",
+    "lat": 48.512167,
+    "lng": 32.268585,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1269347,
+    "idCity": 38052,
+    "address": "ул. Маршала Конева, 6а",
+    "lat": 48.501464,
+    "lng": 32.209178,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1270995,
+    "idCity": 38064,
+    "address": "ул. 2-я Краснознамённая, 28",
+    "lat": 48.527076,
+    "lng": 39.273937,
+    "openTime": "07:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1271440,
+    "idCity": 38044,
+    "address": "ул. Гната Юры, 20",
+    "lat": 50.431378,
+    "lng": 30.383693,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1275785,
+    "idCity": 38036,
+    "address": "ул. Киевская, 67а",
+    "lat": 50.616766,
+    "lng": 26.280573,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1275815,
+    "idCity": 38053627,
+    "address": "ул. Радченко, 37",
+    "lat": 48.619058,
+    "lng": 37.527485,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1276545,
+    "idCity": 38044,
+    "address": "просп. Победы, 73/1",
+    "lat": 50.457739,
+    "lng": 30.399875,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1276765,
+    "idCity": 38037,
+    "address": "ул. Головна, 265а",
+    "lat": 48.25911,
+    "lng": 25.95749,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1279591,
+    "idCity": 38052,
+    "address": "ул. Октябрьской Революции, 24",
+    "lat": 48.516552,
+    "lng": 32.251553,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1279601,
+    "idCity": 38056,
+    "address": "бульв. Театральный, 3",
+    "lat": 48.467278,
+    "lng": 35.044587,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1279611,
+    "idCity": 3806153,
+    "address": "ул. Коммунаров, 75-з",
+    "lat": 46.759985,
+    "lng": 36.79896,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1279631,
+    "idCity": 38057,
+    "address": "просп. Героев Сталинграда        , 136/8",
+    "lat": 49.942917,
+    "lng": 36.301893,
+    "openTime": "09:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1285952,
+    "idCity": 38044,
+    "address": "ул. Столичное шоссе, 101",
+    "lat": 50.343315,
+    "lng": 30.552182,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1287824,
+    "idCity": 38048,
+    "address": "пл. Бориса Деревянко, 2",
+    "lat": 46.398158,
+    "lng": 30.724558,
+    "openTime": "10:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1294422,
+    "idCity": 38043,
+    "address": "ул. Евгения Пикуса, 1а",
+    "lat": 49.240258,
+    "lng": 28.506028,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1294432,
+    "idCity": 38057,
+    "address": "ул. Академика Павлова, 144-Б",
+    "lat": 50.023007,
+    "lng": 36.336035,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1294511,
+    "idCity": 38032,
+    "address": "просп. Красной Калины, 62",
+    "lat": 49.79193,
+    "lng": 24.05751,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1295811,
+    "idCity": 38061,
+    "address": "просп. Соборный, 175",
+    "lat": 47.856381,
+    "lng": 35.106456,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1305313,
+    "idCity": 38061509,
+    "address": "пл. Соборная, 3",
+    "lat": 48.851626,
+    "lng": 37.604142,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1310523,
+    "idCity": 38048,
+    "address": "ул. Пантелеймоновская, 88/1",
+    "lat": 46.470544,
+    "lng": 30.730987,
+    "openTime": "09:00",
+    "closeTime": "23:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1316043,
+    "idCity": 38035,
+    "address": "ул. Текстильная, 28ч",
+    "lat": 49.575822,
+    "lng": 25.639642,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1319605,
+    "idCity": 38061,
+    "address": "просп. Юбилейный, 16а",
+    "lat": 47.820788,
+    "lng": 35.051418,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1319633,
+    "idCity": 38056,
+    "address": "ул. Набережная Победы, 86-А",
+    "lat": 48.42918,
+    "lng": 35.06522,
+    "openTime": "10:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1333626,
+    "idCity": 38041,
+    "address": "ул. Киевская, 77",
+    "lat": 50.266131,
+    "lng": 28.684967,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1340370,
+    "idCity": 38044,
+    "address": "ул. Андрея Малышко, 3",
+    "lat": 50.45785,
+    "lng": 30.611919,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1343796,
+    "idCity": 38044,
+    "address": "ул. Драйзера, 21а",
+    "lat": 50.509857,
+    "lng": 30.595585,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1343936,
+    "idCity": 38034,
+    "address": "ул. Миколайчука, 2",
+    "lat": 48.932965,
+    "lng": 24.74599,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1345915,
+    "idCity": 38053623,
+    "address": "ул. Шевченко, 72",
+    "lat": 49.26057,
+    "lng": 23.856249,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1345916,
+    "idCity": 380629,
+    "address": "просп. Ленина, 69",
+    "lat": 47.097258,
+    "lng": 37.545086,
+    "openTime": "09:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1348033,
+    "idCity": 380564,
+    "address": "бульв. Вечерний, 31а",
+    "lat": 47.937338,
+    "lng": 33.434461,
+    "openTime": "09:00",
+    "closeTime": "23:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1352373,
+    "idCity": 3806142,
+    "address": "просп. 50-летия Победы, 26/1",
+    "lat": 46.8596,
+    "lng": 35.380814,
+    "openTime": "09:00",
+    "closeTime": "23:59",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1356226,
+    "idCity": 38056,
+    "address": "бульв. Звездный, 1А",
+    "lat": 48.425633,
+    "lng": 35.021914,
+    "openTime": "10:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1356241,
+    "idCity": 3805366,
+    "address": "ул. Киевская, 5а",
+    "lat": 49.090575,
+    "lng": 33.425866,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1364610,
+    "idCity": 38056,
+    "address": "ул. Марии Кюри, 5",
+    "lat": 48.438898,
+    "lng": 35.051753,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1368349,
+    "idCity": 38056,
+    "address": "ул. Марии Кюри, 5",
+    "lat": 48.438898,
+    "lng": 35.051753,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1370669,
+    "idCity": 38044,
+    "address": "просп. Оболонский, 21Б",
+    "lat": 50.515817,
+    "lng": 30.498688,
+    "openTime": "10:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1372999,
+    "idCity": 38041,
+    "address": "пл. Житний Рынок, 1",
+    "lat": 50.256028,
+    "lng": 28.672991,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1373000,
+    "idCity": 38044,
+    "address": "просп. Победы, 94/1",
+    "lat": 50.458912,
+    "lng": 30.398757,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1380788,
+    "idCity": 38044,
+    "address": "ул. Горького , 50",
+    "lat": 50.431733,
+    "lng": 30.511247,
+    "openTime": "10:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1398161,
+    "idCity": 38034,
+    "address": "ул. Мазепы, 168-Б",
+    "lat": 48.907569,
+    "lng": 24.682623,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1403429,
+    "idCity": 38044,
+    "address": "ул. Гетьмана, 6 (літери \"Б,Б\")",
+    "lat": 50.450473,
+    "lng": 30.443376,
+    "openTime": "10:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1404531,
+    "idCity": 38033,
+    "address": "ул. Ровенская, 48",
+    "lat": 50.743298,
+    "lng": 25.371786,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1411640,
+    "idCity": 38048,
+    "address": "просп. Небесной Сотни, 2",
+    "lat": 46.416326,
+    "lng": 30.712519,
+    "openTime": "10:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1417679,
+    "idCity": 38044,
+    "address": "ул. Щусева, 44",
+    "lat": 50.477522,
+    "lng": 30.43228,
+    "openTime": "10:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1417722,
+    "idCity": 38044,
+    "address": "ул. Щусева, 44",
+    "lat": 50.477522,
+    "lng": 30.43228,
+    "openTime": "10:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1423426,
+    "idCity": 38057,
+    "address": "ул. 23-го Августа, 33-А",
+    "lat": 50.035665,
+    "lng": 36.218581,
+    "openTime": "09:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1429125,
+    "idCity": 3804472,
+    "address": "ул. Каштановая, 6/1",
+    "lat": 50.125593,
+    "lng": 30.652741,
+    "openTime": "09:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1431318,
+    "idCity": 3806239,
+    "address": "микр. Южный, 41а",
+    "lat": 48.265553,
+    "lng": 37.182411,
+    "openTime": "08:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1434555,
+    "idCity": 38053687,
+    "address": "ул. Орлика Пилипа, 18б",
+    "lat": 49.35854,
+    "lng": 23.51355,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1444116,
+    "idCity": 38033,
+    "address": "просп. Воли, 27",
+    "lat": 50.745955,
+    "lng": 25.338897,
+    "openTime": "10:00",
+    "closeTime": "20:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1455486,
+    "idCity": 38068262,
+    "address": "ул. Строителей, 15",
+    "lat": 48.685918,
+    "lng": 29.236938,
+    "openTime": "10:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1456696,
+    "idCity": 3806142,
+    "address": "ул. Гетьманская, 18/2",
+    "lat": 46.842373,
+    "lng": 35.380362,
+    "openTime": "08:00",
+    "closeTime": "23:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1456867,
+    "idCity": 38061500,
+    "address": "ул. Духновича, 17А/2",
+    "lat": 48.177096,
+    "lng": 23.29361,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1457717,
+    "idCity": 38044,
+    "address": "ул. Калнышевского, 2",
+    "lat": 50.519522,
+    "lng": 30.465654,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1460635,
+    "idCity": 38065,
+    "address": "ул. Объездная , 20",
+    "lat": 44.984696,
+    "lng": 34.133104,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1460642,
+    "idCity": 38044,
+    "address": "просп. Тычины, 1В",
+    "lat": 50.428412,
+    "lng": 30.593635,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1460649,
+    "idCity": 38053635,
+    "address": "просп. Гвардейский, 38/1",
+    "lat": 48.941725,
+    "lng": 38.518045,
+    "openTime": "09:00",
+    "closeTime": "19:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1460654,
+    "idCity": 38052,
+    "address": "ул. Большая Перспективная, 48",
+    "lat": 48.507744,
+    "lng": 32.264339,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1460762,
+    "idCity": 38065,
+    "address": "ул. Киевская, 189",
+    "lat": 44.984707,
+    "lng": 34.086663,
+    "openTime": "10:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1462127,
+    "idCity": 38044,
+    "address": "ул. Антоновича (Горького), 176",
+    "lat": 50.41219,
+    "lng": 30.522468,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1463048,
+    "idCity": 38036,
+    "address": "ул. Макарова, 23",
+    "lat": 50.625228,
+    "lng": 26.200362,
+    "openTime": "10:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1463451,
+    "idCity": 38044,
+    "address": "ул. Заболотного, 37",
+    "lat": 50.34324,
+    "lng": 30.54531,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1463452,
+    "idCity": 38044,
+    "address": "просп. Ватутина, 2Т",
+    "lat": 50.493817,
+    "lng": 30.561351,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1463471,
+    "idCity": 38048,
+    "address": "просп. Маршала Жукова, 3А, корп.4",
+    "lat": 46.416272,
+    "lng": 30.71582,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1463473,
+    "idCity": 38055,
+    "address": "ул. Залаэгерсег, 18",
+    "lat": 46.672127,
+    "lng": 32.643897,
+    "openTime": "09:00",
+    "closeTime": "21:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1465373,
+    "idCity": 3805449,
+    "address": "ул. Карла Маркса, 30",
+    "lat": 51.866425,
+    "lng": 33.481182,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1472326,
+    "idCity": 38054,
+    "address": "ул. Харьковская, 9",
+    "lat": 50.903326,
+    "lng": 34.813006,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1473335,
+    "idCity": 38054,
+    "address": "ул. Металлургов, 17",
+    "lat": 50.92526,
+    "lng": 34.789848,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1473643,
+    "idCity": 3805447,
+    "address": "просп. Мира, 61",
+    "lat": 51.227529,
+    "lng": 33.197078,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1478073,
+    "idCity": 38033,
+    "address": "ул. Сухомлинского, 1",
+    "lat": 50.755154,
+    "lng": 25.355503,
+    "openTime": "10:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1484789,
+    "idCity": 38044,
+    "address": "ул. Красногвардейская, 1-В",
+    "lat": 50.45478,
+    "lng": 30.63621,
+    "openTime": "10:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1484810,
+    "idCity": 3806560,
+    "address": "ул. Пионерская, 1",
+    "lat": 44.67685,
+    "lng": 34.40924,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1484815,
+    "idCity": 3806569,
+    "address": "ул. 9 Мая, 49",
+    "lat": 45.203889,
+    "lng": 33.346711,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1484819,
+    "idCity": 38065,
+    "address": "ул. Киевская, 189",
+    "lat": 44.984707,
+    "lng": 34.086663,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1484820,
+    "idCity": 38053691,
+    "address": "ул. Толбухина, 20",
+    "lat": 45.960836,
+    "lng": 33.792749,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1484821,
+    "idCity": 38065,
+    "address": "ул. Маяковского , 12",
+    "lat": 44.948466,
+    "lng": 34.088516,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1484823,
+    "idCity": 380692,
+    "address": "ул. Ковпака, 3",
+    "lat": 44.587397,
+    "lng": 33.51209,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1484824,
+    "idCity": 380692,
+    "address": "ул. Пожарова, 21",
+    "lat": 44.601773,
+    "lng": 33.499613,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1484825,
+    "idCity": 3806562,
+    "address": "ул. Базарная, 4",
+    "lat": 45.028408,
+    "lng": 35.378756,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1484826,
+    "idCity": 3806562,
+    "address": "ул. Крымская, 84",
+    "lat": 45.052528,
+    "lng": 35.376539,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1484828,
+    "idCity": 380654,
+    "address": "ул. Московская, 6",
+    "lat": 44.511863,
+    "lng": 34.170887,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1484829,
+    "idCity": 3806561,
+    "address": "ул. Кирова, 2",
+    "lat": 45.353203,
+    "lng": 36.475289,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1484831,
+    "idCity": 3806561,
+    "address": "пл. Сенная, 1",
+    "lat": 45.361274,
+    "lng": 36.470956,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1484838,
+    "idCity": 380692,
+    "address": "ул. Пожарова, 21",
+    "lat": 44.601773,
+    "lng": 33.499613,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1487909,
+    "idCity": 38065,
+    "address": "ул. Маяковского , 12",
+    "lat": 44.948466,
+    "lng": 34.088516,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1488630,
+    "idCity": 3806562,
+    "address": "ул. Базарная, 4",
+    "lat": 45.028408,
+    "lng": 35.378756,
+    "openTime": "09:00",
+    "closeTime": "18:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1488631,
+    "idCity": 3806562,
+    "address": "ул. Крымская, 84",
+    "lat": 45.052528,
+    "lng": 35.376539,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1491804,
+    "idCity": 38053734,
+    "address": "ул. Грушевского, 29",
+    "lat": 50.877376,
+    "lng": 26.456747,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1495482,
+    "idCity": 38065,
+    "address": "шоссе Евпаторийское , 8",
+    "lat": 44.96919,
+    "lng": 34.07888,
+    "openTime": null,
+    "closeTime": null,
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1499609,
+    "idCity": 38065442,
+    "address": "ул. Валовая, 24/1",
+    "lat": 49.51509,
+    "lng": 23.1961,
+    "openTime": "08:00",
+    "closeTime": "18:00",
+    "rating": null,
+    "idFeedbacks": null
+  }, {
+    "id": 1499726,
+    "idCity": 38057,
+    "address": "ул. Академика Павлова, 44-Б",
+    "lat": 49.99041,
+    "lng": 36.29001,
+    "openTime": "10:00",
+    "closeTime": "22:00",
+    "rating": null,
+    "idFeedbacks": null
+  }];
   // </editor-fold>
 
   storePlaces = [
@@ -3456,7 +5561,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       id: 1,
       appKey: '',
       userSetting: {'currency': '0', 'lang': '1'},
-      favoriteStoresId: [35, 41]
+      favoriteStoresId: [101462, 1463452]
     },
     {
       name: "vladimir",
@@ -3465,7 +5570,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       id: 2,
       appKey: '',
       userSetting: {'currency': '1', 'lang': '2'},
-      favoriteStoresId: [36, 44, 40]
+      favoriteStoresId: [101462, 1463452]
     },
     {
       name: "Yuri",
@@ -3474,7 +5579,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       id: 3,
       appKey: '',
       userSetting: {'currency': '0', 'lang': '3'},
-      favoriteStoresId: [37, 39]
+      favoriteStoresId: [101462, 1463452]
     },
   ];
 

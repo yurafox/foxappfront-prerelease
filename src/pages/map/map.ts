@@ -8,6 +8,7 @@ import {Geolocation} from '@ionic-native/geolocation';
 import {LaunchNavigator} from "@ionic-native/launch-navigator";
 import {FavoriteStoresPage} from "../favorite-stores/favorite-stores";
 import {StoreReview} from "../../app/model/store-review";
+import {IDictionary} from "../../app/core/app-core";
 
 declare var google: any;
 
@@ -29,11 +30,11 @@ export class MapPage extends ComponentBase implements OnInit {
   map: /*GoogleMap;*/ any;
   prevInfoWindow: any;
   city: City;
-  defaultCityId: number;  // Used to set position when map just opened and user's location is unknown.
+  defaultCityId: string;  // Used to set position when map just opened and user's location is unknown.
   cities: Array<City>;
   selectedCity: City = {id: 0, name: ' '};
   selectedMarker: SelectItem;
-  markersArr: Array<{ idCity: number, stores: Store[] }>;
+  markersArr: IDictionary<Store[]>;
   shopList: Array<SelectItem>;
   options: any;
   userPos: LatLng;
@@ -59,19 +60,12 @@ export class MapPage extends ComponentBase implements OnInit {
               private alertCtrl: AlertController) {
     super();
     this.initLocalization();
-    this.defaultCityId = 0;
+    this.defaultCityId = "38044";
     this.shopList = [{label: '', value: null}];
-    this.markersArr = [];
+    this.markersArr = null;
     this.cities = [{id: 0, name: ''}];
     this.selectedMarker = {label: '', value: null};
     this.userPos = new LatLng(0, 0);
-    this.open = ''/*'Open'*/;
-    this.close = ''/*'Closed'*/;
-    this.openHoursStr = ''/*'Open hours'*/;
-    this.reviewsStr = ''/*'Reviews'*/;
-    this.writeReviewStr = ''/*'Write review'*/;
-    this.dropDownCityOpts = {popupClass: 'f-middle-dictionary', buttonClass: 'f-drop-button-full', popupHeader: '', buttonHeader: ''};
-    this.dropDownAddressOpts = {popupClass: 'f-large-dictionary', buttonClass: 'f-drop-button-full', popupHeader: '', buttonHeader: ''};
     this.availableNavApps = [];
 
     try {
@@ -99,19 +93,29 @@ export class MapPage extends ComponentBase implements OnInit {
     if (this.userService.isAuth) {
       this.isAuthorized = true;
     }
+
+    this.openHoursStr = this.locale['OpenHours'] ? this.locale['OpenHours'] : 'Время работы';
+    this.open = this.locale['Open'] ? this.locale['Open'] : 'Открыто';
+    this.close = this.locale['Closed'] ? this.locale['Closed'] : 'Закрыто';
+    this.reviewsStr = this.locale['Reviews'] ? this.locale['Reviews'] : 'Отзывы';
+    this.writeReviewStr = this.locale['WriteReview'] ? this.locale['WriteReview'] : 'Оставить отзыв';
+    this.dropDownCityOpts = {
+      popupClass: 'f-middle-dictionary',
+      buttonClass: 'f-drop-button-full',
+      popupHeader: this.locale['City'] ? this.locale['City'] : 'Город',
+      buttonHeader: this.locale['City'] ? this.locale['City'] : 'Город'
+    };
+    this.dropDownAddressOpts = {
+      popupClass: 'f-large-dictionary',
+      buttonClass: 'f-drop-button-full',
+      popupHeader: this.locale['Address'] ? this.locale['Address'] : 'Адрес',
+      buttonHeader: this.locale['Address'] ? this.locale['Address'] : 'Адрес'
+    };
+
     try {
       [this.markersArr, this.cities] = await Promise.all([this.repo.getStores(), this.repo.getCities()]);
 
-      if ((this.cities && this.cities.length > 0) && (this.markersArr && this.markersArr.length > 0)) {
-        /**
-         * Set defaultCityId to id of the city with name 'Киев'/'Київ'/'Kiev'/'Kyiv'
-         */
-        this.cities.forEach((city) => {
-          if (city.name === 'Киев' || city.name === 'Київ' || city.name === 'Kiev' || city.name === 'Kyiv') {
-            this.defaultCityId = city.id;
-          }
-        });
-
+      if ((this.cities && this.cities.length > 0) && this.markersArr) {
         if (this.userPosIsKnown === true) {
           this.options = {
             center: this.userPos,
@@ -120,7 +124,7 @@ export class MapPage extends ComponentBase implements OnInit {
           };
         } else {
           this.options = {
-            center: this.markersArr[this.defaultCityId - 1].stores[0].position/*{lat:48.379433,lng:31.165579999999977}*/,
+            center: this.markersArr[this.defaultCityId][0].position,
             zoom: 10,
             disableDefaultUI: true
           };
@@ -138,9 +142,14 @@ export class MapPage extends ComponentBase implements OnInit {
         this.directionsService = new google.maps.DirectionsService;
         this.directionsDisplay = new google.maps.DirectionsRenderer;
 
-        for (const city of this.cities) {
-          if (city.name === this.selectedCity.name) {
-            this.city = city;
+        let citiesArr: City[] = this.cities;
+        this.cities = [];
+        for (let i = 0; i < citiesArr.length; i++) {
+          if (citiesArr[i].id === this.selectedCity.id) {
+            this.city = citiesArr[i];
+          }
+          if (this.markersArr[citiesArr[i].id.toString()]) {
+            this.cities.push(citiesArr[i]);
           }
         }
 
@@ -153,155 +162,145 @@ export class MapPage extends ComponentBase implements OnInit {
         /**
          * Iterating through all stores positions. Setting up info windows and marker event listeners
          */
-        await this.markersArr.forEach((markerArr) => {
-          markerArr.stores.forEach((markerData, i) => {
-            let labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        for (let c = 0; c < this.cities.length; c++) {
+          let cityID = this.cities[c].id.toString();
+          if (this.markersArr[cityID]) {
+            for (let i = 0; i < this.markersArr[cityID].length; i++) {
+              let markerData = this.markersArr[cityID][i];
+              let labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnoprstuvwxyz';
 
-            let reviews: StoreReview[] = [];
-            this.repo.getStoreReviewsByStoreId(markerData.id).then(reviewsArr => {
-              reviewsArr.forEach(review => {
-                if (review.idStore === markerData.id) {
-                  reviews.push(review);
-                }
-              });
-            }).catch(err => {
-              console.log(`Error retrieving store reviews: ${err}`);
-              return null;
-            });
-
-            let shopOpensTime = markerData.openTime;
-            let shopClosesTime = markerData.closeTime;
-            const shopRating = markerData.rating;
-            let rating = '';
-            for (let i = 0; i < shopRating; i++) {
-              rating += '<span class="fa fa-star checked"></span>';
-            }
-
-            let infoWindow = new google.maps.InfoWindow();
-
-            let marker = new google.maps.Marker({
-              position: markerData.position,
-              map: this.map,
-              title: markerData.address,
-              //animation: google.maps.Animation.DROP,
-              label: labels[i % labels.length]
-            });
-
-            let markerPosition = marker.getPosition();
-
-            // <editor-fold desc="Marker events"
-
-            /**
-             * Center to the marker and show info on click
-             */
-            marker.addListener('click', () => {
-              let isWorking = this.shopIsWorking(shopOpensTime, shopClosesTime);
-              if (this.prevInfoWindow) {
-                this.prevInfoWindow.close();
-              }
-              this.map.panTo(markerPosition);
-
-              /*if (14 >= this.map.zoom) {
-                setTimeout(() => {
-                  infoWindow.close();
-                }, 5000);
-              }*/
-
-              this.selectedMarker = {label: markerData.address, value: markerPosition};
-              if (markerArr.idCity !== this.selectedCity.id) {
-                this.selectedCity = {
-                  id: this.cities[markerArr.idCity - 1].id,
-                  name: this.cities[markerArr.idCity - 1].name
-                };
-                {
-                  for (const city of this.cities) {
-                    if (city.name === this.selectedCity.name) {
-                      this.city = city;
-                    }
-                  }
-                  this.makeShopList();
-                }
-              }
-              this.changeDetector.detectChanges();
-              this.prevInfoWindow = infoWindow;
-
-              let content =
-                `<div style="font-size: 15px;">` +
-                `<p style="color: #ef4123; padding: 0; margin: 0; font-size: 16px; text-align: center"><b>Фокстрот</b></p>` +
-                `<p style="padding: 0; margin: 0; text-align: center">${shopRating > 0 ? `${rating}` : ''}</p>` +
-                `<p style="padding: 0; margin: 0;">${markerData.address}</p>` +
-                `<p style="padding: 0; margin: 0;">${this.openHoursStr}:  ${shopOpensTime} - ${shopClosesTime}</p>` +
-                `<p style="color: ${(isWorking === this.open) ? 'green' : 'red'}; padding: 0; margin: 0;">${(isWorking) ? isWorking : '' }</p>` +
-                `<span id="revs" #revs style="color: darkblue; padding: 0; margin: 0;">${(reviews && (reviews.length > 0)) ? (this.reviewsStr + '<span style=""> (' + reviews.length + ')</span>') : this.writeReviewStr}</span>` +
-                `</div>`;
-
-              infoWindow.setContent(content);
-
-              /**
-               * Listen to infoWindow when it's ready and add listener to DOM element
-               */
-              google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
-                document.getElementById('revs').addEventListener('click', () => {
-                  if (reviews && (reviews.length > 0)) {
-                    this.onShowReviewsClick(reviews, markerData);
-                  } else {
-                    this.onWriteReviewClick(markerData);
+              let reviews: StoreReview[] = [];
+              this.repo.getStoreReviewsByStoreId(markerData.id).then(reviewsArr => { //TODO: Change method in repo
+                reviewsArr.forEach(review => {
+                  if (review.idStore === markerData.id) {
+                    reviews.push(review);
                   }
                 });
+              }).catch(err => {
+                console.log(`Error retrieving store reviews: ${err}`);
+                return null;
               });
 
-              infoWindow.open(this.map, marker);
-            });
-
-            /**
-             * Zoom to the marker on double click
-             */
-            marker.addListener('dblclick', () => {
-              if (this.prevInfoWindow) {
-                this.prevInfoWindow.close();
+              let shopOpensTime: string = markerData.openTime;
+              let shopClosesTime: string = markerData.closeTime;
+              let workingHours: string;
+              if (shopOpensTime && shopClosesTime) {
+                workingHours = this.openHoursStr + ': ' + shopOpensTime + ' - ' + shopClosesTime;
+              } else workingHours = '';
+              const shopRating: number = markerData.rating;
+              let rating = '';
+              for (let i = 0; i < shopRating; i++) {
+                rating += '<span class="fa fa-star checked"></span>';
               }
-              this.prevInfoWindow = infoWindow;
-              infoWindow.open(this.map, marker);
-              this.map.panTo(markerPosition);
-              this.map.setZoom(17);
-              this.map.setCenter(markerPosition);
-            });
 
-            this.map.addListener('zoom_changed', () => {
-              infoWindow.close();
-            });
+              let infoWindow = new google.maps.InfoWindow();
 
-            // </editor-fold>
-          });
-        });
+              let marker = new google.maps.Marker({
+                position: markerData.position,
+                map: this.map,
+                title: markerData.address,
+                //animation: google.maps.Animation.DROP,
+                label: labels[i % labels.length]
+              });
+
+              let markerPosition = markerData.position;
+
+              // <editor-fold desc="Marker events"
+
+              /**
+               * Center to the marker and show info on click
+               */
+              marker.addListener('click', () => {
+                let isWorking = this.shopIsWorking(shopOpensTime, shopClosesTime);
+                if (this.prevInfoWindow) {
+                  this.prevInfoWindow.close();
+                }
+                this.map.panTo(markerPosition);
+
+                /*if (14 >= this.map.zoom) {
+                  setTimeout(() => {
+                    infoWindow.close();
+                  }, 5000);
+                }*/
+
+                this.selectedMarker = {label: markerData.address, value: markerPosition};
+                if (markerData.idCity !== this.selectedCity.id) {
+                  this.selectedCity = {
+                    id: this.cities[c].id,
+                    name: this.cities[c].name
+                  };
+                  {
+                    this.city = this.cities[c];
+                    this.makeShopList();
+                  }
+                }
+                this.changeDetector.detectChanges();
+                this.prevInfoWindow = infoWindow;
+
+                let content =
+                  `<div style="font-size: 15px;">` +
+                  `<p style="color: #ef4123; padding: 0; margin: 0; font-size: 16px; text-align: center"><b>Фокстрот</b></p>` +
+                  `<p style="padding: 0; margin: 0; text-align: center">${shopRating > 0 ? `${rating}` : ''}</p>` +
+                  `<p style="padding: 0; margin: 0;">${markerData.address}</p>` +
+                  `<p style="padding: 0; margin: 0;">${workingHours}</p>` +
+                  `<p style="color: ${(isWorking === this.open) ? 'green' : 'red'}; padding: 0; margin: 0;">${(isWorking) ? isWorking : '' }</p>` +
+                  `<span id="revs" #revs style="color: darkblue; padding: 0; margin: 0;">${(reviews && (reviews.length > 0)) ? (this.reviewsStr + '<span style=""> (' + reviews.length + ')</span>') : this.writeReviewStr}</span>` +
+                  `</div>`;
+
+                if (infoWindow && (infoWindow !== null)) {
+                  infoWindow.setContent(content);
+                }
+
+                /**
+                 * Listen to infoWindow when it's ready and add listener to DOM element
+                 */
+                if (infoWindow && (infoWindow !== null)) {
+                  google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
+                    document.getElementById('revs').addEventListener('click', () => {
+                      if (reviews && (reviews.length > 0)) {
+                        this.onShowReviewsClick(reviews, markerData);
+                      } else {
+                        this.onWriteReviewClick(markerData);
+                      }
+                    });
+                  });
+
+                  infoWindow.open(this.map, marker);
+                }
+              });
+
+              /**
+               * Zoom to the marker on double click
+               */
+              marker.addListener('dblclick', () => {
+                if (this.prevInfoWindow) {
+                  this.prevInfoWindow.close();
+                }
+                this.prevInfoWindow = infoWindow;
+                if (infoWindow && (infoWindow !== null)) {
+                  infoWindow.open(this.map, marker);
+                }
+                this.map.panTo(markerPosition);
+                this.map.setZoom(17);
+                this.map.setCenter(markerPosition);
+              });
+
+              this.map.addListener('zoom_changed', () => {
+                if (infoWindow && (infoWindow !== null)) {
+                  infoWindow.close();
+                }
+              });
+
+              // </editor-fold>
+            }
+          }
+        }
 
         /**
          * Listener that shows map and loads localization
          */
         google.maps.event.addListenerOnce(this.map, 'idle', () => {
           mapEle.classList.add('show-map');
-          this.open = this.locale['Open'];
-          this.close = this.locale['Closed'];
-          this.openHoursStr = this.locale['OpenHours'];
-          this.reviewsStr = this.locale['Reviews'];
-          this.writeReviewStr = this.locale['WriteReview'];
-          this.dropDownCityOpts = {
-            popupClass: 'f-middle-dictionary',
-            buttonClass: 'f-drop-button-full',
-            popupHeader: this.locale['City'],
-            buttonHeader: this.locale['City']
-          };
-          this.dropDownAddressOpts = {
-            popupClass: 'f-large-dictionary',
-            buttonClass: 'f-drop-button-full',
-            popupHeader: this.locale['Address'],
-            buttonHeader: this.locale['Address']
-          };
-          try {
-            this.changeDetector.detectChanges();
-          } catch (err) {
-            console.log(`Couldn't detect changes: ${err}`);
-          }
         });
 
         this.navFromFavoriteStoresPage();
@@ -334,14 +333,14 @@ export class MapPage extends ComponentBase implements OnInit {
    */
   makeShopList() {
     for (let i = 0; i < this.cities.length; i++) {
-      if (this.selectedCity.name === this.cities[i].name) {
+      if (this.selectedCity.id === this.cities[i].id) {
         this.shopList = [];
         try {
-          for (let j = 0; j < this.markersArr[i].stores.length; j++) {
+          for (let j = 0; j < this.markersArr[this.cities[i].id.toString()].length; j++) {
             try {
               this.shopList.push({
-                label: this.markersArr[i].stores[j].address,
-                value: this.markersArr[i].stores[j].position
+                label: this.markersArr[this.cities[i].id.toString()][j].address,
+                value: this.markersArr[this.cities[i].id.toString()][j].position
               });
             } catch (error) {
               console.log('In-view shops push error: ' + error);
@@ -358,34 +357,20 @@ export class MapPage extends ComponentBase implements OnInit {
    * Updating stores every time city changes
    */
   changeMarkers() {
-    this.shopList = [];
     this.selectedMarker = {label: '', value: null};
 
-    for (const city of this.cities) {
-      if (city.name === this.selectedCity.name) {
+    for (let city of this.cities) {
+      if (city.id === this.selectedCity.id) {
         this.city = city;
       }
     }
-
-    for (let i = 0; i < this.cities.length; i++) {
-      if (this.selectedCity.name === this.cities[i].name) {
-        try {
-          this.map.panTo(this.markersArr[this.city.id - 1].stores[0].position);
-          this.map.setZoom(10);
-
-          for (let j = 0; j < this.markersArr[i].stores.length; j++) {
-            try {
-              this.shopList.push({
-                label: this.markersArr[i].stores[j].address,
-                value: this.markersArr[i].stores[j].position
-              });
-            } catch (error) {
-              console.log('In-changeMarkers shops push error: ' + error);
-            }
-          }
-        } catch (error) {
-          console.log('Markers change error: ' + error);
-        }
+    if (this.markersArr[this.selectedCity.id.toString()]) {
+      this.makeShopList();
+      try {
+        this.map.panTo(this.markersArr[this.selectedCity.id.toString()][0].position);
+        this.map.setZoom(10);
+      } catch (error) {
+        console.log('Markers change error: ' + error);
       }
     }
   }
@@ -407,16 +392,14 @@ export class MapPage extends ComponentBase implements OnInit {
    */
   addToFavorite() {
     if (this.selectedMarker.value !== null) {
-      for (let markerArr of this.markersArr) {
-        for (let store of markerArr.stores) {
-          if (store.address === this.selectedMarker.label) {
-            if (this.isAuthorized === true) {
-              try {
-                this.userService.addFavoriteStoresId(store.id);
-              } catch (err) {
-                console.log(`Error while adding to favorite: ${err}`);
-                return;
-              }
+      for (let marker of this.markersArr[this.selectedCity.id.toString()]) {
+        if (marker.position === this.selectedMarker.value) {
+          if (this.isAuthorized === true) {
+            try {
+              this.userService.addFavoriteStoresId(marker.id);
+            } catch (err) {
+              console.log(`Error while adding to favorite: ${err}`);
+              return;
             }
           }
         }

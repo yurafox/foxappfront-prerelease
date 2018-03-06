@@ -30,6 +30,7 @@ import { QuotationProduct,
           Category,
           MeasureUnit
        } from '../../../model/index';
+import {IDictionary} from "../../../core/app-core";
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
@@ -97,8 +98,8 @@ export abstract class AbstractDataRepository {
   public async abstract getClientAddressById(id: number): Promise<ClientAddress>;
 
   public async abstract getCities(): Promise<City[]>;
-  public async abstract getStores(): Promise<Array<{idCity: number, stores: Store[]}>>;
-  public async abstract getStoreById(id: number): Promise<{idCity: number, store: Store}>;
+  public async abstract getStores(): Promise<IDictionary<Store[]>>;
+  public async abstract getStoreById(id: number): Promise<Store>;
   public async abstract getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]>;
   public async abstract loadCityCache();
   public async abstract getCityById(id: number): Promise<City>;

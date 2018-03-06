@@ -12,10 +12,8 @@ import {AbstractDataRepository} from "../../app/service";
 export class FavoriteStoresPage extends ComponentBase implements OnInit {
 
   stores: Array<{ city: City, store: Store, hasReviews?: boolean }>;
-  cities: City[];
 
-  constructor(private navCtrl: NavController, private repo: AbstractDataRepository, private alertCtrl: AlertController)
-  {
+  constructor(private navCtrl: NavController, private repo: AbstractDataRepository, private alertCtrl: AlertController) {
     super();
     this.stores = [];
   }
@@ -25,28 +23,24 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
   }
 
   async ionViewDidLoad() {
-    this.cities = await this.repo.getCities();
     let favStoresIDs: number[] = this.userService.profile.favoriteStoresId;
-    let favStores: Array<{ idCity: number, store: Store }> = [];
+    let favStores: Store[] = [];
     if (favStoresIDs && (favStoresIDs.length > 0)) {
-      let clen = this.cities.length;
 
       for (let i = 0; i < favStoresIDs.length; i++) {
         let store = await this.repo.getStoreById(favStoresIDs[i]);
         if (store) {
-          favStores.push(store);
+          let city = await this.repo.getCityById(store.idCity);
+          if (city) {
+            favStores.push(store); console.log(store);
+            this.stores.push({city: city, store: store});
+          }
         } else {
           console.log(`Couldn\'t get store with id: ${favStoresIDs[i]}`);
         }
       }
 
-      for (let i = 0; i < favStores.length; i++) {
-        for (let j = 1; j < clen; j++) {
-          if (this.cities[j].id === favStores[i].idCity) {
-            this.stores.push({city: this.cities[j], store: favStores[i].store});
-          }
-        }
-      }
+      //for (let i = 0; i < favStores.length; i++) {}
     } else {
       console.log(`Didn't load favoriteStoresId from storage`);
       //this.navCtrl.pop().catch(err => console.log(`Couldn't go back: ${err}`));

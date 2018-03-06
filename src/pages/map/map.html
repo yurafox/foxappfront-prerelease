@@ -5,11 +5,11 @@
       [options]="dropDownCityOpts"
       [reference]="selectedCity"
       [store]="cities"
-      [map]="{valueName:'name',displayName:'name'}"
+      [map]="{valueName:'id',displayName:'name'}"
       [afterUpdate]="changeMarkers"
       *ngIf="cities">
     </dropdown-list>
-    <div *ngIf="(shopList[0].value !== null) && (shopList !== [])">
+    <div *ngIf="shopList && (shopList !== []) && shopList[0] && (shopList[0].value !== null)">
       <dropdown-list
         [options]="dropDownAddressOpts"
         [reference]="selectedMarker"
@@ -22,10 +22,8 @@
 </ion-header>
 
 <ion-content>
-  <!--GMap-->
-  <!--<div [ngStyle]="{'height': 100 + '%' - 60 + 'px', 'z-index': -1}" #mapCanvas id="map_canvas"></div>-->
+  <!-- Map -->
   <div style="height: calc(100% - 45px); top: 45px;" #mapCanvas id="map_canvas"></div>
-
 </ion-content>
 
 <div *ngIf="selectedMarker.value !== null">
