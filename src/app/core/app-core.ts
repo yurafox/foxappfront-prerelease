@@ -287,7 +287,6 @@ export function LazyLoad(options: Array<{ options:ILazyOption,
         Object.defineProperty(this, baseName+'_p', {
           configurable: false,
           get: () => {
-            console.log(baseName);
             const repo = this['_repo'];
             var paramsConvertedList = lazyParamToValue(this, value.params);
             if(paramsConvertedList.length!==0) {

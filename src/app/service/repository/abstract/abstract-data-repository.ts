@@ -74,7 +74,6 @@ export abstract class AbstractDataRepository {
   public async abstract saveClientDraftOrder(order: ClientOrder): Promise<ClientOrder>;
   public async abstract getClientOrders(): Promise<ClientOrder[]>;
   public async abstract getClientOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]>;
-  public async abstract getClientOrderById(id: number): Promise<ClientOrder>;
 
   public async abstract getCartProducts(): Promise<ClientOrderProducts[]>;
   public async abstract saveCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
@@ -90,15 +89,11 @@ export abstract class AbstractDataRepository {
                                                                           promoBonusDisc: number}[]>;
 
   public async abstract getClientBonusesExpireInfo(clientId: number): Promise <ClientBonus[]>;
-  public async abstract getClientDraftOrderSpecProductsById(id: number): Promise<ClientOrderProducts>;
-  public async abstract getClientDraftOrderSpecProducts(): Promise<Array<ClientOrderProducts>>;
 
   public async abstract getCountryById(id: number): Promise<Country>;
   public async abstract getCountries(): Promise<Country[]>;
   public async abstract getClientByUserId (id: number): Promise<Client>;
   public async abstract getClientByPhone (phonenum: string ): Promise<Client>;
-  public async abstract getClientById(id: number): Promise<Client>;
-  public async abstract getClientByEmail(email: string): Promise<Client>;
   public async abstract getClientAddressesByClientId(id: number): Promise<ClientAddress[]>;
   public async abstract getClientAddressById(id: number): Promise<ClientAddress>;
   public async abstract saveClientAddress(address: ClientAddress): Promise<ClientAddress>;

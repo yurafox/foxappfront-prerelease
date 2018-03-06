@@ -646,45 +646,6 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getClientOrderById(id: number): Promise<ClientOrder> {
-    try {
-      const response = await this.http
-        .get(clientOrdersUrl, {
-          search: this.createSearchParams([
-            {key: "idStatus", value: id.toString()}
-          ])
-        })
-        .toPromise();
-
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      return new ClientOrder(
-        data.id,
-        data.orderDate,
-        data.idCur,
-        data.idClient,
-        data.total,
-        data.idPaymentMethod,
-        data.idPaymentStatus,
-        data.idStatus,
-        null,
-        data.loIdEntity,
-        data.loIdClientAddress,
-        data.itemsTotal,
-        data.shippingTotal,
-        data.bonusTotal,
-        data.promoBonusTotal,
-        data.bonusEarned,
-        data.promoCodeDiscTotal,
-        data.idPerson
-      );
-    } catch (err) {
-      return await this.handleError(err);
-    }
-  }
-
   public async insertCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
     try {
       const response = await this.http
@@ -847,86 +808,6 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
 
-  }
-
-
-  public async getClientDraftOrderSpecProductsById(id: number): Promise<ClientOrderProducts> {
-    try {
-      const _id = id.toString();
-      const response = await this.http
-        .get(clientOrderSpecProductsUrl + `/${_id}`)
-        .toPromise();
-
-      const val = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      let p = new ClientOrderProducts();
-      p.id = val.id;
-      p.idOrder = val.idOrder;
-      p.idQuotationProduct = val.idQuotationProduct;
-      p.price = val.price;
-      p.qty = val.qty;
-      p.idStorePlace = val.idStorePlace;
-      p.idLoEntity = val.idLoEntity;
-      p.loTrackTicket = val.loTrackTicket;
-      p.loDeliveryCost = val.loDeliveryCost;
-      p.loDeliveryCompleted = val.loDeliveryCompleted;
-      p.loEstimatedDeliveryDate = val.loEstimatedDeliveryDate;
-      p.loDeliveryCompletedDate = val.loDeliveryCompletedDate;
-      p.errorMessage = val.errorMessage;
-      p.warningMessage = val.warningMessage;
-      p.payPromoCode = val.payPromoCode;
-      p.payPromoCodeDiscount = val.payPromoCodeDiscount;
-      p.payBonusCnt = val.payBonusCnt;
-      p.payPromoBonusCnt = val.payPromoBonusCnt;
-      p.earnedBonusCnt = val.earnedBonusCnt;
-      p.warningRead = val.warningRead;
-      return p;
-    } catch (err) {
-      return await this.handleError(err);
-    }
-  }
-
-  public async getClientDraftOrderSpecProducts(): Promise<Array<ClientOrderProducts>> {
-    try {
-      let orderProducts = [];
-      const response = await this.http
-        .get(clientOrderSpecProductsUrl + '')
-        .toPromise();
-
-      const val = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      val.forEach(product => {
-        let p = new ClientOrderProducts();
-        p.id = product.id;
-        p.idOrder = product.idOrder;
-        p.idQuotationProduct = product.idQuotationProduct;
-        p.price = product.price;
-        p.qty = product.qty;
-        p.idStorePlace = product.idStorePlace;
-        p.idLoEntity = product.idLoEntity;
-        p.loTrackTicket = product.loTrackTicket;
-        p.loDeliveryCost = product.loDeliveryCost;
-        p.loDeliveryCompleted = product.loDeliveryCompleted;
-        p.loEstimatedDeliveryDate = product.loEstimatedDeliveryDate;
-        p.loDeliveryCompletedDate = product.loDeliveryCompletedDate;
-        p.errorMessage = product.errorMessage;
-        p.payPromoCode = product.payPromoCode;
-        p.payPromoCodeDiscount = product.payPromoCodeDiscount;
-        p.payBonusCnt = product.payBonusCnt;
-        p.payPromoBonusCnt = product.payPromoBonusCnt;
-        p.earnedBonusCnt = product.earnedBonusCnt;
-        p.warningRead = product.warningRead;
-
-        orderProducts.push(p);
-      });
-      return orderProducts;
-    } catch (err) {
-      return await this.handleError(err);
-    }
   }
 
   public async getProductReviewsByProductId(productId: number): Promise<ProductReview[]> {
@@ -1140,61 +1021,6 @@ export class AppDataRepository extends AbstractDataRepository {
     return await this.handleError(err);
   }
 
-  }
-
-  public async getClientById(id: number): Promise<Client> {
-    try {
-      const _id = id.toString();
-      let client = new Client();
-      const response = await this.http.get(clientsUrl + `/${_id}`).toPromise();
-      let data: any = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-
-      if (data != null) {
-        client.id = data.id;
-        client.name = data.name;
-        client.phone = data.phone;
-        client.login = data.login;
-        client.email = data.email;
-        client.fname = data.fname;
-        client.lname = data.lname;
-        client.barcode = data.barcode;
-        return client;
-      }
-    } catch (err) {
-      return await this.handleError(err);
-    }
-  }
-
-  public async getClientByEmail(email: string): Promise<Client> {
-    try {
-      let client = new Client();
-      const response = await this.http
-        .get(clientsUrl, {
-          search: this.createSearchParams([{key: "email", value: email}])
-        })
-        .toPromise();
-      let data: any = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-
-      if (data != null) {
-        data = data[0];
-        client.id = data.id;
-        client.name = data.name;
-        client.phone = data.phone;
-        client.login = data.login;
-        client.email = email;
-        client.fname = data.fname;
-        client.lname = data.lname;
-        return client;
-      }
-    } catch (err) {
-      return await this.handleError(err);
-    }
   }
 
   public async createClientAddress(address: ClientAddress): Promise<ClientAddress> {
