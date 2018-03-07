@@ -3,25 +3,27 @@
 </ion-header>
 
 <ion-content padding class="register">
-  <ion-list class="list-form" *ngIf="onLoad">
-    <form [formGroup]='registerForm'>
-      <ion-item *ngIf='!!(account.errorMessages[register])' class='alertDanger'>
-        <span>{{account.errorMessages[register]}}</span>
-      </ion-item>
+  <div *ngIf="!preRegister">
+    <ion-list class="list-form" *ngIf="onLoad">
+      <form [formGroup]='registerForm'>
+        <ion-item *ngIf='!!(account.errorMessages[register])' class='alertDanger'>
+          <span>{{account.errorMessages[register]}}</span>
+        </ion-item>
 
-      <ion-item>
-        <ion-input type="text" placeholder="{{locale['Email'] ? locale['Email'] : 'Электронная почта'}}" formControlName="email"></ion-input>
-      </ion-item>
-      <ion-item class='alertDanger' *ngIf="formErrors.email">
-        <span>{{formErrors.email}}</span>
-      </ion-item>
+        <ion-item>
+          <ion-input type="text" placeholder="380xxxxxxxxx" formControlName="phone"></ion-input>
+        </ion-item>
+        <ion-item class='alertDanger' *ngIf="formErrors.phone">
+          <span>{{formErrors.phone}}</span>
+        </ion-item>
 
-      <ion-item>
-        <ion-input type="text" placeholder="{{locale['Password'] ? locale['Password'] : 'Пароль'}}" formControlName="password"></ion-input>
-      </ion-item>
-      <ion-item class='alertDanger' *ngIf="formErrors.password">
-        <span>{{formErrors.password}}</span>
-      </ion-item>
+
+        <ion-item>
+          <ion-input type="text" placeholder="{{locale['Email'] ? locale['Email'] : 'Электронная почта'}}" formControlName="email"></ion-input>
+        </ion-item>
+        <ion-item class='alertDanger' *ngIf="formErrors.email">
+          <span>{{formErrors.email}}</span>
+        </ion-item>
 
       <ion-item>
         <ion-input type="text" placeholder="{{locale['Name'] ? locale['Name'] : 'Имя'}}" formControlName="name"></ion-input>
@@ -30,28 +32,64 @@
         <span>{{formErrors.name}}</span>
       </ion-item>
 
-    <ion-item>
-    <ion-label style="margin-left: 5px"><span loc="Валюта" name="Currency">{{locale['Currency']}}</span></ion-label>
-    <ion-select formControlName="currency" multiple="false" cancelText="{{locale['Cancel'] ? locale['Cancel'] : 'Отмена'}}" okText="{{locale['Chose'] ? locale['Chose'] : 'Выбрать'}}">
-      <ion-option *ngFor="let currency of currencies;"
-                  value="{{currency.id}}">{{currency.shortName}}</ion-option>
-    </ion-select>
-    </ion-item>
+        <ion-item>
+            <ion-input type="text" placeholder="Отчество" formControlName="lname"></ion-input>
+          </ion-item>
+          <ion-item class='alertDanger' *ngIf="formErrors.lname">
+            <span>{{formErrors.lname}}</span>
+        </ion-item>
 
-      <ion-item>
-        <ion-label style="margin-left: 5px"><span loc="Локализация" name="Localization">{{locale['Localization']}}</span></ion-label>
-        <ion-select formControlName="lang" multiple="false" cancelText="{{locale['Cancel'] ? locale['Cancel'] : 'Отмена'}}" okText="{{locale['Chose'] ? locale['Chose'] : 'Выбрать'}}">
-          <ion-option  value="1">Рус</ion-option>
-          <ion-option  value="2">Укр</ion-option>
-          <ion-option  value="3">Eng</ion-option>
-        </ion-select>
-      </ion-item>
+        <ion-item>
+            <ion-input type="text" placeholder="Фамилия" formControlName="fname"></ion-input>
+          </ion-item>
+          <ion-item class='alertDanger' *ngIf="formErrors.fname">
+            <span>{{formErrors.fname}}</span>
+        </ion-item>
 
-      <button style="background: #ffbc2e" ion-button block color="fox" (click)="register()"><span loc="Создать аккаунт" name="CreateAccount">{{locale['CreateAccount']}}</span></button>
-    </form>
-  </ion-list>
+        <ion-item>
+          <ion-label style="margin-left: 8px;padding-left:5px"><span loc="Валюта" name="Currency">{{locale['Currency']}}</span></ion-label>
+          <ion-select formControlName="currency" multiple="false" cancelText="{{locale['Cancel'] ? locale['Cancel'] : 'Отмена'}}" okText="{{locale['Chose'] ? locale['Chose'] : 'Выбрать'}}">
+            <ion-option *ngFor="let currency of currencies;" value="{{currency.id}}">{{currency.shortName}}</ion-option>
+          </ion-select>
+        </ion-item>
 
-  <div *ngIf="onLoad" class="align-bottom" padding text-center>
-    <span loc="Уже имеете аккаунт" name="HaveAccount">{{locale['HaveAccount']}}</span>? <span class="bold" (click)="login()"><span loc="Войти" name="Login">{{locale['Login']}}</span></span>
+        <ion-item>
+          <ion-label style="margin-left: 8px;padding-left:5px"><span loc="Локализация" name="Localization">{{locale['Localization']}}</span></ion-label>
+          <ion-select formControlName="lang" multiple="false" cancelText="{{locale['Cancel'] ? locale['Cancel'] : 'Отмена'}}" okText="{{locale['Chose'] ? locale['Chose'] : 'Выбрать'}}">
+            <ion-option value="1">Рус</ion-option>
+            <ion-option value="2">Укр</ion-option>
+            <ion-option value="3">Eng</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <button style="background: #ffbc2e" ion-button block color="fox" (click)="register()"><span loc="Создать аккаунт" name="CreateAccount">{{locale['CreateAccount']}}</span></button>
+      </form>
+    </ion-list>
+
   </div>
+
+  <!-- pre-register view-->
+  <div *ngIf="preRegister">
+    <form [formGroup]='verifyForm'>
+      <ion-item>
+        <h3 class="header-label">Проверка регистрации</h3>
+      </ion-item>
+      <ion-item>
+       <input type="text" placeholder="380xxxxxxxxx" formControlName="phone" />
+     </ion-item>
+      <ion-item class='alertDanger' *ngIf="formErrors.phone">
+        <span>{{formErrors.phone}}</span>
+      </ion-item>
+       <ion-item class='alertDanger' *ngIf="verifyErrorData.errorShow">
+          <span>{{verifyErrorData.errorMessage}}</span>
+      </ion-item>
+      <button *ngIf='verifyForm.valid' style="background: #ffbc2e" ion-button block color="fox" (click)="verifyUser()">Проверить</button>
+    </form>
+  </div>
+
+  <!-- return yo ligin page-->
+  <div *ngIf="onLoad || preRegister" class="align-bottom" padding text-center>
+      Уже имеете аккаунт?
+      <span class="bold" (click)="login()">Войти</span>
+    </div>
 </ion-content>

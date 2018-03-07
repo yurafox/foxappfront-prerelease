@@ -113,7 +113,7 @@ export class MapPage extends ComponentBase implements OnInit {
     };
 
     try {
-      [this.markersArr, this.cities] = await Promise.all([this.repo.getStores(), this.repo.getCities()]);
+      [this.markersArr, this.cities] = await Promise.all([this.repo.getStores(), this.repo.getCitiesWithStores()]);
 
       if ((this.cities && this.cities.length > 0) && this.markersArr) {
         if (this.userPosIsKnown === true) {

@@ -397,9 +397,13 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'Phone', lang:1, text:'Телефон'},
       { tagName:'Phone', lang:2, text:'Телефон'},
       { tagName:'Phone', lang:3, text:'Phone'},
+      { tagName:'PhoneFormat', lang:1, text:'№ телефона должен содержать 12 цифр в формате 38XXXXXXXXXX'},
+      { tagName:'PhoneFormat', lang:2, text:'№ телефона має складатися з 12 цифр у форматі 38XXXXXXXXXX'},
+      { tagName:'PhoneFormat', lang:3, text:'Phone number should consists of 12 digits of 38XXXXXXXXXX format'},
       { tagName:'EnterPhone', lang:1, text:'Пожалуйста, введите номер телефона'},
       { tagName:'EnterPhone', lang:2, text:'Будь-ласка, введіть номер телефону'},
       { tagName:'EnterPhone', lang:3, text:'Please, enter your phone number'},
+
       { tagName:'PleaseSelectCountry', lang:1, text:'Пожалуйста, выберите страну'},
       { tagName:'PleaseSelectCountry', lang:2, text:'Будь-ласка, оберіть країну'},
       { tagName:'PleaseSelectCountry', lang:3, text:'Please, select country'},

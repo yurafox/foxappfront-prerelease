@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {User} from '../../model/index';
+import {User,IUserVerifyAccountData} from '../../model/index';
 import {AbstractAccountRepository} from "../index";
 import {AppConstants} from "../../app-constants";
 import {LoginTemplate} from "../../model/index";
@@ -47,9 +47,9 @@ export class UserService {
     return this.user.name;
   }
 
-  public get uid(): number {
-    return this.user.id;
-  }
+  // public get uid(): number {
+  //   return this.user.id;
+  // }
 
   public get lang(): number {
     return +this.user.userSetting['lang'];
@@ -77,9 +77,9 @@ export class UserService {
     this.user.name = name;
   }
 
-  public set uid(id: number) {
-    this.user.id = id;
-  }
+  // public set uid(id: number) {
+  //   this.user.id = id;
+  // }
 
   public set email(email: string) {
     this.user.email = email;
@@ -155,18 +155,18 @@ export class UserService {
   }
 
   // method for control signOut behavior
-  public isNotSignOutSelf(): boolean {
-    return this._account.isNotSignOutSelf();
-  }
+  // public isNotSignOutSelf(): boolean {
+  //   return this._account.isNotSignOutSelf();
+  // }
 
   // get user fast by token and uid
   public async shortLogin():Promise<boolean> {
     try {
-    const id: string = localStorage.getItem('id');
-    if (!id)
-      return false;
+    // const id: string = localStorage.getItem('id');
+    // if (!id)
+     // return false;
 
-    this.user = await this._account.getUserById(+id, this.token);
+    this.user = await this._account.getUserById(this.token);
       this.changeAuthStatus(['appKey']);
       this.errorClear('shortLogin');
       this.evServ.events['localeChangeEvent'].emit(this.lang);
@@ -208,22 +208,24 @@ export class UserService {
     }
 
   }
-  public async login(email: string, password: string) {
+  public async login(phone: string, password: string) {
     try {
-      const loginModel: LoginTemplate = await this._account.logIn(email,password);
+      const loginModel: LoginTemplate = await this._account.logIn(phone,password);
       this.user = loginModel.user;
       this._token = loginModel.token;
       localStorage.setItem('token',loginModel.token);
-      this.changeAuthStatus(['id','appKey']);
+      this.changeAuthStatus(['appKey']);
+      //this.changeAuthStatus(['id','appKey']);
       this.errorClear('login');
       this.localeUserService();
     } catch (err) {
       this.errorMessages['login'] = err.message;
     }
   }
-  // </editor-fold>
 
-  // <editor-fold desc='private behavior'>
+  public async verifyAccount(phone: string): Promise<IUserVerifyAccountData> {
+     return await this._account.verifyAccount(phone);
+  }
 
   // send fastswiching data
   private trySendSettings(): void {

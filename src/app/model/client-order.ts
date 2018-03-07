@@ -19,6 +19,15 @@ export class ClientOrder {
 
   private _repo: AbstractDataRepository;
 
+  get dto(): any {
+    return  {id: this.id, orderDate: this.orderDate, idCur: this.idCur, idClient: this.idClient, total: this.total,
+      idPaymentMethod: this.idPaymentMethod, idPaymentStatus: this.idPaymentStatus, idStatus: this.idStatus,
+      loIdEntity: this.loIdEntity, loIdClientAddress: this.loIdClientAddress,
+      itemsTotal: this.itemsTotal, shippingTotal: this.shippingTotal,
+      bonusTotal: this.bonusTotal, promoBonusTotal: this.promoBonusTotal, bonusEarned: this.bonusEarned,
+      promoCodeDiscTotal: this.promoCodeDiscTotal, idPerson: this.idPerson};
+  }
+
   constructor(
     public id: number,
     public orderDate: Date,

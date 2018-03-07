@@ -24,7 +24,6 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
 
   async ionViewDidLoad() {
     let favStoresIDs: number[] = this.userService.profile.favoriteStoresId;
-    let favStores: Store[] = [];
     if (favStoresIDs && (favStoresIDs.length > 0)) {
 
       for (let i = 0; i < favStoresIDs.length; i++) {
@@ -32,15 +31,12 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
         if (store) {
           let city = await this.repo.getCityById(store.idCity);
           if (city) {
-            favStores.push(store); console.log(store);
             this.stores.push({city: city, store: store});
           }
         } else {
           console.log(`Couldn\'t get store with id: ${favStoresIDs[i]}`);
         }
       }
-
-      //for (let i = 0; i < favStores.length; i++) {}
     } else {
       console.log(`Didn't load favoriteStoresId from storage`);
       //this.navCtrl.pop().catch(err => console.log(`Couldn't go back: ${err}`));
@@ -104,5 +100,4 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
       });
     }
   }
-
 }

@@ -66,10 +66,6 @@ export class PaymentPage extends ComponentBase implements OnInit {
     switch (event.data) {
       case 'success': {
         (<any>window).appPage.navCtrl.setRoot('PaymentPage',{result:0});
-        /*(<any>window).appPage.success = true;
-        (<any>window).appPage.formInput = null;
-        (<any>window).appPage.cart.emptyCart();
-        (<any>window).appPage.changeDetector.detectChanges();*/
         break;
       }
       case 'fail': {

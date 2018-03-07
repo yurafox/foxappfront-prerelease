@@ -22,7 +22,7 @@
 
     <ion-row>
       <ion-col class="f-item-nopadding-tb">
-        <span class="f-color-info">{{item?.rating}} <span loc="из 5 звёзд" name="Of5Stars">{{locale['Of5Stars']}}</span></span>
+        <span class="f-color-info" *ngIf="item?.rating">{{item?.rating}} <span loc="из 5 звёзд" name="Of5Stars">{{locale['Of5Stars']}}</span></span>
       </ion-col>
       <ion-col text-end class="f-item-nopadding-tb">
         <span class="f-color-info" (click)="onWriteReviewClick()"><span loc="Оставить отзыв" name="WriteReview">{{locale['WriteReview']}}</span></span>

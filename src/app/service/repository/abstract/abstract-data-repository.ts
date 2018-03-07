@@ -55,6 +55,11 @@ export abstract class AbstractDataRepository {
   public async abstract loadSuppliersCache();
   public async abstract getSupplierById(supplierId: number): Promise<Supplier>;
   public async abstract getPersonById(personId: number): Promise<PersonInfo>;
+  public async abstract insertPerson(person: PersonInfo): Promise<PersonInfo>;
+  public async abstract updatePerson(person: PersonInfo): Promise<PersonInfo>;
+
+
+
   public async abstract getCurrencyById(currencyId: number): Promise<Currency>;
   public async abstract getManufacturerById(manufacturerId: number): Promise<Manufacturer>;
   public async abstract getManufacturers(cacheForce: boolean): Promise<Manufacturer[]>;
@@ -67,6 +72,7 @@ export abstract class AbstractDataRepository {
   public async abstract getProductCreditSize(idProduct: number, isSupplier: number): Promise<any>;
 
   public async abstract getClientDraftOrder(): Promise<ClientOrder>;
+  public async abstract saveClientDraftOrder(order: ClientOrder): Promise<ClientOrder>;
   public async abstract getClientOrders(): Promise<ClientOrder[]>;
   public async abstract getClientOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]>;
   public async abstract getClientOrderById(id: number): Promise<ClientOrder>;
@@ -87,7 +93,6 @@ export abstract class AbstractDataRepository {
   public async abstract getClientBonusesExpireInfo(clientId: number): Promise <ClientBonus[]>;
   public async abstract getClientDraftOrderSpecProductsById(id: number): Promise<ClientOrderProducts>;
   public async abstract getClientDraftOrderSpecProducts(): Promise<Array<ClientOrderProducts>>;
-  public async abstract getClientOrderSpecProductsByClientId(clientId: number): Promise<Array<ClientOrderProducts>>;
 
   public async abstract getCountryById(id: number): Promise<Country>;
   public async abstract getCountries(): Promise<Country[]>;
@@ -96,8 +101,12 @@ export abstract class AbstractDataRepository {
   public async abstract getClientByEmail(email: string): Promise<Client>;
   public async abstract getClientAddressesByClientId(id: number): Promise<ClientAddress[]>;
   public async abstract getClientAddressById(id: number): Promise<ClientAddress>;
+  public async abstract saveClientAddress(address: ClientAddress): Promise<ClientAddress>;
+  public async abstract createClientAddress(address: ClientAddress): Promise<ClientAddress>;
+  public async abstract deleteClientAddress(address: ClientAddress);
 
   public async abstract getCities(): Promise<City[]>;
+  public async abstract getCitiesWithStores(): Promise<City[]>;
   public async abstract getStores(): Promise<IDictionary<Store[]>>;
   public async abstract getStoreById(id: number): Promise<Store>;
   public async abstract getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]>;
@@ -107,6 +116,7 @@ export abstract class AbstractDataRepository {
   public async abstract getAction(id:number):Promise<Action>;
   public async abstract getActions():Promise<Action[]>;
   public async abstract getActionOffersByActionId(id:number):Promise<ActionOffer[]>;
+  public async abstract loadPmtMethodsCache();
   public async abstract getPmtMethods(): Promise<EnumPaymentMethod[]>;
   public async abstract getPmtMethodById(id: number): Promise<EnumPaymentMethod>;
   public async abstract getCreditProducts(): Promise<CreditProduct[]>;
@@ -122,7 +132,6 @@ export abstract class AbstractDataRepository {
   public async abstract postProductView(idProduct: number, params: string);
   public async abstract postDeviceData(deviceData: DeviceData): Promise<DeviceData>
   public async abstract getCategories(): Promise<Category[]>;
-  public async abstract getDataForRedirectToPaymaster(orderID: number, cartTotal: number): Promise<any>;
   public async abstract loadMeasureUnitCache();
   public async abstract getMeasureUnitById(unitId: number): Promise<MeasureUnit>;
   public async abstract getProductDescription(id: number): Promise<string>;

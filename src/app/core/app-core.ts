@@ -9,6 +9,8 @@ import {MeasureUnit} from '../model/measure-unit';
 import { RequestOptionsArgs,Headers,URLSearchParams} from '@angular/http';
 import {Quotation} from '../model/quotation';
 import {LoEntity} from '../model/lo-entity';
+import {Country} from '../model/country';
+import {EnumPaymentMethod} from '../model/enum-payment-method';
 
 export interface IDictionary<T> {
   [k: string]: T;
@@ -141,8 +143,11 @@ export namespace Providers {
     private _cacheCity: IKeyedCollection<City> = null;
     private _cacheStorePlace: IKeyedCollection<StorePlace> = null;
     private _cacheMeasureUnit: IKeyedCollection<MeasureUnit> = null;
+
     private _cacheQuotation: IKeyedCollection<Quotation> = null;
     private _cacheLoEntity: IKeyedCollection<LoEntity> = null;
+    private _cacheCountry: IKeyedCollection<Country> = null;
+    private _cacheEnumPaymentMethod: IKeyedCollection<EnumPaymentMethod> = null;
 
 
     public get Products(): IKeyedCollection<Product> {
@@ -214,6 +219,22 @@ export namespace Providers {
 
       return this._cacheLoEntity;
     }
+
+    public get Country(): IKeyedCollection<Country> {
+      if (this._cacheCountry == null)
+        this._cacheCountry = new CacheItems<Country>(10);
+
+      return this._cacheCountry;
+    }
+
+    public get EnumPaymentMethod(): IKeyedCollection<EnumPaymentMethod> {
+      if (this._cacheEnumPaymentMethod == null)
+        this._cacheEnumPaymentMethod = new CacheItems<EnumPaymentMethod>(10);
+
+      return this._cacheEnumPaymentMethod;
+    }
+
+
   }
 }
 
@@ -329,8 +350,8 @@ export class RequestFactory {
    public static makeAuthHeader(): RequestOptionsArgs{
     const h = new Headers();
 
-    h.set('Authorization', `Bearer: ${localStorage.getItem('token') || ''}`);
-    h.set('X-User',localStorage.getItem('id') || '');
+    h.set('Authorization', `Bearer ${localStorage.getItem('token') || ''}`);
+    // h.set('X-User',localStorage.getItem('id') || '');
 
     return {headers:h}
    }

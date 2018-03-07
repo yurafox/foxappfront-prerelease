@@ -17,9 +17,21 @@ export class ClientAddress {
     return this.idCountry;
   }
 
+  get dto(): any {
+    return  {id: this.id, idClient: this.idClient, idCity: this.idCity, zip: this.zip, street: this.street,
+      lat: this.lat, lng: this.lng, isPrimary: this.isPrimary,
+      idCountry: this.idCountry, city: this.city,
+      bldApp: this.bldApp, recName: this.recName,
+      phone: this.phone};
+  }
+
   public get addressString(): string {
-    return ((<any>this).country) ? this.street +' ' + this.bldApp + ', ' + this.city + ', ' + this.zip + ' '
-      + (<any>this).country.name + ', Phone: ' + this.phone : null;
+    return ((this.street) ? this.street : '') + ' ' +
+      ((this.bldApp) ? this.bldApp : '') + ', ' +
+      ((this.city) ? this.city : '') + ', ' +
+      ((this.zip) ? this.zip : '') + ' ' +
+      (((<any>this).country) ? (<any>this).country.name : '') + ' ' +
+      ((this.phone) ? ', Phone: ' + this.phone : '');
   }
 
   constructor (

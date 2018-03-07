@@ -31,6 +31,7 @@ export class ConnectivityService {
     /*if (activePage && activePage.name !== 'NoConnectionPage') {
       this.showNoConnectionPage(error);
     }*/
+    console.log(error.message ? error.message : error);
     // </editor-fold>
 
     if (this.network.type !== 'none') {

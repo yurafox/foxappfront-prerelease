@@ -1,4 +1,5 @@
 export class PersonInfo {
+  id?: number;
   firstName?: string;
   lastName?: string;
   middleName?: string;

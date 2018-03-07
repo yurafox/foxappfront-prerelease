@@ -28,9 +28,11 @@ export class SelectPmtMethodPage extends ComponentBase {
 
 
   async getPmtMethods () {
+
     let pmt = await this.repo.getPmtMethods();
+
     pmt.forEach(i => {
-        this.pmtMethods.push({isChecked: ((this.cart.pmtMethod) && (this.cart.pmtMethod.id === i.id)), method: i});
+        this.pmtMethods.push({isChecked: ((this.cart.order.idPaymentMethod === i.id)), method: i});
       }
     );
 
@@ -53,10 +55,12 @@ export class SelectPmtMethodPage extends ComponentBase {
   }
 
   validatePage() : boolean {
+/*
     if (!this.cart.pmtMethod)
       return false;
+*/
 
-    switch (this.cart.pmtMethod.id) {
+    switch (this.cart.order.idPaymentMethod) {
       case 3: {
         return ((this.isAnyOptionSelected()) && (this.personInfoValid()) && !(this.cart.loan === null));
       }
@@ -67,7 +71,7 @@ export class SelectPmtMethodPage extends ComponentBase {
   }
 
   onSelectOptionClick(option) {
-    if (option.method === this.cart.pmtMethod)
+    if (option.method.id === this.cart.order.idPaymentMethod)
       return;
 
     for (let i of this.pmtMethods) {
@@ -75,8 +79,8 @@ export class SelectPmtMethodPage extends ComponentBase {
       i.isChecked = match;
 
       if (match) {
-        this.cart.pmtMethod = option.method;
-        if ((this.cart.pmtMethod.id === 1) || (this.cart.pmtMethod.id === 2))
+        this.cart.order.idPaymentMethod = option.method.id;
+        if ((this.cart.order.idPaymentMethod === 1) || (this.cart.order.idPaymentMethod === 2))
           this.cart.loan = null;
       }
     }
@@ -87,11 +91,30 @@ export class SelectPmtMethodPage extends ComponentBase {
     calcModal.present();
   }
 
-  onContinueClick() {
-    this.navCtrl.push('BalancePage', {checkoutMode: true});
+  async onContinueClick() {
+
+    if (this.cart.order.idPerson)
+      this.cart.person = await this.repo.updatePerson(this.cart.person)
+    else
+      this.cart.person = await this.repo.insertPerson(this.cart.person);
+
+
+    this.cart.order.idPerson = this.cart.person.id;
+    this.cart.order = await this.repo.saveClientDraftOrder(this.cart.order);
+    if ((this.cart.availBonus > 0) || (this.cart.availPromoBonus > 0)) {
+      this.navCtrl.push('BalancePage', {checkoutMode: true});
+    }
+    else {
+      this.navCtrl.push('CheckoutPage');
+    };
+  }
+
+  birthDateChanged(newDate: Date) // <-- angular date input handling workaround
+  {
+    this.cart.person.birthDate = new Date(newDate);
   }
 
   onApplyPromoCodeClick() {
-    console.log('ApplyPromoCode click.. ');
+    //console.log('ApplyPromoCode click.. ');
   }
 }

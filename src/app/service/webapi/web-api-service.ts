@@ -5561,7 +5561,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       id: 1,
       appKey: '',
       userSetting: {'currency': '0', 'lang': '1'},
-      favoriteStoresId: [101462, 1463452]
+      favoriteStoresId: [101462, 1463452],
+      phone: "380671153816"
     },
     {
       name: "vladimir",
@@ -5570,7 +5571,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       id: 2,
       appKey: '',
       userSetting: {'currency': '1', 'lang': '2'},
-      favoriteStoresId: [101462, 1463452]
+      favoriteStoresId: [101462, 1463452],
+      phone: "380637652849"
     },
     {
       name: "Yuri",
@@ -5579,7 +5581,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       id: 3,
       appKey: '',
       userSetting: {'currency': '0', 'lang': '3'},
-      favoriteStoresId: [101462, 1463452]
+      favoriteStoresId: [101462, 1463452],
+      phone: "380504410081"
     },
   ];
 
@@ -7657,7 +7660,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
         if (!loginData) return info.utils.createResponse$(() => resOpt);
 
         const loginModel: { token: string; user: {} } = this.getTokenBehavior(
-          loginData.email,
+          loginData.phone,
           loginData.password
         );
         resOpt.body = loginModel;
@@ -7877,7 +7880,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
 
   private getEditBehavior(user: User): User {
     for (let i = 0; i < this.users.length; i++) {
-      if (this.users[i].id === user.id) {
+      if (this.users[i].phone=== user.phone) {
         for (let item in this.users[i]) {
           if (item === "password" || item === "appKey") {
             continue;

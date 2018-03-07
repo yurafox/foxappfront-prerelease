@@ -31,9 +31,6 @@ export class BarcodePage extends ComponentBase {
 
   async ngOnInit() {
     super.ngOnInit();
-    if (!this.userService.isAuth && this.userService.isNotSignOutSelf()) {
-      await this.userService.shortLogin();
-    }
   }
 
   createCode() {

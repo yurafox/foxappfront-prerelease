@@ -1,6 +1,12 @@
-.alertDanger{
-  color: #a94442;
-}
-.top20{
-  margin-top: 20px;
+page-login {
+  .alertDanger{
+    color: #a94442;
+  }
+  .top20{
+    margin-top: 20px;
+  }
+  
+  input[type="text"] {
+    padding-left: 0px !important;
+  }
 }

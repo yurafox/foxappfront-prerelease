@@ -8,7 +8,9 @@
 -->
   <ion-row>
    <ion-col col-auto>
-     <img *ngIf="product.imageUrl" class="f-img-item" [src]="product.imageUrl">
+     <div *ngIf="product.imageUrl" lazy-load-images>
+       <img class="f-img-item" [attr.data-src]="product.imageUrl">
+     </div>
      <img *ngIf="!product.imageUrl" class="f-img-item" src="assets/imgs/nophoto.png">
    </ion-col>
    <ion-col>

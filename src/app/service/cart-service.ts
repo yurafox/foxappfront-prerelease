@@ -36,7 +36,7 @@ export class CartService {
   public orderProducts: Array<ClientOrderProducts> = [];
   public loDeliveryOptions: Array<LoDeliveryOption>=[];
   public loResultDeliveryOptions: Array<LoDeliveryOption>=[];
-  public pmtMethod: EnumPaymentMethod = null;
+  //public pmtMethod: EnumPaymentMethod = null;
 
   public loan: CreditCalc = null;
 
@@ -88,10 +88,12 @@ export class CartService {
       }
     );
 
+    repo.loadPmtMethodsCache();
     repo.loadStorePlaceCache();
     repo.loadSuppliersCache();
     repo.loadCityCache();
     repo.loadMeasureUnitCache();
+    repo.getCountries(); //<--- this loads countries cache
 
     this.initCart();
   }
@@ -141,7 +143,7 @@ export class CartService {
   }
 
   calLoan() {
-    if ((this.pmtMethod) && (this.pmtMethod.id === 3) && (this.loan)) {
+    if ((this.order.idPaymentMethod === 3) && (this.loan)) {
       let cObj = this.loan;
 
       cObj.clMonthAmt = this.calculateLoan(this.cartGrandTotal, cObj.clMonths,
@@ -180,7 +182,7 @@ export class CartService {
 
   public async initBonusData() {
     let cl = await (<any>this.userService).profile.client_p;
-    let bonusData = await this.repo.getBonusesInfo(11049778713/*cl.id*/); //TODO
+    let bonusData = await this.repo.getBonusesInfo( 11049778713/*cl.id*/); //TODO
 
     this.availBonus = (bonusData.bonusLimit) ? bonusData.bonusLimit : 0;
     this.availPromoBonus = (bonusData.actionBonusLimit) ? bonusData.actionBonusLimit : 0;
@@ -222,8 +224,10 @@ export class CartService {
     //console.log('CartInit call. Is auth: '+ this.userService.isAuth);
     if (this.userService.isAuth) {
       this.order = await this.repo.getClientDraftOrder();
+      if (this.order.idPerson)
+        this.person = await this.repo.getPersonById(this.order.idPerson);
 
-      let op = await this.repo.getCartProducts();
+      let op = await this.repo.getCartProducts();``
       for (let i of this.orderProducts) {
         await this.repo.saveCartProduct(i);
         op.push(i);
@@ -300,11 +304,11 @@ export class CartService {
         orderItem.qty = qty;
         orderItem.idStorePlace = (storePlace ? storePlace.id : null);
 
-        if (this.userService.isAuth) {
-          orderItem = await this.repo.insertCartProduct(orderItem);
-        }
-        this.orderProducts.push(orderItem);
+      if (this.userService.isAuth) {
+        orderItem = await this.repo.insertCartProduct(orderItem);
       }
+      this.orderProducts.push(orderItem);
+    }
 
       this.saveToLocalStorage();
       this.lastItemCreditCalc = null;
@@ -361,7 +365,7 @@ export class CartService {
 
   async removeItem(itemIndex: number) {
     if (this.userService.isAuth)
-      this.repo.deleteCartProduct(this.orderProducts[itemIndex]);
+      await this.repo.deleteCartProduct(this.orderProducts[itemIndex]);
     this.orderProducts.splice(itemIndex, 1);
     this.saveToLocalStorage();
     this.lastItemCreditCalc = null;

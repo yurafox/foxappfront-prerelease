@@ -48,83 +48,82 @@ import {ConnectivityService} from "../../connectivity-service";
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
-// const productDescriptionsUrl = "http://localhost:44374/api/product/getProductDescription";
-// const productsUrl = "http://localhost:44374/api/product";
-// const currenciesUrl = "http://localhost:44374/api/currency";
-// const manufacturersUrl = "http://localhost:44374/api/manufacturer";
-// const quotationProductsUrl = "http://localhost:44374/api/quotationproduct";
-// const suppliersUrl = "http://localhost:44374/api/supplier";
-// const measureUnitUrl = 'http://localhost:44374/api/measureUnit';
-// const LangUrl = "http://localhost:44374/api/localization/lang";
-// const countriesUrl = "http://localhost:44374/api/geo/country";
+const productDescriptionsUrl = "http://localhost:44374/api/product/getProductDescription";
+const productsUrl = "http://localhost:44374/api/product";
+const currenciesUrl = "http://localhost:44374/api/currency";
+const manufacturersUrl = "http://localhost:44374/api/manufacturer";
+const quotationProductsUrl = "http://localhost:44374/api/quotationproduct";
+const suppliersUrl = "http://localhost:44374/api/supplier";
+const measureUnitUrl = 'http://localhost:44374/api/measureUnit';
+const LangUrl = "http://localhost:44374/api/localization/lang";
+const countriesUrl = "http://localhost:44374/api/geo/country";
 const citiesUrl = "http://localhost:44374/api/geo/city";
-// const getPaymentMethodsUrl = "http://localhost:44374/api/fin/pmtmethod";
-// const loEntitiesUrl = "http://localhost:44374/api/lo/loentity";
-// const quotationsUrl = "http://localhost:44374/api/quotation";
-// const clientsUrl = "http://localhost:44374/api/client";
-// const cartProductsUrl = "http://localhost:44374/api/cart/CartProducts";
-// const productStorePlacesUrl = "http://localhost:44374/api/storeplace/productstoreplaces";
+const getPaymentMethodsUrl = "http://localhost:44374/api/fin/pmtmethod";
+const loEntitiesUrl = "http://localhost:44374/api/lo/loentity";
+const quotationsUrl = "http://localhost:44374/api/quotation";
+const clientsUrl = "http://localhost:44374/api/client";
+const cartProductsUrl = "http://localhost:44374/api/cart/CartProducts";
+const productStorePlacesUrl = "http://localhost:44374/api/storeplace/productstoreplaces";
 const storePlacesUrl = "http://localhost:44374/api/storeplace/storeplace";
+const loSupplEntitiesUrl = "http://localhost:44374/api/lo/losupplentity";
+const specLOTrackingLogUrl = "http://localhost:44374/api/lo/specLOTrackingLog";
+const clientDraftOrderUrl = "http://localhost:44374/api/Cart/ClientDraftOrder";
+const personsUrl = "http://localhost:44374/api/client/person";
+const productImagesUrl = "http://localhost:44374/api/product/getProductImages";
+const getBonusesInfoUrl = "http://localhost:44374/api/client/getBonusesInfo";
+const getClientBonusesExpireInfoUrl = "http://localhost:44374/api/client/GetBonusesExpireInfo";
+const creditProductsUrl = "http://localhost:44374/api/credit/creditproduct";
+const productSupplCreditGradesUrl = "http://localhost:44374/api/credit/GetProductCreditSize";
+const postProductViewUrl = "http://localhost:44374/api/client/LogProductView";
+const clientAddressesUrl = "http://localhost:44374/api/client/clientAddress";
+const clientOrderSpecProductsUrl = "http://localhost:44374/api/Cart/GetCartProductsByOrderId";
+const clientOrdersUrl = "http://localhost:44374/api/Cart/GetClientOrders";
+const citiesWithStoresUrl = "http://localhost:44374/api/geo/citiesWithStores";
 const storesUrl = "http://localhost:44374/api/storeplace/stores";
-// const loSupplEntitiesUrl = "http://localhost:44374/api/lo/losupplentity";
-// const specLOTrackingLogUrl = "http://localhost:44374/api/lo/specLOTrackingLog";
-// const clientDraftOrderUrl = "http://localhost:44374/api/Cart/getClientDraftOrder";
-// const personsUrl = "http://localhost:44374/api/client/person";
-// const productImagesUrl = "http://localhost:44374/api/product/getProductImages";
-// const getBonusesInfoUrl = "http://localhost:44374/api/client/getBonusesInfo";
-// const getClientBonusesExpireInfoUrl = "http://localhost:44374/api/client/GetBonusesExpireInfo";
-// const creditProductsUrl = "http://localhost:44374/api/credit/creditproduct";
-// const productSupplCreditGradesUrl = "http://localhost:44374/api/credit/GetProductCreditSize";
 
 //DEV URLS
-const productDescriptionsUrl = 'api/mproductDescriptions';
-const currenciesUrl = "/api/mcurrencies";
-const productsUrl = "/api/mproducts";
-const manufacturersUrl = "/api/manufacturers";
-const quotationProductsUrl = "/api/mquotationProducts";
-const suppliersUrl = "/api/msuppliers";
-const measureUnitUrl = '/api/mmeasureUnits';
-const LangUrl = "/api/mlocalization";
-const countriesUrl = "/api/mcountries";
+// const productDescriptionsUrl = 'api/mproductDescriptions';
+// const currenciesUrl = "/api/mcurrencies";
+// const productsUrl = "/api/mproducts";
+// const manufacturersUrl = "/api/manufacturers";
+// const quotationProductsUrl = "/api/mquotationProducts";
+// const suppliersUrl = "/api/msuppliers";
+// const measureUnitUrl = '/api/mmeasureUnits';
+// const LangUrl = "/api/mlocalization";
+// const countriesUrl = "/api/mcountries";
 // const citiesUrl = "/api/mcities";
-const getPaymentMethodsUrl = "/api/mpaymentMethods";
-const loEntitiesUrl = "/api/mloEntities";
-const quotationsUrl = "/api/mquotation";
-const clientsUrl = "/api/mclients";
-const cartProductsUrl = "/api/mcartProducts";
-const productStorePlacesUrl = "/api/mproductStorePlaces";
+// const getPaymentMethodsUrl = "/api/mpaymentMethods";
+// const loEntitiesUrl = "/api/mloEntities";
+// const quotationsUrl = "/api/mquotation";
+// const clientsUrl = "/api/mclients";
+// const cartProductsUrl = "/api/mcartProducts";
+// const productStorePlacesUrl = "/api/mproductStorePlaces";
 // const storePlacesUrl = "/api/mstorePlaces";
-const loSupplEntitiesUrl = "/api/mloSupplEntities";
-const specLOTrackingLogUrl = '/api/mspecLOTrackingLog';
-const clientDraftOrderUrl = "/api/mclientDraftOrder";
-const personsUrl = "/api/mpersons";
-const productImagesUrl = "/api/mProductImages";
-const getBonusesInfoUrl = "/api/mgetBonusesInfoForCheckout";
-const getClientBonusesExpireInfoUrl = "/api/mclientBonuses";
-const creditProductsUrl = "/api/mcreditProducts";
-const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
-
-
-
-
-const calculateCartUrl = "/api/mcalculateCart";
-const getDeliveryCostUrl = "/api/mgetDeliveryCost";
-const getDeliveryDateUrl = "/api/mgetDeliveryDate";
-const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
-//Данньіе нужно забирать из Т22
-const clientOrdersUrl = "/api/mclientOrders";
+// const loSupplEntitiesUrl = "/api/mloSupplEntities";
+// const specLOTrackingLogUrl = '/api/mspecLOTrackingLog';
+// const clientDraftOrderUrl = "/api/mclientDraftOrder";
+// const personsUrl = "/api/mpersons";
+// const productImagesUrl = "/api/mProductImages";
+// const getBonusesInfoUrl = "/api/mgetBonusesInfoForCheckout";
+// const getClientBonusesExpireInfoUrl = "/api/mclientBonuses";
+// const creditProductsUrl = "/api/mcreditProducts";
+// const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
+// const postProductViewUrl = "/api/mpostProductView";
+// const clientAddressesUrl = "/api/mclientAddresses";
+// const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
+// const clientOrdersUrl = "/api/mclientOrders";
+// const citiesWithStoresUrl = "/api/mcities";
 // const storesUrl = "/api/mstores";
 
-
+const getDeliveryCostUrl = "/api/mgetDeliveryCost";
+const getDeliveryDateUrl = "/api/mgetDeliveryDate";
+const calculateCartUrl = "/api/mcalculateCart";
 
 const productReviewsUrl = "/api/mproductReviews";
-const clientAddressesUrl = "/api/mclientAddresses";
-const clientOrderSpecProductsOfClientUrl = "/api/mclientOrderSpecProductsOfClient";
 const pagesDynamicUrl = "/api/mpages";
 const actionDynamicUrl = "/api/mactions";
 const actionOffersUrl = "/api/mactionOffers";
 const storeReviewsUrl = "/api/mstoreReviews";
-const postProductViewUrl = "/api/mpostProductView";
 const pollsUrl='/api/mpolls';
 const pollQuestionUrl='/api/mpollQuestion';
 const pollQuestionAnswerUrl = '/api/mpollQuestionAnswer';
@@ -132,11 +131,8 @@ const clientPollAnswersUrl = '/api/mclientPollAnswers';
 const noveltyDynamicUrl = "/api/mnovelties";
 const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
 const deviceDataUrl = "/api/mdeviceData";
-const redirectToPaymasterUrl = "/api/mredirectToPaymaster";
 
 const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/api/catalog`:"/api/mcategories";
-
-
 
 // </editor-fold
 
@@ -178,9 +174,7 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
       const response = await this.http
         .post(postProductViewUrl, {idProduct: idProduct.toString(), params: params}).toPromise();
-      const val = response.json();
-
-      if (response.status !== 201 && response.status !== 200) {
+      if (response.status !== 201) {
         throw new Error("server side status error");
       }
     } catch (err) {
@@ -229,7 +223,8 @@ export class AppDataRepository extends AbstractDataRepository {
       const response = await this.http
         .get(getBonusesInfoUrl + `/${_id}`).toPromise();
       const val = response.json();
-
+      if (response.status == 204)
+        return {bonusLimit: 0, actionBonusLimit: 0};
       if (response.status !== 201 && response.status !== 200) {
         throw new Error("server side status error");
       }
@@ -272,23 +267,54 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-
-  public async getPmtMethods(): Promise<EnumPaymentMethod[]> {
+  public async loadPmtMethodsCache() {
     try {
       const response = await this.http.get(getPaymentMethodsUrl).toPromise();
 
-      const data = response.json();
+      let data: any = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      const cItems = new Array<EnumPaymentMethod>();
+
       if (data != null) {
         data.forEach(val => {
-          cItems.push(new EnumPaymentMethod(val.id, val.name));
-        });
+            let pmtMethod = new EnumPaymentMethod();
+            pmtMethod.id = val.id;
+            pmtMethod.name = val.name;
+            if (this.isEmpty(this.cache.EnumPaymentMethod.Item(val.id.toString()))) {
+              this.cache.EnumPaymentMethod.Add(val.id.toString(), pmtMethod);
+            };
+          }
+        );
       }
-      return cItems;
-    } catch (err) {
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+
+  public async getPmtMethods(): Promise<EnumPaymentMethod[]> {
+    try {
+      if (this.cache.EnumPaymentMethod.Count() === 0) {
+
+        const response = await this.http.get(getPaymentMethodsUrl).toPromise();
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        const cItems = new Array<EnumPaymentMethod>();
+        if (data != null) {
+          data.forEach(val => {
+            cItems.push(new EnumPaymentMethod(val.id, val.name));
+          });
+        }
+        return cItems;
+      }
+      else
+        return this.cache.EnumPaymentMethod.Values();
+    }
+    catch (err) {
       return await this.handleError(err);
     }
 
@@ -296,23 +322,30 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getPmtMethodById(id: number): Promise<EnumPaymentMethod> {
     try {
-      let _id = id.toString();
-      const response = await this.http
-        .get(getPaymentMethodsUrl + `/${_id}`)
-        .toPromise();
+      const _id = id.toString();
+      const pmtMethod = new EnumPaymentMethod();
+      if (this.isEmpty(this.cache.EnumPaymentMethod.Item(_id))) {
+        const response = await this.http
+          .get(getPaymentMethodsUrl + `/${_id}`).toPromise();
 
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        if (data)
+        {
+          pmtMethod.id = data.id;
+          pmtMethod.name = data.name;
+          this.cache.EnumPaymentMethod.Add(_id, pmtMethod);
+        }
+        return pmtMethod;
       }
-      if (data)
-        return new EnumPaymentMethod(
-          data.id,
-          data.name
-        )
       else
-        return null;
-    } catch (err) {
+      {
+        return this.cache.EnumPaymentMethod.Item(_id);
+      };
+    }
+    catch (err) {
       return await this.handleError(err);
     }
   }
@@ -476,6 +509,46 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       return cloSupplEntArr;
     } catch (err) {
+      return await this.handleError(err);
+    }
+
+  }
+
+  public async saveClientDraftOrder(order: ClientOrder): Promise<ClientOrder> {
+    try {
+      const response = await this.http
+        .put(clientDraftOrderUrl, order.dto)
+        .toPromise();
+      const data = response.json();
+
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        let cClientOrder = new ClientOrder(
+          data.id,
+          data.orderDate,
+          data.idCur,
+          data.idClient,
+          data.total,
+          data.idPaymentMethod,
+          data.idPaymentStatus,
+          data.idStatus,
+          null,
+          data.loIdEntity,
+          data.loIdClientAddress,
+          data.itemsTotal,
+          data.shippingTotal,
+          data.bonusTotal,
+          data.promoBonusTotal,
+          data.bonusEarned,
+          data.promoCodeDiscTotal,
+          data.idPerson
+        );
+        return cClientOrder;
+      }
+    }
+    catch (err) {
       return await this.handleError(err);
     }
 
@@ -854,50 +927,6 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getClientOrderSpecProductsByClientId(clientId: number): Promise<Array<ClientOrderProducts>> {
-    try {
-      let orderProducts = [];
-      const response = await this.http
-        .get(clientOrderSpecProductsOfClientUrl, {
-          search: this.createSearchParams([
-            {key: "idClient", value: clientId.toString()}
-          ])
-        })
-        .toPromise();
-
-      const val = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      val.forEach(product => {
-        let p = new ClientOrderProducts();
-        p.id = product.id;
-        p.idOrder = product.idOrder;
-        p.idQuotationProduct = product.idQuotationProduct;
-        p.price = product.price;
-        p.qty = product.qty;
-        p.idStorePlace = product.idStorePlace;
-        p.idLoEntity = product.idLoEntity;
-        p.loTrackTicket = product.loTrackTicket;
-        p.loDeliveryCost = product.loDeliveryCost;
-        p.loDeliveryCompleted = product.loDeliveryCompleted;
-        p.loEstimatedDeliveryDate = product.loEstimatedDeliveryDate;
-        p.loDeliveryCompletedDate = product.loDeliveryCompletedDate;
-        p.errorMessage = product.errorMessage;
-        p.payPromoCode = product.payPromoCode;
-        p.payPromoCodeDiscount = product.payPromoCodeDiscount;
-        p.payBonusCnt = product.payBonusCnt;
-        p.payPromoBonusCnt = product.payPromoBonusCnt;
-        p.earnedBonusCnt = product.earnedBonusCnt;
-        p.warningRead = product.warningRead;
-        orderProducts.push(p);
-      });
-      return orderProducts;
-    } catch (err) {
-      return await this.handleError(err);
-    }
-  }
-
   public async getProductReviewsByProductId(productId: number): Promise<ProductReview[]> {
     try {
       const response = await this.http
@@ -993,6 +1022,8 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async getCountries(): Promise<Country[]> {
+    if (this.cache.Country.Count() > 0)
+      return this.cache.Country.Values();
     try {
       const response = await this.http.get(countriesUrl).toPromise();
 
@@ -1006,8 +1037,8 @@ export class AppDataRepository extends AbstractDataRepository {
           let p = new Country();
           p.id = val.id;
           p.name = val.name;
-
           cCountries.push(p);
+          this.cache.Country.Add(p.id.toString(), p);
         });
       }
       return cCountries;
@@ -1021,18 +1052,24 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
       const _id = id.toString();
       let country = new Country();
-      const response = await this.http
-        .get(countriesUrl + `/${_id}`)
-        .toPromise();
-      let data: any = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
+      if (this.isEmpty(this.cache.Country.Item(_id))) {
+        const response = await this.http
+          .get(countriesUrl + `/${_id}`).toPromise();
+        let data: any = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
 
-      if (data != null) {
-        country.id = data.id;
-        country.name = data.name;
-        return country;
+        if (data != null) {
+          country.id = data.id;
+          country.name = data.name;
+          this.cache.Country.Add(_id, country);
+          return country;
+        }
+      }
+      else
+      {
+        return this.cache.Country.Item(_id);
       }
     } catch (err) {
       return await this.handleError(err);
@@ -1126,6 +1163,86 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+
+  public async createClientAddress(address: ClientAddress): Promise<ClientAddress> {
+    try {
+      const response = await this.http
+        .post(clientAddressesUrl, address.dto)
+        .toPromise();
+      const data = response.json();
+
+      if (response.status !== 201) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        let clientAddress = new ClientAddress();
+        clientAddress.id = data.id;
+        clientAddress.idClient = data.idClient;
+        clientAddress.idCity = data.idCity;
+        clientAddress.zip = data.zip;
+        clientAddress.street = data.street;
+        clientAddress.lat = data.lat;
+        clientAddress.lng = data.lng;
+        clientAddress.isPrimary = data.isPrimary;
+        clientAddress.idCountry = data.idCountry;
+        clientAddress.city = data.city;
+        clientAddress.bldApp = data.bldApp;
+        clientAddress.recName = data.recName;
+        clientAddress.phone = data.phone;
+        return clientAddress;
+      }
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async deleteClientAddress(address: ClientAddress) {
+    try {
+      const response = await this.http
+        .delete(clientAddressesUrl + `/${address.id}`)
+        .toPromise();
+      if (response.status !== 204) {
+        throw new Error("server side status error");
+      }
+    } catch (err) {
+      await this.handleError(err);
+    }
+  }
+
+  public async saveClientAddress(address: ClientAddress): Promise<ClientAddress> {
+    try {
+      const response = await this.http
+        .put(clientAddressesUrl, address.dto)
+        .toPromise();
+      const data = response.json();
+
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        let clientAddress = new ClientAddress();
+        clientAddress.id = data.id;
+        clientAddress.idClient = data.idClient;
+        clientAddress.idCity = data.idCity;
+        clientAddress.zip = data.zip;
+        clientAddress.street = data.street;
+        clientAddress.lat = data.lat;
+        clientAddress.lng = data.lng;
+        clientAddress.isPrimary = data.isPrimary;
+        clientAddress.idCountry = data.idCountry;
+        clientAddress.city = data.city;
+        clientAddress.bldApp = data.bldApp;
+        clientAddress.recName = data.recName;
+        clientAddress.phone = data.phone;
+        return clientAddress;
+      }
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 
   public async getClientAddressById(id: number): Promise<ClientAddress> {
     if (!id)
@@ -1650,6 +1767,63 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async insertPerson(person: PersonInfo): Promise<PersonInfo> {
+    try {
+      let p = new PersonInfo();
+
+      const response = await this.http
+        .post(personsUrl, person).toPromise();
+      const data = response.json();
+
+      if (response.status !== 201) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        p.id = data.id;
+        p.firstName = data.firstName;
+        p.lastName= data.lastName;
+        p.middleName= data.middleName;
+        p.passportSeries= data.passportSeries;
+        p.passportNum= data.passportNum;
+        p.issuedAuthority= data.issuedAuthority;
+        p.taxNumber= data.taxNumber;
+        p.birthDate= data.birthDate;
+        return p;
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+
+  public async updatePerson(person: PersonInfo): Promise<PersonInfo> {
+    try {
+      let p = new PersonInfo();
+
+      const response = await this.http
+        .put(personsUrl, person).toPromise();
+      const data = response.json();
+
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        p.id = data.id;
+        p.firstName = data.firstName;
+        p.lastName= data.lastName;
+        p.middleName= data.middleName;
+        p.passportSeries= data.passportSeries;
+        p.passportNum= data.passportNum;
+        p.issuedAuthority= data.issuedAuthority;
+        p.taxNumber= data.taxNumber;
+        p.birthDate= data.birthDate;
+        return p;
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
   public async getPersonById(personId: number): Promise<PersonInfo> {
     try {
       const _id = personId.toString();
@@ -1660,6 +1834,7 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
       if (data != null) {
+        p.id = data.id;
         p.firstName = data.firstName;
         p.lastName= data.lastName;
         p.middleName= data.middleName;
@@ -1948,11 +2123,10 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   // <editor-fold desc="error handler"
-  private handleError(error?: Error): any /*Promise<any>*/ {
+  private handleError(error?: Error): any {
     if (this.connServ.counter < 1) {
       this.connServ.checkConnection(error);
     }
-    //return Promise.reject(error.message || error);
   }
 
   // </editor-fold>
@@ -2022,6 +2196,28 @@ export class AppDataRepository extends AbstractDataRepository {
 
   // </editor-fold>
 
+  public async getCitiesWithStores(): Promise<City[]> {
+    try {
+      const response = await this.http.get(citiesWithStoresUrl).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const cities = new Array<City>();
+      if (data != null) {
+        data.forEach(val => {
+          // create current city
+          const cityItem: City = new City(val.id, val.name);
+          cities.push(cityItem);
+        });
+      }
+      return cities;
+    } catch (err) {
+      await this.handleError(err);
+    }
+  }
+
   public async getCities(): Promise<City[]> {
     try {
       const response = await this.http.get(citiesUrl).toPromise();
@@ -2088,39 +2284,6 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getStoreById(id: number): Promise<Store> {
     try {
-      /*const response = await this.http.get(storesUrl).toPromise();
-
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      const stores = new Array<{ id: number; stores: Store[] }>();
-      if (data != null) {
-        data.forEach(val => {
-          const storeArr = new Array<Store>();
-          const arr: Store[] = val.stores;
-          arr.forEach((store) => {
-            if (store.openTime !== null && store.closeTime !== null && store.rating === null) {
-              storeArr.push(new Store(store.id, store.position, store.address, store.openTime, store.closeTime));
-            }
-            else if (store.openTime !== null && store.closeTime !== null && store.rating !== null) {
-              storeArr.push(new Store(store.id, store.position, store.address, store.openTime, store.closeTime,
-                store.rating));
-            }
-            else {
-              storeArr.push(new Store(store.id, store.position, store.address));
-            }
-          });
-          stores.push({id: val.id, stores: storeArr});
-        });
-      }
-      for (let i = 0; i < stores.length; i++) {
-        for (let j = 0; j < stores[i].stores.length; j++) {
-          if (stores[i].stores[j].id === id) {
-            return {idCity: stores[i].id, store: stores[i].stores[j]};
-          }
-        }
-      }*/
       const response = await this.http.get(storePlacesUrl + `/${id}`).toPromise();
 
       const data = response.json();
@@ -2557,26 +2720,6 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
       return val;
-    } catch (err) {
-      return await this.handleError(err);
-    }
-  }
-
-  public async getDataForRedirectToPaymaster(orderID: number, cartTotal: number): Promise<any> {
-    try {
-      const response = await this.http
-        .post(
-          redirectToPaymasterUrl,
-          {id: orderID, total: cartTotal},
-          RequestFactory.makeAuthHeader()
-        ).toPromise();
-      const resp = response.json();
-
-      if (response.status !== 201 && response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      console.log(response);
-      return resp;
     } catch (err) {
       return await this.handleError(err);
     }

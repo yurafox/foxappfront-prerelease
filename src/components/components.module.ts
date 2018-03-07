@@ -1,4 +1,5 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import { LazyLoadImagesModule } from 'ngx-lazy-load-images';
 import {SearchBtnComponent} from './search-btn/search-btn';
 import {IonicModule} from 'ionic-angular';
 import {MainToolbarComponent} from './main-toolbar/main-toolbar';
@@ -69,7 +70,8 @@ import { ItemSimpleComponent } from './item-simple/item-simple';
   imports: [
     IonicModule,
     PipesModule,
-    Ionic2RatingModule
+    Ionic2RatingModule,
+    LazyLoadImagesModule
   ],
   exports: [
     SearchBtnComponent,
