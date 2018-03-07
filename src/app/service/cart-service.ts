@@ -120,7 +120,7 @@ export class CartService {
       }
     );
 
-    this.calLoan();
+    this.calcLoan();
   }
 
   public get promoCode(): string {
@@ -142,7 +142,7 @@ export class CartService {
     this.evServ.events['cartUpdateEvent'].emit();
   }
 
-  calLoan() {
+  calcLoan() {
     if ((this.order.idPaymentMethod === 3) && (this.loan)) {
       let cObj = this.loan;
 

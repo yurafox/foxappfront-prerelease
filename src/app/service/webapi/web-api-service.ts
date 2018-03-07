@@ -5570,7 +5570,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
         let reqData = (<any>info.req)._body;
         let mockDate = new Date();
         mockDate.setDate(mockDate.getDate() + reqData.loEntity);
-        resOpt.body = {DeliveryDate: mockDate};
+        resOpt.body = {deliveryDate: mockDate};
         return info.utils.createResponse$(() => resOpt);
       }
 
@@ -5583,13 +5583,13 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
         let reqData = (<any>info.req)._body;
         if (reqData.order.idStorePlace)
           // Если пикап с магазина - доставка 0
-          resOpt.body = {AssessedCost: 0}
+          resOpt.body = {assessedCost: 0}
         else
           {
             if (reqData.order.idQuotationProduct === 7) //Для телевизора цену доставки умножаем на кол-во товара
-              resOpt.body = {AssessedCost: reqData.loEntity/10 * reqData.order.qty}
+              resOpt.body = {assessedCost: reqData.loEntity/10 * reqData.order.qty}
             else
-              resOpt.body = {AssessedCost: reqData.loEntity/10};
+              resOpt.body = {assessedCost: reqData.loEntity/10};
           }
         return info.utils.createResponse$(() => resOpt);
       }

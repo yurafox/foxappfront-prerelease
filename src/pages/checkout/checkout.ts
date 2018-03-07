@@ -48,7 +48,7 @@ export class CheckoutPage extends ComponentBase {
       j++;
     }
 
-    this.repo.getDeliveryCost(objRef, this.cart.loResultDeliveryOptions[j].loEntityId).then(r => {
+    this.repo.getDeliveryCost(objRef, this.cart.loResultDeliveryOptions[j].loEntityId, this.cart.order.loIdClientAddress).then(r => {
         this.cart.loResultDeliveryOptions[j].deliveryCost = r;
       }
     );

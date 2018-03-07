@@ -79,6 +79,8 @@ const clientAddressesUrl = `${AppConstants.BASE_URL}/api/client/clientAddress`;
 const clientOrderSpecProductsUrl = `${AppConstants.BASE_URL}/api/Cart/GetCartProductsByOrderId`;
 const clientOrdersUrl = `${AppConstants.BASE_URL}/api/Cart/GetClientOrders`;
 const citiesWithStoresUrl = `${AppConstants.BASE_URL}/api/geo/citiesWithStores`;
+const getDeliveryCostUrl = `${AppConstants.BASE_URL}/api/lo/GetDeliveryCost`;
+const getDeliveryDateUrl = `${AppConstants.BASE_URL}/api/lo/GetDeliveryDate`;
 
 
 //DEV URLS
@@ -113,9 +115,9 @@ const citiesWithStoresUrl = `${AppConstants.BASE_URL}/api/geo/citiesWithStores`;
 // const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
 // const clientOrdersUrl = "/api/mclientOrders";
 // const citiesWithStoresUrl = "/api/mcities";
+// const getDeliveryCostUrl = "/api/mgetDeliveryCost";
+// const getDeliveryDateUrl = "/api/mgetDeliveryDate";
 
-const getDeliveryCostUrl = "/api/mgetDeliveryCost";
-const getDeliveryDateUrl = "/api/mgetDeliveryDate";
 const calculateCartUrl = "/api/mcalculateCart";
 
 
@@ -353,34 +355,33 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
 
-  public async getDeliveryDate(order: ClientOrderProducts, loEntityId: number): Promise<Date> {
+  public async getDeliveryDate(order: ClientOrderProducts, loEntityId: number, loIdClientAddress: number): Promise<Date> {
     try {
       const response = await this.http
-        .post(getDeliveryDateUrl, {order: order, loEntity: loEntityId})
+        .post(getDeliveryDateUrl, {order: order.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress})
         .toPromise();
       const val = response.json();
 
-      if (response.status !== 201 && response.status !== 200) {
+      if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      return val.DeliveryDate;
+      return val.deliveryDate;
     } catch (err) {
       return await this.handleError(err);
     }
   }
 
-  public async getDeliveryCost(order: ClientOrderProducts, loEntityId: number): Promise<number> {
+  public async getDeliveryCost(order: ClientOrderProducts, loEntityId: number, loIdClientAddress: number): Promise<number> {
     try {
-      //console.log('orderSpecId: '+ orderSpecId + ', loEntityId: ' + loEntityId);
       const response = await this.http
-        .post(getDeliveryCostUrl, {order: order, loEntity: loEntityId})
+        .post(getDeliveryCostUrl, {order: order.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress})
         .toPromise();
       const val = response.json();
 
-      if (response.status !== 201 && response.status !== 200) {
+      if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      return val.AssessedCost;
+      return val.assessedCost;
     } catch (err) {
       return await this.handleError(err);
     }
@@ -1332,51 +1333,98 @@ export class AppDataRepository extends AbstractDataRepository {
   public async searchProducts(srchString: string): Promise<Product[]> {
     //TODO This method should be implemented in back end in production mode!
     try {
-      const response = await this.http.get(productsUrl).toPromise();
-
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      const products = new Array<Product>();
-
-      if (data != null) {
-        for (let val of data) {
-          let props = new Array<ProductPropValue>();
-          if (val.props && val.props.length !== 0) {
-            props = this.getPropValuefromProduct(val);
+      if (!AppConstants.USE_PRODUCTION) {
+          const response = await this.http.get(productsUrl).toPromise();
+          const data = response.json();
+          if (response.status !== 200) {
+            throw new Error("server side status error");
           }
+          const products = new Array<Product>();
 
-          // create current product
-          const productItem: Product = new Product(
-            val.id,
-            val.name,
-            val.price,
-            val.oldPrice,
-            val.bonuses,
-            val.manufacturerId,
-            props,
-            val.imageUrl,
-            val.rating,
-            val.recall,
-            val.supplOffers,
-            val.slideImageUrls,
-            val.barcode
-          );
+          if (data != null) {
+            for (let val of data) {
+              let props = new Array<ProductPropValue>();
+              if (val.props && val.props.length !== 0) {
+                props = this.getPropValuefromProduct(val);
+              }
 
-          let mnf = await (<any>productItem).manufacturer_p;
-          if (
-            this.search(mnf.name, srchString) ||
-            this.search(productItem.id.toString(), srchString) ||
-            this.search(productItem.name, srchString) ||
-            this.search(productItem.barcode, srchString)
-          ) {
+              // create current product
+              const productItem: Product = new Product(
+                val.id,
+                val.name,
+                val.price,
+                val.oldPrice,
+                val.bonuses,
+                val.manufacturerId,
+                props,
+                val.imageUrl,
+                val.rating,
+                val.recall,
+                val.supplOffers,
+                val.slideImageUrls,
+                val.barcode
+              );
+
+              let mnf = await (<any>productItem).manufacturer_p;
+              if (
+                this.search(mnf.name, srchString) ||
+                this.search(productItem.id.toString(), srchString) ||
+                this.search(productItem.name, srchString) ||
+                this.search(productItem.barcode, srchString)
+              ) {
+                products.push(productItem);
+              }
+            }
+          }
+          return products;
+      }
+      else
+      {
+        const response = await this.http
+          .get(productsUrl, {
+            search: this.createSearchParams([
+              {key: "srch", value: srchString}
+            ])
+          })
+          .toPromise();
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+
+        const products = new Array<Product>();
+
+        if (data != null) {
+          for (let val of data) {
+            let props = new Array<ProductPropValue>();
+            if (val.props && val.props.length !== 0) {
+              props = this.getPropValuefromProduct(val);
+            }
+
+            // create current product
+            const productItem: Product = new Product(
+              val.id,
+              val.name,
+              val.price,
+              val.oldPrice,
+              val.bonuses,
+              val.manufacturerId,
+              props,
+              val.imageUrl,
+              val.rating,
+              val.recall,
+              val.supplOffers,
+              val.slideImageUrls,
+              val.barcode
+            );
             products.push(productItem);
           }
+         return products;
         }
       }
-      return products;
-    } catch (err) {
+    }
+    catch (err)
+    {
       await this.handleError(err);
     }
   }

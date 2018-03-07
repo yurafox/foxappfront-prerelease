@@ -47,8 +47,8 @@ export class ShippingOptionsPage extends ComponentBase {
         item.idClientOrderProduct = ci.id;
         item.loEntityId = loEnt.idLoEntity;
         item.itemIdx = i;
-        item.deliveryCost = await this.repo.getDeliveryCost(ci, loEnt.idLoEntity);
-        item.deliveryDate = await this.repo.getDeliveryDate(ci, loEnt.idLoEntity);
+        item.deliveryCost = await this.repo.getDeliveryCost(ci, loEnt.idLoEntity, this.cart.order.loIdClientAddress);
+        item.deliveryDate = await this.repo.getDeliveryDate(ci, loEnt.idLoEntity, this.cart.order.loIdClientAddress);
         item.loName = ent.name;
         item.isChecked = false;
         this.cart.loDeliveryOptions.push(item);
