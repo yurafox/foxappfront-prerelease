@@ -79,10 +79,15 @@ export class AccountRepository extends AbstractAccountRepository {
 
   }
 
-  public async edit(user: User, token: string): Promise<User> {
+  public async edit(user: User): Promise<IUserInfo> {
      try {
-      const response = await this.http.put(accountUrl, user, RequestFactory.makeAuthHeader())
-                                                          .toPromise();
+      const response = await this.http.put(accountUrl,{
+        phone:user.phone,
+        email:user.email,
+        fname:user.fname,
+        lname:user.lname,
+        userSetting:user.userSetting
+      }, RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status === 401) {
@@ -92,10 +97,9 @@ export class AccountRepository extends AbstractAccountRepository {
       if(!data && response.status !== 200) {
         throw new Error(`ошибка правки данных`);
       }
-      const currentUser: User = new User(data.name, data.email,null,
-        data.appKey,data.userSetting,data.idClient,data.favoriteStoresId);
-
-      return currentUser;
+      
+      return {message:data.message,status:data.status,user:(data.status === 2)
+        ? data.content : null}
     }
 
     catch (err) {

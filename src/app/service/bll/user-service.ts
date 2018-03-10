@@ -190,20 +190,27 @@ export class UserService {
     }
   }
 
-  public async edit(user: User):Promise<boolean> {
+  public async edit(user: User):Promise<IUserInfo> {
     try {
       if (this._auth) {
-        const resUser: User = await this._account.edit(user, this.token);
-        if (!resUser) return false;
-        this.user = resUser;
-        this.changeAuthStatus(['appKey']);
-        this.errorClear('edit');
-        this.localeUserService();
-        return true;
+        const res: IUserInfo = await this._account.edit(user);
+        if (res.status === 2 && res.user) {
+          this.user.name = res.user.name;
+          this.user.email = res.user.email;
+          this.user.userSetting = res.user.userSetting;
+          this.user.phone = res.user.phone;
+          this.user.fname = res.user.fname;
+          this.user.lname = res.user.lname;
+
+          this.changeAuthStatus(['appKey']);
+          this.errorClear('edit');
+          this.localeUserService();
+        }
+        
+        return res;
      }
     } catch (err) {
       this.errorMessages['edit'] = err.message;
-      return false;
     }
 
   }
