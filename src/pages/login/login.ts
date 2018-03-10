@@ -12,8 +12,9 @@ import {CartService} from '../../app/service/cart-service';
 export class LoginPage extends ComponentBase implements OnInit {
 
   private _authError = false;
+  private _phone = '';
   public loginForm: FormGroup;
-
+ 
   public get authError() {
     return this._authError;
   }
@@ -40,22 +41,13 @@ export class LoginPage extends ComponentBase implements OnInit {
               private formBuilder: FormBuilder, public cart: CartService) {
     super();
     this.initLocalization();
+    const navData = this.navParams.data; 
+    this._phone = (navData && navData.phone) ? navData.phone : '';
   }
 
   // application hook /
   async ngOnInit(){
     this.buildForm();
-    // this.errorMessages = {
-    //   'email': {
-    //     'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
-    //     'pattern': this.locale['WrongEMailFormat'] ? this.locale['WrongEMailFormat'] : 'Не правильный формат email адреса'
-    //   },
-    //   'password': {
-    //     'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
-    //     'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
-    //     'maxlength': this.locale['LengthNGT128'] ? this.locale['LengthNGT128'] : 'Значение должно быть не более 128-и символов'
-    //   }
-    // };
   }
 
   // go to register page
@@ -92,7 +84,7 @@ export class LoginPage extends ComponentBase implements OnInit {
   // <editor-fold desc="form builder">
   private buildForm(): void {
     this.loginForm = this.formBuilder.group({
-      'phone': ['', [Validators.required,
+      'phone': [this._phone, [Validators.required,
         // obsolete email regex^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$
         Validators.pattern('^380\\d{2}\\d{7}$')]],
 

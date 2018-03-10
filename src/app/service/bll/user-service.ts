@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {User,IUserVerifyAccountData} from '../../model/index';
+import {User,IUserVerifyAccountData, IUserInfo} from '../../model/index';
 import {AbstractAccountRepository} from "../index";
 import {AppConstants} from "../../app-constants";
 import {LoginTemplate} from "../../model/index";
@@ -44,7 +44,7 @@ export class UserService {
   }
 
   public get name(): string {
-    return this.user.name;
+    return this.user.fname;
   }
 
   // public get uid(): number {
@@ -88,13 +88,13 @@ export class UserService {
   public set lang(lang: number) {
     this.user.userSetting['lang'] = lang.toString();
     localStorage.setItem('lang', lang.toString());
-    this.trySendSettings();
+    //this.trySendSettings();
   }
 
   public set currency(currency: number) {
     this.user.userSetting['currency'] = currency.toString();
     localStorage.setItem('currency', currency.toString());
-    this.trySendSettings();
+    //this.trySendSettings();
   }
 
   // <editor-fold desc='favorite stores'>
@@ -130,13 +130,13 @@ export class UserService {
       });
       toast.present().catch((err) => console.log(`Toast error: ${err}`));
     }
-    this.trySendSettings();
+    //this.trySendSettings();
   }
 
   public removeFavoriteStoresId(id:number) {
     let indx: number = this.user.favoriteStoresId.indexOf(id);
     this.user.favoriteStoresId.splice(indx,1);
-    this.trySendSettings();
+    //this.trySendSettings();
   }
   // </editor-fold>
 
@@ -178,16 +178,15 @@ export class UserService {
     }
   }
 
-  public async register(user: User):Promise<boolean> {
+  public async register(user: User):Promise<IUserInfo> {
     try {
-      let returnUser: User = await this._account.register(user);
+      let returnUser: IUserInfo = await this._account.register(user);
       this.errorClear('register');
       this.localeUserService();
-      return (returnUser) ? true: false;
+      return returnUser;
 
     } catch (err) {
       this.errorMessages['register'] = err.message;
-      return false;
     }
   }
 
@@ -228,12 +227,12 @@ export class UserService {
   }
 
   // send fastswiching data
-  private trySendSettings(): void {
-    if (this._auth) {
-      this._account.edit(this.user, this.token)
-        .then(user => {},error => this.errorMessages['edit'] = error.message);
-    }
-  }
+  // private trySendSettings(): void {
+  //   if (this._auth) {
+  //     this._account.edit(this.user, this.token)
+  //       .then(user => {},error => this.errorMessages['edit'] = error.message);
+  //   }
+  // }
 
   private firstOrDefaults(props: Array<string>, defVals: Array<string>): void {
     if (props.length === 0) {

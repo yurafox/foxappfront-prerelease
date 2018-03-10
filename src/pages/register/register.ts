@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController, IonicPage, AlertController} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Currency} from "../../app/model/index";
+import {Currency, Lang, IUserInfo} from "../../app/model/index";
 import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
 import {UserService} from "../../app/service/bll/user-service";
 import {User,IUserVerifyAccountData} from "../../app/model/index";
@@ -14,16 +14,18 @@ import {ComponentBase} from "../../components/component-extension/component-base
 })
 export class RegisterPage extends ComponentBase{
   public currencies:Array<Currency>;
+  public langs:Array<Lang>;
   public registerForm: FormGroup;
   public verifyForm: FormGroup;
   public verifyErrorData:{errorShow:boolean,errorMessage:string}
-  public onLoad = false;
-  public preRegister = true;
+  private onLoad = false;
+  private preRegister = true;
+  private isSendAsync = false;
   public formErrors = {
     'phone': '',
     'email': '',
     'password': '',
-    'name':'',
+    //'name':'',
     'fname':'',
     'lname':''
   };
@@ -37,15 +39,15 @@ export class RegisterPage extends ComponentBase{
       'required': 'Обязательное поле',
       'pattern': 'Не правильный формат email адреса'
     },
-    'password': {
-      'required': 'Обязательное поле',
-      'minlength': 'Значение должно быть не менее 6ти символов',
-      'maxlength': 'Значение должно быть не более 25ти символов'
-    },
-    'name':{
-      'required': 'Обязательное поле',
-      'maxlength': 'Значение должно быть не более 20ти символов'
-    },
+    // 'password': {
+    //   'required': 'Обязательное поле',
+    //   'minlength': 'Значение должно быть не менее 6ти символов',
+    //   'maxlength': 'Значение должно быть не более 20ти символов'
+    // },
+    // 'name':{
+    //   'required': 'Обязательное поле',
+    //   'maxlength': 'Значение должно быть не более 20ти символов'
+    // },
     'fname':{
       'required': 'Обязательное поле',
       'maxlength': 'Значение должно быть не более 20ти символов'
@@ -70,43 +72,28 @@ export class RegisterPage extends ComponentBase{
   async ngOnInit(){
     super.ngOnInit();
     this.buildForm();
-    this.currencies = await this.repo.getCurrencies(true);
+    [this.currencies,this.langs] = await Promise.all([this.repo.getCurrencies(true),this.repo.getLocale(true)]);
     this.onLoad=true;
-    // this.errorMessages = {
-    //   'email': {
-    //     'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
-    //     'pattern': this.locale['WrongEMailFormat'] ? this.locale['WrongEMailFormat'] : 'Не правильный формат email адреса'
-    //   },
-    //   'password': {
-    //     'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
-    //     'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
-    //     'maxlength': this.locale['LengthNGT128'] ? this.locale['LengthNGT128'] : 'Значение должно быть не более 128-и символов'
-    //   },
-    //   'name':{
-    //     'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
-    //     'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
-    //   },
-    //   'fname':{
-    //     'required': 'Обязательное поле',
-    //     'maxlength': 'Значение должно быть не более 20ти символов'
-    //   },
-    //   'lname':{
-    //     'required': 'Обязательное поле',
-    //     'maxlength': 'Значение должно быть не более 20ти символов'
-    //   }
-    // };
   }
 
   // go to login page
-  login() {
-    this.nav.push('LoginPage');
+  login(phone:string) {
+    this.nav.push('LoginPage',{phone: phone}).catch(
+      err => {
+        console.log(`Error navigating to LoginPage: ${err}`);
+      }
+    );
   }
 
   verifyUser() {
+    // clear error message
     this.clearVerifyError();
     if (!this.verifyForm.valid) {
       return;
     }
+    
+     // start block logic for multiple sending
+     this.isSendAsync = true;
 
     const phone = this.verifyForm.value.phone;
     (async ()=>{
@@ -117,23 +104,37 @@ export class RegisterPage extends ComponentBase{
       }
 
       else {
-        this.findBehaviorByStatus(result);
+        this.findBehaviorByStatus(result, phone);
       }
+
+      // end block logic for multiple sending
+      this.isSendAsync = false;
     })();
   }
 
   register() {
-
+    this.clearVerifyError();
     if (!this.registerForm.valid) {
       return;
     }
+
+     // start block logic for multiple sending
+    this.isSendAsync = true;
     const data = this.registerForm.value;
-    const user: User= new User(data.name,data.email, null,
+    const user: User= new User(null,data.email, null,
                               null,{'currency':data.currency,'lang':data.lang},
                               null,data.phone,data.fname,data.lname);
+
     (async ()=>{
-      const result = await this.account.register(user);
-      if(result) this.login();
+      const result:IUserInfo = await this.userService.register(user);
+      if(result.status === 2 && result.user)
+         this.showSmsPopUp(result.message,result.user.phone);
+      else {
+          this.verifyErrorData.errorShow = true;
+          this.verifyErrorData.errorMessage = (result) ? result.message : 'Ошибка удаленного источника';
+      }
+
+      this.isSendAsync = false;
     })();
   }
 
@@ -145,10 +146,10 @@ export class RegisterPage extends ComponentBase{
 
       'email': ['', [Validators.required,
         Validators.pattern('^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]],
-      'name':['',[Validators.required, Validators.maxLength(20)]],
-      'fname':['',[Validators.required, Validators.maxLength(20)]],
-      'lname':['',[Validators.required, Validators.maxLength(20)]],
-      'currency':['0', [Validators.required]],
+      //'name':['',[Validators.required, Validators.maxLength(20)]],
+      'fname':['',[Validators.required,Validators.maxLength(20)]],
+      'lname':['',[Validators.maxLength(20)]],
+      'currency':['4', [Validators.required]],
       'lang':['1', [Validators.required]]
     });
 
@@ -169,6 +170,9 @@ export class RegisterPage extends ComponentBase{
 
   // <editor-fold desc="form value changing hook">
   private onValueChanged(data?: any) {
+    if(this.verifyErrorData.errorShow)
+      this.clearVerifyError();
+
     if (!this.registerForm) {
       return;
     }
@@ -205,26 +209,14 @@ export class RegisterPage extends ComponentBase{
     }
   }
 
-  private findBehaviorByStatus(result:IUserVerifyAccountData ):void {
+  private findBehaviorByStatus(result:IUserVerifyAccountData, phone:string ):void {
     if(result.status === 1) {
       this.preRegister = false;
+      this.registerForm.controls['phone'].setValue(phone);
     }
 
     else {
-      let alert = this.alertCtrl.create({
-        message: result.message,
-        buttons:[
-          {
-            text: 'OK',
-            handler: () => {
-              this.nav.removeView(this.nav.getActive());
-              this.login();
-            }
-          }
-        ]
-      });
-
-      alert.present();
+      this.showSmsPopUp(result.message,phone);
     }
 
   }
@@ -232,6 +224,26 @@ export class RegisterPage extends ComponentBase{
   private clearVerifyError():void {
     this.verifyErrorData.errorShow = false;
     this.verifyErrorData.errorMessage = '';
+  }
+
+  private showSmsPopUp(message:string,phone:string){
+    let alert = this.alertCtrl.create({
+      message: message,
+      enableBackdropDismiss:false,
+      buttons:[
+        {
+          text: 'OK',
+          handler: () => {
+            if(this.nav.length() > 1) {this.nav.removeView(this.nav.getActive());}
+           
+            // go to login page
+            this.login(phone);
+          }
+        }
+      ]
+    });
+
+    alert.present();
   }
   // </editor-fold>
 }

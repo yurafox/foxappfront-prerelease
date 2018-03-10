@@ -7,7 +7,7 @@ export class AppConstants {
   public static readonly PRODUCT_PAGE_SIZE = 9;
   public static readonly PRODUCT_PAGELINK_SIZE = 5;
   public static readonly LOCALE_DEFAULT_VALUE = 1;
-  public static readonly CURRENCY_DEFAULT_VALUE = 0;
+  public static readonly CURRENCY_DEFAULT_VALUE = 4;
 
   public static readonly MAX_LOAN_AMT = 70000;
   public static readonly MIN_LOAN_AMT = 500;

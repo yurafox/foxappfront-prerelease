@@ -18,29 +18,46 @@
         </ion-item>
 
 
-        <ion-item>
+        <!-- <ion-item>
           <ion-label floating><span loc="Пароль" name="Password">{{locale['Password']}}</span></ion-label>
           <ion-input type="password"  formControlName="password"></ion-input>
         </ion-item>
         <ion-item class='alertDanger' *ngIf="formErrors.password">
           <span>{{formErrors.password}}</span>
-        </ion-item>
-
+        </ion-item> -->
+      
         <ion-item>
-          <ion-label floating><span loc="Имя" name="Name">{{locale['Name']}}</span></ion-label>
+          <ion-label floating><span loc="Имя в системе" name="Name">{{locale['NickName']}}</span></ion-label>
           <ion-input type="text" formControlName="name"></ion-input>
         </ion-item>
         <ion-item class='alertDanger' *ngIf="formErrors.name">
           <span>{{formErrors.name}}</span>
         </ion-item>
+        
+        <ion-item>
+            <ion-label floating><span loc="Имя">{{locale['Name']}}</span></ion-label>
+            <ion-input style="margin-left: 13px" type="text"  formControlName="fname"></ion-input>
+          </ion-item>
+          <ion-item class='alertDanger' *ngIf="formErrors.fname">
+            <span>{{formErrors.fname}}</span>
+        </ion-item>
 
         <ion-item>
+            <ion-label floating><span loc="Имя">{{locale['Surname']}}</span></ion-label>
+            <ion-input style="margin-left: 13px" type="text" formControlName="lname"></ion-input>
+          </ion-item>
+          <ion-item class='alertDanger' *ngIf="formErrors.lname">
+            <span>{{formErrors.lname}}</span>
+        </ion-item>
+
+
+        <!-- <ion-item>
           <ion-label floating><span loc="Ключ" name="AppKey">{{locale['AppKey']}}</span></ion-label>
           <ion-input type="text" formControlName="appKey"></ion-input>
         </ion-item>
         <ion-item class='alertDanger' *ngIf="formErrors.appKey">
           <span>{{formErrors.appKey}}</span>
-        </ion-item>
+        </ion-item> -->
 
         <ion-grid class="f-top20">
           <ion-row>

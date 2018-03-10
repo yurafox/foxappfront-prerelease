@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AbstractAccountRepository} from '../../index';
 import {Headers, Http, RequestOptionsArgs} from '@angular/http';
-import {User,IUserVerifyAccountData} from '../../../model/index';
+import {User,IUserVerifyAccountData,IUserInfo} from '../../../model/index';
 import {LoginTemplate} from "../../../model/index";
 import {HttpHeaders} from "@angular/common/http";
 import {AppConstants} from "../../../app-constants"
@@ -34,8 +34,7 @@ export class AccountRepository extends AbstractAccountRepository {
       }
 
       const currentUser: User = new User(data.user.name, data.user.email,null,
-                                         data.user.appKey,data.user.userSetting,data.user.favoriteStoresId,data.phone);
-
+                                         data.user.appKey,data.user.userSetting,null,data.user.phone,data.user.fname,data.user.lname); 
       return new LoginTemplate(data.token, currentUser);
     }
 
@@ -44,11 +43,11 @@ export class AccountRepository extends AbstractAccountRepository {
     }
   }
 
-  public async register(user: User): Promise<User> {
+  public async register(user: User): Promise<IUserInfo> {
     try {
 
       const response = await this.http.post(accountUrl,{
-        name:user.name,
+        // name:user.name,
         phone:user.phone,
         email:user.email,
         fname:user.fname,
@@ -58,17 +57,20 @@ export class AccountRepository extends AbstractAccountRepository {
 
       const data = response.json();
 
-      if (response.status !== 201) {
+      if (response.status !== 201 && response.status !== 200) {
         throw new Error(`${response.status} ${response.statusText }`);
       }
 
       if(!data) {
         throw new Error(`некорректные пользовательские данные`);
       }
-      const currentUser: User = new User(data.name, data.email,null,data.id,
-        data.appKey,data.userSetting,data.idClient,null);
 
-      return currentUser;
+      // const currentUser: User = new User(data.name, data.email,null,null,
+      //   data.userSetting,null,data.phone,data.fname,data.lname);
+      
+      let userInfo:IUserInfo = {message:data.message,status:data.status,user:(response.status === 201)
+                                 ? data.content : null};
+      return userInfo;
     }
 
     catch (err) {
@@ -117,7 +119,7 @@ export class AccountRepository extends AbstractAccountRepository {
       }
 
       const currentUser: User = new User(data.name, data.email,null,
-        data.appKey,data.userSetting, data.favoriteStoresId,data.phone);
+        data.appKey,data.userSetting,null,data.phone,data.fname,data.lname);
       return currentUser;
     }
 

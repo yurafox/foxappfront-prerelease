@@ -23,9 +23,11 @@ export class AccountPage extends ComponentBase {
 
   public formErrors = {
     'email': '',
-    'password': '',
+    // 'password': '',
     'name':'',
-    'appKey':''
+    'fname':'',
+    'lname':'',
+    //'appKey':''
   };
 
   public errorMessages = {};
@@ -63,11 +65,19 @@ export class AccountPage extends ComponentBase {
       },
       'password': {
         'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
-          'maxlength': this.locale['LengthNGT128'] ? this.locale['LengthNGT128'] : 'Значение должно быть не более 128-и символов'
+          'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
       },
       'name':{
         'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
           'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
+      },
+      'fname':{
+        'required': 'Обязательное поле',
+        'maxlength': 'Значение должно быть не более 20ти символов'
+      },
+      'lname':{
+        'required': 'Обязательное поле',
+        'maxlength': 'Значение должно быть не более 20ти символов'
       },
       'appKey':{
         'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
@@ -111,14 +121,24 @@ export class AccountPage extends ComponentBase {
             },
             'password': {
               'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
-              'maxlength': this.locale['LengthNGT128'] ? this.locale['LengthNGT128'] : 'Значение должно быть не более 128-и символов'
+              'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
             },
             'name':{
               'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
               'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
             },
+            
+            'fname':{
+              'required': 'Обязательное поле',
+              'maxlength': 'Значение должно быть не более 20ти символов'
+            },
+            'lname':{
+              'required': 'Обязательное поле',
+              'maxlength': 'Значение должно быть не более 20ти символов'
+            },
+
             'appKey':{
-              'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
+              'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 3-х символов',
               'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
             },
           };
@@ -138,10 +158,12 @@ export class AccountPage extends ComponentBase {
       'email': [this.userService.email, [Validators.required,
         Validators.pattern('^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]],
 
-      'password': ['', [Validators.minLength(6), Validators.maxLength(128)]],
+      // 'password': ['', [Validators.minLength(6), Validators.maxLength(20)]],
       'name':[this.userService.name,[Validators.required, Validators.maxLength(20)]],
+      'fname':[this.userService.profile.fname,[Validators.maxLength(20)]],
+      'lname':[this.userService.profile.lname,[Validators.maxLength(20)]],
       'lang':[this.userService.lang, [Validators.required]],
-      'appKey':[this.userService.appKey,[Validators.minLength(6), Validators.maxLength(20)]]
+      //'appKey':[this.userService.appKey,[Validators.minLength(6), Validators.maxLength(20)]]
     });
 
     this.editForm.valueChanges
