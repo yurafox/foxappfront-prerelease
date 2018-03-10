@@ -142,6 +142,9 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'Login&Security', lang:1, text:'Авторизация и Безопасность'},
       { tagName:'Login&Security', lang:2, text:'Авторизація і Безпека'},
       { tagName:'Login&Security', lang:0, text:'Login & Security'},
+      { tagName:'ChangePassword', lang:1, text:'Сменить пароль'},
+      { tagName:'ChangePassword', lang:2, text:'Змінити пароль'},
+      { tagName:'ChangePassword', lang:0, text:'Change Password'},
       { tagName:'ManageYourPlaces', lang:1, text:'Управление своими адресами'},
       { tagName:'ManageYourPlaces', lang:2, text:'Управління своїми адресами'},
       { tagName:'ManageYourPlaces', lang:0, text:'Manage your places'},
@@ -1278,7 +1281,23 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'ToastMessage', lang:2, text:'Крамницю додано до обраних'},
       { tagName:'ToastMessage', lang:0, text:'Store added to favorites'},
     ];
+
+    this._mockLocalizationStore['ChangePasswordPage'] =[
+      { tagName:'Password', lang:1, text:'Пароль'},
+      { tagName:'Password', lang:2, text:'Пароль'},
+      { tagName:'Password', lang:0, text:'Password'},
+      { tagName:'NewPassword', lang:1, text:'Новый пароль'},
+      { tagName:'NewPassword', lang:2, text:'Новий пароль'},
+      { tagName:'NewPassword', lang:0, text:'NewPassword'},
+      { tagName:'ConfirmPassword', lang:1, text:'Пароль для подтверждения'},
+      { tagName:'ConfirmPassword', lang:2, text:'Пароль підтвердження'},
+      { tagName:'ConfirmPassword', lang:0, text:'ConfirmPassword'},
+      { tagName:'ChangePassword', lang:1, text:'Сменить пароль'},
+      { tagName:'ChangePassword', lang:2, text:'Змінити пароль'},
+      { tagName:'ChangePassword', lang:0, text:'ChangePassword'},
+    ];
   }
+  
 
   public getLocalization(data: { componentName: string, lang: number }): Promise<IDictionary<string>> {
     let mockResult: IDictionary<string> = {};

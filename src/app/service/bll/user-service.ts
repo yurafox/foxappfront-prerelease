@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {User,IUserVerifyAccountData, IUserInfo} from '../../model/index';
+import {User,IUserVerifyAccountData, IUserInfo, ChangePassword} from '../../model/index';
 import {AbstractAccountRepository} from "../index";
 import {AppConstants} from "../../app-constants";
 import {LoginTemplate} from "../../model/index";
@@ -214,6 +214,12 @@ export class UserService {
     }
 
   }
+
+  public async changePassword(pswdModel:ChangePassword):Promise<IUserVerifyAccountData> {
+      let returnUser: IUserVerifyAccountData = await this._account.changePassword(pswdModel);
+      return returnUser;
+  }
+
   public async login(phone: string, password: string) {
     try {
       const loginModel: LoginTemplate = await this._account.logIn(phone,password);
@@ -233,6 +239,9 @@ export class UserService {
      return await this._account.verifyAccount(phone);
   }
 
+  public removeToken(){
+    localStorage.removeItem('token');
+  }
   // send fastswiching data
   // private trySendSettings(): void {
   //   if (this._auth) {

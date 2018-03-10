@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AbstractAccountRepository} from '../../index';
 import {Headers, Http, RequestOptionsArgs} from '@angular/http';
-import {User,IUserVerifyAccountData,IUserInfo} from '../../../model/index';
-import {LoginTemplate} from "../../../model/index";
+import {User,IUserVerifyAccountData,IUserInfo,LoginTemplate,ChangePassword} from '../../../model/index';
 import {HttpHeaders} from "@angular/common/http";
 import {AppConstants} from "../../../app-constants"
 import { RequestFactory } from '../../../core/app-core';
@@ -10,6 +9,7 @@ import { RequestFactory } from '../../../core/app-core';
 const loginUrl = `${AppConstants.BASE_URL}/api/account/login`;
 const accountUrl = `${AppConstants.BASE_URL}/api/account`;
 const verifyAccountUrl = `${AppConstants.BASE_URL}/api/account/verify`;
+const changePasswdAccountUrl = `${AppConstants.BASE_URL}/api/account/changePass`;
 // mock url
 //const loginUrl = '/api/mtoken';
 //const accountUrl = '/api/musers';
@@ -153,7 +153,31 @@ export class AccountRepository extends AbstractAccountRepository {
       return await this.errorHandler(err);
     }
   }
+ 
+ public async changePassword(passwordModel:ChangePassword):Promise<IUserVerifyAccountData> {
+  try {
+    const response = await this.http.post(`${changePasswdAccountUrl}`,{
+           password:passwordModel.password,
+           newPassword:passwordModel.newPassword,
+           confirmPassword:passwordModel.confirmPassword,
+         },RequestFactory.makeAuthHeader()).toPromise();
 
+    const data = response.json();
+    if (response.status === 401) {
+      throw new Error(`${response.status} ${response.statusText }`);
+    }
+
+    if(!data && response.status !== 200)  {
+      throw new Error(`некорректные пользовательские данные`);
+    }
+
+    return data;
+  }
+
+  catch (err) {
+    return await this.errorHandler(err);
+  }
+ }
   // public isNotSignOutSelf(): boolean {
   //   return !!(localStorage.getItem('id'));
   // }

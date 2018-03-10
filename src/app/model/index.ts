@@ -55,3 +55,4 @@ export * from './person';
 export * from './client-bonus';
 export * from './category';
 export * from './measure-unit';
+export * from './change-password';
