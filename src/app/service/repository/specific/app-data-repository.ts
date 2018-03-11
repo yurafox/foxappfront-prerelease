@@ -80,6 +80,7 @@ const clientOrderSpecProductsUrl = "http://localhost:44374/api/Cart/GetCartProdu
 const clientOrdersUrl = "http://localhost:44374/api/Cart/GetClientOrders";
 const citiesWithStoresUrl = "http://localhost:44374/api/geo/citiesWithStores";
 const storesUrl = "http://localhost:44374/api/storeplace/stores";
+const productReviewsUrl = "http://localhost:44374/api/product/GetProductReviews";
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -119,7 +120,7 @@ const getDeliveryCostUrl = "/api/mgetDeliveryCost";
 const getDeliveryDateUrl = "/api/mgetDeliveryDate";
 const calculateCartUrl = "/api/mcalculateCart";
 
-const productReviewsUrl = "/api/mproductReviews";
+// const productReviewsUrl = "/api/mproductReviews";
 const pagesDynamicUrl = "/api/mpages";
 const actionDynamicUrl = "/api/mactions";
 const actionOffersUrl = "/api/mactionOffers";
@@ -930,51 +931,75 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getProductReviewsByProductId(productId: number): Promise<ProductReview[]> {
     try {
       const response = await this.http
-        .get(productReviewsUrl, {
-          search: this.createSearchParams([
-            {key: "idProduct", value: productId.toString()}
-          ])
-        })
-        .toPromise();
+        .get(productReviewsUrl + "/" + productId).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
       const qProductsRevs = new Array<ProductReview>();
+      let answers: IDictionary<ReviewAnswer[]> = {};
       if (data != null) {
         data.forEach(val => {
-          let answers: ReviewAnswer[] = [];
-          if (val.reviewAnswers) {
-            val.reviewAnswers.forEach(answer => {
-              answers.push(
-                new ReviewAnswer(
-                  answer.id,
-                  answer.idReview,
-                  answer.user,
-                  answer.answerDate,
-                  answer.answerText
-                )
-              );
-            });
-          }
-          qProductsRevs.push(
-            new ProductReview(
+          let substrings = val.reviewDate.toString().split("T");
+          let substring1 = substrings[0].slice(0, substrings[0].length);
+          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
+          let date = substring1 + " " + substring2;
+          if (val.idReview && val.idReview !== null) {
+            if(!answers[val.idReview.toString()]) {
+              answers[val.idReview.toString()] = [];
+            }
+            answers[val.idReview.toString()].push(new ReviewAnswer(
               val.id,
-              val.idProduct,
+              val.idReview,
               val.user,
-              val.reviewDate,
-              val.reviewText,
-              val.rating,
-              val.advantages,
-              val.disadvantages,
-              val.upvotes,
-              val.downvotes,
-              answers
-            )
-          )
+              new Date(date),
+              val.reviewText
+            ));
+          }
         });
-      }
+        data.forEach(val => {
+          let substrings = val.reviewDate.toString().split("T");
+          let substring1 = substrings[0].slice(0, substrings[0].length);
+          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
+          let date = substring1 + " " + substring2;
+          if (val.idReview === null) {
+            if (answers[val.id.toString()]) {
+              qProductsRevs.push(
+                new ProductReview(
+                  val.id,
+                  val.idProduct,
+                  val.user,
+                  new Date(date),
+                  val.reviewText,
+                  val.rating,
+                  val.advantages,
+                  val.disadvantages,
+                  val.upvotes,
+                  val.downvotes,
+                  answers[val.id.toString()]
+                )
+              )
+            } else {
+              qProductsRevs.push(
+                new ProductReview(
+                  val.id,
+                  val.idProduct,
+                  val.user,
+                  new Date(date),
+                  val.reviewText,
+                  val.rating,
+                  val.advantages,
+                  val.disadvantages,
+                  val.upvotes,
+                  val.downvotes,
+                  []
+                )
+              )
+            }
+          }
+        })
+      } console.log(qProductsRevs);
       return qProductsRevs;
     } catch (err) {
       return await this.handleError(err);

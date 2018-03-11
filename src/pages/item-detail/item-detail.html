@@ -16,11 +16,11 @@
 
     <ion-row>
 
-      <ion-col text-center *ngIf="product?.slideImageUrls?.length === 0">
+      <ion-col text-center *ngIf="product?.slideImageUrls && product?.slideImageUrls?.length === 0">
         <img *ngIf="product?.imageUrl" class="f-img-item-lg" [src]="product.imageUrl">
         <img *ngIf="!product?.imageUrl" class="f-img-item-lg" src="assets/imgs/nophoto.png">
       </ion-col>
-      <ion-col text-center *ngIf="!(product?.slideImageUrls?.length === 0) && product.slideImageUrls">
+      <ion-col text-center *ngIf="!(product?.slideImageUrls?.length === 0) && product?.slideImageUrls">
         <ion-slides pager>
           <ion-slide *ngFor="let slide of product.slideImageUrls">
             <img src="{{ slide }}" alt="">
@@ -126,7 +126,7 @@
 
   </ion-grid>
 
-  <ion-grid class="f-item-nopadding-tb" *ngIf="reviews.length >0">
+  <ion-grid class="f-item-nopadding-tb" *ngIf="reviews && reviews?.length >0">
 
     <ion-row>
       <ion-col class="f-item-section-header"><span loc="Отзывы покупателей" name="CustomerReviews">{{locale['CustomerReviews']}}</span>
