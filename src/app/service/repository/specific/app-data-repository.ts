@@ -2437,7 +2437,8 @@ export class AppDataRepository extends AbstractDataRepository {
           data.img_url,
           data.priority,
           data.sketch_content,
-          data.action_content
+          data.action_content,
+          (data.isActive) ? true:false
         );
       }
       return action;
@@ -2464,7 +2465,8 @@ export class AppDataRepository extends AbstractDataRepository {
             val.img_url,
             val.priority,
             val.sketch_content,
-            val.action_content
+            val.action_content,
+            (data.isActive) ? true:false
           );
 
           actions.push(actionItem);

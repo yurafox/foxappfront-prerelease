@@ -85,8 +85,8 @@ export class PollPage extends ComponentBase{
           {
             text: 'OK',
             handler: () => {
-              this.navCtrl.push('HomePage').then(() => {
-                const startIndex = this.navCtrl.getActive().index - 2;
+              this.navCtrl.setRoot('HomePage').then(() => {
+                const startIndex = this.navCtrl.getActive().index - 1;
                 this.navCtrl.remove(startIndex, 2);
               });
             }
