@@ -5,6 +5,7 @@ export class Action {
               public dateEnd?:Date,
               public img_url?:string,
               public priority?:number,
+              public isActive?:boolean,
               public sketch_content?:string,
               public action_content?:string
               ) {

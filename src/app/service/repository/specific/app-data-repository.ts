@@ -79,8 +79,12 @@ const clientAddressesUrl = "http://localhost:44374/api/client/clientAddress";
 const clientOrderSpecProductsUrl = "http://localhost:44374/api/Cart/GetCartProductsByOrderId";
 const clientOrdersUrl = "http://localhost:44374/api/Cart/GetClientOrders";
 const citiesWithStoresUrl = "http://localhost:44374/api/geo/citiesWithStores";
-
-
+const pollsUrl=`${AppConstants.BASE_URL}/api/poll`;
+const clientPollAnswersUrl = `${AppConstants.BASE_URL}/api/poll/ClientPollAnswer`;
+const pollQuestionUrl=`${AppConstants.BASE_URL}/api/poll/pollQuestions`;
+const pollQuestionAnswerUrl = `${AppConstants.BASE_URL}/api/poll/pollAnswers`;
+const pagesDynamicUrl = `${AppConstants.BASE_URL}/api/page`;
+const actionDynamicUrl = `${AppConstants.BASE_URL}/api/stock`;
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
 // const currenciesUrl = "/api/mcurrencies";
@@ -88,7 +92,7 @@ const citiesWithStoresUrl = "http://localhost:44374/api/geo/citiesWithStores";
 // const manufacturersUrl = "/api/manufacturers";
 // const quotationProductsUrl = "/api/mquotationProducts";
 // const suppliersUrl = "/api/msuppliers";
-// const measureUnitUrl = '/api/mmeasureUnits';
+// const mYeasureUnitUrl = '/api/mmeasureUnits';
 // const LangUrl = "/api/mlocalization";
 // const countriesUrl = "/api/mcountries";
 // const citiesUrl = "/api/mcities";
@@ -113,7 +117,12 @@ const citiesWithStoresUrl = "http://localhost:44374/api/geo/citiesWithStores";
 // const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
 // const clientOrdersUrl = "/api/mclientOrders";
 // const citiesWithStoresUrl = "/api/mcities";
-
+//const pollsUrl='/api/mpolls';
+//const clientPollAnswersUrl = '/api/mclientPollAnswers';
+//const pollQuestionUrl='/api/mpollQuestion';
+//const pollQuestionAnswerUrl = '/api/mpollQuestionAnswer';
+//const pagesDynamicUrl = "/api/mpages";
+//const actionDynamicUrl = "/api/mactions";
 const getDeliveryCostUrl = "/api/mgetDeliveryCost";
 const getDeliveryDateUrl = "/api/mgetDeliveryDate";
 const calculateCartUrl = "/api/mcalculateCart";
@@ -121,14 +130,10 @@ const calculateCartUrl = "/api/mcalculateCart";
 
 const storesUrl = "/api/mstores";
 const productReviewsUrl = "/api/mproductReviews";
-const pagesDynamicUrl = "/api/mpages";
-const actionDynamicUrl = "/api/mactions";
+
 const actionOffersUrl = "/api/mactionOffers";
 const storeReviewsUrl = "/api/mstoreReviews";
-const pollsUrl='/api/mpolls';
-const pollQuestionUrl='/api/mpollQuestion';
-const pollQuestionAnswerUrl = '/api/mpollQuestionAnswer';
-const clientPollAnswersUrl = '/api/mclientPollAnswers';
+
 const noveltyDynamicUrl = "/api/mnovelties";
 const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
 const deviceDataUrl = "/api/mdeviceData";
@@ -2623,10 +2628,9 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getPollQuestionsByPollId(pollId: number): Promise<PollQuestion[]> {
     try {
       const response = await this.http
-        .get(pollQuestionUrl, RequestFactory
-          .makeSearchAndAuth([{key: 'idPoll', value: pollId.toString()}]))
+        .get(`${pollQuestionUrl}/${pollId}`, RequestFactory.makeAuthHeader())
         .toPromise();
-
+        
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -2681,8 +2685,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getPollAnswersByQuestionId(idPollQuestion: number): Promise<PollQuestionAnswer[]> {
     try {
       const response = await this.http
-        .get(pollQuestionAnswerUrl, RequestFactory
-          .makeSearchAndAuth([{key: 'idPollQuestions', value: idPollQuestion.toString()}]))
+        .get(`${pollQuestionAnswerUrl}/${idPollQuestion}`, RequestFactory.makeAuthHeader())
         .toPromise();
 
       const data = response.json();
@@ -2706,15 +2709,15 @@ export class AppDataRepository extends AbstractDataRepository {
   public async postClientPoolAnswers(pollAnswers: any): Promise<ClientPollAnswer> {
     try {
       const response = await this.http
-        .post(clientPollAnswersUrl, pollAnswers, RequestFactory.makeAuthHeader())
+        .post(pollsUrl/*clientPollAnswersUrl*/, pollAnswers, RequestFactory.makeAuthHeader())
         .toPromise();
       const data = response.json();
 
-      if (response.status !== 201) {
+      if (response.status !== 200) {
         throw new Error("server side status error");
       }
       const clientPollLast: ClientPollAnswer = new ClientPollAnswer
-      (data.id, data.userId, data.idPoll, data.idPollQuestions, data.clientAnswer);
+      (data.id, data.idClient, data.idPoll, data.idPollQuestions, data.clientAnswer);
 
       return clientPollLast;
     } catch (err) {
@@ -2725,9 +2728,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getClientPoolAnswersForUserByPollId(pollId: number): Promise<ClientPollAnswer[]> {
     try {
       const response = await this.http
-        .get(clientPollAnswersUrl, RequestFactory
-          .makeSearchAndAuth([{key: 'idPoll', value: pollId.toString()}]))
-        .toPromise();
+      .get(`${clientPollAnswersUrl}/${pollId}`, RequestFactory.makeAuthHeader())
+      .toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2737,7 +2739,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data != null) {
         data.forEach(val =>
           clientPollAnswer.push(
-            new ClientPollAnswer(val.id, val.userId, val.idPoll, val.idPollQuestions, val.clientAnswer)
+            new ClientPollAnswer(val.id, val.idClient, val.idPoll, val.idPollQuestions, val.clientAnswer)
           )
         );
       }
