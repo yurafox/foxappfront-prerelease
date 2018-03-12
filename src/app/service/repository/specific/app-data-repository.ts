@@ -45,6 +45,8 @@ import {
 import { AbstractDataRepository } from '../../index';
 import { Providers } from '../../../core/app-core';
 import {ConnectivityService} from '../../connectivity-service';
+import {Region} from '../../../model/region';
+
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
@@ -58,6 +60,7 @@ const measureUnitUrl = `${AppConstants.BASE_URL}/api/measureUnit`;
 const LangUrl = `${AppConstants.BASE_URL}/api/localization/lang`;
 const countriesUrl = `${AppConstants.BASE_URL}/api/geo/country`;
 const citiesUrl = `${AppConstants.BASE_URL}/api/geo/city`;
+const regionsUrl = `${AppConstants.BASE_URL}/api/geo/region`;
 const getPaymentMethodsUrl = `${AppConstants.BASE_URL}/api/fin/pmtmethod`;
 const loEntitiesUrl = `${AppConstants.BASE_URL}/api/lo/loentity`;
 const quotationsUrl = `${AppConstants.BASE_URL}/api/quotation`;
@@ -81,7 +84,8 @@ const clientOrdersUrl = `${AppConstants.BASE_URL}/api/Cart/GetClientOrders`;
 const citiesWithStoresUrl = `${AppConstants.BASE_URL}/api/geo/citiesWithStores`;
 const getDeliveryCostUrl = `${AppConstants.BASE_URL}/api/lo/GetDeliveryCost`;
 const getDeliveryDateUrl = `${AppConstants.BASE_URL}/api/lo/GetDeliveryDate`;
-
+const calculateCartUrl = `${AppConstants.BASE_URL}/api/cart/calculateCart`;
+const postOrderUrl = `${AppConstants.BASE_URL}/api/cart/postOrder`;
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -94,6 +98,7 @@ const getDeliveryDateUrl = `${AppConstants.BASE_URL}/api/lo/GetDeliveryDate`;
 // const LangUrl = "/api/mlocalization";
 // const countriesUrl = "/api/mcountries";
 // const citiesUrl = "/api/mcities";
+// const regionsUrl = "/api/mregions";
 // const getPaymentMethodsUrl = "/api/mpaymentMethods";
 // const loEntitiesUrl = "/api/mloEntities";
 // const quotationsUrl = "/api/mquotation";
@@ -117,8 +122,8 @@ const getDeliveryDateUrl = `${AppConstants.BASE_URL}/api/lo/GetDeliveryDate`;
 // const citiesWithStoresUrl = "/api/mcities";
 // const getDeliveryCostUrl = "/api/mgetDeliveryCost";
 // const getDeliveryDateUrl = "/api/mgetDeliveryDate";
-
-const calculateCartUrl = "/api/mcalculateCart";
+// const calculateCartUrl = "/api/mcalculateCart";
+// const postOrderUrl = "/api/mpostOrder";
 
 
 const storesUrl = "/api/mstores";
@@ -187,9 +192,10 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
 
-  public async calculateCart(promoCode: string, maxBonusCnt: number, usePromoBonus: boolean,
+  public async calculateCart(promoCode: string, maxBonusCnt: number, usePromoBonus: boolean, creditProductId: number,
                              cartContent: ClientOrderProducts[]):
-      Promise<{clOrderSpecProdId: number, promoCodeDisc: number, bonusDisc: number, promoBonusDisc: number}[]>
+      Promise<{clOrderSpecProdId: number, promoCodeDisc: number, bonusDisc: number, promoBonusDisc: number,
+               earnedBonus: number}[]>
   {
     try {
       let _dtoContent = [];
@@ -200,7 +206,9 @@ export class AppDataRepository extends AbstractDataRepository {
 
       const response = await this.http
         .post(calculateCartUrl, {promoCode: promoCode, maxBonusCnt: maxBonusCnt,
-                                        usePromoBonus: usePromoBonus, cartContent: _dtoContent})
+                                      usePromoBonus: usePromoBonus, creditProductId: creditProductId,
+                                      cartContent: _dtoContent}
+             )
         .toPromise();
       const val = response.json();
 
@@ -211,7 +219,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (val) {
         val.forEach(i => {
           _res.push({clOrderSpecProdId: i.clOrderSpecProdId, promoCodeDisc: i.promoCodeDisc,
-            bonusDisc: i.bonusDisc, promoBonusDisc: i.promoBonusDisc});
+            bonusDisc: i.bonusDisc, promoBonusDisc: i.promoBonusDisc, earnedBonus: i.earnedBonus});
         });
       }
       return _res;
@@ -646,6 +654,22 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+
+  public async postOrder(order: ClientOrder): Promise<{isSuccess: boolean, errorMessage: string}> {
+    try {
+      const response = await this.http
+        .put(postOrderUrl, order.dto).toPromise();
+      const val = response.json();
+
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      return {isSuccess: val.isSuccess, errorMessage: val.errorMessage};
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 
   public async insertCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
     try {
@@ -1270,6 +1294,7 @@ export class AppDataRepository extends AbstractDataRepository {
             let city = new City();
             city.id = val.id;
             city.name = val.name;
+            city.idRegion = val.idRegion;
             if (this.isEmpty(this.cache.City.Item(val.id.toString()))) {
               this.cache.City.Add(val.id.toString(), city);
             };
@@ -1279,6 +1304,88 @@ export class AppDataRepository extends AbstractDataRepository {
     }
     catch (err) {
       return await this.handleError(err);
+    }
+  }
+
+  public async loadRegionsCache(){
+    try {
+      const response = await this.http
+        .get(regionsUrl).toPromise();
+
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      if (data != null) {
+        data.forEach(val => {
+            let region = new Region();
+            region.id = val.id;
+            region.name = val.name;
+            if (this.isEmpty(this.cache.Region.Item(val.id.toString()))) {
+              this.cache.Region.Add(val.id.toString(), region);
+            };
+          }
+        );
+      }
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+
+  }
+
+  public async getRegionById(id: number): Promise<Region> {
+    if (!id) return null;
+    try {
+      const region: Region = new Region();
+      const _id: string = id.toString();
+      //let city = null;
+      if (this.isEmpty(this.cache.Region.Item(_id))) {
+        // http request
+        const response = await this.http.get(regionsUrl + `/${_id}`).toPromise();
+
+        // response data binding
+        let data: any = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+
+        if (data != null) {
+          region.id = id;
+          region.name = data.name;
+
+          // add to cache
+          this.cache.Region.Add(_id, region);
+        }
+        return region;
+      } else {
+        // </editor-fold>
+        return this.cache.Region.Item(_id);
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getRegions(): Promise<Region[]> {
+    try {
+      const response = await this.http.get(regionsUrl).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const regions = new Array<Region>();
+      if (data != null) {
+        data.forEach(val => {
+          const regionItem: Region = new Region(val.id, val.name);
+          regions.push(regionItem);
+        });
+      }
+      return regions;
+    } catch (err) {
+      await this.handleError(err);
     }
   }
 
@@ -1302,6 +1409,7 @@ export class AppDataRepository extends AbstractDataRepository {
         if (data != null) {
           city.id = id;
           city.name = data.name;
+          city.idRegion = data.idRegion;
 
           // add to cache
           this.cache.City.Add(_id, city);
@@ -1966,7 +2074,7 @@ export class AppDataRepository extends AbstractDataRepository {
       const id: string = manufacturerId.toString();
       // <editor-fold desc = "id in cache is empty"
       if (this.isEmpty(this.cache.Manufacturer.Item(id))) {
-        this.cache.Manufacturer.Add(id, manufacturer);
+        //this.cache.Manufacturer.Add(id, manufacturer);
         const response = await this.http
           .get(manufacturersUrl + `/${id}`)
           .toPromise();
@@ -2075,7 +2183,10 @@ export class AppDataRepository extends AbstractDataRepository {
           val.prop_Value_Bool,
           enumVal,
           val.prop_Value_Long,
-          val.id_Measure_Unit
+          val.id_Measure_Unit,
+          //
+          val.idx,
+          val.out_bmask
         )
       );
     });
@@ -2091,8 +2202,8 @@ export class AppDataRepository extends AbstractDataRepository {
       val.name,
       val.prop_type,
       val.is_Multi_Select,
-      val.url,
-      val.predestination
+      val.url //,
+      //val.predestination,
     );
   }
 
@@ -2116,7 +2227,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data != null) {
         data.forEach(val => {
           // create current city
-          const cityItem: City = new City(val.id, val.name);
+          const cityItem: City = new City(val.id, val.name, val.idRegion);
           cities.push(cityItem);
         });
       }
@@ -2124,6 +2235,34 @@ export class AppDataRepository extends AbstractDataRepository {
     } catch (err) {
       await this.handleError(err);
     }
+  }
+
+  public async searchCities(srchString: string): Promise<City[]> {
+    try {
+      const response = await this.http.get(citiesUrl, {
+          search: this.createSearchParams([
+            {key: "srch", value: srchString}
+          ])
+        }
+      ).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const cities = new Array<City>();
+      if (data != null) {
+        data.forEach(val => {
+          // create current city
+          const cityItem: City = new City(val.id, val.name, val.idRegion);
+          cities.push(cityItem);
+        });
+      }
+      return cities;
+    } catch (err) {
+      await this.handleError(err);
+    }
+
   }
 
 
@@ -2139,7 +2278,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data != null) {
         data.forEach(val => {
           // create current city
-          const cityItem: City = new City(val.id, val.name);
+          const cityItem: City = new City(val.id, val.name, val.idRegion);
           cities.push(cityItem);
         });
       }
@@ -2812,5 +2951,7 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+
+
 
 }

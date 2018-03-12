@@ -538,32 +538,28 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     name: "Количество SIM",
     prop_type: 2,
     is_Multi_Select: true,
-    url: null,
-    predestination: true
+    url: null
   };
   private prop2 = {
     id: 12,
     name: "Встроенная память",
     prop_type: 4,
     is_Multi_Select: null,
-    url: null,
-    predestination: true
+    url: null
   };
   private prop3 = {
     id: 13,
     name: "Диагональ дисплея",
     prop_type: 4,
     is_Multi_Select: null,
-    url: null,
-    predestination: true
+    url: null
   };
   private prop4 = {
     id: 10,
     name: "Тип сетевой вилки",
     prop_type: 4,
     is_Multi_Select: null,
-    url: null,
-    predestination: false
+    url: null
   };
   // </editor-fold>
   // <editor-fold desc='propEnumList'
@@ -642,7 +638,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Bool: null,
     prop_Value_Enum: this.propEnumList1,
     prop_Value_Long: null,
-    id_Measure_Unit: 8796097184356
+    id_Measure_Unit: 8796097184356,
+    idx: 0,
+    out_bmask: 3
   };
   private productPropValue2 = {
     id: 2,
@@ -653,7 +651,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Bool: null,
     prop_Value_Enum: this.propEnumList1,
     prop_Value_Long: null,
-    id_Measure_Unit: 8796093743716
+    id_Measure_Unit: 8796093743716,
+    idx: 1,
+    out_bmask: 3
 
   };
   private productPropValue3 = {
@@ -665,7 +665,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Bool: null,
     prop_Value_Enum: this.propEnumList1,
     prop_Value_Long: null,
-    id_Measure_Unit: 8796095644260
+    id_Measure_Unit: 8796095644260,
+    idx: 2,
+    out_bmask: 1
   };
   private productPropValue4 = {
     id: 4,
@@ -676,7 +678,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Bool: null,
     prop_Value_Enum: this.propEnumList3,
     prop_Value_Long: null,
-    id_Measure_Unit: 8796095644260
+    id_Measure_Unit: 8796095644260,
+    idx: 3,
+    out_bmask: 3
   };
   private productPropValue5 = {
     id: 5,
@@ -687,7 +691,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Bool: null,
     prop_Value_Enum: this.propEnumList4,
     prop_Value_Long: null,
-    id_Measure_Unit: 8796095447652
+    id_Measure_Unit: 8796095447652,
+    idx: 3,
+    out_bmask: 3
   };
   private productPropValue6 = {
     id: 6,
@@ -698,7 +704,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Bool: null,
     prop_Value_Enum: this.propEnumList5,
     prop_Value_Long: null,
-    id_Measure_Unit: 8796095644260
+    id_Measure_Unit: 8796095644260,
+    idx: 4,
+    out_bmask: 3
   };
   private productPropValue7 = {
     id: 7,
@@ -709,7 +717,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Bool: null,
     prop_Value_Enum: null,
     prop_Value_Long: null,
-    id_Measure_Unit: 8796095644260
+    id_Measure_Unit: 8796095644260,
+    idx: 2,
+    out_bmask: 1
   };
   private productPropValue8 = {
     id: 8,
@@ -731,7 +741,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Bool: null,
     prop_Value_Enum: null,
     prop_Value_Long: null,
-    id_Measure_Unit: 8796095644260
+    id_Measure_Unit: 8796095644260,
+    idx: 2,
+    out_bmask: 3
   };
   private productPropValue10 = {
     id: 10,
@@ -742,7 +754,9 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Bool: null,
     prop_Value_Enum: this.propEnumList6,
     prop_Value_Long: null,
-    id_Measure_Unit: 8796158755428
+    id_Measure_Unit: 8796158755428,
+    idx: 7,
+    out_bmask: 3
   };
   // </editor-fold>
 
@@ -1214,24 +1228,32 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     }
   ];
   // </editor-fold>
+  regions = [
+    {id: 380430, name: "Винницкая"},
+    {id: 380330, name: "Волынская"},
+    {id: 380560, name: "Днепропетровская"},
+    {id: 380620, name: "Донецкая"},
+    {id: 380410, name: "Житомирская"},
+    {id: 380440, name: "Киевская"}
+  ];
 
   // <editor-fold desc="cities"
   cities = [
-    {id: 1, name: "Александрия"},
-    {id: 2, name: "Бахмут"},
+    {id: 1, name: "Александрия", idRegion: 380430},
+    {id: 2, name: "Бахмут", idRegion: 380560},
     {id: 3, name: "Белая Церковь"},
     {id: 4, name: "Белгород-Днестровский"},
     {id: 5, name: "Бердичев"},
     {id: 6, name: "Бердянск"},
     {id: 7, name: "Борисполь"},
-    {id: 8, name: "Бровары"},
+    {id: 8, name: "Бровары", idRegion: 380440},
     {id: 9, name: "Васильков"},
     {id: 10, name: "Винница"},
     {id: 11, name: "Вознесенск"},
     {id: 12, name: "Днепр"},
     {id: 13, name: "Дрогобыч"},
     {id: 14, name: "Дубно"},
-    {id: 15, name: "Житомир"},
+    {id: 15, name: "Житомир", idRegion: 380410},
     {id: 16, name: "Запорожье"},
     {id: 17, name: "Ивано-Франковск"},
     {id: 18, name: "Измаил"},
@@ -5488,6 +5510,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     const mmeasureUnits = this.measureUnits;
     const mproductDescriptions = this.productDescriptions;
     const mProductImages = this.productImages;
+    const mregions = this.regions;
 
     return {
       mquotationProducts,
@@ -5533,7 +5556,8 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       mcategories,
       mmeasureUnits,
       mproductDescriptions,
-      mProductImages
+      mProductImages,
+      mregions
     };
   }
 
@@ -5576,6 +5600,12 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
 
       case "mpostProductView": {
         let reqData = (<any>info.req)._body;
+        return info.utils.createResponse$(() => resOpt);
+      }
+
+      case "mpostOrder": {
+        let reqData = (<any>info.req)._body;
+        resOpt.body = {isSuccess: true, errorMessage: null};
         return info.utils.createResponse$(() => resOpt);
       }
 

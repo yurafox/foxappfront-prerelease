@@ -50,7 +50,7 @@ export class AccountPage extends ComponentBase {
             serviceItemName:'currency'});
 
     this.setDefaultSetting<Lang>(this.langs,
-      {targetReference:{name:'currentLang', ref: Currency},
+      {targetReference:{name:'currentLang', ref: Lang},
             item: {valueName:'id',displayValue:'name'},
             serviceItemName:'lang'});
 

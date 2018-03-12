@@ -20,9 +20,21 @@
           <span *ngIf="!bldApp.valid && bldApp.touched"
                 class="f-color-validation-error"><span loc="Пожалуйста, введите здание и квартиру" name="EnterBuildingAndApartment">{{locale['EnterBuildingAndApartment']}}</span></span>
           <br>
-          <input [(ngModel)]="shippingAddress.city" name="city"
+
+          <input [(ngModel)]="shippingAddress.city" name="city"  (keyup)="cityInputStream$.next($event.target.value)"
                  placeholder="{{locale['City']}}" required #city="ngModel">
           <span *ngIf="!city.valid && city.touched" class="f-color-validation-error"><span loc="Пожалуйста, введите город" name="EnterCity">{{locale['EnterCity']}}</span></span>
+          <div *ngIf="showCityPopup && cities && cities.length>0">
+            <dropdown-list id="btnCity"
+                           [param]="shippingAddress.idCity"
+                           [ref]="{bindRef:shippingAddress,bindName:'idCity'}"
+                           [placeholder]="'Please select city'"
+                           [store]="cities"
+                           [options]="{popupClass: 'f-large-dictionary', popupHeader: 'SelectCity'}"
+                           [map]="{valueName:'id', displayName:'cityWithRegion'}"
+                           [afterUpdate]="cityUpdate">
+            </dropdown-list>
+          </div>
           <br>
           <input [(ngModel)]="shippingAddress.zip" name="zip"
                  placeholder="{{locale['Zip']}}" #zip="ngModel">
@@ -54,14 +66,22 @@
       <div *ngIf="delivery === 0">
         <ion-row>
           <ion-col>
-            <button class="f-btn-action" ion-button block (click)="saveAddress()"><span loc="Сохранить этот адрес" name="SaveThisAddress">{{locale['SaveThisAddress']}}</span></button>
+            <button class="f-btn-action" ion-button block
+                    [attr.disabled]="!validatePage()?'':null"
+                    (click)="saveThisAddress()">
+              <span loc="Сохранить этот адрес" name="SaveThisAddress">{{locale['SaveThisAddress']}}</span>
+            </button>
           </ion-col>
         </ion-row>
       </div>
       <div *ngIf="delivery === 1">
         <ion-row>
           <ion-col>
-            <button class="f-btn-action" ion-button block (click)="saveAddress()"><span loc="Доставить по этому адресу" name="DeliverToThisAddress">{{locale['DeliverToThisAddress']}}</span></button>
+            <button class="f-btn-action" ion-button block
+                    [attr.disabled]="!validatePage()?'':null"
+                    (click)="deliverToThisAddress()">
+              <span loc="Доставить по этому адресу" name="DeliverToThisAddress">{{locale['DeliverToThisAddress']}}</span>
+            </button>
           </ion-col>
         </ion-row>
       </div>

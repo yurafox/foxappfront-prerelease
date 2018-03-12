@@ -7,7 +7,7 @@ import {UserService} from './bll/user-service';
 import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
 import {EventService} from './event-service';
 import {EnumPaymentMethod} from '../model/enum-payment-method';
-import {App} from 'ionic-angular';
+import {AlertController, App} from 'ionic-angular';
 import {PersonInfo} from '../model/person';
 import {CreditCalc} from '../model/credit-calc';
 import {AppConstants} from '../app-constants';
@@ -56,7 +56,8 @@ export class CartService {
   private localization: IDictionary<string> = {};
 
   constructor(public userService: UserService, public repo: AbstractDataRepository,
-              public evServ: EventService, private app: App, private locRepo: AbstractLocalizationRepository) {
+              public evServ: EventService, private app: App, private locRepo: AbstractLocalizationRepository,
+              public alertCtrl: AlertController) {
 
     this.evServ.events['logonEvent'].subscribe(() => {
         this.initCart().then (() => {
@@ -89,38 +90,61 @@ export class CartService {
     );
 
     repo.loadPmtMethodsCache();
+    repo.loadRegionsCache();
     repo.loadStorePlaceCache();
     repo.loadSuppliersCache();
-    repo.loadCityCache();
+    //repo.loadCityCache();
     repo.loadMeasureUnitCache();
     repo.getCountries(); //<--- this loads countries cache
+    repo.getManufacturers(true); //<--- this loads manufacturers cache
 
     this.initCart();
   }
 
   public async calculateCart(){
-    let calcRes = await this.repo.calculateCart(this.promoCode, this.bonus, this.payByPromoBonus,
-                                    this.orderProducts);
-    calcRes.forEach(i => {
+    let calcRes = await this.repo.calculateCart(
+                  this.promoCode, this.bonus, this.payByPromoBonus,
+      ((this.loan) && (this.loan.creditProduct) && (this.order.idPaymentMethod === 3)) ? this.loan.creditProduct.sId : null,
+                  this.orderProducts);
+
+    for (let i of calcRes) {
       let _found = false;
       let _prod: ClientOrderProducts = null;
 
       for (let _p of this.orderProducts) {
-          if (_p.id === i.clOrderSpecProdId) {
-            _prod = _p;
-            _found = true;
-            break;
-          }
+        if (_p.id === i.clOrderSpecProdId) {
+          _prod = _p;
+          _found = true;
+          break;
         }
+      }
       if (_found) {
         _prod.payBonusCnt = i.bonusDisc;
         _prod.payPromoCodeDiscount = i.promoCodeDisc;
         _prod.payPromoBonusCnt = i.promoBonusDisc;
+        _prod.earnedBonusCnt = i.earnedBonus;
+//        await this.repo.saveCartProduct(_prod);
       }
-      }
-    );
+
+    }
 
     this.calcLoan();
+  }
+
+  public emptyCart(): void {
+    this.lastItemCreditCalc = null;
+    this.order = null;
+    this.orderProducts = [];
+    this.loDeliveryOptions = [];
+    this.loResultDeliveryOptions = [];
+    this.loan = null;
+    this.bonus  = null;
+    this._payByPromoBonus = false;
+    this._promoCode = null;
+    this.promocodeInvalid = false;
+    this.availBonus = null;
+    this.availPromoBonus = null;
+    this.cartValidationNeeded = false;
   }
 
   public get promoCode(): string {
@@ -156,6 +180,8 @@ export class CartService {
     this.orderProducts.forEach(i => {
       _res += i.payBonusCnt*i.qty;
     });
+    if (this.order)
+      this.order.bonusTotal = _res;
     return _res;
   }
 
@@ -164,6 +190,8 @@ export class CartService {
     this.orderProducts.forEach(i => {
       _res += i.payPromoCodeDiscount*i.qty;
     });
+    if (this.order)
+      this.order.promoCodeDiscTotal = _res;
     return _res;
   }
 
@@ -172,7 +200,32 @@ export class CartService {
     this.orderProducts.forEach(i => {
       _res += i.payPromoBonusCnt*i.qty;
     });
+    if (this.order)
+      this.order.promoBonusTotal = _res;
     return _res;
+  }
+
+  public get shippingCost(): number {
+    let res = 0;
+    this.loResultDeliveryOptions.forEach(i => {
+        res += i.deliveryCost;
+      }
+    );
+    if (this.order)
+      this.order.shippingTotal = res;
+    return res;
+  }
+
+  public get itemsTotal(): number {
+    let _s = 0;
+    if (this.orderProducts) {
+      this.orderProducts.forEach(item => {
+        _s += item.price*item.qty
+      });
+    }
+    if (this.order)
+      this.order.itemsTotal = _s;
+    return _s;
   }
 
   public get cartGrandTotal(): number {
@@ -269,25 +322,6 @@ export class CartService {
     return this.itemsTotal + this.shippingCost;
   }
 
-  public get shippingCost(): number {
-    let res = 0;
-    this.loResultDeliveryOptions.forEach(i => {
-        res += i.deliveryCost;
-      }
-    );
-    return res;
-  }
-
-  public get itemsTotal(): number {
-    let _s = 0;
-    if (this.orderProducts) {
-      this.orderProducts.forEach(item => {
-        _s += item.price*item.qty
-      });
-    }
-    return _s;
-  }
-
   async addItem(item: QuotationProduct, qty: number, price: number, storePlace: StorePlace, page: any) {
     if (item && qty && price) {
       const _f = this.orderProducts.filter(i => {return (i.idQuotationProduct === item.id);});
@@ -356,11 +390,33 @@ export class CartService {
     }
   }
 
+  async gotoCartPageIfDataChanged() {
+    let alert = this.alertCtrl.create({
+      title: this.localization['Information'],
+      message: this.localization['Message'],
+      buttons: [
+        {
+          text: this.localization['BtnText'],
+          handler: () => {
+            this.emptyCart();
+            this.initCart().then(() => {
+                this.app.getActiveNav().setRoot('CartPage');
+              }
+            );
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   async updateItem(item: ClientOrderProducts) {
     if (this.userService.isAuth) {
       item = await this.repo.saveCartProduct(item);
+      if (!(item)) {
+        this.gotoCartPageIfDataChanged();
+      }
     }
-
   }
 
   async removeItem(itemIndex: number) {
@@ -370,11 +426,6 @@ export class CartService {
     this.saveToLocalStorage();
     this.lastItemCreditCalc = null;
     this.evServ.events['cartUpdateEvent'].emit();
-  }
-
-  emptyCart() {
-    //TODO implement emptyCart method
-    console.log('Empty cart');
   }
 
   public get cartErrors(): Array<{idQuotProduct: number, errorMessage: string}> {

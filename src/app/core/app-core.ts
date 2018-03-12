@@ -11,6 +11,7 @@ import {Quotation} from '../model/quotation';
 import {LoEntity} from '../model/lo-entity';
 import {Country} from '../model/country';
 import {EnumPaymentMethod} from '../model/enum-payment-method';
+import {Region} from '../model/region';
 
 export interface IDictionary<T> {
   [k: string]: T;
@@ -148,6 +149,7 @@ export namespace Providers {
     private _cacheLoEntity: IKeyedCollection<LoEntity> = null;
     private _cacheCountry: IKeyedCollection<Country> = null;
     private _cacheEnumPaymentMethod: IKeyedCollection<EnumPaymentMethod> = null;
+    private _cacheRegion: IKeyedCollection<Region> = null;
 
 
     public get Products(): IKeyedCollection<Product> {
@@ -234,6 +236,12 @@ export namespace Providers {
       return this._cacheEnumPaymentMethod;
     }
 
+    public get Region(): IKeyedCollection<Region> {
+      if (this._cacheRegion == null)
+        this._cacheRegion = new CacheItems<Region>(50);
+
+      return this._cacheRegion;
+    }
 
   }
 }

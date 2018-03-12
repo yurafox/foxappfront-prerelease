@@ -155,7 +155,7 @@
 -->
 
       <ion-row class="f-padding-lr-5">
-        <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
+        <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded && cart.loResultDeliveryOptions && cart.loResultDeliveryOptions[i]">
           <ion-row>
             <ion-col>
               {{cart.loResultDeliveryOptions[i].loName}}
@@ -204,12 +204,21 @@
                   </ion-col>
                 </ion-row>
 
+                <ion-row *ngIf="item?.earnedBonusCnt">
+                  <ion-col class="f-item-padding-bottom" >
+                    <bonus [bonusCnt]="item?.earnedBonusCnt*item.qty"></bonus>
+                  </ion-col>
+                </ion-row>
+
+<!--
+
                 <ion-row *ngIf="item?.quotationproduct?.product?.bonuses">
                   <ion-col class="f-item-padding-bottom" >
                     <bonus [bonusCnt]="item?.quotationproduct?.product?.bonuses"></bonus>
                   </ion-col>
                 </ion-row>
 
+-->
 
                 <ion-row *ngIf="item.errorMessage">
                   <ion-col class="f-size-small">

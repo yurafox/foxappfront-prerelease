@@ -30,6 +30,7 @@ import { QuotationProduct,
           Category,
           MeasureUnit
        } from '../../../model/index';
+import {Region} from '../../../model/region';
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
@@ -70,6 +71,7 @@ export abstract class AbstractDataRepository {
   public async abstract getDeliveryCost(order: ClientOrderProducts, loEntityId: number, loIdClientAddress: number): Promise<number>;
   public async abstract getProductCreditSize(idProduct: number, isSupplier: number): Promise<any>;
 
+  public async abstract postOrder(order: ClientOrder): Promise<{isSuccess: boolean, errorMessage: string}>;
   public async abstract getClientDraftOrder(): Promise<ClientOrder>;
   public async abstract saveClientDraftOrder(order: ClientOrder): Promise<ClientOrder>;
   public async abstract getClientOrders(): Promise<ClientOrder[]>;
@@ -83,10 +85,11 @@ export abstract class AbstractDataRepository {
   public async abstract calculateCart(promoCode: string,
                                       maxBonusCnt: number,
                                       usePromoBonus: boolean,
+                                      creditProductId: number,
                                       cartContent: ClientOrderProducts[])
                                                               : Promise<{clOrderSpecProdId: number,
                                                                           promoCodeDisc: number, bonusDisc: number,
-                                                                          promoBonusDisc: number}[]>;
+                                                                          promoBonusDisc: number, earnedBonus: number}[]>;
 
   public async abstract getClientBonusesExpireInfo(clientId: number): Promise <ClientBonus[]>;
 
@@ -100,13 +103,20 @@ export abstract class AbstractDataRepository {
   public async abstract createClientAddress(address: ClientAddress): Promise<ClientAddress>;
   public async abstract deleteClientAddress(address: ClientAddress);
 
+  public async abstract loadCityCache();
+  public async abstract getCityById(id: number): Promise<City>;
   public async abstract getCities(): Promise<City[]>;
+  public async abstract searchCities(srchString: string): Promise<City[]>;
+
+  public async abstract loadRegionsCache();
+  public async abstract getRegionById(id: number): Promise<Region>;
+  public async abstract getRegions(): Promise<Region[]>;
+
+
   public async abstract getCitiesWithStores(): Promise<City[]>;
   public async abstract getStores(): Promise<Array<{idCity: number, stores: Store[]}>>;
   public async abstract getStoreById(id: number): Promise<{idCity: number, store: Store}>;
   public async abstract getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]>;
-  public async abstract loadCityCache();
-  public async abstract getCityById(id: number): Promise<City>;
   public async abstract getPageContent(id:number):Promise<string>;
   public async abstract getAction(id:number):Promise<Action>;
   public async abstract getActions():Promise<Action[]>;

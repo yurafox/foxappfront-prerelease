@@ -31,7 +31,7 @@ export class MapPage extends ComponentBase implements OnInit {
   city: City;
   defaultCityId: number;  // Used to set position when map just opened and user's location is unknown.
   cities: Array<City>;
-  selectedCity: City = {id: 0, name: ' '};
+  selectedCity: City = new City(0, ' ', 0);
   selectedMarker: SelectItem;
   markersArr: Array<{ idCity: number, stores: Store[] }>;
   shopList: Array<SelectItem>;
@@ -62,7 +62,8 @@ export class MapPage extends ComponentBase implements OnInit {
     this.defaultCityId = 0;
     this.shopList = [{label: '', value: null}];
     this.markersArr = [];
-    this.cities = [{id: 0, name: ''}];
+    this.cities = [];
+    this.cities.push(new City(0, ''));
     this.selectedMarker = {label: '', value: null};
     this.userPos = new LatLng(0, 0);
     this.open = ''/*'Open'*/;
@@ -209,10 +210,11 @@ export class MapPage extends ComponentBase implements OnInit {
 
               this.selectedMarker = {label: markerData.address, value: markerPosition};
               if (markerArr.idCity !== this.selectedCity.id) {
-                this.selectedCity = {
-                  id: this.cities[markerArr.idCity - 1].id,
-                  name: this.cities[markerArr.idCity - 1].name
-                };
+                this.selectedCity = new City(
+                  this.cities[markerArr.idCity - 1].id,
+                  this.cities[markerArr.idCity - 1].name,
+                  null
+                );
                 {
                   for (const city of this.cities) {
                     if (city.name === this.selectedCity.name) {

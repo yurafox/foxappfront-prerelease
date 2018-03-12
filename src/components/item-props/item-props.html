@@ -1,12 +1,12 @@
 <b class="f-size-larger"><span loc="Особенности и Детали" name="FeaturesDetails">{{locale['FeaturesDetails']}}</span></b>
 <p></p>
 <ion-grid no-padding>
-  <ion-row  *ngFor="let prop of product.Props; let i = index">
+  <ion-row  *ngFor="let p of propsArr; let i = index">
     <ion-col class="f-border-ligthgray" style="padding: 5px; background-color: #EFEFF0" col-4 *ngIf="(i<displayPropCount) || (displayPropCount ==-1)">
-      {{prop.id_Prop.name}}<span *ngIf="prop && prop.measureunit">, {{prop?.measureunit?.name}}</span>
+      {{p.prop.name}}<span *ngIf="p.vals[0] && p.vals[0].measureunit">, {{p.vals[0]?.measureunit?.name}}</span>
     </ion-col>
     <ion-col class="f-border-ligthgray" style="padding: 5px;" col-8 *ngIf="(i<displayPropCount) || (displayPropCount ==-1) ">
-      {{prop.value}}
+      {{p.propStr}}
     </ion-col>
   </ion-row>
 </ion-grid>

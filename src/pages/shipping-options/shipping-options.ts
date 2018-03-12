@@ -81,19 +81,36 @@ export class ShippingOptionsPage extends ComponentBase {
     return res;
  }
 
-  onContinueClick() {
+  async onContinueClick() {
     if (this.itemIndex < this.cart.orderProducts.length-1)
       this.itemIndex++;
     else {
       // Выбранные опции запихиваем в массив выбранных опций
       this.cart.loResultDeliveryOptions = [];
+/*
       this.cart.loDeliveryOptions.forEach(i => {
+
+*/
+      for (let i of this.cart.loDeliveryOptions) {
+
           if (i.isChecked) {
             this.cart.loResultDeliveryOptions.push(i);
+
+            let op = this.cart.orderProducts.find(x => x.id == i.idClientOrderProduct);
+            if (op) {
+              op.loEstimatedDeliveryDate = i.deliveryDate;
+              op.loDeliveryCost = i.deliveryCost;
+              op.idLoEntity = i.loEntityId;
+              await this.repo.saveCartProduct(op);
+            };
             this.evServ.events['cartUpdateEvent'].emit();
           }
+      };
+
+/*
         }
       );
+*/
       this.navCtrl.push('SelectPmtMethodPage');
     }
   }

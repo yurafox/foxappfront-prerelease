@@ -313,6 +313,24 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'Qty', lang:1, text:'Кол-во'},
       { tagName:'Qty', lang:2, text:'Кіл-ть'},
       { tagName:'Qty', lang:3, text:'Qty'},
+      { tagName:'AlertTitle', lang:1, text:'Спасибо!'},
+      { tagName:'AlertTitle', lang:2, text:'Дякуємо!'},
+      { tagName:'AlertTitle', lang:3, text:'Thank you!'},
+      { tagName:'AlertMessage', lang:1, text:'Ваш заказ принят'},
+      { tagName:'AlertMessage', lang:2, text:'Ваше замовлення прийнято'},
+      { tagName:'AlertMessage', lang:3, text:'You order has been successfully posted'},
+      { tagName:'BtnText', lang:1, text:'Перейти на главную страницу'},
+      { tagName:'BtnText', lang:2, text:'Перейти на головну сторінку'},
+      { tagName:'BtnText', lang:3, text:'To home page'},
+      { tagName:'AlertErrorTitle', lang:1, text:'Ошибка'},
+      { tagName:'AlertErrorTitle', lang:2, text:'Помилка'},
+      { tagName:'AlertErrorTitle', lang:3, text:'Error'},
+      { tagName:'AlertErrorMessage', lang:1, text:'Текст ошибки:'},
+      { tagName:'AlertErrorMessage', lang:2, text:'Текст помилки:'},
+      { tagName:'AlertErrorMessage', lang:3, text:'Error text:'},
+      { tagName:'BtnErrorText', lang:1, text:'Проверить корзину'},
+      { tagName:'BtnErrorText', lang:2, text:'Перевірити корзину'},
+      { tagName:'BtnErrorText', lang:3, text:'Check your cart'}
     ];
 
     this._mockLocalizationStore['CityPopoverPage'] = [
@@ -1253,6 +1271,15 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'SomethingWrong', lang:1, text:'Что-то пошло не так'},
       { tagName:'SomethingWrong', lang:2, text:'Щось пішло не так'},
       { tagName:'SomethingWrong', lang:3, text:'Something went wrong'},
+      { tagName:'Information', lang:1, text:'Информация'},
+      { tagName:'Information', lang:2, text:'Інформація'},
+      { tagName:'Information', lang:3, text:'Information'},
+      { tagName:'Message', lang:1, text:'Товар был удален либо заказ отправлен с другого устройства'},
+      { tagName:'Message', lang:2, text:'Товар було видалено або замовлення розміщено з іншого пристрою'},
+      { tagName:'Message', lang:3, text:'Item has been deleted or order has been submitted from another device'},
+      { tagName:'BtnText', lang:1, text:'Перейти в корзину'},
+      { tagName:'BtnText', lang:2, text:'Перейти до кошика'},
+      { tagName:'BtnText', lang:3, text:'Go to Cart'}
     ];
 
     this._mockLocalizationStore['UserService'] = [

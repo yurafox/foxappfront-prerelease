@@ -52,7 +52,8 @@ export class UserService {
   // }
 
   public get lang(): number {
-    return +this.user.userSetting['lang'];
+    return 3;
+    //return +this.user.userSetting['lang'];
   }
 
   public get currency(): number {

@@ -86,8 +86,8 @@ export class ItemDetailPage extends ItemBase implements OnInit {
     this.navCtrl.push('ItemQuotesPage', {prod: this.product, quotesArr: this.quotes});
   }
 
-  onAddToCart() {
-    this.cart.addItem(this.valueQuot, this.qty.value, this.product.price, this.selectedStorePlace, this);
+  async onAddToCart() {
+    await this.cart.addItem(this.valueQuot, this.qty.value, this.product.price, this.selectedStorePlace, this);
   }
 
   onGetForLoan() {

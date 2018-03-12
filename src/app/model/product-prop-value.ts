@@ -19,7 +19,11 @@ export class ProductPropValue {
     public prop_Value_Bool?: boolean,
     public prop_Value_Enum?: PropEnumList,
     public prop_Value_Long?: string,
-    public id_Measure_Unit?: number
+    public id_Measure_Unit?: number,
+    public idx?: number,
+    public out_bmask?: number
+
+
   ) { this._repo = RefInjector.pull(AbstractDataRepository); }
 
   public get value(): any {

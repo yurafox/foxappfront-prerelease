@@ -1,6 +1,17 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {Product} from '../../app/model/product';
+import {Prop} from '../../app/model/prop';
+import {ProductPropValue} from '../../app/model/product-prop-value';
+
+
+export class ItemPropsTable {
+  constructor(
+    public prop?: Prop,
+    public vals?: ProductPropValue[],
+    public propStr?: string
+  ){}
+}
 
 @Component({
   selector: 'item-props',
@@ -17,13 +28,38 @@ export class ItemPropsComponent extends ComponentBase implements OnInit {
 
   showPeriod = false;
 
+  propsArr = new Array<ItemPropsTable>();
+
   constructor() {
     super();
 
     }
 
-    ngOnInit () {
-      this.showPeriod = (!(this.displayPropCount == -1) && (this.product.Props.length > this.displayPropCount));
-      super.ngOnInit();
-    }
+  ngOnInit () {
+    this.showPeriod = (!(this.displayPropCount == -1) && (this.product.Props.length > this.displayPropCount));
+    super.ngOnInit();
+    this.getUniqueProps();
+  }
+
+  getUniqueProps() {
+    let uniqueProps = new Array<Prop>();
+    let sortedProps = this.product.Props.sort( (x,y) => {return x.idx - y.idx});
+
+    sortedProps.forEach(i => {
+        if (
+             (!uniqueProps.find((x) => {return x.id === i.id_Prop.id}))
+             &&
+             ((i.out_bmask & 1) === 1) // Св-ва для формьі просмотр св-в товара
+           )
+          uniqueProps.push(i.id_Prop);
+      }
+    );
+
+    uniqueProps.forEach(i => {
+        let vals = this.product.Props.filter(x => (x.id_Prop.id === i.id));
+        this.propsArr.push(new ItemPropsTable(i, vals, vals.map(x => {return x.value;}).join('; ')));
+      }
+    );
+  }
+
 }

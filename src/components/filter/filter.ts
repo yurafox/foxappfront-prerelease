@@ -3,7 +3,7 @@ import {Product} from '../../app/model/product';
 import {ComponentBase} from '../component-extension/component-base';
 import {PopoverController} from 'ionic-angular';
 import {FilterPopoverPage} from '../../pages/filter-popover/filter-popover';
-import {Prop, Manufacturer} from '../../app/model/index';
+import {Prop, Manufacturer, ProductPropValue} from '../../app/model/index';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 class MnfFilterStruct {
@@ -29,6 +29,13 @@ class PropsFilterStruct {
               public listIndex?: number,
               public isOpened:boolean = false) {
   }
+}
+
+class PropFilterCondition {
+  constructor(
+    public propId: number,
+    public propVal: string
+  ){}
 }
 
 class FilterItem {
@@ -81,7 +88,7 @@ export class FilterComponent extends  ComponentBase implements OnInit {
   filteredProps: PropsFilterStruct[];
   public filteredManufacturers: MnfFilterStruct[];
 
-  propFilterCondition = [];
+  propFilterConditionArray = new Array<PropFilterCondition>();
   mnfFilterCondition = [];
 
   async initData() {
@@ -110,7 +117,7 @@ export class FilterComponent extends  ComponentBase implements OnInit {
   }
 
   initFilter() {
-    this.propFilterCondition = [];
+    this.propFilterConditionArray = [];
     //////// Props ///////
     let fItems = null;
     let fCat = null;
@@ -168,7 +175,9 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     this.filteredProps.length = 0;
     prodArray.forEach(p => {
       p.Props.forEach(a => {
-        if (a.id_Prop.predestination) {
+//        if (a.id_Prop. predestination>0) {
+        // Вьіводим только св-ва для фильтра
+        if ((a.out_bmask & 2) === 2) {
           const i = this.filteredProps.findIndex(z => ((z.prop.id === a.id_Prop.id)
                                                                     && (z.value == a.value)));
           if (i !== -1)
@@ -206,7 +215,7 @@ export class FilterComponent extends  ComponentBase implements OnInit {
           &&
           (this.filterByManufacturer(p, this.mnfFilterCondition))
           &&
-          (this.filterByPropertyValue(p, this.propFilterCondition))
+          (this.filterByPropertyValue(p, this.propFilterConditionArray))
         )
           this.filteredProducts.push(p);
       }
@@ -215,12 +224,13 @@ export class FilterComponent extends  ComponentBase implements OnInit {
   }
 
   onPropsClick(data) {
-    let cond = [data.prop.id, data.value];
-    let i = this.propFilterCondition.findIndex(z => ((z[0] === data.prop.id) && (z[1] == data.value)));
+    let cond = new PropFilterCondition(data.prop.id, data.value);
+    let i = this.propFilterConditionArray
+          .findIndex(z => ((z.propId === data.prop.id) && (z.propVal == data.value)));
     if ((data.isChecked))
-      this.propFilterCondition.splice(i, 1);
+      this.propFilterConditionArray.splice(i, 1);
     if ((i == -1) && (!data.isChecked))
-      this.propFilterCondition.push(cond);
+      this.propFilterConditionArray.push(cond);
     this.filterRun();
   }
 
@@ -230,8 +240,8 @@ export class FilterComponent extends  ComponentBase implements OnInit {
       this.mnfFilterCondition.splice(i, 1);
     if ((i == -1) && (!mnf.isChecked))
       this.mnfFilterCondition.push(mnf.mnf.id);
-    this.propFilterCondition.length = 0;
-    this.initFilterProps(this.baseProducts);
+    //this.propFilterConditionArray.length = 0;
+    //this.initFilterProps(this.baseProducts);
     this.filterRun();
   }
 
@@ -243,19 +253,20 @@ export class FilterComponent extends  ComponentBase implements OnInit {
 
 
   filterByManufacturer(product: Product, mnfArray: number[]): boolean {
-    return ((mnfArray.length == 0) || (mnfArray.includes(product.manufacturerId))); //includes - Ecmascript7 feature
+    return ((mnfArray.length == 0) || (mnfArray.includes(product.manufacturerId)));
   }
 
-  filterByPropertyValue(product: Product, propsArray: any[]): boolean {
+  filterByPropertyValue(product: Product, propsArray: PropFilterCondition[]): boolean {
     if (propsArray.length == 0) return true;
-    for (let i in product.Props) {
-      for (let j in propsArray) {
-        let obj = propsArray[j];
-        if ((obj[0] === product.Props[i].id_Prop.id) && (obj[1] == product.Props[i].value))
-          return true;
-      }
-    }
-    return false;
+
+    let occur = 0;
+    propsArray.forEach(x => {
+      let fnd = product.Props.find(y => {return ((y.id_Prop.id === x.propId) && (y.value === x.propVal));});
+      if (fnd)
+        occur++;
+    });
+
+    return (occur === propsArray.length);
   }
 
   async showFilter(event: any) {

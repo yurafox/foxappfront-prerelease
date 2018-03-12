@@ -41,11 +41,11 @@ Credit Products
         </ion-col>
       </ion-row>
 
-      <ion-row *ngIf="cart.loan && (cart.order.idPaymentMethod === 3)"
+      <ion-row *ngIf="cart.loan && cart.order && (cart.order.idPaymentMethod === 3)"
                class="f-padding-lr-5">
 
         <ion-grid no-padding class="f-border-ligthgray">
-          <ion-row *ngIf="(cart.order.idPaymentMethod === 3)"
+          <ion-row *ngIf="cart.order && (cart.order.idPaymentMethod === 3)"
                    (click)="onShowCreditCalculatorClick()">
             <ion-col>
               <ion-item  detail-push text-wrap>

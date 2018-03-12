@@ -45,7 +45,7 @@ export class ShippingAddressComponent extends ComponentBase {
     return res;
   }
 
-  onIsPrimaryClick(item: any, event: any) {
+  async onIsPrimaryClick(item: any, event: any) {
     for (let i of this.addresses) {
       i.isPrimary = (i === item);
     }
@@ -53,8 +53,10 @@ export class ShippingAddressComponent extends ComponentBase {
     event.preventDefault();
   }
 
-  deliverToThisAddress(item: any) {
+  async deliverToThisAddress(item: any) {
     this.cart.order.loIdClientAddress = item.id;
+    item.isPrimary = true;
+    await this.repo.saveClientAddress(item);
     this.navCtrl.push('ShippingOptionsPage', {data: item});
   }
 

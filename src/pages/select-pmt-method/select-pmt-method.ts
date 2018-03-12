@@ -55,10 +55,8 @@ export class SelectPmtMethodPage extends ComponentBase {
   }
 
   validatePage() : boolean {
-/*
-    if (!this.cart.pmtMethod)
+    if (!this.cart.order)
       return false;
-*/
 
     switch (this.cart.order.idPaymentMethod) {
       case 3: {
@@ -93,14 +91,24 @@ export class SelectPmtMethodPage extends ComponentBase {
 
   async onContinueClick() {
 
-    if (this.cart.order.idPerson)
-      this.cart.person = await this.repo.updatePerson(this.cart.person)
-    else
-      this.cart.person = await this.repo.insertPerson(this.cart.person);
+    if ((this.cart.person) && (this.cart.order.idPaymentMethod === 3)) {
+      if (this.cart.order.idPerson)
+        this.cart.person = await this.repo.updatePerson(this.cart.person)
+      else
+        this.cart.person = await this.repo.insertPerson(this.cart.person);
+
+      this.cart.order.idPerson = this.cart.person.id;
+    };
+
+    let order = await this.repo.saveClientDraftOrder(this.cart.order);
+    if (order) // check if order has not been submitted from another device
+      this.cart.order = order
+    else {
+      this.cart.gotoCartPageIfDataChanged();
+      return;
+    };
 
 
-    this.cart.order.idPerson = this.cart.person.id;
-    this.cart.order = await this.repo.saveClientDraftOrder(this.cart.order);
     if ((this.cart.availBonus > 0) || (this.cart.availPromoBonus > 0)) {
       this.navCtrl.push('BalancePage', {checkoutMode: true});
     }
