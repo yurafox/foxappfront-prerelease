@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {User,IUserVerifyAccountData} from '../../model/index';
+import {User,IUserVerifyAccountData, IUserInfo, ChangePassword} from '../../model/index';
 import {AbstractAccountRepository} from "../index";
 import {AppConstants} from "../../app-constants";
 import {LoginTemplate} from "../../model/index";
@@ -44,7 +44,7 @@ export class UserService {
   }
 
   public get name(): string {
-    return this.user.name;
+    return this.user.fname;
   }
 
   // public get uid(): number {
@@ -89,13 +89,13 @@ export class UserService {
   public set lang(lang: number) {
     this.user.userSetting['lang'] = lang.toString();
     localStorage.setItem('lang', lang.toString());
-    this.trySendSettings();
+    //this.trySendSettings();
   }
 
   public set currency(currency: number) {
     this.user.userSetting['currency'] = currency.toString();
     localStorage.setItem('currency', currency.toString());
-    this.trySendSettings();
+    //this.trySendSettings();
   }
 
   // <editor-fold desc='favorite stores'>
@@ -131,13 +131,13 @@ export class UserService {
       });
       toast.present().catch((err) => console.log(`Toast error: ${err}`));
     }
-    this.trySendSettings();
+    //this.trySendSettings();
   }
 
   public removeFavoriteStoresId(id:number) {
     let indx: number = this.user.favoriteStoresId.indexOf(id);
     this.user.favoriteStoresId.splice(indx,1);
-    this.trySendSettings();
+    //this.trySendSettings();
   }
   // </editor-fold>
 
@@ -179,36 +179,48 @@ export class UserService {
     }
   }
 
-  public async register(user: User):Promise<boolean> {
+  public async register(user: User):Promise<IUserInfo> {
     try {
-      let returnUser: User = await this._account.register(user);
+      let returnUser: IUserInfo = await this._account.register(user);
       this.errorClear('register');
       this.localeUserService();
-      return (returnUser) ? true: false;
+      return returnUser;
 
     } catch (err) {
       this.errorMessages['register'] = err.message;
-      return false;
     }
   }
 
-  public async edit(user: User):Promise<boolean> {
+  public async edit(user: User):Promise<IUserInfo> {
     try {
       if (this._auth) {
-        const resUser: User = await this._account.edit(user, this.token);
-        if (!resUser) return false;
-        this.user = resUser;
-        this.changeAuthStatus(['appKey']);
-        this.errorClear('edit');
-        this.localeUserService();
-        return true;
+        const res: IUserInfo = await this._account.edit(user);
+        if (res.status === 2 && res.user) {
+          this.user.name = res.user.name;
+          this.user.email = res.user.email;
+          this.user.userSetting = res.user.userSetting;
+          this.user.phone = res.user.phone;
+          this.user.fname = res.user.fname;
+          this.user.lname = res.user.lname;
+
+          this.changeAuthStatus(['appKey']);
+          this.errorClear('edit');
+          this.localeUserService();
+        }
+        
+        return res;
      }
     } catch (err) {
       this.errorMessages['edit'] = err.message;
-      return false;
     }
 
   }
+
+  public async changePassword(pswdModel:ChangePassword):Promise<IUserVerifyAccountData> {
+      let returnUser: IUserVerifyAccountData = await this._account.changePassword(pswdModel);
+      return returnUser;
+  }
+
   public async login(phone: string, password: string) {
     try {
       const loginModel: LoginTemplate = await this._account.logIn(phone,password);
@@ -228,13 +240,16 @@ export class UserService {
      return await this._account.verifyAccount(phone);
   }
 
-  // send fastswiching data
-  private trySendSettings(): void {
-    if (this._auth) {
-      this._account.edit(this.user, this.token)
-        .then(user => {},error => this.errorMessages['edit'] = error.message);
-    }
+  public removeToken(){
+    localStorage.removeItem('token');
   }
+  // send fastswiching data
+  // private trySendSettings(): void {
+  //   if (this._auth) {
+  //     this._account.edit(this.user, this.token)
+  //       .then(user => {},error => this.errorMessages['edit'] = error.message);
+  //   }
+  // }
 
   private firstOrDefaults(props: Array<string>, defVals: Array<string>): void {
     if (props.length === 0) {

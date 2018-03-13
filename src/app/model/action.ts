@@ -6,7 +6,8 @@ export class Action {
               public img_url?:string,
               public priority?:number,
               public sketch_content?:string,
-              public action_content?:string
+              public action_content?:string,
+              public isActive:boolean=false,
               ) {
   }
 }

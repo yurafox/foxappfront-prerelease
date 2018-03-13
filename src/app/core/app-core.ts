@@ -28,12 +28,14 @@ export interface IDTO {
 }
 
 export class CustomValidators {
-  public static compare(control: AbstractControl): { [k: string]: any } {
-    const data = control.value;
-    let dataPrimary = control.root.get('password');
-    dataPrimary = (!dataPrimary) ? '' : dataPrimary.value;
-    return (data !== dataPrimary) ? {'compare': data} : null;
-  };
+  public static compare(matchControlName:string){
+    return (control: AbstractControl): { [k: string]: any } =>{
+      const data = control.value;
+      let dataPrimary = control.root.get(matchControlName);
+      dataPrimary = (!dataPrimary) ? '' : dataPrimary.value;
+      return (data !== dataPrimary) ? {'compare': data} : null;
+    };
+  }
 }
 
 export class RefInjector {

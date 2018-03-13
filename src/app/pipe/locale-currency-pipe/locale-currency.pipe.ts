@@ -4,10 +4,10 @@ import {IDictionary} from '../../core/app-core';
 import {CurrencyStore} from '../../service/index';
 
 const map: IDictionary<{name: string, culture: string}> = {
-  '0': {name: 'UAH', culture: 'uk-UA'},
-  '1': {name: 'EUR', culture: 'en-US'},
-  '2': {name: 'USD', culture: 'en-US'},
-  '3': {name: 'MDL', culture: 'md-MD'}
+  '4': {name: 'UAH', culture: 'uk-UA'},
+  '3': {name: 'EUR', culture: 'en-US'},
+  '0': {name: 'USD', culture: 'en-US'},
+  '20': {name: 'MDL', culture: 'md-MD'}
 };
 
 @Pipe({

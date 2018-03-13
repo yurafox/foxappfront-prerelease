@@ -56,4 +56,4 @@ export * from './client-bonus';
 export * from './category';
 export * from './measure-unit';
 export * from './region';
-
+export * from './change-password';

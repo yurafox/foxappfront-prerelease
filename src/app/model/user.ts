@@ -26,3 +26,7 @@ export interface IUserVerifyAccountData {
    message:string,
    status: number
 }
+
+export interface IUserInfo extends IUserVerifyAccountData{
+   user:User
+}

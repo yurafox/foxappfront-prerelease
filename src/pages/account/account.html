@@ -4,43 +4,48 @@
 
   <ion-content padding class="outer-content">
     <ion-list class="list-form" *ngIf="onLoad">
+       <!--error message block-->
+       <ion-item class='alertDanger' *ngIf="verifyErrorData?.errorShow">
+          <span>{{verifyErrorData.errorMessage}}</span>
+      </ion-item>
+
       <form [formGroup]='editForm'>
         <ion-item *ngIf='!!(userService.errorMessages[edit])' class='alertDanger'>
           <span>{{userService.errorMessages[edit]}}</span>
         </ion-item>
 
         <ion-item>
-          <ion-label floating>E-mail</ion-label>
+          <ion-label floating><font class="f-color-red">*&nbsp;</font>E-mail</ion-label>
           <ion-input type="text" formControlName="email"></ion-input>
         </ion-item>
         <ion-item class='alertDanger' *ngIf="formErrors.email">
           <span>{{formErrors.email}}</span>
         </ion-item>
-
-
+        
         <ion-item>
-          <ion-label floating><span loc="Пароль" name="Password">{{locale['Password']}}</span></ion-label>
-          <ion-input type="password"  formControlName="password"></ion-input>
-        </ion-item>
-        <ion-item class='alertDanger' *ngIf="formErrors.password">
-          <span>{{formErrors.password}}</span>
-        </ion-item>
-
-        <ion-item>
-          <ion-label floating><span loc="Имя" name="Name">{{locale['Name']}}</span></ion-label>
-          <ion-input type="text" formControlName="name"></ion-input>
-        </ion-item>
-        <ion-item class='alertDanger' *ngIf="formErrors.name">
-          <span>{{formErrors.name}}</span>
+            <ion-label floating><span loc="Имя"><font class="f-color-red">*&nbsp;</font>{{locale['Name']}}</span></ion-label>
+            <ion-input style="margin-left: 13px" type="text"  formControlName="fname"></ion-input>
+          </ion-item>
+          <ion-item class='alertDanger' *ngIf="formErrors.fname">
+            <span>{{formErrors.fname}}</span>
         </ion-item>
 
         <ion-item>
+            <ion-label floating><span loc="Фамилия">{{locale['Surname']}}</span></ion-label>
+            <ion-input style="margin-left: 13px" type="text" formControlName="lname"></ion-input>
+          </ion-item>
+          <ion-item class='alertDanger' *ngIf="formErrors.lname">
+            <span>{{formErrors.lname}}</span>
+        </ion-item>
+
+
+        <!-- <ion-item>
           <ion-label floating><span loc="Ключ" name="AppKey">{{locale['AppKey']}}</span></ion-label>
           <ion-input type="text" formControlName="appKey"></ion-input>
         </ion-item>
         <ion-item class='alertDanger' *ngIf="formErrors.appKey">
           <span>{{formErrors.appKey}}</span>
-        </ion-item>
+        </ion-item> -->
 
         <ion-grid class="f-top20">
           <ion-row>
@@ -74,7 +79,7 @@
           </ion-row>
         </ion-grid>
 
-        <button style="background: #ffbc2e" ion-button block color="fox" (click)="edit()"><span loc="Применить" name="Apply">{{locale['Apply']}}</span></button>
+        <button [disabled]="isSendAsync" style="background: #ffbc2e" ion-button block color="fox" (click)="edit()"><span loc="Применить" name="Apply">{{locale['Apply']}}</span></button>
       </form>
 
     </ion-list>
