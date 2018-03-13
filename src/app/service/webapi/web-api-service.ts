@@ -5787,12 +5787,12 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     {
       id: 1,
       noveltyId: 1,
-      idProduct: 6310491
+      productId: 6310491
     },
     {
       id: 2,
       noveltyId: 1,
-      idProduct: 6312913
+      productId: 6312913
     }
   ];
   // </editor-fold>

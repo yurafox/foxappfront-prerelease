@@ -1,6 +1,6 @@
 export class Novelty {
   constructor(public id?: number,
-              public productId?: number,
+              public idProduct?: number,
               public name?: string,
               public img_url?: string,
               public priority?: number,

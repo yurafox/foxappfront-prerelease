@@ -48,39 +48,44 @@ import {ConnectivityService} from "../../connectivity-service";
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
-const productDescriptionsUrl = "http://localhost:44374/api/product/getProductDescription";
-const productsUrl = "http://localhost:44374/api/product";
-const currenciesUrl = "http://localhost:44374/api/currency";
-const manufacturersUrl = "http://localhost:44374/api/manufacturer";
-const quotationProductsUrl = "http://localhost:44374/api/quotationproduct";
-const suppliersUrl = "http://localhost:44374/api/supplier";
-const measureUnitUrl = 'http://localhost:44374/api/measureUnit';
-const LangUrl = "http://localhost:44374/api/localization/lang";
-const countriesUrl = "http://localhost:44374/api/geo/country";
-const citiesUrl = "http://localhost:44374/api/geo/city";
-const getPaymentMethodsUrl = "http://localhost:44374/api/fin/pmtmethod";
-const loEntitiesUrl = "http://localhost:44374/api/lo/loentity";
-const quotationsUrl = "http://localhost:44374/api/quotation";
-const clientsUrl = "http://localhost:44374/api/client";
-const cartProductsUrl = "http://localhost:44374/api/cart/CartProducts";
-const productStorePlacesUrl = "http://localhost:44374/api/storeplace/productstoreplaces";
-const storePlacesUrl = "http://localhost:44374/api/storeplace/storeplace";
-const loSupplEntitiesUrl = "http://localhost:44374/api/lo/losupplentity";
-const specLOTrackingLogUrl = "http://localhost:44374/api/lo/specLOTrackingLog";
-const clientDraftOrderUrl = "http://localhost:44374/api/Cart/ClientDraftOrder";
-const personsUrl = "http://localhost:44374/api/client/person";
-const productImagesUrl = "http://localhost:44374/api/product/getProductImages";
-const getBonusesInfoUrl = "http://localhost:44374/api/client/getBonusesInfo";
-const getClientBonusesExpireInfoUrl = "http://localhost:44374/api/client/GetBonusesExpireInfo";
-const creditProductsUrl = "http://localhost:44374/api/credit/creditproduct";
-const productSupplCreditGradesUrl = "http://localhost:44374/api/credit/GetProductCreditSize";
-const postProductViewUrl = "http://localhost:44374/api/client/LogProductView";
-const clientAddressesUrl = "http://localhost:44374/api/client/clientAddress";
-const clientOrderSpecProductsUrl = "http://localhost:44374/api/Cart/GetCartProductsByOrderId";
-const clientOrdersUrl = "http://localhost:44374/api/Cart/GetClientOrders";
-const citiesWithStoresUrl = "http://localhost:44374/api/geo/citiesWithStores";
-const storesUrl = "http://localhost:44374/api/storeplace/stores";
-const productReviewsUrl = "http://localhost:44374/api/product/GetProductReviews";
+const productDescriptionsUrl = `${AppConstants.BASE_URL}/api/product/getProductDescription`;
+const productsUrl = `${AppConstants.BASE_URL}/api/product`;
+const currenciesUrl = `${AppConstants.BASE_URL}/api/currency`;
+const manufacturersUrl = `${AppConstants.BASE_URL}/api/manufacturer`;
+const quotationProductsUrl = `${AppConstants.BASE_URL}/api/quotationproduct`;
+const suppliersUrl = `${AppConstants.BASE_URL}/api/supplier`;
+const measureUnitUrl = `${AppConstants.BASE_URL}/api/measureUnit`;
+const LangUrl = `${AppConstants.BASE_URL}/api/localization/lang`;
+const countriesUrl = `${AppConstants.BASE_URL}/api/geo/country`;
+const citiesUrl = `${AppConstants.BASE_URL}/api/geo/city`;
+const getPaymentMethodsUrl = `${AppConstants.BASE_URL}/api/fin/pmtmethod`;
+const loEntitiesUrl = `${AppConstants.BASE_URL}/api/lo/loentity`;
+const quotationsUrl = `${AppConstants.BASE_URL}/api/quotation`;
+const clientsUrl = `${AppConstants.BASE_URL}/api/client`;
+const cartProductsUrl = `${AppConstants.BASE_URL}/api/cart/CartProducts`;
+const productStorePlacesUrl = `${AppConstants.BASE_URL}/api/storeplace/productstoreplaces`;
+const storePlacesUrl = `${AppConstants.BASE_URL}/api/storeplace/storeplace`;
+const loSupplEntitiesUrl = `${AppConstants.BASE_URL}/api/lo/losupplentity`;
+const specLOTrackingLogUrl = `${AppConstants.BASE_URL}/api/lo/specLOTrackingLog`;
+const clientDraftOrderUrl = `${AppConstants.BASE_URL}/api/Cart/ClientDraftOrder`;
+const personsUrl = `${AppConstants.BASE_URL}/api/client/person`;
+const productImagesUrl = `${AppConstants.BASE_URL}/api/product/getProductImages`;
+const getBonusesInfoUrl = `${AppConstants.BASE_URL}/api/client/getBonusesInfo`;
+const getClientBonusesExpireInfoUrl = `${AppConstants.BASE_URL}/api/client/GetBonusesExpireInfo`;
+const creditProductsUrl = `${AppConstants.BASE_URL}/api/credit/creditproduct`;
+const productSupplCreditGradesUrl = `${AppConstants.BASE_URL}/api/credit/GetProductCreditSize`;
+const postProductViewUrl = `${AppConstants.BASE_URL}/api/client/LogProductView`;
+const clientAddressesUrl = `${AppConstants.BASE_URL}/api/client/clientAddress`;
+const clientOrderSpecProductsUrl = `${AppConstants.BASE_URL}/api/Cart/GetCartProductsByOrderId`;
+const clientOrdersUrl = `${AppConstants.BASE_URL}/api/Cart/GetClientOrders`;
+const citiesWithStoresUrl = `${AppConstants.BASE_URL}/api/geo/citiesWithStores`;
+const storesUrl = `${AppConstants.BASE_URL}/api/storeplace/stores`;
+const productReviewsUrl = `${AppConstants.BASE_URL}/api/product/GetProductReviews`;
+const storeReviewsUrl = `${AppConstants.BASE_URL}/api/storeplace/GetStoreReviews`;
+const storeReviewsByStoreIdUrl = `${AppConstants.BASE_URL}/api/storeplace/GetStoreReviewsByStoreId`;
+const noveltyByIdDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNoveltyById`;
+const noveltiesDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNovelties`;
+const noveltyDetailsDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNoveltyDetailsByNoveltyId`;
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -124,13 +129,13 @@ const calculateCartUrl = "/api/mcalculateCart";
 const pagesDynamicUrl = "/api/mpages";
 const actionDynamicUrl = "/api/mactions";
 const actionOffersUrl = "/api/mactionOffers";
-const storeReviewsUrl = "/api/mstoreReviews";
+// const storeReviewsUrl = "/api/mstoreReviews";
 const pollsUrl='/api/mpolls';
 const pollQuestionUrl='/api/mpollQuestion';
 const pollQuestionAnswerUrl = '/api/mpollQuestionAnswer';
 const clientPollAnswersUrl = '/api/mclientPollAnswers';
-const noveltyDynamicUrl = "/api/mnovelties";
-const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
+// const noveltyDynamicUrl = "/api/mnovelties";
+//const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
 const deviceDataUrl = "/api/mdeviceData";
 
 const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/api/catalog`:"/api/mcategories";
@@ -931,7 +936,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getProductReviewsByProductId(productId: number): Promise<ProductReview[]> {
     try {
       const response = await this.http
-        .get(productReviewsUrl + "/" + productId).toPromise();
+        .get(`${productReviewsUrl}/${productId}`).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -999,7 +1004,7 @@ export class AppDataRepository extends AbstractDataRepository {
             }
           }
         })
-      } console.log(qProductsRevs);
+      }
       return qProductsRevs;
     } catch (err) {
       return await this.handleError(err);
@@ -2267,41 +2272,54 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getStores(): Promise<IDictionary<Store[]>> {
     try {
-      const response = await this.http.get(storesUrl).toPromise();
+      if (this.cache.Store.Count() === 0) {
+        const response = await this.http.get(storesUrl).toPromise();
 
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      let stores: IDictionary<Store[]> = {};
-      if (data != null) {
-        let storeFiltered = [];
-        let cityID: number[] = [];
-        data.forEach(dataStore => {
-          if (!cityID.includes(dataStore.idCity)) {
-            cityID.push(dataStore.idCity);
-            storeFiltered = data.filter((value: Store): string => {
-              return value.idCity === dataStore.idCity ? dataStore.idCity.toString() : '';
-            });
-            let storeArr: Store[] = [];
-            for (let i=0; i< storeFiltered.length; i++) {
-              let store = storeFiltered[i];
-              let position = {lat: store.lat, lng: store.lng};
-              if (store.openTime !== null && store.closeTime !== null && store.rating === null && store.idFeedbacks === null) {
-                storeArr.push(new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime));
-              } else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.idFeedbacks === null) {
-                storeArr.push(new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime, store.rating));
-              } else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.idFeedbacks !== null) {
-                storeArr.push(new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime, store.rating, store.idFeedbacks));
-              } else {
-                storeArr.push(new Store(store.id, store.idCity, store.address, position));
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        let stores: IDictionary<Store[]> = {};
+        if (data != null) {
+          let storeFiltered = [];
+          let cityID: number[] = [];
+          data.forEach(dataStore => {
+            if (!cityID.includes(dataStore.idCity)) {
+              cityID.push(dataStore.idCity);
+              storeFiltered = data.filter((value: Store): string => {
+                return value.idCity === dataStore.idCity ? dataStore.idCity.toString() : '';
+              });
+              let storeArr: Store[] = [];
+              for (let i = 0; i < storeFiltered.length; i++) {
+                let store = storeFiltered[i];
+                let position = {lat: store.lat, lng: store.lng};
+                if (store.openTime !== null && store.closeTime !== null && store.rating === null && store.idFeedbacks === null) {
+                  let s = new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime);
+                  storeArr.push(s);
+                } else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.idFeedbacks === null) {
+                  let s = new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime, store.rating);
+                  storeArr.push(s);
+                } else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.idFeedbacks !== null) {
+                  let s = new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime, store.rating, store.idFeedbacks);
+                  storeArr.push(s);
+                } else {
+                  let s = new Store(store.id, store.idCity, store.address, position);
+                  storeArr.push(s);
+                }
               }
+              stores[dataStore.idCity.toString()] = storeArr;
+              this.cache.Store.Add(dataStore.idCity.toString(),{id: dataStore.idCity.toString(), stores: storeArr});
             }
-            stores[dataStore.idCity.toString()] = storeArr;
-          }
+          });
+        }
+        return stores;
+      } else {
+        let stores: IDictionary<Store[]> = {};
+        this.cache.Store.Values().forEach(val => {
+          stores[val.id.toString()] = val.stores;
         });
+        return stores;
       }
-      return stores;
     } catch (err) {
       await this.handleError(err);
     }
@@ -2309,7 +2327,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getStoreById(id: number): Promise<Store> {
     try {
-      const response = await this.http.get(storePlacesUrl + `/${id}`).toPromise();
+      const response = await this.http.get(`${storePlacesUrl}/${id}`).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2332,52 +2350,158 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]> {
     try {
       const response = await this.http
-        .get(storeReviewsUrl, {
-          search: this.createSearchParams([
-            {key: "idStore", value: storeId.toString()}
-          ])
-        })
-        .toPromise();
+        .get(`${storeReviewsByStoreIdUrl}/${storeId}`).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
       const storesRevs = new Array<StoreReview>();
+      let answers: IDictionary<ReviewAnswer[]> = {};
       if (data != null) {
         data.forEach(val => {
-          let answers: ReviewAnswer[] = [];
-          if (val.reviewAnswers) {
-            val.reviewAnswers.forEach(answer => {
-              answers.push(
-                new ReviewAnswer(
-                  answer.id,
-                  answer.idReview,
-                  answer.user,
-                  answer.answerDate,
-                  answer.answerText
-                )
-              );
-            });
-          }
-          storesRevs.push(
-            new StoreReview(
+          let substrings = val.reviewDate.toString().split("T");
+          let substring1 = substrings[0].slice(0, substrings[0].length);
+          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
+          let date = substring1 + " " + substring2;
+          if (val.idReview && val.idReview !== null) {
+            if(!answers[val.idReview.toString()]) {
+              answers[val.idReview.toString()] = [];
+            }
+            answers[val.idReview.toString()].push(new ReviewAnswer(
               val.id,
-              val.idStore,
+              val.idReview,
               val.user,
-              val.reviewDate,
-              val.reviewText,
-              val.rating,
-              val.advantages,
-              val.disadvantages,
-              val.upvotes,
-              val.downvotes,
-              answers
-            )
-          )
+              new Date(date),
+              val.reviewText
+            ));
+          }
         });
+        data.forEach(val => {
+          let substrings = val.reviewDate.toString().split("T");
+          let substring1 = substrings[0].slice(0, substrings[0].length);
+          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
+          let date = substring1 + " " + substring2;
+          if (val.idReview === null) {
+            if (answers[val.id.toString()]) {
+              storesRevs.push(
+                new StoreReview(
+                  val.id,
+                  val.idStore,
+                  val.user,
+                  new Date(date),
+                  val.reviewText,
+                  val.rating,
+                  val.advantages,
+                  val.disadvantages,
+                  val.upvotes,
+                  val.downvotes,
+                  answers[val.id.toString()]
+                )
+              )
+            } else {
+              storesRevs.push(
+                new StoreReview(
+                  val.id,
+                  val.idStore,
+                  val.user,
+                  new Date(date),
+                  val.reviewText,
+                  val.rating,
+                  val.advantages,
+                  val.disadvantages,
+                  val.upvotes,
+                  val.downvotes,
+                  []
+                )
+              )
+            }
+          }
+        })
       }
       return storesRevs;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getStoreReviews(): Promise<IDictionary<StoreReview[]>> {
+    try {
+      const response = await this.http
+        .get(`${storeReviewsUrl}`).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      let reviews: IDictionary<StoreReview[]> = {};
+      if (data != null) {
+        const storesRevs = new Array<StoreReview>();
+        let answers: IDictionary<ReviewAnswer[]> = {};
+        let idStore: number = 0;
+        data.forEach(val => {
+          let substrings = val.reviewDate.toString().split("T");
+          let substring1 = substrings[0].slice(0, substrings[0].length);
+          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
+          let date = substring1 + " " + substring2;
+          if (val.idReview && val.idReview !== null) {
+            if (!answers[val.idReview.toString()]) {
+              answers[val.idReview.toString()] = [];
+            }
+            answers[val.idReview.toString()].push(new ReviewAnswer(
+              val.id,
+              val.idReview,
+              val.user,
+              new Date(date),
+              val.reviewText
+            ));
+          }
+        });
+        data.forEach(val => {
+          idStore = val.idStore;
+          let substrings = val.reviewDate.toString().split("T");
+          let substring1 = substrings[0].slice(0, substrings[0].length);
+          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
+          let date = substring1 + " " + substring2;
+          if (val.idReview === null) {
+            if (answers[val.id.toString()]) {
+              storesRevs.push(
+                new StoreReview(
+                  val.id,
+                  val.idStore,
+                  val.user,
+                  new Date(date),
+                  val.reviewText,
+                  val.rating,
+                  val.advantages,
+                  val.disadvantages,
+                  val.upvotes,
+                  val.downvotes,
+                  answers[val.id.toString()]
+                )
+              )
+            } else {
+              storesRevs.push(
+                new StoreReview(
+                  val.id,
+                  val.idStore,
+                  val.user,
+                  new Date(date),
+                  val.reviewText,
+                  val.rating,
+                  val.advantages,
+                  val.disadvantages,
+                  val.upvotes,
+                  val.downvotes,
+                  []
+                )
+              )
+            }
+          }
+        });
+        reviews[idStore.toString()] = storesRevs;
+      }
+      return reviews;
     } catch (err) {
       return await this.handleError(err);
     }
@@ -2527,18 +2651,18 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getNovelty(id: number): Promise<Novelty> {
     try {
       const response = await this.http
-        .get(`${noveltyDynamicUrl}/${id}`)
+        .get(`${noveltyByIdDynamicUrl}/${id}`)
         .toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      let novelty: Novelty = null;
+      let novelty: Novelty;
       if (data != null) {
         novelty = new Novelty(
           data.id,
-          data.productId,
+          data.idProduct,
           data.name,
           data.img_url,
           data.priority,
@@ -2554,7 +2678,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getNovelties(): Promise<Novelty[]> {
     try {
-      const response = await this.http.get(noveltyDynamicUrl).toPromise();
+      const response = await this.http.get(noveltiesDynamicUrl).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2565,7 +2689,7 @@ export class AppDataRepository extends AbstractDataRepository {
         data.forEach(val => {
           const novelty: Novelty = new Novelty(
             val.id,
-            val.productId,
+            val.idProduct,
             val.name,
             val.img_url,
             val.priority,
@@ -2637,11 +2761,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getNoveltyDetailsByNoveltyId(id: number): Promise<NoveltyDetails[]> {
     try {
-      const response = await this.http.get(`${noveltyDetailsDynamicUrl}`, {
-        search: this.createSearchParams([
-          {key: "noveltyId", value: id.toString()}
-        ])
-      }).toPromise();
+      const response = await this.http.get(`${noveltyDetailsDynamicUrl}/${id}`).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2653,7 +2773,7 @@ export class AppDataRepository extends AbstractDataRepository {
         data.forEach(val => {
           let detail: NoveltyDetails = new NoveltyDetails(
             val.id,
-            val.noveltyId,
+            val.idNovelty,
             val.idProduct
           );
           noveltyDetails.push(detail);

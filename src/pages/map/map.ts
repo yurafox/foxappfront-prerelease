@@ -36,6 +36,7 @@ export class MapPage extends ComponentBase implements OnInit {
   selectedMarker: SelectItem;
   markersArr: IDictionary<Store[]>;
   shopList: Array<SelectItem>;
+  storeReviews: IDictionary<StoreReview[]>;
   options: any;
   userPos: LatLng;
   userPosIsKnown: boolean;
@@ -62,7 +63,8 @@ export class MapPage extends ComponentBase implements OnInit {
     this.initLocalization();
     this.defaultCityId = "38044";
     this.shopList = [{label: '', value: null}];
-    this.markersArr = null;
+    this.storeReviews = {};
+    this.markersArr = {};
     this.cities = [{id: 0, name: ''}];
     this.selectedMarker = {label: '', value: null};
     this.userPos = new LatLng(0, 0);
@@ -89,7 +91,6 @@ export class MapPage extends ComponentBase implements OnInit {
   }
 
   async ngOnInit() {
-    //super.ngOnInit();
     if (this.userService.isAuth) {
       this.isAuthorized = true;
     }
@@ -113,7 +114,9 @@ export class MapPage extends ComponentBase implements OnInit {
     };
 
     try {
-      [this.markersArr, this.cities] = await Promise.all([this.repo.getStores(), this.repo.getCitiesWithStores()]);
+      this.markersArr = await this.repo.getStores();
+      this.cities = await this.repo.getCitiesWithStores();
+      this.storeReviews = await this.repo.getStoreReviews();
 
       if ((this.cities && this.cities.length > 0) && this.markersArr) {
         if (this.userPosIsKnown === true) {
@@ -170,16 +173,9 @@ export class MapPage extends ComponentBase implements OnInit {
               let labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnoprstuvwxyz';
 
               let reviews: StoreReview[] = [];
-              this.repo.getStoreReviewsByStoreId(markerData.id).then(reviewsArr => { //TODO: Change method in repo
-                reviewsArr.forEach(review => {
-                  if (review.idStore === markerData.id) {
-                    reviews.push(review);
-                  }
-                });
-              }).catch(err => {
-                console.log(`Error retrieving store reviews: ${err}`);
-                return null;
-              });
+              if (this.storeReviews[this.markersArr[cityID][i].id.toString()]) {
+                reviews = this.storeReviews[this.markersArr[cityID][i].id.toString()];
+              }
 
               let shopOpensTime: string = markerData.openTime;
               let shopClosesTime: string = markerData.closeTime;

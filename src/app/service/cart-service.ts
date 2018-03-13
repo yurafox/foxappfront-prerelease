@@ -227,7 +227,7 @@ export class CartService {
       if (this.order.idPerson)
         this.person = await this.repo.getPersonById(this.order.idPerson);
 
-      let op = await this.repo.getCartProducts();``
+      let op = await this.repo.getCartProducts();
       for (let i of this.orderProducts) {
         await this.repo.saveCartProduct(i);
         op.push(i);
