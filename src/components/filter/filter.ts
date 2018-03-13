@@ -3,7 +3,7 @@ import {Product} from '../../app/model/product';
 import {ComponentBase} from '../component-extension/component-base';
 import {PopoverController} from 'ionic-angular';
 import {FilterPopoverPage} from '../../pages/filter-popover/filter-popover';
-import {Prop, Manufacturer, ProductPropValue} from '../../app/model/index';
+import {Prop, Manufacturer} from '../../app/model/index';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 class MnfFilterStruct {
@@ -260,6 +260,20 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     if (propsArray.length == 0) return true;
 
     let occur = 0;
+    let res = false;
+    for (let x of propsArray) {
+      let fnd = product.Props.find(y => {return ((y.id_Prop.id === x.propId) && (y.value === x.propVal));});
+      if (fnd)
+        occur++;
+      if (occur === propsArray.length) {
+        res = true;
+        break;
+      };
+    };
+
+    return res;
+
+    /*
     propsArray.forEach(x => {
       let fnd = product.Props.find(y => {return ((y.id_Prop.id === x.propId) && (y.value === x.propVal));});
       if (fnd)
@@ -267,6 +281,7 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     });
 
     return (occur === propsArray.length);
+    */
   }
 
   async showFilter(event: any) {

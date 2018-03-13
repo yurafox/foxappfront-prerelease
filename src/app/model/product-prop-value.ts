@@ -22,9 +22,10 @@ export class ProductPropValue {
     public id_Measure_Unit?: number,
     public idx?: number,
     public out_bmask?: number
-
-
-  ) { this._repo = RefInjector.pull(AbstractDataRepository); }
+  )
+  {
+    this._repo = RefInjector.pull(AbstractDataRepository);
+  }
 
   public get value(): any {
     if (this.id_Prop.prop_type == 1 ) {
@@ -42,7 +43,5 @@ export class ProductPropValue {
     if (this.id_Prop.prop_type == 4 ) {
       return (this.prop_Value_Enum) ? this.prop_Value_Enum.name : null;
     };
-
-
   }
 }

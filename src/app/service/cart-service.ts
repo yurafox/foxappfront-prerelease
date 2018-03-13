@@ -6,7 +6,6 @@ import {StorePlace} from '../model/store-place';
 import {UserService} from './bll/user-service';
 import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
 import {EventService} from './event-service';
-import {EnumPaymentMethod} from '../model/enum-payment-method';
 import {AlertController, App} from 'ionic-angular';
 import {PersonInfo} from '../model/person';
 import {CreditCalc} from '../model/credit-calc';

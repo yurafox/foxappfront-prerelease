@@ -18,6 +18,15 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'msgErrorEncountered', lang:3, text:'There was an error'}
     ];
 
+    this._mockLocalizationStore['Types'] = [
+      { tagName:'typeBoolTrue', lang:1, text:'Да'},
+      { tagName:'typeBoolTrue', lang:2, text:'Так'},
+      { tagName:'typeBoolTrue', lang:3, text:'Yes'},
+      { tagName:'typeBoolFalse', lang:1, text:'Нет'},
+      { tagName:'typeBoolFalse', lang:2, text:'Ні'},
+      { tagName:'typeBoolFalse', lang:3, text:'No'}
+    ];
+
     this._mockLocalizationStore['FoxApp'] = [
       { tagName:'Hello', lang:1, text:'Привет'},
       { tagName:'Hello', lang:2, text:'Привіт'},
