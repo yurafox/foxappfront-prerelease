@@ -260,20 +260,6 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     if (propsArray.length == 0) return true;
 
     let occur = 0;
-    let res = false;
-    for (let x of propsArray) {
-      let fnd = product.Props.find(y => {return ((y.id_Prop.id === x.propId) && (y.value === x.propVal));});
-      if (fnd)
-        occur++;
-      if (occur === propsArray.length) {
-        res = true;
-        break;
-      };
-    };
-
-    return res;
-
-    /*
     propsArray.forEach(x => {
       let fnd = product.Props.find(y => {return ((y.id_Prop.id === x.propId) && (y.value === x.propVal));});
       if (fnd)
@@ -281,7 +267,7 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     });
 
     return (occur === propsArray.length);
-    */
+
   }
 
   async showFilter(event: any) {
