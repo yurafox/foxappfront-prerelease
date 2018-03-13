@@ -15,13 +15,13 @@ export class ChangePasswordPage extends ComponentBase {
   public currentForm: FormGroup;
   public isSendAsync = false;
   public verifyErrorData:{errorShow:boolean,errorMessage:string}
-  
+
   public formErrors = {
     'password': '',
     'newpassword':'',
     'confirmpassword':''
   };
-  
+
   public errorMessages = {};
 
   constructor(public navCtrl: NavController,
@@ -31,7 +31,7 @@ export class ChangePasswordPage extends ComponentBase {
     super();
     this.verifyErrorData={errorShow:false,errorMessage:''};
   }
-  
+
   async ngOnInit(){
     super.ngOnInit();
     this.errorMessages = {
@@ -55,13 +55,13 @@ export class ChangePasswordPage extends ComponentBase {
 
     this.buildForm();
   }
-  
+
   public change():void {
     this.clearVerifyError();
     if (!this.currentForm.valid) {
       return;
     }
-    
+
     // start block logic for multiple sending
     this.isSendAsync = true;
 
@@ -139,8 +139,9 @@ export class ChangePasswordPage extends ComponentBase {
   }
 
   private logout() {
-    this.userService.logOut();
-    this.userService.removeToken();
+    //this.userService.logOut();
+    //this.userService.removeToken();
+
     this.navCtrl.setRoot('HomePage');
   }
 }

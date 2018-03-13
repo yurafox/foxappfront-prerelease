@@ -14,7 +14,7 @@ export class LoginPage extends ComponentBase implements OnInit {
   private _authError = false;
   private _phone = '';
   public loginForm: FormGroup;
- 
+
   public get authError() {
     return this._authError;
   }
@@ -41,7 +41,7 @@ export class LoginPage extends ComponentBase implements OnInit {
               private formBuilder: FormBuilder, public cart: CartService) {
     super();
     this.initLocalization();
-    const navData = this.navParams.data; 
+    const navData = this.navParams.data;
     this._phone = (navData && navData.phone) ? navData.phone : '';
   }
 
@@ -69,10 +69,10 @@ export class LoginPage extends ComponentBase implements OnInit {
       if (this.navParams.data.continuePage) {
         if (this.navParams.data.continuePage === 'SelectShipAddressPage') {
           this.cart.cartValidationNeeded = true;
-          this.nav.push(this.navParams.data.continuePage, {fromCart: 1});
+          this.toContinuePage({fromCart: 1});
         }
         else if (this.navParams.data.continuePage !== 'SelectShipAddressPage') {
-          this.nav.push(this.navParams.data.continuePage, this.navParams.data.params);
+          this.toContinuePage(this.navParams.data.params);
         }
       }
       else
@@ -81,7 +81,14 @@ export class LoginPage extends ComponentBase implements OnInit {
     else this._authError = true;
   }
 
-  // <editor-fold desc="form builder">
+  private toContinuePage(params:any) {
+    this.nav.remove(0).then(() => this.nav.insert(0, 'HomePage'));
+    this.nav.push(this.navParams.data.continuePage,params).then(() => {
+      this.nav.remove(this.nav.getActive().index);
+    });
+  }
+
+// <editor-fold desc="form builder">
   private buildForm(): void {
     this.loginForm = this.formBuilder.group({
       'phone': [this._phone, [Validators.required,
