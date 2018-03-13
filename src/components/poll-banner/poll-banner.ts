@@ -24,12 +24,14 @@ export class PollBannerComponent extends ComponentBase{
 
   async ngOnInit() {
     super.ngOnInit();
-    [this.currentPoll,this.clientAnswers] = await Promise.all([this._repo.getPollById(this.innerId || 1),
-                                                               this._repo.getClientPoolAnswersForUserByPollId(this.innerId)]);
+    if (this.userService.isAuth) {
+      [this.currentPoll,this.clientAnswers] = await Promise.all([this._repo.getPollById(this.innerId || 1),
+        this._repo.getClientPoolAnswersForUserByPollId(this.innerId)]);
 
-    this.canView = this.userService.isAuth
-                     && new Date() <= this.currentPoll.dateEnd
-                     && this.clientAnswers.length===0;
+      this.canView = new Date() <= this.currentPoll.dateEnd
+                        && this.clientAnswers.length===0;
+    }
+    else this.canView = false;
   }
 
   public openItem():void {
