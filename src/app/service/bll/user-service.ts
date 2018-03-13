@@ -52,8 +52,8 @@ export class UserService {
   // }
 
   public get lang(): number {
-    return 3;
-    //return +this.user.userSetting['lang'];
+    //return 3;
+    return +this.user.userSetting['lang'];
   }
 
   public get currency(): number {
@@ -207,7 +207,7 @@ export class UserService {
           this.errorClear('edit');
           this.localeUserService();
         }
-        
+
         return res;
      }
     } catch (err) {

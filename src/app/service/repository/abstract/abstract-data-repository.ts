@@ -28,9 +28,10 @@ import { QuotationProduct,
           ClientPollAnswer, PersonInfo, CreditProduct, ClientBonus,
           LoTrackLog,
           Category,
-          MeasureUnit
+          MeasureUnit,
+          Region
        } from '../../../model/index';
-import {Region} from '../../../model/region';
+import {IDictionary} from "../../../core/app-core";
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
@@ -114,8 +115,9 @@ export abstract class AbstractDataRepository {
 
 
   public async abstract getCitiesWithStores(): Promise<City[]>;
-  public async abstract getStores(): Promise<Array<{idCity: number, stores: Store[]}>>;
-  public async abstract getStoreById(id: number): Promise<{idCity: number, store: Store}>;
+  public async abstract getStores(): Promise<IDictionary<Store[]>>;
+  public async abstract getStoreById(id: number): Promise<Store>;
+  public async abstract getStoreReviews(): Promise<IDictionary<StoreReview[]>>;
   public async abstract getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]>;
   public async abstract getPageContent(id:number):Promise<string>;
   public async abstract getAction(id:number):Promise<Action>;
@@ -137,7 +139,6 @@ export abstract class AbstractDataRepository {
   public async abstract postProductView(idProduct: number, params: string);
   public async abstract postDeviceData(deviceData: DeviceData): Promise<DeviceData>
   public async abstract getCategories(): Promise<Category[]>;
-  public async abstract getDataForRedirectToPaymaster(orderID: number, cartTotal: number): Promise<any>;
   public async abstract loadMeasureUnitCache();
   public async abstract getMeasureUnitById(unitId: number): Promise<MeasureUnit>;
   public async abstract getProductDescription(id: number): Promise<string>;

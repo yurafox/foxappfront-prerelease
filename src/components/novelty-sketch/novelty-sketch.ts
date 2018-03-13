@@ -26,13 +26,13 @@ export class NoveltySketchComponent extends ComponentBase{
     if (!this.novelty || !this.novelty.id) {
       this.novelty = await this._repo.getNovelty(this.innerId);
       if (this.novelty) {
-        this.productId = this.novelty.productId;
-        this.product = await this._repo.getProductById(this.novelty.productId);
+        this.productId = this.novelty.idProduct;
+        this.product = await this._repo.getProductById(this.novelty.idProduct);
       }
     } else {
-      if(this.novelty.productId) {
-        this.productId = this.novelty.productId;
-        this.product = await this._repo.getProductById(this.novelty.productId);
+      if(this.novelty.idProduct) {
+        this.productId = this.novelty.idProduct;
+        this.product = await this._repo.getProductById(this.novelty.idProduct);
       }
     }
     this.content=this.novelty.sketch_content;

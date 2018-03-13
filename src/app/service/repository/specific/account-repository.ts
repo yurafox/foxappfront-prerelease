@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {AbstractAccountRepository} from '../../index';
-import {Headers, Http, RequestOptionsArgs} from '@angular/http';
+import {Http} from '@angular/http';
 import {User,IUserVerifyAccountData,IUserInfo,LoginTemplate,ChangePassword} from '../../../model/index';
-import {HttpHeaders} from "@angular/common/http";
 import {AppConstants} from "../../../app-constants"
 import { RequestFactory } from '../../../core/app-core';
+import {ConnectivityService} from "../../connectivity-service";
 // server url
 const loginUrl = `${AppConstants.BASE_URL}/api/account/login`;
 const accountUrl = `${AppConstants.BASE_URL}/api/account`;
@@ -17,7 +17,7 @@ const changePasswdAccountUrl = `${AppConstants.BASE_URL}/api/account/changePass`
 @Injectable()
 export class AccountRepository extends AbstractAccountRepository {
 
-  constructor(private http:Http) {
+  constructor(private http:Http, private connServ: ConnectivityService) {
     super();
   }
 
@@ -34,7 +34,7 @@ export class AccountRepository extends AbstractAccountRepository {
       }
 
       const currentUser: User = new User(data.user.name, data.user.email,null,
-                                         data.user.appKey,data.user.userSetting,null,data.user.phone,data.user.fname,data.user.lname); 
+                                         data.user.appKey,data.user.userSetting,null,data.user.phone,data.user.fname,data.user.lname);
       return new LoginTemplate(data.token, currentUser);
     }
 
@@ -67,7 +67,7 @@ export class AccountRepository extends AbstractAccountRepository {
 
       // const currentUser: User = new User(data.name, data.email,null,null,
       //   data.userSetting,null,data.phone,data.fname,data.lname);
-      
+
       let userInfo:IUserInfo = {message:data.message,status:data.status,user:(response.status === 201)
                                  ? data.content : null};
       return userInfo;
@@ -97,7 +97,7 @@ export class AccountRepository extends AbstractAccountRepository {
       if(!data && response.status !== 200) {
         throw new Error(`ошибка правки данных`);
       }
-      
+
       return {message:data.message,status:data.status,user:(data.status === 2)
         ? data.content : null}
     }
@@ -153,7 +153,7 @@ export class AccountRepository extends AbstractAccountRepository {
       return await this.errorHandler(err);
     }
   }
- 
+
  public async changePassword(passwordModel:ChangePassword):Promise<IUserVerifyAccountData> {
   try {
     const response = await this.http.post(`${changePasswdAccountUrl}`,{
@@ -183,8 +183,11 @@ export class AccountRepository extends AbstractAccountRepository {
   // }
 
   // <editor-fold desc="error handler">
-  private errorHandler(err: any): Promise<any> {
-    return Promise.reject((err.message) ? err : new Error(`${err.status} ${err.statusText }`));
+  private errorHandler(err: any): any {
+    if (this.connServ.counter < 1) {
+      this.connServ.checkConnection(err);
+    }
+    //return Promise.reject((err.message) ? err : new Error(`${err.status} ${err.statusText }`));
   }
   // </editor-fold>
 

@@ -12,6 +12,7 @@ import {LoEntity} from '../model/lo-entity';
 import {Country} from '../model/country';
 import {EnumPaymentMethod} from '../model/enum-payment-method';
 import {Region} from '../model/region';
+import {Store} from "../model/store";
 
 export interface IDictionary<T> {
   [k: string]: T;
@@ -145,6 +146,7 @@ export namespace Providers {
     private _cacheManufacturer: IKeyedCollection<Manufacturer> = null;
     private _cacheCity: IKeyedCollection<City> = null;
     private _cacheStorePlace: IKeyedCollection<StorePlace> = null;
+    private _cacheStore: IKeyedCollection<{id:number, stores: Store[]}> = null;
     private _cacheMeasureUnit: IKeyedCollection<MeasureUnit> = null;
 
     private _cacheQuotation: IKeyedCollection<Quotation> = null;
@@ -201,6 +203,13 @@ export namespace Providers {
         this._cacheStorePlace = new CacheItems<StorePlace>(300);
 
       return this._cacheStorePlace;
+    }
+
+    public get Store(): IKeyedCollection<{id:number, stores: Store[]}> {
+      if (this._cacheStore == null)
+        this._cacheStore = new CacheItems<{id:number, stores: Store[]}>(300);
+
+      return this._cacheStore;
     }
 
     public get MeasureUnit(): IKeyedCollection<MeasureUnit> {

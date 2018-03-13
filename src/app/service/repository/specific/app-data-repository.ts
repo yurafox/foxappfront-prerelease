@@ -43,10 +43,8 @@ import {
 } from '../../../model/index';
 
 import { AbstractDataRepository } from '../../index';
-import { Providers } from '../../../core/app-core';
-import {ConnectivityService} from '../../connectivity-service';
-import {Region} from '../../../model/region';
-
+import {IDictionary, Providers } from '../../../core/app-core';
+import {ConnectivityService} from '../../connectivity-service';import {Region} from '../../../model/region';
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
@@ -92,6 +90,13 @@ const pollQuestionUrl=`${AppConstants.BASE_URL}/api/poll/pollQuestions`;
 const pollQuestionAnswerUrl = `${AppConstants.BASE_URL}/api/poll/pollAnswers`;
 const pagesDynamicUrl = `${AppConstants.BASE_URL}/api/page`;
 const actionDynamicUrl = `${AppConstants.BASE_URL}/api/stock`;
+const storesUrl = `${AppConstants.BASE_URL}/api/storeplace/stores`;
+const productReviewsUrl = `${AppConstants.BASE_URL}/api/product/GetProductReviews`;
+const storeReviewsUrl = `${AppConstants.BASE_URL}/api/storeplace/GetStoreReviews`;
+const storeReviewsByStoreIdUrl = `${AppConstants.BASE_URL}/api/storeplace/GetStoreReviewsByStoreId`;
+const noveltyByIdDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNoveltyById`;
+const noveltiesDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNovelties`;
+const noveltyDetailsDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNoveltyDetailsByNoveltyId`;
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
 // const currenciesUrl = "/api/mcurrencies";
@@ -125,22 +130,19 @@ const actionDynamicUrl = `${AppConstants.BASE_URL}/api/stock`;
 // const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
 // const clientOrdersUrl = "/api/mclientOrders";
 // const citiesWithStoresUrl = "/api/mcities";
+// const storesUrl = "/api/mstores";
 
 // const getDeliveryCostUrl = "/api/mgetDeliveryCost";
 // const getDeliveryDateUrl = "/api/mgetDeliveryDate";
 // const calculateCartUrl = "/api/mcalculateCart";
 
-
-const storesUrl = "/api/mstores";
-const productReviewsUrl = "/api/mproductReviews";
-
+// const productReviewsUrl = "/api/mproductReviews";
 const actionOffersUrl = "/api/mactionOffers";
-const storeReviewsUrl = "/api/mstoreReviews";
+// const storeReviewsUrl = "/api/mstoreReviews";
 
-const noveltyDynamicUrl = "/api/mnovelties";
-const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
+// const noveltyDynamicUrl = "/api/mnovelties";
+//const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
 const deviceDataUrl = "/api/mdeviceData";
-const redirectToPaymasterUrl = "/api/mredirectToPaymaster";
 
 const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/api/catalog`:"/api/mcategories";
 
@@ -839,50 +841,74 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getProductReviewsByProductId(productId: number): Promise<ProductReview[]> {
     try {
       const response = await this.http
-        .get(productReviewsUrl, {
-          search: this.createSearchParams([
-            {key: "idProduct", value: productId.toString()}
-          ])
-        })
-        .toPromise();
+        .get(`${productReviewsUrl}/${productId}`).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
       const qProductsRevs = new Array<ProductReview>();
+      let answers: IDictionary<ReviewAnswer[]> = {};
       if (data != null) {
         data.forEach(val => {
-          let answers: ReviewAnswer[] = [];
-          if (val.reviewAnswers) {
-            val.reviewAnswers.forEach(answer => {
-              answers.push(
-                new ReviewAnswer(
-                  answer.id,
-                  answer.idReview,
-                  answer.user,
-                  answer.answerDate,
-                  answer.answerText
-                )
-              );
-            });
-          }
-          qProductsRevs.push(
-            new ProductReview(
+          let substrings = val.reviewDate.toString().split("T");
+          let substring1 = substrings[0].slice(0, substrings[0].length);
+          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
+          let date = substring1 + " " + substring2;
+          if (val.idReview && val.idReview !== null) {
+            if(!answers[val.idReview.toString()]) {
+              answers[val.idReview.toString()] = [];
+            }
+            answers[val.idReview.toString()].push(new ReviewAnswer(
               val.id,
-              val.idProduct,
+              val.idReview,
               val.user,
-              val.reviewDate,
-              val.reviewText,
-              val.rating,
-              val.advantages,
-              val.disadvantages,
-              val.upvotes,
-              val.downvotes,
-              answers
-            )
-          )
+              new Date(date),
+              val.reviewText
+            ));
+          }
         });
+        data.forEach(val => {
+          let substrings = val.reviewDate.toString().split("T");
+          let substring1 = substrings[0].slice(0, substrings[0].length);
+          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
+          let date = substring1 + " " + substring2;
+          if (val.idReview === null) {
+            if (answers[val.id.toString()]) {
+              qProductsRevs.push(
+                new ProductReview(
+                  val.id,
+                  val.idProduct,
+                  val.user,
+                  new Date(date),
+                  val.reviewText,
+                  val.rating,
+                  val.advantages,
+                  val.disadvantages,
+                  val.upvotes,
+                  val.downvotes,
+                  answers[val.id.toString()]
+                )
+              )
+            } else {
+              qProductsRevs.push(
+                new ProductReview(
+                  val.id,
+                  val.idProduct,
+                  val.user,
+                  new Date(date),
+                  val.reviewText,
+                  val.rating,
+                  val.advantages,
+                  val.disadvantages,
+                  val.upvotes,
+                  val.downvotes,
+                  []
+                )
+              )
+            }
+          }
+        })
       }
       return qProductsRevs;
     } catch (err) {
@@ -2139,11 +2165,10 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   // <editor-fold desc="error handler"
-  private handleError(error?: Error): any /*Promise<any>*/ {
+  private handleError(error?: Error): any {
     if (this.connServ.counter < 1) {
       this.connServ.checkConnection(error);
     }
-    //return Promise.reject(error.message || error);
   }
 
   // </editor-fold>
@@ -2289,97 +2314,78 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getStores(): Promise<Array<{ idCity: number; stores: Store[] }>> {
+  public async getStores(): Promise<IDictionary<Store[]>> {
     try {
-      const response = await this.http.get(storesUrl).toPromise();
+      if (this.cache.Store.Count() === 0) {
+        const response = await this.http.get(storesUrl).toPromise();
 
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      const stores = new Array<{ idCity: number; stores: Store[] }>();
-      if (data != null) {
-        data.forEach(val => {
-          const storeArr = new Array<Store>();
-          const arr: Store[] = val.stores;
-          arr.forEach(store => {
-            if (
-              store.openTime !== null &&
-              store.closeTime !== null &&
-              store.rating === null
-            ) {
-              storeArr.push(
-                new Store(
-                  store.id,
-                  store.position,
-                  store.address,
-                  store.openTime,
-                  store.closeTime
-                )
-              );
-            } else if (
-              store.openTime !== null &&
-              store.closeTime !== null &&
-              store.rating !== null
-            ) {
-              storeArr.push(
-                new Store(
-                  store.id,
-                  store.position,
-                  store.address,
-                  store.openTime,
-                  store.closeTime,
-                  store.rating
-                )
-              );
-            } else {
-              storeArr.push(new Store(store.id, store.position, store.address));
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        let stores: IDictionary<Store[]> = {};
+        if (data != null) {
+          let storeFiltered = [];
+          let cityID: number[] = [];
+          data.forEach(dataStore => {
+            if (!cityID.includes(dataStore.idCity)) {
+              cityID.push(dataStore.idCity);
+              storeFiltered = data.filter((value: Store): string => {
+                return value.idCity === dataStore.idCity ? dataStore.idCity.toString() : '';
+              });
+              let storeArr: Store[] = [];
+              for (let i = 0; i < storeFiltered.length; i++) {
+                let store = storeFiltered[i];
+                let position = {lat: store.lat, lng: store.lng};
+                if (store.openTime !== null && store.closeTime !== null && store.rating === null && store.idFeedbacks === null) {
+                  let s = new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime);
+                  storeArr.push(s);
+                } else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.idFeedbacks === null) {
+                  let s = new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime, store.rating);
+                  storeArr.push(s);
+                } else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.idFeedbacks !== null) {
+                  let s = new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime, store.rating, store.idFeedbacks);
+                  storeArr.push(s);
+                } else {
+                  let s = new Store(store.id, store.idCity, store.address, position);
+                  storeArr.push(s);
+                }
+              }
+              stores[dataStore.idCity.toString()] = storeArr;
+              this.cache.Store.Add(dataStore.idCity.toString(),{id: dataStore.idCity.toString(), stores: storeArr});
             }
           });
-          stores.push({idCity: val.id, stores: storeArr});
+        }
+        return stores;
+      } else {
+        let stores: IDictionary<Store[]> = {};
+        this.cache.Store.Values().forEach(val => {
+          stores[val.id.toString()] = val.stores;
         });
+        return stores;
       }
-      return stores;
     } catch (err) {
       await this.handleError(err);
     }
   }
 
-  public async getStoreById(id: number): Promise<{idCity: number, store: Store}> {
+  public async getStoreById(id: number): Promise<Store> {
     try {
-      const response = await this.http.get(storesUrl).toPromise();
+      const response = await this.http.get(`${storePlacesUrl}/${id}`).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      const stores = new Array<{ id: number; stores: Store[] }>();
+      let resultStore: Store;
       if (data != null) {
-        data.forEach(val => {
-          const storeArr = new Array<Store>();
-          const arr: Store[] = val.stores;
-          arr.forEach((store) => {
-            if (store.openTime !== null && store.closeTime !== null && store.rating === null) {
-              storeArr.push(new Store(store.id, store.position, store.address, store.openTime, store.closeTime));
-            }
-            else if (store.openTime !== null && store.closeTime !== null && store.rating !== null) {
-              storeArr.push(new Store(store.id, store.position, store.address, store.openTime, store.closeTime,
-                store.rating));
-            }
-            else {
-              storeArr.push(new Store(store.id, store.position, store.address));
-            }
-          });
-          stores.push({id: val.id, stores: storeArr});
-        });
-      }
-      for (let i = 0; i < stores.length; i++) {
-        for (let j = 0; j < stores[i].stores.length; j++) {
-          if (stores[i].stores[j].id === id) {
-            return {idCity: stores[i].id, store: stores[i].stores[j]};
-          }
+        let idCity = data.idCity.toString();
+        let position = {lat: data.lat, lng: data.lng};
+        if (data.id === id) {
+          resultStore = new Store(data.id, idCity, data.address_line, position);
         }
       }
+      return resultStore;
     } catch (err) {
       await this.handleError(err);
     }
@@ -2388,52 +2394,158 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]> {
     try {
       const response = await this.http
-        .get(storeReviewsUrl, {
-          search: this.createSearchParams([
-            {key: "idStore", value: storeId.toString()}
-          ])
-        })
-        .toPromise();
+        .get(`${storeReviewsByStoreIdUrl}/${storeId}`).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
       const storesRevs = new Array<StoreReview>();
+      let answers: IDictionary<ReviewAnswer[]> = {};
       if (data != null) {
         data.forEach(val => {
-          let answers: ReviewAnswer[] = [];
-          if (val.reviewAnswers) {
-            val.reviewAnswers.forEach(answer => {
-              answers.push(
-                new ReviewAnswer(
-                  answer.id,
-                  answer.idReview,
-                  answer.user,
-                  answer.answerDate,
-                  answer.answerText
-                )
-              );
-            });
-          }
-          storesRevs.push(
-            new StoreReview(
+          let substrings = val.reviewDate.toString().split("T");
+          let substring1 = substrings[0].slice(0, substrings[0].length);
+          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
+          let date = substring1 + " " + substring2;
+          if (val.idReview && val.idReview !== null) {
+            if(!answers[val.idReview.toString()]) {
+              answers[val.idReview.toString()] = [];
+            }
+            answers[val.idReview.toString()].push(new ReviewAnswer(
               val.id,
-              val.idStore,
+              val.idReview,
               val.user,
-              val.reviewDate,
-              val.reviewText,
-              val.rating,
-              val.advantages,
-              val.disadvantages,
-              val.upvotes,
-              val.downvotes,
-              answers
-            )
-          )
+              new Date(date),
+              val.reviewText
+            ));
+          }
         });
+        data.forEach(val => {
+          let substrings = val.reviewDate.toString().split("T");
+          let substring1 = substrings[0].slice(0, substrings[0].length);
+          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
+          let date = substring1 + " " + substring2;
+          if (val.idReview === null) {
+            if (answers[val.id.toString()]) {
+              storesRevs.push(
+                new StoreReview(
+                  val.id,
+                  val.idStore,
+                  val.user,
+                  new Date(date),
+                  val.reviewText,
+                  val.rating,
+                  val.advantages,
+                  val.disadvantages,
+                  val.upvotes,
+                  val.downvotes,
+                  answers[val.id.toString()]
+                )
+              )
+            } else {
+              storesRevs.push(
+                new StoreReview(
+                  val.id,
+                  val.idStore,
+                  val.user,
+                  new Date(date),
+                  val.reviewText,
+                  val.rating,
+                  val.advantages,
+                  val.disadvantages,
+                  val.upvotes,
+                  val.downvotes,
+                  []
+                )
+              )
+            }
+          }
+        })
       }
       return storesRevs;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getStoreReviews(): Promise<IDictionary<StoreReview[]>> {
+    try {
+      const response = await this.http
+        .get(`${storeReviewsUrl}`).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      let reviews: IDictionary<StoreReview[]> = {};
+      if (data != null) {
+        const storesRevs = new Array<StoreReview>();
+        let answers: IDictionary<ReviewAnswer[]> = {};
+        let idStore: number = 0;
+        data.forEach(val => {
+          let substrings = val.reviewDate.toString().split("T");
+          let substring1 = substrings[0].slice(0, substrings[0].length);
+          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
+          let date = substring1 + " " + substring2;
+          if (val.idReview && val.idReview !== null) {
+            if (!answers[val.idReview.toString()]) {
+              answers[val.idReview.toString()] = [];
+            }
+            answers[val.idReview.toString()].push(new ReviewAnswer(
+              val.id,
+              val.idReview,
+              val.user,
+              new Date(date),
+              val.reviewText
+            ));
+          }
+        });
+        data.forEach(val => {
+          idStore = val.idStore;
+          let substrings = val.reviewDate.toString().split("T");
+          let substring1 = substrings[0].slice(0, substrings[0].length);
+          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
+          let date = substring1 + " " + substring2;
+          if (val.idReview === null) {
+            if (answers[val.id.toString()]) {
+              storesRevs.push(
+                new StoreReview(
+                  val.id,
+                  val.idStore,
+                  val.user,
+                  new Date(date),
+                  val.reviewText,
+                  val.rating,
+                  val.advantages,
+                  val.disadvantages,
+                  val.upvotes,
+                  val.downvotes,
+                  answers[val.id.toString()]
+                )
+              )
+            } else {
+              storesRevs.push(
+                new StoreReview(
+                  val.id,
+                  val.idStore,
+                  val.user,
+                  new Date(date),
+                  val.reviewText,
+                  val.rating,
+                  val.advantages,
+                  val.disadvantages,
+                  val.upvotes,
+                  val.downvotes,
+                  []
+                )
+              )
+            }
+          }
+        });
+        reviews[idStore.toString()] = storesRevs;
+      }
+      return reviews;
     } catch (err) {
       return await this.handleError(err);
     }
@@ -2585,18 +2697,18 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getNovelty(id: number): Promise<Novelty> {
     try {
       const response = await this.http
-        .get(`${noveltyDynamicUrl}/${id}`)
+        .get(`${noveltyByIdDynamicUrl}/${id}`)
         .toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      let novelty: Novelty = null;
+      let novelty: Novelty;
       if (data != null) {
         novelty = new Novelty(
           data.id,
-          data.productId,
+          data.idProduct,
           data.name,
           data.img_url,
           data.priority,
@@ -2612,7 +2724,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getNovelties(): Promise<Novelty[]> {
     try {
-      const response = await this.http.get(noveltyDynamicUrl).toPromise();
+      const response = await this.http.get(noveltiesDynamicUrl).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2623,7 +2735,7 @@ export class AppDataRepository extends AbstractDataRepository {
         data.forEach(val => {
           const novelty: Novelty = new Novelty(
             val.id,
-            val.productId,
+            val.idProduct,
             val.name,
             val.img_url,
             val.priority,
@@ -2694,11 +2806,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getNoveltyDetailsByNoveltyId(id: number): Promise<NoveltyDetails[]> {
     try {
-      const response = await this.http.get(`${noveltyDetailsDynamicUrl}`, {
-        search: this.createSearchParams([
-          {key: "noveltyId", value: id.toString()}
-        ])
-      }).toPromise();
+      const response = await this.http.get(`${noveltyDetailsDynamicUrl}/${id}`).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2710,7 +2818,7 @@ export class AppDataRepository extends AbstractDataRepository {
         data.forEach(val => {
           let detail: NoveltyDetails = new NoveltyDetails(
             val.id,
-            val.noveltyId,
+            val.idNovelty,
             val.idProduct
           );
           noveltyDetails.push(detail);
@@ -2800,26 +2908,6 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
       return val;
-    } catch (err) {
-      return await this.handleError(err);
-    }
-  }
-
-  public async getDataForRedirectToPaymaster(orderID: number, cartTotal: number): Promise<any> {
-    try {
-      const response = await this.http
-        .post(
-          redirectToPaymasterUrl,
-          {id: orderID, total: cartTotal},
-          RequestFactory.makeAuthHeader()
-        ).toPromise();
-      const resp = response.json();
-
-      if (response.status !== 201 && response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      console.log(response);
-      return resp;
     } catch (err) {
       return await this.handleError(err);
     }

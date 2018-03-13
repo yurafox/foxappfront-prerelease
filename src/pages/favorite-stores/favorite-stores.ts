@@ -12,11 +12,8 @@ import {AbstractDataRepository} from "../../app/service";
 export class FavoriteStoresPage extends ComponentBase implements OnInit {
 
   stores: Array<{ city: City, store: Store, hasReviews?: boolean }>;
-  foxStores: Array<{ id: number, stores: Store[] }>;
-  cities: City[];
 
-  constructor(private navCtrl: NavController, private repo: AbstractDataRepository, private alertCtrl: AlertController)
-  {
+  constructor(private navCtrl: NavController, private repo: AbstractDataRepository, private alertCtrl: AlertController) {
     super();
     this.stores = [];
   }
@@ -26,26 +23,18 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
   }
 
   async ionViewDidLoad() {
-    this.cities = await this.repo.getCities();
     let favStoresIDs: number[] = this.userService.profile.favoriteStoresId;
-    let favStores: Array<{ idCity: number, store: Store }> = [];
     if (favStoresIDs && (favStoresIDs.length > 0)) {
-      let clen = this.cities.length;
 
       for (let i = 0; i < favStoresIDs.length; i++) {
         let store = await this.repo.getStoreById(favStoresIDs[i]);
         if (store) {
-          favStores.push(store);
+          let city = await this.repo.getCityById(store.idCity);
+          if (city) {
+            this.stores.push({city: city, store: store});
+          }
         } else {
           console.log(`Couldn\'t get store with id: ${favStoresIDs[i]}`);
-        }
-      }
-
-      for (let i = 0; i < favStores.length; i++) {
-        for (let j = 1; j < clen; j++) {
-          if (this.cities[j].id === favStores[i].idCity) {
-            this.stores.push({city: this.cities[j], store: favStores[i].store});
-          }
         }
       }
     } else {
@@ -61,8 +50,8 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
 
   onIsPrimaryClick(item: Store) {
     this.stores.forEach(i => {
-      i.store.isPrimary = false;
-    }
+        i.store.isPrimary = false;
+      }
     );
     item.isPrimary = true;
   }
@@ -93,13 +82,13 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
   }
 
   navToMap(store: Store, city: City) {
-    this.navCtrl.push('MapPage', { store: store, city: city, page: this }).catch(err => {
+    this.navCtrl.push('MapPage', {store: store, city: city, page: this}).catch(err => {
       console.log(`Couldn't navigate to MapPage with selected params: ${err}`);
     });
   }
 
   onShowReviewsClick(store: any): void {
-    this.navCtrl.push('ItemReviewsPage', { store: store }).catch(err => {
+    this.navCtrl.push('ItemReviewsPage', {store: store}).catch(err => {
       console.log(`Error navigating to ItemReviewPage: ${err}`);
     });
   }
@@ -110,6 +99,5 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
         console.log(`Error navigating to ItemReviewWritePage: ${err}`);
       });
     }
-
   }
 }
