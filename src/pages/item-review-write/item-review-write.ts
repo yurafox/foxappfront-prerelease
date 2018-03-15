@@ -37,9 +37,11 @@ export class ItemReviewWritePage extends ComponentBase {
 
   ionViewDidLoad() {
     if (document.readyState === 'complete') {
-      document.getElementById('rating').addEventListener('click', () => {
-        this.changeDetector.detectChanges();
-      });
+      if (document.getElementById('rating') && document.getElementById('rating')!==null) {
+        document.getElementById('rating').addEventListener('click', () => {
+          this.changeDetector.detectChanges();
+        });
+      }
     }
   }
 

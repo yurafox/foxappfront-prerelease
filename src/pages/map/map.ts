@@ -1,5 +1,5 @@
 import {Component, ViewChild, ElementRef, OnInit, ChangeDetectorRef} from '@angular/core';
-import {Platform, IonicPage, NavController, NavParams, AlertController} from 'ionic-angular';
+import {Platform, IonicPage, NavController, NavParams, AlertController, ToastController} from 'ionic-angular';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {/*GoogleMap,*/ LatLng} from '@ionic-native/google-maps';
 import {City, Store} from "../../app/model/index";
@@ -58,7 +58,7 @@ export class MapPage extends ComponentBase implements OnInit {
   constructor(private nav: NavController, private navParams: NavParams, private platform: Platform,
               private repo: AbstractDataRepository, private geolocation: Geolocation,
               private launchNavigator: LaunchNavigator, private changeDetector: ChangeDetectorRef,
-              private alertCtrl: AlertController) {
+              private alertCtrl: AlertController, private toastCtrl: ToastController) {
     super();
     this.initLocalization();
     this.defaultCityId = "38044";
@@ -394,7 +394,7 @@ export class MapPage extends ComponentBase implements OnInit {
         if (marker.position === this.selectedMarker.value) {
           if (this.isAuthorized === true) {
             try {
-              this.userService.addFavoriteStoresId(marker.id);
+              this.addFavoriteStore(marker);
             } catch (err) {
               console.log(`Error while adding to favorite: ${err}`);
               return;
@@ -552,6 +552,36 @@ export class MapPage extends ComponentBase implements OnInit {
           console.log(`Error navigating to ItemReviewWritePage: ${err}`);
         });
       }
+    }
+  }
+
+  public async addFavoriteStore(store: Store) {
+    let addedId = await this.repo.addFavoriteStore(store.id);
+
+    if (!addedId || addedId === null || addedId === 0) {
+      let alertMessage = this.locale['AlertMessage'];
+      let title = this.locale['AlertTitle'];
+      let alert = this.alertCtrl.create({
+        title: title,
+        message: alertMessage,
+        buttons: [
+          {
+            text: 'OK'
+          }
+        ]
+      });
+      alert.present().catch((err) => console.log(`Alert error: ${err}`));
+    } else {
+      let toastMessage = this.locale['ToastMessage'];
+      let toast = this.toastCtrl.create({
+        message: toastMessage,
+        duration: 2000,
+        position: 'bottom',
+        cssClass: 'toast-message'
+      });
+      toast.onDidDismiss(() => {
+      });
+      toast.present().catch((err) => console.log(`Toast error: ${err}`));
     }
   }
 }

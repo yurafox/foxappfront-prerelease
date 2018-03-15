@@ -91,12 +91,16 @@ const pollQuestionAnswerUrl = `${AppConstants.BASE_URL}/api/poll/pollAnswers`;
 const pagesDynamicUrl = `${AppConstants.BASE_URL}/api/page`;
 const actionDynamicUrl = `${AppConstants.BASE_URL}/api/stock`;
 const storesUrl = `${AppConstants.BASE_URL}/api/storeplace/stores`;
+const storeUrl = `${AppConstants.BASE_URL}/api/storeplace/store`;
 const productReviewsUrl = `${AppConstants.BASE_URL}/api/product/GetProductReviews`;
 const storeReviewsUrl = `${AppConstants.BASE_URL}/api/storeplace/GetStoreReviews`;
 const storeReviewsByStoreIdUrl = `${AppConstants.BASE_URL}/api/storeplace/GetStoreReviewsByStoreId`;
 const noveltyByIdDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNoveltyById`;
 const noveltiesDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNovelties`;
 const noveltyDetailsDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNoveltyDetailsByNoveltyId`;
+const favoriteStoresUrl = `${AppConstants.BASE_URL}/api/storeplace/GetFavoriteStores`;
+const addFavoriteStoreUrl = `${AppConstants.BASE_URL}/api/storeplace/AddFavoriteStore`;
+const deleteFavoriteStoreUrl = `${AppConstants.BASE_URL}/api/storeplace/DeleteFavoriteStore`;
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
 // const currenciesUrl = "/api/mcurrencies";
@@ -2243,21 +2247,26 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getCitiesWithStores(): Promise<City[]> {
     try {
-      const response = await this.http.get(citiesWithStoresUrl).toPromise();
+      if (this.cache.CityWithStore.Count() === 0) {
+        const response = await this.http.get(citiesWithStoresUrl).toPromise();
 
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        const cities = new Array<City>();
+        if (data != null) {
+          data.forEach(val => {
+            // create current city
+            const cityItem: City = new City(val.id, val.name, val.idRegion);
+            cities.push(cityItem);
+            this.cache.CityWithStore.Add(val.id.toString(),cityItem);
+          });
+        }
+        return cities;
+      } else {
+        return this.cache.CityWithStore.Values();
       }
-      const cities = new Array<City>();
-      if (data != null) {
-        data.forEach(val => {
-          // create current city
-          const cityItem: City = new City(val.id, val.name, val.idRegion);
-          cities.push(cityItem);
-        });
-      }
-      return cities;
     } catch (err) {
       await this.handleError(err);
     }
@@ -2294,21 +2303,26 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getCities(): Promise<City[]> {
     try {
-      const response = await this.http.get(citiesUrl).toPromise();
+      if (this.cache.City.Count() === 0) {
+        const response = await this.http.get(citiesUrl).toPromise();
 
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        const cities = new Array<City>();
+        if (data != null) {
+          data.forEach(val => {
+            // create current city
+            const cityItem: City = new City(val.id, val.name, val.idRegion);
+            cities.push(cityItem);
+            this.cache.City.Add(val.id.toString(),cityItem);
+          });
+        }
+        return cities;
+      } else {
+        return this.cache.City.Values();
       }
-      const cities = new Array<City>();
-      if (data != null) {
-        data.forEach(val => {
-          // create current city
-          const cityItem: City = new City(val.id, val.name, val.idRegion);
-          cities.push(cityItem);
-        });
-      }
-      return cities;
     } catch (err) {
       await this.handleError(err);
     }
@@ -2371,7 +2385,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getStoreById(id: number): Promise<Store> {
     try {
-      const response = await this.http.get(`${storePlacesUrl}/${id}`).toPromise();
+      const response = await this.http.get(`${storeUrl}/${id}`).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2379,10 +2393,17 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       let resultStore: Store;
       if (data != null) {
-        let idCity = data.idCity.toString();
         let position = {lat: data.lat, lng: data.lng};
         if (data.id === id) {
-          resultStore = new Store(data.id, idCity, data.address_line, position);
+          if (data.openTime !== null && data.closeTime !== null && data.rating === null && data.idFeedbacks === null) {
+            resultStore = new Store(data.id, data.idCity, data.address, position, data.openTime, data.closeTime);
+          } else if (data.openTime !== null && data.closeTime !== null && data.rating !== null && data.idFeedbacks === null) {
+            resultStore = new Store(data.id, data.idCity, data.address, position, data.openTime, data.closeTime, data.rating);
+          } else if (data.openTime !== null && data.closeTime !== null && data.rating !== null && data.idFeedbacks !== null) {
+            resultStore = new Store(data.id, data.idCity, data.address, position, data.openTime, data.closeTime, data.rating, data.idFeedbacks);
+          } else {
+            resultStore = new Store(data.id, data.idCity, data.address, position);
+          }
         }
       }
       return resultStore;
@@ -2550,6 +2571,53 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+
+  public async getFavoriteStores(): Promise<Store[]> {
+    try {
+      const response = await this.http.get(favoriteStoresUrl, RequestFactory.makeAuthHeader()).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      let stores: Store[] = [];
+      if (data != null) {
+        data.forEach(val => {
+          stores.push(val);
+        });
+      }
+      return stores;
+    } catch (err) {
+      await this.handleError(err);
+    }
+  }
+
+  public async addFavoriteStore(idStore: number): Promise<any> {
+    try {
+      const response = await this.http.post(`${addFavoriteStoreUrl}/${idStore}`, idStore, RequestFactory.makeAuthHeader()).toPromise();
+
+      const data = response.json();
+      if (response.status !== 201) {
+        throw new Error("server side status error");
+      }
+      return data;
+    } catch (err) {
+      await this.handleError(err);
+    }
+  };
+
+  public async deleteFavoriteStore(idStore: number) {
+    try {
+      const response = await this.http.post(`${deleteFavoriteStoreUrl}/${idStore}`, idStore, RequestFactory.makeAuthHeader()).toPromise();
+
+      //const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+    } catch (err) {
+      await this.handleError(err);
+    }
+  };
 
   public async getPageContent(id: number): Promise<string> {
     try {

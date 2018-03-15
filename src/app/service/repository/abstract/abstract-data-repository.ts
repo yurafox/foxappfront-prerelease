@@ -119,6 +119,9 @@ export abstract class AbstractDataRepository {
   public async abstract getStoreById(id: number): Promise<Store>;
   public async abstract getStoreReviews(): Promise<IDictionary<StoreReview[]>>;
   public async abstract getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]>;
+  public async abstract getFavoriteStores(): Promise<Store[]>;
+  public async abstract addFavoriteStore(idStore: number): Promise<any>;
+  public async abstract deleteFavoriteStore(idStore: number);
   public async abstract getPageContent(id:number):Promise<string>;
   public async abstract getAction(id:number):Promise<Action>;
   public async abstract getActions():Promise<Action[]>;

@@ -145,6 +145,7 @@ export namespace Providers {
     private _cacheLang: IKeyedCollection<Lang> = null;
     private _cacheManufacturer: IKeyedCollection<Manufacturer> = null;
     private _cacheCity: IKeyedCollection<City> = null;
+    private _cacheCityWithStore: IKeyedCollection<City> = null;
     private _cacheStorePlace: IKeyedCollection<StorePlace> = null;
     private _cacheStore: IKeyedCollection<{id:number, stores: Store[]}> = null;
     private _cacheMeasureUnit: IKeyedCollection<MeasureUnit> = null;
@@ -196,6 +197,13 @@ export namespace Providers {
         this._cacheCity = new CacheItems<City>(300);
 
       return this._cacheCity;
+    }
+
+    public get CityWithStore(): IKeyedCollection<City> {
+      if (this._cacheCityWithStore == null)
+        this._cacheCityWithStore = new CacheItems<City>(300);
+
+      return this._cacheCityWithStore;
     }
 
     public get StorePlace(): IKeyedCollection<StorePlace> {

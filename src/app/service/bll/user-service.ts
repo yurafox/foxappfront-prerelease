@@ -97,50 +97,6 @@ export class UserService {
     localStorage.setItem('currency', currency.toString());
     //this.trySendSettings();
   }
-
-  // <editor-fold desc='favorite stores'>
-  public addFavoriteStoresId(id:number) {
-    let count = 0;
-    for (let favSoreID of this.user.favoriteStoresId) {
-      if (id === favSoreID) {
-        count++;
-        let message = this.localization['AlertMessage'];
-        let title = this.localization['AlertTitle'];
-        let alert = this.alertCtrl.create({
-          title: title,
-          message: message,
-          buttons: [
-            {
-              text: 'OK'
-            }
-          ]
-        });
-        alert.present().catch((err) => console.log(`Alert error: ${err}`));
-      }
-    }
-    if (count === 0) {
-      this.user.favoriteStoresId.push(id);
-      let message = this.localization['ToastMessage'];
-      let toast = this.toastCtrl.create({
-        message: message,
-        duration: 2000,
-        position: 'bottom',
-        cssClass: 'toast-message'
-      });
-      toast.onDidDismiss(() => {
-      });
-      toast.present().catch((err) => console.log(`Toast error: ${err}`));
-    }
-    //this.trySendSettings();
-  }
-
-  public removeFavoriteStoresId(id:number) {
-    let indx: number = this.user.favoriteStoresId.indexOf(id);
-    this.user.favoriteStoresId.splice(indx,1);
-    //this.trySendSettings();
-  }
-  // </editor-fold>
-
   // </editor-fold>
 
   // <editor-fold desc='methods'>
