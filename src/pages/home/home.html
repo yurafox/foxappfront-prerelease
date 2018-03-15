@@ -11,7 +11,7 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <div *ngIf="content && (pageMode === 1)">
+  <div *ngIf="content && !userService.userMutex && (pageMode === 1)">
       <html-outlet [html]="content" [context]="this"></html-outlet>
   </div>
 

@@ -72,7 +72,9 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
     super.ngOnInit();
     this.connService.nav = this.nav;
     if (!this.userService.isAuth && this.userService.token) {
+      this.userService.userMutex = true;
       await this.userService.shortLogin();
+      this.userService.userMutex = false;
     }
 
     /**

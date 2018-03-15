@@ -3,7 +3,13 @@
 </ion-header>
 
 <ion-content>
-<h1>count</h1>    
+  <ion-list>
+    <div *ngFor="let group of currentGroup">
+      <button ion-item detail-push outline (click)="toChildCategory(group.id)">
+        <ion-label>
+          <span>{{group.name}}</span>
+        </ion-label>
+      </button>
+    </div>
+  </ion-list>
 </ion-content>
-
-<button onclick="">Click</button>

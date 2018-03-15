@@ -14,4 +14,13 @@
     </ion-row>
   </ion-grid>
 
+    <ion-list *ngIf='canAllCategoryView' >
+      <ion-row>
+        <ion-col text-center style="padding:10px 10px;" (click)="toCategoryTree()">
+          <img src="assets/icon/allcategories.svg" alt="" height="50px">
+          <div text-center style="font-size:15px;"> Все категории</div>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+
 </ion-content>
