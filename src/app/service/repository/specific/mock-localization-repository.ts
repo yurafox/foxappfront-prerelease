@@ -722,12 +722,21 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'Address', lang:1, text:'Адрес'},
       { tagName:'Address', lang:2, text:'Адреса'},
       { tagName:'Address', lang:0, text:'Address'},
-      { tagName:'AlertTitle', lang:1, text:'Что-то пошло не так'},
-      { tagName:'AlertTitle', lang:2, text:'Щось пішло не так'},
-      { tagName:'AlertTitle', lang:0, text:'Something went wrong'},
-      { tagName:'AlertMessage', lang:1, text:'Пожалуйста, проверьте соединение с сетью и попробуйте перезапустить приложение'},
-      { tagName:'AlertMessage', lang:2, text:'Будь ласка, перевірте з\'єднання з мережею та спробуйте перезапустити програму'},
-      { tagName:'AlertMessage', lang:0, text:'Please check the connection to the network and try to restart the application'},
+      { tagName:'AlertFailTitle', lang:1, text:'Что-то пошло не так'},
+      { tagName:'AlertFailTitle', lang:2, text:'Щось пішло не так'},
+      { tagName:'AlertFailTitle', lang:0, text:'Something went wrong'},
+      { tagName:'AlertFailMessage', lang:1, text:'Пожалуйста, проверьте соединение с сетью и попробуйте перезапустить приложение'},
+      { tagName:'AlertFailMessage', lang:2, text:'Будь ласка, перевірте з\'єднання з мережею та спробуйте перезапустити програму'},
+      { tagName:'AlertFailMessage', lang:0, text:'Please check the connection to the network and try to restart the application'},
+      { tagName:'AlertTitle', lang:1, text:'Ошибка'},
+      { tagName:'AlertTitle', lang:2, text:'Помилка'},
+      { tagName:'AlertTitle', lang:0, text:'Sorry'},
+      { tagName:'AlertMessage', lang:1, text:'Этот магазин уже есть в Ваших избранных'},
+      { tagName:'AlertMessage', lang:2, text:'Ця крамниця вже є у Ваших обраних'},
+      { tagName:'AlertMessage', lang:0, text:'You already have this address in favorites'},
+      { tagName:'ToastMessage', lang:1, text:'Магазин добавлен в избранные'},
+      { tagName:'ToastMessage', lang:2, text:'Крамницю додано до обраних'},
+      { tagName:'ToastMessage', lang:0, text:'Store added to favorites'},
     ];
 
     this._mockLocalizationStore['NoConnectionPage'] = [
@@ -1307,15 +1316,6 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
     ];
 
     this._mockLocalizationStore['UserService'] = [
-      { tagName:'AlertTitle', lang:1, text:'Ошибка'},
-      { tagName:'AlertTitle', lang:2, text:'Помилка'},
-      { tagName:'AlertTitle', lang:0, text:'Sorry'},
-      { tagName:'AlertMessage', lang:1, text:'Этот магазин уже есть в Ваших избранных'},
-      { tagName:'AlertMessage', lang:2, text:'Ця крамниця вже є у Ваших обраних'},
-      { tagName:'AlertMessage', lang:0, text:'You already have this address in favorites'},
-      { tagName:'ToastMessage', lang:1, text:'Магазин добавлен в избранные'},
-      { tagName:'ToastMessage', lang:2, text:'Крамницю додано до обраних'},
-      { tagName:'ToastMessage', lang:0, text:'Store added to favorites'},
     ];
 
     this._mockLocalizationStore['ChangePasswordPage'] =[

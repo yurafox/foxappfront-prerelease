@@ -308,20 +308,21 @@ export class MapPage extends ComponentBase implements OnInit {
         });
       }
     } catch (err) {
-      /*let alert = this.alertCtrl.create({
-        title: this.locale['AlertTitle'] ? this.locale['AlertTitle'] : 'Что-то пошло не так',
-        message: this.locale['AlertMessage'] ? this.locale['AlertMessage'] : 'Пожалуйста, проверьте соединение с сетью и попробуйте перезапустить приложение',
+      let alert = this.alertCtrl.create({
+        title: this.locale['AlertFailTitle'] ? this.locale['AlertFailTitle'] : 'Что-то пошло не так',
+        message: this.locale['AlertFailMessage'] ? this.locale['AlertFailMessage'] : 'Пожалуйста, проверьте соединение с сетью и попробуйте перезапустить приложение',
         buttons: [
           {
             text: 'OK',
-            /!*handler: () => {
+            /*handler: () => {
               this.nav.pop().catch((err) => console.log(`Couldn't pop: ${err}`))
-            }*!/
+            }*/
           }
         ]
       });
-      this.nav.pop().catch((err) => console.log(`Couldn't pop: ${err}`))
-      alert.present().catch((err) => console.log(`Alert error: ${err}`));*/
+      alert.present().then(() => {
+        this.nav.pop().catch((err) => console.log(`Couldn't pop: ${err}`));
+      }).catch((err) => console.log(`Alert error: ${err}`));
       console.log(err);
     }
   }
@@ -571,15 +572,13 @@ export class MapPage extends ComponentBase implements OnInit {
         ]
       });
       alert.present().catch((err) => console.log(`Alert error: ${err}`));
-    } else {
+    } else if (addedId && addedId > 0) {
       let toastMessage = this.locale['ToastMessage'];
       let toast = this.toastCtrl.create({
         message: toastMessage,
         duration: 2000,
         position: 'bottom',
         cssClass: 'toast-message'
-      });
-      toast.onDidDismiss(() => {
       });
       toast.present().catch((err) => console.log(`Toast error: ${err}`));
     }

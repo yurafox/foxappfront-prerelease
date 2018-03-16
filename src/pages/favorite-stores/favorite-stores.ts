@@ -40,13 +40,6 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
     }
   }
 
-  async ionViewDidLoad() {
-    /*for (let store of this.stores) {
-      let revs = await this.repo.getStoreReviewsByStoreId(store.store.id);
-      store.hasReviews = !!(revs && (revs.length > 0));
-    }*/
-  }
-
   onIsPrimaryClick(item: Store) {
     if (this.stores) {
       this.stores.forEach(i => {
@@ -57,7 +50,7 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
     }
   }
 
-  deleteStore(item: IStore) {
+  async deleteStore(item: IStore) {
     let title = this.locale['AlertTitle'];
     let message = this.locale['AlertMessage'];
     let cancel = this.locale['Cancel'];
@@ -68,7 +61,7 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
         {
           text: 'OK',
           handler: () => {
-            this.removeFavoriteStore(item.store.id); console.log(item.store.id);
+            this.removeFavoriteStore(item.store.id);
           }
         },
         {
@@ -101,14 +94,17 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
     }
   }
 
-  removeFavoriteStore(idStore:number) {
-    this.repo.deleteFavoriteStore(idStore).then(() => {
-      for (let i = 0; i < this.stores.length; i++) {
-        let store = this.stores[i];
-        if (store.store.id === idStore) {
-          this.stores.splice(i, 1);
+  async removeFavoriteStore(idStore:number) {
+    if (idStore && (idStore > 0)) {
+      let data = await this.repo.deleteFavoriteStore(idStore);
+      if (data && data !== 0 && data !== null) {
+        for (let i = 0; i < this.stores.length; i++) {
+          let store = this.stores[i];
+          if (store.store.id === idStore) {
+            this.stores.splice(i, 1);
+          }
         }
       }
-    });
+    }
   }
 }

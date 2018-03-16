@@ -2592,28 +2592,33 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async addFavoriteStore(idStore: number): Promise<any> {
+  public async addFavoriteStore(idStore: number): Promise<number> {
     try {
       const response = await this.http.post(`${addFavoriteStoreUrl}/${idStore}`, idStore, RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
-      if (response.status !== 201) {
+      if (response.status !== 200 && response.status !== 201) {
         throw new Error("server side status error");
       }
-      return data;
+      if (data !== null) {
+        return data;
+      } else return 0;
     } catch (err) {
       await this.handleError(err);
     }
   };
 
-  public async deleteFavoriteStore(idStore: number) {
+  public async deleteFavoriteStore(idStore: number): Promise<number> {
     try {
       const response = await this.http.post(`${deleteFavoriteStoreUrl}/${idStore}`, idStore, RequestFactory.makeAuthHeader()).toPromise();
 
-      //const data = response.json();
+      const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+      if (data !== null) {
+        return data;
+      } else return 0;
     } catch (err) {
       await this.handleError(err);
     }
