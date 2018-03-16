@@ -261,8 +261,7 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
     let os = this.device.platform + ' ' + this.device.version;
     let height = this.platform.height();
     let width = this.platform.width();
-    let userToken = this.userService.token;
-    let deviceData = new DeviceData(model, os, height, width, pushDeviceToken, userToken);
+    let deviceData = new DeviceData(model, os, height, width, pushDeviceToken);
     this.repo.postDeviceData(deviceData).catch(err => {
       console.log(`Couldn't send device data: ${err}`);
     });

@@ -101,6 +101,8 @@ const noveltyDetailsDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNovelt
 const favoriteStoresUrl = `${AppConstants.BASE_URL}/api/storeplace/GetFavoriteStores`;
 const addFavoriteStoreUrl = `${AppConstants.BASE_URL}/api/storeplace/AddFavoriteStore`;
 const deleteFavoriteStoreUrl = `${AppConstants.BASE_URL}/api/storeplace/DeleteFavoriteStore`;
+const deviceDataUrl = `${AppConstants.BASE_URL}/api/devicedata`;
+
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
 // const currenciesUrl = "/api/mcurrencies";
@@ -135,18 +137,16 @@ const deleteFavoriteStoreUrl = `${AppConstants.BASE_URL}/api/storeplace/DeleteFa
 // const clientOrdersUrl = "/api/mclientOrders";
 // const citiesWithStoresUrl = "/api/mcities";
 // const storesUrl = "/api/mstores";
-
 // const getDeliveryCostUrl = "/api/mgetDeliveryCost";
 // const getDeliveryDateUrl = "/api/mgetDeliveryDate";
 // const calculateCartUrl = "/api/mcalculateCart";
-
 // const productReviewsUrl = "/api/mproductReviews";
-const actionOffersUrl = "/api/mactionOffers";
 // const storeReviewsUrl = "/api/mstoreReviews";
-
 // const noveltyDynamicUrl = "/api/mnovelties";
-//const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
-const deviceDataUrl = "/api/mdeviceData";
+// const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
+// const deviceDataUrl = "/api/mdeviceData";
+
+const actionOffersUrl = "/api/mactionOffers";
 
 const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/api/catalog`:"/api/mcategories";
 
@@ -2597,7 +2597,7 @@ export class AppDataRepository extends AbstractDataRepository {
       const response = await this.http.post(`${addFavoriteStoreUrl}/${idStore}`, idStore, RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
-      if (response.status !== 200 && response.status !== 201) {
+      if (response.status !== 200 && response.status !== 201 && response.status !== 204) {
         throw new Error("server side status error");
       }
       if (data !== null) {
@@ -2970,17 +2970,13 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async postDeviceData(deviceData: DeviceData): Promise<DeviceData> {
+  public async postDeviceData(deviceData: DeviceData) {
     try {
-      const response = await this.http
-        .post(deviceDataUrl, deviceData, RequestFactory.makeAuthHeader())
-        .toPromise();
-      const val = response.json();
+      const response = await this.http.post(deviceDataUrl, deviceData, RequestFactory.makeAuthHeader()).toPromise();
 
-      if (response.status !== 201 && response.status !== 200) {
+      if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
         throw new Error("server side status error");
       }
-      return val;
     } catch (err) {
       return await this.handleError(err);
     }
