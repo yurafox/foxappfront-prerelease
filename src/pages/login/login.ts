@@ -13,6 +13,7 @@ export class LoginPage extends ComponentBase implements OnInit {
 
   private _authError = false;
   private _phone = '';
+  private isSendAsync = false;
   public loginForm: FormGroup;
 
   public get authError() {
@@ -60,10 +61,14 @@ export class LoginPage extends ComponentBase implements OnInit {
     if (!this.loginForm.valid) {
       return;
     }
-
+   
+    // start block logic for multiple sending
+    this.isSendAsync = true;
     const data = this.loginForm.value;
 
     await this.userService.login(data.phone,data.password);
+    this.isSendAsync = false;
+    
     if(this.userService.isAuth) {
       this.evServ.events['localeChangeEvent'].emit(this.userService.lang);
       if (this.navParams.data.continuePage) {

@@ -143,5 +143,4 @@ export abstract class AbstractDataRepository {
   public async abstract getMeasureUnitById(unitId: number): Promise<MeasureUnit>;
   public async abstract getProductDescription(id: number): Promise<string>;
   public async abstract getProductImages(id: number): Promise<string[]>;
-
 }

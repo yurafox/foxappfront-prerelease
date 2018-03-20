@@ -23,7 +23,7 @@
          <span>{{formErrors.password}}</span>
       </ion-item>
 
-      <button style="background: #ffbc2e" ion-button block (click)="login()"><span loc="Войти" name="Login">{{locale['Login']}}</span></button>
+      <button [disabled]="isSendAsync" style="background: #ffbc2e" ion-button block (click)="login()"><span loc="Войти" name="Login">{{locale['Login']}}</span></button>
     </form>
 
   </ion-list>
