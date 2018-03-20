@@ -24,6 +24,10 @@ export class ItemReviewWritePage extends ComponentBase {
       this.product = navParams.data;
     } else if (navParams.data instanceof Store) {
       this.store = navParams.data;
+    } else if (navParams.data.product instanceof Product) {
+      this.product = navParams.data.product;
+    } else if (navParams.data.store instanceof Store) {
+      this.store = navParams.data.store;
     }
   }
 

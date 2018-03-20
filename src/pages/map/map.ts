@@ -526,12 +526,11 @@ export class MapPage extends ComponentBase implements OnInit {
    */
   navFromFavoriteStoresPage() {
     if (this.previousPage === 'FavoriteStoresPage') {
-      let store = this.navParams.get('store');
-      let city = this.navParams.get('city');
+      let store = this.navParams.data.store;
+      let city: City = this.navParams.data.city;
       this.selectedCity = city;
       this.makeShopList();
-      this.selectedMarker = {label: store.address, value: store.position};
-      this.changeDetector.detectChanges();
+      this.selectedMarker = {label: store.address, value: {lat: store.lat, lng: store.lng}};
       this.handleListSelect();
     }
   }
@@ -545,7 +544,7 @@ export class MapPage extends ComponentBase implements OnInit {
   onWriteReviewClick(store: Store): void {
     if (store) {
       if (!this.userService.isAuth) {
-        this.nav.push('LoginPage').catch((err) => {
+        this.nav.push('LoginPage', {continuePage: 'ItemReviewWritePage', params: {store}}).catch((err) => {
           console.log(`Couldn't navigate to LoginPage: ${err}`);
         });
       } else {

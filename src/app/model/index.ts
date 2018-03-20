@@ -57,3 +57,4 @@ export * from './category';
 export * from './measure-unit';
 export * from './region';
 export * from './change-password';
+export * from './banner-slide';

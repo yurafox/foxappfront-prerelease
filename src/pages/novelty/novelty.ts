@@ -28,10 +28,10 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
   constructor(public navCtrl: NavController, public navParams: NavParams, private cart: CartService,
               private _repo:AbstractDataRepository, public toastCtrl: ToastController, public evServ: EventService) {
     super(navCtrl, navParams, _repo);
-    this.noveltyId = this.navParams.data.id;
-    this.productId = this.navParams.data.productId;
-    this.novelty = this.navParams.data.novelty;
-    this.product = this.navParams.data.product;
+    if (this.navParams.data.id) this.noveltyId = this.navParams.data.id;
+    if (this.navParams.data.productId) this.productId = this.navParams.data.productId;
+    if (this.navParams.data.novelty) this.novelty = this.navParams.data.novelty;
+    if (this.navParams.data.product) this.product = this.navParams.data.product;
     this.preloadQuotes = true;
     this.qty.value = 1;
   }
@@ -42,12 +42,18 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
       this.novelty = await this._repo.getNovelty(this.noveltyId);
     }
     if(!this.product) {
-      this.product = await this._repo.getProductById(this.productId);
+      if (this.novelty && this.novelty.idProduct) {
+        this.product = await this._repo.getProductById(this.novelty.idProduct);
+      } else {
+        this.product = await this._repo.getProductById(this.productId);
+      }
     }
-    // get dynamic content
-    this.content = this.novelty.novelty_content;
-
-    this.noveltyDetails = await this.repo.getNoveltyDetailsByNoveltyId(this.novelty.id);
+    if (this.novelty && this.novelty.novelty_content) {
+      this.content = this.novelty.novelty_content;
+    }
+    if (this.novelty && this.novelty.id) {
+      this.noveltyDetails = await this.repo.getNoveltyDetailsByNoveltyId(this.novelty.id);
+    }
   }
 
   ngOnDestroy():void {

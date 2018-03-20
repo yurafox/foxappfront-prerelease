@@ -1,4 +1,4 @@
-<ion-grid class="f-no-padding" (click)="openItemDetails(product)">
+<ion-grid class="f-no-padding" (click)="openItemDetails(product)" *ngIf="product">
 <!--
   <ion-row no-padding>
     <ion-col col-auto>
@@ -8,10 +8,10 @@
 -->
   <ion-row>
    <ion-col col-auto>
-     <div *ngIf="product.imageUrl" lazy-load-images>
-       <img class="f-img-item" [attr.data-src]="product.imageUrl">
+     <div *ngIf="product && product?.imageUrl" lazy-load-images>
+       <img class="f-img-item" [attr.data-src]="product?.imageUrl">
      </div>
-     <img *ngIf="!product.imageUrl" class="f-img-item" src="assets/imgs/nophoto.png">
+     <img *ngIf="product && !product.imageUrl" class="f-img-item" src="assets/imgs/nophoto.png">
    </ion-col>
    <ion-col>
      <ion-grid class="f-item-nopadding-tb">

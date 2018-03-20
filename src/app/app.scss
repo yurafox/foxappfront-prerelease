@@ -826,3 +826,40 @@ input[type="text"], input[type="date"], input[type="number"],input[type="passwor
   text-align: center;
   font-size: 22px;
 }
+
+page-barcode {
+  ion-card {
+    position: relative;
+    height: 300px;
+    background-color: lightgrey;
+
+    .h1 {
+      font-size: 26px;
+      position: relative;
+      top: 50px;
+      //color: #ef4123;
+      color: #e00000;
+    }
+    .h6 {
+      font-size: 20px;
+      position: relative;
+      top: 50px;
+    }
+    #logo {
+      position: absolute;
+      top: 2%;
+      right: 2%;
+      width: 100px;
+    }
+    .barcode {
+      position: relative;
+      top: 55px;
+      img {
+        display: block;
+        margin: auto;
+        height: 120px;
+        width: 85%;
+      }
+    }
+  }
+}

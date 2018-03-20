@@ -29,7 +29,8 @@ import { QuotationProduct,
           LoTrackLog,
           Category,
           MeasureUnit,
-          Region
+          Region,
+          BannerSlide
        } from '../../../model/index';
 import {IDictionary} from "../../../core/app-core";
 
@@ -147,4 +148,5 @@ export abstract class AbstractDataRepository {
   public async abstract getProductDescription(id: number): Promise<string>;
   public async abstract getProductImages(id: number): Promise<string[]>;
 
+  public async abstract getBannerSlides(): Promise<BannerSlide[]>;
 }

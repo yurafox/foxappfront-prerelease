@@ -3,7 +3,6 @@ import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {City, Store} from "../../app/model";
 import {AbstractDataRepository} from "../../app/service";
-import {IDictionary} from "../../app/core/app-core";
 
 export interface IStore {
   city: City;
@@ -80,7 +79,7 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
     });
   }
 
-  onShowReviewsClick(store: any): void {
+  onShowReviewsClick(store: Store): void {
     this.navCtrl.push('ItemReviewsPage', {store: store}).catch(err => {
       console.log(`Error navigating to ItemReviewPage: ${err}`);
     });

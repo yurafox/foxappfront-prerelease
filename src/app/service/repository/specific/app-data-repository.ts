@@ -39,12 +39,14 @@ import {
   ClientPollAnswer, CreditProduct, ClientBonus, PersonInfo,
   LoTrackLog,
   Category,
-  MeasureUnit
+  MeasureUnit,
+  Region,
+  BannerSlide
 } from '../../../model/index';
 
 import { AbstractDataRepository } from '../../index';
 import {IDictionary, Providers } from '../../../core/app-core';
-import {ConnectivityService} from '../../connectivity-service';import {Region} from '../../../model/region';
+import {ConnectivityService} from '../../connectivity-service';
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
@@ -92,16 +94,17 @@ const pagesDynamicUrl = `${AppConstants.BASE_URL}/api/page`;
 const actionDynamicUrl = `${AppConstants.BASE_URL}/api/stock`;
 const storesUrl = `${AppConstants.BASE_URL}/api/storeplace/stores`;
 const storeUrl = `${AppConstants.BASE_URL}/api/storeplace/store`;
-const productReviewsUrl = `${AppConstants.BASE_URL}/api/product/GetProductReviews`;
-const storeReviewsUrl = `${AppConstants.BASE_URL}/api/storeplace/GetStoreReviews`;
-const storeReviewsByStoreIdUrl = `${AppConstants.BASE_URL}/api/storeplace/GetStoreReviewsByStoreId`;
+const productReviewsUrl = `${AppConstants.BASE_URL}/api/reviews/GetProductReviews`;
+const storeReviewsUrl = `${AppConstants.BASE_URL}/api/reviews/GetStoreReviews`;
+const storeReviewsByStoreIdUrl = `${AppConstants.BASE_URL}/api/reviews/GetStoreReviewsByStoreId`;
 const noveltyByIdDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNoveltyById`;
 const noveltiesDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNovelties`;
 const noveltyDetailsDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNoveltyDetailsByNoveltyId`;
 const favoriteStoresUrl = `${AppConstants.BASE_URL}/api/storeplace/GetFavoriteStores`;
 const addFavoriteStoreUrl = `${AppConstants.BASE_URL}/api/storeplace/AddFavoriteStore`;
 const deleteFavoriteStoreUrl = `${AppConstants.BASE_URL}/api/storeplace/DeleteFavoriteStore`;
-const deviceDataUrl = `${AppConstants.BASE_URL}/api/devicedata`;
+const deviceDataUrl = `${AppConstants.BASE_URL}/api/DeviceData`;
+const bannerSlidesUrl = `${AppConstants.BASE_URL}/api/BannerSlides`;
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -1065,6 +1068,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data != null) {
         data = data[0];
         client.id = data.id;
+        client.barcode = data.barcode;
         client.name = data.name;
         client.phone = data.phone;
         client.login = data.login;
@@ -2583,7 +2587,17 @@ export class AppDataRepository extends AbstractDataRepository {
       let stores: Store[] = [];
       if (data != null) {
         data.forEach(val => {
-          stores.push(val);
+          let store = new Store(
+            val.id,
+            val.idCity,
+            val.address,
+            {lat: val.lat, lng: val.lng},
+            val.openTime,
+            val.closeTime,
+            val.rating,
+            val.idFeedbacks
+          );
+          stores.push(store);
         });
       }
       return stores;
@@ -3109,6 +3123,24 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async getBannerSlides(): Promise<BannerSlide[]> {
+    try {
+      const response = await this.http.get(bannerSlidesUrl).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
 
+      let banners: BannerSlide[] = [];
+      if (data !== null) {
+        data.forEach((banner) => {
+          banners.push(banner);
+        })
+      }
+      return banners;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
 
 }

@@ -45,16 +45,22 @@ export class ItemBase extends ComponentBase implements OnInit {
   async ngOnInit() {
     super.ngOnInit();
     if (this.preloadQuotes) {
-      this.quotes = await this.repo.getQuotationProductsByProductId(this.product.id);
-      this._noOfQuotes = this.quotes.filter((i) => {return (i.stockQuant>0);}).length;
+      if (this.product && this.product.id) {
+        this.quotes = await this.repo.getQuotationProductsByProductId(this.product.id);
+        this._noOfQuotes = this.quotes.filter((i) => {
+          return (i.stockQuant > 0);
+        }).length;
 
-      // Возвращаем предложение с минимальной ценой
-      this.valueQuot = this.quotes.sort((x,y) => {
-        return (x.price - y.price);
-      })
-        .find((i) => {return (i.stockQuant > 0)});
+        // Возвращаем предложение с минимальной ценой
+        this.valueQuot = this.quotes.sort((x, y) => {
+          return (x.price - y.price);
+        })
+          .find((i) => {
+            return (i.stockQuant > 0)
+          });
 
-      //this.valueQuot = await this.repo.getValueQuotByProduct(this.product.id);
+        //this.valueQuot = await this.repo.getValueQuotByProduct(this.product.id);
+      }
     }
     if (this.valueQuot) {
       this.productStorePlaces = await this.repo.getProductStorePlacesByQuotId(this.valueQuot.id);

@@ -86,13 +86,15 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
     });
 
     if (this.device.cordova) {
-      // Getting FCM device token and send device data
-      FCMPlugin.getToken((token) => {
-        if (token) {
-          // Collecting and send data about device including device FCM token
-          this.collectAndSendDeviceData(token).catch((err) => console.log(`Sending device's data err: ${err}`));
-        }
-      });
+      if (this.userService.isAuth && this.userService.token) {
+        // Getting FCM device token and send device data
+        FCMPlugin.getToken((token) => {
+          if (token) {
+            // Collecting and send data about device including device FCM token
+            this.collectAndSendDeviceData(token).catch((err) => console.log(`Sending device's data err: ${err}`));
+          }
+        });
+      }
       // Subscribing this device to the main topic to send PUSH-notifications to this topic
       FCMPlugin.subscribeToTopic('main');
       // Handling incoming PUSH-notifications
