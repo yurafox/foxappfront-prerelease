@@ -2,6 +2,8 @@ import {ChangeDetectorRef, Component, Input} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {ProductReview} from '../../app/model/product-review';
 import {StoreReview} from "../../app/model/store-review";
+import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
+import {ToastController} from "ionic-angular";
 
 @Component({
   selector: 'item-review',
@@ -13,24 +15,92 @@ export class ItemReviewComponent extends ComponentBase {
   @Input() displayTextLength: number;
   @Input() collapsibleMode = false;
   helpfulClicked: boolean;
+  answerText: string;
+  answered: boolean = false;
+  answerClicked: boolean = false;
+  isAuth: boolean;
 
-  constructor(private changeDetector: ChangeDetectorRef) {
+  constructor(private changeDetector: ChangeDetectorRef, private repo: AbstractDataRepository,
+              private toastCtrl: ToastController) {
     super();
+    this.isAuth = this.userService.isAuth;
   }
 
   ngOnInit() {
     super.ngOnInit();
   }
 
-  onHelpfulClick() {
-    console.log('"Helpful" clicked');
+  /**
+   * function to adjust the height of the message textarea
+   * @param {any} event - the event, which is provided by the textarea input
+   * @return {void}
+   */
+  protected adjustTextarea(event: any): void {
+    let textarea: any		= event.target;
+    textarea.style.overflow = 'hidden';
+    textarea.style.height 	= 'auto';
+    textarea.style.height 	= textarea.scrollHeight + 'px';
+    return;
+  }
+
+  async onHelpfulClick() {
+    this.review.upvotes += 1;
     this.helpfulClicked = true;
+    if (this.review && (<any>this.review).idStore) {
+      let storeReview = this.review;
+      await this.repo.updateStoreReview(storeReview);
+    } else if (this.review && (<any>this.review).idProduct) {
+      let productReview = this.review;
+      await this.repo.updateProductReview(productReview);
+    }
     this.changeDetector.detectChanges();
 
   }
-  onNotHelpfulClick() {
-    console.log('"Not Helpful" clicked');
+  async onNotHelpfulClick() {
+    this.review.downvotes += 1;
     this.helpfulClicked = true;
+    if (this.review && (<any>this.review).idStore) {
+      let storeReview = this.review;
+      await this.repo.updateStoreReview(storeReview);
+    } else if (this.review && (<any>this.review).idProduct) {
+      let productReview = this.review;
+      await this.repo.updateProductReview(productReview);
+    }
     this.changeDetector.detectChanges();
+  }
+
+  async sendAnswer() {
+    this.answered = true;
+    if (this.review && (<any>this.review).idStore && this.answerText && this.answerText.length > 0) {
+      let storeReview = new StoreReview();
+      storeReview.idStore = (<any>this.review).idStore;
+      storeReview.reviewDate = new Date(Date.now());
+      storeReview.reviewText = this.answerText;
+      storeReview.idReview = this.review.id;
+      await this.repo.postStoreReview(storeReview).then(() => {
+        this.showToast();
+      });
+    } else if (this.review && (<any>this.review).idProduct && this.answerText && this.answerText.length > 0) {
+      let productReview = new ProductReview();
+      productReview.idProduct = (<any>this.review).idProduct;
+      productReview.reviewDate = new Date(Date.now());
+      productReview.reviewText = this.answerText;
+      productReview.idReview = this.review.id;
+      await this.repo.postProductReview(productReview).then(() => {
+        this.showToast();
+      });
+    }
+  }
+
+  private showToast() {
+    this.answerText = '';
+    this.answered = false;
+    this.answerClicked = false;
+    let message = this.locale['ToastMessage'];
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000
+    });
+    toast.present();
   }
 }

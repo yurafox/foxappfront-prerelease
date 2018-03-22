@@ -617,6 +617,15 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'Submit', lang:1, text:'Отправить'},
       { tagName:'Submit', lang:2, text:'Відправити'},
       { tagName:'Submit', lang:0, text:'Submit'},
+      { tagName:'ToastMessage', lang:1, text:'Ваш отзыв отправлен'},
+      { tagName:'ToastMessage', lang:2, text:'Ваш відгук відправлено'},
+      { tagName:'ToastMessage', lang:0, text:'Your review has been sent'},
+      { tagName:'WriteAdvantages', lang:1, text:'Преимущества'},
+      { tagName:'WriteAdvantages', lang:2, text:'Переваги'},
+      { tagName:'WriteAdvantages', lang:0, text:'Advantages'},
+      { tagName:'WriteDisadvantages', lang:1, text:'Недостатки'},
+      { tagName:'WriteDisadvantages', lang:2, text:'Недоліки'},
+      { tagName:'WriteDisadvantages', lang:0, text:'Disadvantages'},
     ];
 
     this._mockLocalizationStore['ItemReviewsPage'] = [
@@ -1025,9 +1034,9 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
     ];
 
     this._mockLocalizationStore['SupportPage'] = [
-      { tagName:'SpecifyProblem', lang:1, text:'Укажите Ваше сообщение ниже'},
-      { tagName:'SpecifyProblem', lang:2, text:'Вкажіть Ваше повідомлення нижче'},
-      { tagName:'SpecifyProblem', lang:0, text:'Specify your problem below'},
+      { tagName:'SpecifyProblem', lang:1, text:'Укажите здесь Ваше сообщение'},
+      { tagName:'SpecifyProblem', lang:2, text:'Вкажіть тут Ваше повідомлення'},
+      { tagName:'SpecifyProblem', lang:0, text:'Specify here your problem'},
       { tagName:'NoMessage', lang:1, text:'Вы не ввели сообщение'},
       { tagName:'NoMessage', lang:2, text:'Ви не ввели повідомлення'},
       { tagName:'NoMessage', lang:0, text:'You did not enter your message'},
@@ -1229,9 +1238,18 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'PeopleFound', lang:1, text:'людям это помогло'},
       { tagName:'PeopleFound', lang:2, text:'людям це допомогло'},
       { tagName:'PeopleFound', lang:0, text:'people found this helpful'},
+      { tagName:'PersonFound', lang:1, text:'человеку это помогло'},
+      { tagName:'PersonFound', lang:2, text:'людині це допомогло'},
+      { tagName:'PersonFound', lang:0, text:'person found this helpful'},
       { tagName:'Answers', lang:1, text:'Ответы'},
       { tagName:'Answers', lang:2, text:'Відповіді'},
       { tagName:'Answers', lang:0, text:'Answers'},
+      { tagName:'Answer', lang:1, text:'Ответить'},
+      { tagName:'Answer', lang:2, text:'Відповісти'},
+      { tagName:'Answer', lang:0, text:'Answer'},
+      { tagName:'ToastMessage', lang:1, text:'Ваш ответ отправлен'},
+      { tagName:'ToastMessage', lang:2, text:'Вашу відповідь відправлено'},
+      { tagName:'ToastMessage', lang:0, text:'Your answer has been sent'},
     ];
 
     this._mockLocalizationStore['PromoCodeComponent'] = [

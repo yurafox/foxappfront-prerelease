@@ -36,6 +36,13 @@
       </ion-list>
 
       <ion-list [hidden]="!userService.isAuth">
+        <button ion-item menuClose (click)="openPage(supportPage)">
+          <ion-icon item-start [name]="supportPage.icon"></ion-icon>
+          <span [loc]="supportPage.title" [name]="supportPage.name">{{locale[supportPage.name]}}</span>
+        </button>
+      </ion-list>
+
+      <ion-list [hidden]="!userService.isAuth">
         <button ion-item menuClose (click)="signOut($event)">
           <ion-icon item-start name="ios-exit-outline"></ion-icon>
           <span loc="Выйти" name="OutApp">{{locale.OutApp}}</span>

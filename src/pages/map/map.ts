@@ -530,7 +530,7 @@ export class MapPage extends ComponentBase implements OnInit {
       let city: City = this.navParams.data.city;
       this.selectedCity = city;
       this.makeShopList();
-      this.selectedMarker = {label: store.address, value: {lat: store.lat, lng: store.lng}};
+      this.selectedMarker = {label: store.address, value: store.position};
       this.handleListSelect();
     }
   }

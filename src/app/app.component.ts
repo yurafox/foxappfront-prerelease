@@ -50,8 +50,8 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
     {title: 'Магазины на карте', name: 'Map', component: 'MapPage', index: 0, icon: 'ios-map-outline'},
     {title: 'Акции', name: 'Actions', component: 'ActionsPage', index: 1, icon: 'ios-briefcase-outline'},
     {title: 'О нас', name: 'About', index: 2, icon: 'ios-information-circle-outline'},
-    {title: 'Поддержка', name: 'Support', component: 'SupportPage', index: 3, icon: 'ios-text-outline'}
   ];
+  supportPage: PageInterface = {title: 'Поддержка', name: 'Support', component: 'SupportPage', index: 0, icon: 'ios-text-outline'};
 
   private noveltyPushEventDescriptor: any;
   private actionPushEventDescriptor: any;

@@ -39,13 +39,23 @@
       </ion-row>
       <ion-row>
         <ion-col class="f-size-larger f-padding-5 f-border-ligthgray">
-          <ion-textarea placeholder="{{locale['WriteYourReview'] ? locale['WriteYourReview'] : 'Напишите свой отзыв здесь'}}" rows="15" [(ngModel)]="reviewText"></ion-textarea>
+          <ion-textarea placeholder="{{locale['WriteYourReview'] ? locale['WriteYourReview'] : 'Напишите свой отзыв здесь'}}" rows="2" [(ngModel)]="reviewText" (input)="adjustTextarea($event);"></ion-textarea>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="f-size-larger f-padding-5 f-border-ligthgray">
+          <ion-textarea placeholder="{{locale['WriteAdvantages'] ? locale['WriteAdvantages'] : 'Преимущества'}}" rows="2" [(ngModel)]="advantages" (input)="adjustTextarea($event);"></ion-textarea>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="f-size-larger f-padding-5 f-border-ligthgray">
+          <ion-textarea placeholder="{{locale['WriteDisadvantages'] ? locale['WriteDisadvantages'] : 'Недостатки'}}" rows="2" [(ngModel)]="disadvantages" (input)="adjustTextarea($event);"></ion-textarea>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
           <button class="f-btn-action" ion-button block (click)="onSubmitClick()"
-                  [attr.disabled]="((reviewText === '') || !(reviewText))?'':null">
+                  [attr.disabled]="((reviewText && reviewText.length < 3) || !(reviewText) || (submitted === true)) ? '' : null">
             <span loc="Отправить" name="Submit">{{locale['Submit']}}</span>
           </button>
         </ion-col>

@@ -4,22 +4,16 @@
 
 
 <ion-content>
-
-  <form #submitForm="ngForm" novalidate (ngSubmit)="submit(submitForm)">
-    <ion-list no-lines>
-      <ion-item>
-        <ion-label stacked color="fox"><span loc="Укажите Ваше сообщение ниже" name="SpecifyProblem">{{locale['SpecifyProblem']}}</span></ion-label>
-        <ion-textarea [(ngModel)]="supportMessage" name="supportQuestion" #supportQuestion="ngModel" rows="6"
-                      required></ion-textarea>
-      </ion-item>
-    </ion-list>
-
-    <p ion-text [hidden]="supportQuestion.valid || submitted === false" color="danger" padding-left>
-      <span loc="Вы не ввели сообщение" name="NoMessage">{{locale['NoMessage']}}</span>
-    </p>
-
-    <div padding>
-      <button ion-button block class="f-btn-action"><span loc="Отправить" name="Submit">{{locale['Submit']}}</span></button>
-    </div>
-  </form>
+  <ion-list no-lines>
+    <ion-item>
+      <ion-label floating><span style="font-size: 20px; color: black;" loc="Укажите здесь Ваше сообщение"
+                                            name="SpecifyProblem">{{locale['SpecifyProblem']}}</span></ion-label>
+      <ion-textarea [(ngModel)]="supportMessage" rows="3" (input)="adjustTextarea($event);"></ion-textarea>
+    </ion-item>
+  </ion-list>
+  <div padding>
+    <button ion-button block class="f-btn-action" (click)="submit()"
+            [attr.disabled]="(!supportMessage || (supportMessage && supportMessage.length === 0))?'':null"><span
+      loc="Отправить" name="Submit">{{locale['Submit']}}</span></button>
+  </div>
 </ion-content>

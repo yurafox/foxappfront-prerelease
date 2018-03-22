@@ -41,7 +41,8 @@ import {
   Category,
   MeasureUnit,
   Region,
-  BannerSlide
+  BannerSlide,
+  ClientMessage
 } from '../../../model/index';
 
 import { AbstractDataRepository } from '../../index';
@@ -105,6 +106,11 @@ const addFavoriteStoreUrl = `${AppConstants.BASE_URL}/api/storeplace/AddFavorite
 const deleteFavoriteStoreUrl = `${AppConstants.BASE_URL}/api/storeplace/DeleteFavoriteStore`;
 const deviceDataUrl = `${AppConstants.BASE_URL}/api/DeviceData`;
 const bannerSlidesUrl = `${AppConstants.BASE_URL}/api/BannerSlides`;
+const clientMessageUrl = `${AppConstants.BASE_URL}/api/ClientMessage`;
+const postProductReviewUrl = `${AppConstants.BASE_URL}/api/SaveReview/Product`;
+const postStoreReviewUrl = `${AppConstants.BASE_URL}/api/SaveReview/Store`;
+const updateProductReviewUrl = `${AppConstants.BASE_URL}/api/UpdateReview/Product`;
+const updateStoreReviewUrl = `${AppConstants.BASE_URL}/api/UpdateReview/Store`;
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -3143,4 +3149,60 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async postClientMessage(message: ClientMessage): Promise<ClientMessage> {
+    try {
+      const response = await this.http.post(clientMessageUrl, message, RequestFactory.makeAuthHeader()).toPromise();
+      if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
+        throw new Error("server side status error");
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async postProductReview(productReview: ProductReview): Promise<ProductReview> {
+    try {
+      const response = await this.http.post(postProductReviewUrl, productReview, RequestFactory.makeAuthHeader())
+        .toPromise();
+      if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
+        throw new Error("server side status error");
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async postStoreReview(storeReview: StoreReview): Promise<StoreReview> {
+    try {
+      const response = await this.http.post(postStoreReviewUrl, storeReview, RequestFactory.makeAuthHeader())
+        .toPromise();
+      if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
+        throw new Error("server side status error");
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async updateProductReview(productReview: ProductReview): Promise<ProductReview> {
+    try {
+      const response = await this.http.post(updateProductReviewUrl, productReview).toPromise();
+      if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
+        throw new Error("server side status error");
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async updateStoreReview(storeReview: StoreReview): Promise<StoreReview> {
+    try {
+      const response = await this.http.post(updateStoreReviewUrl, storeReview).toPromise();
+      if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
+        throw new Error("server side status error");
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
 }

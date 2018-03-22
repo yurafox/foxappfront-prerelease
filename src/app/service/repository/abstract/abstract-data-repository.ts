@@ -30,7 +30,8 @@ import { QuotationProduct,
           Category,
           MeasureUnit,
           Region,
-          BannerSlide
+          BannerSlide,
+          ClientMessage
        } from '../../../model/index';
 import {IDictionary} from "../../../core/app-core";
 
@@ -149,4 +150,9 @@ export abstract class AbstractDataRepository {
   public async abstract getProductImages(id: number): Promise<string[]>;
 
   public async abstract getBannerSlides(): Promise<BannerSlide[]>;
+  public async abstract postClientMessage(message: ClientMessage): Promise<ClientMessage>;
+  public async abstract postProductReview(review: ProductReview): Promise<ProductReview>;
+  public async abstract postStoreReview(review: StoreReview): Promise<StoreReview>;
+  public async abstract updateProductReview(review: ProductReview): Promise<ProductReview>;
+  public async abstract updateStoreReview(review: StoreReview): Promise<StoreReview>;
 }

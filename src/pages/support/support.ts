@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {IonicPage} from "ionic-angular";
-
-import {AlertController, NavController, ToastController} from 'ionic-angular';
+import {NavController, ToastController} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
+import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
+import {ClientMessage} from "../../app/model/client-message";
 
 @IonicPage({name: 'SupportPage', segment: 'support'})
 @Component({
@@ -15,27 +16,45 @@ export class SupportPage extends ComponentBase {
   submitted: boolean = false;
   supportMessage: string;
 
-  constructor(public navCtrl: NavController,
-              public alertCtrl: AlertController,
-              public toastCtrl: ToastController) {
+  constructor(private navCtrl: NavController,
+              private toastCtrl: ToastController,
+              private repo: AbstractDataRepository) {
     super();
   }
 
-  submit(form: NgForm) {
+  /**
+   * function to adjust the height of the message textarea
+   * @param {any} event - the event, which is provided by the textarea input
+   * @return {void}
+   */
+  protected adjustTextarea(event: any): void {
+    let textarea: any		= event.target;
+    textarea.style.overflow = 'hidden';
+    textarea.style.height 	= 'auto';
+    textarea.style.height 	= textarea.scrollHeight + 'px';
+    return;
+  }
+
+  async submit() {
     this.submitted = true;
 
-    if (form.valid) {
-      this.supportMessage = '';
-      this.submitted = false;
-
-      let message = this.locale['ToastMessage'];
-      let toast = this.toastCtrl.create({
-        message: message,
-        duration: 3000
-      });
-      toast.present();
-
-      // Handle report message sending here
+    if (this.supportMessage && this.supportMessage.length>0) {
+      let m = new ClientMessage();
+      m.messageDate = new Date(Date.now());
+      m.messageText = this.supportMessage;
+      if (m && m !== null && m.messageText) {
+        await this.repo.postClientMessage(m);
+        this.supportMessage = '';
+        this.submitted = false;
+        let message = this.locale['ToastMessage'];
+        let toast = this.toastCtrl.create({
+          message: message,
+          duration: 3000
+        });
+        toast.present().then(() => {
+          this.navCtrl.pop()
+        });
+      }
     }
   }
 
