@@ -14,6 +14,7 @@ export class UserService {
   private _auth: boolean;
   private _token: string;
   private localization: IDictionary<string> = {};
+  private shortloginMutex:boolean = false;
 
   public errorMessages:IDictionary<string> = {  // field for user service error log
     'login':'',
@@ -72,7 +73,10 @@ export class UserService {
     return this.user.appKey;
   }
   // </editor-fold>
-
+  
+  public get userMutex():boolean {
+     return this.shortloginMutex;
+  }
   // <editor-fold desc='setters'>
   public set name(name: string) {
     this.user.name = name;
@@ -85,6 +89,11 @@ export class UserService {
   public set email(email: string) {
     this.user.email = email;
   }
+
+  public set userMutex(mutex:boolean) {
+    this.shortloginMutex = mutex;
+  }
+
 
   public set lang(lang: number) {
     this.user.userSetting['lang'] = lang.toString();

@@ -134,6 +134,7 @@ export class AccountPage extends ComponentBase {
   logout() {
     this.userService.logOut();
     this.nav.setRoot('HomePage');
+
   }
 
   // <editor-fold desc="form builder">

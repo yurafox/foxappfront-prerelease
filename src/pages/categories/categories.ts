@@ -15,6 +15,7 @@ export class CategoriesPage extends ComponentBase   {
 
   private categoriesArray:Category[]=[];
   public  categoryForShow:Category[]=[];
+  public canAllCategoryView:boolean=false;
   // categoriesArray = [
   //   {categoryImg: 'assets/icon/phone.svg', caption: 'Cмартфоны и телефоны', url: 'mobilnye_telefony.html'},
   //   {categoryImg: 'assets/icon/tv.svg', caption: 'Телевизоры', url: 'led_televizory.html'},
@@ -43,6 +44,7 @@ export class CategoriesPage extends ComponentBase   {
      });
 
       this.sortDesc();
+      this.canAllCategoryView = true;
     }
   }
 
@@ -56,6 +58,9 @@ export class CategoriesPage extends ComponentBase   {
     return this._sanitizer.bypassSecurityTrustResourceUrl(`${header}${imgTxt}`);
   }
 
+  public toCategoryTree(){
+    this.navCtrl.push("CategoryTreePage",{groups:this.categoriesArray});
+  }
   private sortDesc():void {
     //this.categoriesArray.sort((x,y)=>{return y.priority_index-x.priority_index;});
     this.categoryForShow.sort((x,y)=>{return y.priority_show-x.priority_show;});
