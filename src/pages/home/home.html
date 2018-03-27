@@ -12,8 +12,8 @@
   </ion-refresher>
 
   <div *ngIf="content && !userService.userMutex && (pageMode === 1)">
-    <html-outlet [html]="content" [context]="this"></html-outlet>
     <sliding-banner></sliding-banner>
+    <html-outlet [html]="content" [context]="this"></html-outlet>
   </div>
 
   <div *ngIf="pageMode === 2">
