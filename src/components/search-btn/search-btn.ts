@@ -46,7 +46,9 @@ export class SearchBtnComponent extends ComponentBase {
       this.hostPage.baseProducts = null;
       (<any>this.hostPage).pageMode = PageMode.SearchResultsMode;
       this.inputMode = false;
-      this.hostPage.baseProducts = await this.srchService.searchProducts(searchString);
+      this.hostPage.resultsList.searchByText(searchString);
+
+      //this.hostPage.baseProducts = await this.srchService.searchProducts(searchString);
     }
 
   }

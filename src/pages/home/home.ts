@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ViewChild, ViewChildren} from '@angular/core';
 import {App, NavController, IonicPage} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {AbstractDataRepository} from "../../app/service/index";
@@ -20,7 +20,7 @@ export class HomePage extends ComponentBase {
 //  searchMode = false;
 
   private _pageMode: PageMode = PageMode.HomeMode;
-  public baseProducts = []; // new Array<Product>();
+  public baseProducts = [];
 
   // list slides for slider
   public slides = [
@@ -35,11 +35,9 @@ export class HomePage extends ComponentBase {
     }
   ];
 
-  @ViewChild('srch')
-  searchButtonControl;
+  @ViewChild('srch') searchButtonControl;
 
-  @ViewChild('resultsList')
-  public resultsList;
+  @ViewChild('resultsList') public resultsList;
 
   public content: string = '';
 
@@ -84,7 +82,7 @@ export class HomePage extends ComponentBase {
     this.searchButtonControl.removeSearchItem(item);
   }
 
-  search(srchString: string): void {
+  search(srchString: string) {
     this.searchButtonControl.searchByText(srchString);
   }
 

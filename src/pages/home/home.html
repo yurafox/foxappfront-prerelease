@@ -31,7 +31,7 @@
     <div class="f-color-secondary f-padding-lr-10 f-padding-t-10" *ngIf="(baseProducts) && (baseProducts.length == 0)">
       <span loc="Ваш поиск" name="YourSearch">{{locale['YourSearch']}}</span> "{{srchService.lastSearch}}" <span loc="" name="DidNotMatch">{{locale['DidNotMatch']}}</span>
     </div>
-    <items-list [products]="baseProducts" *ngIf="(baseProducts) && (baseProducts.length > 0)"></items-list>
+    <items-list #resultsList [products]="baseProducts" *ngIf="(baseProducts) && (baseProducts.length > 0)"></items-list>
   </div>
 
 </ion-content>
