@@ -61,11 +61,10 @@ export abstract class ComponentBase implements OnDestroy, OnInit {
   // get localization data from remote service
   protected setLocaleFromSource(data: any): void {
     if (this.makeLocale) {
-      this.locRepos.getLocalization(data).then((loc) => {
-        if (loc && (Object.keys(loc).length !== 0)) {
-          this._localeList = loc;
-        }
-      });
+      let loc = this.locRepos.getLocalization(data);
+      if (loc && (Object.keys(loc).length !== 0)) {
+        this._localeList = loc;
+      }
     }
     this.localeID = data.lang;
   }

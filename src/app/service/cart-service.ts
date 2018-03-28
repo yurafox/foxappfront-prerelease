@@ -305,7 +305,7 @@ export class CartService {
         });
       }
     }
-    this.localeUserService();
+    await this.localeCartService();
   }
 
   public get cartItemsCount(): number {
@@ -437,12 +437,11 @@ export class CartService {
     return (arr.length === 0) ? null : arr;
   }
 
-  // making localization for user service
-  private localeUserService() {
-    this.locRepo.getLocalization({componentName: (<any> this).constructor.name, lang: (this.userService.lang ? this.userService.lang : 1)}).then((loc) => {
-      if (loc && (Object.keys(loc).length !== 0)) {
-        this.localization = loc;
-      }
-    });
+  // making localization for cart service
+  private async localeCartService() {
+    let loc = await this.locRepo.getLocalization({componentName: (<any> this).constructor.name, lang: (this.userService.lang ? this.userService.lang : 1)});
+    if (loc && (Object.keys(loc).length !== 0)) {
+      this.localization = loc;
+    }
   }
 }
