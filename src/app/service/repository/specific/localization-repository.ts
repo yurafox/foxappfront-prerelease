@@ -3,12 +3,13 @@ import {AbstractLocalizationRepository} from '../abstract/abstract-localization-
 import {Injectable} from '@angular/core';
 import {Http} from "@angular/http";
 import {AppConstants} from "../../../app-constants";
+import {ConnectivityService} from "../../connectivity-service";
 
 @Injectable()
-export class MockLocalizationRepository extends AbstractLocalizationRepository {
+export class LocalizationRepository extends AbstractLocalizationRepository {
   private _mockLocalizationStore: IDictionary<Array<ILocalization>> = {};
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private connServ: ConnectivityService) {
     super();
   }
 
@@ -40,9 +41,9 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
           }
         }
       }
-      this._mockLocalizationStore = localization;console.log(localization);
+      this._mockLocalizationStore = localization;
     } catch(err) {
-      console.log(err.text);
+      await this.handleError(err);
     }
   }
 
@@ -58,6 +59,15 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
     }
     return mockResult;
   }
+
+  // <editor-fold desc="error handler"
+  private handleError(error?: Error): any {
+    if (this.connServ.counter < 1) {
+      this.connServ.checkConnection(error);
+    }
+  }
+  // </editor-fold>
+
 }
 
 interface ILocalization {

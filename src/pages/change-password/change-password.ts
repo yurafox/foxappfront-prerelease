@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { ComponentBase } from '../../components/component-extension/component-base';
 import {AbstractDataRepository} from "../../app/service/index";
 import {CustomValidators} from "../../app/core/app-core";
-import {IUserInfo,ChangePassword,IUserVerifyAccountData} from "../../app/model/index";
+import {ChangePassword,IUserVerifyAccountData} from "../../app/model/index";
 
 @IonicPage()
 @Component({
@@ -14,7 +14,7 @@ import {IUserInfo,ChangePassword,IUserVerifyAccountData} from "../../app/model/i
 export class ChangePasswordPage extends ComponentBase {
   public currentForm: FormGroup;
   public isSendAsync = false;
-  public verifyErrorData:{errorShow:boolean,errorMessage:string}
+  public verifyErrorData:{errorShow:boolean,errorMessage:string};
 
   public formErrors = {
     'password': '',
@@ -38,18 +38,18 @@ export class ChangePasswordPage extends ComponentBase {
       'password': {
         'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
         'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
-        'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
+        'maxlength': this.locale['LengthNGT25'] ? this.locale['LengthNGT25'] : 'Значение должно быть не более 25-и символов'
       },
       'newpassword': {
         'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
         'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
-        'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
+        'maxlength': this.locale['LengthNGT25'] ? this.locale['LengthNGT25'] : 'Значение должно быть не более 25-и символов'
       },
       'confirmpassword': {
         'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
         'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
-        'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов',
-        'compare': 'Пароль не совпадает с проверочным'
+        'maxlength': this.locale['LengthNGT25'] ? this.locale['LengthNGT25'] : 'Значение должно быть не более 25-и символов',
+        'compare': this.locale['PassDoesNotMatch'] ? this.locale['PassDoesNotMatch'] : 'Пароль не совпадает с проверочным'
       },
     };
 
@@ -75,7 +75,7 @@ export class ChangePasswordPage extends ComponentBase {
 
       else {
        this.verifyErrorData.errorShow = true;
-       this.verifyErrorData.errorMessage = (result) ? result.message : 'Ошибка удаленного источника';
+       this.verifyErrorData.errorMessage = (result) ? result.message : (this.locale['RemoteSourceError'] ? this.locale['RemoteSourceError'] : 'Ошибка удаленного источника');
       }
 
       this.isSendAsync = false;
@@ -84,9 +84,9 @@ export class ChangePasswordPage extends ComponentBase {
 
   private buildForm(): void {
     this.currentForm = this.formBuilder.group({
-      'password': ['', [Validators.required,Validators.minLength(6), Validators.maxLength(20)]],
-      'newpassword': ['', [Validators.required,Validators.minLength(6), Validators.maxLength(20)]],
-      'confirmpassword': ['', [Validators.required, CustomValidators.compare('newpassword'), Validators.minLength(6), Validators.maxLength(20)]],
+      'password': ['', [Validators.required,Validators.minLength(6), Validators.maxLength(25)]],
+      'newpassword': ['', [Validators.required,Validators.minLength(6), Validators.maxLength(25)]],
+      'confirmpassword': ['', [Validators.required, CustomValidators.compare('newpassword'), Validators.minLength(6), Validators.maxLength(25)]],
     });
 
     this.currentForm.valueChanges

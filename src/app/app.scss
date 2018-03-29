@@ -111,8 +111,8 @@ ion-list ion-icon {
 .profile-picture {
   position: absolute;
   border-radius: 50%;
-  left: 50px;
-  top: 8px;
+  left: auto;
+  top: auto;
   width: 45px;
   height: 45px;
   align-self: left !important;
@@ -244,16 +244,18 @@ ion-slides[pager] {
 }
 
 .f-main-menu-header {
-  height: 60px;
+  position: relative;
+  height: inherit;
   padding: 10px !important;
 
   .f-main-menu-header-content-text {
-    position: absolute !important;
-    left: 105px;
-    top: 20px;
-    font-size: 20px;
+    position: relative !important;
+    left: auto;
+    top: auto;
+    font-size: 19px;
     color: white;
-    //text-align: center;
+    text-align: center;
+    //text-transform: uppercase;
   }
 }
 

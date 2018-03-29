@@ -17,7 +17,7 @@ export class RegisterPage extends ComponentBase{
   public langs:Array<Lang>;
   public registerForm: FormGroup;
   public verifyForm: FormGroup;
-  public verifyErrorData:{errorShow:boolean,errorMessage:string}
+  public verifyErrorData:{errorShow:boolean,errorMessage:string};
   private onLoad = false;
   private preRegister = true;
   private isSendAsync = false;
@@ -30,33 +30,7 @@ export class RegisterPage extends ComponentBase{
     'lname':''
   };
 
-  public errorMessages = {
-    'phone': {
-      'required': 'Обязательное поле',
-      'pattern': 'Не правильный формат номера'
-    },
-    'email': {
-      'required': 'Обязательное поле',
-      'pattern': 'Не правильный формат email адреса'
-    },
-    // 'password': {
-    //   'required': 'Обязательное поле',
-    //   'minlength': 'Значение должно быть не менее 6ти символов',
-    //   'maxlength': 'Значение должно быть не более 20ти символов'
-    // },
-    // 'name':{
-    //   'required': 'Обязательное поле',
-    //   'maxlength': 'Значение должно быть не более 20ти символов'
-    // },
-    'fname':{
-      'required': 'Обязательное поле',
-      'maxlength': 'Значение должно быть не более 20ти символов'
-    },
-    'lname':{
-      'required': 'Обязательное поле',
-      'maxlength': 'Значение должно быть не более 20ти символов'
-    }
-  };
+  public errorMessages = {};
 
 
 
@@ -71,6 +45,33 @@ export class RegisterPage extends ComponentBase{
 
   async ngOnInit(){
     super.ngOnInit();
+    this.errorMessages = {
+      'phone': {
+        'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+        'pattern': this.locale['WrongPhoneFormat'] ? this.locale['WrongPhoneFormat'] : 'Не правильный формат номера'
+      },
+      'email': {
+        'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+        'pattern': this.locale['WrongEMailFormat'] ? this.locale['WrongEMailFormat'] : 'Не правильный формат email адреса'
+      },
+      // 'password': {
+      //   'required': 'Обязательное поле',
+      //   'minlength': 'Значение должно быть не менее 6ти символов',
+      //   'maxlength': 'Значение должно быть не более 20ти символов'
+      // },
+      // 'name':{
+      //   'required': 'Обязательное поле',
+      //   'maxlength': 'Значение должно быть не более 20ти символов'
+      // },
+      'fname':{
+        'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+        'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
+      },
+      'lname':{
+        'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+        'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
+      }
+    };
     this.buildForm();
     [this.currencies,this.langs] = await Promise.all([this.repo.getCurrencies(true),this.repo.getLocale(true)]);
     this.onLoad=true;
@@ -91,7 +92,7 @@ export class RegisterPage extends ComponentBase{
     if (!this.verifyForm.valid) {
       return;
     }
-    
+
      // start block logic for multiple sending
      this.isSendAsync = true;
 
@@ -100,7 +101,7 @@ export class RegisterPage extends ComponentBase{
       const result:IUserVerifyAccountData = await this.account.verifyAccount(phone);
       if(result===null || result.status===0){
         this.verifyErrorData.errorShow = true;
-        this.verifyErrorData.errorMessage = (result) ? result.message : 'Ошибка удаленного источника';
+        this.verifyErrorData.errorMessage = (result) ? result.message : (this.locale['RemoteSourceError'] ? this.locale['RemoteSourceError'] : 'Ошибка удаленного источника');
       }
 
       else {
@@ -131,7 +132,7 @@ export class RegisterPage extends ComponentBase{
          this.showSmsPopUp(result.message,result.user.phone);
       else {
           this.verifyErrorData.errorShow = true;
-          this.verifyErrorData.errorMessage = (result) ? result.message : 'Ошибка удаленного источника';
+          this.verifyErrorData.errorMessage = (result) ? result.message : (this.locale['RemoteSourceError'] ? this.locale['RemoteSourceError'] : 'Ошибка удаленного источника');
       }
 
       this.isSendAsync = false;
@@ -235,7 +236,7 @@ export class RegisterPage extends ComponentBase{
           text: 'OK',
           handler: () => {
             if(this.nav.length() > 1) {this.nav.removeView(this.nav.getActive());}
-           
+
             // go to login page
             this.login(phone);
           }
