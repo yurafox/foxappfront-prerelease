@@ -5,6 +5,7 @@ import {PopoverController} from 'ionic-angular';
 import {FilterPopoverPage} from '../../pages/filter-popover/filter-popover';
 import {Prop, Manufacturer} from '../../app/model/index';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {SearchService} from '../../app/service/search-service';
 
 class MnfFilterStruct {
   constructor(public mnf: Manufacturer,
@@ -112,7 +113,8 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     await this.initData();
   }
 
-  constructor(public popoverCtrl: PopoverController, public repo: AbstractDataRepository) {
+  constructor(public popoverCtrl: PopoverController, public repo: AbstractDataRepository,
+              public srchService: SearchService) {
     super();
   }
 

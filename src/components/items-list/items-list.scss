@@ -1,5 +1,10 @@
 items-list {
 
+  .search-results {
+    height: 100vh;
+    overflow-y: scroll;
+  }
+
   .f-item-padding-top {
     padding-top: 5px;
   }

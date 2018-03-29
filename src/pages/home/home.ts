@@ -39,6 +39,8 @@ export class HomePage extends ComponentBase {
 
   @ViewChild('resultsList') public resultsList;
 
+  @ViewChild('cont') public cont;
+
   public content: string = '';
 
   constructor(public app: App, public nav: NavController, private _repo:AbstractDataRepository,
@@ -49,6 +51,9 @@ export class HomePage extends ComponentBase {
 
   public set pageMode(val: PageMode) {
     this._pageMode = val;
+    if (val === PageMode.SearchMode)
+      this.searchButtonControl.inputMode = true;
+    this.cont.resize();
   }
 
   public get pageMode(): PageMode {
@@ -73,7 +78,7 @@ export class HomePage extends ComponentBase {
   onSearchClick() {
     if (!(this.pageMode == PageMode.SearchMode)) {
       this.pageMode = PageMode.SearchMode;
-      this.searchButtonControl.inputMode = true;
+      //this.searchButtonControl.inputMode = true;
     }
   }
 

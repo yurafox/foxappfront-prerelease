@@ -2,6 +2,7 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import { LazyLoadImagesModule } from 'ngx-lazy-load-images';
 import {SearchBtnComponent} from './search-btn/search-btn';
 import {IonicModule} from 'ionic-angular';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import {MainToolbarComponent} from './main-toolbar/main-toolbar';
 import {ItemComponent} from './item/item';
 import {PipesModule} from '../app/pipe/pipes.module';
@@ -73,7 +74,8 @@ import { SlidingBannerComponent } from './sliding-banner/sliding-banner';
     IonicModule,
     PipesModule,
     Ionic2RatingModule,
-    LazyLoadImagesModule
+    LazyLoadImagesModule,
+    InfiniteScrollModule
   ],
   exports: [
     SearchBtnComponent,

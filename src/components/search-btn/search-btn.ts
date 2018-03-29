@@ -46,9 +46,7 @@ export class SearchBtnComponent extends ComponentBase {
       this.hostPage.baseProducts = null;
       (<any>this.hostPage).pageMode = PageMode.SearchResultsMode;
       this.inputMode = false;
-      this.hostPage.resultsList.searchByText(searchString);
-
-      //this.hostPage.baseProducts = await this.srchService.searchProducts(searchString);
+      this.srchService.searchProducts(searchString, this.hostPage);
     }
 
   }
@@ -72,7 +70,6 @@ export class SearchBtnComponent extends ComponentBase {
   }
 
   incSearch() {
-    this.inputMode = true;
     this.hostPage.pageMode = PageMode.SearchMode;
     if (this.searchValue) {
       this.tmpSearchArray = this.searchService.searchItems.filter((value) => {

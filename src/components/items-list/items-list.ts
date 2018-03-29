@@ -10,53 +10,18 @@ import {SearchService} from '../../app/service/search-service';
 
 export class ItemsListComponent extends ComponentBase {
 
-  @Input() products: Product[];
+  //@Input() products: Product[];
 
-  private readonly INDEX = 'product';
-  private readonly TYPE = null;
-  private readonly SIZE = 30;
-
-  haveNextPage = false;
-  scrollID = '';
-  notice = '';
-  hitsTotal = 0;
-
-  constructor(public searchService: SearchService) {
+  constructor(public srchService: SearchService) {
     super();
-    this.scrollID = '';
-    this.notice = '';
-    this.haveNextPage = false;
   }
 
   ngOnInit() {
     super.ngOnInit();
   }
 
-  searchByText(srchString: string) {
-    this.searchService.getAllDocumentsWithScroll(
-    this.INDEX,
-    this.TYPE,
-    this.SIZE,
-      srchString).then(
-      response => {
-
-      if (response.hits.hits) {
-      this.products = response.hits.hits.map(
-        x => {
-          return x._source;
-        }
-      );
-      if (response.hits.hits.length < response.hits.total) {
-      this.haveNextPage = true;
-      this.scrollID = response._scroll_id;
-    }
-    this.hitsTotal = response.hits.total;
-    }
-    else
-    this.products = [];
-    }, error => {
-      console.error(error);
-    });
+  onScroll() {
+    this.srchService.loadNext();
   }
 
 }

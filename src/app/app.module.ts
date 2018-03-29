@@ -8,6 +8,7 @@ import {HttpModule} from '@angular/http';
 import {FormsModule} from '@angular/forms';
 import {InAppBrowser} from '@ionic-native/in-app-browser';
 import {GoogleMaps} from '@ionic-native/google-maps';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import {Ionic2Rating, Ionic2RatingModule} from 'ionic2-rating';
 import { LazyLoadImagesModule } from 'ngx-lazy-load-images';
 import {BarcodeScanner} from '@ionic-native/barcode-scanner';
@@ -109,6 +110,7 @@ import {Network} from "@ionic-native/network";
     InMemoryWebApiModule.forRoot(WebApiService, {delay: 200, passThruUnknownUrl: true,post204: false, put204: false}),
     IonicModule.forRoot(FoxApp),
     IonicPageModule.forChild(HomePage),
+    InfiniteScrollModule,
     LazyLoadImagesModule,
     ComponentsModule,
     Ionic2RatingModule,

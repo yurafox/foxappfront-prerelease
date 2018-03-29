@@ -532,7 +532,7 @@ export class MockLocalizationRepository extends AbstractLocalizationRepository {
       { tagName:'Clear', lang:0, text:'Clear'},
     ];
 
-    this._mockLocalizationStore['HomePage'] = [
+    this._mockLocalizationStore['ItemsListComponent'] = [
       { tagName:'YourSearch', lang:1, text:'Ваш поиск'},
       { tagName:'YourSearch', lang:2, text:'Ваш пошук'},
       { tagName:'YourSearch', lang:0, text:'Your search'},
