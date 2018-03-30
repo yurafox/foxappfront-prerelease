@@ -47,7 +47,7 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
     {title: 'Профиль', name: 'Account', component: 'AccountMenuPage', index: 2, icon: 'ios-person-outline'},
   ];
   infoPages: PageInterface[] = [
-    {title: 'Магазины на карте', name: 'Map', component: 'MapPage', index: 0, icon: 'ios-map-outline'},
+    {title: 'Магазины', name: 'Map', component: 'MapPage', index: 0, icon: 'ios-map-outline'},
     {title: 'Акции', name: 'Actions', component: 'ActionsPage', index: 1, icon: 'ios-briefcase-outline'},
     {title: 'О нас', name: 'About', index: 2, icon: 'ios-information-circle-outline'},
   ];

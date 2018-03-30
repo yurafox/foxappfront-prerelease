@@ -7,7 +7,7 @@ import {ConnectivityService} from "../../connectivity-service";
 
 @Injectable()
 export class LocalizationRepository extends AbstractLocalizationRepository {
-  private _mockLocalizationStore: IDictionary<Array<ILocalization>> = {};
+  private _localizationStore: IDictionary<Array<ILocalization>> = {};
 
   constructor(private http: Http, private connServ: ConnectivityService) {
     super();
@@ -41,7 +41,7 @@ export class LocalizationRepository extends AbstractLocalizationRepository {
           }
         }
       }
-      this._mockLocalizationStore = localization;
+      this._localizationStore = localization;
     } catch(err) {
       await this.handleError(err);
     }
@@ -49,7 +49,7 @@ export class LocalizationRepository extends AbstractLocalizationRepository {
 
   public getLocalization(data: { componentName: string, lang: number }): IDictionary<string> {
     let mockResult: IDictionary<string> = {};
-    let localeArray: ILocalization[] = this._mockLocalizationStore[data.componentName];
+    let localeArray: ILocalization[] = this._localizationStore[data.componentName];
     if (localeArray) {
       localeArray = localeArray
         .filter((value) => {
