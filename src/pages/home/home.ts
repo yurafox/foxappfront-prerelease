@@ -7,7 +7,7 @@ import {SearchService} from '../../app/service/search-service';
 export enum PageMode {
   HomeMode = 1,
   SearchMode = 2,
-  SearchResultsMode =3
+  SearchResultsMode = 3
 }
 
 @IonicPage({name: 'HomePage', segment: 'home'})

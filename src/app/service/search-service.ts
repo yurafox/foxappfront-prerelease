@@ -4,6 +4,29 @@ import {AbstractDataRepository} from './repository/abstract/abstract-data-reposi
 import { Client } from 'elasticsearch';
 
 
+export enum SortOrderEnum {
+  Relevance = 1,
+  PriceLowToHigh = 2,
+  PriceHighToLow = 3,
+  Popularity = 4,
+  Rating = 5
+}
+
+export class PropsFilterExpr {
+  public propId: number;
+  public propVal: string;
+}
+
+export class ProductSearchParams {
+  constructor (
+  public srchText?: string,
+  public categoryId?: number,
+  public supplier?: number[],
+  public productProps?: PropsFilterExpr[],
+  public sortOrder: SortOrderEnum = SortOrderEnum.Relevance)
+  {}
+}
+
 @Injectable()
 export class SearchService {
 
@@ -13,7 +36,6 @@ export class SearchService {
   public searchItems = new Array<string> ();
   public searchResults: Promise<Product[]>;
   private _ls: string = '';
-  //private progressBarIsActive = false;
   public inSearch = false;
   public hostPage: any;
 
@@ -24,8 +46,9 @@ export class SearchService {
   private readonly SIZE = 30;
   private readonly MAX_ITEMS_COUNT = 360;
 
+  public prodSrchParams: ProductSearchParams = null;
+
   public haveNextPage = false;
-  //public scrollID = '';
   public notice = '';
   public hitsTotal = 0;
   public lastItemIndex = 0;
@@ -53,41 +76,43 @@ export class SearchService {
     this.lastSearchStringUpdated.emit(value);
   }
 
-/*
-  public get progressBarStatus(): boolean {
-    return this.progressBarIsActive;
-  }
-*/
-
   private connect() {
     this.client = new Client({
       host: 'http://localhost:9200'
     });
   }
 
-  searchByText() {
+  resetSearch() {
     this.lastItemIndex = 0;
     this.products = [];
     this.hitsTotal = 0;
+  }
+
+  searchByCategory (catId: number) {
+    this.resetSearch();
+    this.prodSrchParams = new ProductSearchParams(undefined, catId);
+    this.getData();
+  }
+
+  searchByText(srchText: string) {
+    this.resetSearch();
+    this.prodSrchParams = new ProductSearchParams(srchText);
     this.getData();
   }
 
   loadNext() {
-    if (this.products.length > this.MAX_ITEMS_COUNT)
-      return;
+    if (
+          (this.products.length > this.MAX_ITEMS_COUNT)
+            ||
+          (this.products.length === this.hitsTotal)
+       ) return;
     this.getData();
   }
 
   getData() {
     this.inSearch = true;
-    this.getDocuments(
-    this.INDEX,
-    this.TYPE,
-    this.lastItemIndex,
-    this.SIZE,
-    this.lastSearch).then(
+    this.getDocuments(this.lastItemIndex).then(
     response => {
-      //this.progressBarIsActive = true;
       try
       {
         if (response.hits.hits) {
@@ -113,7 +138,6 @@ export class SearchService {
         }
       }
       finally {
-//        this.progressBarIsActive = false;
         this.inSearch = false;
         this.hostPage.cont.resize();
       }
@@ -122,18 +146,71 @@ export class SearchService {
     });
   }
 
-  getDocuments(_index, _type, _from, _size, _qryText): any {
+  getDocuments(_from: number): any {
+    let sort = null;
+    let mustArr = [];
+
+    if (this.prodSrchParams.sortOrder === SortOrderEnum.Relevance) {
+      sort = [{'_score': {'order' : 'desc'}}];
+    }
+    if (this.prodSrchParams.sortOrder === SortOrderEnum.Rating) {
+      sort = [{'rating': {'order' : 'desc'}}];
+    }
+    if (this.prodSrchParams.sortOrder === SortOrderEnum.Popularity) {
+      sort = [{'popularity': {'order' : 'desc'}}];
+    }
+    if (this.prodSrchParams.sortOrder === SortOrderEnum.PriceLowToHigh) {
+      sort = [{'price': {'order' : 'asc'}}];
+    }
+    if (this.prodSrchParams.sortOrder === SortOrderEnum.PriceHighToLow) {
+      sort = [{'price': {'order' : 'desc'}}];
+    }
+
+    if ((this.prodSrchParams.supplier) && (this.prodSrchParams.supplier.length >=1)) {
+      let terms = [];
+      this.prodSrchParams.supplier.forEach(
+        x => terms.push({'term': {"manufacturerId" : `${x}`}})
+      );
+      let mnf = {'bool': {'should': terms}};
+      mustArr.push(mnf);
+    };
+
+    if (this.prodSrchParams.srchText) {
+      mustArr.push({'simple_query_string': {
+                                      'query': `${this.prodSrchParams.srchText}`,
+                                      'default_operator': 'and'
+                                    }
+            });
+    }
+
+    if (this.prodSrchParams.categoryId) {
+      mustArr.push({
+                      'nested' : {
+                      'path' : 'groups',
+                        'query' : {
+                        'term': {
+                          'groups.id': {
+                            'value': `${this.prodSrchParams.categoryId}`
+                          }
+                        }
+                      }
+                    }
+      });
+    }
+
     return this.client.search({
-      index: _index,
-      type: _type,
+      index: this.INDEX,
+      type: this.TYPE,
       filterPath: ['hits.hits._source', 'hits.total'],
-      body: {
+      body:
+        {
         'from': _from,
-        'size': _size,
+        'size': this.SIZE,
+        'sort': sort,
         'query': {
-          'simple_query_string': {
-            'query': `${_qryText}`,
-            'default_operator': 'and'
+          'bool': {
+            'must':
+              mustArr
           }
         }
       }
@@ -143,9 +220,6 @@ export class SearchService {
   lastSearchStringUpdated = new EventEmitter<string>();
 
   searchProducts(srchString: string, hostPage: any) {
-
-    this.lastSearch = srchString;
-
     // Если такая строка поиска уже есть в списке - переносим ее в верх списка и обрезаем список до макс длиньі
     const i = this.searchItems.indexOf(srchString);
     if (!(i == -1))
@@ -156,7 +230,8 @@ export class SearchService {
     //Сохраняем массив в сторадже
     localStorage.setItem(this.cKey, JSON.stringify(this.searchItems));
     this.hostPage = hostPage;
-    this.searchByText();
+    this.searchByText(srchString);
+    this.lastSearch = srchString;
   }
 
   removeSearchItem(str: string) {
