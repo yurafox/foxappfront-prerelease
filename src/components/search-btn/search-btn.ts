@@ -43,10 +43,10 @@ export class SearchBtnComponent extends ComponentBase {
   async searchByText(searchString: string) {
     if (searchString) {
       this.searchValue = searchString;
-      this.hostPage.baseProducts = null;
+      this.srchService.products = [];
+      this.srchService.searchProducts(searchString, this.hostPage);
       (<any>this.hostPage).pageMode = PageMode.SearchResultsMode;
       this.inputMode = false;
-      this.srchService.searchProducts(searchString, this.hostPage);
     }
 
   }

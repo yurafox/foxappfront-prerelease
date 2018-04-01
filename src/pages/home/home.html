@@ -1,7 +1,7 @@
 <ion-header>
   <main-toolbar [host]="this"></main-toolbar>
   <search-btn #srch [hostPage]="this" (click)="onSearchClick()"></search-btn>
-  <filter *ngIf="(pageMode === 3) && (srchService.products)" [filteredProducts]="srchService.products" [parentComponent]="this"></filter>
+  <filter *ngIf="(pageMode === 3) && (srchService.products)" [srch]="srchService"></filter>
 </ion-header>
 
 <ion-content #cont>

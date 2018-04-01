@@ -36,14 +36,14 @@ export class ItemPropsComponent extends ComponentBase implements OnInit {
     }
 
   ngOnInit () {
-    this.showPeriod = (!(this.displayPropCount == -1) && (this.product.Props.length > this.displayPropCount));
+    this.showPeriod = (!(this.displayPropCount == -1) && (this.product.props.length > this.displayPropCount));
     super.ngOnInit();
     this.getUniqueProps();
   }
 
   getUniqueProps() {
     let uniqueProps = new Array<Prop>();
-    let sortedProps = this.product.Props.sort( (x,y) => {return x.idx - y.idx});
+    let sortedProps = this.product.props.sort( (x,y) => {return x.idx - y.idx});
 
     sortedProps.forEach(i => {
         if (
@@ -56,8 +56,8 @@ export class ItemPropsComponent extends ComponentBase implements OnInit {
     );
 
     uniqueProps.forEach(i => {
-        let vals = this.product.Props.filter(x => (x.id_Prop.id === i.id));
-        this.propsArr.push(new ItemPropsTable(i, vals, vals.map(x => {return x.value;}).join('; ')));
+        let vals = this.product.props.filter(x => (x.id_Prop.id === i.id));
+        this.propsArr.push(new ItemPropsTable(i, vals, vals.map(x => {return x.pVal;}).join('; ')));
       }
     );
   }

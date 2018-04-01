@@ -53,6 +53,7 @@ export abstract class AbstractDataRepository {
   public async abstract getProductStorePlacesByQuotId(quotId: number): Promise<ProductStorePlace[]>;
   public async abstract loadStorePlaceCache();
   public async abstract getStorePlaceById(id: number): Promise<StorePlace>;
+  public abstract getProductFromResponse(data: any): Product;
   public async abstract getProductById(productId: number): Promise<Product>;
   public async abstract getQuotationById(quotationId: number): Promise<Quotation>;
   public async abstract loadSuppliersCache();

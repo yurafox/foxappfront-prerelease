@@ -1430,7 +1430,6 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-
   public async getCityById(id: number): Promise<City> {
     if (!id) return null;
     try {
@@ -1476,7 +1475,6 @@ export class AppDataRepository extends AbstractDataRepository {
       });
       if (i == ar.length) return true;
     } else return false;
-    //return ((textToSearch) && !(textToSearch.toLowerCase().indexOf(srchVal.toLowerCase()) == -1));
   }
 
   public async searchProducts(srchString: string): Promise<Product[]> {
@@ -1510,6 +1508,7 @@ export class AppDataRepository extends AbstractDataRepository {
                 val.rating,
                 val.recall,
                 val.supplOffers,
+                val.description,
                 val.slideImageUrls,
                 val.barcode
               );
@@ -1563,6 +1562,7 @@ export class AppDataRepository extends AbstractDataRepository {
               val.rating,
               val.recall,
               val.supplOffers,
+              val.description,
               val.slideImageUrls,
               val.barcode
             );
@@ -1614,6 +1614,7 @@ export class AppDataRepository extends AbstractDataRepository {
               val.rating,
               val.recall,
               val.supplOffers,
+              val.description,
               val.slideImageUrls,
               val.barcode
             );
@@ -1735,6 +1736,29 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public getProductFromResponse(data: any): Product {
+    if (data != null && data.length !== 0) {
+      const prod: Product = new Product();
+      let props = new Array<ProductPropValue>();
+      if (data.props && data.props.length !== 0) {
+        props = this.getPropValuefromProduct(data);
+      }
+      prod.id = data.id;
+      prod.name = data.name;
+      prod.price = data.price;
+      prod.manufacturerId = data.manufacturerId;
+      prod.props = props;
+      prod.imageUrl = data.imageUrl;
+      prod.rating = data.rating;
+      prod.recall = data.recall;
+      prod.supplOffers = data.supplOffers;
+      prod.description = data.description;
+      prod.slideImageUrls = data.slideImageUrls;
+      prod.barcode = data.barcode;
+      return prod;
+    }
+    else return null;
+  }
 
   public async getProductById(productId: number): Promise<Product> {
     try {
@@ -1751,36 +1775,14 @@ export class AppDataRepository extends AbstractDataRepository {
 
         // response data binding
         let data: any = response.json();
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
 
-        if (data != null && data.length !== 0) {
-          //data = data[0]; // ---> single data make Array container
-          let props = new Array<ProductPropValue>();
-          if (data.props && data.props.length !== 0) {
-            props = this.getPropValuefromProduct(data);
-          }
-          /*prod = new Product(data.id, data.name, data.price, new Manufacturer(data.manufacturer.id, data.manufacturer.name),
-            props, data.imageUrl, data.rating, data.recall, data.supplOffers);*/
-
-          // product insert
-          prod.id = data.id;
-          prod.name = data.name;
-          prod.price = data.price;
-          prod.manufacturerId = data.manufacturerId;
-          prod.Props = props;
-          prod.imageUrl = data.imageUrl;
-          prod.rating = data.rating;
-          prod.recall = data.recall;
-          prod.supplOffers = data.supplOffers;
-          prod.slideImageUrls = data.slideImageUrls;
-          prod.barcode = data.barcode;
-
-          // add to cache
-          this.cache.Products.Add(id, prod);
-        }
-        return prod;
+        let prod1 = this.getProductFromResponse(data);
+        this.cache.Products.Add(id, prod1);
+        return prod1;
       } else {
         // </editor-fold>
         return this.cache.Products.Item(id);
@@ -2223,6 +2225,7 @@ export class AppDataRepository extends AbstractDataRepository {
           val.prop_Value_Bool,
           enumVal,
           val.prop_Value_Long,
+          val.pVal,
           val.id_Measure_Unit,
           //
           val.idx,

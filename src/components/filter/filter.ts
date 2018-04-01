@@ -5,7 +5,8 @@ import {PopoverController} from 'ionic-angular';
 import {FilterPopoverPage} from '../../pages/filter-popover/filter-popover';
 import {Prop, Manufacturer} from '../../app/model/index';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
-import {SearchService} from '../../app/service/search-service';
+import {SearchService, SortOrderEnum} from '../../app/service/search-service';
+import {ProductPropValue} from '../../app/model/product-prop-value';
 
 class MnfFilterStruct {
   constructor(public mnf: Manufacturer,
@@ -13,13 +14,6 @@ class MnfFilterStruct {
               public isChecked: boolean) {
   }
 }
-
-/*class FilterObj {
-  constructor(
-    public isChecked: boolean = false,
-    public name: string
-  ){}
-}*/
 
 class PropsFilterStruct {
   constructor(public prop: Prop,
@@ -32,7 +26,7 @@ class PropsFilterStruct {
   }
 }
 
-class PropFilterCondition {
+export class PropFilterCondition {
   constructor(
     public propId: number,
     public propVal: string
@@ -74,16 +68,14 @@ class FilterCategory {
   selector: 'filter',
   templateUrl: 'filter.html'
 })
-export class FilterComponent extends  ComponentBase implements OnInit {
+export class FilterComponent extends  ComponentBase {
 
-  @Input() filteredProducts: Product[];
+  //@Input() filteredProducts: Product[];
 
-  @Input() parentComponent: any;
+  @Input() srch: SearchService;
 
   fCategories = new Array<FilterCategory>();
 
-  baseProducts = new Array<Product>();
-  //initialProducts = new Array<Product>();
   public dataInitialized = false;
 
   filteredProps: PropsFilterStruct[];
@@ -93,28 +85,24 @@ export class FilterComponent extends  ComponentBase implements OnInit {
   mnfFilterCondition = [];
 
   async initData() {
-    this.filteredProducts = [];
     this.filteredProps = [];
     this.filteredManufacturers = [];
     this.fCategories = [];
-    this.initFilterProps(this.baseProducts);
+    this.initFilterProps(this.srch.products);
 
     await this.initFilterManufacturers();
     this.initFilter();
     this.fCategories.sort((a, b) => {return (a.sortOrder - b.sortOrder)});
-    this.filterRun();
   }
 
   async resetFilter() {
-    this.parentComponent.products = [];
-    for (let p of this.baseProducts) {
-      this.parentComponent.products.push(p);
-    }
     await this.initData();
+    this.srch.prodSrchParams.productProps = this.propFilterConditionArray;
+    this.srch.prodSrchParams.supplier = this.mnfFilterCondition;
+    this.srch.searchGeneral();
   }
 
-  constructor(public popoverCtrl: PopoverController, public repo: AbstractDataRepository,
-              public srchService: SearchService) {
+  constructor(public popoverCtrl: PopoverController, public repo: AbstractDataRepository) {
     super();
   }
 
@@ -147,19 +135,16 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     this.fCategories.push(fCat);
   }
 
-  async ngOnInit() {
-    super.ngOnInit();
-  }
-
   async initFilterManufacturers() {
     this.mnfFilterCondition = [];
-    for (let p of this.baseProducts) {
+    for (let p of this.srch.products) {
       const i = this.filteredManufacturers.findIndex(z => (z.mnf.id == p.manufacturerId));
       if (i !== -1)
         this.filteredManufacturers[i].count++;
       else {
         let mnf = new MnfFilterStruct(await this.repo.getManufacturerById(p.manufacturerId), 1, false);
-        this.filteredManufacturers.push(mnf);
+        if (mnf.mnf.name)
+          this.filteredManufacturers.push(mnf);
       }
     }
     this.filteredManufacturers.sort((a, b) => (a.mnf.name.localeCompare(b.mnf.name)));
@@ -176,16 +161,16 @@ export class FilterComponent extends  ComponentBase implements OnInit {
   initFilterProps(prodArray: Product[]) {
     this.filteredProps.length = 0;
     prodArray.forEach(p => {
-      p.Props.forEach(a => {
+      p.props.forEach(a => {
 //        if (a.id_Prop. predestination>0) {
         // Вьіводим только св-ва для фильтра
         if ((a.out_bmask & 2) === 2) {
           const i = this.filteredProps.findIndex(z => ((z.prop.id === a.id_Prop.id)
-                                                                    && (z.value == a.value)));
+                                                                    && (z.value == a.pVal)));
           if (i !== -1)
             this.filteredProps[i].count++;
           else {
-            const pt = new PropsFilterStruct(a.id_Prop, a.value, 1, false, null, (a.id_Prop.prop_type == 4) ? a.prop_Value_Enum.list_Index : null);
+            const pt = new PropsFilterStruct(a.id_Prop, a.pVal, 1, false, null, (a.id_Prop.prop_type == 4) ? a.prop_Value_Enum.list_Index : null);
             this.filteredProps.push(pt);
           }
         }
@@ -209,22 +194,6 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     }
   }
 
-  filterRun() {
-    this.filteredProducts.length = 0;
-    this.baseProducts.forEach(p => {
-        if (
-          (this.filterByPrice(p, null, null/*this.startPriceFilterCondition, this.endPriceFilterCondition*/))
-          &&
-          (this.filterByManufacturer(p, this.mnfFilterCondition))
-          &&
-          (this.filterByPropertyValue(p, this.propFilterConditionArray))
-        )
-          this.filteredProducts.push(p);
-      }
-    );
-    this.parentComponent.products = this.filteredProducts;
-  }
-
   onPropsClick(data) {
     let cond = new PropFilterCondition(data.prop.id, data.value);
     let i = this.propFilterConditionArray
@@ -233,7 +202,8 @@ export class FilterComponent extends  ComponentBase implements OnInit {
       this.propFilterConditionArray.splice(i, 1);
     if ((i == -1) && (!data.isChecked))
       this.propFilterConditionArray.push(cond);
-    this.filterRun();
+    this.srch.prodSrchParams.productProps = this.propFilterConditionArray;
+    this.srch.searchGeneral();
   }
 
   onMnfClick(mnf) {
@@ -242,42 +212,17 @@ export class FilterComponent extends  ComponentBase implements OnInit {
       this.mnfFilterCondition.splice(i, 1);
     if ((i == -1) && (!mnf.isChecked))
       this.mnfFilterCondition.push(mnf.mnf.id);
-    //this.propFilterConditionArray.length = 0;
-    //this.initFilterProps(this.baseProducts);
-    this.filterRun();
-  }
-
-
-  filterByPrice(product: Product, startPrice: number, endPrice: number): boolean {
-    //return ((product.price >= startPrice) && (product.price <= endPrice));
-    return true;
-  }
-
-
-  filterByManufacturer(product: Product, mnfArray: number[]): boolean {
-    return ((mnfArray.length == 0) || (mnfArray.includes(product.manufacturerId)));
-  }
-
-  filterByPropertyValue(product: Product, propsArray: PropFilterCondition[]): boolean {
-    if (propsArray.length == 0) return true;
-
-    let occur = 0;
-    propsArray.forEach(x => {
-      let fnd = product.Props.find(y => {return ((y.id_Prop.id === x.propId) && (y.value === x.propVal));});
-      if (fnd)
-        occur++;
-    });
-
-    return (occur === propsArray.length);
-
+    this.srch.prodSrchParams.supplier = this.mnfFilterCondition;
+    this.srch.searchGeneral()
   }
 
   async showFilter(event: any) {
-
     if (!this.dataInitialized) {
+      /*
       for (let p of this.filteredProducts) {
         this.baseProducts.push(p);
       }
+      */
       this.dataInitialized = true;
       await this.initData();
     }
@@ -287,33 +232,29 @@ export class FilterComponent extends  ComponentBase implements OnInit {
     }
 
     let popover = this.popoverCtrl.create(FilterPopoverPage, {filterControl: this});
-//    (<any>popover).filter = this;
     popover.present({
       ev: event
     });
   }
 
   sortByPriceAsc() {
-    this.filteredProducts.sort((a, b) =>
-      {return (a.price - b.price)}
-    );
+    this.srch.prodSrchParams.sortOrder = SortOrderEnum.PriceLowToHigh;
+    this.srch.searchGeneral();
   };
 
   sortByPriceDesc() {
-    this.filteredProducts.sort((a, b) =>
-      {return (b.price - a.price)}
-    );
-
+    this.srch.prodSrchParams.sortOrder = SortOrderEnum.PriceHighToLow;
+    this.srch.searchGeneral();
   };
 
   sortByRating() {
-    this.filteredProducts.sort((a, b) =>
-      {return (b.rating - a.rating)}
-    );
+    this.srch.prodSrchParams.sortOrder = SortOrderEnum.Rating;
+    this.srch.searchGeneral();
   };
 
   sortByRelevance() {
-    this.filterRun();
+    this.srch.prodSrchParams.sortOrder = SortOrderEnum.Relevance;
+    this.srch.searchGeneral();
   };
 
 }

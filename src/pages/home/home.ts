@@ -20,7 +20,6 @@ export class HomePage extends ComponentBase {
 //  searchMode = false;
 
   private _pageMode: PageMode = PageMode.HomeMode;
-  public baseProducts = [];
 
   // list slides for slider
   public slides = [
@@ -98,7 +97,6 @@ export class HomePage extends ComponentBase {
 
   async doRefresh(refresher) {
     this.content = await this._repo.getPageContent(1);
-    this.baseProducts = await this.srchService.searchResults;
     if (refresher !== 0) {
       this.changeDet.detectChanges();
       refresher.complete();

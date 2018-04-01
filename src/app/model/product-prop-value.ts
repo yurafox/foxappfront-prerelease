@@ -19,6 +19,7 @@ export class ProductPropValue {
     public prop_Value_Bool?: boolean,
     public prop_Value_Enum?: PropEnumList,
     public prop_Value_Long?: string,
+    public pVal?: string,
     public id_Measure_Unit?: number,
     public idx?: number,
     public out_bmask?: number
@@ -27,6 +28,7 @@ export class ProductPropValue {
     this._repo = RefInjector.pull(AbstractDataRepository);
   }
 
+  /*
   public get value(): any {
     if (this.id_Prop.prop_type == 1 ) {
       return this.prop_Value_Str;
@@ -44,4 +46,5 @@ export class ProductPropValue {
       return (this.prop_Value_Enum) ? this.prop_Value_Enum.name : null;
     };
   }
+  */
 }
