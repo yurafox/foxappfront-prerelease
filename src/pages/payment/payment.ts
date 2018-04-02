@@ -3,6 +3,7 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {CartService} from "../../app/service/cart-service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {AppConstants} from "../../app/app-constants";
 
 @IonicPage()
 @Component({
@@ -49,7 +50,7 @@ export class PaymentPage extends ComponentBase implements OnInit {
       this.formInput = null;
       this.changeDetector.detectChanges();
     } else {
-      this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(`https://mobile.foxtrot.com.ua/paymaster/payment/?id=${this.id}&total=${this.total}`);
+      this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(`${AppConstants.BASE_PAYMENT_URL}/?id=${this.id}&total=${this.total}`);
       window.addEventListener('message', this.receiveMessage);
     }
   }

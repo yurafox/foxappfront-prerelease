@@ -21,7 +21,7 @@
         <ion-item class='alertDanger' *ngIf="formErrors.email">
           <span>{{formErrors.email}}</span>
         </ion-item>
-        
+
         <ion-item>
             <ion-label floating><span loc="Имя"><font class="f-color-red">*&nbsp;</font>{{locale['Name']}}</span></ion-label>
             <ion-input style="margin-left: 13px" type="text"  formControlName="fname"></ion-input>
@@ -79,7 +79,7 @@
           </ion-row>
         </ion-grid>
 
-        <button [disabled]="isSendAsync" style="background: #ffbc2e" ion-button block color="fox" (click)="edit()"><span loc="Применить" name="Apply">{{locale['Apply']}}</span></button>
+        <button [disabled]="!isChanged || isSendAsync" style="background: #ffbc2e" ion-button block color="fox" (click)="edit()"><span loc="Применить" name="Apply">{{locale['Apply']}}</span></button>
       </form>
 
     </ion-list>

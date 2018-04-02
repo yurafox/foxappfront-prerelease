@@ -13,6 +13,7 @@ import {Country} from '../model/country';
 import {EnumPaymentMethod} from '../model/enum-payment-method';
 import {Region} from '../model/region';
 import {Store} from "../model/store";
+import { AppConstants } from '../app-constants';
 
 export interface IDictionary<T> {
   [k: string]: T;
@@ -370,7 +371,10 @@ export class RequestFactory {
 
     let searchParams = new URLSearchParams();
     params.forEach(val => {searchParams.set(val.key, val.value);});
-    return {search: searchParams};
+
+    // add user headers
+    const headers = RequestFactory.makeAuthHeader().headers;
+    return {search: searchParams, headers:headers};
    }
    /** only auth headers (token,uid)
    * example in http.get(apiUrl, RequestFactory.makeAuthHeader()).toPromise();
@@ -379,6 +383,8 @@ export class RequestFactory {
     const h = new Headers();
 
     h.set('Authorization', `Bearer ${localStorage.getItem('token') || ''}`);
+    h.set('X-Currency',localStorage.getItem('currency') || `${AppConstants.CURRENCY_DEFAULT_VALUE}`);
+    h.set('X-Lang',localStorage.getItem('lang') || `${AppConstants.LOCALE_DEFAULT_VALUE}`);
     // h.set('X-User',localStorage.getItem('id') || '');
 
     return {headers:h}

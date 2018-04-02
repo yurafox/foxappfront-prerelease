@@ -27,7 +27,7 @@ export class LoginPage extends ComponentBase implements OnInit {
   };
 
   public errorMessages = {
-      'phone': {
+      /*'phone': {
       'required': 'Обязательное поле',
       'pattern': 'Не правильный формат номера'
     },
@@ -35,7 +35,7 @@ export class LoginPage extends ComponentBase implements OnInit {
       'required': 'Обязательное поле',
       'minlength': 'Значение должно быть не менее 6ти символов',
       'maxlength': 'Значение должно быть не более 25ти символов'
-    }
+    }*/
   };
 
   constructor(public nav: NavController, public navParams: NavParams,
@@ -48,6 +48,17 @@ export class LoginPage extends ComponentBase implements OnInit {
 
   // application hook /
   async ngOnInit(){
+    this.errorMessages = {
+      'phone': {
+        'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+        'pattern': this.locale['WrongPhoneFormat'] ? this.locale['WrongPhoneFormat'] : 'Не правильный формат номера'
+      },
+      'password': {
+        'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+        'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
+        'maxlength': this.locale['LengthNGT25'] ? this.locale['LengthNGT25'] : 'Значение должно быть не более 25-и символов'
+      }
+    };
     this.buildForm();
   }
 
@@ -61,14 +72,14 @@ export class LoginPage extends ComponentBase implements OnInit {
     if (!this.loginForm.valid) {
       return;
     }
-   
+
     // start block logic for multiple sending
     this.isSendAsync = true;
     const data = this.loginForm.value;
 
     await this.userService.login(data.phone,data.password);
     this.isSendAsync = false;
-    
+
     if(this.userService.isAuth) {
       this.evServ.events['localeChangeEvent'].emit(this.userService.lang);
       if (this.navParams.data.continuePage) {

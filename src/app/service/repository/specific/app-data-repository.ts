@@ -101,9 +101,7 @@ const storeReviewsByStoreIdUrl = `${AppConstants.BASE_URL}/api/reviews/GetStoreR
 const noveltyByIdDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNoveltyById`;
 const noveltiesDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNovelties`;
 const noveltyDetailsDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNoveltyDetailsByNoveltyId`;
-const favoriteStoresUrl = `${AppConstants.BASE_URL}/api/storeplace/GetFavoriteStores`;
-const addFavoriteStoreUrl = `${AppConstants.BASE_URL}/api/storeplace/AddFavoriteStore`;
-const deleteFavoriteStoreUrl = `${AppConstants.BASE_URL}/api/storeplace/DeleteFavoriteStore`;
+const favoriteStoresUrl = `${AppConstants.BASE_URL}/api/storeplace/FavoriteStores`;
 const deviceDataUrl = `${AppConstants.BASE_URL}/api/DeviceData`;
 const bannerSlidesUrl = `${AppConstants.BASE_URL}/api/BannerSlides`;
 const clientMessageUrl = `${AppConstants.BASE_URL}/api/ClientMessage`;
@@ -2617,7 +2615,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async addFavoriteStore(idStore: number): Promise<number> {
     try {
-      const response = await this.http.post(`${addFavoriteStoreUrl}/${idStore}`, idStore, RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.post(`${favoriteStoresUrl}/${idStore}`, idStore, RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200 && response.status !== 201 && response.status !== 204) {
@@ -2633,7 +2631,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async deleteFavoriteStore(idStore: number): Promise<number> {
     try {
-      const response = await this.http.post(`${deleteFavoriteStoreUrl}/${idStore}`, idStore, RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.delete(`${favoriteStoresUrl}/${idStore}`, RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {

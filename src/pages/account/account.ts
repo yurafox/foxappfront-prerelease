@@ -19,9 +19,12 @@ export class AccountPage extends ComponentBase {
   public currentCurrency:Currency;
   public currentLang:Lang;
   public editForm: FormGroup;
+  public previousData: {email: string, currency: number, lang: number, fname: string, lname: string};
+  public currentData: {email: string, currency: number, lang: number, fname: string, lname: string};
   public onLoad = false;
   public isSendAsync = false;
-  public verifyErrorData:{errorShow:boolean,errorMessage:string}
+  public verifyErrorData:{errorShow:boolean,errorMessage:string};
+  public isChanged = false;
 
   public formErrors = {
     'email': '',
@@ -59,12 +62,15 @@ export class AccountPage extends ComponentBase {
             item: {valueName:'id',displayValue:'name'},
             serviceItemName:'lang'});
 
+    this.previousData = {email: this.editForm.value.email, currency: this.currentCurrency.id, lang: this.currentLang.id, fname: this.editForm.value.fname, lname: this.editForm.value.lname};
+    this.currentData = {email: this.editForm.value.email, currency: this.currentCurrency.id, lang: this.currentLang.id, fname: this.editForm.value.fname, lname: this.editForm.value.lname};
+
     this.onLoad=true;
 
     this.errorMessages = {
       'email': {
         'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
-          'pattern': this.locale['WrongEMailFormat'] ? this.locale['WrongEMailFormat'] : 'Не правильный формат email адреса'
+        'pattern': this.locale['WrongEMailFormat'] ? this.locale['WrongEMailFormat'] : 'Не правильный формат email адреса'
       },
       // 'password': {
       //   'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
@@ -74,13 +80,13 @@ export class AccountPage extends ComponentBase {
       //   'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
       //     'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
       // },
-      'fname':{
-        'required': 'Обязательное поле',
-        'maxlength': 'Значение должно быть не более 20ти символов'
+      'fname': {
+        'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+        'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
       },
-      'lname':{
-        'required': 'Обязательное поле',
-        'maxlength': 'Значение должно быть не более 20ти символов'
+      'lname': {
+        'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
+        'maxlength': this.locale['LengthNGT20'] ? this.locale['LengthNGT20'] : 'Значение должно быть не более 20-и символов'
       },
       // 'appKey':{
       //   'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
@@ -91,43 +97,53 @@ export class AccountPage extends ComponentBase {
 
   currencyUpdate(item:any):void {
     this.currentCurrency.id = item.id;
+    this.currentData.currency = item.id;
+    this.checkIfDataChanged();
   }
 
   langUpdate(item:any):void {
     this.currentLang.id = item.id;
+    this.currentData.lang = item.id;
+    this.checkIfDataChanged();
   }
 
   edit(){
     this.clearVerifyError();
-    if (!this.editForm.valid) {
+    if (!this.editForm.valid && this.isChanged === false) {
       return;
     }
 
-      // start block logic for multiple sending        
+    // start block logic for multiple sending
     this.isSendAsync = true;
-      
+
     const data = this.editForm.value;
-    const user: User= new User(null,data.email,
-      null,null,{'currency': `${this.currentCurrency.id}`, 'lang': `${this.currentLang.id}`},null,this.userService.profile.phone,
-      data.fname,data.lname);
+    const user: User = new User(null, data.email,
+      null, null, {
+        'currency': `${this.currentCurrency.id}`,
+        'lang': `${this.currentLang.id}`
+      }, null, this.userService.profile.phone,
+      data.fname, data.lname);
 
-    (async ()=>{
-      const result:IUserInfo = await this.userService.edit(user);
-      if(result.status === 2) {
-          await this.evServ.events['localeChangeEvent'].emit(this.userService.lang);
+    (async () => {
+      const result: IUserInfo = await this.userService.edit(user);
+      if (result.status === 2) {
+        await this.evServ.events['localeChangeEvent'].emit(this.userService.lang);
 
-          let alert = this.alertCtrl.create({
-            subTitle: this.locale['ProfileChangedSuccessfully'],
-            buttons: ['OK'],
-            cssClass: 'alertCustomCss'
-          });
-         
-          alert.present();
+        let alert = this.alertCtrl.create({
+          subTitle: this.locale['ProfileChangedSuccessfully'] ? this.locale['ProfileChangedSuccessfully'] : 'Профиль успешно изменён',
+          buttons: ['OK'],
+          cssClass: 'alertCustomCss'
+        });
+
+        alert.present();
+
+        this.previousData = {email: this.editForm.value.email, currency: this.currentCurrency.id, lang: this.currentLang.id, fname: this.editForm.value.fname, lname: this.editForm.value.lname};
       } else {
         this.verifyErrorData.errorShow = true;
-        this.verifyErrorData.errorMessage = (result) ? result.message : 'Ошибка удаленного источника';
+        this.verifyErrorData.errorMessage = (result) ? result.message : (this.locale['RemoteSourceError'] ? this.locale['RemoteSourceError'] : 'Ошибка удаленного источника');
       }
-    this.isSendAsync = false;
+      this.isSendAsync = false;
+      this.isChanged = false;
     })();
   }
 
@@ -152,10 +168,16 @@ export class AccountPage extends ComponentBase {
     });
 
     this.editForm.valueChanges
-      .subscribe(data => this.onValueChanged(data));
+      .subscribe(data => {
+        this.currentData.email = data.email;
+        this.currentData.fname = data.fname;
+        this.currentData.lname = data.lname;
+        this.onValueChanged(data);
+        this.checkIfDataChanged();
+      });
     this.onValueChanged();
   }
-  // </editor-fold>
+// </editor-fold>
 
   // <editor-fold desc="form value changing hook">
   private onValueChanged(data?: any) {
@@ -206,5 +228,21 @@ export class AccountPage extends ComponentBase {
   private clearVerifyError():void {
     this.verifyErrorData.errorShow = false;
     this.verifyErrorData.errorMessage = '';
+  }
+
+  private checkIfDataChanged() {
+    if (this.currentData.email !== this.previousData.email) {
+      this.isChanged = true;
+    } else if (this.currentData.fname !== this.previousData.fname) {
+      this.isChanged = true;
+    } else if (this.currentData.lname !== this.previousData.lname) {
+      this.isChanged = true;
+    } else if (this.previousData.currency !== this.currentData.currency) {
+      this.isChanged = true;
+    } else if (this.previousData.lang !== this.currentData.lang) {
+      this.isChanged = true;
+    } else {
+      this.isChanged = false;
+    }
   }
 }

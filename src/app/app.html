@@ -5,10 +5,10 @@
     <ion-header>
       <!-- User profile -->
       <div padding class="menu-bg f-main-menu-header" [hidden]="!userService.isAuth">
-        <img class="profile-picture" src="http://www.gravatar.com/avatar?d=mm&s=140"/>
-          <p class="f-main-menu-header-content-text">
-           <span loc="Привет" name="Hello">{{locale['Hello']}}</span>, {{userService.profile.fname}}
-          </p>
+        <!--<img class="profile-picture" src="http://www.gravatar.com/avatar?d=mm&s=140"/>-->
+        <p class="f-main-menu-header-content-text">
+          <span loc="Привет" name="Hello">{{locale['Hello']}}</span>, {{userService.profile.fname}}
+        </p>
       </div>
       <div padding class="menu-bg f-main-menu-header" [hidden]="userService.isAuth">
         <p menuClose class="f-main-menu-header-content-text" (click)="toLogIn()">

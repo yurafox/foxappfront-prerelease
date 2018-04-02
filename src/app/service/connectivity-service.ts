@@ -26,15 +26,18 @@ export class ConnectivityService {
   }
 
   public checkConnection(error?: any) {
-    let activePage = this.navCtrl.getActive();
+    let activePage = this.navCtrl ? this.navCtrl.getActive() : undefined;
     // <editor-fold desc="For browser testing only">
-    /*if (activePage && activePage.name !== 'NoConnectionPage') {
-      this.showNoConnectionPage(error);
-    }*/
-    console.log(error.message ? error.message : error);
+    if (!this.network || !this.network.type) {
+      /*if (activePage && activePage.name !== 'NoConnectionPage') {
+        this.showNoConnectionPage(error);
+      }*/
+      console.error(error.message ? error.message : error);
+    }
     // </editor-fold>
 
     if (this.network.type !== 'none') {
+      console.error(error.message ? error.message : error);
       return;
     } else if (this.network.type === 'none') {
       if (activePage && activePage.name !== 'NoConnectionPage') {

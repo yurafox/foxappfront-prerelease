@@ -73,7 +73,7 @@ export class UserService {
     return this.user.appKey;
   }
   // </editor-fold>
-  
+
   public get userMutex():boolean {
      return this.shortloginMutex;
   }
@@ -195,7 +195,7 @@ export class UserService {
       this.changeAuthStatus(['appKey']);
       //this.changeAuthStatus(['id','appKey']);
       this.errorClear('login');
-      this.localeUserService();
+      await this.localeUserService();
     } catch (err) {
       this.errorMessages['login'] = err.message;
     }
@@ -278,11 +278,10 @@ export class UserService {
   // </editor-fold>
 
   // making localization for user service
-  private localeUserService() {
-    this.locRepo.getLocalization({componentName: (<any> this).constructor.name, lang: (this.lang ? this.lang : 1)}).then((loc) => {
-      if (loc && (Object.keys(loc).length !== 0)) {
-        this.localization = loc;
-      }
-    });
+  private async localeUserService() {
+    let loc = await this.locRepo.getLocalization({componentName: (<any> this).constructor.name, lang: (this.lang ? this.lang : 1)});
+    if (loc && (Object.keys(loc).length !== 0)) {
+      this.localization = loc;
+    }
   }
 }
