@@ -319,7 +319,7 @@ export class SearchService {
             },
             'aggs': {
               'idProp': {
-                'terms': {"script":"doc ['props.id_Prop.id'].value + '|' + doc ['props.id_Prop.name'].value + '|' + doc ['props.out_bmask'].value"},
+                'terms': {"script":"doc ['props.id_Prop.id'].value + '|' + doc ['props.id_Prop.name'].value + '|' + doc ['props.out_bmask'].value", 'size': 50},
                 'aggs': {
                   'propVal': {
                     'terms': {'field': 'props.pVal' }

@@ -137,6 +137,8 @@ export class FilterComponent extends  ComponentBase {
 
   async initFilterManufacturers() {
     this.mnfFilterCondition = [];
+
+    /* Старый фильтр, основанный на переборе отфильтрованного массива продуктов
     for (let p of this.srch.products) {
       const i = this.filteredManufacturers.findIndex(z => (z.mnf.id == p.manufacturerId));
       if (i !== -1)
@@ -147,7 +149,24 @@ export class FilterComponent extends  ComponentBase {
           this.filteredManufacturers.push(mnf);
       }
     }
+    */
+
+    // Новый фильтр, на агрегатах ES
+    this.srch.aggs.mnfAgg.buckets.forEach(
+      x => {
+        const mnfId = x.key.substring(0, x.key.indexOf('|'));
+        const mnfName = x.key.substring(x.key.indexOf('|')+1, x.key.length);
+
+        const mnf = new Manufacturer(mnfId, mnfName);
+        let mnfFlt = new MnfFilterStruct(mnf, x.doc_count, false);
+        this.filteredManufacturers.push(mnfFlt);
+      }
+    );
+
+    /* Убираем сортировку. Выводим по убыванию кол-ва документов
     this.filteredManufacturers.sort((a, b) => (a.mnf.name.localeCompare(b.mnf.name)));
+    */
+
 
     ////////////Заполняем модель формьі фильтра брендами////////////////
     let mnfAr = new Array<FilterItem>();
@@ -160,10 +179,10 @@ export class FilterComponent extends  ComponentBase {
 
   initFilterProps(prodArray: Product[]) {
     this.filteredProps.length = 0;
+
+    /*
     prodArray.forEach(p => {
       p.props.forEach(a => {
-//        if (a.id_Prop. predestination>0) {
-        // Вьіводим только св-ва для фильтра
         if ((a.out_bmask & 2) === 2) {
           const i = this.filteredProps.findIndex(z => ((z.prop.id === a.id_Prop.id)
                                                                     && (z.value == a.pVal)));
@@ -176,7 +195,31 @@ export class FilterComponent extends  ComponentBase {
         }
       });
     });
+    */
 
+
+    this.srch.aggs.propsAgg.idProp.buckets.forEach(
+      x => {
+        const start_pos = x.key.indexOf('|');
+        const end_pos = x.key.indexOf('|', start_pos+1);
+
+        const propId = parseInt(x.key.substring(0, start_pos));
+        const propName = x.key.substring(start_pos+1, end_pos);
+        const propBMask = parseInt(x.key.substring(end_pos+1, x.key.length));
+
+        if ((propBMask & 2) === 2) {
+          const prop = new Prop (propId, propName, -1);
+          x.propVal.buckets.forEach(
+            y => {
+              const pt = new PropsFilterStruct(prop, y.key, y.doc_count, false, null);
+              this.filteredProps.push(pt);
+            }
+          );
+        }
+      }
+    );
+
+    /*
     this.filteredProps.sort((x, y) => {
       if (x.prop.name.localeCompare(y.prop.name) == 0) {
         if (x.prop.prop_type == 4)
@@ -186,6 +229,8 @@ export class FilterComponent extends  ComponentBase {
       } else
         return x.prop.name.localeCompare(y.prop.name);
     });
+    */
+
     // Заполняем значение название предыдущей группы для создания закладок с названиями групп
     let prevName = null;
     for (let i = 0; i < this.filteredProps.length; i++) {
