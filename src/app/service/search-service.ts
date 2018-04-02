@@ -55,6 +55,7 @@ export class SearchService {
   public notice = '';
   public hitsTotal = 0;
   public lastItemIndex = 0;
+  public aggs: any;
 
   constructor(private repo: AbstractDataRepository) {
 
@@ -68,6 +69,14 @@ export class SearchService {
         this.searchItems.push(val);
       });
     }
+  }
+
+  public get inFilter() : boolean {
+    if (!this.prodSrchParams) return false;
+    if ((this.prodSrchParams.supplier) && (this.prodSrchParams.supplier.length))
+      return true;
+    if ((this.prodSrchParams.productProps) && (this.prodSrchParams.productProps.length))
+      return true;
   }
 
   public get lastSearch(): string {
@@ -154,6 +163,8 @@ export class SearchService {
         {
           this.products = [];
         };
+
+        this.aggs = response.aggregations;
       }
       finally {
         this.hitsTotal = response.hits.total;
@@ -189,19 +200,19 @@ export class SearchService {
 
     if (this.prodSrchParams.sortOrder === SortOrderEnum.Relevance) {
       sort = [{'_score': {'order' : 'desc'}}];
-    }
+    };
     if (this.prodSrchParams.sortOrder === SortOrderEnum.Rating) {
       sort = [{'rating': {'order' : 'desc'}}];
-    }
+    };
     if (this.prodSrchParams.sortOrder === SortOrderEnum.Popularity) {
       sort = [{'popularity': {'order' : 'desc'}}];
-    }
+    };
     if (this.prodSrchParams.sortOrder === SortOrderEnum.PriceLowToHigh) {
       sort = [{'price': {'order' : 'asc'}}];
-    }
+    };
     if (this.prodSrchParams.sortOrder === SortOrderEnum.PriceHighToLow) {
       sort = [{'price': {'order' : 'desc'}}];
-    }
+    };
 
     if ((this.prodSrchParams.supplier) && (this.prodSrchParams.supplier.length >=1)) {
       let terms = [];
@@ -257,7 +268,7 @@ export class SearchService {
 
       let prop = {'bool': {'must': terms}};
       mustArr.push(prop);
-    }
+    };
 
     if (this.prodSrchParams.srchText) {
       mustArr.push({'simple_query_string': {
@@ -266,7 +277,7 @@ export class SearchService {
                                       'default_operator': 'and'
                                     }
             });
-    }
+    };
 
     if (this.prodSrchParams.categoryId) {
       mustArr.push({
@@ -281,12 +292,12 @@ export class SearchService {
                       }
                     }
       });
-    }
+    };
 
     return this.client.search({
       index: this.INDEX,
       type: this.TYPE,
-      filterPath: ['hits.hits._source', 'hits.total'],
+      filterPath: ['hits.hits._source', 'hits.total', 'aggregations'],
       body:
         {
         'from': _from,
@@ -296,6 +307,26 @@ export class SearchService {
           'bool': {
             'must':
               mustArr
+          }
+        },
+        'aggs': {
+          'mnfAgg': {
+            'terms': {"script":"doc ['manufacturer.id'].value + '|' + doc['manufacturer.name'].value"}
+          },
+          'propsAgg': {
+            'nested': {
+              'path': 'props'
+            },
+            'aggs': {
+              'idProp': {
+                'terms': {"script":"doc ['props.id_Prop.id'].value + '|' + doc ['props.id_Prop.name'].value + '|' + doc ['props.out_bmask'].value"},
+                'aggs': {
+                  'propVal': {
+                    'terms': {'field': 'props.pVal' }
+                  }
+                }
+              }
+            }
           }
         }
       }

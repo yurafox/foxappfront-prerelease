@@ -1,4 +1,4 @@
-<div *ngIf="(srch.hitsTotal >= 5) && (srch.products.length > 0)">
+<div *ngIf="((srch.hitsTotal >= 5) && (srch.products.length > 0)) || (srch.inFilter)">
   <ion-grid class="f-item-nopadding">
     <ion-row>
       <ion-col  class="f-item-padding-5 f-border-ligthgray">
