@@ -127,9 +127,9 @@ export class SearchService {
 
   async getData() {
     this.inSearch = true;
-    let response = await this.getProducts(this.lastItemIndex);
     try
     {
+      let response = await this.getProducts(this.lastItemIndex);
       if (response.hits.hits) {
           let _chunk = response.hits.hits.map(
           x => this.repo.getProductFromResponse(x._source)
@@ -160,11 +160,10 @@ export class SearchService {
       {
         this.products = [];
       };
-
       this.aggs = response.aggregations;
+      this.hitsTotal = response.hits.total;
     }
     finally {
-      this.hitsTotal = response.hits.total;
       this.inSearch = false;
       this.hostPage.cont.resize();
     }

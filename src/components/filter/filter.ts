@@ -31,21 +31,27 @@ export class PropFilterCondition {
   ){}
 }
 
+export enum CategoryType {
+  Sort = 1,
+  Manufacturer = 2,
+  Property = 3,
+}
+
 class FilterItem {
   constructor(
     public id: number,
     public name: string,
     public isChecked?: boolean,
     public count?: number,
-    public type?: string,
+    public type?: CategoryType,
     public item?: any
   ){}
 }
 
 class FilterCategory {
   constructor (
-    public id: number,
-    public type: string,
+    public tag: number,
+    public type: CategoryType,
     public catName: string,
     public items?: FilterItem[],
     public isOpened: boolean = false,
@@ -116,13 +122,13 @@ export class FilterComponent extends  ComponentBase {
     let fCat = null;
 
     let filteredPropCatId = null;
-    if ((this.lastFilteredCat) && (this.lastFilteredCat.type === 'prop')) {
-      filteredPropCatId = this.lastFilteredCat.id;
+    if ((this.lastFilteredCat) && (this.lastFilteredCat.type === CategoryType.Property)) {
+      filteredPropCatId = this.lastFilteredCat.tag;
     };
 
     this.filteredProps.forEach(p => {
       if (!(p.prop.name == p.prevPropName) || !(p.prevPropName)) {
-        fCat = new FilterCategory(p.prop.id, 'prop', p.prop.name, null,
+        fCat = new FilterCategory(p.prop.id, CategoryType.Property, p.prop.name, null,
                     ((filteredPropCatId) && (filteredPropCatId === p.prop.id)));
         fItems = new Array<FilterItem>();
         if (filteredPropCatId)
@@ -130,7 +136,7 @@ export class FilterComponent extends  ComponentBase {
       }
 
 
-      fItems.push(new FilterItem(p.prop.id, p.value, p.isChecked, p.count, 'prop', p));
+      fItems.push(new FilterItem(p.prop.id, p.value, p.isChecked, p.count, CategoryType.Property, p));
 
       if (!(p.prop.name == p.prevPropName)) {
         fCat.items = fItems;
@@ -140,11 +146,11 @@ export class FilterComponent extends  ComponentBase {
     });
     ///////// Sort ////////
     fItems = new Array<FilterItem>();
-    fItems.push(new FilterItem(-1, 'Relevance', true, 0, 'sort', null));
-    fItems.push(new FilterItem(0, 'Price: Low to High', false, 0, 'sort', null));
-    fItems.push(new FilterItem(1, 'Price: High to Low', false, 0, 'sort', null));
-    fItems.push(new FilterItem(2, 'Rating', false, 0, 'sort', null));
-    fCat = new FilterCategory(0, 'sort', 'Sort', fItems, false, 3);
+    fItems.push(new FilterItem(-1, 'Relevance', true, 0, CategoryType.Sort, null));
+    fItems.push(new FilterItem(0, 'Price: Low to High', false, 0, CategoryType.Sort, null));
+    fItems.push(new FilterItem(1, 'Price: High to Low', false, 0, CategoryType.Sort, null));
+    fItems.push(new FilterItem(2, 'Rating', false, 0, CategoryType.Sort, null));
+    fCat = new FilterCategory(0, CategoryType.Sort, 'Sort', fItems, false, 3);
     this.fCategories.push(fCat);
   }
 
@@ -162,15 +168,15 @@ export class FilterComponent extends  ComponentBase {
       }
     );
 
-    const justFiltered: boolean = ((this.lastFilteredCat) && (this.lastFilteredCat.type === 'mnf'));
+    const justFiltered: boolean = ((this.lastFilteredCat) && (this.lastFilteredCat.type === CategoryType.Manufacturer));
 
     ////////////Заполняем модель формьі фильтра брендами////////////////
     let mnfAr = [];
     for (let m of this.filteredManufacturers) {
       let isChecked = !(this.mnfFilterCondition.indexOf(m.mnf.id) == -1);
-      mnfAr.push(new FilterItem(m.mnf.id, m.mnf.name, isChecked, m.count, 'mnf', m));
+      mnfAr.push(new FilterItem(m.mnf.id, m.mnf.name, isChecked, m.count, CategoryType.Manufacturer, m));
     }
-    this.fCategories.push(new FilterCategory(0, 'mnf', 'Brand', mnfAr, justFiltered, 5));
+    this.fCategories.push(new FilterCategory(0, CategoryType.Manufacturer, 'Brand', mnfAr, justFiltered, 5));
     ////////////////////////////////////////////////////////////////////
     if (justFiltered)
       this.lastFilteredCat = null;

@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
-import {FilterComponent} from '../../components/filter/filter';
+import {CategoryType, FilterComponent} from '../../components/filter/filter';
 import {ComponentBase} from "../../components/component-extension/component-base";
-import {SortOrderEnum} from '../../app/service/search-service';
 
 @IonicPage()
 @Component({
@@ -36,16 +35,16 @@ export class FilterPopoverPage extends ComponentBase {
   }
 
   onFilterElementClick(item: any, catItems: any, category: any, evt: any) {
-    if (item.type === 'prop') {
+    if (item.type === CategoryType.Property) {
       item.item.isChecked = item.isChecked;
       this.filter.onPropsClick(item, category);
     }
-    if (item.type === 'mnf') {
+    if (item.type === CategoryType.Manufacturer) {
       item.item.isChecked = item.isChecked;
       this.filter.onMnfClick(item, category);
     }
 
-    if (item.type === 'sort') {
+    if (item.type === CategoryType.Sort) {
 
       let _isChecked = item.isChecked;
       catItems.forEach(j => {
