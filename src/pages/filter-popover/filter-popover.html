@@ -5,13 +5,11 @@
         <b><span loc="ФИЛЬТР" name="Filter">{{locale['Filter']}}</span></b>
       </ion-col>
       <ion-col col-auto >
-        <span class="f-color-info f-size-small" (click)="filter.resetFilter()"><span loc="Очистить всё" name="ClearAll">{{locale['ClearAll']}}</span></span>
+        <span *ngIf="filter.inFilter" class="f-color-info f-size-small" (click)="filter.resetFilter()"><span loc="Очистить всё" name="ClearAll">{{locale['ClearAll']}}</span></span>
       </ion-col>
     </ion-row>
   </ion-grid>
 </div>
-
-
 
 <div  class="f-border-ligthgray" *ngFor="let cat of filter.fCategories; let i = index">
   <ion-grid (click)="toggleOpen(i)">
@@ -35,7 +33,7 @@
             {{locale[item.name] ? locale[item.name] : item.name}}
           </ion-col>
           <ion-col col-auto>
-            <input type="checkbox" [(ngModel)]="item.isChecked" (click)="onFilterElementClick(item, cat.items, $event)">
+            <input type="checkbox" [(ngModel)]="item.isChecked" (click)="onFilterElementClick(item, cat.items, cat, $event)">
           </ion-col>
         </ion-row>
       </ion-grid>

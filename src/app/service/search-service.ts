@@ -96,8 +96,6 @@ export class SearchService {
 
   resetSearch() {
     this.lastItemIndex = 0;
-//    this.products = [];
-//    this.hitsTotal = 0;
   }
 
   searchByCategory (catId: number) {
@@ -106,9 +104,9 @@ export class SearchService {
     this.getData();
   }
 
-  searchGeneral() {
+  async search() {
     this.resetSearch();
-    this.getData();
+    await this.getData();
   }
 
 
@@ -127,53 +125,49 @@ export class SearchService {
     this.getData();
   }
 
-  getData() {
+  async getData() {
     this.inSearch = true;
-    this.getProducts(this.lastItemIndex).then(
-    response => {
-      try
-      {
-        if (response.hits.hits) {
-            let _chunk = response.hits.hits.map(
-            x => this.repo.getProductFromResponse(x._source)
-          );
+    let response = await this.getProducts(this.lastItemIndex);
+    try
+    {
+      if (response.hits.hits) {
+          let _chunk = response.hits.hits.map(
+          x => this.repo.getProductFromResponse(x._source)
+        );
 
-          if (response.hits.hits.length < response.hits.total) {
-            this.haveNextPage = true;
-          }
+        if (response.hits.hits.length < response.hits.total) {
+          this.haveNextPage = true;
+        }
 
-          if (_chunk) {
+        if (_chunk) {
 
-            if (this.lastItemIndex === 0) {
-              this.products = _chunk;
-            }
-            else
-            {
-              this.products = this.products.concat(_chunk);
-            };
-            this.lastItemIndex = this.lastItemIndex + _chunk.length;
+          if (this.lastItemIndex === 0) {
+            this.products = _chunk;
           }
           else
           {
-            this.haveNextPage = false;
-            this.notice = 'There are no more products!';
-          }
+            this.products = this.products.concat(_chunk);
+          };
+          this.lastItemIndex = this.lastItemIndex + _chunk.length;
         }
         else
         {
-          this.products = [];
-        };
+          this.haveNextPage = false;
+          this.notice = 'There are no more products!';
+        }
+      }
+      else
+      {
+        this.products = [];
+      };
 
-        this.aggs = response.aggregations;
-      }
-      finally {
-        this.hitsTotal = response.hits.total;
-        this.inSearch = false;
-        this.hostPage.cont.resize();
-      }
-    }, error => {
-      console.error(error);
-    });
+      this.aggs = response.aggregations;
+    }
+    finally {
+      this.hitsTotal = response.hits.total;
+      this.inSearch = false;
+      this.hostPage.cont.resize();
+    }
   }
 
   packPropsArray(inArray: PropFilterCondition[]): ProductPropsAgg[] {
@@ -194,7 +188,7 @@ export class SearchService {
     return res;
   }
 
-  getProducts(_from: number): any {
+  async getProducts(_from: number): Promise<any> {
     let sort = null;
     let mustArr = [];
 
@@ -233,7 +227,7 @@ export class SearchService {
 
                 x.propVals.forEach(y => {
                     propValArrExpr.push(
-                      { 'match_phrase': {'props.pVal': `${y}`} }
+                      { 'match_phrase': {'propsF.pVal': `${y}`} }
                     );
                   }
                 );
@@ -241,7 +235,7 @@ export class SearchService {
 
                 let propExpr = {
                   'nested': {
-                    'path': 'props',
+                    'path': 'propsF',
                     'query': {
                       'bool': {
                         'must': [
@@ -252,7 +246,7 @@ export class SearchService {
                           },
                           {
                             'term': {
-                              'props.id_Prop.id': {'value': `${x.propId}`}
+                              'propsF.id_Prop.id': {'value': `${x.propId}`}
                             }
                           }
                         ]
@@ -315,14 +309,14 @@ export class SearchService {
           },
           'propsAgg': {
             'nested': {
-              'path': 'props'
+              'path': 'propsF'
             },
             'aggs': {
               'idProp': {
-                'terms': {"script":"doc ['props.id_Prop.id'].value + '|' + doc ['props.id_Prop.name'].value + '|' + doc ['props.out_bmask'].value", 'size': 50},
+                'terms': {"script":"doc ['propsF.id_Prop.id'].value + '|' + doc ['propsF.id_Prop.name'].value + '|' + doc ['propsF.out_bmask'].value"},
                 'aggs': {
                   'propVal': {
-                    'terms': {'field': 'props.pVal' }
+                    'terms': {'field': 'propsF.pVal' }
                   }
                 }
               }

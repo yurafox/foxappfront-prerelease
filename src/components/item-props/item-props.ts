@@ -46,12 +46,8 @@ export class ItemPropsComponent extends ComponentBase implements OnInit {
     let sortedProps = this.product.props.sort( (x,y) => {return x.idx - y.idx});
 
     sortedProps.forEach(i => {
-        if (
-             (!uniqueProps.find((x) => {return x.id === i.id_Prop.id}))
-             &&
-             ((i.out_bmask & 1) === 1) // Св-ва для формьі просмотр св-в товара
-           )
-          uniqueProps.push(i.id_Prop);
+        if (!uniqueProps.find((x) => {return x.id === i.id_Prop.id}))
+           uniqueProps.push(i.id_Prop);
       }
     );
 

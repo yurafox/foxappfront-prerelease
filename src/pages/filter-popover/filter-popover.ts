@@ -35,14 +35,14 @@ export class FilterPopoverPage extends ComponentBase {
     this.filter.fCategories[index].isOpened = !curState;
   }
 
-  onFilterElementClick(item: any, catItems: any, evt: any) {
+  onFilterElementClick(item: any, catItems: any, category: any, evt: any) {
     if (item.type === 'prop') {
       item.item.isChecked = item.isChecked;
-      this.filter.onPropsClick(item.item);
+      this.filter.onPropsClick(item, category);
     }
     if (item.type === 'mnf') {
       item.item.isChecked = item.isChecked;
-      this.filter.onMnfClick(item.item);
+      this.filter.onMnfClick(item, category);
     }
 
     if (item.type === 'sort') {

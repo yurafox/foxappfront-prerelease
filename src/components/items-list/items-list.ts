@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {Product} from '../../app/model/product';
 import {ComponentBase} from '../component-extension/component-base';
 import {SearchService} from '../../app/service/search-service';
 
@@ -9,8 +8,6 @@ import {SearchService} from '../../app/service/search-service';
 })
 
 export class ItemsListComponent extends ComponentBase {
-
-  //@Input() products: Product[];
 
   constructor(public srchService: SearchService) {
     super();
