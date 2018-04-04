@@ -4,7 +4,15 @@ import {NavController} from 'ionic-angular';
 import {SearchService} from '../../app/service/search-service';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import {PageMode} from '../../pages/home/home';
+import {Subject} from 'rxjs/Subject';
 
+
+class SearchSuggestItem {
+  constructor (
+    public isClosable: boolean,
+    public itemText: string
+  ){}
+}
 
 @Component({
   selector: 'search-btn',
@@ -15,7 +23,10 @@ export class SearchBtnComponent extends ComponentBase {
   @Input()
   public hostPage: any = null;
 
-  public tmpSearchArray = [];
+  srchTextInputStream$ = new Subject<string>();
+
+  //public tmpSearchArray = [];
+  public srchItemsArr = new Array<SearchSuggestItem>();
   searchValue = null;
   inputMode = false;
 
@@ -33,6 +44,14 @@ export class SearchBtnComponent extends ComponentBase {
     );
 
     this.initTmpSearchArray();
+
+    this.srchTextInputStream$.debounceTime(700)
+      .distinctUntilChanged()
+      .subscribe(inputValue =>
+        {
+          this.incSearch();
+        }
+      );
 
   }
 
@@ -61,37 +80,71 @@ export class SearchBtnComponent extends ComponentBase {
     });
   }
 
-  initTmpSearchArray (): void {
+  initTmpSearchArray(): void {
     let ar = this.searchService.searchItems;
     ar.forEach((item) => {
-      this.tmpSearchArray.push(item);
+      //this.tmpSearchArray.push(item);
+      this.srchItemsArr.push(new SearchSuggestItem(true, item));
     });
     this.searchValue = this.searchService.lastSearch;
   }
 
-  incSearch() {
-    this.hostPage.pageMode = PageMode.SearchMode;
+  async buildSuggestList() {
+    this.srchItemsArr = [];
+    this.searchService.searchItems.filter((value) => {
+      return !(value.toLowerCase().indexOf(this.searchValue.toLowerCase()) == -1);
+    }).slice().forEach(x =>
+      this.srchItemsArr.push(new SearchSuggestItem(true, x))
+    );
+
     if (this.searchValue) {
-      this.tmpSearchArray = this.searchService.searchItems.filter((value) => {
-        return !(value.toLowerCase().indexOf(this.searchValue.toLowerCase()) == -1);
-      }).slice()}
+      let res = await this.srchService.getSuggestData(this.searchValue);
+      let varArr = [];
+      res.inpSuggest.forEach(
+        x => {
+          const txt = x.text;
+          const opts = x.options;
+          let s = null;
+          if (opts.length>0)
+            s = opts[0].text
+          else
+            s = txt;
+          varArr.push(s);
+        }
+      );
+      if (varArr.length > 0)
+        this.srchItemsArr.push(new SearchSuggestItem(false, varArr.join(' ')));
+    }
+  }
+
+  async incSearch() {
+    this.hostPage.pageMode = PageMode.SearchMode;
+    this.buildSuggestList();
+    /*
+    if (this.searchValue)
+      this.buildSuggestList();
     else
       this.tmpSearchArray = this.searchService.searchItems;
+    */
   }
 
 
   onKeyUp(event) {
     if (!(event.keyCode === 13))
-      this.incSearch()
+      this.srchTextInputStream$.next(event.target.value)
     else
       this.renderer.invokeElementMethod(event.target, 'blur');
   }
 
-  removeSearchItem(item: string) {
+  removeSearchItem(item: number) {
+    this.searchService.removeSearchItem(this.srchItemsArr[item].itemText);
+    this.srchItemsArr.splice(item, 1);
+    /*
     const i = this.tmpSearchArray.indexOf(item);
     if (!(i == -1))
       this.tmpSearchArray.splice(i, 1);
     this.searchService.removeSearchItem(item);
+    */
   }
 
   clearInput(event) {

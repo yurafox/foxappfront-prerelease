@@ -101,18 +101,18 @@ export class SearchService {
   searchByCategory (catId: number) {
     this.resetSearch();
     this.prodSrchParams = new ProductSearchParams(undefined, catId);
-    this.getData();
+    this.getProductsData();
   }
 
   public async search() {
     this.resetSearch();
-    await this.getData();
+    await this.getProductsData();
   }
 
   searchByText(srchText: string) {
     this.resetSearch();
     this.prodSrchParams = new ProductSearchParams(srchText);
-    this.getData();
+    this.getProductsData();
   }
 
   loadNext() {
@@ -121,10 +121,10 @@ export class SearchService {
             ||
           (this.products.length === this.hitsTotal)
        ) return;
-    this.getData();
+    this.getProductsData();
   }
 
-  async getData() {
+  async getProductsData() {
     this.inSearch = true;
     try {
       let response = await this.getProducts(this.lastItemIndex);
@@ -184,6 +184,38 @@ export class SearchService {
       }
     );
     return res;
+  }
+
+
+  async getSuggestData(inText: string): Promise<any> {
+    try {
+      this.inSearch = true;
+      let data = await this.getSuggestions(inText);
+      return data.suggest;
+    }
+    finally {
+      this.inSearch = false;
+    }
+  }
+
+  async getSuggestions(inText: string): Promise<any> {
+    const query = {
+      'suggest': {
+        'inpSuggest': {
+          'text': `${inText}`,
+          'term': {
+            'field': 'srchString',
+            'sort': 'frequency'
+          }
+        }
+      }
+    };
+
+    return this.client.search({
+      index: this.INDEX,
+      type: this.TYPE,
+      filterPath: ['suggest'],
+      body: query});
   }
 
   async getProducts(_from: number): Promise<any> {
@@ -265,7 +297,7 @@ export class SearchService {
     if (this.prodSrchParams.srchText) {
       mustArr.push({'simple_query_string': {
                                       'query': `${this.prodSrchParams.srchText}`,
-                                      'fields': [ 'name', 'description', 'srchString', '_id'],
+                                      'fields': [ 'name', 'description', 'srchString', 'id'],
                                       'default_operator': 'and'
                                     }
             });

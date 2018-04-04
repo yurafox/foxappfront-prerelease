@@ -20,10 +20,10 @@
   </div>
 
   <div *ngIf="pageMode === 2">
-    <ion-item *ngFor="let sItem of searchButtonControl.tmpSearchArray; let i=index" (click)="search(sItem)">
-      <ion-icon name="md-close" item-left color="gray" (click)="deleteSearchItem($event, sItem)"></ion-icon>
+    <ion-item *ngFor="let sItem of searchButtonControl.srchItemsArr; let i=index" (click)="search(sItem.itemText)">
+      <ion-icon *ngIf="sItem.isClosable" name="md-close" item-left color="gray" (click)="deleteSearchItem($event, i)"></ion-icon>
       <div>
-        {{sItem}}
+        {{sItem.itemText}}
       </div>
       <ion-icon name="arrow-up-left" item-right color="gray"></ion-icon>
     </ion-item>
