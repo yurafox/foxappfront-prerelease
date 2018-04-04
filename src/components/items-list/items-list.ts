@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {SearchService} from '../../app/service/search-service';
 
@@ -11,10 +11,6 @@ export class ItemsListComponent extends ComponentBase {
 
   constructor(public srchService: SearchService) {
     super();
-  }
-
-  ngOnInit() {
-    super.ngOnInit();
   }
 
   onScroll() {

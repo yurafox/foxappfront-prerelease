@@ -36,7 +36,7 @@ export class SearchService {
   public products = [];
   private cKey = 'searchItems';
   private cMaxSearchItemsCount = 15;
-  public searchItems = new Array<string> ();
+  public searchItems = new Array<string>();
   public searchResults: Promise<Product[]>;
   private _ls: string = '';
   public inSearch = false;
@@ -104,11 +104,10 @@ export class SearchService {
     this.getData();
   }
 
-  async search() {
+  public async search() {
     this.resetSearch();
     await this.getData();
   }
-
 
   searchByText(srchText: string) {
     this.resetSearch();
@@ -127,8 +126,7 @@ export class SearchService {
 
   async getData() {
     this.inSearch = true;
-    try
-    {
+    try {
       let response = await this.getProducts(this.lastItemIndex);
       if (response.hits.hits) {
           let _chunk = response.hits.hits.map(
@@ -173,7 +171,8 @@ export class SearchService {
     let res = new Array<ProductPropsAgg>() ;
     inArray.forEach(x => {
         let fnd: ProductPropsAgg = res.find( a => a.propId === x.propId );
-        if (!fnd) {
+        if (!fnd)
+        {
           let ar = new Array<string>();
           ar.push(x.propVal);
           res.push(new ProductPropsAgg(x.propId, ar) );

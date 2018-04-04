@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {PopoverController} from 'ionic-angular';
 import {FilterPopoverPage} from '../../pages/filter-popover/filter-popover';
@@ -7,21 +7,23 @@ import {AbstractDataRepository} from '../../app/service/repository/abstract/abst
 import {SearchService, SortOrderEnum} from '../../app/service/search-service';
 
 class MnfFilterStruct {
-  constructor(public mnf: Manufacturer,
-              public count: number,
-              public isChecked: boolean) {
-  }
+  constructor(
+    public mnf: Manufacturer,
+    public count: number,
+    public isChecked: boolean
+  ){}
 }
 
 class PropsFilterStruct {
-  constructor(public prop: Prop,
-              public value: any,
-              public count: number,
-              public isChecked: boolean,
-              public prevPropName?: string,
-              public listIndex?: number,
-              public isOpened:boolean = false) {
-  }
+  constructor(
+    public prop: Prop,
+    public value: any,
+    public count: number,
+    public isChecked: boolean,
+    public prevPropName?: string,
+    public listIndex?: number,
+    public isOpened:boolean = false
+  ){}
 }
 
 export class PropFilterCondition {
@@ -56,19 +58,13 @@ class FilterCategory {
     public items?: FilterItem[],
     public isOpened: boolean = false,
     public sortOrder?: number,
-  ) {}
+  ){}
 
   public get filterExpr(): string {
-    let exp = '';
-    const delim = ', ';
-
-    for (let item of this.items) {
-      if (item.isChecked)
-        exp = exp + item.name + delim;
-    }
-    if (!(exp === ''))
-      exp = exp.substr(0, exp.length-2);
-    return exp;
+    return this.items
+          .filter(x => x.isChecked)
+          .map(y => y.name)
+          .join(', ');
   }
 }
 
@@ -78,17 +74,13 @@ class FilterCategory {
 })
 export class FilterComponent extends  ComponentBase {
   @Input() srch: SearchService;
-
-  fCategories = new Array<FilterCategory>();
-
-  public dataInitialized = false;
-  public filteredProps: PropsFilterStruct[];
-  public filteredManufacturers: MnfFilterStruct[];
-
-  lastFilteredCat: FilterCategory;
-
-  propFilterCondition = new Array<PropFilterCondition>();
-  mnfFilterCondition = [];
+  private lastFilteredCat: FilterCategory;
+  private propFilterCondition = [];
+  private mnfFilterCondition = [];
+  private dataInitialized = false;
+  fCategories = [];
+  filteredProps: PropsFilterStruct[];
+  filteredManufacturers: MnfFilterStruct[];
 
   constructor(public popoverCtrl: PopoverController, public repo: AbstractDataRepository) {
     super();
@@ -116,47 +108,45 @@ export class FilterComponent extends  ComponentBase {
   }
 
   initFilter() {
-    //this.propFilterCondition = [];
     //////// Props ///////
-    let fItems = null;
-    let fCat = null;
-
     let filteredPropCatId = null;
     if ((this.lastFilteredCat) && (this.lastFilteredCat.type === CategoryType.Property)) {
       filteredPropCatId = this.lastFilteredCat.tag;
     };
 
+
+    let fPropItems = [];
     this.filteredProps.forEach(p => {
+      let fPropsCat = null;
       if (!(p.prop.name == p.prevPropName) || !(p.prevPropName)) {
-        fCat = new FilterCategory(p.prop.id, CategoryType.Property, p.prop.name, null,
+        fPropsCat = new FilterCategory(p.prop.id, CategoryType.Property, p.prop.name, null,
                     ((filteredPropCatId) && (filteredPropCatId === p.prop.id)));
-        fItems = new Array<FilterItem>();
+        fPropItems = [];
         if (filteredPropCatId)
           this.lastFilteredCat = null;
       }
 
-
-      fItems.push(new FilterItem(p.prop.id, p.value, p.isChecked, p.count, CategoryType.Property, p));
+      fPropItems.push(new FilterItem(p.prop.id, p.value, p.isChecked, p.count, CategoryType.Property, p));
 
       if (!(p.prop.name == p.prevPropName)) {
-        fCat.items = fItems;
-        fCat.sortOrder = 10;
-        this.fCategories.push(fCat);
+        fPropsCat.items = fPropItems;
+        fPropsCat.sortOrder = 10;
+        this.fCategories.push(fPropsCat);
       };
     });
+
     ///////// Sort ////////
-    fItems = new Array<FilterItem>();
-    fItems.push(new FilterItem(-1, 'Relevance', true, 0, CategoryType.Sort, null));
-    fItems.push(new FilterItem(0, 'Price: Low to High', false, 0, CategoryType.Sort, null));
-    fItems.push(new FilterItem(1, 'Price: High to Low', false, 0, CategoryType.Sort, null));
-    fItems.push(new FilterItem(2, 'Rating', false, 0, CategoryType.Sort, null));
-    fCat = new FilterCategory(0, CategoryType.Sort, 'Sort', fItems, false, 3);
-    this.fCategories.push(fCat);
+    let fSortItems = [];
+    fSortItems.push(new FilterItem(-1, 'Relevance', true, 0, CategoryType.Sort, null));
+    fSortItems.push(new FilterItem(0, 'Price: Low to High', false, 0, CategoryType.Sort, null));
+    fSortItems.push(new FilterItem(1, 'Price: High to Low', false, 0, CategoryType.Sort, null));
+    fSortItems.push(new FilterItem(2, 'Rating', false, 0, CategoryType.Sort, null));
+    let fSortCat = new FilterCategory(0, CategoryType.Sort, 'Sort', fSortItems, false, 3);
+    this.fCategories.push(fSortCat);
   }
 
   initFilterManufacturers() {
     this.filteredManufacturers = [];
-    //this.mnfFilterCondition = [];
     this.srch.aggs.mnfAgg.buckets.forEach(
       x => {
         const mnfId = x.key.substring(0, x.key.indexOf('|'));
@@ -200,7 +190,7 @@ export class FilterComponent extends  ComponentBase {
                   return ((x.propId === propId) && (x.propVal === y.key));
                 }
               ) !== -1);
-            const pt = new PropsFilterStruct(prop, y.key, y.doc_count, isChecked, null);
+            const pt = new PropsFilterStruct(prop, y.key, y.doc_count, isChecked);
             this.filteredProps.push(pt);
           }
         );
@@ -213,13 +203,9 @@ export class FilterComponent extends  ComponentBase {
       this.filteredProps[i].prevPropName = prevName;
       prevName = this.filteredProps[i].prop.name;
     };
-    /*
-    if ((this.lastFilteredItem) && (this.lastFilteredItem.type === 'prop'))
-      this.lastFilteredItem = null;
-    */
   }
 
-  async onPropsClick(filterItem, filterCat: FilterCategory) {
+  onPropsClick(filterItem, filterCat: FilterCategory) {
     const data = filterItem.item;
     let cond = new PropFilterCondition(data.prop.id, data.value);
     let i = this.propFilterCondition
@@ -229,12 +215,10 @@ export class FilterComponent extends  ComponentBase {
     if ((i == -1) && (!data.isChecked))
       this.propFilterCondition.push(cond);
     this.srch.prodSrchParams.productProps = this.propFilterCondition;
-    await this.srch.search();
-    this.lastFilteredCat = filterCat;
-    this.initData();
+    this.applyFilter(filterCat);
   }
 
-  async onMnfClick(filterItem: FilterItem, filterCat: FilterCategory) {
+  onMnfClick(filterItem: FilterItem, filterCat: FilterCategory) {
     const mnf = filterItem.item;
     let i = this.mnfFilterCondition.indexOf(mnf.mnf.id);
     if ((i !== -1))
@@ -242,8 +226,12 @@ export class FilterComponent extends  ComponentBase {
     if ((i == -1) && (!mnf.isChecked))
       this.mnfFilterCondition.push(mnf.mnf.id);
     this.srch.prodSrchParams.supplier = this.mnfFilterCondition;
+    this.applyFilter(filterCat);
+  }
+
+  async applyFilter(lastFilterItem: FilterCategory) {
     await this.srch.search();
-    this.lastFilteredCat = filterCat;
+    this.lastFilteredCat = lastFilterItem;
     this.initData();
   }
 
@@ -263,24 +251,9 @@ export class FilterComponent extends  ComponentBase {
     });
   }
 
-  sortByPriceAsc() {
-    this.srch.prodSrchParams.sortOrder = SortOrderEnum.PriceLowToHigh;
+  sort(order: SortOrderEnum) {
+    this.srch.prodSrchParams.sortOrder = order;
     this.srch.search();
-  };
-
-  sortByPriceDesc() {
-    this.srch.prodSrchParams.sortOrder = SortOrderEnum.PriceHighToLow;
-    this.srch.search();
-  };
-
-  sortByRating() {
-    this.srch.prodSrchParams.sortOrder = SortOrderEnum.Rating;
-    this.srch.search();
-  };
-
-  sortByRelevance() {
-    this.srch.prodSrchParams.sortOrder = SortOrderEnum.Relevance;
-    this.srch.search();
-  };
+  }
 
 }

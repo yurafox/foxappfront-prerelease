@@ -1,10 +1,8 @@
-import {IonicPage, NavController, NavParams, ActionSheetController, ModalController} from 'ionic-angular';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Component, OnInit} from '@angular/core';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {Product} from '../../app/model/product';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
-import {QuotationProduct} from "../../app/model/quotation-product";
-import {Manufacturer} from "../../app/model/manufacturer";
 
 @IonicPage({name: 'CategoryPage', segment: 'category/:categoryId'})
 @Component({
@@ -57,8 +55,6 @@ export class CategoryPage extends ComponentBase implements OnInit {
         this.baseProducts = products;
       }
     }
-
   }
-
 
 }
