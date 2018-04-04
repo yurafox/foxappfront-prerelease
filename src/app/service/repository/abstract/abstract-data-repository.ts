@@ -31,7 +31,8 @@ import { QuotationProduct,
           MeasureUnit,
           Region,
           BannerSlide,
-          ClientMessage
+          ClientMessage,
+          CurrencyRate
        } from '../../../model/index';
 import {IDictionary} from "../../../core/app-core";
 
@@ -156,4 +157,6 @@ export abstract class AbstractDataRepository {
   public async abstract postStoreReview(review: StoreReview): Promise<StoreReview>;
   public async abstract updateProductReview(review: ProductReview): Promise<ProductReview>;
   public async abstract updateStoreReview(review: StoreReview): Promise<StoreReview>;
+
+  public async abstract getCurrencyRate():Promise<CurrencyRate[]>;
 }

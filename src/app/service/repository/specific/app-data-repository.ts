@@ -42,7 +42,8 @@ import {
   MeasureUnit,
   Region,
   BannerSlide,
-  ClientMessage
+  ClientMessage,
+  CurrencyRate
 } from '../../../model/index';
 
 import { AbstractDataRepository } from '../../index';
@@ -109,7 +110,7 @@ const postProductReviewUrl = `${AppConstants.BASE_URL}/api/SaveReview/Product`;
 const postStoreReviewUrl = `${AppConstants.BASE_URL}/api/SaveReview/Store`;
 const updateProductReviewUrl = `${AppConstants.BASE_URL}/api/UpdateReview/Product`;
 const updateStoreReviewUrl = `${AppConstants.BASE_URL}/api/UpdateReview/Store`;
-
+const getCurrencyRate = `${AppConstants.BASE_URL}/api/currency/rate`;
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
 // const currenciesUrl = "/api/mcurrencies";
@@ -2992,8 +2993,8 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async postDeviceData(deviceData: DeviceData) {
-    try {
-      const response = await this.http.post(deviceDataUrl, deviceData, RequestFactory.makeAuthHeader()).toPromise();
+    try {     
+      const response = await this.http.post(deviceDataUrl, deviceData,RequestFactory.makeAuthHeader()).toPromise();
 
       if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
         throw new Error("server side status error");
@@ -3202,6 +3203,28 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
         throw new Error("server side status error");
       }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getCurrencyRate():Promise<CurrencyRate[]>{
+    try {
+      const response = await this.http
+        .get(getCurrencyRate).toPromise();
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const currencyRates: CurrencyRate[] = new Array<CurrencyRate>();
+      if (data != null) {
+        data.forEach(val =>
+          currencyRates.push(
+            new CurrencyRate(val.defaultId,val.targetId,val.rate)
+          )
+        );
+      }
+      return currencyRates;
     } catch (err) {
       return await this.handleError(err);
     }
