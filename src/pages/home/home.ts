@@ -97,9 +97,9 @@ export class HomePage extends ComponentBase {
 
   async doRefresh(refresher) {
     this.content = await this._repo.getPageContent(1);
-    if (refresher !== 0) {
+    /*if (refresher !== 0) {
       this.changeDet.detectChanges();
       refresher.complete();
-    }
+    }*/
   }
 }

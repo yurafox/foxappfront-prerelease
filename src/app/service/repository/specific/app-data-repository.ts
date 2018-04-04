@@ -2351,9 +2351,9 @@ export class AppDataRepository extends AbstractDataRepository {
         let stores: IDictionary<Store[]> = {};
         if (data != null) {
           let storeFiltered = [];
-          let cityID: number[] = [];
+          let cityID: Array<number> = [];
           data.forEach(dataStore => {
-            if (!cityID.includes(dataStore.idCity)) {
+            if (!(cityID.indexOf(dataStore.idCity) > -1)) {
               cityID.push(dataStore.idCity);
               storeFiltered = data.filter((value: Store): string => {
                 return value.idCity === dataStore.idCity ? dataStore.idCity.toString() : '';

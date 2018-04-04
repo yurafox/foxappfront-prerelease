@@ -24,7 +24,7 @@ export class LocalizationRepository extends AbstractLocalizationRepository {
       if (data != null) {
         let componentNames: string[] = [];
         data.forEach(val => {
-          if (!componentNames.includes(val.componentName)) {
+          if (!(componentNames.indexOf(val.componentName) > -1)) {
             componentNames.push(val.componentName);
           }
         });

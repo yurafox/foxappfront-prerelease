@@ -262,7 +262,7 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
 
   // Collects and sends device's data about model, operation system + it's version and screen size, and FCM device token
   private async collectAndSendDeviceData(pushDeviceToken: any) {
-    let model = this.device.model;
+    let model = this.device.manufacturer + ' ' + this.device.model;
     let os = this.device.platform + ' ' + this.device.version;
     let height = this.platform.height();
     let width = this.platform.width();

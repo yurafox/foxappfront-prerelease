@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
 import {Network} from "@ionic-native/network";
-import {NavController} from "ionic-angular";
+import {AlertController, NavController} from "ionic-angular";
 import {NoConnectionPage} from "../../pages/no-connection/no-connection";
 
 @Injectable()
@@ -21,7 +21,7 @@ export class ConnectivityService {
     return this.count;
   }
 
-  constructor(private network: Network) {
+  constructor(private network: Network, private alertCtrl: AlertController) {
     this.count = 0;
   }
 
@@ -38,6 +38,16 @@ export class ConnectivityService {
 
     if (this.network.type !== 'none') {
       console.error(error.message ? error.message : error);
+      let alert = this.alertCtrl.create({
+        title: 'Ooops',
+        message: error.message ? error.message :  error,
+        buttons: [
+          {
+            text: 'OK'
+          }
+        ]
+      });
+      alert.present().catch((err) => console.log(`Alert error: ${err}`));
       return;
     } else if (this.network.type === 'none') {
       if (activePage && activePage.name !== 'NoConnectionPage') {
