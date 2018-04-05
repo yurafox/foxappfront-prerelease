@@ -171,12 +171,9 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getClientBonusesExpireInfo(clientId: number): Promise <ClientBonus[]> {
     try {
       const response = await this.http
-        .get(getClientBonusesExpireInfoUrl, {
-          search: this.createSearchParams([
-            {key: "clientId", value: clientId.toString()}
-          ])
-        })
-        .toPromise();
+        .get(getClientBonusesExpireInfoUrl,RequestFactory.makeSearch([
+          {key: "clientId", value: clientId.toString()}
+        ])).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -197,7 +194,9 @@ export class AppDataRepository extends AbstractDataRepository {
   public async postProductView(idProduct: number, params: string) {
     try {
       const response = await this.http
-        .post(postProductViewUrl, {idProduct: idProduct.toString(), params: params}).toPromise();
+        .post(postProductViewUrl, {idProduct: idProduct.toString(), params: params, },
+        RequestFactory.makeAuthHeader()).toPromise();
+
       if (response.status !== 201) {
         throw new Error("server side status error");
       }
@@ -223,7 +222,7 @@ export class AppDataRepository extends AbstractDataRepository {
         .post(calculateCartUrl, {promoCode: promoCode, maxBonusCnt: maxBonusCnt,
                                       usePromoBonus: usePromoBonus, creditProductId: creditProductId,
                                       cartContent: _dtoContent}
-             )
+             ,RequestFactory.makeAuthHeader())
         .toPromise();
       const val = response.json();
 
@@ -248,7 +247,7 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
       let _id = clientId.toString();
       const response = await this.http
-        .get(getBonusesInfoUrl + `/${_id}`).toPromise();
+        .get(getBonusesInfoUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
       const val = response.json();
       if (response.status == 204)
         return {bonusLimit: 0, actionBonusLimit: 0};
@@ -263,7 +262,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getCreditProducts(): Promise<CreditProduct[]> {
     try {
-      const response = await this.http.get(creditProductsUrl).toPromise();
+      const response = await this.http.get(creditProductsUrl,RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -296,7 +295,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async loadPmtMethodsCache() {
     try {
-      const response = await this.http.get(getPaymentMethodsUrl).toPromise();
+      const response = await this.http.get(getPaymentMethodsUrl,RequestFactory.makeAuthHeader()).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
@@ -325,7 +324,7 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
       if (this.cache.EnumPaymentMethod.Count() === 0) {
 
-        const response = await this.http.get(getPaymentMethodsUrl).toPromise();
+        const response = await this.http.get(getPaymentMethodsUrl,RequestFactory.makeAuthHeader()).toPromise();
         const data = response.json();
         if (response.status !== 200) {
           throw new Error("server side status error");
@@ -353,7 +352,7 @@ export class AppDataRepository extends AbstractDataRepository {
       const pmtMethod = new EnumPaymentMethod();
       if (this.isEmpty(this.cache.EnumPaymentMethod.Item(_id))) {
         const response = await this.http
-          .get(getPaymentMethodsUrl + `/${_id}`).toPromise();
+          .get(getPaymentMethodsUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
@@ -381,7 +380,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getDeliveryDate(order: ClientOrderProducts, loEntityId: number, loIdClientAddress: number): Promise<Date> {
     try {
       const response = await this.http
-        .post(getDeliveryDateUrl, {order: order.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress})
+        .post(getDeliveryDateUrl, {order: order.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress},
+          RequestFactory.makeAuthHeader())
         .toPromise();
       const val = response.json();
 
@@ -397,7 +397,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getDeliveryCost(order: ClientOrderProducts, loEntityId: number, loIdClientAddress: number): Promise<number> {
     try {
       const response = await this.http
-        .post(getDeliveryCostUrl, {order: order.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress})
+        .post(getDeliveryCostUrl, {order: order.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress},
+          RequestFactory.makeAuthHeader())
         .toPromise();
       const val = response.json();
 
@@ -413,12 +414,10 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getProductCreditSize(idProduct: number, isSupplier: number): Promise<any> {
     try {
       const response = await this.http
-        .get(productSupplCreditGradesUrl, {
-          search: this.createSearchParams([
-            {key: "idProduct", value: idProduct.toString()},
-            {key: "idSupplier", value: isSupplier.toString()}
-          ])
-        })
+        .get(productSupplCreditGradesUrl,RequestFactory.makeSearch([
+          {key: "idProduct", value: idProduct.toString()},
+          {key: "idSupplier", value: isSupplier.toString()}
+        ]))
         .toPromise();
 
       const data = response.json();
@@ -441,7 +440,7 @@ export class AppDataRepository extends AbstractDataRepository {
       const loEntity = new LoEntity();
       if (this.isEmpty(this.cache.LoEntity.Item(id))) {
         const response = await this.http
-          .get(loEntitiesUrl + `/${entityId}`)
+          .get(loEntitiesUrl + `/${entityId}`,RequestFactory.makeAuthHeader())
           .toPromise();
 
         const data = response.json();
@@ -470,11 +469,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getLoTrackLogByOrderSpecId(id: number): Promise<LoTrackLog[]> {
     try {
       const response = await this.http
-        .get(specLOTrackingLogUrl, {
-          search: this.createSearchParams([
-            {key: "idOrderSpecProd", value: id.toString()}
-          ])
-        })
+        .get(specLOTrackingLogUrl,RequestFactory.makeSearch([{key: "idOrderSpecProd", value: id.toString()}]))
         .toPromise();
 
       const data = response.json();
@@ -510,12 +505,9 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getLoEntitiesForSupplier(supplierId: number): Promise<LoSupplEntity[]> {
     try {
       const response = await this.http
-        .get(loSupplEntitiesUrl, {
-          search: this.createSearchParams([
-            {key: "idSupplier", value: supplierId.toString()}
-          ])
-        })
-        .toPromise();
+        .get(loSupplEntitiesUrl,RequestFactory.makeSearch([
+          {key: "idSupplier", value: supplierId.toString()}
+        ])).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -543,7 +535,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async saveClientDraftOrder(order: ClientOrder): Promise<ClientOrder> {
     try {
       const response = await this.http
-        .put(clientDraftOrderUrl, order.dto)
+        .put(clientDraftOrderUrl, order.dto,RequestFactory.makeAuthHeader())
         .toPromise();
       const data = response.json();
 
@@ -585,7 +577,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getClientDraftOrder(): Promise<ClientOrder> {
     try {
       const response = await this.http
-        .get(clientDraftOrderUrl).toPromise();
+        .get(clientDraftOrderUrl,RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -624,14 +616,10 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
 
       const response = await this.http
-        .get(clientOrdersUrl, {
-          //TODO в реальном бекенде входящие параметры игнорить и возвращать все заказы клиента в статусе > 0
-          search: this.createSearchParams([
-            {key: "idClient", value: "100"},
-            {key: "idStatus", value: "1"}
-          ])
-        })
-        .toPromise();
+        .get(clientOrdersUrl,RequestFactory.makeSearch([
+          {key: "idClient", value: "100"},
+          {key: "idStatus", value: "1"}
+        ])).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -673,7 +661,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async postOrder(order: ClientOrder): Promise<{isSuccess: boolean, errorMessage: string}> {
     try {
       const response = await this.http
-        .put(postOrderUrl, order.dto).toPromise();
+        .put(postOrderUrl, order.dto,RequestFactory.makeAuthHeader()).toPromise();
       const val = response.json();
 
       if (response.status !== 200) {
@@ -689,7 +677,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async insertCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
     try {
       const response = await this.http
-        .post(cartProductsUrl, prod.dto /*obj*/)
+        .post(cartProductsUrl, prod.dto,RequestFactory.makeAuthHeader())
         .toPromise();
       const val = response.json();
 
@@ -721,7 +709,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async saveCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
     try {
       const response = await this.http
-        .put(cartProductsUrl, prod.dto /*obj*/)
+        .put(cartProductsUrl, prod.dto,RequestFactory.makeAuthHeader())
         .toPromise();
       const val = response.json();
 
@@ -753,7 +741,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async deleteCartProduct(prod: ClientOrderProducts) {
     try {
       const response = await this.http
-        .delete(cartProductsUrl + `/${prod.id}`)
+        .delete(cartProductsUrl + `/${prod.id}`,RequestFactory.makeAuthHeader())
         .toPromise();
       if (response.status !== 204) {
         throw new Error("server side status error");
@@ -765,7 +753,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getCartProducts(): Promise<ClientOrderProducts[]> {
     try {
-      const response = await this.http.get(cartProductsUrl).toPromise();
+      const response = await this.http.get(cartProductsUrl,RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -808,12 +796,9 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getClientOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]> {
     try {
       const response = await this.http
-        .get(clientOrderSpecProductsUrl, {
-          search: this.createSearchParams([
-            {key: "idOrder", value: orderId.toString()}
-          ])
-        })
-        .toPromise();
+        .get(clientOrderSpecProductsUrl,RequestFactory.makeSearch([
+          {key: "idOrder", value: orderId.toString()}
+        ])).toPromise();
 
       let orderProducts = [];
       const val = response.json();
@@ -853,7 +838,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getProductReviewsByProductId(productId: number): Promise<ProductReview[]> {
     try {
       const response = await this.http
-        .get(`${productReviewsUrl}/${productId}`).toPromise();
+        .get(`${productReviewsUrl}/${productId}`,RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -931,12 +916,9 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getProductStorePlacesByQuotId(quotId: number): Promise<ProductStorePlace[]> {
     try {
       const response = await this.http
-        .get(productStorePlacesUrl, {
-          search: this.createSearchParams([
-            {key: "idQuotationProduct", value: quotId.toString()}
-          ])
-        })
-        .toPromise();
+        .get(productStorePlacesUrl,RequestFactory.makeSearch([
+          {key: "idQuotationProduct", value: quotId.toString()}
+        ])).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -972,7 +954,7 @@ export class AppDataRepository extends AbstractDataRepository {
     if (this.cache.Country.Count() > 0)
       return this.cache.Country.Values();
     try {
-      const response = await this.http.get(countriesUrl).toPromise();
+      const response = await this.http.get(countriesUrl,RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -1001,7 +983,7 @@ export class AppDataRepository extends AbstractDataRepository {
       let country = new Country();
       if (this.isEmpty(this.cache.Country.Item(_id))) {
         const response = await this.http
-          .get(countriesUrl + `/${_id}`).toPromise();
+          .get(countriesUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
         let data: any = response.json();
         if (response.status !== 200) {
           throw new Error("server side status error");
@@ -1028,9 +1010,7 @@ export class AppDataRepository extends AbstractDataRepository {
       const _id = id.toString();
       let client = new Client();
       const response = await this.http
-        .get(clientsUrl, {
-          search: this.createSearchParams([{key: "userId", value: _id}])
-        })
+        .get(clientsUrl,RequestFactory.makeSearch([{key: "userId", value: _id}]))
         .toPromise();
       let data: any = response.json();
       if (response.status !== 200) {
@@ -1061,9 +1041,7 @@ export class AppDataRepository extends AbstractDataRepository {
     {
       let client = new Client();
       const response = await this.http
-        .get(clientsUrl, {
-          search: this.createSearchParams([{key: "phone", value: phonenum}])
-        })
+        .get(clientsUrl,RequestFactory.makeSearch([{key: "phone", value: phonenum}]))
         .toPromise();
       let data: any = response.json();
       if (response.status !== 200) {
@@ -1091,7 +1069,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async createClientAddress(address: ClientAddress): Promise<ClientAddress> {
     try {
       const response = await this.http
-        .post(clientAddressesUrl, address.dto)
+        .post(clientAddressesUrl, address.dto,RequestFactory.makeAuthHeader())
         .toPromise();
       const data = response.json();
 
@@ -1124,7 +1102,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async deleteClientAddress(address: ClientAddress) {
     try {
       const response = await this.http
-        .delete(clientAddressesUrl + `/${address.id}`)
+        .delete(clientAddressesUrl + `/${address.id}`,RequestFactory.makeAuthHeader())
         .toPromise();
       if (response.status !== 204) {
         throw new Error("server side status error");
@@ -1137,7 +1115,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async saveClientAddress(address: ClientAddress): Promise<ClientAddress> {
     try {
       const response = await this.http
-        .put(clientAddressesUrl, address.dto)
+        .put(clientAddressesUrl, address.dto,RequestFactory.makeAuthHeader())
         .toPromise();
       const data = response.json();
 
@@ -1175,7 +1153,7 @@ export class AppDataRepository extends AbstractDataRepository {
       let _id = id.toString();
 
       const response = await this.http
-        .get(clientAddressesUrl + `/${_id}`).toPromise();
+        .get(clientAddressesUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
@@ -1210,9 +1188,7 @@ export class AppDataRepository extends AbstractDataRepository {
       let clientAdresses = new Array<ClientAddress>();
 
       const response = await this.http
-        .get(clientAddressesUrl, {
-          search: this.createSearchParams([{key: "idClient", value: _id}])
-        })
+        .get(clientAddressesUrl,RequestFactory.makeSearch([{key: "idClient", value: _id}]))
         .toPromise();
 
       let data: any = response.json();
@@ -1247,7 +1223,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async loadStorePlaceCache() {
     try {
       const response = await this.http
-        .get(storePlacesUrl).toPromise();
+        .get(storePlacesUrl,RequestFactory.makeAuthHeader()).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
@@ -1285,7 +1261,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (this.isEmpty(this.cache.StorePlace.Item(_id))) {
         // http request
         const response = await this.http
-          .get(storePlacesUrl + `/${_id}`)
+          .get(storePlacesUrl + `/${_id}`,RequestFactory.makeAuthHeader())
           .toPromise();
 
         // response data binding
@@ -1322,7 +1298,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async loadCityCache() {
     try {
       const response = await this.http
-        .get(citiesUrl).toPromise();
+        .get(citiesUrl,RequestFactory.makeAuthHeader()).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
@@ -1350,7 +1326,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async loadRegionsCache(){
     try {
       const response = await this.http
-        .get(regionsUrl).toPromise();
+        .get(regionsUrl,RequestFactory.makeAuthHeader()).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
@@ -1383,7 +1359,7 @@ export class AppDataRepository extends AbstractDataRepository {
       //let city = null;
       if (this.isEmpty(this.cache.Region.Item(_id))) {
         // http request
-        const response = await this.http.get(regionsUrl + `/${_id}`).toPromise();
+        const response = await this.http.get(regionsUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
 
         // response data binding
         let data: any = response.json();
@@ -1410,7 +1386,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getRegions(): Promise<Region[]> {
     try {
-      const response = await this.http.get(regionsUrl).toPromise();
+      const response = await this.http.get(regionsUrl,RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -1437,7 +1413,7 @@ export class AppDataRepository extends AbstractDataRepository {
       //let city = null;
       if (this.isEmpty(this.cache.City.Item(_id))) {
         // http request
-        const response = await this.http.get(citiesUrl + `/${_id}`).toPromise();
+        const response = await this.http.get(citiesUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
 
         // response data binding
         let data: any = response.json();
@@ -1480,7 +1456,7 @@ export class AppDataRepository extends AbstractDataRepository {
     //TODO This method should be implemented in back end in production mode!
     try {
       if (!AppConstants.USE_PRODUCTION) {
-          const response = await this.http.get(productsUrl).toPromise();
+          const response = await this.http.get(productsUrl,RequestFactory.makeAuthHeader()).toPromise();
           const data = response.json();
           if (response.status !== 200) {
             throw new Error("server side status error");
@@ -1583,9 +1559,7 @@ export class AppDataRepository extends AbstractDataRepository {
       // <editor-fold desc = "cashe is empty or cache force active">
       if (this.cache.Products.Count() === 0 || cacheForce === true) {
         const response = await this.http
-          .get(productsUrl, {
-            search: this.createSearchParams([{key: "url", value: urlQuery}])
-          })
+          .get(productsUrl,RequestFactory.makeSearch([{key: "url", value: urlQuery}]))
           .toPromise();
 
         const data = response.json();
@@ -1637,7 +1611,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getQuotationProductById(qpId: number): Promise<QuotationProduct> {
     try {
       const response = await this.http
-        .get(quotationProductsUrl + `/${qpId}`)
+        .get(quotationProductsUrl + `/${qpId}`,RequestFactory.makeAuthHeader())
         .toPromise();
 
       const data = response.json();
@@ -1700,12 +1674,9 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getQuotationProductsByProductId(productId: number): Promise<QuotationProduct[]> {
     try {
       const response = await this.http
-        .get(quotationProductsUrl, {
-          search: this.createSearchParams([
-            {key: "idProduct", value: productId.toString()}
-          ])
-        })
-        .toPromise();
+        .get(quotationProductsUrl,RequestFactory.makeSearch([
+          {key: "idProduct", value: productId.toString()}
+        ])).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -1769,7 +1740,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
         // http request
         const response = await this.http
-          .get(productsUrl + `/${id}`)
+          .get(productsUrl + `/${id}`,RequestFactory.makeAuthHeader())
           .toPromise();
 
         // response data binding
@@ -1799,7 +1770,7 @@ export class AppDataRepository extends AbstractDataRepository {
         this.cache.Quotation.Add(id, quotation);
 
         const response = await this.http
-          .get(quotationsUrl + `/${quotationId}`)
+          .get(quotationsUrl + `/${quotationId}`,RequestFactory.makeAuthHeader())
           .toPromise();
 
         const data = response.json();
@@ -1829,7 +1800,7 @@ export class AppDataRepository extends AbstractDataRepository {
       let p = new PersonInfo();
 
       const response = await this.http
-        .post(personsUrl, person).toPromise();
+        .post(personsUrl, person,RequestFactory.makeAuthHeader()).toPromise();
       const data = response.json();
 
       if (response.status !== 201) {
@@ -1858,7 +1829,7 @@ export class AppDataRepository extends AbstractDataRepository {
       let p = new PersonInfo();
 
       const response = await this.http
-        .put(personsUrl, person).toPromise();
+        .put(personsUrl, person,RequestFactory.makeAuthHeader()).toPromise();
       const data = response.json();
 
       if (response.status !== 200) {
@@ -1885,7 +1856,7 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
       const _id = personId.toString();
       let p = new PersonInfo();
-      const response = await this.http.get(personsUrl + `/${_id}`).toPromise();
+      const response = await this.http.get(personsUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
       let data: any = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -1910,7 +1881,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async loadSuppliersCache() {
     try {
       const response = await this.http
-        .get(suppliersUrl).toPromise();
+        .get(suppliersUrl,RequestFactory.makeAuthHeader()).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
@@ -1948,7 +1919,7 @@ export class AppDataRepository extends AbstractDataRepository {
         this.cache.Suppliers.Add(id, suppl);
 
         const response = await this.http
-          .get(suppliersUrl + `/${id}`)
+          .get(suppliersUrl + `/${id}`,RequestFactory.makeAuthHeader())
           .toPromise();
 
         const data = response.json();
@@ -1985,7 +1956,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (this.isEmpty(this.cache.Currency.Item(id))) {
         this.cache.Currency.Add(id, curr);
         const response = await this.http
-          .get(currenciesUrl + `/${id}`)
+          .get(currenciesUrl + `/${id}`,RequestFactory.makeAuthHeader())
           .toPromise();
 
         const data = response.json();
@@ -2013,7 +1984,7 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
       if (this.cache.Suppliers.Count() === 0 || cacheForce === true) {
-        const response = await this.http.get(suppliersUrl).toPromise();
+        const response = await this.http.get(suppliersUrl,RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
@@ -2052,7 +2023,7 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
       if (this.cache.Currency.Count() === 0 || cacheForce === true) {
-        const response = await this.http.get(currenciesUrl).toPromise();
+        const response = await this.http.get(currenciesUrl,RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
@@ -2083,7 +2054,7 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
       if (this.cache.Lang.Count() === 0 || cacheForce === true) {
-        const response = await this.http.get(LangUrl).toPromise();
+        const response = await this.http.get(LangUrl,RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
@@ -2118,7 +2089,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (this.isEmpty(this.cache.Manufacturer.Item(id))) {
         //this.cache.Manufacturer.Add(id, manufacturer);
         const response = await this.http
-          .get(manufacturersUrl + `/${id}`)
+          .get(manufacturersUrl + `/${id}`,RequestFactory.makeAuthHeader())
           .toPromise();
         const data = response.json();
         if (response.status !== 200) {
@@ -2145,7 +2116,7 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
       if (this.cache.Manufacturer.Count() === 0 || cacheForce === true) {
-        const response = await this.http.get(manufacturersUrl).toPromise();
+        const response = await this.http.get(manufacturersUrl,RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
@@ -2260,7 +2231,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getCitiesWithStores(): Promise<City[]> {
     try {
       if (this.cache.CityWithStore.Count() === 0) {
-        const response = await this.http.get(citiesWithStoresUrl).toPromise();
+        const response = await this.http.get(citiesWithStoresUrl,RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
@@ -2286,12 +2257,9 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async searchCities(srchString: string): Promise<City[]> {
     try {
-      const response = await this.http.get(citiesUrl, {
-          search: this.createSearchParams([
-            {key: "srch", value: srchString}
-          ])
-        }
-      ).toPromise();
+      const response = await this.http.get(citiesUrl,RequestFactory.makeSearch([
+        {key: "srch", value: srchString}
+      ])).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2316,7 +2284,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getCities(): Promise<City[]> {
     try {
       if (this.cache.City.Count() === 0) {
-        const response = await this.http.get(citiesUrl).toPromise();
+        const response = await this.http.get(citiesUrl,RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
@@ -2343,7 +2311,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getStores(): Promise<IDictionary<Store[]>> {
     try {
       if (this.cache.Store.Count() === 0) {
-        const response = await this.http.get(storesUrl).toPromise();
+        const response = await this.http.get(storesUrl,RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
@@ -2397,7 +2365,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getStoreById(id: number): Promise<Store> {
     try {
-      const response = await this.http.get(`${storeUrl}/${id}`).toPromise();
+      const response = await this.http.get(`${storeUrl}/${id}`,RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2427,7 +2395,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]> {
     try {
       const response = await this.http
-        .get(`${storeReviewsByStoreIdUrl}/${storeId}`).toPromise();
+        .get(`${storeReviewsByStoreIdUrl}/${storeId}`,RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2505,7 +2473,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getStoreReviews(): Promise<IDictionary<StoreReview[]>> {
     try {
       const response = await this.http
-        .get(`${storeReviewsUrl}`).toPromise();
+        .get(`${storeReviewsUrl}`,RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2649,7 +2617,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getPageContent(id: number): Promise<string> {
     try {
       const response = await this.http
-        .get(`${pagesDynamicUrl}/${id}`)
+        .get(`${pagesDynamicUrl}/${id}`,RequestFactory.makeAuthHeader())
         .toPromise();
 
       const data = response.json();
@@ -2665,7 +2633,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getAction(id: number): Promise<Action> {
     try {
       const response = await this.http
-        .get(`${actionDynamicUrl}/${id}`)
+        .get(`${actionDynamicUrl}/${id}`,RequestFactory.makeAuthHeader())
         .toPromise();
 
       const data = response.json();
@@ -2694,7 +2662,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getActions(): Promise<Action[]> {
     try {
-      const response = await this.http.get(actionDynamicUrl).toPromise();
+      const response = await this.http.get(actionDynamicUrl,RequestFactory.makeAuthHeader()).toPromise();
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -2726,12 +2694,9 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getActionOffersByActionId(idAction: number): Promise<ActionOffer[]> {
     try {
       const response = await this.http
-        .get(actionOffersUrl, {
-          search: this.createSearchParams([
-            {key: "idAction", value: idAction.toString()}
-          ])
-        })
-        .toPromise();
+        .get(actionOffersUrl,RequestFactory.makeSearch([
+          {key: "idAction", value: idAction.toString()}
+        ])).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2754,12 +2719,9 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getQuotationProductsByQuotationId(quotationId: number): Promise<QuotationProduct[]> {
     try {
       const response = await this.http
-        .get(quotationProductsUrl, {
-          search: this.createSearchParams([
-            {key: "idQuotation", value: quotationId.toString()}
-          ])
-        })
-        .toPromise();
+        .get(quotationProductsUrl,RequestFactory.makeSearch([
+          {key: "idQuotation", value: quotationId.toString()}
+        ])).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2792,7 +2754,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getNovelty(id: number): Promise<Novelty> {
     try {
       const response = await this.http
-        .get(`${noveltyByIdDynamicUrl}/${id}`)
+        .get(`${noveltyByIdDynamicUrl}/${id}`,RequestFactory.makeAuthHeader())
         .toPromise();
 
       const data = response.json();
@@ -2819,7 +2781,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getNovelties(): Promise<Novelty[]> {
     try {
-      const response = await this.http.get(noveltiesDynamicUrl).toPromise();
+      const response = await this.http.get(noveltiesDynamicUrl,RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2901,7 +2863,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getNoveltyDetailsByNoveltyId(id: number): Promise<NoveltyDetails[]> {
     try {
-      const response = await this.http.get(`${noveltyDetailsDynamicUrl}/${id}`).toPromise();
+      const response = await this.http.get(`${noveltyDetailsDynamicUrl}/${id}`,RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -3007,7 +2969,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getCategories(): Promise<Category[]> {
     try {
       const response = await this.http
-        .get(categoriesUrl).toPromise();
+        .get(categoriesUrl,RequestFactory.makeAuthHeader()).toPromise();
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -3030,7 +2992,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async loadMeasureUnitCache() {
     try {
       const response = await this.http
-        .get(measureUnitUrl).toPromise();
+        .get(measureUnitUrl,RequestFactory.makeAuthHeader()).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
@@ -3065,7 +3027,7 @@ export class AppDataRepository extends AbstractDataRepository {
           this.cache.MeasureUnit.Add(id, munit);
 
           const response = await this.http
-            .get(measureUnitUrl + `/${id}`)
+            .get(measureUnitUrl + `/${id}`,RequestFactory.makeAuthHeader())
             .toPromise();
 
           const data = response.json();
@@ -3093,7 +3055,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getProductDescription(id: number): Promise<string> {
     try {
       const _id = id.toString();
-      const response = await this.http.get(productDescriptionsUrl + `/${_id}`).toPromise();
+      const response = await this.http.get(productDescriptionsUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
       let data: any = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -3111,7 +3073,7 @@ export class AppDataRepository extends AbstractDataRepository {
       let res = [];
       let data: any = null;
       const _id = id.toString();
-      const response = await this.http.get(productImagesUrl + `/${_id}`).toPromise();
+      const response = await this.http.get(productImagesUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
       if (response) {
         data = response.json();
         if (response.status !== 200) {
@@ -3133,7 +3095,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getBannerSlides(): Promise<BannerSlide[]> {
     try {
-      const response = await this.http.get(bannerSlidesUrl).toPromise();
+      const response = await this.http.get(bannerSlidesUrl,RequestFactory.makeAuthHeader()).toPromise();
       let data: any = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -3188,7 +3150,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async updateProductReview(productReview: ProductReview): Promise<ProductReview> {
     try {
-      const response = await this.http.post(updateProductReviewUrl, productReview).toPromise();
+      const response = await this.http.post(updateProductReviewUrl, productReview,RequestFactory.makeAuthHeader()).toPromise();
       if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
         throw new Error("server side status error");
       }
@@ -3199,7 +3161,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async updateStoreReview(storeReview: StoreReview): Promise<StoreReview> {
     try {
-      const response = await this.http.post(updateStoreReviewUrl, storeReview).toPromise();
+      const response = await this.http.post(updateStoreReviewUrl, storeReview,RequestFactory.makeAuthHeader()).toPromise();
       if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
         throw new Error("server side status error");
       }
@@ -3211,7 +3173,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getCurrencyRate():Promise<CurrencyRate[]>{
     try {
       const response = await this.http
-        .get(getCurrencyRate).toPromise();
+        .get(getCurrencyRate,RequestFactory.makeAuthHeader()).toPromise();
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
