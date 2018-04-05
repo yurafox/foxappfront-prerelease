@@ -69,7 +69,6 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
   }
 
   async ngOnInit() {
-    await this.locRepos.setLocalization();
     super.ngOnInit();
     this.connService.nav = this.nav;
     if (!this.userService.isAuth && this.userService.token) {

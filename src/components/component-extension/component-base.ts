@@ -59,9 +59,9 @@ export abstract class ComponentBase implements OnDestroy, OnInit {
   }
 
   // get localization data from remote service
-  protected setLocaleFromSource(data: any): void {
+  protected async setLocaleFromSource(data: any) {
     if (this.makeLocale) {
-      let loc = this.locRepos.getLocalization(data);
+      let loc = await this.locRepos.getLocalization(data);
       if (loc && (Object.keys(loc).length !== 0)) {
         this._localeList = loc;
       }
@@ -78,7 +78,8 @@ export abstract class ComponentBase implements OnDestroy, OnInit {
   protected toEventSubscribe() {
     let subEv: any = this.evServ.events['localeChangeEvent']
       .subscribe(data => {
-        this.setLocaleFromSource({componentName: this._componentName, lang: data})});
+        this.setLocaleFromSource({componentName: this._componentName, lang: data});
+      });
 
     this.listenersObj.push(subEv);
   }
