@@ -184,7 +184,8 @@
             <ion-col col-auto>
               <div>
                 <img *ngIf="item?.quotationproduct?.product?.imageUrl" class="f-img-item-80"
-                     [src]="item?.quotationproduct?.product?.imageUrl">
+                     [src]="item?.quotationproduct?.product?.imageUrl"
+                     onError="this.src='assets/imgs/nophoto.png';">
                 <img *ngIf="!item?.quotationproduct?.product?.imageUrl" class="f-img-item-80"
                      src="assets/imgs/nophoto.png">
 

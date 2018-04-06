@@ -35,7 +35,7 @@ export class SearchService {
 
   public products = [];
   private cKey = 'searchItems';
-  private cMaxSearchItemsCount = 15;
+  private cMaxSearchItemsCount;
   public searchItems = new Array<string>();
   public searchResults: Promise<Product[]>;
   private _ls: string = '';
@@ -46,8 +46,8 @@ export class SearchService {
 
   private readonly INDEX = 'product';
   private readonly TYPE = null;
-  private readonly SIZE = 30;
-  private readonly MAX_ITEMS_COUNT = 360;
+  private SIZE = 30;
+  private MAX_ITEMS_COUNT = 360;
 
   public prodSrchParams: ProductSearchParams = null;
 
@@ -58,7 +58,6 @@ export class SearchService {
   public aggs: any;
 
   constructor(private repo: AbstractDataRepository) {
-
     if (!this.client) {
       this.connect();
     }
@@ -69,14 +68,47 @@ export class SearchService {
         this.searchItems.push(val);
       });
     }
+    this.repo.getAppParam('SEARCH_HISTORY_MAX_LIST_LENGTH').then(x => {
+        try {
+          this.cMaxSearchItemsCount = parseInt(x);
+        }
+        catch (err) {
+          console.log(err);
+        }
+      }
+    );
+
+    this.repo.getAppParam('ELASTIC_PRODUCT_SEARCH_ITEMS_MAX_COUNT').then(x =>{
+        try {
+          this.MAX_ITEMS_COUNT = parseInt(x);
+        }
+        catch (err) {
+          console.log(err);
+        }
+      }
+    );
+
+    this.repo.getAppParam('ELASTIC_PRODUCT_SEARCH_PAGE_SIZE').then(x => {
+        try {
+          this.SIZE = parseInt(x);
+        }
+        catch (err) {
+          console.log(err);
+        }
+      }
+    );
   }
 
   public get inFilter() : boolean {
-    if (!this.prodSrchParams) return false;
-    if ((this.prodSrchParams.supplier) && (this.prodSrchParams.supplier.length))
-      return true;
-    if ((this.prodSrchParams.productProps) && (this.prodSrchParams.productProps.length))
-      return true;
+    let res = false;
+    if (!this.prodSrchParams)
+      return res;
+    if (
+          ((this.prodSrchParams.supplier) && (this.prodSrchParams.supplier.length > 0))
+          ||
+          ((this.prodSrchParams.productProps) && (this.prodSrchParams.productProps.length > 0))
+    ) res = true;
+    return res;
   }
 
   public get lastSearch(): string {
@@ -88,18 +120,20 @@ export class SearchService {
     this.lastSearchStringUpdated.emit(value);
   }
 
-  private connect() {
+  private async connect() {
     this.client = new Client({
-      host: 'http://localhost:9200'
+      host: await this.repo.getAppParam('ELASTIC_ENDPOINT')
     });
   }
 
   resetSearch() {
     this.lastItemIndex = 0;
+    this.products = [];
   }
 
-  searchByCategory (catId: number) {
+  async searchByCategory (catId: number) {
     this.resetSearch();
+    this.lastSearch = null;
     this.prodSrchParams = new ProductSearchParams(undefined, catId);
     this.getProductsData();
   }
@@ -109,10 +143,10 @@ export class SearchService {
     await this.getProductsData();
   }
 
-  searchByText(srchText: string) {
+  async searchByText(srchText: string) {
     this.resetSearch();
     this.prodSrchParams = new ProductSearchParams(srchText);
-    this.getProductsData();
+    await this.getProductsData();
   }
 
   loadNext() {
@@ -205,7 +239,8 @@ export class SearchService {
           'text': `${inText}`,
           'term': {
             'field': 'srchString',
-            'sort': 'frequency'
+            'sort': 'score',
+            'min_word_length': 2
           }
         }
       }
@@ -359,18 +394,21 @@ export class SearchService {
 
   lastSearchStringUpdated = new EventEmitter<string>();
 
-  searchProducts(srchString: string, hostPage: any) {
-    // Если такая строка поиска уже есть в списке - переносим ее в верх списка и обрезаем список до макс длиньі
-    const i = this.searchItems.indexOf(srchString);
-    if (!(i == -1))
-      this.searchItems.splice(i,1);
-    this.searchItems.splice(0,0, srchString);
-    this.searchItems = this.searchItems.splice(0, this.cMaxSearchItemsCount);
-
-    //Сохраняем массив в сторадже
-    localStorage.setItem(this.cKey, JSON.stringify(this.searchItems));
+  async searchProducts(srchString: string, hostPage: any) {
     this.hostPage = hostPage;
-    this.searchByText(srchString);
+    await this.searchByText(srchString);
+
+    if (this.products.length > 0) //сохраняем поисковые запросы, которые вернули данные
+    {
+      const i = this.searchItems.indexOf(srchString);
+      if (!(i == -1))
+        this.searchItems.splice(i,1);
+      this.searchItems.splice(0,0, srchString);
+      this.searchItems = this.searchItems.splice(0, this.cMaxSearchItemsCount);
+
+      //Сохраняем массив в сторадже
+      localStorage.setItem(this.cKey, JSON.stringify(this.searchItems));
+    }
     this.lastSearch = srchString;
   }
 

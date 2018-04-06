@@ -49,17 +49,20 @@ export class FilterPopoverPage extends ComponentBase {
       item.isChecked = !item.isChecked;
 
       if (item.isChecked) {
-        if (item.id == -1)
+        if (item.id === -1)
           this.filter.sort(SortOrderEnum.Relevance);
 
-        if (item.id == 0)
+        if (item.id === 0)
           this.filter.sort(SortOrderEnum.PriceLowToHigh);
 
-        if (item.id == 1)
+        if (item.id === 1)
           this.filter.sort(SortOrderEnum.PriceHighToLow);
 
-        if (item.id == 2)
+        if (item.id === 2)
           this.filter.sort(SortOrderEnum.Rating);
+
+        if (item.id === 3)
+          this.filter.sort(SortOrderEnum.Popularity);
       }
 
       ///// Prevent default checkbox behavior///
@@ -69,7 +72,7 @@ export class FilterPopoverPage extends ComponentBase {
     }
   }
 
-  close(): void {
+  close() {
     this.viewCtrl.dismiss();
   }
 }

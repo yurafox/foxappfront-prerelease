@@ -35,9 +35,6 @@ export class HomePage extends ComponentBase {
   ];
 
   @ViewChild('srch') searchButtonControl;
-
-  @ViewChild('resultsList') public resultsList;
-
   @ViewChild('cont') public cont;
 
   public content: string = '';
@@ -50,8 +47,10 @@ export class HomePage extends ComponentBase {
 
   public set pageMode(val: PageMode) {
     this._pageMode = val;
-    if (val === PageMode.SearchMode)
+    if (val === PageMode.SearchMode) {
       this.searchButtonControl.inputMode = true;
+      this.searchButtonControl.incSearch();
+    }
     this.cont.resize();
   }
 

@@ -48,6 +48,8 @@ import {
 import { AbstractDataRepository } from '../../index';
 import {IDictionary, Providers } from '../../../core/app-core';
 import {ConnectivityService} from '../../connectivity-service';
+import {AppParam} from '../../../model/app-param';
+import IKeyedCollection = Providers.IKeyedCollection;
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
@@ -109,6 +111,7 @@ const postProductReviewUrl = `${AppConstants.BASE_URL}/api/SaveReview/Product`;
 const postStoreReviewUrl = `${AppConstants.BASE_URL}/api/SaveReview/Store`;
 const updateProductReviewUrl = `${AppConstants.BASE_URL}/api/UpdateReview/Product`;
 const updateStoreReviewUrl = `${AppConstants.BASE_URL}/api/UpdateReview/Store`;
+const appParamsUrl = `${AppConstants.BASE_URL}/api/appparams`;
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -3205,5 +3208,39 @@ export class AppDataRepository extends AbstractDataRepository {
     } catch (err) {
       return await this.handleError(err);
     }
+  }
+
+  public async getAppParams(): Promise<IKeyedCollection<AppParam>> {
+    try {
+      if (this.cache.EnumPaymentMethod.Count() === 0) {
+        const response = await this.http
+          .get(appParamsUrl).toPromise();
+
+        let data: any = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+
+        if (data != null) {
+          data.forEach(val => {
+              let param = new AppParam(val.id, val.propName, val.propVal);
+
+              if (this.isEmpty(this.cache.AppParams.Item(val.propName))) {
+                this.cache.AppParams.Add(val.propName, param);
+              }
+              ;
+            }
+          );
+        }
+      };
+      return this.cache.AppParams;
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getAppParam(param: string): Promise<string> {
+    return (<IKeyedCollection<AppParam>>(await this.getAppParams())).Item(param).propVal;
   }
 }

@@ -25,7 +25,6 @@ export class SearchBtnComponent extends ComponentBase {
 
   srchTextInputStream$ = new Subject<string>();
 
-  //public tmpSearchArray = [];
   public srchItemsArr = new Array<SearchSuggestItem>();
   searchValue = null;
   inputMode = false;
@@ -45,18 +44,13 @@ export class SearchBtnComponent extends ComponentBase {
 
     this.initTmpSearchArray();
 
-    this.srchTextInputStream$.debounceTime(700)
+    this.srchTextInputStream$.debounceTime(200)
       .distinctUntilChanged()
       .subscribe(inputValue =>
         {
           this.incSearch();
         }
       );
-
-  }
-
-  ngOnInit() {
-    super.ngOnInit();
   }
 
   async searchByText(searchString: string) {
@@ -67,10 +61,9 @@ export class SearchBtnComponent extends ComponentBase {
       (<any>this.hostPage).pageMode = PageMode.SearchResultsMode;
       this.inputMode = false;
     }
-
   }
 
-  searchByBarcode(): void {
+  searchByBarcode() {
     this.barcodeScanner.scan().then((barcodeData) => {
       this.searchValue = barcodeData.text;
       this.incSearch();
@@ -80,20 +73,26 @@ export class SearchBtnComponent extends ComponentBase {
     });
   }
 
-  initTmpSearchArray(): void {
-    let ar = this.searchService.searchItems;
+  initTmpSearchArray() {
+    const ar = this.searchService.searchItems;
     ar.forEach((item) => {
-      //this.tmpSearchArray.push(item);
       this.srchItemsArr.push(new SearchSuggestItem(true, item));
     });
     this.searchValue = this.searchService.lastSearch;
   }
 
-  async buildSuggestList() {
+  async incSearch() {
     this.srchItemsArr = [];
-    this.searchService.searchItems.filter((value) => {
-      return !(value.toLowerCase().indexOf(this.searchValue.toLowerCase()) == -1);
-    }).slice().forEach(x =>
+
+    let ar = [];
+    if (this.searchValue)
+      ar = this.searchService.searchItems.filter((value) => {
+        return !(value.toLowerCase().indexOf(this.searchValue.toLowerCase()) == -1);
+      }).slice()
+    else
+      ar = this.searchService.searchItems;
+
+    ar.forEach(x =>
       this.srchItemsArr.push(new SearchSuggestItem(true, x))
     );
 
@@ -112,22 +111,13 @@ export class SearchBtnComponent extends ComponentBase {
           varArr.push(s);
         }
       );
-      if (varArr.length > 0)
-        this.srchItemsArr.push(new SearchSuggestItem(false, varArr.join(' ')));
+      if (varArr.length > 0) {
+        const str = varArr.join(' ');
+        if (this.srchItemsArr.findIndex(x => {return (x.itemText === str);}) === -1)
+          this.srchItemsArr.push(new SearchSuggestItem(false, str));
+      }
     }
   }
-
-  async incSearch() {
-    this.hostPage.pageMode = PageMode.SearchMode;
-    this.buildSuggestList();
-    /*
-    if (this.searchValue)
-      this.buildSuggestList();
-    else
-      this.tmpSearchArray = this.searchService.searchItems;
-    */
-  }
-
 
   onKeyUp(event) {
     if (!(event.keyCode === 13))
@@ -139,12 +129,6 @@ export class SearchBtnComponent extends ComponentBase {
   removeSearchItem(item: number) {
     this.searchService.removeSearchItem(this.srchItemsArr[item].itemText);
     this.srchItemsArr.splice(item, 1);
-    /*
-    const i = this.tmpSearchArray.indexOf(item);
-    if (!(i == -1))
-      this.tmpSearchArray.splice(i, 1);
-    this.searchService.removeSearchItem(item);
-    */
   }
 
   clearInput(event) {

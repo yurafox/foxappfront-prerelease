@@ -141,6 +141,7 @@ export class FilterComponent extends  ComponentBase {
     fSortItems.push(new FilterItem(0, 'Price: Low to High', false, 0, CategoryType.Sort, null));
     fSortItems.push(new FilterItem(1, 'Price: High to Low', false, 0, CategoryType.Sort, null));
     fSortItems.push(new FilterItem(2, 'Rating', false, 0, CategoryType.Sort, null));
+    fSortItems.push(new FilterItem(3, 'Popularity', false, 0, CategoryType.Sort, null));
     let fSortCat = new FilterCategory(0, CategoryType.Sort, 'Sort', fSortItems, false, 3);
     this.fCategories.push(fSortCat);
   }

@@ -20,12 +20,13 @@
   </div>
 
   <div *ngIf="pageMode === 2">
-    <ion-item *ngFor="let sItem of searchButtonControl.srchItemsArr; let i=index" (click)="search(sItem.itemText)">
-      <ion-icon *ngIf="sItem.isClosable" name="md-close" item-left color="gray" (click)="deleteSearchItem($event, i)"></ion-icon>
-      <div>
+    <ion-item *ngFor="let sItem of searchButtonControl.srchItemsArr; let i=index"
+              (click)="search(sItem.itemText)">
+      <ion-icon class="f-item-gray" *ngIf="sItem.isClosable" name="md-close" item-left (click)="deleteSearchItem($event, i)"></ion-icon>
+      <div [ngClass]="sItem.isClosable ? 'f-color-info' : 'f-product'">
         {{sItem.itemText}}
       </div>
-      <ion-icon name="arrow-up-left" item-right color="gray"></ion-icon>
+      <ion-icon class="f-item-gray"  name="arrow-up-left" item-right></ion-icon>
     </ion-item>
   </div>
 
@@ -35,7 +36,7 @@
     <progress-bar [active]="srchService.inSearch"></progress-bar>
 
 -->
-    <items-list #resultsList></items-list>
+    <items-list></items-list>
   </div>
 
 </ion-content>

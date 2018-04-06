@@ -59,3 +59,4 @@ export * from './region';
 export * from './change-password';
 export * from './banner-slide';
 export * from './client-message';
+export * from './app-param';

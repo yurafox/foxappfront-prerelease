@@ -4,7 +4,7 @@
 <ion-content padding>
   <ion-grid>
     <ion-row wrap>
-      <ion-col col-6 col-md-6 col-lg-3 col-xl-3 (click)="onCategoryClick(item.prefix)" *ngFor="let item of categoryForShow">
+      <ion-col col-6 col-md-6 col-lg-3 col-xl-3 (click)="onCategoryClick(item.id)" *ngFor="let item of categoryForShow">
         <div text-center>
           <img [src]='convertImg(item.icon)' class="cat-icon">
           <br>

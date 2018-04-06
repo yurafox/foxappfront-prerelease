@@ -14,6 +14,7 @@ import {EnumPaymentMethod} from '../model/enum-payment-method';
 import {Region} from '../model/region';
 import {Store} from "../model/store";
 import { AppConstants } from '../app-constants';
+import {AppParam} from '../model/app-param';
 
 export interface IDictionary<T> {
   [k: string]: T;
@@ -156,6 +157,7 @@ export namespace Providers {
     private _cacheCountry: IKeyedCollection<Country> = null;
     private _cacheEnumPaymentMethod: IKeyedCollection<EnumPaymentMethod> = null;
     private _cacheRegion: IKeyedCollection<Region> = null;
+    private _cacheAppParams: IKeyedCollection<AppParam> = null;
 
 
     public get Products(): IKeyedCollection<Product> {
@@ -261,6 +263,13 @@ export namespace Providers {
         this._cacheRegion = new CacheItems<Region>(50);
 
       return this._cacheRegion;
+    }
+
+    public get AppParams(): IKeyedCollection<AppParam> {
+      if (this._cacheAppParams == null)
+        this._cacheAppParams = new CacheItems<AppParam>();
+
+      return this._cacheAppParams;
     }
 
   }

@@ -1,10 +1,10 @@
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ComponentBase} from '../../components/component-extension/component-base';
-import {Product} from '../../app/model/product';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {SearchService} from '../../app/service/search-service';
 
-@IonicPage({name: 'CategoryPage', segment: 'category/:categoryId'})
+@IonicPage({name: 'CategoryPage', segment: 'category'})
 @Component({
   selector: 'page-category',
   templateUrl: 'category.html',
@@ -12,7 +12,7 @@ import {AbstractDataRepository} from '../../app/service/repository/abstract/abst
 
 export class CategoryPage extends ComponentBase implements OnInit {
 
-  public baseProducts: Product[];
+  @ViewChild('cont') public cont;
 
   public slides = [
     {
@@ -37,24 +37,14 @@ export class CategoryPage extends ComponentBase implements OnInit {
   ];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-                private repo: AbstractDataRepository) {
+                private repo: AbstractDataRepository, private srch: SearchService) {
     super();
   }
 
   async ngOnInit() {
     super.ngOnInit();
-    if (typeof this.navParams.data === "string") {
-      this.baseProducts = await this.repo.getProducts(this.navParams.data, true);
-    } else if (typeof this.navParams.data === "object") {
-      if(this.navParams.data && (this.navParams.data.length > 0)){
-        let products: Product[] = [];
-        for (let productId of this.navParams.data) {
-          let p = await this.repo.getProductById(productId);
-          products.push(p);
-        }
-        this.baseProducts = products;
-      }
-    }
+    this.srch.hostPage = this;
+    await this.srch.searchByCategory(this.navParams.data);
   }
 
 }

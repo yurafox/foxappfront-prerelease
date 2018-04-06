@@ -1,5 +1,7 @@
-<div class="f-color-secondary f-padding-lr-10 f-padding-t-10" *ngIf="(srchService.products.length == 0) && !srchService.inSearch">
-  <span loc="Ваш поиск" name="YourSearch">{{locale['YourSearch']}}</span> "{{srchService.lastSearch}}" <span loc="" name="DidNotMatch">{{locale['DidNotMatch']}}</span>
+<div class="f-color-secondary f-padding-lr-10 f-padding-t-10" *ngIf="(srchService.products.length === 0) && !srchService.inSearch">
+  <span loc="Ваш поиск" name="YourSearch">{{locale['YourSearch']}}</span>
+  <span *ngIf="srchService.lastSearch">"{{srchService.lastSearch}}"</span>
+  <span loc="" name="DidNotMatch">{{locale['DidNotMatch']}}</span>
 </div>
 
 <div class="search-results"

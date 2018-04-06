@@ -348,7 +348,7 @@ export class CartService {
 
       this.evServ.events['cartUpdateEvent'].emit();
 
-      let message = this.localization['AddedToCart'];
+      const message = this.localization['AddedToCart'];
       let toast = page.toastCtrl.create({
         message: message,
         duration: 2000,
@@ -439,7 +439,7 @@ export class CartService {
 
   // making localization for cart service
   private async localeCartService() {
-    let loc = await this.locRepo.getLocalization({componentName: (<any> this).constructor.name, lang: (this.userService.lang ? this.userService.lang : 1)});
+    let loc = await this.locRepo.getLocalization({componentName: (<any> this).constructor.name, lang: (this.userService.lang ? +localStorage.getItem('lang') : 1)});
     if (loc && (Object.keys(loc).length !== 0)) {
       this.localization = loc;
     }

@@ -33,14 +33,14 @@ export class CategoryTreePage extends ComponentBase {
     });
     if(recursionGroup && recursionGroup.length!=0)
       this.navCtrl.push('CategoryTreePage', { groups:this.groups,currentGroup:recursionGroup});
-    else  this.navCtrl.push('CategoryPage',id);              
+    else this.navCtrl.push('CategoryPage',id);
   }
 
 
   private setCurrentCategoryList(): void
   {
      const isChildLevel = !!this.navParams.data.currentGroup;
-     this.currentGroup = (!isChildLevel) ? this.buildRootTree() 
+     this.currentGroup = (!isChildLevel) ? this.buildRootTree()
                                          : this.navParams.data.currentGroup;
   }
 
@@ -53,7 +53,7 @@ export class CategoryTreePage extends ComponentBase {
     const filteredArray=this.groups.filter((value:Category): boolean => {
             return value.parent_id === rootId;
       });
-    
+
     if(filteredArray && filteredArray.length!=0) {
       filteredArray.sort((x,y)=>{return y.priority_index-x.priority_index;});
     }

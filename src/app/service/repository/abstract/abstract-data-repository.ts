@@ -33,7 +33,9 @@ import { QuotationProduct,
           BannerSlide,
           ClientMessage
        } from '../../../model/index';
-import {IDictionary} from "../../../core/app-core";
+import {IDictionary, Providers} from "../../../core/app-core";
+import {AppParam} from '../../../model/app-param';
+import IKeyedCollection = Providers.IKeyedCollection;
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
@@ -156,4 +158,6 @@ export abstract class AbstractDataRepository {
   public async abstract postStoreReview(review: StoreReview): Promise<StoreReview>;
   public async abstract updateProductReview(review: ProductReview): Promise<ProductReview>;
   public async abstract updateStoreReview(review: StoreReview): Promise<StoreReview>;
+  public async abstract getAppParams(): Promise<IKeyedCollection<AppParam>>;
+  public async abstract getAppParam(param: string): Promise<string>;
 }

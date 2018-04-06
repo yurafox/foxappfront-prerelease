@@ -22,7 +22,8 @@
               <ion-row class="f-padding-tb-10">
                 <ion-col col-4 no-padding>
                   <img *ngIf="spec?.quotationproduct?.product?.imageUrl" class="f-img-item-80"
-                       [src]="spec?.quotationproduct?.product?.imageUrl">
+                       [src]="spec?.quotationproduct?.product?.imageUrl"
+                       onError="this.src='assets/imgs/nophoto.png';">
                   <img *ngIf="!spec?.quotationproduct?.product?.imageUrl" class="f-img-item-80"
                        src="assets/imgs/nophoto.png">
                 </ion-col>

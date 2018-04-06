@@ -48,9 +48,9 @@ export class CategoriesPage extends ComponentBase   {
     }
   }
 
-  onCategoryClick(urlQueryString: string): void {
-    if (urlQueryString)
-      this.navCtrl.push('CategoryPage', urlQueryString); // {animate: true, direction: 'forward', duration: 500});
+  onCategoryClick(categoryId: number) {
+    if (categoryId)
+      this.navCtrl.push('CategoryPage', categoryId); // {animate: true, direction: 'forward', duration: 500});
   }
 
   public convertImg(imgTxt:string):any {
@@ -59,7 +59,7 @@ export class CategoriesPage extends ComponentBase   {
   }
 
   public toCategoryTree(){
-    this.navCtrl.push("CategoryTreePage",{groups:this.categoriesArray});
+    this.navCtrl.push('CategoryTreePage',{groups:this.categoriesArray});
   }
   private sortDesc():void {
     //this.categoriesArray.sort((x,y)=>{return y.priority_index-x.priority_index;});

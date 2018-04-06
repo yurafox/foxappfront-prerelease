@@ -48,7 +48,8 @@
       <ion-row>
         <ion-col col-auto>
           <div *ngIf="item?.quotationproduct?.product">
-            <img class="f-img-item" width="60" height="60" [src]="item?.quotationproduct?.product?.imageUrl">
+            <img class="f-img-item" width="60"  [src]="item?.quotationproduct?.product?.imageUrl"
+                 onError="this.src='assets/imgs/nophoto.png';">
           </div>
         </ion-col>
         <ion-col no-padding>
