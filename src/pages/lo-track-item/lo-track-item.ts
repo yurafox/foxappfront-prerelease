@@ -16,11 +16,11 @@ export class LoTrackItemPage extends ComponentBase {
   constructor(public navCtrl: NavController, public navParams: NavParams,
                 private repo: AbstractDataRepository) {
     super();
-    this.initData(this.navParams.data.id);
+    this.initData(this.navParams.data);
   }
 
-  async initData(id: number) {
-    this.trackArr = await this.repo.getLoTrackLogByOrderSpecId(id);
+  async initData(data: any) {
+    this.trackArr = await this.repo.getLoTrackLogByOrderSpecId(data.orderSpecId);
     this.dataLoaded = true;
   }
 

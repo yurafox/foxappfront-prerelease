@@ -4,13 +4,21 @@
   <span loc="" name="DidNotMatch">{{locale['DidNotMatch']}}</span>
 </div>
 
-<div class="search-results"
+<div class="search-results" #searchResults
+    [ngStyle]="{'height.px': getListHeight() }"
     data-infinite-scroll
-    debounce
-    [infiniteScrollDistance]="1"
+    [infiniteScrollDistance]="2"
     [infiniteScrollThrottle]="50"
     [scrollWindow]="false"
     (scrolled)="onScroll()">
+
+  <ion-slides *ngIf="srchService.products.length > 0"  pager autoplay="3000" loop="true">
+    <ion-slide *ngFor="let slide of slides">
+      <img src="{{ slide.src }}" alt="">
+    </ion-slide>
+  </ion-slides>
+
+
   <div *ngIf="srchService.products" class="f-item-padding-top">
     <div *ngFor="let productElement of srchService.products, let i=index">
       <hr *ngIf="!(i == 0)">

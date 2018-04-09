@@ -4,7 +4,6 @@ import {AbstractDataRepository} from './repository/abstract/abstract-data-reposi
 import { Client } from 'elasticsearch';
 import {PropFilterCondition} from '../../components/filter/filter';
 
-
 export enum SortOrderEnum {
   Relevance = 1,
   PriceLowToHigh = 2,
@@ -32,71 +31,42 @@ class ProductPropsAgg {
 
 @Injectable()
 export class SearchService {
-
-  public products = [];
   private cKey = 'searchItems';
   private cMaxSearchItemsCount;
-  public searchItems = new Array<string>();
-  public searchResults: Promise<Product[]>;
   private _ls: string = '';
-  public inSearch = false;
-  public hostPage: any;
-
   private client: Client;
-
   private readonly INDEX = 'product';
   private readonly TYPE = null;
   private SIZE = 30;
   private MAX_ITEMS_COUNT = 360;
 
-  public prodSrchParams: ProductSearchParams = null;
-
-  public haveNextPage = false;
-  public notice = '';
-  public hitsTotal = 0;
-  public lastItemIndex = 0;
-  public aggs: any;
+  products = [];
+  searchItems = new Array<string>();
+  lastSearchStringUpdated = new EventEmitter<string>();
+  searchResults: Promise<Product[]>;
+  inSearch = false;
+  hostPage: any;
+  prodSrchParams: ProductSearchParams = null;
+  hitsTotal = 0;
+  lastItemIndex = 0;
+  aggs: any;
 
   constructor(private repo: AbstractDataRepository) {
-    if (!this.client) {
-      this.connect();
-    }
-
+    this.initData();
     const stor = JSON.parse(localStorage.getItem(this.cKey));
     if (stor) {
       stor.forEach((val) => {
         this.searchItems.push(val);
       });
     }
-    this.repo.getAppParam('SEARCH_HISTORY_MAX_LIST_LENGTH').then(x => {
-        try {
-          this.cMaxSearchItemsCount = parseInt(x);
-        }
-        catch (err) {
-          console.log(err);
-        }
-      }
-    );
+  }
 
-    this.repo.getAppParam('ELASTIC_PRODUCT_SEARCH_ITEMS_MAX_COUNT').then(x =>{
-        try {
-          this.MAX_ITEMS_COUNT = parseInt(x);
-        }
-        catch (err) {
-          console.log(err);
-        }
-      }
-    );
-
-    this.repo.getAppParam('ELASTIC_PRODUCT_SEARCH_PAGE_SIZE').then(x => {
-        try {
-          this.SIZE = parseInt(x);
-        }
-        catch (err) {
-          console.log(err);
-        }
-      }
-    );
+  async initData() {
+    if (!this.client)
+      await this.connect();
+    this.cMaxSearchItemsCount = parseInt(await this.repo.getAppParam('SEARCH_HISTORY_MAX_LIST_LENGTH'));
+    this.MAX_ITEMS_COUNT = parseInt(await this.repo.getAppParam('ELASTIC_PRODUCT_SEARCH_ITEMS_MAX_COUNT'));
+    this.SIZE = parseInt(await this.repo.getAppParam('ELASTIC_PRODUCT_SEARCH_PAGE_SIZE'));
   }
 
   public get inFilter() : boolean {
@@ -135,10 +105,10 @@ export class SearchService {
     this.resetSearch();
     this.lastSearch = null;
     this.prodSrchParams = new ProductSearchParams(undefined, catId);
-    this.getProductsData();
+    await this.getProductsData();
   }
 
-  public async search() {
+  async search() {
     this.resetSearch();
     await this.getProductsData();
   }
@@ -159,45 +129,41 @@ export class SearchService {
   }
 
   async getProductsData() {
-    this.inSearch = true;
+    if (this.inSearch)
+      return;
     try {
+      this.inSearch = true;
       let response = await this.getProducts(this.lastItemIndex);
-      if (response.hits.hits) {
-          let _chunk = response.hits.hits.map(
+      if (response.hits.hits)
+      {
+        let _chunk = response.hits.hits.map(
           x => this.repo.getProductFromResponse(x._source)
         );
 
-        if (response.hits.hits.length < response.hits.total) {
-          this.haveNextPage = true;
-        }
-
-        if (_chunk) {
-
-          if (this.lastItemIndex === 0) {
+        if (_chunk)
+        {
+          if (this.lastItemIndex === 0)
             this.products = _chunk;
-          }
           else
-          {
             this.products = this.products.concat(_chunk);
-          };
+
           this.lastItemIndex = this.lastItemIndex + _chunk.length;
         }
-        else
-        {
-          this.haveNextPage = false;
-          this.notice = 'There are no more products!';
-        }
       }
+/*
       else
       {
-        this.products = [];
-      };
+        if (this.lastItemIndex === 0)
+          this.products = [];
+      }
+*/
       this.aggs = response.aggregations;
       this.hitsTotal = response.hits.total;
     }
-    finally {
-      this.inSearch = false;
+    finally
+    {
       this.hostPage.cont.resize();
+      this.inSearch = false;
     }
   }
 
@@ -391,8 +357,6 @@ export class SearchService {
       }
     });
   }
-
-  lastSearchStringUpdated = new EventEmitter<string>();
 
   async searchProducts(srchString: string, hostPage: any) {
     this.hostPage = hostPage;

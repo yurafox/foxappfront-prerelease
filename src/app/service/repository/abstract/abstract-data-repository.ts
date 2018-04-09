@@ -36,6 +36,7 @@ import { QuotationProduct,
 import {IDictionary, Providers} from "../../../core/app-core";
 import {AppParam} from '../../../model/app-param';
 import IKeyedCollection = Providers.IKeyedCollection;
+import {OrdersFilter} from '../../../../pages/your-orders/your-orders';
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
@@ -81,6 +82,7 @@ export abstract class AbstractDataRepository {
   public async abstract getClientDraftOrder(): Promise<ClientOrder>;
   public async abstract saveClientDraftOrder(order: ClientOrder): Promise<ClientOrder>;
   public async abstract getClientOrders(): Promise<ClientOrder[]>;
+  public async abstract getClientOrderById(orderId: number): Promise<ClientOrder>;
   public async abstract getClientOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]>;
 
   public async abstract getCartProducts(): Promise<ClientOrderProducts[]>;
@@ -160,4 +162,11 @@ export abstract class AbstractDataRepository {
   public async abstract updateStoreReview(review: StoreReview): Promise<StoreReview>;
   public async abstract getAppParams(): Promise<IKeyedCollection<AppParam>>;
   public async abstract getAppParam(param: string): Promise<string>;
+  public async abstract getClientOrderDatesRanges(): Promise<OrdersFilter[]>;
+  public async abstract getDefaultClientOrderDatesRanges(isDefault: boolean): Promise<OrdersFilter>;
+
+  public async abstract getClientOrderProductsByDate(datesRange: string):
+                        Promise<{orderId: string, orderDate: Date, orderSpecId: number, idProduct: number,
+                          productName: string, productImageUrl: string, loTrackTicket: string,
+                          idQuotation: number}[]>;
 }

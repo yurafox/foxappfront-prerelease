@@ -91,7 +91,8 @@ import {
   NoveltyPageModule,
   OrderDetailsPageModule,
   PaymentPageModule,
-  WarningViewPageModule
+  WarningViewPageModule,
+  OrdersFilterPageModule
 } from '../pages/index-modules';
 import {NgxQRCodeModule} from 'ngx-qrcode2';
 import {AppAvailability} from '@ionic-native/app-availability';
@@ -162,6 +163,7 @@ import {Network} from "@ionic-native/network";
     OrderDetailsPageModule,
     PaymentPageModule,
     WarningViewPageModule,
+    OrdersFilterPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

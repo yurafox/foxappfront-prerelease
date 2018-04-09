@@ -1,7 +1,7 @@
-import {ChangeDetectorRef, Component, ViewChild, ViewChildren} from '@angular/core';
+import {ChangeDetectorRef, Component, DoCheck, ElementRef, ViewChild} from '@angular/core';
 import {App, NavController, IonicPage} from 'ionic-angular';
-import {ComponentBase} from "../../components/component-extension/component-base";
-import {AbstractDataRepository} from "../../app/service/index";
+import {ComponentBase} from '../../components/component-extension/component-base';
+import {AbstractDataRepository} from '../../app/service/index';
 import {SearchService} from '../../app/service/search-service';
 
 export enum PageMode {
@@ -15,14 +15,12 @@ export enum PageMode {
   selector: 'page-home',
   templateUrl: 'home.html',
 })
-export class HomePage extends ComponentBase {
-
-//  searchMode = false;
+export class HomePage extends ComponentBase implements DoCheck {
 
   private _pageMode: PageMode = PageMode.HomeMode;
 
   // list slides for slider
-  public slides = [
+  slides = [
     {
       src: 'assets/imgs/actions/action3.jpg'
     },
@@ -35,22 +33,45 @@ export class HomePage extends ComponentBase {
   ];
 
   @ViewChild('srch') searchButtonControl;
-  @ViewChild('cont') public cont;
+  @ViewChild('cont') cont;
+  @ViewChild('itemsList') itemsList;
+  @ViewChild('header') header;
+  private filterRef: ElementRef;
 
-  public content: string = '';
+  @ViewChild('filter') set filter(elRef: ElementRef) {
+    this.filterRef = elRef;
+  };
+
+
+  content: string = '';
+  scrollHeight: number;
 
   constructor(public app: App, public nav: NavController, private _repo:AbstractDataRepository,
               public srchService: SearchService, private changeDet: ChangeDetectorRef) {
     super();
     this.srchService.lastSearch = null;
- }
+  }
+
+  ngDoCheck() {
+    this.updateScrollHeight();
+  }
+
+  public updateScrollHeight() {
+    const hdrH = (this.header) ?  this.header.nativeElement.scrollHeight : 0;
+    this.scrollHeight = window.screen.height - hdrH;
+  }
 
   public set pageMode(val: PageMode) {
+    if (val === this._pageMode)
+      return;
     this._pageMode = val;
+    this.changeDet.detectChanges();
     if (val === PageMode.SearchMode) {
       this.searchButtonControl.inputMode = true;
       this.searchButtonControl.incSearch();
     }
+    if (val === PageMode.SearchResultsMode)
+      this.itemsList.srchResDiv.height = 0;
     this.cont.resize();
   }
 
@@ -58,31 +79,17 @@ export class HomePage extends ComponentBase {
     return this._pageMode;
   }
 
-  // view categories
-  viewCategories() {
-    this.nav.push('CategoriesPage');
-  }
-
-  // view a category
-  viewCategory(catId) {
-    this.nav.push('CategoryPage', {id: catId});
-  }
-
-  // view a item
-  viewItem(itemId) {
-    this.nav.push('CategoryPage', {id: itemId})
-  }
-
   onSearchClick() {
-    if (!(this.pageMode == PageMode.SearchMode)) {
-      this.pageMode = PageMode.SearchMode;
-      //this.searchButtonControl.inputMode = true;
-    }
+    this.pageMode = PageMode.SearchMode;
   }
 
   deleteSearchItem(event: any, item: string) {
     event.stopPropagation();
     this.searchButtonControl.removeSearchItem(item);
+  }
+
+  ionViewDidLoad() {
+    //this.updateScrollHeight();
   }
 
   search(srchString: string) {

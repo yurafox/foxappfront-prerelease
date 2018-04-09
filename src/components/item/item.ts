@@ -3,7 +3,6 @@ import {Product} from '../../app/model/product';
 import {NavController, NavParams} from "ionic-angular";
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {ItemBase} from '../component-extension/item-base';
-import {EventService} from '../../app/service/event-service';
 
 
 @Component({

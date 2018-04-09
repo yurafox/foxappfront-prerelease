@@ -56,12 +56,12 @@
 
       <ion-row class="f-padding-lr-5">
         <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
+
           <ion-row>
             <ion-col>{{spec?.loentity?.name}}
               <hr>
             </ion-col>
           </ion-row>
-
 
           <ion-row *ngIf="spec.loDeliveryCompletedDate">
             <ion-col>
@@ -70,6 +70,7 @@
               <span class="f-color-green">{{spec.loDeliveryCompletedDate | date: 'mediumDate'}}</span>
             </ion-col>
           </ion-row>
+
 
           <ion-row *ngIf="!spec.loDeliveryCompletedDate && spec.loEstimatedDeliveryDate">
             <ion-col>
@@ -80,11 +81,15 @@
           </ion-row>
 
           <ion-row>
-            <ion-col col-auto>
+
+            <ion-col *ngIf="spec?.quotationproduct?.product?.imageUrl" col-auto>
               <div>
-                <img class="f-img-item-80" [src]="spec?.quotationproduct?.product?.imageUrl">
+                <img class="f-img-item-80" [src]="spec?.quotationproduct?.product?.imageUrl"
+                     onError="this.src='assets/imgs/nophoto.png';">
               </div>
             </ion-col>
+
+
             <ion-col no-padding>
               <ion-grid class="f-item-nopadding-tb">
                 <ion-row>

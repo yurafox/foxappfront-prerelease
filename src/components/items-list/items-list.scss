@@ -1,7 +1,11 @@
 items-list {
 
+  ion-slides {
+    height: auto;
+  }
+
   .search-results {
-    height: 100vh;
+    //height: 100vh;
     overflow-y: scroll;
   }
 

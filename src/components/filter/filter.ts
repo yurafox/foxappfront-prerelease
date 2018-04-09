@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, DoCheck, Input, ViewChild} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {PopoverController} from 'ionic-angular';
 import {FilterPopoverPage} from '../../pages/filter-popover/filter-popover';
@@ -72,18 +72,24 @@ class FilterCategory {
   selector: 'filter',
   templateUrl: 'filter.html'
 })
-export class FilterComponent extends  ComponentBase {
+export class FilterComponent extends ComponentBase implements DoCheck {
+  @ViewChild('filterControl') filterControl;
   @Input() srch: SearchService;
   private lastFilteredCat: FilterCategory;
   private propFilterCondition = [];
   private mnfFilterCondition = [];
   private dataInitialized = false;
+  clientHeight = 0;
   fCategories = [];
   filteredProps: PropsFilterStruct[];
   filteredManufacturers: MnfFilterStruct[];
 
   constructor(public popoverCtrl: PopoverController, public repo: AbstractDataRepository) {
     super();
+  }
+
+  ngDoCheck() {
+    this.clientHeight = this.filterControl.nativeElement.clientHeight;
   }
 
   public get inFilter(): boolean {

@@ -42,3 +42,4 @@ export * from './order-details/order-details.module';
 export * from './payment/payment.module';
 export * from './warning-view/warning-view.module';
 export * from './lo-track-item/lo-track-item.module';
+export * from './your-orders-filter/your-orders-filter.module';

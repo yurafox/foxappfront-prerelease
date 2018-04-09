@@ -1,0 +1,45 @@
+<ion-header>
+  <main-toolbar></main-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="f-page-header"><span loc="Фильтр по дате" name="TimeFilter">{{locale['TimeFilter']}}</span>
+      </ion-col>
+    </ion-row>
+
+
+    <div *ngFor="let fOption of filterOptions">
+      <ion-row class="f-padding-lr-5">
+
+        <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
+
+          <ion-row (click)="onSelectFilterOptionClick(fOption, $event)">
+            <ion-col col-2 text-center>
+              <div class="pure-radiobutton">
+                <input type="radio" id="radioButton" class="radio" [checked]="fOption.isChecked">
+                <label for="radioButton"></label>
+              </div>
+            </ion-col>
+            <ion-col class="f-padding-tb-10">
+              {{fOption.filter.displayName}}
+            </ion-col>
+          </ion-row>
+
+        </ion-grid>
+      </ion-row>
+    </div>
+
+    <ion-row *ngIf="dataLoaded">
+      <ion-col class="f-padding-lr-5">
+        <button class="f-btn-action" ion-button block
+                (click)="onApplyFilterClick()"><span loc="Применить" name="ApplyFilter">{{locale['ApplyFilter']}}</span></button>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+
+
+
+</ion-content>

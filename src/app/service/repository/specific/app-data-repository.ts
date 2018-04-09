@@ -50,6 +50,7 @@ import {IDictionary, Providers } from '../../../core/app-core';
 import {ConnectivityService} from '../../connectivity-service';
 import {AppParam} from '../../../model/app-param';
 import IKeyedCollection = Providers.IKeyedCollection;
+import {OrdersFilter} from '../../../../pages/your-orders/your-orders';
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
@@ -83,7 +84,7 @@ const productSupplCreditGradesUrl = `${AppConstants.BASE_URL}/api/credit/GetProd
 const postProductViewUrl = `${AppConstants.BASE_URL}/api/client/LogProductView`;
 const clientAddressesUrl = `${AppConstants.BASE_URL}/api/client/clientAddress`;
 const clientOrderSpecProductsUrl = `${AppConstants.BASE_URL}/api/Cart/GetCartProductsByOrderId`;
-const clientOrdersUrl = `${AppConstants.BASE_URL}/api/Cart/GetClientOrders`;
+const clientOrdersUrl = `${AppConstants.BASE_URL}/api/Cart/clientOrder`;
 const citiesWithStoresUrl = `${AppConstants.BASE_URL}/api/geo/citiesWithStores`;
 const getDeliveryCostUrl = `${AppConstants.BASE_URL}/api/lo/GetDeliveryCost`;
 const getDeliveryDateUrl = `${AppConstants.BASE_URL}/api/lo/GetDeliveryDate`;
@@ -112,6 +113,8 @@ const postStoreReviewUrl = `${AppConstants.BASE_URL}/api/SaveReview/Store`;
 const updateProductReviewUrl = `${AppConstants.BASE_URL}/api/UpdateReview/Product`;
 const updateStoreReviewUrl = `${AppConstants.BASE_URL}/api/UpdateReview/Store`;
 const appParamsUrl = `${AppConstants.BASE_URL}/api/appparams`;
+const clientOrderDatesRangeUrl = `${AppConstants.BASE_URL}/api/client/OrderDatesRanges`;
+const clientOrderProductsByDateUrl = `${AppConstants.BASE_URL}/api/cart/ClientOrderProductsByDate`;
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -671,6 +674,46 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+
+  public async getClientOrderById(orderId: number): Promise<ClientOrder> {
+    try {
+
+      const response = await this.http
+        .get(clientOrdersUrl + `/${orderId}`)
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      if (data != null) {
+            return new ClientOrder(
+              data.id,
+              data.orderDate,
+              data.idCur,
+              data.idClient,
+              data.total,
+              data.idPaymentMethod,
+              data.idPaymentStatus,
+              data.idStatus,
+              null,
+              data.loIdEntity,
+              data.loIdClientAddress,
+              data.itemsTotal,
+              data.shippingTotal,
+              data.bonusTotal,
+              data.promoBonusTotal,
+              data.bonusEarned,
+              data.promoCodeDiscTotal,
+              data.idPerson
+            );
+      };
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 
   public async postOrder(order: ClientOrder): Promise<{isSuccess: boolean, errorMessage: string}> {
     try {
@@ -3243,4 +3286,86 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getAppParam(param: string): Promise<string> {
     return (<IKeyedCollection<AppParam>>(await this.getAppParams())).Item(param).propVal;
   }
+
+  public async getClientOrderDatesRanges(): Promise<OrdersFilter[]> {
+    try {
+      const response = await this.http
+        .get(clientOrderDatesRangeUrl).toPromise();
+
+      const data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      const res = [];
+
+      if (data != null) {
+        data.forEach(val => {
+            res.push(new OrdersFilter(val.key, val.displayName, val.isDefault));
+          }
+        );
+      }
+      return res;
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getDefaultClientOrderDatesRanges(isDefault: boolean): Promise<OrdersFilter> {
+    try {
+      const response = await this.http
+        .get(clientOrderDatesRangeUrl, {
+          search: this.createSearchParams([
+            {key: "isDefault", value: String(isDefault)}
+          ])
+        }).toPromise();
+
+      const data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      if (data != null) {
+        return new OrdersFilter(data.key, data.displayName, data.isDefault);
+      }
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+
+  public async getClientOrderProductsByDate(datesRange: string):
+              Promise<{orderId: string, orderDate: Date, orderSpecId: number, idProduct: number,
+                       productName: string, productImageUrl: string, loTrackTicket: string, idQuotation: number}[]> {
+    try {
+      const response = await this.http.get(clientOrderProductsByDateUrl, {
+          search: this.createSearchParams([
+            {key: "datesRange", value: datesRange}
+          ])
+        }).toPromise();
+
+      const data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      const res = [];
+
+      if (data != null) {
+        data.forEach(val => {
+            res.push({orderId: val.orderId, orderDate: val.orderDate, orderSpecId: val.orderSpecId,
+              idProduct: val.idProduct, productName: val.productName, productImageUrl: val.productImageUrl,
+              loTrackTicket: val.loTrackTicket, idQuotation: val.idQuotation});
+          }
+        );
+      }
+      return res;
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 }

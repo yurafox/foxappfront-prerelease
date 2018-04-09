@@ -4,6 +4,7 @@ import { OrdersPage } from './your-orders';
 import {ComponentsModule} from "../../components/components.module";
 import {PipesModule} from "../../app/pipe/pipes.module";
 import {Ionic2RatingModule} from "ionic2-rating";
+import {LazyLoadImagesModule} from 'ngx-lazy-load-images';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import {Ionic2RatingModule} from "ionic2-rating";
     IonicPageModule.forChild(OrdersPage),
     ComponentsModule,
     PipesModule,
-    Ionic2RatingModule
+    Ionic2RatingModule,
+    LazyLoadImagesModule
   ],
   exports: [
     OrdersPage
