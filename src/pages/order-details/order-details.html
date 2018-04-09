@@ -197,7 +197,8 @@ ORDER SUMMARY AREA
             {{order.itemsTotal | localeCurrency:userService.currency}}
           </ion-col>
         </ion-row>
-        <ion-row>
+
+        <ion-row *ngIf="!(order.shippingTotal === 0)">
           <ion-col>
             <span loc="Доставка" name="Shipping">{{locale['Shipping']}}</span>:
           </ion-col>
