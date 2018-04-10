@@ -31,7 +31,8 @@ import { QuotationProduct,
           MeasureUnit,
           Region,
           BannerSlide,
-          ClientMessage
+          ClientMessage,
+          CurrencyRate
        } from '../../../model/index';
 import {IDictionary, Providers} from "../../../core/app-core";
 import {AppParam} from '../../../model/app-param';
@@ -169,4 +170,6 @@ export abstract class AbstractDataRepository {
                         Promise<{orderId: string, orderDate: Date, orderSpecId: number, idProduct: number,
                           productName: string, productImageUrl: string, loTrackTicket: string,
                           idQuotation: number}[]>;
+
+  public async abstract getCurrencyRate():Promise<CurrencyRate[]>;
 }
