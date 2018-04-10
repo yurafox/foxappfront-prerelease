@@ -1,34 +1,46 @@
-import {Component, ViewChild, ElementRef, OnInit, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef, OnDestroy, ElementRef, ViewChild} from '@angular/core';
 import {Platform, IonicPage, NavController, NavParams, AlertController, ToastController} from 'ionic-angular';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
-import {/*GoogleMap,*/ LatLng} from '@ionic-native/google-maps';
-import {City, Store} from "../../app/model/index";
-import {ComponentBase} from "../../components/component-extension/component-base";
-import {Geolocation} from '@ionic-native/geolocation';
-import {LaunchNavigator} from "@ionic-native/launch-navigator";
-import {FavoriteStoresPage} from "../favorite-stores/favorite-stores";
-import {StoreReview} from "../../app/model/store-review";
+import { AbstractDataRepository } from '../../app/service/repository/abstract/abstract-data-repository';
+import {
+  GoogleMaps,
+  GoogleMap,
+  GoogleMapsEvent,
+  GoogleMapOptions,
+  //CameraPosition,
+  MarkerOptions,
+  Marker,
+  LatLng,
+  //MarkerCluster,
+  //MarkerClusterOptions,
+  HtmlInfoWindow
+} from '@ionic-native/google-maps';
+import { City, Store } from "../../app/model/index";
+import { ComponentBase } from "../../components/component-extension/component-base";
+import { Geolocation } from '@ionic-native/geolocation';
+import { LaunchNavigator } from "@ionic-native/launch-navigator";
+import { FavoriteStoresPage } from "../favorite-stores/favorite-stores";
+import { StoreReview } from "../../app/model/store-review";
 import {IDictionary} from "../../app/core/app-core";
+import {Subscription} from "rxjs/Subscription";
 
 declare var google: any;
 
 interface SelectItem {
   label: string;
-  value: any;
+  value: {lat: number, lng: number};
 }
 
-@IonicPage({name: 'MapPage', segment: 'map'})
+@IonicPage({ name: 'MapPage', segment: 'map' })
 @Component({
   selector: 'page-map',
   templateUrl: 'map.html'
 })
-export class MapPage extends ComponentBase implements OnInit {
+export class MapPage extends ComponentBase implements OnInit, OnDestroy {
 
-  @ViewChild('mapCanvas') mapElement: ElementRef;
   previousPage: string;
 
-  map: /*GoogleMap;*/ any;
-  prevInfoWindow: any;
+  map: GoogleMap;
+  prevInfoWindow: HtmlInfoWindow;
   city: City;
   defaultCityId: string;  // Used to set position when map just opened and user's location is unknown.
   cities: Array<City>;
@@ -37,7 +49,7 @@ export class MapPage extends ComponentBase implements OnInit {
   markersArr: IDictionary<Store[]>;
   shopList: Array<SelectItem>;
   storeReviews: IDictionary<StoreReview[]>;
-  options: any;
+  options: GoogleMapOptions;
   userPos: LatLng;
   userPosIsKnown: boolean;
   // Setting up direction service
@@ -55,10 +67,12 @@ export class MapPage extends ComponentBase implements OnInit {
   isAuthorized: boolean;
   availableNavApps: void | string[];
 
+  markerSubscriptions: Subscription[];
+
   constructor(private nav: NavController, private navParams: NavParams, private platform: Platform,
-              private repo: AbstractDataRepository, private geolocation: Geolocation,
-              private launchNavigator: LaunchNavigator, private changeDetector: ChangeDetectorRef,
-              private alertCtrl: AlertController, private toastCtrl: ToastController) {
+    private repo: AbstractDataRepository, private geolocation: Geolocation,
+    private launchNavigator: LaunchNavigator, private changeDetector: ChangeDetectorRef,
+    private alertCtrl: AlertController, private googleMaps: GoogleMaps, private toastCtrl: ToastController) {
     super();
     this.initLocalization();
     this.defaultCityId = "38044";
@@ -70,6 +84,7 @@ export class MapPage extends ComponentBase implements OnInit {
     this.selectedMarker = {label: '', value: null};
     this.userPos = new LatLng(0, 0);
     this.availableNavApps = [];
+    this.markerSubscriptions = [];
 
     try {
       if (this.nav.last()) {
@@ -84,7 +99,7 @@ export class MapPage extends ComponentBase implements OnInit {
         this.userPos.lat = res.coords.latitude;
         this.userPos.lng = res.coords.longitude;
         this.userPosIsKnown = true;
-      }).catch(err => {
+      }).catch(() => {
         // console.log(`Error while getting user's location ${err}`);
         this.userPosIsKnown = false;
       });
@@ -92,6 +107,7 @@ export class MapPage extends ComponentBase implements OnInit {
   }
 
   async ngOnInit() {
+    super.ngOnInit();
     if (this.userService.isAuth) {
       this.isAuthorized = true;
     }
@@ -119,60 +135,110 @@ export class MapPage extends ComponentBase implements OnInit {
       this.cities = await this.repo.getCitiesWithStores();
       this.storeReviews = await this.repo.getStoreReviews();
 
-      if ((this.cities && this.cities.length > 0) && this.markersArr) {
-        if (this.userPosIsKnown === true) {
-          this.options = {
-            center: this.userPos,
-            zoom: 10,
-            disableDefaultUI: true
-          };
-        } else {
-          this.options = {
-            center: this.markersArr[this.defaultCityId][0].position,
-            zoom: 10,
-            disableDefaultUI: true
-          };
-        }
-
-        this.makeShopList();
-
-        let mapEle = this.mapElement.nativeElement;
-        this.map = new google.maps.Map(mapEle, this.options);
-
-        /**
-         * Direction Service
-         * @type {google.maps.DirectionsService}
-         */
-        this.directionsService = new google.maps.DirectionsService;
-        this.directionsDisplay = new google.maps.DirectionsRenderer;
-
-        let citiesArr: City[] = this.cities;
-        this.cities = [];
-        for (let i = 0; i < citiesArr.length; i++) {
-          if (citiesArr[i].id === this.selectedCity.id) {
-            this.city = citiesArr[i];
+      await this.loadMap();
+    } catch(err) {
+      let alert = this.alertCtrl.create({
+        title: this.locale['AlertFailTitle'] ? this.locale['AlertFailTitle'] : 'Что-то пошло не так',
+        message: this.locale['AlertFailMessage'] ? this.locale['AlertFailMessage'] : 'Пожалуйста, проверьте соединение с сетью и попробуйте перезапустить приложение',
+        buttons: [
+          {
+            text: 'OK',
           }
-          if (this.markersArr[citiesArr[i].id.toString()]) {
-            this.cities.push(citiesArr[i]);
-          }
+        ]
+      });
+      alert.present().then(() => {
+        this.nav.pop().catch((err) => console.log(`Couldn't pop: ${err}`));
+      }).catch((err) => console.log(`Alert error: ${err}`));
+      console.log(err);
+    }
+  }
+  ngOnDestroy() {
+    for (let i = 0; i < this.markerSubscriptions.length; i++) {
+      this.markerSubscriptions[i].unsubscribe();
+    }
+  }
+
+  loadMap() {
+    if (this.userPosIsKnown === true) {
+      this.options = {
+        controls: {
+          compass: false,
+          myLocationButton: true,
+          mapToolbar: true,
+          zoom: false,
+        },
+        gestures: {
+          scroll: true,
+          tilt: false,
+          zoom: true,
+          rotate: true,
+        },
+        camera: {
+          target: this.userPos,
+          zoom: 10
+        },
+      };
+    } else {
+      this.options = {
+        controls: {
+          compass: false,
+          myLocationButton: false,
+          mapToolbar: true,
+          zoom: false,
+        },
+        gestures: {
+          scroll: true,
+          tilt: false,
+          zoom: true,
+          rotate: true,
+        },
+        camera: {
+          target: this.markersArr[this.defaultCityId][0].position,
+          zoom: 10
+        },
+      };
+    }
+
+    this.makeShopList();
+
+    this.map = GoogleMaps.create('map_canvas', this.options);
+
+    let citiesArr: City[] = this.cities;
+    this.cities = [];
+
+    this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
+      for (let i = 0; i < citiesArr.length; i++) {
+        if (citiesArr[i].id === this.selectedCity.id) {
+          this.city = citiesArr[i];
         }
-
-        try {
-          this.directionsDisplay.setMap(this.map);
-        } catch (err) {
-          console.log(err);
+        if (this.markersArr[citiesArr[i].id.toString()]) {
+          this.cities.push(citiesArr[i]);
         }
+      }
 
-        /**
-         * Iterating through all stores positions. Setting up info windows and marker event listeners
-         */
-        for (let c = 0; c < this.cities.length; c++) {
-          let cityID = this.cities[c].id.toString();
-          if (this.markersArr[cityID]) {
-            for (let i = 0; i < this.markersArr[cityID].length; i++) {
-              let markerData = this.markersArr[cityID][i];
-              let labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnoprstuvwxyz';
+      /**
+       * Iterating through all stores positions. Setting up info windows and marker event listeners
+       */
+      for (let c = 0; c < this.cities.length; c++) {
+        let cityID = this.cities[c].id.toString();
+        if (this.markersArr[cityID]) {
+          for (let i = 0; i < this.markersArr[cityID].length; i++) {
+            let markerData = this.markersArr[cityID][i];
 
+            let markerOptions: MarkerOptions = {
+              position: markerData.position,
+              draggable: false,
+              flat: false,
+              visible: true,
+              disableAutoPan: false
+            };
+
+            //let markerPosition = markerOptions.position;
+
+            // <editor-fold desc="Marker events"
+
+            // Native
+            this.map.addMarker(markerOptions).then((marker: Marker) => {
               let reviews: StoreReview[] = [];
               if (this.storeReviews[this.markersArr[cityID][i].id.toString()]) {
                 reviews = this.storeReviews[this.markersArr[cityID][i].id.toString()];
@@ -190,141 +256,80 @@ export class MapPage extends ComponentBase implements OnInit {
                 rating += '<span class="fa fa-star checked"></span>';
               }
 
-              let infoWindow = new google.maps.InfoWindow();
-
-              let marker = new google.maps.Marker({
-                position: markerData.position,
-                map: this.map,
-                title: markerData.address,
-                //animation: google.maps.Animation.DROP,
-                label: labels[i % labels.length]
-              });
-
               let markerPosition = markerData.position;
 
-              // <editor-fold desc="Marker events"
+              let isWorking = this.shopIsWorking(shopOpensTime, shopClosesTime);
+
+              let htmlInfoWnd = new HtmlInfoWindow();
+              let html: HTMLElement = document.createElement('div');
+              html.innerHTML =  [`<div style="font-size: 17px;">`,
+                `<p style="color: #ef4123; padding: 0; margin: 0; font-size: 18px; text-align: center"><b>Фокстрот</b></p>`,
+                `<p style="padding: 0; margin: 0; text-align: center">${shopRating > 0 ? `${rating}` : ''}</p>`,
+                `<p style="padding: 0; margin: 0;">${markerData.address}</p>`,
+                `<p style="padding: 0; margin: 0;">${workingHours}</p>`,
+                `<p style="color: ${(isWorking === this.open) ? 'green' : 'red'}; padding: 0; margin: 0;">${(isWorking) ? isWorking : '' }</p>`,
+                `<span id="revs" #revs style="color: darkblue; padding: 0; margin: 0;">${(reviews && (reviews.length > 0)) ? (this.reviewsStr + '<span style=""> (' + reviews.length + ')</span>') : this.writeReviewStr}</span>`,
+                `</div>`].join('');
+              let revs = html.getElementsByTagName('span')[0];
+              if (revs) {
+                revs.addEventListener('click', () => {
+                  if (reviews && (reviews.length > 0)) {
+                    this.onShowReviewsClick(reviews, markerData);
+                  } else {
+                    this.onWriteReviewClick(markerData);
+                  }
+                });
+              }
+              htmlInfoWnd.setContent(html);
 
               /**
                * Center to the marker and show info on click
                */
-              marker.addListener('click', () => {
-                let isWorking = this.shopIsWorking(shopOpensTime, shopClosesTime);
+              let subMarkerClick = marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
                 if (this.prevInfoWindow) {
                   this.prevInfoWindow.close();
                 }
-                this.map.panTo(markerPosition);
 
-                /*if (14 >= this.map.zoom) {
-                  setTimeout(() => {
-                    infoWindow.close();
-                  }, 5000);
-                }*/
-
-              this.selectedMarker = {label: markerData.address, value: markerPosition};
-              if (markerData.idCity !== this.selectedCity.id) {
-                this.selectedCity = new City(
-                   this.cities[c].id,
-                   this.cities[c].name,
-                  null
-                );
-                {
-                   this.city= this.cities[c];
-                  this.makeShopList();
-                }
-              }
-              this.changeDetector.detectChanges();
-              this.prevInfoWindow = infoWindow;
-
-                let content =
-                  `<div style="font-size: 15px;">` +
-                  `<p style="color: #ef4123; padding: 0; margin: 0; font-size: 16px; text-align: center"><b>Фокстрот</b></p>` +
-                  `<p style="padding: 0; margin: 0; text-align: center">${shopRating > 0 ? `${rating}` : ''}</p>` +
-                  `<p style="padding: 0; margin: 0;">${markerData.address}</p>` +
-                  `<p style="padding: 0; margin: 0;">${workingHours}</p>` +
-                  `<p style="color: ${(isWorking === this.open) ? 'green' : 'red'}; padding: 0; margin: 0;">${(isWorking) ? isWorking : '' }</p>` +
-                  `<span id="revs" #revs style="color: darkblue; padding: 0; margin: 0;">${(reviews && (reviews.length > 0)) ? (this.reviewsStr + '<span style=""> (' + reviews.length + ')</span>') : this.writeReviewStr}</span>` +
-                  `</div>`;
-
-                if (infoWindow && (infoWindow !== null)) {
-                  infoWindow.setContent(content);
+                this.selectedMarker = {label: markerData.address, value: markerPosition};
+                if (+cityID !== this.selectedCity.id) {
+                  this.selectedCity = this.cities[c];
+                  {
+                    this.city = this.cities[c];
+                    this.makeShopList();
+                  }
                 }
 
-                /**
-                 * Listen to infoWindow when it's ready and add listener to DOM element
-                 */
-                if (infoWindow && (infoWindow !== null)) {
-                  google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
-                    document.getElementById('revs').addEventListener('click', () => {
-                      if (reviews && (reviews.length > 0)) {
-                        this.onShowReviewsClick(reviews, markerData);
-                      } else {
-                        this.onWriteReviewClick(markerData);
-                      }
-                    });
-                  });
+                this.prevInfoWindow = htmlInfoWnd;
 
-                  infoWindow.open(this.map, marker);
-                }
+                htmlInfoWnd.open(marker);
               });
+              this.markerSubscriptions.push(subMarkerClick);
 
-              /**
-               * Zoom to the marker on double click
-               */
-              marker.addListener('dblclick', () => {
-                if (this.prevInfoWindow) {
-                  this.prevInfoWindow.close();
-                }
-                this.prevInfoWindow = infoWindow;
-                if (infoWindow && (infoWindow !== null)) {
-                  infoWindow.open(this.map, marker);
-                }
-                this.map.panTo(markerPosition);
-                this.map.setZoom(17);
-                this.map.setCenter(markerPosition);
+              let subCamMove = marker.on(GoogleMapsEvent.CAMERA_MOVE).subscribe(() => {
+                htmlInfoWnd.close();
               });
+              this.markerSubscriptions.push(subCamMove);
 
-              this.map.addListener('zoom_changed', () => {
-                if (infoWindow && (infoWindow !== null)) {
-                  infoWindow.close();
-                }
+              let subInfoClick = marker.on(GoogleMapsEvent.INFO_CLICK).subscribe(() => {
+                this.map.setCameraTarget(markerPosition);
+                this.map.setCameraZoom(17);
               });
+              this.markerSubscriptions.push(subInfoClick);
 
-              // </editor-fold>
-            }
+            });
+
+            // </editor-fold>
           }
         }
-
-        /**
-         * Listener that shows map and loads localization
-         */
-        google.maps.event.addListenerOnce(this.map, 'idle', () => {
-          mapEle.classList.add('show-map');
-        });
-
-        this.navFromFavoriteStoresPage();
-
-        this.availableNavApps = await this.launchNavigator.availableApps().catch((err) => {
-          console.log(`Couldn't get available navigation apps: ${err}`);
-        });
       }
-    } catch (err) {
-      let alert = this.alertCtrl.create({
-        title: this.locale['AlertFailTitle'] ? this.locale['AlertFailTitle'] : 'Что-то пошло не так',
-        message: this.locale['AlertFailMessage'] ? this.locale['AlertFailMessage'] : 'Пожалуйста, проверьте соединение с сетью и попробуйте перезапустить приложение',
-        buttons: [
-          {
-            text: 'OK',
-            /*handler: () => {
-              this.nav.pop().catch((err) => console.log(`Couldn't pop: ${err}`))
-            }*/
-          }
-        ]
-      });
-      alert.present().then(() => {
-        this.nav.pop().catch((err) => console.log(`Couldn't pop: ${err}`));
-      }).catch((err) => console.log(`Alert error: ${err}`));
-      console.log(err);
-    }
+      this.navFromFavoriteStoresPage();
+    });
+
+    this.launchNavigator.availableApps().then((avApps) => {
+      this.availableNavApps = avApps
+    }).catch((err) => {
+      console.log(`Couldn't get available navigation apps: ${err}`);
+    });
   }
 
   /**
@@ -366,8 +371,8 @@ export class MapPage extends ComponentBase implements OnInit {
     if (this.markersArr[this.selectedCity.id.toString()]) {
       this.makeShopList();
       try {
-        this.map.panTo(this.markersArr[this.selectedCity.id.toString()][0].position);
-        this.map.setZoom(10);
+        this.map.setCameraTarget(this.markersArr[this.selectedCity.id.toString()][0].position);
+        this.map.setCameraZoom(10);
       } catch (error) {
         console.log('Markers change error: ' + error);
       }
@@ -379,8 +384,8 @@ export class MapPage extends ComponentBase implements OnInit {
    */
   handleListSelect() {
     if (this.selectedMarker.value !== null) {
-      this.map.setCenter(this.selectedMarker.value);
-      this.map.setZoom(17);
+      this.map.setCameraTarget(this.selectedMarker.value);
+      this.map.setCameraZoom(17);
     } else {
       return;
     }
@@ -392,7 +397,7 @@ export class MapPage extends ComponentBase implements OnInit {
   addToFavorite() {
     if (this.selectedMarker.value !== null) {
       for (let marker of this.markersArr[this.selectedCity.id.toString()]) {
-        if (marker.position === this.selectedMarker.value) {
+        if (marker.position.lat === this.selectedMarker.value.lat && marker.position.lng === this.selectedMarker.value.lng) {
           if (this.isAuthorized === true) {
             try {
               this.addFavoriteStore(marker);
@@ -464,7 +469,7 @@ export class MapPage extends ComponentBase implements OnInit {
             success => console.log('Launched navigator'),
             error => window.alert('Error launching navigator: ' + error)
           );
-        this.launchNavigator.navigate([endpoint.lat, endpoint.lng],{
+        this.launchNavigator.navigate([endpoint.lat, endpoint.lng], {
           app: this.launchNavigator.APP.USER_SELECT,
           transportMode: this.launchNavigator.TRANSPORT_MODE.WALKING,
           appSelection: {
@@ -536,7 +541,7 @@ export class MapPage extends ComponentBase implements OnInit {
   }
 
   onShowReviewsClick(reviews: StoreReview[], store: Store): void {
-    this.nav.push('ItemReviewsPage', {reviews: reviews, store: store}).catch(err => {
+    this.nav.push('ItemReviewsPage', { reviews: reviews, store: store }).catch(err => {
       console.log(`Error navigating to ItemReviewPage: ${err}`);
     });
   }
@@ -559,8 +564,8 @@ export class MapPage extends ComponentBase implements OnInit {
     let addedId = await this.repo.addFavoriteStore(store.id);
 
     if (!addedId || addedId === null || addedId === 0) {
-      let alertMessage = this.locale['AlertMessage'];
-      let title = this.locale['AlertTitle'];
+      let title = this.locale['AlertTitle'] ? this.locale['AlertTitle'] : 'Ошибка';
+      let alertMessage = this.locale['AlertMessage'] ? this.locale['AlertMessage'] : 'Этот магазин уже есть в Ваших избранных';
       let alert = this.alertCtrl.create({
         title: title,
         message: alertMessage,
@@ -572,7 +577,7 @@ export class MapPage extends ComponentBase implements OnInit {
       });
       alert.present().catch((err) => console.log(`Alert error: ${err}`));
     } else if (addedId && addedId > 0) {
-      let toastMessage = this.locale['ToastMessage'];
+      let toastMessage = this.locale['ToastMessage'] ? this.locale['ToastMessage'] : 'Магазин добавлен в избранные';
       let toast = this.toastCtrl.create({
         message: toastMessage,
         duration: 2000,
