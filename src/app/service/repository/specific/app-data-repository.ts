@@ -3340,7 +3340,7 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
       const currencyRates: CurrencyRate[] = new Array<CurrencyRate>();
-      if (data != null) {
+      if (data !== null) {
         data.forEach(val =>
           currencyRates.push(
             new CurrencyRate(val.defaultId,val.targetId,val.rate)
