@@ -60,6 +60,7 @@ export class CartService {
 
     this.evServ.events['logonEvent'].subscribe(() => {
         this.initCart().then (() => {
+            this.localeCartService();
 /*
 
             if ((this.cartValidationNeeded) && (this.cartErrors)) {
@@ -87,6 +88,7 @@ export class CartService {
         this.calculateCart();
       }
     );
+    locRepo.setLocalization();
 
     repo.loadPmtMethodsCache();
     repo.loadRegionsCache();
@@ -98,6 +100,8 @@ export class CartService {
     repo.getManufacturers(true); //<--- this loads manufacturers cache
 
     this.initCart();
+
+    this.localeCartService();
   }
 
   public async calculateCart(){
@@ -260,8 +264,8 @@ export class CartService {
   }
 
   validateLoan (loanAmt: number): {isValid:boolean, validationErrors:string[]} {
-    let maxLoan = this.localization['MaxLoan'];
-    let minLoan = this.localization['MinLoan'];
+    let maxLoan = this.localization['MaxLoan'] ? this.localization['MaxLoan'] : 'Максимальный лимит кредита перевышен';
+    let minLoan = this.localization['MinLoan'] ? this.localization['MinLoan'] : 'Сумма кредита ниже лимита';
     let errs = [];
     let mes = (loanAmt > AppConstants.MAX_LOAN_AMT) ? maxLoan : null;
     if (mes)
@@ -305,7 +309,6 @@ export class CartService {
         });
       }
     }
-    await this.localeCartService();
   }
 
   public get cartItemsCount(): number {
@@ -348,7 +351,7 @@ export class CartService {
 
       this.evServ.events['cartUpdateEvent'].emit();
 
-      const message = this.localization['AddedToCart'];
+      const message = this.localization['AddedToCart'] ? this.localization['AddedToCart'] : 'Товар добавлен в корзину';
       let toast = page.toastCtrl.create({
         message: message,
         duration: 2000,
@@ -361,7 +364,7 @@ export class CartService {
 
       toast.present();
     } else {
-      let message = this.localization['SomethingWrong'];
+      let message = this.localization['SomethingWrong'] ? this.localization['SomethingWrong'] : 'Что-то пошло не так';
       let toast = page.toastCtrl.create({
         message: message,
         duration: 2500,
@@ -391,11 +394,11 @@ export class CartService {
 
   async gotoCartPageIfDataChanged() {
     let alert = this.alertCtrl.create({
-      title: this.localization['Information'],
-      message: this.localization['Message'],
+      title: this.localization['Information'] ? this.localization['Information'] : 'Информация',
+      message: this.localization['Message'] ? this.localization['Message'] : 'Товар был удален либо заказ отправлен с другого устройства',
       buttons: [
         {
-          text: this.localization['BtnText'],
+          text: this.localization['BtnText'] ? this.localization['BtnText'] : 'Перейти в корзину',
           handler: () => {
             this.emptyCart();
             this.initCart().then(() => {
@@ -438,8 +441,8 @@ export class CartService {
   }
 
   // making localization for cart service
-  private async localeCartService() {
-    let loc = await this.locRepo.getLocalization({componentName: (<any> this).constructor.name, lang: (this.userService.lang ? +localStorage.getItem('lang') : 1)});
+  public async localeCartService() {
+    let loc = await this.locRepo.getLocalization({componentName: (<any> this).constructor.name, lang: +localStorage.getItem('lang')});
     if (loc && (Object.keys(loc).length !== 0)) {
       this.localization = loc;
     }

@@ -7,6 +7,7 @@ import {AbstractDataRepository} from "../../app/service/index";
 import { AlertController } from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {Activator} from "../../app/core/app-core";
+import {CartService} from "../../app/service/cart-service";
 
 @IonicPage({name: 'AccountPage', segment: 'account'})
 @Component({
@@ -40,7 +41,8 @@ export class AccountPage extends ComponentBase {
   constructor(public nav: NavController,
               private alertCtrl: AlertController,
               private repo: AbstractDataRepository,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private cartServ: CartService) {
     super();
     this.verifyErrorData={errorShow:false,errorMessage:''};
   }
@@ -128,6 +130,7 @@ export class AccountPage extends ComponentBase {
       const result: IUserInfo = await this.userService.edit(user);
       if (result.status === 2) {
         await this.evServ.events['localeChangeEvent'].emit(this.userService.lang);
+        await this.cartServ.localeCartService();
 
         let alert = this.alertCtrl.create({
           subTitle: this.locale['ProfileChangedSuccessfully'] ? this.locale['ProfileChangedSuccessfully'] : 'Профиль успешно изменён',

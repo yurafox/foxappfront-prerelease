@@ -13,7 +13,6 @@ export class UserService {
   private user: User;
   private _auth: boolean;
   private _token: string;
-  private localization: IDictionary<string> = {};
   private shortloginMutex:boolean = false;
 
   public errorMessages:IDictionary<string> = {  // field for user service error log
@@ -135,6 +134,7 @@ export class UserService {
     this.user = await this._account.getUserById(this.token);
       this.changeAuthStatus(['appKey']);
       this.errorClear('shortLogin');
+      await this.locRepo.setLocalization();
       this.evServ.events['localeChangeEvent'].emit(this.lang);
       return true;
 
@@ -148,7 +148,6 @@ export class UserService {
     try {
       let returnUser: IUserInfo = await this._account.register(user);
       this.errorClear('register');
-      this.localeUserService();
       return returnUser;
 
     } catch (err) {
@@ -168,9 +167,9 @@ export class UserService {
           this.user.fname = res.user.fname;
           this.user.lname = res.user.lname;
 
+          await this.locRepo.setLocalization();
           this.changeAuthStatus(['appKey']);
           this.errorClear('edit');
-          this.localeUserService();
         }
 
         return res;
@@ -195,7 +194,7 @@ export class UserService {
       this.changeAuthStatus(['appKey']);
       //this.changeAuthStatus(['id','appKey']);
       this.errorClear('login');
-      await this.localeUserService();
+      await this.locRepo.setLocalization();
     } catch (err) {
       this.errorMessages['login'] = err.message;
     }
@@ -240,7 +239,6 @@ export class UserService {
     const lang: string = AppConstants.LOCALE_DEFAULT_VALUE.toString();
     const currency: string = AppConstants.CURRENCY_DEFAULT_VALUE.toString();
     this.firstOrDefaults(['lang', 'currency'],[lang, currency]);
-    this.localeUserService();
   }
 
   // add data to storage and check user status
@@ -276,12 +274,4 @@ export class UserService {
     this.errorMessages[actionName]='';
   }
   // </editor-fold>
-
-  // making localization for user service
-  private async localeUserService() {
-    let loc = await this.locRepo.getLocalization({componentName: (<any> this).constructor.name, lang: (this.lang ? this.lang : 1)});
-    if (loc && (Object.keys(loc).length !== 0)) {
-      this.localization = loc;
-    }
-  }
 }

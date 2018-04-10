@@ -24,7 +24,7 @@ export class LocalizationRepository extends AbstractLocalizationRepository {
       if (data != null) {
         let componentNames: string[] = [];
         data.forEach(val => {
-          if (!componentNames.includes(val.componentName)) {
+          if (!(componentNames.indexOf(val.componentName) > -1)) {
             componentNames.push(val.componentName);
           }
         });
@@ -47,17 +47,21 @@ export class LocalizationRepository extends AbstractLocalizationRepository {
     }
   }
 
-  public getLocalization(data: { componentName: string, lang: number }): IDictionary<string> {
-    let mockResult: IDictionary<string> = {};
+  public async getLocalization(data: { componentName: string, lang: number }): Promise<IDictionary<string>> {
+    if (this._localizationStore === {}) {
+      await this.setLocalization();
+    }
+    let result: IDictionary<string> = {};
     let localeArray: ILocalization[] = this._localizationStore[data.componentName];
     if (localeArray) {
-      localeArray = localeArray
+      // Uncomment this filter if you're working with all 3 languages at time
+      /*localeArray = localeArray
         .filter((value) => {
-          return value.lang === +data.lang;
-        });
-      localeArray.forEach((value) => mockResult[value.tagName] = value.text);
+          return value.lang === data.lang;
+        });*/
+      localeArray.forEach((value) => result[value.tagName] = value.text);
     }
-    return mockResult;
+    return result;
   }
 
   // <editor-fold desc="error handler"
