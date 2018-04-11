@@ -1,8 +1,9 @@
 import {ChangeDetectorRef, Component, DoCheck, ElementRef, ViewChild} from '@angular/core';
-import {App, NavController, IonicPage} from 'ionic-angular';
+import {App, NavController, IonicPage, ToastController} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {AbstractDataRepository} from '../../app/service/index';
 import {SearchService} from '../../app/service/search-service';
+import {ScreenOrientation} from "@ionic-native/screen-orientation";
 
 export enum PageMode {
   HomeMode = 1,
@@ -15,7 +16,7 @@ export enum PageMode {
   selector: 'page-home',
   templateUrl: 'home.html',
 })
-export class HomePage extends ComponentBase implements DoCheck {
+export class HomePage extends ComponentBase/* implements DoCheck*/ {
 
   private _pageMode: PageMode = PageMode.HomeMode;
 
@@ -47,14 +48,15 @@ export class HomePage extends ComponentBase implements DoCheck {
   scrollHeight: number;
 
   constructor(public app: App, public nav: NavController, private _repo:AbstractDataRepository,
-              public srchService: SearchService, private changeDet: ChangeDetectorRef) {
+              public srchService: SearchService, private changeDet: ChangeDetectorRef,
+              private screenOrientation: ScreenOrientation, private toastCtrl: ToastController) {
     super();
     this.srchService.lastSearch = null;
   }
 
-  ngDoCheck() {
+  /*ngDoCheck() {
     this.updateScrollHeight();
-  }
+  }*/
 
   public updateScrollHeight() {
     const hdrH = (this.header) ?  this.header.nativeElement.scrollHeight : 0;
@@ -99,6 +101,16 @@ export class HomePage extends ComponentBase implements DoCheck {
   async ngOnInit() {
     super.ngOnInit();
     this.doRefresh(0);
+    this.screenOrientation.onChange().subscribe(() => {
+      this.updateScrollHeight();
+      let toast = this.toastCtrl.create({
+        message: this.screenOrientation.type,
+        duration: 1000,
+        position: 'bottom',
+        cssClass: 'toast-message'
+      });
+      toast.present().catch((err) => console.log(`Toast error: ${err}`));
+    });
   }
 
   async doRefresh(refresher) {

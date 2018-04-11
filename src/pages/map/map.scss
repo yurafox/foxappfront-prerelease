@@ -18,7 +18,8 @@ page-map {
     font-weight: 400;
   }
   .f-map-buttons {
-    margin-bottom: 2%;
+    margin-bottom: 20px;
+    z-index: 2;
   }
   .button-md {
     margin: 0.2rem 0;
@@ -56,6 +57,7 @@ page-map {
   }
 
   page-map #map_canvas {
+    z-index: 0;
     overflow: auto;
     opacity: 0;
     transition: opacity 150ms ease-in
