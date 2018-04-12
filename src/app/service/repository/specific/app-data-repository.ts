@@ -668,7 +668,7 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
 
       const response = await this.http
-        .get(clientOrdersUrl + `/${orderId}`)
+        .get(clientOrdersUrl + `/${orderId}`, RequestFactory.makeAuthHeader())
         .toPromise();
 
       const data = response.json();
@@ -3253,7 +3253,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getClientOrderDatesRanges(): Promise<OrdersFilter[]> {
     try {
       const response = await this.http
-        .get(clientOrderDatesRangeUrl).toPromise();
+        .get(clientOrderDatesRangeUrl,RequestFactory.makeAuthHeader()).toPromise();
 
       const data: any = response.json();
       if (response.status !== 200) {
@@ -3278,11 +3278,9 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getDefaultClientOrderDatesRanges(isDefault: boolean): Promise<OrdersFilter> {
     try {
       const response = await this.http
-        .get(clientOrderDatesRangeUrl, {
-          search: this.createSearchParams([
-            {key: "isDefault", value: String(isDefault)}
-          ])
-        }).toPromise();
+        .get(clientOrderDatesRangeUrl,RequestFactory.makeSearch([
+          {key: "isDefault", value: String(isDefault)}
+        ])).toPromise();
 
       const data: any = response.json();
       if (response.status !== 200) {
@@ -3303,11 +3301,9 @@ export class AppDataRepository extends AbstractDataRepository {
               Promise<{orderId: string, orderDate: Date, orderSpecId: number, idProduct: number,
                        productName: string, productImageUrl: string, loTrackTicket: string, idQuotation: number}[]> {
     try {
-      const response = await this.http.get(clientOrderProductsByDateUrl, {
-          search: this.createSearchParams([
-            {key: "datesRange", value: datesRange}
-          ])
-        }).toPromise();
+      const response = await this.http.get(clientOrderProductsByDateUrl,RequestFactory.makeSearch([
+        {key: "datesRange", value: datesRange}
+      ])).toPromise();
 
       const data: any = response.json();
       if (response.status !== 200) {
