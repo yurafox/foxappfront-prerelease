@@ -12,6 +12,7 @@ import {CreditCalc} from '../model/credit-calc';
 import {AppConstants} from '../app-constants';
 import {AbstractLocalizationRepository} from "./repository/abstract/abstract-localization-repository";
 import {IDictionary} from "../core/app-core";
+import {CurrencyStore} from "./repository/specific/currency-store.service";
 
 
 export class LoDeliveryOption {
@@ -56,7 +57,7 @@ export class CartService {
 
   constructor(public userService: UserService, public repo: AbstractDataRepository,
               public evServ: EventService, private app: App, private locRepo: AbstractLocalizationRepository,
-              public alertCtrl: AlertController) {
+              public alertCtrl: AlertController, private currStoreService: CurrencyStore) {
 
     this.evServ.events['logonEvent'].subscribe(() => {
         this.initCart().then (() => {
@@ -102,6 +103,8 @@ export class CartService {
     this.initCart();
 
     this.localeCartService();
+
+    this.currStoreService.initCurrencyRate();
   }
 
   public async calculateCart(){

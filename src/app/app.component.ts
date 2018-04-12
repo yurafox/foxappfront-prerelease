@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnDestroy, AfterViewInit} from '@angular/core';
+import {Component, ViewChild, OnDestroy} from '@angular/core';
 import {Nav, Platform, MenuController, AlertController} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {AbstractDataRepository} from "./service/index";
@@ -24,7 +24,7 @@ declare var FCMPlugin: any;
 @Component({
   templateUrl: 'app.html'
 })
-export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
+export class FoxApp extends ComponentBase implements OnDestroy {
   // the root nav is a child of the root app component
   // @ViewChild(Nav) gets a reference to the app's root nav
   @ViewChild(Nav) nav: Nav;
@@ -109,13 +109,11 @@ export class FoxApp extends ComponentBase implements AfterViewInit, OnDestroy {
           this.pushNotificationHandling(data);
         }
       });
-    }
-  }
 
-  ngAfterViewInit() {
-    this.platform.ready().then(() => {
-      this.splashScreen.hide();
-    });
+      this.platform.ready().then(() => {
+        this.splashScreen.hide();
+      });
+    }
   }
 
   ngOnDestroy() {

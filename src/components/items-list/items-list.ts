@@ -12,29 +12,6 @@ export class ItemsListComponent extends ComponentBase {
   @ViewChild('searchResults') srchResDiv;
   @Input() parentControl;
 
-
-  slides = [
-    {
-      src: 'assets/imgs/category/mobtel/2120.jpg'
-    },
-    {
-      src: 'assets/imgs/category/mobtel/2130.jpg'
-    },
-    {
-      src: 'assets/imgs/category/mobtel/2177.jpg'
-    },
-    {
-      src: 'assets/imgs/category/mobtel/2178.jpg'
-    },
-    {
-      src: 'assets/imgs/category/mobtel/2223.jpg'
-    },
-    {
-      src: 'assets/imgs/category/mobtel/2230.jpg'
-    }
-
-  ];
-
   constructor(public srchService: SearchService) {
     super();
   }
