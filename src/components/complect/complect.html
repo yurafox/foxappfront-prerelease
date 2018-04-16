@@ -1,9 +1,6 @@
-<!--
-[attr.pager]="!complectAgg.length>0?'':null"
--->
-<ion-slides #slides pager>
+<ion-slides #slides [attr.pager]="complectAgg.length>1?'':null">
   <ion-slide *ngFor="let item of complectAgg">
-    <div style="height: 180px;">
+    <div [ngStyle]="{'height.px': complectAgg.length>1? 180 : 150}">
       <ion-grid no-padding>
         <ion-row>
           <ion-col no-padding text-left>
@@ -117,7 +114,7 @@
                     </ion-row>
 
                     <ion-row>
-                      <ion-col style="padding-top: 5px;">
+                      <ion-col style="padding-top: 5px; padding-left: 3px;">
                         <button class="f-btn-action f-btn-bottom" ion-button block
                                 (click)="onAddToCart()"><span>Add to Cart</span>
                         </button>
