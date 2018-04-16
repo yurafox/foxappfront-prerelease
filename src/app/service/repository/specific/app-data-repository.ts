@@ -1778,6 +1778,8 @@ export class AppDataRepository extends AbstractDataRepository {
       prod.description = data.description;
       prod.slideImageUrls = data.slideImageUrls;
       prod.barcode = data.barcode;
+      prod.oldPrice = data.oldPrice;
+      prod.bonuses = data.bonuses;
       return prod;
     }
     else return null;

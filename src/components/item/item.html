@@ -31,6 +31,13 @@
            <product-rating [product]=product></product-rating>
          </ion-col>
        </ion-row>
+
+       <ion-row *ngIf="product.oldPrice">
+         <ion-col class="f-item-col f-old-price f-size-small" >
+           <span>{{product.oldPrice | localeCurrency:userService.currency}}</span>
+         </ion-col>
+       </ion-row>
+
        <ion-row *ngIf="product.price">
          <ion-col class="f-item-col f-product">
            <b>{{product.price | localeCurrency:userService.currency}}</b>
