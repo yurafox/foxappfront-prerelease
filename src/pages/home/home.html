@@ -32,6 +32,11 @@
   </div>
 
   <div *ngIf="pageMode === 3">
+<!--
+
+    <progress-bar [active]="srchService.inSearch"></progress-bar>
+
+-->
     <items-list #itemsList [parentControl]="this"></items-list>
   </div>
 
