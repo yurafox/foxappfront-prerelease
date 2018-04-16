@@ -1,21 +1,20 @@
 progress-bar {
+  position: relative;
+
   .progress-bar {
-    margin: 0px;
+    margin: 0;
     height: 4px;
-    padding: 0px;
+    padding: 0;
     width: 100%;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .progress-bar span {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     display: inline-block;
-    height: 100%;
+    height: 4px;
     background-color: #777;
-    //-moz-border-radius: 3px;
-    //-webkit-border-radius: 3px;
-    //border-radius: 3px;
     -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
     -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
     box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
@@ -70,19 +69,20 @@ progress-bar {
   }
 
   @-webkit-keyframes animate-stripes {
-    0% {background-position: 0 0;} 100% {background-position: 60px 0;}
+    0% {background-position: 0 0;} 100% {background-position: 100% 0;}
   }
 
 
   @-moz-keyframes animate-stripes {
-    0% {background-position: 0 0;} 100% {background-position: 60px 0;}
+    0% {background-position: 0 0;} 100% {background-position: 100% 0;}
   }
 
   /*---------------------------*/
 
   .shine span {
     position: relative;
-    top: -6px;
+    top: -10px;
+    height: 4px;
   }
 
   .shine span::after {

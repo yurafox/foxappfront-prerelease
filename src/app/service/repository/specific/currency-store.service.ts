@@ -31,13 +31,13 @@ export class CurrencyStore {
       // make async correct
       if(this.curStore && this.curStore.length!=0)
         return this.getChangedValue(value,currencyCode);
-    }  
+    }
     else {
-      return this.getChangedValue(value,currencyCode); 
+      return this.getChangedValue(value,currencyCode);
     }
   }
 
-  private async initCurrencyRate():Promise<void> {
+  public async initCurrencyRate():Promise<void> {
     this.curStore = await this._repo.getCurrencyRate();
     this.currentTicks = new Date().getTime();
   }
@@ -52,6 +52,6 @@ export class CurrencyStore {
     })[0];
 
     let result: number = (value / currencyRate.rate);
-    return result.toString();     
+    return result.toString();
   }
 }

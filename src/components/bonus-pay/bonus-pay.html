@@ -19,7 +19,7 @@
       <ion-col>
         <input type="number" [(ngModel)]="cart.bonus" placeholder="{{locale['EnterBonusQuantity'] ? locale['EnterBonusQuantity'] : 'Введите количество бонусов'}}" name="bonus" id="bonus"
                pattern="[0-9]+(\.[0-9][0-9]?)?"
-               (keyup)="bonusInputStream$.next($event.target.value)"
+               (keyup)="bonusInputStream$.next($event.target.value);keyUpHandle($event.keyCode);"
                #bonus="ngModel">
         <div *ngIf="!bonus.valid && bonus.touched">
                   <span *ngIf="bonus.hasError('pattern')"

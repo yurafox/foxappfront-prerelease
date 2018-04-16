@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectorRef, OnDestroy, ElementRef, ViewChild} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Platform, IonicPage, NavController, NavParams, AlertController, ToastController} from 'ionic-angular';
 import { AbstractDataRepository } from '../../app/service/repository/abstract/abstract-data-repository';
 import {
@@ -17,7 +17,6 @@ import {
 import { City, Store } from "../../app/model/index";
 import { ComponentBase } from "../../components/component-extension/component-base";
 import { Geolocation } from '@ionic-native/geolocation';
-import { LaunchNavigator } from "@ionic-native/launch-navigator";
 import { FavoriteStoresPage } from "../favorite-stores/favorite-stores";
 import { StoreReview } from "../../app/model/store-review";
 import {IDictionary} from "../../app/core/app-core";
@@ -52,9 +51,6 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
   options: GoogleMapOptions;
   userPos: LatLng;
   userPosIsKnown: boolean;
-  // Setting up direction service
-  directionsService: any;
-  directionsDisplay: any;
   // Variables for infoWindow content
   open: string;
   close: string;
@@ -65,14 +61,12 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
   dropDownCityOpts: any;
   dropDownAddressOpts: any;
   isAuthorized: boolean;
-  availableNavApps: void | string[];
 
   markerSubscriptions: Subscription[];
 
   constructor(private nav: NavController, private navParams: NavParams, private platform: Platform,
-    private repo: AbstractDataRepository, private geolocation: Geolocation,
-    private launchNavigator: LaunchNavigator, private changeDetector: ChangeDetectorRef,
-    private alertCtrl: AlertController, private googleMaps: GoogleMaps, private toastCtrl: ToastController) {
+              private repo: AbstractDataRepository, private geolocation: Geolocation,
+              private alertCtrl: AlertController, private toastCtrl: ToastController) {
     super();
     this.initLocalization();
     this.defaultCityId = "38044";
@@ -83,7 +77,6 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     this.cities.push(new City(0, ''));
     this.selectedMarker = {label: '', value: null};
     this.userPos = new LatLng(0, 0);
-    this.availableNavApps = [];
     this.markerSubscriptions = [];
 
     try {
@@ -93,17 +86,6 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     } catch (err) {
       console.log(`Error getting last page: ${err}`);
     }
-
-    platform.ready().then(() => {
-      this.getLocation().then(res => {
-        this.userPos.lat = res.coords.latitude;
-        this.userPos.lng = res.coords.longitude;
-        this.userPosIsKnown = true;
-      }).catch(() => {
-        // console.log(`Error while getting user's location ${err}`);
-        this.userPosIsKnown = false;
-      });
-    });
   }
 
   async ngOnInit() {
@@ -111,6 +93,16 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     if (this.userService.isAuth) {
       this.isAuthorized = true;
     }
+
+    this.platform.ready().then(() => {
+      this.getLocation().then(res => {
+        this.userPos.lat = res.coords.latitude;
+        this.userPos.lng = res.coords.longitude;
+        this.userPosIsKnown = true;
+      }).catch(() => {
+        this.userPosIsKnown = false;
+      });
+    });
 
     this.openHoursStr = this.locale['OpenHours'] ? this.locale['OpenHours'] : 'Время работы';
     this.open = this.locale['Open'] ? this.locale['Open'] : 'Открыто';
@@ -193,7 +185,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
           rotate: true,
         },
         camera: {
-          target: this.markersArr[this.defaultCityId][0].position,
+          target: {lat: 50.449878, lng: 30.523089}, // Center of Kiev
           zoom: 10
         },
       };
@@ -305,17 +297,6 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
               });
               this.markerSubscriptions.push(subMarkerClick);
 
-              let subCamMove = marker.on(GoogleMapsEvent.CAMERA_MOVE).subscribe(() => {
-                htmlInfoWnd.close();
-              });
-              this.markerSubscriptions.push(subCamMove);
-
-              let subInfoClick = marker.on(GoogleMapsEvent.INFO_CLICK).subscribe(() => {
-                this.map.setCameraTarget(markerPosition);
-                this.map.setCameraZoom(17);
-              });
-              this.markerSubscriptions.push(subInfoClick);
-
             });
 
             // </editor-fold>
@@ -323,12 +304,6 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
         }
       }
       this.navFromFavoriteStoresPage();
-    });
-
-    this.launchNavigator.availableApps().then((avApps) => {
-      this.availableNavApps = avApps
-    }).catch((err) => {
-      console.log(`Couldn't get available navigation apps: ${err}`);
     });
   }
 
@@ -411,85 +386,12 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     }
   }
 
-  buildRoute() {
-    if (this.userPosIsKnown === true && this.selectedMarker.value !== null) {
-      this.calculateAndDisplayRoute(this.userPos, this.selectedMarker.value);
-    } else {
-      return;
-    }
-  }
-
   /**
    * Receive user's location
    * @returns {Promise<Geoposition>}
    */
   getLocation() {
     return this.geolocation.getCurrentPosition();
-  }
-
-  /**
-   * Show route to the selected shop position
-   * @param start
-   * @param end
-   */
-  calculateAndDisplayRoute(start, end) {
-    try {
-      this.directionsService.route({
-        origin: start,
-        destination: end,
-        provideRouteAlternatives: true,
-        travelMode: google.maps.TravelMode.DRIVING,
-        unitSystem: google.maps.UnitSystem.METRIC
-      }, (response, status) => {
-        if (status === 'OK') {
-          this.directionsDisplay.setDirections(response);
-          // console.log('Duration: ' + (response.routes[0].legs[0].duration.value / 60).toFixed());
-        } else {
-          /**
-           * When we can't determine user's location - use another navigator instead
-           */
-          this.useExternalNavigator(end);
-          // window.alert('Directions request failed due to ' + status);
-        }
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  /**
-   * Open external navigator (by user's choice) with endpoint as parameter
-   * @param endpoint
-   */
-  useExternalNavigator(endpoint) {
-    this.platform.ready().then(() => {
-      if (this.availableNavApps) {
-        this.launchNavigator.navigate([endpoint.lat, endpoint.lng])
-          .then(
-            success => console.log('Launched navigator'),
-            error => window.alert('Error launching navigator: ' + error)
-          );
-        this.launchNavigator.navigate([endpoint.lat, endpoint.lng], {
-          app: this.launchNavigator.APP.USER_SELECT,
-          transportMode: this.launchNavigator.TRANSPORT_MODE.WALKING,
-          appSelection: {
-            dialogHeaderText: 'some dialog header',
-            cancelButtonText: 'cancel me',
-            rememberChoice: {
-              enabled: false,
-              prompt: {
-                headerText: 'some prompt header',
-                bodyText: 'some prompt body',
-                yesButtonText: 'go for it',
-                noButtonText: 'please no'
-              }
-            }
-          }
-        })
-          .then(success => console.log('Launched navigator'))
-          .catch(error => console.error('Error launching navigator: ' + JSON.stringify(error, null, 2)));
-      }
-    });
   }
 
   /**

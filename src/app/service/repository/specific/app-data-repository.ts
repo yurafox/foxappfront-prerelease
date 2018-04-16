@@ -99,7 +99,6 @@ const pollQuestionAnswerUrl = `${AppConstants.BASE_URL}/api/poll/pollAnswers`;
 const pagesDynamicUrl = `${AppConstants.BASE_URL}/api/page`;
 const actionDynamicUrl = `${AppConstants.BASE_URL}/api/action`;
 const storesUrl = `${AppConstants.BASE_URL}/api/storeplace/stores`;
-const storeUrl = `${AppConstants.BASE_URL}/api/storeplace/store`;
 const productReviewsUrl = `${AppConstants.BASE_URL}/api/reviews/GetProductReviews`;
 const storeReviewsUrl = `${AppConstants.BASE_URL}/api/reviews/GetStoreReviews`;
 const storeReviewsByStoreIdUrl = `${AppConstants.BASE_URL}/api/reviews/GetStoreReviewsByStoreId`;
@@ -2419,7 +2418,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getStoreById(id: number): Promise<Store> {
     try {
-      const response = await this.http.get(`${storeUrl}/${id}`,RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.get(`${storesUrl}/${id}`,RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {

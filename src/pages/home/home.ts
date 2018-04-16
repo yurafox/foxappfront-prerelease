@@ -1,8 +1,10 @@
-import {ChangeDetectorRef, Component, DoCheck, ElementRef, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
 import {App, NavController, IonicPage} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {AbstractDataRepository} from '../../app/service/index';
 import {SearchService} from '../../app/service/search-service';
+import {ScreenOrientation} from "@ionic-native/screen-orientation";
+import {Subscription} from "rxjs/Subscription";
 
 export enum PageMode {
   HomeMode = 1,
@@ -15,7 +17,7 @@ export enum PageMode {
   selector: 'page-home',
   templateUrl: 'home.html',
 })
-export class HomePage extends ComponentBase implements DoCheck {
+export class HomePage extends ComponentBase {
 
   private _pageMode: PageMode = PageMode.HomeMode;
 
@@ -45,15 +47,13 @@ export class HomePage extends ComponentBase implements DoCheck {
 
   content: string = '';
   scrollHeight: number;
+  scrOrientationSub: Subscription;
 
   constructor(public app: App, public nav: NavController, private _repo:AbstractDataRepository,
-              public srchService: SearchService, private changeDet: ChangeDetectorRef) {
+              public srchService: SearchService, private changeDet: ChangeDetectorRef,
+              private screenOrientation: ScreenOrientation) {
     super();
     this.srchService.lastSearch = null;
-  }
-
-  ngDoCheck() {
-    this.updateScrollHeight();
   }
 
   public updateScrollHeight() {
@@ -88,10 +88,6 @@ export class HomePage extends ComponentBase implements DoCheck {
     this.searchButtonControl.removeSearchItem(item);
   }
 
-  ionViewDidLoad() {
-    //this.updateScrollHeight();
-  }
-
   search(srchString: string) {
     this.searchButtonControl.searchByText(srchString);
   }
@@ -99,6 +95,13 @@ export class HomePage extends ComponentBase implements DoCheck {
   async ngOnInit() {
     super.ngOnInit();
     this.doRefresh(0);
+    this.scrOrientationSub = this.screenOrientation.onChange().subscribe(() => {
+      if (this._pageMode !== 1) this.changeDet.detectChanges();
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.scrOrientationSub) this.scrOrientationSub.unsubscribe();
   }
 
   async doRefresh(refresher) {
