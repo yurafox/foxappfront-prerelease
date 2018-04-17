@@ -342,14 +342,23 @@ export class CartService {
 
     let firstItem = new ClientOrderProducts();
     firstItem.idQuotationProduct = vrnt.mainProductQP;
-    firstItem.price = vrnt.mainProductActionPrice;
+    if (item.actionType === 4) {
+      firstItem.price = vrnt.mainProductActionPrice;
+    } else if (item.actionType === 5) {
+      firstItem.price = vrnt.mainProductRegularPrice - vrnt.secondProductRegularPrice; //  ActionPrice;
+    }
+
     firstItem.qty = qty;
     firstItem.idAction = vrnt.idAction;
     firstItem.complect = vrnt.complect;
 
     let secondItem = new ClientOrderProducts();
     secondItem.idQuotationProduct = vrnt.secondProductQP;
-    secondItem.price = vrnt.secondProductActionPrice;
+    if (item.actionType === 4) {
+      secondItem.price = vrnt.secondProductActionPrice
+    } else if (item.actionType === 5) {
+      secondItem.price = vrnt.secondProductRegularPrice
+    }
     secondItem.qty = qty;
     secondItem.idAction = vrnt.idAction;
     secondItem.complect = vrnt.complect;
