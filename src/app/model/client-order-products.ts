@@ -21,7 +21,7 @@ export class ClientOrderProducts implements IDTO {
       loEstimatedDeliveryDate: this.loEstimatedDeliveryDate, loDeliveryCompletedDate: this.loDeliveryCompletedDate,
       errorMessage: this.errorMessage, warningMessage: this.warningMessage,  payPromoCode: this.payPromoCode,
       payPromoCodeDiscount: this.payPromoCodeDiscount, payBonusCnt: this.payBonusCnt, payPromoBonusCnt: this.payPromoBonusCnt,
-      earnedBonusCnt: this.earnedBonusCnt, warningRead: this.warningRead};
+      earnedBonusCnt: this.earnedBonusCnt, warningRead: this.warningRead, complect: this.complect, idAction: this.idAction};
   }
 
   constructor (
@@ -44,7 +44,9 @@ export class ClientOrderProducts implements IDTO {
     public payBonusCnt?: number,
     public payPromoBonusCnt?: number,
     public earnedBonusCnt?: number,
-    public warningRead?: boolean
+    public warningRead?: boolean,
+    public complect?: string,
+    public idAction?: number
   ){ this._repo = RefInjector.pull(AbstractDataRepository) }
 
 

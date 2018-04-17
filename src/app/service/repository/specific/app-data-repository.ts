@@ -753,6 +753,8 @@ export class AppDataRepository extends AbstractDataRepository {
       p.errorMessage = val.errorMessage;
       p.warningMessage = val.warningMessage;
       p.warningRead = val.warningRead;
+      p.complect = val.complect;
+      p.idAction = val.idAction;
       return p;
     } catch (err) {
       return await this.handleError(err);
@@ -785,6 +787,8 @@ export class AppDataRepository extends AbstractDataRepository {
       p.errorMessage = val.errorMessage;
       p.warningMessage = val.warningMessage;
       p.warningRead = val.warningRead;
+      p.complect = val.complect;
+      p.idAction = val.idAction;
       return p;
     } catch (err) {
       return await this.handleError(err);
@@ -836,6 +840,8 @@ export class AppDataRepository extends AbstractDataRepository {
           p.payPromoBonusCnt = val.payPromoBonusCnt;
           p.earnedBonusCnt = val.earnedBonusCnt;
           p.warningRead = val.warningRead;
+          p.complect = val.complect;
+          p.idAction = val.idAction;
 
           cClientOrderProducts.push(p);
         });
@@ -879,6 +885,8 @@ export class AppDataRepository extends AbstractDataRepository {
         p.payPromoBonusCnt = i.payPromoBonusCnt;
         p.earnedBonusCnt = i.earnedBonusCnt;
         p.warningRead = i.warningRead;
+        p.complect = i.complect;
+        p.idAction = i.idAction;
         orderProducts.push(p);
       });
       return orderProducts;
@@ -1642,7 +1650,8 @@ export class AppDataRepository extends AbstractDataRepository {
               val.supplOffers,
               val.description,
               val.slideImageUrls,
-              val.barcode
+              val.barcode,
+              val.valueQP
             );
 
             products.push(productItem);
@@ -1778,6 +1787,7 @@ export class AppDataRepository extends AbstractDataRepository {
       prod.description = data.description;
       prod.slideImageUrls = data.slideImageUrls;
       prod.barcode = data.barcode;
+      prod.valueQP = data.valueQP;
       prod.oldPrice = data.oldPrice;
       prod.bonuses = data.bonuses;
       return prod;

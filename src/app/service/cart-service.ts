@@ -13,6 +13,8 @@ import {AppConstants} from '../app-constants';
 import {AbstractLocalizationRepository} from "./repository/abstract/abstract-localization-repository";
 import {IDictionary} from "../core/app-core";
 import {CurrencyStore} from "./repository/specific/currency-store.service";
+import {ComplectItem, ComplectOptionItem} from '../../components/complect/complect';
+import {ItemDetailPage} from '../../pages/item-detail/item-detail';
 
 
 export class LoDeliveryOption {
@@ -313,6 +315,8 @@ export class CartService {
           spec.price = val.price;
           spec.qty = val.qty;
           spec.idStorePlace = val.storePlace;
+          spec.complect = val.complect;
+          spec.idAction = val.idAction;
           this.orderProducts.push(spec);
         });
       }
@@ -332,9 +336,49 @@ export class CartService {
     return this.itemsTotal + this.shippingCost;
   }
 
+  async addComplect(item: ComplectItem, qty: number, page: any) {
+    //TODO implement local storage
+    const vrnt = item.variants[item.selIndex];
+
+    let firstItem = new ClientOrderProducts();
+    firstItem.idQuotationProduct = vrnt.mainProductQP;
+    firstItem.price = vrnt.mainProductActionPrice;
+    firstItem.qty = qty;
+    firstItem.idAction = vrnt.idAction;
+    firstItem.complect = vrnt.complect;
+
+    let secondItem = new ClientOrderProducts();
+    secondItem.idQuotationProduct = vrnt.secondProductQP;
+    secondItem.price = vrnt.secondProductActionPrice;
+    secondItem.qty = qty;
+    secondItem.idAction = vrnt.idAction;
+    secondItem.complect = vrnt.complect;
+
+    if (this.userService.isAuth) {
+      firstItem = await this.repo.insertCartProduct(firstItem);
+      this.orderProducts.push(firstItem);
+      secondItem = await this.repo.insertCartProduct(secondItem);
+      this.orderProducts.push(secondItem);
+    }
+    this.showAddedItemToast(page);
+  }
+
+  showAddedItemToast(page: any) {
+    this.evServ.events['cartUpdateEvent'].emit();
+
+    const message = this.localization['AddedToCart'] ? this.localization['AddedToCart'] : 'Товар добавлен в корзину';
+    let toast = (<ItemDetailPage>page).toastCtrl.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom',
+      cssClass: 'toast-message'
+    });
+    toast.present();
+  }
+
   async addItem(item: QuotationProduct, qty: number, price: number, storePlace: StorePlace, page: any) {
     if (item && qty && price) {
-      const _f = this.orderProducts.filter(i => {return (i.idQuotationProduct === item.id);});
+      const _f = this.orderProducts.filter(i => {return ((i.idQuotationProduct === item.id) && (!i.complect));});
       let foundQuot: ClientOrderProducts = (_f) ? _f[0] : null;
 
       if (foundQuot) {
@@ -353,37 +397,9 @@ export class CartService {
       }
       this.orderProducts.push(orderItem);
     }
-
       this.saveToLocalStorage();
       this.lastItemCreditCalc = null;
-
-      this.evServ.events['cartUpdateEvent'].emit();
-
-      const message = this.localization['AddedToCart'] ? this.localization['AddedToCart'] : 'Товар добавлен в корзину';
-      let toast = page.toastCtrl.create({
-        message: message,
-        duration: 2000,
-        position: 'bottom',
-        cssClass: 'toast-message'
-      });
-
-      toast.onDidDismiss(() => {
-      });
-
-      toast.present();
-    } else {
-      let message = this.localization['SomethingWrong'] ? this.localization['SomethingWrong'] : 'Что-то пошло не так';
-      let toast = page.toastCtrl.create({
-        message: message,
-        duration: 2500,
-        position: 'bottom',
-        cssClass: 'toast-message'
-      });
-
-      toast.onDidDismiss(() => {
-      });
-
-      toast.present();
+      this.showAddedItemToast(page);
     }
   }
 
