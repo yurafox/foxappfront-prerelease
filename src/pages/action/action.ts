@@ -1,4 +1,4 @@
-import { ActionOffer, QuotationProduct } from './../../app/model/index';
+import { ActionOffer, QuotationProduct, Product } from './../../app/model/index';
 import {System} from '../../app/core/app-core';
 import { Component,OnInit,OnDestroy} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
@@ -19,10 +19,11 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy {
   public actionId:number;
   public content:string='';
   public action:Action;
-  public actionOffers:Array<ActionOffer>=[];
+  public actionProducts:Array<Product>=[];
   public quotationProduct:Array<QuotationProduct>=[];
   public expire:{days?:number,hours?:number,minutes?:number,seconds?:number};
   private alive:boolean;
+  private monitor:{};
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private _repo:AbstractDataRepository) {
@@ -48,13 +49,13 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy {
     .subscribe(() => {
       this.actionExpire();
     });
-
-    this.actionOffers = await this._repo.getActionOffersByActionId(this.actionId);
-    for(let offer of this.actionOffers) {
-      const qp:QuotationProduct[] = await this._repo.getQuotationProductsByQuotationId(offer.idQuotation);
-      System.customConcat<QuotationProduct>(this.quotationProduct,qp);
+    
+    if(!Monitor.isMustWait()){
+      Monitor.enter();
+      this.actionProducts = await this._repo.getProductsByActionId(this.actionId);
+      Monitor.exit();
     }
-
+      
   }
 
   ngOnDestroy():void {
@@ -116,5 +117,20 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy {
 
     this.expire.seconds = Math.floor(timespan / 1000);
     timespan -= this.expire.seconds * 1000;
+  }
+}
+
+class Monitor {
+  private static isLock:boolean=false;
+  public static enter():void {
+    Monitor.isLock=true;
+  }
+
+  public static exit():void {
+    Monitor.isLock=false;
+  }
+
+  public static isMustWait():boolean{
+    return Monitor.isLock;
   }
 }

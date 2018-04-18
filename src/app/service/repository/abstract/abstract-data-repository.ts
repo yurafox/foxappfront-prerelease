@@ -134,7 +134,6 @@ export abstract class AbstractDataRepository {
   public async abstract getPageContent(id:number):Promise<string>;
   public async abstract getAction(id:number):Promise<Action>;
   public async abstract getActions():Promise<Action[]>;
-  public async abstract getActionOffersByActionId(id:number):Promise<ActionOffer[]>;
   public async abstract loadPmtMethodsCache();
   public async abstract getPmtMethods(): Promise<EnumPaymentMethod[]>;
   public async abstract getPmtMethodById(id: number): Promise<EnumPaymentMethod>;
@@ -174,4 +173,5 @@ export abstract class AbstractDataRepository {
 
   public async abstract getCurrencyRate():Promise<CurrencyRate[]>;
   public async abstract getActionsByProduct(idProduct: number): Promise<ActionByProduct[]>;
+  public async abstract getProductsByActionId(actionId: number):  Promise<Product[]>;
 }

@@ -118,6 +118,8 @@ const clientOrderDatesRangeUrl = `${AppConstants.BASE_URL}/api/client/OrderDates
 const clientOrderProductsByDateUrl = `${AppConstants.BASE_URL}/api/cart/ClientOrderProductsByDate`;
 const getCurrencyRate = `${AppConstants.BASE_URL}/api/currency/rate`;
 const getActionsByProductUrl = `${AppConstants.BASE_URL}/api/action/GetProductActions`;
+const getProductsByActionUrl = `${AppConstants.BASE_URL}/api/product/GetByAction`;
+const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/api/catalog`:"/api/mcategories";
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
 // const currenciesUrl = "/api/mcurrencies";
@@ -160,11 +162,6 @@ const getActionsByProductUrl = `${AppConstants.BASE_URL}/api/action/GetProductAc
 // const noveltyDynamicUrl = "/api/mnovelties";
 // const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
 // const deviceDataUrl = "/api/mdeviceData";
-
-const actionOffersUrl = "/api/mactionOffers";
-
-const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/api/catalog`:"/api/mcategories";
-
 // </editor-fold
 
 @Injectable()
@@ -2704,7 +2701,12 @@ export class AppDataRepository extends AbstractDataRepository {
           data.priority,
           data.sketch_content,
           data.action_content,
-          (data.isActive) ? true:false
+          (data.isActive) ? true:false,
+          data.id_type,
+          data.badge_url,
+          data.id_supplier,
+          data.title,
+          (data.is_landing)? true:false
         );
       }
       return action;
@@ -2732,7 +2734,12 @@ export class AppDataRepository extends AbstractDataRepository {
             val.priority,
             val.sketch_content,
             val.action_content,
-            (data.isActive) ? true:false
+            (data.isActive) ? true:false,
+            data.id_type,
+            data.badge_url,
+            data.id_supplier,
+            data.title,
+           (data.is_landing)? true:false
           );
 
           actions.push(actionItem);
@@ -2744,26 +2751,46 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getActionOffersByActionId(idAction: number): Promise<ActionOffer[]> {
+  public async getProductsByActionId(actionId: number):  Promise<Product[]> {
     try {
-      const response = await this.http
-        .get(actionOffersUrl,RequestFactory.makeSearch([
-          {key: "idAction", value: idAction.toString()}
-        ])).toPromise();
+        const response = await this.http
+          .get(`${getProductsByActionUrl}/${actionId}`,RequestFactory.makeAuthHeader())
+          .toPromise();
 
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      const aOffers = new Array<ActionOffer>();
-      if (data != null) {
-        data.forEach(val =>
-          aOffers.push(
-            new ActionOffer(val.id, val.idAction, val.idQuotation, val.idCur)
-          )
-        );
-      }
-      return aOffers;
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        const products = new Array<Product>();
+        if (data != null) {
+          data.forEach(val => {
+            let props = new Array<ProductPropValue>();
+            if (val.props && val.props.length !== 0) {
+              props = this.getPropValuefromProduct(val);
+            }
+
+            // create current product
+            const productItem: Product = new Product(
+              val.id,
+              val.name,
+              val.price,
+              val.oldPrice,
+              val.bonuses,
+              val.manufacturerId,
+              props,
+              val.imageUrl,
+              val.rating,
+              val.recall,
+              val.supplOffers,
+              val.description,
+              val.slideImageUrls,
+              val.barcode
+            );
+
+            products.push(productItem);
+          });
+        }
+        return products;
     } catch (err) {
       return await this.handleError(err);
     }

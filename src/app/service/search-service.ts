@@ -18,7 +18,8 @@ export class ProductSearchParams {
   public categoryId?: number,
   public supplier?: number[],
   public productProps?: PropFilterCondition[],
-  public sortOrder: SortOrderEnum = SortOrderEnum.Relevance)
+  public sortOrder: SortOrderEnum = SortOrderEnum.Relevance,
+  public actionId?:number)
   {}
 }
 
@@ -105,6 +106,14 @@ export class SearchService {
     this.resetSearch();
     this.lastSearch = null;
     this.prodSrchParams = new ProductSearchParams(undefined, catId);
+    console.log(this.prodSrchParams);
+    await this.getProductsData();
+  }
+
+  async searchByAction (actionId: number) {
+    this.resetSearch();
+    this.lastSearch = null;
+    this.prodSrchParams = new ProductSearchParams();
     await this.getProductsData();
   }
 
