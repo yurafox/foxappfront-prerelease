@@ -106,7 +106,6 @@ export class SearchService {
     this.resetSearch();
     this.lastSearch = null;
     this.prodSrchParams = new ProductSearchParams(undefined, catId);
-    console.log(this.prodSrchParams);
     await this.getProductsData();
   }
 
@@ -114,6 +113,7 @@ export class SearchService {
     this.resetSearch();
     this.lastSearch = null;
     this.prodSrchParams = new ProductSearchParams();
+    this.prodSrchParams.actionId=actionId;
     await this.getProductsData();
   }
 
@@ -325,6 +325,12 @@ export class SearchService {
                         }
                       }
                     }
+      });
+    };
+   
+    if (this.prodSrchParams.actionId) {
+      mustArr.push({
+        "match": { "actions":`${this.prodSrchParams.actionId}`}
       });
     };
 
