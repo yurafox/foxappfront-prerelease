@@ -307,7 +307,7 @@ export class SearchService {
     if (this.prodSrchParams.srchText) {
       mustArr.push({'simple_query_string': {
                                       'query': `${this.prodSrchParams.srchText}`,
-                                      'fields': [ 'name', 'description', 'srchString', 'id'],
+                                      'fields': [ 'name', 'description', 'srchString', 'id', 'barcode'],
                                       'default_operator': 'and'
                                     }
             });
