@@ -45,6 +45,8 @@ export class HomePage extends ComponentBase implements DoCheck {
   };
 
 
+  productsOfDay = [];
+  productsSalesHits = [];
   content: string = '';
   scrollHeight: number;
   scrOrientationSub: Subscription;
@@ -54,6 +56,24 @@ export class HomePage extends ComponentBase implements DoCheck {
               private screenOrientation: ScreenOrientation) {
     super();
     this.srchService.lastSearch = null;
+  }
+
+  async initData() {
+
+    let ar = await this._repo.getProductsOfDay();
+    this.productsOfDay = [];
+    for (let i of ar) {
+      let prod = await this._repo.getProductById(i);
+      this.productsOfDay.push(prod);
+    }
+
+    let shAr = await this._repo.getProductsSalesHits();
+    this.productsSalesHits = [];
+    for (let i of shAr) {
+      let prod = await this._repo.getProductById(i);
+      this.productsSalesHits.push(prod);
+    }
+
   }
 
   ngDoCheck() {
@@ -98,10 +118,11 @@ export class HomePage extends ComponentBase implements DoCheck {
 
   async ngOnInit() {
     super.ngOnInit();
-    this.doRefresh(0);
+    await this.doRefresh(0);
     this.scrOrientationSub = this.screenOrientation.onChange().subscribe(() => {
       if (this._pageMode !== 1) this.changeDet.detectChanges();
     });
+    await this.initData();
   }
 
   ngOnDestroy() {

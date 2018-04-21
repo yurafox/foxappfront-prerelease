@@ -157,7 +157,7 @@ export class ComplectComponent extends ComponentBase {
     this.navCtrl.push('ItemDetailPage', {prod: prod, loadQuotes: true});
   }
 
-  onAddToCart(item: ComplectItem) {
-    this.cart.addComplect(item, 1, this.navCtrl.getActive().instance);
+  async onAddToCart(item: ComplectItem) {
+    await this.cart.addComplect(item, 1, this.navCtrl.getActive().instance);
   }
 }

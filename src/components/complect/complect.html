@@ -19,7 +19,7 @@
                   </ion-row>
                   <ion-row>
                     <ion-col>
-                      <img class="f-img-item" style="width: 60px; height: 60px;" [src]="mainProdImgUrl"
+                      <img class="f-img-item" style="height: 60px;" [src]="mainProdImgUrl"
                            onError="this.src='assets/imgs/nophoto.png';">
                     </ion-col>
                   </ion-row>
@@ -51,7 +51,7 @@
                   <ion-grid no-padding>
                     <ion-row>
                       <ion-col (click)="onOpenItemDetail(item)">
-                        <img class="f-img-item" style="width: 60px; height: 60px;" [src]="item.variants[item.selIndex].secondProductImgUrl"
+                        <img class="f-img-item" style="height: 60px;" [src]="item.variants[item.selIndex].secondProductImgUrl"
                              onError="this.src='assets/imgs/nophoto.png';">
                       </ion-col>
                     </ion-row>

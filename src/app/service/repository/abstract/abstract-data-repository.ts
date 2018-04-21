@@ -43,6 +43,9 @@ import {OrdersFilter} from '../../../../pages/your-orders/your-orders';
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
   public async abstract getProducts(urlQuery: string, cacheForce: boolean): Promise<Product[]>;
+  public async abstract getProductsOfDay(): Promise<number[]>;
+  public async abstract getProductsSalesHits(): Promise<number[]>;
+
   public async abstract searchProducts(srchString: string): Promise<Product[]>;
 
   public async abstract getSuppliers(cacheForce: boolean): Promise<Supplier[]>;
@@ -85,7 +88,9 @@ export abstract class AbstractDataRepository {
   public async abstract saveClientDraftOrder(order: ClientOrder): Promise<ClientOrder>;
   public async abstract getClientOrders(): Promise<ClientOrder[]>;
   public async abstract getClientOrderById(orderId: number): Promise<ClientOrder>;
+  public async abstract getClientHistOrderById(orderId: number): Promise<ClientOrder>;
   public async abstract getClientOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]>;
+  public async abstract getClientHistOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]>;
 
   public async abstract getCartProducts(): Promise<ClientOrderProducts[]>;
   public async abstract saveCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
@@ -95,11 +100,12 @@ export abstract class AbstractDataRepository {
   public async abstract calculateCart(promoCode: string,
                                       maxBonusCnt: number,
                                       usePromoBonus: boolean,
-                                      creditProductId: number,
-                                      cartContent: ClientOrderProducts[])
+                                      creditProductId: number /*,
+                                      cartContent: ClientOrderProducts[]*/)
                                                               : Promise<{clOrderSpecProdId: number,
                                                                           promoCodeDisc: number, bonusDisc: number,
-                                                                          promoBonusDisc: number, earnedBonus: number}[]>;
+                                                                          promoBonusDisc: number, earnedBonus: number,
+                                                                          qty: number}[]>;
 
   public async abstract getClientBonusesExpireInfo(clientId: number): Promise <ClientBonus[]>;
 

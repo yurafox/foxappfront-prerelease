@@ -33,6 +33,7 @@ import { ProgressBarComponent } from './progress-bar/progress-bar';
 import { ItemSimpleComponent } from './item-simple/item-simple';
 import { SlidingBannerComponent } from './sliding-banner/sliding-banner';
 import { ComplectComponent } from './complect/complect';
+import { ItemTileComponent } from './item-tile/item-tile';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { ComplectComponent } from './complect/complect';
     ProgressBarComponent,
     ItemSimpleComponent,
     SlidingBannerComponent,
-    ComplectComponent
+    ComplectComponent,
+    ItemTileComponent
   ],
   entryComponents: [
     CustomPopupComponent,
@@ -108,7 +110,8 @@ import { ComplectComponent } from './complect/complect';
     ProgressBarComponent,
     ItemSimpleComponent,
     SlidingBannerComponent,
-    ComplectComponent
+    ComplectComponent,
+    ItemTileComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

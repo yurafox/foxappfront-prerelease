@@ -34,8 +34,10 @@ export class CartService {
 
   public lastItemCreditCalc: ClientOrderProducts = null;
   private cKey = 'cartItems';
+  private _inCartInit = false;
   public order: ClientOrder = null;
   public orderProducts: Array<ClientOrderProducts> = [];
+  displayOrderProducts: Array<{orderProduct: ClientOrderProducts, prevComplect: string}> = [];
   public loDeliveryOptions: Array<LoDeliveryOption>=[];
   public loResultDeliveryOptions: Array<LoDeliveryOption>=[];
   min_loan_amt = 0;
@@ -91,6 +93,7 @@ export class CartService {
 
     this.evServ.events['cartUpdateEvent'].subscribe(() => {
         this.calculateCart();
+        this.updateDisplayOrderProducts();
       }
     );
     locRepo.setLocalization();
@@ -111,11 +114,27 @@ export class CartService {
     this.currStoreService.initCurrencyRate();
   }
 
+  updateDisplayOrderProducts() {
+    let tmpArr = this.orderProducts
+            .sort((a,b) => (a.id - b.id))
+            .map(x => {return {orderProduct: x, prevComplect: null};});
+
+    let prevCompl: string = null;
+    tmpArr.forEach(z => {
+        z.prevComplect = prevCompl;
+        prevCompl = z.orderProduct.complect;
+      }
+    );
+    this.displayOrderProducts = tmpArr;
+  }
+
   public async calculateCart(){
+    if (!this.userService.isAuth)
+      return;
     let calcRes = await this.repo.calculateCart(
                   this.promoCode, this.bonus, this.payByPromoBonus,
-      ((this.loan) && (this.loan.creditProduct) && (this.order.idPaymentMethod === 3)) ? this.loan.creditProduct.sId : null,
-                  this.orderProducts);
+      ((this.loan) && (this.loan.creditProduct) && (this.order.idPaymentMethod === 3)) ? this.loan.creditProduct.sId : null /*,
+                  this.orderProducts*/);
 
     for (let i of calcRes) {
       let _found = false;
@@ -133,10 +152,13 @@ export class CartService {
         _prod.payPromoCodeDiscount = i.promoCodeDisc;
         _prod.payPromoBonusCnt = i.promoBonusDisc;
         _prod.earnedBonusCnt = i.earnedBonus;
+        _prod.qty = i.qty;
 //        await this.repo.saveCartProduct(_prod);
       }
 
+      //this.orderProducts = this.orderProducts.filter(x => true);
     }
+    this.orderProducts = this.orderProducts.splice(0,this.orderProducts.length);
 
     this.calcLoan();
   }
@@ -284,42 +306,64 @@ export class CartService {
     return {isValid: !(errs.length > 0), validationErrors: errs};
   }
 
-  async initCart() {
-    this.min_loan_amt = parseInt(await this.repo.getAppParam('MAX_LOAN_AMT'));
-    this.max_loan_amt = parseInt(await this.repo.getAppParam('MIN_LOAN_AMT'));
-    //console.log('CartInit call. Is auth: '+ this.userService.isAuth);
-    if (this.userService.isAuth) {
-      this.order = await this.repo.getClientDraftOrder();
-      if (this.order.idPerson)
-        this.person = await this.repo.getPersonById(this.order.idPerson);
-
-      let op = await this.repo.getCartProducts();
-      for (let i of this.orderProducts) {
-        await this.repo.saveCartProduct(i);
-        op.push(i);
-      }
-
-      //переключаем корзину на результирующую
-      this.orderProducts = op;
-
-      // после переноса содержимого локальной корзины в бекенд - затираем локальную корзину
-      localStorage.setItem(this.cKey, null);
+  public getLocalStorageItems(): ClientOrderProducts[] {
+    const stor = JSON.parse(localStorage.getItem(this.cKey));
+    const ar = [];
+    if (stor) {
+      stor.forEach((val) => {
+        let spec = new ClientOrderProducts();
+        spec.idQuotationProduct = val.idQuotationProduct;
+        spec.price = val.price;
+        spec.qty = val.qty;
+        spec.idStorePlace = val.storePlace;
+        spec.complect = val.complect;
+        spec.idAction = val.idAction;
+        spec.actionTitle = val.actionTitle;
+        ar.push(spec);
+      });
     }
-    else {
-      this.order = null;
-      const stor = JSON.parse(localStorage.getItem(this.cKey));
-      if (stor) {
-        stor.forEach((val) => {
-          let spec = new ClientOrderProducts();
-          spec.idQuotationProduct = val.idQuotationProduct;
-          spec.price = val.price;
-          spec.qty = val.qty;
-          spec.idStorePlace = val.storePlace;
-          spec.complect = val.complect;
-          spec.idAction = val.idAction;
-          this.orderProducts.push(spec);
-        });
+    return ar;
+  }
+
+    async initCart() {
+    if (this._inCartInit)
+      return;
+    try {
+      this._inCartInit = true;
+      this.min_loan_amt = parseInt(await this.repo.getAppParam('MAX_LOAN_AMT'));
+      this.max_loan_amt = parseInt(await this.repo.getAppParam('MIN_LOAN_AMT'));
+      //console.log('CartInit call. Is auth: '+ this.userService.isAuth);
+      if (this.userService.isAuth)
+      {
+        this.order = await this.repo.getClientDraftOrder();
+        if (this.order.idPerson)
+          this.person = await this.repo.getPersonById(this.order.idPerson);
+
+        let op = await this.repo.getCartProducts();
+
+        // Add local storage items
+        let lsAr = this.getLocalStorageItems();
+        for (let i of lsAr) {
+          let itm = await this.repo.insertCartProduct(i);
+          op.push(itm);
+        }
+
+        //переключаем корзину на результирующую
+        this.orderProducts = op;
+        this.updateDisplayOrderProducts();
+
+        // после переноса содержимого локальной корзины в бекенд - затираем локальную корзину
+        localStorage.setItem(this.cKey, null);
       }
+      else
+      {
+        this.order = null;
+        this.orderProducts = this.getLocalStorageItems();
+        this.updateDisplayOrderProducts();
+      }
+    }
+    finally {
+      this._inCartInit = false;
     }
   }
 
@@ -351,6 +395,7 @@ export class CartService {
     firstItem.qty = qty;
     firstItem.idAction = vrnt.idAction;
     firstItem.complect = vrnt.complect;
+    firstItem.actionTitle = vrnt.title;
 
     let secondItem = new ClientOrderProducts();
     secondItem.idQuotationProduct = vrnt.secondProductQP;
@@ -362,14 +407,24 @@ export class CartService {
     secondItem.qty = qty;
     secondItem.idAction = vrnt.idAction;
     secondItem.complect = vrnt.complect;
+    secondItem.actionTitle = vrnt.title;
 
     if (this.userService.isAuth) {
       firstItem = await this.repo.insertCartProduct(firstItem);
-      this.orderProducts.push(firstItem);
+      //this.orderProducts.push(firstItem);
       secondItem = await this.repo.insertCartProduct(secondItem);
-      this.orderProducts.push(secondItem);
+      //this.orderProducts.push(secondItem);
+      this.showAddedItemToast(page);
+      this.orderProducts = [];
+      await this.initCart();
     }
-    this.showAddedItemToast(page);
+    else
+    {
+      this.orderProducts.push(firstItem);
+      this.orderProducts.push(secondItem);
+      this.showAddedItemToast(page);
+    }
+    this.saveToLocalStorage();
   }
 
   showAddedItemToast(page: any) {
@@ -387,25 +442,29 @@ export class CartService {
 
   async addItem(item: QuotationProduct, qty: number, price: number, storePlace: StorePlace, page: any) {
     if (item && qty && price) {
-      const _f = this.orderProducts.filter(i => {return ((i.idQuotationProduct === item.id) && (!i.complect));});
+      const sp = (storePlace) ? storePlace.id : null;
+      const _f = this.orderProducts.filter(i => {return ((i.idQuotationProduct === item.id) && (!i.complect)
+                                                          && (i.idStorePlace === sp));});
       let foundQuot: ClientOrderProducts = (_f) ? _f[0] : null;
-
-      if (foundQuot) {
+      if (foundQuot)
+      {
         foundQuot.qty += qty;
         foundQuot.price = price;
-        this.updateItem(foundQuot);
-      } else {
+        await this.updateItem(foundQuot);
+      }
+      else
+      {
         let orderItem = new ClientOrderProducts();
         orderItem.idQuotationProduct = item.id;
         orderItem.price = price;
         orderItem.qty = qty;
         orderItem.idStorePlace = (storePlace ? storePlace.id : null);
 
-      if (this.userService.isAuth) {
-        orderItem = await this.repo.insertCartProduct(orderItem);
+        if (this.userService.isAuth) {
+          orderItem = await this.repo.insertCartProduct(orderItem);
+        }
+        this.orderProducts.push(orderItem);
       }
-      this.orderProducts.push(orderItem);
-    }
       this.saveToLocalStorage();
       this.lastItemCreditCalc = null;
       this.showAddedItemToast(page);
@@ -445,19 +504,39 @@ export class CartService {
     alert.present();
   }
 
+
   async updateItem(item: ClientOrderProducts) {
+
+    if (item.complect) {
+      let cmplArr = this.orderProducts.filter(x => (x.complect === item.complect) && (x.id !== item.id));
+      cmplArr.forEach(x => {
+          x.qty = item.qty;
+        }
+      );
+    }
+
     if (this.userService.isAuth) {
       item = await this.repo.saveCartProduct(item);
-      if (!(item)) {
-        this.gotoCartPageIfDataChanged();
-      }
+        if (!(item)) {
+          this.gotoCartPageIfDataChanged();
+        }
+      //this.initCart();
     }
   }
 
   async removeItem(itemIndex: number) {
-    if (this.userService.isAuth)
+    const cmpl: string = this.orderProducts[itemIndex].complect;
+    if (this.userService.isAuth) {
       await this.repo.deleteCartProduct(this.orderProducts[itemIndex]);
+    }
     this.orderProducts.splice(itemIndex, 1);
+    if (cmpl) {
+      //const fltrd: Array<ClientOrderProducts> = this.orderProducts.filter(x => x.complect === cmpl);
+      let fnd = this.orderProducts.findIndex(x => x.complect === cmpl);
+      if (fnd !== -1)
+        this.orderProducts.splice(fnd, 1);
+    }
+
     this.saveToLocalStorage();
     this.lastItemCreditCalc = null;
     this.evServ.events['cartUpdateEvent'].emit();

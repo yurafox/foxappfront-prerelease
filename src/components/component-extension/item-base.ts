@@ -52,16 +52,6 @@ export class ItemBase extends ComponentBase implements OnInit {
         }).length;
 
         this.valueQuot = this.quotes.find(i => {return i.id === this.product.valueQP});
-
-        // Возвращаем предложение с минимальной ценой
-/*
-        this.valueQuot = this.quotes.sort((x, y) => {
-          return (x.price - y.price);
-        })
-          .find((i) => {
-            return (i.stockQuant > 0)
-          });
-*/
       }
     }
     if (this.valueQuot) {

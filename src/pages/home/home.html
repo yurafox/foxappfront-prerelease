@@ -18,6 +18,46 @@
   <div *ngIf="content && !userService.userMutex && (pageMode === 1)">
     <sliding-banner></sliding-banner>
     <html-outlet [html]="content" [context]="this"></html-outlet>
+
+    <ion-grid no-padding *ngIf="productsOfDay.length>0">
+      <ion-row>
+        <ion-col style="padding-left: 10px; padding-top: 20px; padding-right: 5px; padding-bottom: 5px;"
+                 class="f-item-section-header">
+          <span loc="Deals of day" name="Hits">{{locale['Deals']}}</span>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div *ngFor="let productElement of productsOfDay, let i=index">
+            <hr *ngIf="!(i == 0)">
+            <item
+              [product]="productElement">
+            </item>
+          </div>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid *ngIf="productsSalesHits.length>0">
+      <ion-row>
+        <ion-col style="padding-top: 20px;" class="f-padding-lr-5 f-item-section-header">
+          <span loc="Hits of sales" name="Hits">{{locale['Hits']}}</span>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="f-padding-lr-5">
+          <ion-scroll class="f-day-deals-scroll" scrollX="true" >
+            <ion-row nowrap>
+              <div *ngFor="let prod of productsSalesHits">
+                <item-tile [product]="prod"></item-tile>
+              </div>
+            </ion-row>
+          </ion-scroll>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
   </div>
 
   <div *ngIf="pageMode === 2">
