@@ -6,78 +6,34 @@
 </ion-header>
 
 <ion-content #cont>
-<!--
-  <ion-refresher (ionRefresh)="doRefresh($event)" [snapbackDuration]="1000" [closeDuration]="1000">
-    <ion-refresher-content
-      pullingIcon="ios-refresh-outline"
-      refreshingSpinner="circles">
-    </ion-refresher-content>
-  </ion-refresher>
--->
+  <div class="f-bkg-div">
+  <!--
+    <ion-refresher (ionRefresh)="doRefresh($event)" [snapbackDuration]="1000" [closeDuration]="1000">
+      <ion-refresher-content
+        pullingIcon="ios-refresh-outline"
+        refreshingSpinner="circles">
+      </ion-refresher-content>
+    </ion-refresher>
+  -->
 
-  <div *ngIf="content && !userService.userMutex && (pageMode === 1)">
-    <sliding-banner></sliding-banner>
-    <html-outlet [html]="content" [context]="this"></html-outlet>
+    <div *ngIf="content && !userService.userMutex && (pageMode === 1)">
+      <sliding-banner></sliding-banner>
+      <html-outlet [html]="content" [context]="this"></html-outlet>
+    </div>
 
-    <ion-grid no-padding *ngIf="productsOfDay.length>0">
-      <ion-row>
-        <ion-col style="padding-left: 10px; padding-top: 20px; padding-right: 5px; padding-bottom: 5px;"
-                 class="f-item-section-header">
-          <span loc="Deals of day" name="Hits">{{locale['Deals']}}</span>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <div *ngFor="let productElement of productsOfDay, let i=index">
-            <hr *ngIf="!(i == 0)">
-            <item
-              [product]="productElement">
-            </item>
-          </div>
+    <div class="f-div-card"  *ngIf="pageMode === 2">
+      <ion-item *ngFor="let sItem of searchButtonControl.srchItemsArr; let i=index"
+                (click)="search(sItem.itemText)">
+        <ion-icon class="f-item-gray" *ngIf="sItem.isClosable" name="md-close" item-left (click)="deleteSearchItem($event, i)"></ion-icon>
+        <div [ngClass]="sItem.isClosable ? 'f-color-info' : 'f-product'">
+          {{sItem.itemText}}
+        </div>
+        <ion-icon class="f-item-gray"  name="arrow-up-left" item-right></ion-icon>
+      </ion-item>
+    </div>
 
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-
-    <ion-grid *ngIf="productsSalesHits.length>0">
-      <ion-row>
-        <ion-col style="padding-top: 20px;" class="f-padding-lr-5 f-item-section-header">
-          <span loc="Hits of sales" name="Hits">{{locale['Hits']}}</span>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col class="f-padding-lr-5">
-          <ion-scroll class="f-day-deals-scroll" scrollX="true" >
-            <ion-row nowrap>
-              <div *ngFor="let prod of productsSalesHits">
-                <item-tile [product]="prod"></item-tile>
-              </div>
-            </ion-row>
-          </ion-scroll>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-
+    <div class="f-div-card" *ngIf="pageMode === 3">
+      <items-list #itemsList [parentControl]="this"></items-list>
+    </div>
   </div>
-
-  <div *ngIf="pageMode === 2">
-    <ion-item *ngFor="let sItem of searchButtonControl.srchItemsArr; let i=index"
-              (click)="search(sItem.itemText)">
-      <ion-icon class="f-item-gray" *ngIf="sItem.isClosable" name="md-close" item-left (click)="deleteSearchItem($event, i)"></ion-icon>
-      <div [ngClass]="sItem.isClosable ? 'f-color-info' : 'f-product'">
-        {{sItem.itemText}}
-      </div>
-      <ion-icon class="f-item-gray"  name="arrow-up-left" item-right></ion-icon>
-    </ion-item>
-  </div>
-
-  <div *ngIf="pageMode === 3">
-<!--
-
-    <progress-bar [active]="srchService.inSearch"></progress-bar>
-
--->
-    <items-list #itemsList [parentControl]="this"></items-list>
-  </div>
-
 </ion-content>

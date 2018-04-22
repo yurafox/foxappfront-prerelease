@@ -34,6 +34,7 @@ import { ItemSimpleComponent } from './item-simple/item-simple';
 import { SlidingBannerComponent } from './sliding-banner/sliding-banner';
 import { ComplectComponent } from './complect/complect';
 import { ItemTileComponent } from './item-tile/item-tile';
+import { CategoriesComponent } from './categories/categories';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { ItemTileComponent } from './item-tile/item-tile';
     ItemSimpleComponent,
     SlidingBannerComponent,
     ComplectComponent,
-    ItemTileComponent
+    ItemTileComponent,
+    CategoriesComponent
   ],
   entryComponents: [
     CustomPopupComponent,
@@ -79,7 +81,8 @@ import { ItemTileComponent } from './item-tile/item-tile';
     PipesModule,
     Ionic2RatingModule,
     LazyLoadImagesModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+
   ],
   exports: [
     SearchBtnComponent,
@@ -111,7 +114,8 @@ import { ItemTileComponent } from './item-tile/item-tile';
     ItemSimpleComponent,
     SlidingBannerComponent,
     ComplectComponent,
-    ItemTileComponent
+    ItemTileComponent,
+    CategoriesComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

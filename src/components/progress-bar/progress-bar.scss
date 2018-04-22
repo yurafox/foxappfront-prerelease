@@ -10,6 +10,8 @@ progress-bar {
   }
 
   .progress-bar span {
+    position: relative;
+    top: -6px;
     margin: 0;
     padding: 0;
     display: inline-block;

@@ -376,6 +376,15 @@ ion-header.header.header-md::after {
 }
 
 /// ION-GRID, ROWS, COLS
+.f-div-card-margin {
+  background-color: white;
+  margin-top: 5px;
+}
+
+.f-div-card {
+  background-color: white;
+}
+
 .col {
   padding-top: 2px;
   padding-bottom: 2px;
@@ -519,6 +528,7 @@ ion-header.header.header-md::after {
 
 .f-img-item-lg {
   padding: 6px 4px 2px;
+  height: 50vh;
 }
 
 //buttons
