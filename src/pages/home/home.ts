@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, DoCheck, ElementRef, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component,DoCheck, ElementRef, ViewChild} from '@angular/core';
 import {App, NavController, IonicPage} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {AbstractDataRepository} from '../../app/service/index';
@@ -83,10 +83,6 @@ export class HomePage extends ComponentBase implements DoCheck {
   public updateScrollHeight() {
     const hdrH = (this.header) ?  this.header.nativeElement.scrollHeight : 0;
     this.scrollHeight = window.screen.height - hdrH;
-  }
-
-  ngDoCheck() {
-    this.updateScrollHeight();
   }
 
   public set pageMode(val: PageMode) {
