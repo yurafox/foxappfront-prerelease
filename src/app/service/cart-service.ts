@@ -102,7 +102,7 @@ export class CartService {
     repo.loadRegionsCache();
     repo.loadStorePlaceCache();
     repo.loadSuppliersCache();
-    //repo.loadCityCache();
+    repo.loadCityCache();
     repo.loadMeasureUnitCache();
     repo.getCountries(); //<--- this loads countries cache
     repo.getManufacturers(true); //<--- this loads manufacturers cache

@@ -69,6 +69,7 @@ const measureUnitUrl = `${AppConstants.BASE_URL}/api/measureUnit`;
 const LangUrl = `${AppConstants.BASE_URL}/api/localization/lang`;
 const countriesUrl = `${AppConstants.BASE_URL}/api/geo/country`;
 const citiesUrl = `${AppConstants.BASE_URL}/api/geo/city`;
+const citiesWithStoresUrl = `${AppConstants.BASE_URL}/api/geo/citiesWithStores`;
 const regionsUrl = `${AppConstants.BASE_URL}/api/geo/region`;
 const getPaymentMethodsUrl = `${AppConstants.BASE_URL}/api/fin/pmtmethod`;
 const loEntitiesUrl = `${AppConstants.BASE_URL}/api/lo/loentity`;
@@ -92,7 +93,6 @@ const clientOrderSpecProductsUrl = `${AppConstants.BASE_URL}/api/Cart/GetCartPro
 const clientOrderHistSpecProductsUrl = `${AppConstants.BASE_URL}/api/Cart/GetClientHistProductsByOrderId`;
 const clientOrdersUrl = `${AppConstants.BASE_URL}/api/Cart/clientOrder`;
 const clientHistOrdersUrl = `${AppConstants.BASE_URL}/api/Cart/clientHistOrder`;
-const citiesWithStoresUrl = `${AppConstants.BASE_URL}/api/geo/citiesWithStores`;
 const getDeliveryCostUrl = `${AppConstants.BASE_URL}/api/lo/GetDeliveryCost`;
 const getDeliveryDateUrl = `${AppConstants.BASE_URL}/api/lo/GetDeliveryDate`;
 const calculateCartUrl = `${AppConstants.BASE_URL}/api/cart/calculateCart`;
@@ -1462,7 +1462,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async loadCityCache() {
     try {
       const response = await this.http
-        .get(citiesUrl,RequestFactory.makeAuthHeader()).toPromise();
+        .get(citiesWithStoresUrl,RequestFactory.makeAuthHeader()).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
