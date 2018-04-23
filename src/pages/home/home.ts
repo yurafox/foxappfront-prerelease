@@ -85,6 +85,10 @@ export class HomePage extends ComponentBase implements DoCheck {
     this.scrollHeight = window.screen.height - hdrH;
   }
 
+  ngDoCheck() {
+    this.updateScrollHeight();
+  }
+
   public set pageMode(val: PageMode) {
     if (val === this._pageMode)
       return;
