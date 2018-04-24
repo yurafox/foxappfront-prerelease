@@ -3,7 +3,7 @@
     <ion-row>
       <ion-col col-auto>
         <div *ngIf="product && product?.imageUrl" lazy-load-images>
-          <img class="f-img-item-tile" [attr.data-src]="product?.imageUrl" onError="this.src='assets/imgs/nophoto.png';">
+          <img class="f-img-item-tile" src="assets/imgs/spiner-load.gif" [attr.data-src]="product?.imageUrl" onError="this.src='assets/imgs/nophoto.png';">
         </div>
         <img *ngIf="product && !product.imageUrl" class="f-img-item-tile" src="assets/imgs/nophoto.png">
       </ion-col>
