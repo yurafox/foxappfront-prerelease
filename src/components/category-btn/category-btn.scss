@@ -1,0 +1,29 @@
+category-btn {
+  .ctb-wrapper{
+    background-color:#ef4123;
+    margin-top:-3px;
+    margin-bottom:2px;
+    min-height: 40px;
+    padding-top: 8px;
+  }
+
+  .ctb-content{
+    width: 150px;
+    height: 24px;
+    margin-left: 40px;
+    padding-top: 2px;float: left
+  }
+
+  .ctb-inbox {
+    width: 24px;
+    height: 24px;
+    margin-left: 19px;
+    float: left
+  }
+
+  .ctb-arrow {
+    padding-top: 4px;
+    text-align: right;
+    padding-right: 10px
+  }
+}

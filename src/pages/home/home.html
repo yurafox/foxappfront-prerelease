@@ -7,7 +7,7 @@
 
 <ion-content #cont>
   <div class="f-bkg-div">
-  <!--
+    <!--
     <ion-refresher (ionRefresh)="doRefresh($event)" [snapbackDuration]="1000" [closeDuration]="1000">
       <ion-refresher-content
         pullingIcon="ios-refresh-outline"
@@ -18,17 +18,18 @@
 
     <div *ngIf="content && !userService.userMutex && (pageMode === 1)">
       <sliding-banner></sliding-banner>
+      <category-btn></category-btn>
+
       <html-outlet [html]="content" [context]="this"></html-outlet>
     </div>
 
-    <div class="f-div-card"  *ngIf="pageMode === 2">
-      <ion-item *ngFor="let sItem of searchButtonControl.srchItemsArr; let i=index"
-                (click)="search(sItem.itemText)">
+    <div class="f-div-card" *ngIf="pageMode === 2">
+      <ion-item *ngFor="let sItem of searchButtonControl.srchItemsArr; let i=index" (click)="search(sItem.itemText)">
         <ion-icon class="f-item-gray" *ngIf="sItem.isClosable" name="md-close" item-left (click)="deleteSearchItem($event, i)"></ion-icon>
         <div [ngClass]="sItem.isClosable ? 'f-color-info' : 'f-product'">
           {{sItem.itemText}}
         </div>
-        <ion-icon class="f-item-gray"  name="arrow-up-left" item-right></ion-icon>
+        <ion-icon class="f-item-gray" name="arrow-up-left" item-right></ion-icon>
       </ion-item>
     </div>
 
