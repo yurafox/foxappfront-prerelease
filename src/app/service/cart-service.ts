@@ -330,8 +330,8 @@ export class CartService {
       return;
     try {
       this._inCartInit = true;
-      this.min_loan_amt = parseInt(await this.repo.getAppParam('MAX_LOAN_AMT'));
-      this.max_loan_amt = parseInt(await this.repo.getAppParam('MIN_LOAN_AMT'));
+      this.min_loan_amt = parseInt(await this.repo.getAppParam('MIN_LOAN_AMT'));
+      this.max_loan_amt = parseInt(await this.repo.getAppParam('MAX_LOAN_AMT'));
       //console.log('CartInit call. Is auth: '+ this.userService.isAuth);
       if (this.userService.isAuth)
       {
