@@ -211,11 +211,10 @@ export class SearchService {
     const query = {
       'suggest': {
         'inpSuggest': {
-          'text': `${inText}`,
-          'term': {
-            'field': 'srchString',
-            'sort': 'score',
-            'min_word_length': 2
+          'prefix': `${inText}`,
+          'completion': {
+            'field': 'suggest',
+            'size' : 10
           }
         }
       }
@@ -307,7 +306,7 @@ export class SearchService {
     if (this.prodSrchParams.srchText) {
       mustArr.push({'simple_query_string': {
                                       'query': `${this.prodSrchParams.srchText}`,
-                                      'fields': [ 'name', 'description', 'srchString', 'id', 'barcode'],
+                                      'fields': [ 'name', 'description', 'srchString', 'id', 'barcode', 'suggest'],
                                       'default_operator': 'and'
                                     }
             });
@@ -327,7 +326,7 @@ export class SearchService {
                     }
       });
     };
-   
+
     if (this.prodSrchParams.actionId) {
       mustArr.push({
         "match": { "actions":`${this.prodSrchParams.actionId}`}

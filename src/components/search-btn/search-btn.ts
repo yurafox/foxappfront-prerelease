@@ -105,16 +105,23 @@ export class SearchBtnComponent extends ComponentBase {
           const opts = x.options;
           let s = null;
           if (opts.length>0)
-            s = opts[0].text
+          {
+              opts.forEach(y => {
+                varArr.push(y.text);
+              })
+          }
           else
-            s = txt;
-          varArr.push(s);
+          {
+            varArr.push(txt);
+          }
         }
       );
       if (varArr.length > 0) {
-        const str = varArr.join(' ');
-        if (this.srchItemsArr.findIndex(x => {return (x.itemText === str);}) === -1)
-          this.srchItemsArr.push(new SearchSuggestItem(false, str));
+        varArr.forEach(z => {
+          if (this.srchItemsArr.findIndex(x => {return (x.itemText === z);}) === -1)
+            this.srchItemsArr.push(new SearchSuggestItem(false, z));
+          }
+        );
       }
     }
   }
