@@ -35,6 +35,7 @@ import { SlidingBannerComponent } from './sliding-banner/sliding-banner';
 import { ComplectComponent } from './complect/complect';
 import { ItemTileComponent } from './item-tile/item-tile';
 import { CategoriesComponent } from './categories/categories';
+import { CategoryBtnComponent } from './category-btn/category-btn';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { CategoriesComponent } from './categories/categories';
     SlidingBannerComponent,
     ComplectComponent,
     ItemTileComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    CategoryBtnComponent
   ],
   entryComponents: [
     CustomPopupComponent,
@@ -115,7 +117,8 @@ import { CategoriesComponent } from './categories/categories';
     SlidingBannerComponent,
     ComplectComponent,
     ItemTileComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    CategoryBtnComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
