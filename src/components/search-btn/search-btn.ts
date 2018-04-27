@@ -10,7 +10,8 @@ import {Subject} from 'rxjs/Subject';
 class SearchSuggestItem {
   constructor (
     public isClosable: boolean,
-    public itemText: string
+    public itemText: string,
+    public itemDisplayText: string
   ){}
 }
 
@@ -76,9 +77,18 @@ export class SearchBtnComponent extends ComponentBase {
   initTmpSearchArray() {
     const ar = this.searchService.searchItems;
     ar.forEach((item) => {
-      this.srchItemsArr.push(new SearchSuggestItem(true, item));
+      this.srchItemsArr.push(new SearchSuggestItem(true, item, item));
     });
     this.searchValue = this.searchService.lastSearch;
+  }
+
+  private getIncSearchDisplayText(txt: string): string {
+    if ((!txt) || (!this.searchValue))
+      return txt;
+    const idx = txt.indexOf(this.searchValue);
+    const emTxt = txt.substr(idx + this.searchValue.length, txt.length);
+    return  ((idx === -1) ? txt : txt.substr(idx, this.searchValue.length))
+            + ((emTxt) ? '<b>' + txt.substr(idx + this.searchValue.length, txt.length) + '</b>' : '');
   }
 
   async incSearch() {
@@ -87,14 +97,15 @@ export class SearchBtnComponent extends ComponentBase {
     let ar = [];
     if (this.searchValue)
       ar = this.searchService.searchItems.filter((value) => {
-        return !(value.toLowerCase().indexOf(this.searchValue.toLowerCase()) == -1);
+        return !(value.toLowerCase().indexOf(this.searchValue.toLowerCase()) === -1);
       }).slice()
     else
       ar = this.searchService.searchItems;
 
-    ar.forEach(x =>
-      this.srchItemsArr.push(new SearchSuggestItem(true, x))
-    );
+    ar.forEach(x => {
+
+      this.srchItemsArr.push(new SearchSuggestItem(true, x, this.getIncSearchDisplayText(x)))
+    });
 
     if (this.searchValue) {
       let res = await this.srchService.getSuggestData(this.searchValue);
@@ -103,23 +114,16 @@ export class SearchBtnComponent extends ComponentBase {
         x => {
           const txt = x.text;
           const opts = x.options;
-          let s = null;
           if (opts.length>0)
-          {
-              opts.forEach(y => {
-                varArr.push(y.text);
-              })
-          }
+            opts.forEach(y => varArr.push(y.text))
           else
-          {
             varArr.push(txt);
-          }
         }
       );
       if (varArr.length > 0) {
         varArr.forEach(z => {
           if (this.srchItemsArr.findIndex(x => {return (x.itemText === z);}) === -1)
-            this.srchItemsArr.push(new SearchSuggestItem(false, z));
+            this.srchItemsArr.push(new SearchSuggestItem(false, z, this.getIncSearchDisplayText(z)));
           }
         );
       }

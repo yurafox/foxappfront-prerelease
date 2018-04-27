@@ -26,7 +26,7 @@
                 (click)="search(sItem.itemText)">
         <ion-icon class="f-item-gray" *ngIf="sItem.isClosable" name="md-close" item-left (click)="deleteSearchItem($event, i)"></ion-icon>
         <div [ngClass]="sItem.isClosable ? 'f-color-info' : 'f-product'">
-          {{sItem.itemText}}
+          <span [innerHTML]="sItem.itemDisplayText"> </span>
         </div>
         <ion-icon class="f-item-gray"  name="arrow-up-left" item-right></ion-icon>
       </ion-item>
