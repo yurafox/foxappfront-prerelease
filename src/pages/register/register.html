@@ -17,7 +17,7 @@
 
         <ion-item>
           <ion-label><font class="f-color-red">*</font></ion-label>
-          <ion-input type="text" placeholder="380xxxxxxxxx" formControlName="phone"></ion-input>
+          <ion-input type="text" [mask]="'380999999999'" placeholder="380xxxxxxxxx" formControlName="phone"></ion-input>
         </ion-item>
         <ion-item class='alertDanger' *ngIf="formErrors.phone">
           <span>{{formErrors.phone}}</span>
@@ -84,7 +84,7 @@
         <h3 class="header-label" loc="Проверка регистрации" name="VerifyRegistration">{{locale['VerifyRegistration']}}</h3>
       </ion-item>
       <ion-item>
-       <input type="text" placeholder="380xxxxxxxxx" formControlName="phone" />
+       <input type="text" [mask]="'380999999999'" placeholder="380xxxxxxxxx" formControlName="phone" />
      </ion-item>
       <ion-item class='alertDanger' *ngIf="formErrors.phone">
         <span>{{formErrors.phone}}</span>
@@ -98,7 +98,7 @@
     </form>
   </div>
 
-  <!-- return yo ligin page-->
+  <!-- return your login page-->
   <div *ngIf="onLoad || preRegister" class="align-bottom" padding text-center>
     <span loc="Уже имеете аккаунт" name="HaveAccount">{{locale['HaveAccount']}}</span>?
     <span class="bold" (click)="login()" loc="Войти" name="Login">{{locale['Login']}}</span>

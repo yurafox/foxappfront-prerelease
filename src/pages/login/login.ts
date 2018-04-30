@@ -109,7 +109,7 @@ export class LoginPage extends ComponentBase implements OnInit {
     this.loginForm = this.formBuilder.group({
       'phone': [this._phone, [Validators.required,
         // obsolete email regex^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$
-        Validators.pattern('^380\\d{2}\\d{7}$')]],
+        Validators.pattern('^380\\d{9}$')]],
 
       'password': ['', [Validators.required,
         Validators.minLength(6),

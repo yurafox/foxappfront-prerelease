@@ -36,6 +36,7 @@ import { ComplectComponent } from './complect/complect';
 import { ItemTileComponent } from './item-tile/item-tile';
 import { CategoriesComponent } from './categories/categories';
 import { CategoryBtnComponent } from './category-btn/category-btn';
+import { MaskComponent } from './mask/mask';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { CategoryBtnComponent } from './category-btn/category-btn';
     ComplectComponent,
     ItemTileComponent,
     CategoriesComponent,
-    CategoryBtnComponent
+    CategoryBtnComponent,
+    MaskComponent
   ],
   entryComponents: [
     CustomPopupComponent,
@@ -118,7 +120,8 @@ import { CategoryBtnComponent } from './category-btn/category-btn';
     ComplectComponent,
     ItemTileComponent,
     CategoriesComponent,
-    CategoryBtnComponent
+    CategoryBtnComponent,
+    MaskComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

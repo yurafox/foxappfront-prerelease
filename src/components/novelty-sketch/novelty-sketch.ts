@@ -63,7 +63,7 @@ export class NoveltySketchComponent extends ComponentBase{
   }
 
   public get img_url ():string {
-    return this.novelty.img_url;
+    return this.product.imageUrl;
   }
 
   public get priority ():number {
