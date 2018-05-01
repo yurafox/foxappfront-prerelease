@@ -1,5 +1,5 @@
 <ion-header>
-  <main-toolbar [showCartIcon]="false"></main-toolbar>
+  <main-toolbar [showCartIcon]="false" [showSearchButton]="false"></main-toolbar>
 </ion-header>
 
 <ion-content class="f-size-larger">
@@ -13,11 +13,16 @@
   <ion-grid>
     <ion-row padding *ngIf="dataLoaded">
       <ion-col>
-        <span><span loc="Посылка" name="Shipment">{{locale['Shipment']}}</span> {{itemIndex+1}} <span loc="из" name="Of">{{locale['Of']}}</span> {{cart.orderProducts.length}}</span>
+        <span><span loc="Посылка" name="Shipment">{{locale['Shipment']}}</span> {{itemIndex+1}} <span loc="из" name="Of">{{locale['Of']}}</span> {{this.cart.loShipments.length}}</span>
         <br>
-        <span class="f-size-default"><b>{{cart.orderProducts[itemIndex]?.quotationproduct?.product?.name}}</b></span>
+        <ul class="f-ul">
+          <li *ngFor="let itm of this.cart.loShipments[itemIndex].shipmentItems">
+            <span class="f-size-default"><b>{{cart.getCartOrderProductById(itm.idOrderSpecProd)?.quotationproduct?.product?.name}}</b></span>
+          </li>
+        </ul>
       </ion-col>
     </ion-row>
+
 
     <ion-row *ngIf="dataLoaded">
       <ion-col class="f-padding-lr-15">
@@ -25,7 +30,7 @@
       </ion-col>
     </ion-row>
 
-    <div *ngFor="let opt of cart.loDeliveryOptions" style="padding-left: 5px; padding-right: 5px;">
+    <div *ngFor="let opt of cart.loShipmentDeliveryOptions" style="padding-left: 5px; padding-right: 5px;">
       <ion-row *ngIf="opt.itemIdx === itemIndex">
 
         <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
@@ -47,7 +52,10 @@
                 <span class="f-color-green"><b><span loc="БЕСПЛАТНАЯ доставка" name="FreeDelivery">{{locale['FreeDelivery']}}</span></b></span>
               </span>
               <br>
-              <span loc="Доставляется" name="DeliveryBy">{{locale['DeliveryBy']}}</span> <span class="f-color-green">{{opt.loName}}</span>
+
+              <span *ngIf="opt.loName" loc="Доставляется" name="DeliveryBy">{{locale['DeliveryBy']}}</span> <span class="f-color-green">{{opt.loName}}</span>
+              <span *ngIf="opt.pickupLocationName" loc="Самовивоз" name="PickupPlace">{{locale['PickupPlace']}}</span> <span class="f-color-green">{{opt.pickupLocationName}}</span>
+
             </ion-col>
           </ion-row>
 

@@ -19,7 +19,7 @@ export class BonusPayComponent extends ComponentBase {
   constructor(public cart: CartService, private keyBoard: Keyboard) {
     super();
 
-    this.bonusInputStream$.debounceTime(1500)
+    this.bonusInputStream$.debounceTime(500)
       .distinctUntilChanged()
       .subscribe(inputValue =>
         {

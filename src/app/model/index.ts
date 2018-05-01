@@ -62,3 +62,6 @@ export * from './client-message';
 export * from './app-param';
 export * from './currency-rate';
 export * from './action-by-product';
+export * from './shipment';
+export * from './shipment-items';
+export * from './app-param';

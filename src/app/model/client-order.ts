@@ -22,7 +22,7 @@ export class ClientOrder {
   get dto(): any {
     return  {id: this.id, orderDate: this.orderDate, idCur: this.idCur, idClient: this.idClient, total: this.total,
       idPaymentMethod: this.idPaymentMethod, idPaymentStatus: this.idPaymentStatus, idStatus: this.idStatus,
-      loIdEntity: this.loIdEntity, loIdClientAddress: this.loIdClientAddress,
+      loIdClientAddress: this.loIdClientAddress,
       itemsTotal: this.itemsTotal, shippingTotal: this.shippingTotal,
       bonusTotal: this.bonusTotal, promoBonusTotal: this.promoBonusTotal, bonusEarned: this.bonusEarned,
       promoCodeDiscTotal: this.promoCodeDiscTotal, idPerson: this.idPerson};
@@ -38,7 +38,6 @@ export class ClientOrder {
     public idPaymentStatus?: number,
     public idStatus?: number,
     public orderProducts?: ClientOrderProducts[],
-    public loIdEntity?: number,
     public loIdClientAddress?: number,
     public itemsTotal?: number,
     public shippingTotal?: number,

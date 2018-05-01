@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
-import {LoDeliveryOption, CartService} from '../../app/service/cart-service';
+import {CartService, LoShipmentDeliveryOption} from '../../app/service/cart-service';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
@@ -18,12 +18,14 @@ export class ShippingOptionsPage extends ComponentBase {
                 public repo: AbstractDataRepository, public loadingCtrl: LoadingController) {
     super();
     this.initLocalization();
-    this.cart.loDeliveryOptions = [];
+    this.cart.loShipmentDeliveryOptions = [];
   }
 
-  ngOnInit() {
-    this.getDeliveryOptions();
+  async ngOnInit() {
+    this.cart.loShipments = await this.repo.generateShipments();
+    await this.getDeliveryOptions();
   }
+
 
   async getDeliveryOptions() {
     let content = this.locale['LoadingContent'];
@@ -34,24 +36,37 @@ export class ShippingOptionsPage extends ComponentBase {
     loading.present();
 
     let i = 0;
-    for (let ci of this.cart.orderProducts) {
-      let qp = await (<any>ci).quotationproduct_p;
-      let quot = await (<any>qp).quotation_p;
-      let suppl = await (<any>quot).supplier_p;
 
-      let supplLoEnt = await this.repo.getLoEntitiesForSupplier(suppl.id);
+    for (let ship of this.cart.loShipments) {
 
-      for (let loEnt of supplLoEnt) {
-        let ent = await this.repo.getLoEntitiyById(loEnt.idLoEntity);
-        let item = new LoDeliveryOption();
-        item.idClientOrderProduct = ci.id;
-        item.loEntityId = loEnt.idLoEntity;
+      if (ship.idStorePlace) {
+        let item = new LoShipmentDeliveryOption();
+        item.shipment = ship;
+        item.loEntityId = null;
         item.itemIdx = i;
-        item.deliveryCost = await this.repo.getDeliveryCost(ci, loEnt.idLoEntity, this.cart.order.loIdClientAddress);
-        item.deliveryDate = await this.repo.getDeliveryDate(ci, loEnt.idLoEntity, this.cart.order.loIdClientAddress);
-        item.loName = ent.name;
-        item.isChecked = false;
-        this.cart.loDeliveryOptions.push(item);
+        item.deliveryCost = 0;
+        item.deliveryDate = new Date(); //await this.repo.getDeliveryDateByShipment(ship.id, loEnt.idLoEntity, this.cart.order.loIdClientAddress);
+        item.loName = null;
+        item.isChecked = true;
+        item.pickupLocationName = (await this.repo.getStorePlaceById(ship.idStorePlace)).name; // '';
+        this.cart.loShipmentDeliveryOptions.push(item);
+      }
+      else
+      {
+        let supplLoEnt = await this.repo.getLoEntitiesForSupplier(ship.idSupplier);
+        for (let loEnt of supplLoEnt) {
+          let ent = await this.repo.getLoEntitiyById(loEnt.idLoEntity);
+          let item = new LoShipmentDeliveryOption();
+
+          item.shipment = ship;
+          item.loEntityId = loEnt.idLoEntity;
+          item.itemIdx = i;
+          item.deliveryCost = await this.repo.getDeliveryCostByShipment(ship, loEnt.idLoEntity, this.cart.order.loIdClientAddress);
+          item.deliveryDate = await this.repo.getDeliveryDateByShipment(ship, loEnt.idLoEntity, this.cart.order.loIdClientAddress);
+          item.loName = ent.name;
+          item.isChecked = (supplLoEnt.length === 1);
+          this.cart.loShipmentDeliveryOptions.push(item);
+        }
       }
       i++;
     }
@@ -60,7 +75,7 @@ export class ShippingOptionsPage extends ComponentBase {
   }
 
   onSelectOptionClick(option: any) {
-    this.cart.loDeliveryOptions.forEach(i => {
+    this.cart.loShipmentDeliveryOptions.forEach(i => {
         if (i.itemIdx === this.itemIndex) {
           i.isChecked = (i === option);
         }
@@ -70,7 +85,7 @@ export class ShippingOptionsPage extends ComponentBase {
 
   isAnyOptionSelected():boolean {
     let res = false;
-    for (let item of this.cart.loDeliveryOptions) {
+    for (let item of this.cart.loShipmentDeliveryOptions) {
       if (item.itemIdx === this.itemIndex) {
         if (item.isChecked){
           res = true;
@@ -82,36 +97,23 @@ export class ShippingOptionsPage extends ComponentBase {
  }
 
   async onContinueClick() {
-    if (this.itemIndex < this.cart.orderProducts.length-1)
+    if (this.itemIndex < this.cart.loShipments.length-1)
       this.itemIndex++;
     else {
-      // Выбранные опции запихиваем в массив выбранных опций
-      this.cart.loResultDeliveryOptions = [];
-/*
-      this.cart.loDeliveryOptions.forEach(i => {
-
-*/
-      for (let i of this.cart.loDeliveryOptions) {
+      for (let i of this.cart.loShipmentDeliveryOptions) {
 
           if (i.isChecked) {
-            this.cart.loResultDeliveryOptions.push(i);
-
-            let op = this.cart.orderProducts.find(x => x.id == i.idClientOrderProduct);
-            if (op) {
-              op.loEstimatedDeliveryDate = i.deliveryDate;
-              op.loDeliveryCost = i.deliveryCost;
-              op.idLoEntity = i.loEntityId;
-              await this.repo.saveCartProduct(op);
-            };
-            this.evServ.events['cartUpdateEvent'].emit();
+            let ship = i.shipment;
+            ship.idLoEntity = i.loEntityId;
+            ship.loEstimatedDeliveryDate = i.deliveryDate;
+            ship.loDeliveryCost = i.deliveryCost;
+            ship = await this.repo.saveShipment(ship);
           }
       };
-
-/*
-        }
-      );
-*/
-      this.navCtrl.push('SelectPmtMethodPage');
+      this.evServ.events['cartUpdateEvent'].emit();
+      //console.log(this.cart.loShipments);
+      await this.navCtrl.push('SelectPmtMethodPage');
+      this.navCtrl.remove((this.navCtrl.getActive().index)-1, 1)
     }
   }
 }

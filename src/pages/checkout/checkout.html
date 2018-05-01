@@ -1,5 +1,5 @@
 <ion-header>
-  <main-toolbar [showCartIcon] = "false"></main-toolbar>
+  <main-toolbar [showCartIcon] = "false" [showSearchButton]="false"></main-toolbar>
 </ion-header>
 <ion-content class="f-size-larger">
   <ion-grid>
@@ -135,131 +135,118 @@
 <!--
    SHIPPING ITEMS AREA
 -->
-    <div *ngFor="let item of cart.orderProducts; let i = index">
+    <div *ngFor="let item of cart.loShipments; let i = index">
       <ion-row>
         <ion-col class="f-section-header">
-          <b><span loc="Доставка" name="Shipment">{{locale['Shipment']}}</span> {{i+1}} <span loc="из" name="Of">{{locale['Of']}}</span> {{cart.orderProducts.length}}</b>
+          <b><span loc="Доставка" name="Shipment">{{locale['Shipment']}}</span> {{i+1}} <span loc="из" name="Of">{{locale['Of']}}</span> {{cart.loShipments.length}}</b>
           <br>
-          <span class="f-size-default"><span loc="Товар поставляется" name="ItemShippedFrom">{{locale['ItemShippedFrom']}}</span> {{item?.quotationproduct?.quotation?.supplier?.name}}</span>
+          <span class="f-size-default"><span loc="Товар поставляется" name="ItemShippedFrom">{{locale['ItemShippedFrom']}}</span> {{item?.supplier?.name}}</span>
         </ion-col>
       </ion-row>
 
-<!--
-      <ion-row>
-        <ion-col style="padding-left: 15px; padding-right: 15px; padding-top: 20px;">
-          <b>Shipment {{i+1}} of {{cart.orderProducts.length}}</b>
-          <br>
-          Item shipped from {{item?.quotationproduct?.quotation?.supplier?.name}}
-        </ion-col>
-      </ion-row>
--->
 
       <ion-row class="f-padding-lr-5">
-        <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded && cart.loResultDeliveryOptions && cart.loResultDeliveryOptions[i]">
-          <ion-row>
+        <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
+          <ion-row *ngIf="item.idLoEntity">
             <ion-col>
-              {{cart.loResultDeliveryOptions[i].loName}}
+              {{item?.loentity?.name}}
               <hr>
             </ion-col>
           </ion-row>
 
+
           <ion-row *ngIf="item.idStorePlace">
             <ion-col>
-              <span loc="Получение в" name="PickupAt">{{locale['PickupAt']}}</span> --
+              <span loc="Получение в" name="PickupAt">{{locale['PickupAt']}}</span> &#45;&#45;
               <span class="f-color-green">{{item?.storeplace?.name}}, {{item?.storeplace?.address_line}}
                 {{item?.storeplace?.city?.name}}</span>
               <hr>
             </ion-col>
           </ion-row>
 
+
           <ion-row>
             <ion-col>
-              <span loc="Предполагаемая дата доставки" name="EstDeliveryDate">{{locale['EstDeliveryDate']}}</span> --
-              <span class="f-color-green">{{cart.loResultDeliveryOptions[i].deliveryDate | date: 'fullDate'}}</span>
+              <span loc="Предполагаемая дата доставки" name="EstDeliveryDate">{{locale['EstDeliveryDate']}}</span> &#45;&#45;
+              <span class="f-color-green">{{item.loEstimatedDeliveryDate | date: 'fullDate'}}</span>
               <hr>
             </ion-col>
           </ion-row>
 
-          <ion-row>
-            <ion-col col-auto>
-              <div>
-                <img *ngIf="item?.quotationproduct?.product?.imageUrl" class="f-img-item-80"
-                     [src]="item?.quotationproduct?.product?.imageUrl"
-                     onError="this.src='assets/imgs/nophoto.png';">
-                <img *ngIf="!item?.quotationproduct?.product?.imageUrl" class="f-img-item-80"
-                     src="assets/imgs/nophoto.png">
-
-              </div>
-            </ion-col>
-            <ion-col no-padding>
-              <ion-grid class="f-item-nopadding-tb">
-
-                <ion-row *ngIf="item?.actionTitle">
-                  <ion-col>
-                    <span class="f-bundle-text">{{item?.actionTitle}}</span>
-                  </ion-col>
-                </ion-row>
-
-                <ion-row>
-                  <ion-col>
-                    <span><b>{{item?.quotationproduct?.product.name}}</b></span>
-                  </ion-col>
-                </ion-row>
-
-                <ion-row>
-                  <ion-col class="f-item-padding-bottom">
-                    <span class="f-color-red">{{item?.price |  localeCurrency:userService.currency}}</span>
-                  </ion-col>
-                </ion-row>
-
-                <ion-row *ngIf="item?.earnedBonusCnt">
-                  <ion-col class="f-item-padding-bottom" >
-                    <bonus [bonusCnt]="item?.earnedBonusCnt*item.qty"></bonus>
-                  </ion-col>
-                </ion-row>
-
-<!--
-
-                <ion-row *ngIf="item?.quotationproduct?.product?.bonuses">
-                  <ion-col class="f-item-padding-bottom" >
-                    <bonus [bonusCnt]="item?.quotationproduct?.product?.bonuses"></bonus>
-                  </ion-col>
-                </ion-row>
-
--->
-                <ion-row *ngIf="item.complect">
-                  <ion-col class="f-size-small f-bundle-text">
-                    <span><i>*This item is a part of bundle. Quantities of all bundle's parts will be automatically synchronized upon change</i></span>
-                  </ion-col>
-                </ion-row>
+          <div *ngFor="let sitem of item.shipmentItems">
 
 
+                    <ion-row>
+                      <ion-col col-auto>
+                        <div>
+                          <img *ngIf="cart.getCartOrderProductById(sitem.idOrderSpecProd)?.quotationproduct?.product?.imageUrl" class="f-img-item-80"
+                               [src]="cart.getCartOrderProductById(sitem.idOrderSpecProd)?.quotationproduct?.product?.imageUrl"
+                               onError="this.src='assets/imgs/nophoto.png';">
+                          <img *ngIf="!cart.getCartOrderProductById(sitem.idOrderSpecProd)?.quotationproduct?.product?.imageUrl" class="f-img-item-80"
+                               src="assets/imgs/nophoto.png">
 
-                <ion-row *ngIf="item.errorMessage">
-                  <ion-col class="f-size-small">
-                    <error [errorText]="item?.errorMessage"></error>
-<!--
-                    <span class="f-size-small f-color-red">{{item?.errorMessage}}</span>
--->
-                  </ion-col>
-                </ion-row>
+                        </div>
+                      </ion-col>
 
-              </ion-grid>
+                      <ion-col no-padding>
+                        <ion-grid class="f-item-nopadding-tb">
+
+                          <ion-row *ngIf="cart.getCartOrderProductById(sitem.idOrderSpecProd)?.actionTitle">
+                            <ion-col>
+                              <span class="f-bundle-text">{{cart.getCartOrderProductById(sitem.idOrderSpecProd)?.actionTitle}}</span>
+                            </ion-col>
+                          </ion-row>
+
+                          <ion-row>
+                            <ion-col>
+                              <span><b>{{cart.getCartOrderProductById(sitem.idOrderSpecProd)?.quotationproduct?.product.name}}</b></span>
+                            </ion-col>
+                          </ion-row>
+
+                          <ion-row>
+                            <ion-col class="f-item-padding-bottom">
+                              <span class="f-color-red">{{cart.getCartOrderProductById(sitem.idOrderSpecProd)?.price |  localeCurrency:userService.currency}}</span>
+                            </ion-col>
+                          </ion-row>
+
+                          <ion-row *ngIf="cart.getCartOrderProductById(sitem.idOrderSpecProd)?.earnedBonusCnt">
+                            <ion-col class="f-item-padding-bottom" >
+                              <bonus [bonusCnt]="cart.getCartOrderProductById(sitem.idOrderSpecProd)?.earnedBonusCnt*cart.getCartOrderProductById(sitem.idOrderSpecProd).qty"></bonus>
+                            </ion-col>
+                          </ion-row>
+
+                          <ion-row *ngIf="cart.getCartOrderProductById(sitem.idOrderSpecProd)?.complect">
+                            <ion-col class="f-size-small f-bundle-text">
+                              <span><i>*This item is a part of bundle. Quantities of all bundle's parts will be automatically synchronized upon change</i></span>
+                            </ion-col>
+                          </ion-row>
 
 
-            </ion-col>
+                          <ion-row *ngIf="cart.getCartOrderProductById(sitem.idOrderSpecProd)?.errorMessage">
+                            <ion-col class="f-size-small">
+                              <error [errorText]="cart.getCartOrderProductById(sitem.idOrderSpecProd)?.errorMessage"></error>
+                            </ion-col>
+                          </ion-row>
 
-          </ion-row>
-          <ion-row>
-            <ion-col class="f-item-padding-bottom">
-              <dropdown-list id="btnQty" [reference]="item"
-                             [afterUpdate] = "onAfterQtyUpdate"
-                             [map]="{valueName:'qty', displayName:'qty'}"
-                             [options]="{popupHeader:locale['Quantity'], buttonHeader:locale['Qty'], buttonClass:'f-drop-button-block'}"
-                             [isQty]="true">
-              </dropdown-list>
-            </ion-col>
-          </ion-row>
+                        </ion-grid>
+
+
+                      </ion-col>
+
+                    </ion-row>
+
+                    <ion-row>
+                      <ion-col class="f-padding-tb-10">
+                        <dropdown-list id="btnQty" [reference]="cart.getCartOrderProductById(sitem.idOrderSpecProd)"
+                                       [afterUpdate] = "onAfterQtyUpdate"
+                                       [map]="{valueName:'qty', displayName:'qty'}"
+                                       [options]="{popupHeader:locale['Quantity'], buttonHeader:locale['Qty'], buttonClass:'f-drop-button-block'}"
+                                       [isQty]="true">
+                        </dropdown-list>
+                      </ion-col>
+                    </ion-row>
+
+          </div>
 
 
         </ion-grid>

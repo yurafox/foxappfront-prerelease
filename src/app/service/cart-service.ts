@@ -9,25 +9,27 @@ import {EventService} from './event-service';
 import {AlertController, App} from 'ionic-angular';
 import {PersonInfo} from '../model/person';
 import {CreditCalc} from '../model/credit-calc';
-import {AppConstants} from '../app-constants';
 import {AbstractLocalizationRepository} from "./repository/abstract/abstract-localization-repository";
 import {IDictionary} from "../core/app-core";
 import {CurrencyStore} from "./repository/specific/currency-store.service";
-import {ComplectItem, ComplectOptionItem} from '../../components/complect/complect';
+import {ComplectItem} from '../../components/complect/complect';
 import {ItemDetailPage} from '../../pages/item-detail/item-detail';
+import {Shipment} from '../model/shipment';
 
 
-export class LoDeliveryOption {
-  public idClientOrderProduct?: number;
+export class LoShipmentDeliveryOption {
+  public shipment?: Shipment;
   public itemIdx?: number;
   public loEntityId?: number;
   public deliveryDate?: Date;
   public deliveryCost?: number;
   public loName?: string;
   public isChecked?: boolean;
+  public pickupLocationName?: string;
 
   constructor(){};
 }
+
 
 @Injectable()
 export class CartService {
@@ -38,11 +40,13 @@ export class CartService {
   public order: ClientOrder = null;
   public orderProducts: Array<ClientOrderProducts> = [];
   displayOrderProducts: Array<{orderProduct: ClientOrderProducts, prevComplect: string}> = [];
-  public loDeliveryOptions: Array<LoDeliveryOption>=[];
-  public loResultDeliveryOptions: Array<LoDeliveryOption>=[];
+
+  public loShipments: Array<Shipment>=[];
+
+  public loShipmentDeliveryOptions: Array<LoShipmentDeliveryOption>=[];
+
   min_loan_amt = 0;
   max_loan_amt = 0;
-  //public pmtMethod: EnumPaymentMethod = null;
 
   public loan: CreditCalc = null;
 
@@ -68,18 +72,6 @@ export class CartService {
     this.evServ.events['logonEvent'].subscribe(() => {
         this.initCart().then (() => {
             this.localeCartService();
-/*
-
-            if ((this.cartValidationNeeded) && (this.cartErrors)) {
-              this.navCtrl = app.getActiveNav();
-              console.log(this.navCtrl);
-              const startIndex = this.navCtrl.getActive().index - 1;
-              this.navCtrl.remove(startIndex, 2);
-              this.navCtrl.push('CartPage');
-            };
-            this.cartValidationNeeded = false;
-*/
-
         }
         );
       }
@@ -112,6 +104,11 @@ export class CartService {
     this.localeCartService();
 
     this.currStoreService.initCurrencyRate();
+  }
+
+  getCartOrderProductById(id: number): ClientOrderProducts {
+    const idx =  this.orderProducts.findIndex(x => x.id  === id);
+    return (idx != -1 ) ? this.orderProducts[idx] : null;
   }
 
   updateDisplayOrderProducts() {
@@ -167,8 +164,6 @@ export class CartService {
     this.lastItemCreditCalc = null;
     this.order = null;
     this.orderProducts = [];
-    this.loDeliveryOptions = [];
-    this.loResultDeliveryOptions = [];
     this.loan = null;
     this.bonus  = null;
     this._payByPromoBonus = false;
@@ -239,8 +234,8 @@ export class CartService {
 
   public get shippingCost(): number {
     let res = 0;
-    this.loResultDeliveryOptions.forEach(i => {
-        res += i.deliveryCost;
+    this.loShipments.forEach(i => {
+        res += i.loDeliveryCost;
       }
     );
     if (this.order)
@@ -509,10 +504,11 @@ export class CartService {
 
     if (item.complect) {
       let cmplArr = this.orderProducts.filter(x => (x.complect === item.complect) && (x.id !== item.id));
-      cmplArr.forEach(x => {
-          x.qty = item.qty;
-        }
-      );
+
+      for (let i of cmplArr) {
+        i.qty = item.qty;
+        i = await this.repo.saveCartProduct(i);
+      }
     }
 
     if (this.userService.isAuth) {

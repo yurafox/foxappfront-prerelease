@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component,DoCheck, ElementRef, ViewChild} from '@angular/core';
-import {App, NavController, IonicPage} from 'ionic-angular';
+import {App, NavController, IonicPage, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {AbstractDataRepository} from '../../app/service/index';
 import {SearchService} from '../../app/service/search-service';
@@ -53,12 +53,18 @@ export class HomePage extends ComponentBase implements DoCheck {
 
   constructor(public app: App, public nav: NavController, private _repo:AbstractDataRepository,
               public srchService: SearchService, private changeDet: ChangeDetectorRef,
-              private screenOrientation: ScreenOrientation) {
+              private screenOrientation: ScreenOrientation, private navParams: NavParams) {
     super();
     this.srchService.lastSearch = null;
+    if (navParams.data.pageMode)
+      this._pageMode = navParams.data.pageMode;
   }
 
   async initData() {
+    if (this._pageMode != PageMode.HomeMode)
+      return;
+
+    await this.doRefresh(0);
 
     let ar = await this._repo.getProductsOfDay();
     this.productsOfDay = [];
@@ -118,7 +124,6 @@ export class HomePage extends ComponentBase implements DoCheck {
 
   async ngOnInit() {
     super.ngOnInit();
-    await this.doRefresh(0);
     this.scrOrientationSub = this.screenOrientation.onChange().subscribe(() => {
       if (this._pageMode !== 1) this.changeDet.detectChanges();
     });

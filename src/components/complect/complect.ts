@@ -101,6 +101,9 @@ export class ComplectComponent extends ComponentBase {
     if (this.actionsArr.length === 0) return;
 
     const mainProdEl = this.actionsArr.find(x => x.idProduct === this.mainProductId);
+    if (!mainProdEl)
+      return;
+
     this.mainProdImgUrl = mainProdEl.imgUrl;
     this.mainProdName = mainProdEl.productName;
 

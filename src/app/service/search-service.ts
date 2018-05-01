@@ -214,7 +214,7 @@ export class SearchService {
           'prefix': `${inText}`,
           'completion': {
             'field': 'suggest',
-            'size' : 10
+            'size' : 15
           }
         }
       }
@@ -230,6 +230,7 @@ export class SearchService {
   async getProducts(_from: number): Promise<any> {
     let sort = null;
     let mustArr = [];
+    let postFilterArr = [];
 
     if (this.prodSrchParams.sortOrder === SortOrderEnum.Relevance) {
       sort = [{'_score': {'order' : 'desc'}}];
@@ -253,7 +254,7 @@ export class SearchService {
         x => terms.push({'term': {"manufacturerId" : `${x}`}})
       );
       let mnf = {'bool': {'should': terms}};
-      mustArr.push(mnf);
+      postFilterArr.push(mnf);
     };
 
     if ((this.prodSrchParams.productProps) && (this.prodSrchParams.productProps.length >= 1)) {
@@ -366,6 +367,12 @@ export class SearchService {
                 }
               }
             }
+          }
+        },
+        'post_filter': {
+          'bool': {
+            'should':
+              postFilterArr
           }
         }
       }

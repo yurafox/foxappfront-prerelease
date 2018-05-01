@@ -16,6 +16,9 @@ export class MainToolbarComponent {
   showCloseIcon = false;
 
   @Input()
+  showSearchButton = true;
+
+  @Input()
   host = null;
 
   @Input()
@@ -33,16 +36,22 @@ export class MainToolbarComponent {
     if (this.disableHeaderClickHandler)
       return;
 
+    /*
     if (this.host) {
       this.host.pageMode = PageMode.HomeMode;
       this.host.searchButtonControl.clearInput(null);
+      this.host.initData();
     }
-    else
-      this.navCtrl.setRoot('HomePage');
+    else */
+    this.navCtrl.setRoot('HomePage', {pageMode: PageMode.HomeMode});
   }
 
   close() {
     this.viewCtrl.dismiss();
+  }
+
+  async showSearch() {
+    this.navCtrl.push('HomePage', {pageMode: PageMode.SearchMode});
   }
 
 }

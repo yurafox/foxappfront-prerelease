@@ -3,6 +3,7 @@ import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angula
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {CartService} from '../../app/service/cart-service';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {Shipment} from '../../app/model/shipment';
 
 @IonicPage()
 @Component({
@@ -98,6 +99,7 @@ export class CheckoutPage extends ComponentBase {
   }
 
   async onAfterQtyUpdate(item: any, objRef:any) {
+    /*
     let j = 0;
     for (let i of this.cart.loResultDeliveryOptions) {
       if (i.idClientOrderProduct === objRef.id)  {
@@ -105,14 +107,34 @@ export class CheckoutPage extends ComponentBase {
       }
       j++;
     }
-
-
     //TODO пересчитать стоимость логистики для всех товаров комплекта!!
     this.repo.getDeliveryCost(objRef, this.cart.loResultDeliveryOptions[j].loEntityId, this.cart.order.loIdClientAddress).then(r => {
         this.cart.loResultDeliveryOptions[j].deliveryCost = r;
       }
     );
+    */
+
+    //сохраняем кол-во
     await this.cart.updateItem(objRef);
+
+    // пересчитьіваем стоимость и дату доставки
+    let spmt: Shipment = null;
+
+    for (let i of this.cart.loShipments) {
+      for (let j of i.shipmentItems) {
+        if (j.idOrderSpecProd === objRef.id) {
+          spmt = i;
+          break;
+        }
+      }
+    }
+
+    if (!spmt.idStorePlace) {
+      spmt.loDeliveryCost = await this.repo.getDeliveryCostByShipment(spmt, spmt.idLoEntity, this.cart.order.loIdClientAddress);
+      spmt.loEstimatedDeliveryDate = await this.repo.getDeliveryDateByShipment(spmt, spmt.idLoEntity, this.cart.order.loIdClientAddress);
+      spmt = await this.repo.saveShipment(spmt);
+    }
+
     this.evServ.events['cartUpdateEvent'].emit();
   }
 

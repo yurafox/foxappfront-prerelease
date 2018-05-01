@@ -44,15 +44,17 @@ import {
   BannerSlide,
   ClientMessage,
   CurrencyRate,
-  ActionByProduct
+  ActionByProduct,
+  Shipment,
+  AppParam
 } from '../../../model/index';
 
 import { AbstractDataRepository } from '../../index';
 import {IDictionary, Providers } from '../../../core/app-core';
 import {ConnectivityService} from '../../connectivity-service';
-import {AppParam} from '../../../model/app-param';
 import IKeyedCollection = Providers.IKeyedCollection;
 import {OrdersFilter} from '../../../../pages/your-orders/your-orders';
+import {ShipmentItems} from '../../../model/shipment-items';
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
@@ -91,10 +93,10 @@ const postProductViewUrl = `${AppConstants.BASE_URL}/api/client/LogProductView`;
 const clientAddressesUrl = `${AppConstants.BASE_URL}/api/client/clientAddress`;
 const clientOrderSpecProductsUrl = `${AppConstants.BASE_URL}/api/Cart/GetCartProductsByOrderId`;
 const clientOrderHistSpecProductsUrl = `${AppConstants.BASE_URL}/api/Cart/GetClientHistProductsByOrderId`;
-const clientOrdersUrl = `${AppConstants.BASE_URL}/api/Cart/clientOrder`;
+//const clientOrdersUrl = `${AppConstants.BASE_URL}/api/Cart/clientOrder`;
 const clientHistOrdersUrl = `${AppConstants.BASE_URL}/api/Cart/clientHistOrder`;
-const getDeliveryCostUrl = `${AppConstants.BASE_URL}/api/lo/GetDeliveryCost`;
-const getDeliveryDateUrl = `${AppConstants.BASE_URL}/api/lo/GetDeliveryDate`;
+const getDeliveryCostByShipmentUrl = `${AppConstants.BASE_URL}/api/lo/GetDeliveryCostByShipment`;
+const getDeliveryDateByShipmentUrl = `${AppConstants.BASE_URL}/api/lo/GetDeliveryDateByShipment`;
 const calculateCartUrl = `${AppConstants.BASE_URL}/api/cart/calculateCart`;
 const postOrderUrl = `${AppConstants.BASE_URL}/api/cart/postOrder`;
 const pollsUrl=`${AppConstants.BASE_URL}/api/poll`;
@@ -125,6 +127,9 @@ const getCurrencyRate = `${AppConstants.BASE_URL}/api/currency/rate`;
 const getActionsByProductUrl = `${AppConstants.BASE_URL}/api/action/GetProductActions`;
 const getProductsByActionUrl = `${AppConstants.BASE_URL}/api/product/GetByAction`;
 const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/api/catalog`:"/api/mcategories";
+const generateShipmentsUrl = `${AppConstants.BASE_URL}/api/cart/GenerateShipments`;
+const shipmentUrl = `${AppConstants.BASE_URL}/api/cart/shipment`;
+
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
 // const currenciesUrl = "/api/mcurrencies";
@@ -392,41 +397,6 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-
-  public async getDeliveryDate(order: ClientOrderProducts, loEntityId: number, loIdClientAddress: number): Promise<Date> {
-    try {
-      const response = await this.http
-        .post(getDeliveryDateUrl, {order: order.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress},
-          RequestFactory.makeAuthHeader())
-        .toPromise();
-      const val = response.json();
-
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      return val.deliveryDate;
-    } catch (err) {
-      return await this.handleError(err);
-    }
-  }
-
-  public async getDeliveryCost(order: ClientOrderProducts, loEntityId: number, loIdClientAddress: number): Promise<number> {
-    try {
-      const response = await this.http
-        .post(getDeliveryCostUrl, {order: order.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress},
-          RequestFactory.makeAuthHeader())
-        .toPromise();
-      const val = response.json();
-
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      return val.assessedCost;
-    } catch (err) {
-      return await this.handleError(err);
-    }
-  }
-
   public async getProductCreditSize(idProduct: number, isSupplier: number): Promise<any> {
     try {
       const response = await this.http
@@ -569,7 +539,6 @@ export class AppDataRepository extends AbstractDataRepository {
           data.idPaymentStatus,
           data.idStatus,
           null,
-          data.loIdEntity,
           data.loIdClientAddress,
           data.itemsTotal,
           data.shippingTotal,
@@ -610,7 +579,6 @@ export class AppDataRepository extends AbstractDataRepository {
           data.idPaymentStatus,
           data.idStatus,
           null,
-          data.loIdEntity,
           data.loIdClientAddress,
           data.itemsTotal,
           data.shippingTotal,
@@ -627,6 +595,7 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+/*
 
   public async getClientOrders(): Promise<ClientOrder[]> {
     try {
@@ -655,7 +624,6 @@ export class AppDataRepository extends AbstractDataRepository {
               val.idPaymentStatus,
               val.idStatus,
               null,
-              val.loIdEntity,
               val.loIdClientAddress,
               val.itemsTotal,
               val.shippingTotal,
@@ -673,8 +641,10 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+*/
 
 
+/*
   public async getClientOrderById(orderId: number): Promise<ClientOrder> {
     try {
 
@@ -698,7 +668,6 @@ export class AppDataRepository extends AbstractDataRepository {
               data.idPaymentStatus,
               data.idStatus,
               null,
-              data.loIdEntity,
               data.loIdClientAddress,
               data.itemsTotal,
               data.shippingTotal,
@@ -713,6 +682,7 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+*/
 
   public async getClientHistOrderById(orderId: number): Promise<ClientOrder> {
     try {
@@ -737,7 +707,6 @@ export class AppDataRepository extends AbstractDataRepository {
           data.idPaymentStatus,
           data.idStatus,
           null,
-          data.loIdEntity,
           data.loIdClientAddress,
           data.itemsTotal,
           data.shippingTotal,
@@ -3591,5 +3560,99 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+
+  private getShipmentItemsFromJson(data: any): ShipmentItems[] {
+    let arr = [];
+    data.forEach(
+     x => {
+       let si = new ShipmentItems(x.id, x.idShipment, x.idOrderSpecProd, x.qty, x.errorMessage);
+       arr.push(si);
+     }
+    );
+    return arr;
+  }
+
+  public async generateShipments(): Promise<Shipment[]> {
+    try {
+      const response = await this.http.post(generateShipmentsUrl, null, RequestFactory.makeAuthHeader()).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      const arr: Shipment[] = [];
+      if (data !== null) {
+        data.forEach(val =>
+          arr.push(
+            new Shipment(val.id,val.idOrder,val.idSupplier,val.idLoEntity,val.loTrackTicket,val.loDeliveryCost,
+              val.loDeliveryCompleted,val.loEstimatedDeliveryDate,val.loDeliveryCompletedDate,val.idStorePlace,
+              val.idLoEntityOffice, this.getShipmentItemsFromJson(val.shipmentItems))
+          )
+        );
+      }
+      return arr;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getDeliveryDateByShipment(shpmt: Shipment, loEntityId: number, loIdClientAddress: number): Promise<Date> {
+    try {
+      const response = await this.http
+        .post(getDeliveryDateByShipmentUrl, {shpmt: shpmt.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress},
+          RequestFactory.makeAuthHeader())
+        .toPromise();
+      const val = response.json();
+
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      return val.deliveryDate;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getDeliveryCostByShipment(shpmt: Shipment, loEntityId: number, loIdClientAddress: number): Promise<number> {
+    try {
+      const response = await this.http
+        .post(getDeliveryCostByShipmentUrl, {shpmt: shpmt.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress},
+          RequestFactory.makeAuthHeader())
+        .toPromise();
+      const val = response.json();
+
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      return val.assessedCost;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async saveShipment(value: Shipment): Promise<Shipment> {
+    try {
+      const response = await this.http
+        .put(shipmentUrl, value.dto, RequestFactory.makeAuthHeader())
+        .toPromise();
+      const data = response.json();
+
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        let res = new Shipment(
+          data.id, data.idOrder, data.idSupplier, data.idLoEntity, data.loTrackTicket, data.loDeliveryCost,
+          data.loDeliveryCompleted, data.loEstimatedDeliveryDate, data.loDeliveryCompletedDate, data.idStorePlace,
+          data.idLoEntityOffice, this.getShipmentItemsFromJson(data.shipmentItems));
+        return res;
+      }
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 
 }

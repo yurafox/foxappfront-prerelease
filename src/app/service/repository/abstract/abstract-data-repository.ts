@@ -33,7 +33,8 @@ import { QuotationProduct,
           BannerSlide,
           ClientMessage,
           CurrencyRate,
-          ActionByProduct
+          ActionByProduct,
+          Shipment
        } from '../../../model/index';
 import {IDictionary, Providers} from "../../../core/app-core";
 import {AppParam} from '../../../model/app-param';
@@ -79,15 +80,20 @@ export abstract class AbstractDataRepository {
   public async abstract getLoEntitiesForSupplier(supplierId: number):Promise<LoSupplEntity[]>;
   public async abstract getLoEntitiyById(entityId: number):Promise<LoEntity>;
   public async abstract getLoTrackLogByOrderSpecId(id: number): Promise<LoTrackLog[]>;
-  public async abstract getDeliveryDate(order: ClientOrderProducts, loEntityId: number, loIdClientAddress: number): Promise<Date>;
-  public async abstract getDeliveryCost(order: ClientOrderProducts, loEntityId: number, loIdClientAddress: number): Promise<number>;
+
+  public async abstract getDeliveryDateByShipment(shpmt: Shipment, loEntityId: number, loIdClientAddress: number): Promise<Date>;
+  public async abstract getDeliveryCostByShipment(shpmt: Shipment, loEntityId: number, loIdClientAddress: number): Promise<number>;
+
+
   public async abstract getProductCreditSize(idProduct: number, isSupplier: number): Promise<any>;
 
   public async abstract postOrder(order: ClientOrder): Promise<{isSuccess: boolean, errorMessage: string}>;
   public async abstract getClientDraftOrder(): Promise<ClientOrder>;
   public async abstract saveClientDraftOrder(order: ClientOrder): Promise<ClientOrder>;
+/*
   public async abstract getClientOrders(): Promise<ClientOrder[]>;
   public async abstract getClientOrderById(orderId: number): Promise<ClientOrder>;
+*/
   public async abstract getClientHistOrderById(orderId: number): Promise<ClientOrder>;
   public async abstract getClientOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]>;
   public async abstract getClientHistOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]>;
@@ -180,4 +186,7 @@ export abstract class AbstractDataRepository {
   public async abstract getCurrencyRate():Promise<CurrencyRate[]>;
   public async abstract getActionsByProduct(idProduct: number): Promise<ActionByProduct[]>;
   public async abstract getProductsByActionId(actionId: number):  Promise<Product[]>;
+  public async abstract generateShipments(): Promise<Shipment[]>;
+  public async abstract saveShipment(value: Shipment): Promise<Shipment>;
+
 }
