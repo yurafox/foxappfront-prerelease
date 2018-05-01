@@ -29,8 +29,9 @@ export class AccountRepository extends AbstractAccountRepository {
         throw new Error(`${response.status} ${response.statusText }`);
       }
 
-      if(!data) {
-        throw new Error(`некорректные авторизационные данные`);
+      if(!data || data.message) {
+        const errMsg:string = (data) ? data.message : `некорректные авторизационные данные`;
+        return new LoginTemplate(null,null,errMsg);
       }
 
       const currentUser: User = new User(data.user.name, data.user.email,null,

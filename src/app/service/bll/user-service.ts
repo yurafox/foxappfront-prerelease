@@ -188,6 +188,10 @@ export class UserService {
   public async login(phone: string, password: string) {
     try {
       const loginModel: LoginTemplate = await this._account.logIn(phone,password);
+      if(loginModel.errMessage){
+        throw new Error(loginModel.errMessage);
+      }
+
       this.user = loginModel.user;
       this._token = loginModel.token;
       localStorage.setItem('token',loginModel.token);
