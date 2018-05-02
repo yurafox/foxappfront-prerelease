@@ -21,7 +21,7 @@ export function createComponentFactory(
   compiler: Compiler,
   metadata: Component,
   context:any
-): Promise<void | ComponentFactory<any>> {
+): Promise<ComponentFactory<any>> {
   const cmpClass = class DynamicComponent {};
   cmpClass.prototype = context;
   const decoratedCmp = Component(metadata)(cmpClass);
