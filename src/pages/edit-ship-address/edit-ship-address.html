@@ -40,7 +40,7 @@
                  placeholder="{{locale['Zip']}}" #zip="ngModel">
           <span *ngIf="!zip.valid && zip.touched" class="f-color-validation-error"><span loc="Пожалуйста, введите индекс" name="EnterZip">{{locale['EnterZip']}}</span></span>
           <br>
-          <input [(ngModel)]="shippingAddress.phone" id="phone" name="phone"
+          <input [(ngModel)]="shippingAddress.phone" [mask]="'380999999999'" id="phone" name="phone"
                  placeholder="{{locale['Phone']}}"
                  pattern="[0-9]{12}"
                  minlength="12"

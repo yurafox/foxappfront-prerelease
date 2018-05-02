@@ -10,7 +10,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-input type="text"  placeholder="380xxxxxxxxx" formControlName="phone"></ion-input>
+        <ion-input type="text"  [mask]="'380999999999'" type="number"  placeholder="380xxxxxxxxx" formControlName="phone"></ion-input>
       </ion-item>
       <ion-item class='alertDanger' *ngIf="formErrors.phone">
         <span>{{formErrors.phone}}</span>
