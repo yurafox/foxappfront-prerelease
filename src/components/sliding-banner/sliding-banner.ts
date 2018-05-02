@@ -17,7 +17,7 @@ export class SlidingBannerComponent {
     this.slides = await this._repo.getBannerSlides();
   }
 
-  async handleClick(slide: BannerSlide) {
+  handleClick(slide: BannerSlide) {
     if (slide && slide.actionType) {
       switch (slide.actionType) {
         case 1: {
