@@ -59,10 +59,9 @@ export class BalancePage extends ComponentBase {
   }
 
   validatePage() {
- //   return true;
-
     return (!(this.cart.bonus)
-        || (this.cart.bonus && (this.cart.bonus <= this.cart.availBonus)));
+        || (this.cart.bonus && (this.cart.bonus <= this.cart.availBonus))
+        );
   }
 
 }

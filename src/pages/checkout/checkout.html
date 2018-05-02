@@ -7,7 +7,7 @@
     <ion-row *ngIf="dataLoaded">
       <ion-col class="f-padding-lr-5">
         <button class="f-btn-action" ion-button block
-                [attr.disabled]="!validatePage().isValid?'':null"
+                [attr.disabled]="(!continueBtnEnabled)?'':null"
                 (click)="onPlaceOrderClick()"><span loc="Разместить заказ" name="PlaceYourOrder">{{locale['PlaceYourOrder']}}</span></button>
       </ion-col>
     </ion-row>
@@ -257,7 +257,7 @@
     <ion-row *ngIf="dataLoaded">
       <ion-col class="f-padding-lr-5">
         <button class="f-btn-action" ion-button block
-                [attr.disabled]="!validatePage().isValid?'':null"
+                [attr.disabled]="(!continueBtnEnabled)?'':null"
                 (click)="onPlaceOrderClick()"><span loc="Разместить заказ" name="PlaceYourOrder">{{locale['PlaceYourOrder']}}</span></button>
       </ion-col>
     </ion-row>

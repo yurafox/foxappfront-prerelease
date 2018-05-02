@@ -37,8 +37,10 @@ export class CartService {
   public lastItemCreditCalc: ClientOrderProducts = null;
   private cKey = 'cartItems';
   private _inCartInit = false;
+  public _httpCallInProgress = false;
   public order: ClientOrder = null;
   public orderProducts: Array<ClientOrderProducts> = [];
+
   displayOrderProducts: Array<{orderProduct: ClientOrderProducts, prevComplect: string}> = [];
 
   public loShipments: Array<Shipment>=[];
@@ -128,36 +130,40 @@ export class CartService {
   public async calculateCart(){
     if (!this.userService.isAuth)
       return;
-    let calcRes = await this.repo.calculateCart(
-                  this.promoCode, this.bonus, this.payByPromoBonus,
-      ((this.loan) && (this.loan.creditProduct) && (this.order.idPaymentMethod === 3)) ? this.loan.creditProduct.sId : null /*,
-                  this.orderProducts*/);
 
-    for (let i of calcRes) {
-      let _found = false;
-      let _prod: ClientOrderProducts = null;
+    try {
+      this._httpCallInProgress = true;
+      let calcRes = await this.repo.calculateCart(
+        this.promoCode, this.bonus, this.payByPromoBonus,
+        ((this.loan) && (this.loan.creditProduct) && (this.order.idPaymentMethod === 3)) ? this.loan.creditProduct.sId : null /*,
+                    this.orderProducts*/);
 
-      for (let _p of this.orderProducts) {
-        if (_p.id === i.clOrderSpecProdId) {
-          _prod = _p;
-          _found = true;
-          break;
+      for (let i of calcRes) {
+        let _found = false;
+        let _prod: ClientOrderProducts = null;
+
+        for (let _p of this.orderProducts) {
+          if (_p.id === i.clOrderSpecProdId) {
+            _prod = _p;
+            _found = true;
+            break;
+          }
         }
-      }
-      if (_found) {
-        _prod.payBonusCnt = i.bonusDisc;
-        _prod.payPromoCodeDiscount = i.promoCodeDisc;
-        _prod.payPromoBonusCnt = i.promoBonusDisc;
-        _prod.earnedBonusCnt = i.earnedBonus;
-        _prod.qty = i.qty;
-//        await this.repo.saveCartProduct(_prod);
-      }
+        if (_found) {
+          _prod.payBonusCnt = i.bonusDisc;
+          _prod.payPromoCodeDiscount = i.promoCodeDisc;
+          _prod.payPromoBonusCnt = i.promoBonusDisc;
+          _prod.earnedBonusCnt = i.earnedBonus;
+          _prod.qty = i.qty;
+        }
 
-      //this.orderProducts = this.orderProducts.filter(x => true);
+      }
+      this.orderProducts = this.orderProducts.splice(0, this.orderProducts.length);
+      this.calcLoan();
     }
-    this.orderProducts = this.orderProducts.splice(0,this.orderProducts.length);
-
-    this.calcLoan();
+    finally {
+      this._httpCallInProgress = false;
+    }
   }
 
   public emptyCart(): void {
