@@ -54,6 +54,16 @@ ion-title {
   text-align: center;
 }
 
+html {
+  font-size: 10px!important;
+  line-height: 1!important;
+
+  -webkit-text-size-adjust:none;
+  -ms-text-size-adjust:none;
+  -moz-text-size-adjust:none;
+  text-size-adjust:none;
+}
+
 ion-list ion-icon {
   color: color($colors, fox);
 }
@@ -272,14 +282,27 @@ ion-header.header.header-md::after {
   height: 0;
 }
 
+.bar-button-md {
+  font-size: 14px;
+}
+
+.button-md {
+  height: 36px;
+  font-size: 14px;
+}
 
 ////// FONTS
+
+ion-app.md {
+  font-size: 14px;
+}
+
 .f-page-header {
-  font-size: 2.8rem;
+  font-size: 28px;
 }
 
 .f-size-small {
-  font-size: 1.2rem;
+  font-size: 12px;
 }
 
 .f-size-smaller {
@@ -287,28 +310,28 @@ ion-header.header.header-md::after {
 }
 
 .f-size-13 {
-  font-size: 1.3rem;
+  font-size: 13px;
 }
 
 .f-size-default {
-  font-size: 1.4rem;
+  font-size: 14px;
 }
 
 .f-size-larger {
-  font-size: 1.6rem;
+  font-size: 16px;
 }
 
 .f-size-20 {
-  font-size: 2.0rem;
+  font-size: 20px;
 }
 
 .f-size-large {
-  font-size: 1.8rem;
+  font-size: 18px;
 }
 
 .f-product-price-small {
   color: #616161;
-  font-size: 1.6rem;
+  font-size: 16px;
   font-weight: 400;
 }
 
@@ -395,7 +418,7 @@ ion-header.header.header-md::after {
   padding-right: 15px;
   padding-top: 10px;
   padding-bottom: 10px;
-  font-size: 2.4rem;
+  font-size: 24px;
   font-weight: bold;
 }
 
@@ -404,7 +427,7 @@ ion-header.header.header-md::after {
   padding-right: 15px;
   padding-top: 20px;
   padding-bottom: 5px;
-  font-size: 1.9rem;
+  font-size: 19px;
   font-weight: bold;
 }
 
@@ -413,7 +436,7 @@ ion-header.header.header-md::after {
   padding-right: 15px;
   padding-top: 10px;
   padding-bottom: 5px;
-  font-size: 1.7rem;
+  font-size: 17px;
   font-weight: bold;
 }
 
@@ -422,7 +445,7 @@ ion-header.header.header-md::after {
   padding-right: 15px;
   padding-top: 20px;
   padding-bottom: 5px;
-  font-size: 1.8rem;
+  font-size: 18px;
 }
 
 .f-no-padding {

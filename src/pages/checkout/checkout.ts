@@ -40,67 +40,78 @@ export class CheckoutPage extends ComponentBase {
   }
 
   async onPlaceOrderClick() {
-    //Save cart items
-    for (let i of this.cart.orderProducts) {
-      await this.repo.saveCartProduct(i);
-    }
+    if (this.cart._httpCallInProgress)
+      return;
 
-    if (this.cart.order.idPaymentMethod === 2) {
-      this.navCtrl.push('PaymentPage').catch(err => console.error(err));
-    }
-    else
-    // TODO show messagebox
+    try
     {
-      let res = await this.repo.postOrder(this.cart.order);
+      this.cart._httpCallInProgress = true;
+      //Save cart items
+      for (let i of this.cart.orderProducts) {
+        await this.repo.saveCartProduct(i);
+      }
 
-      if (res.isSuccess)
-      {
-        //console.log('Success!!!!');
-
-        let title = this.locale['AlertTitle'];
-        let message = this.locale['AlertMessage'];
-        let btnText = this.locale['BtnText'];
-        let alert = this.alertCtrl.create({
-          title: title,
-          message: message,
-          buttons: [
-            {
-              text: btnText,
-              handler: () => {
-                this.navCtrl.setRoot('HomePage');
-                this.cart.emptyCart();
-                this.cart.initCart();
-              }
-            }
-          ]
-        });
-        alert.present();
+      if (this.cart.order.idPaymentMethod === 2) {
+        this.navCtrl.push('PaymentPage').catch(err => console.error(err));
       }
       else
+      // TODO show messagebox
       {
-        //console.log(res.errorMessage);
-        let title = this.locale['AlertErrorTitle'];
-        let message = this.locale['AlertErrorMessage'] + ' ' + res.errorMessage;
-        let btnText = this.locale['BtnErrorText'];
-        let alert = this.alertCtrl.create({
-          title: title,
-          message: message,
-          buttons: [
-            {
-              text: btnText,
-              handler: () => {
-                this.cart.emptyCart();
-                this.cart.initCart().then(() => {
-                    this.navCtrl.setRoot('CartPage');
-                  }
-                );
+        let res = await this.repo.postOrder(this.cart.order);
+
+        if (res.isSuccess)
+        {
+          //console.log('Success!!!!');
+
+          let title = this.locale['AlertTitle'];
+          let message = this.locale['AlertMessage'];
+          let btnText = this.locale['BtnText'];
+          let alert = this.alertCtrl.create({
+            title: title,
+            message: message,
+            buttons: [
+              {
+                text: btnText,
+                handler: () => {
+                  this.navCtrl.setRoot('HomePage');
+                  this.cart.emptyCart();
+                  this.cart.initCart();
+                }
               }
-            }
-          ]
-        });
-        alert.present();
+            ]
+          });
+          alert.present();
+        }
+        else
+        {
+          //console.log(res.errorMessage);
+          let title = this.locale['AlertErrorTitle'];
+          let message = this.locale['AlertErrorMessage'] + ' ' + res.errorMessage;
+          let btnText = this.locale['BtnErrorText'];
+          let alert = this.alertCtrl.create({
+            title: title,
+            message: message,
+            buttons: [
+              {
+                text: btnText,
+                handler: () => {
+                  this.cart.emptyCart();
+                  this.cart.initCart().then(() => {
+                      this.navCtrl.setRoot('CartPage');
+                    }
+                  );
+                }
+              }
+            ]
+          });
+          alert.present();
+        };
       };
-    };
+    }
+    finally
+    {
+      this.cart._httpCallInProgress = false;
+    }
   }
 
   async onAfterQtyUpdate(item: any, objRef:any) {

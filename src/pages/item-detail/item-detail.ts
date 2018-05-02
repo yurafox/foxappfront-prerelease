@@ -21,6 +21,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   qty = new System.FoxNumber();
   selectedStorePlace: StorePlace;
   reviews = new Array<ProductReview>();
+  description: string;
   minLoanAmt = 0;
   maxLoanAmt = 0;
   actionsArr = new Array<ActionByProduct>();
@@ -47,12 +48,11 @@ export class ItemDetailPage extends ItemBase implements OnInit {
       }
     );
 
-    /*
+
     this.repo.getProductDescription(this.product.id).then( x => {
         this.description = x;
       }
     );
-    */
 
     if (this.userService.isAuth)
       this.repo.postProductView(this.product.id, null);
@@ -65,7 +65,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   }
 
   onShowProductDescription(): void {
-    this.navCtrl.push('ItemDescriptionPage', this.product.description);
+    this.navCtrl.push('ItemDescriptionPage', this.description);
   }
 
   onShowProductProps(): void {
