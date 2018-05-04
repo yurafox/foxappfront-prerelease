@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { HomePage } from './home';
 import {ComponentsModule} from "../../components/components.module";
+import {SearchService} from "../../app/service/index";
+
 
 @NgModule({
   declarations: [
@@ -13,6 +15,9 @@ import {ComponentsModule} from "../../components/components.module";
   ],
   exports: [
     HomePage
+  ],
+  providers: [
+    SearchService
   ]
 })
 export class HomePageModule {}

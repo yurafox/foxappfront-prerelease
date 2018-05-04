@@ -34,7 +34,6 @@ import {
   UserService,
   CurrencyStore,
   CartService,
-  SearchService,
   ConnectivityService
 } from '../app/service/index';
 
@@ -194,7 +193,6 @@ import {Keyboard} from "@ionic-native/keyboard";
     NewsSubscribeService,
     AppConstants,
     CurrencyStore,
-    SearchService,
     CartService,
     ConnectivityService
   ]

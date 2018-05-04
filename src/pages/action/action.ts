@@ -60,6 +60,9 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
     if(!Monitor.isMustWait()){
       Monitor.enter();
       await this.srch.searchByAction(this.actionId);
+      this.scrOrientationSub = this.screenOrientation.onChange().subscribe(() => {
+        this.changeDet.detectChanges();
+      });
       Monitor.exit();
     }
     this.actionExpire(); // for design display
@@ -69,15 +72,6 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
     .subscribe(() => {
       this.actionExpire();
     });
-    
-    if(!Monitor.isMustWait()){
-      Monitor.enter();
-      this.actionProducts = await this._repo.getProductsByActionId(this.actionId);
-      this.scrOrientationSub = this.screenOrientation.onChange().subscribe(() => {
-        this.changeDet.detectChanges();
-      });
-      Monitor.exit();
-    }
       
   }
 

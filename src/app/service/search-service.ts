@@ -151,11 +151,16 @@ export class SearchService {
 
         if (_chunk)
         {
-          if (this.lastItemIndex === 0)
-            this.products = _chunk;
-          else
+          if (this.lastItemIndex === 0){
+            this.products =_chunk;
+            this.hostPage.products=this.products
+            console.log(this.hostPage.products);
+          }
+          else {
             this.products = this.products.concat(_chunk);
-
+            this.hostPage.products=this.products
+            console.log(this.hostPage.products);
+          }
           this.lastItemIndex = this.lastItemIndex + _chunk.length;
         }
       }
