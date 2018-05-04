@@ -135,8 +135,8 @@ export class CheckoutPage extends ComponentBase {
       }
 
       if (!spmt.idStorePlace) {
-        spmt.loDeliveryCost = await this.repo.getDeliveryCostByShipment(spmt, spmt.idLoEntity, this.cart.order.loIdClientAddress);
-        spmt.loEstimatedDeliveryDate = await this.repo.getDeliveryDateByShipment(spmt, spmt.idLoEntity, this.cart.order.loIdClientAddress);
+        spmt.loDeliveryCost = await this.repo.getDeliveryCostByShipment(spmt, spmt.idLoEntity, this.cart.order.loIdClientAddress, spmt.idLoDeliveryType);
+        spmt.loEstimatedDeliveryDate = await this.repo.getDeliveryDateByShipment(spmt, spmt.idLoEntity, this.cart.order.loIdClientAddress, spmt.idLoDeliveryType);
         spmt = await this.repo.saveShipment(spmt);
       }
 

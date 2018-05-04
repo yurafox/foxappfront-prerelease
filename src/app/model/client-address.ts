@@ -28,9 +28,9 @@ export class ClientAddress {
   public get addressString(): string {
     return ((this.street) ? this.street : '') + ' ' +
       ((this.bldApp) ? this.bldApp : '') + ', ' +
-      ((this.city) ? this.city : '') + ', ' +
-      ((this.zip) ? this.zip : '') + ' ' +
-      (((<any>this).country) ? (<any>this).country.name : '') + ' ' +
+      ((this.city) ? this.city : '') +
+      //((this.zip) ? this.zip : '') + ' ' +
+      //(((<any>this).country) ? (<any>this).country.name : '') + ' ' +
       ((this.phone) ? ', Phone: ' + this.phone : '');
   }
 

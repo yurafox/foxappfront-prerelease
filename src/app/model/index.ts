@@ -65,3 +65,5 @@ export * from './action-by-product';
 export * from './shipment';
 export * from './shipment-items';
 export * from './app-param';
+export * from './lo-delivery-type';
+export * from './lo-entity-office';

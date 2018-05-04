@@ -151,6 +151,11 @@
             <ion-col>
               {{item?.loentity?.name}}
               <hr>
+              {{item?.lodeliverytype?.name}}<span *ngIf="item?.idLoEntityOffice"> &#45;&#45; </span>
+              <span class="f-color-green" *ngIf="item?.idLoEntityOffice">
+                {{item?.loentityoffice?.name}}
+              </span>
+              <hr>
             </ion-col>
           </ion-row>
 

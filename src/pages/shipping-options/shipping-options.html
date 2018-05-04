@@ -42,7 +42,7 @@
                 <label for="radioButton"></label>
               </div>
             </ion-col>
-            <ion-col class="f-size-larger">
+            <ion-col col-10 class="f-size-larger">
               <span loc="Получите" name="GetIt">{{locale['GetIt']}}</span> <span class="f-color-green">{{opt.deliveryDate | date: 'fullDate'}}</span>
               <br>
               <span *ngIf="!(opt.deliveryCost === 0)">
@@ -56,6 +56,22 @@
               <span *ngIf="opt.loName" loc="Доставляется" name="DeliveryBy">{{locale['DeliveryBy']}}</span> <span class="f-color-green">{{opt.loName}}</span>
               <span *ngIf="opt.pickupLocationName" loc="Самовивоз" name="PickupPlace">{{locale['PickupPlace']}}</span> <span class="f-color-green">{{opt.pickupLocationName}}</span>
 
+
+              <br>
+              <span loc="Тип доставки:" name="DeliveryType">{{locale['DeliveryType']}}</span> <span class="f-color-green">{{opt.deliveryType.name }}</span>
+
+              <div *ngIf="opt.loEntityOfficesList && opt.loEntityOfficesList.length>0">
+                <dropdown-list id="btnLoOffice" class="truncate" [param]="opt.loEntityOfficeId"
+                               [ref]="{bindRef:opt,bindName:'loEntityOfficeId'}"
+                               [placeholder]="locale['PleaseSelectLoOffice']"
+                               [store]="opt.loEntityOfficesList"
+                               [options]="{popupClass: 'f-large-dictionary', popupHeader: locale['PleaseSelectLoOffice']}"
+                               [map]="{valueName:'id', displayName:'name'}">
+                </dropdown-list>
+              </div>
+
+
+
             </ion-col>
           </ion-row>
 
@@ -67,7 +83,7 @@
     <ion-row *ngIf="dataLoaded">
       <ion-col class="f-padding-lr-5">
         <button class="f-btn-action" ion-button block
-                [attr.disabled]="!isAnyOptionSelected()?'':null"
+                [attr.disabled]="!validatePage()?'':null"
                 (click)="onContinueClick()"><span loc="Далее" name="Continue">{{locale['Continue']}}</span></button>
       </ion-col>
     </ion-row>

@@ -46,7 +46,9 @@ import {
   CurrencyRate,
   ActionByProduct,
   Shipment,
-  AppParam
+  AppParam,
+  LoDeliveryType,
+  LoEntityOffice
 } from '../../../model/index';
 
 import { AbstractDataRepository } from '../../index';
@@ -129,6 +131,10 @@ const getProductsByActionUrl = `${AppConstants.BASE_URL}/api/product/GetByAction
 const categoriesUrl = AppConstants.USE_PRODUCTION ? `${AppConstants.BASE_URL}/api/catalog`:"/api/mcategories";
 const generateShipmentsUrl = `${AppConstants.BASE_URL}/api/cart/GenerateShipments`;
 const shipmentUrl = `${AppConstants.BASE_URL}/api/cart/shipment`;
+const getLoDeliveryTypeUrl =`${AppConstants.BASE_URL}/api/lo/LoDeliveryType`;
+const getLoEntityOfficeUrl =`${AppConstants.BASE_URL}/api/lo/LoEntityOffice`;
+const getLoDeliveryTypesByLoEntityUrl = `${AppConstants.BASE_URL}/api/lo/LoDeliveryTypesByLoEntity`;
+const getLoOfficesByLoEntityAndCityUrl = `${AppConstants.BASE_URL}/api/lo/LoEntityOfficesByLoEntityAndCity`;
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -546,7 +552,10 @@ export class AppDataRepository extends AbstractDataRepository {
           data.promoBonusTotal,
           data.bonusEarned,
           data.promoCodeDiscTotal,
-          data.idPerson
+          data.idPerson,null,null,null,
+          data.idCreditProduct,
+          data.creditPeriod,
+          data.creditMonthlyPmt
         );
         return cClientOrder;
       }
@@ -586,7 +595,10 @@ export class AppDataRepository extends AbstractDataRepository {
           data.promoBonusTotal,
           data.bonusEarned,
           data.promoCodeDiscTotal,
-          data.idPerson
+          data.idPerson,null,null,null,
+          data.idCreditProduct,
+          data.creditPeriod,
+          data.creditMonthlyPmt
         );
         return cClientOrder;
       }
@@ -3587,7 +3599,7 @@ export class AppDataRepository extends AbstractDataRepository {
           arr.push(
             new Shipment(val.id,val.idOrder,val.idSupplier,val.idLoEntity,val.loTrackTicket,val.loDeliveryCost,
               val.loDeliveryCompleted,val.loEstimatedDeliveryDate,val.loDeliveryCompletedDate,val.idStorePlace,
-              val.idLoEntityOffice, this.getShipmentItemsFromJson(val.shipmentItems))
+              val.idLoEntityOffice, val.idLoDeliveryType, this.getShipmentItemsFromJson(val.shipmentItems))
           )
         );
       }
@@ -3597,10 +3609,10 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getDeliveryDateByShipment(shpmt: Shipment, loEntityId: number, loIdClientAddress: number): Promise<Date> {
+  public async getDeliveryDateByShipment(shpmt: Shipment, loEntityId: number, loIdClientAddress: number, delivTypeId: number): Promise<Date> {
     try {
       const response = await this.http
-        .post(getDeliveryDateByShipmentUrl, {shpmt: shpmt.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress},
+        .post(getDeliveryDateByShipmentUrl, {shpmt: shpmt.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress, delivTypeId: delivTypeId},
           RequestFactory.makeAuthHeader())
         .toPromise();
       const val = response.json();
@@ -3614,10 +3626,10 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getDeliveryCostByShipment(shpmt: Shipment, loEntityId: number, loIdClientAddress: number): Promise<number> {
+  public async getDeliveryCostByShipment(shpmt: Shipment, loEntityId: number, loIdClientAddress: number, delivTypeId: number): Promise<number> {
     try {
       const response = await this.http
-        .post(getDeliveryCostByShipmentUrl, {shpmt: shpmt.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress},
+        .post(getDeliveryCostByShipmentUrl, {shpmt: shpmt.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress, delivTypeId: delivTypeId},
           RequestFactory.makeAuthHeader())
         .toPromise();
       const val = response.json();
@@ -3645,13 +3657,121 @@ export class AppDataRepository extends AbstractDataRepository {
         let res = new Shipment(
           data.id, data.idOrder, data.idSupplier, data.idLoEntity, data.loTrackTicket, data.loDeliveryCost,
           data.loDeliveryCompleted, data.loEstimatedDeliveryDate, data.loDeliveryCompletedDate, data.idStorePlace,
-          data.idLoEntityOffice, this.getShipmentItemsFromJson(data.shipmentItems));
+          data.idLoEntityOffice, data.idLoDeliveryType, this.getShipmentItemsFromJson(data.shipmentItems));
         return res;
       }
     }
     catch (err) {
       return await this.handleError(err);
     }
+  }
+
+  public async getLoDeliveryTypeById(id: number): Promise<LoDeliveryType> {
+    try {
+      const _id = id.toString();
+      const delType = new LoDeliveryType(id);
+      if (this.isEmpty(this.cache.LoDeliveryType.Item(_id))) {
+        this.cache.LoDeliveryType.Add(_id, delType);
+        const response = await this.http
+          .get(getLoDeliveryTypeUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
+
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        if (data)
+        {
+          delType.name = data.name;
+        }
+        return delType;
+      }
+      else
+      {
+        return this.cache.LoDeliveryType.Item(_id);
+      };
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getLoEntityOfficeById(id: number): Promise<LoEntityOffice> {
+    try {
+      const _id = id.toString();
+      const entOff = new LoEntityOffice(id);
+      if (this.isEmpty(this.cache.LoEntityOffice.Item(_id))) {
+        this.cache.LoDeliveryType.Add(_id, entOff);
+        const response = await this.http
+          .get(getLoEntityOfficeUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
+
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        if (data)
+        {
+          entOff.name = data.name;
+          entOff.idLoEntity = data.idLoEntity;
+          entOff.idCity = data.idCity;
+        }
+        return entOff;
+      }
+      else
+      {
+        return this.cache.LoEntityOffice.Item(_id);
+      };
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getLoEntityDeliveryTypes(idLoEntity: number): Promise<LoDeliveryType[]> {
+    try {
+      const _id = idLoEntity.toString();
+      const response = await this.http
+        .get(getLoDeliveryTypesByLoEntityUrl + `/${_id}` ).toPromise();
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const arr: LoDeliveryType[] = new Array<LoDeliveryType>();
+      if (data !== null) {
+        data.forEach(val =>
+          arr.push(
+            new LoDeliveryType(val.id,val.name)
+          )
+        );
+      }
+      return arr;
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getLoOfficesByLoEntityAndCity(idLoEntity: number, idCity: number): Promise<LoEntityOffice[]> {
+    try {
+      const response = await this.http
+        .post(getLoOfficesByLoEntityAndCityUrl, {idLoEntity: idLoEntity, idCity: idCity}).toPromise();
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const arr: LoEntityOffice[] = new Array<LoEntityOffice>();
+      if (data !== null) {
+        data.forEach(val =>
+          arr.push(
+            new LoEntityOffice(val.id, val.idLoEntity, val.name, val.idCity)
+          )
+        );
+      }
+      return arr;
+    }
+    catch (err) {
+      return await this.handleError(err);
+    }
+
   }
 
 

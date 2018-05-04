@@ -36,14 +36,13 @@ export class MainToolbarComponent {
     if (this.disableHeaderClickHandler)
       return;
 
-    /*
     if (this.host) {
       this.host.pageMode = PageMode.HomeMode;
       this.host.searchButtonControl.clearInput(null);
       this.host.initData();
     }
-    else */
-    this.navCtrl.setRoot('HomePage', {pageMode: PageMode.HomeMode});
+    else
+      this.navCtrl.setRoot('HomePage', {pageMode: PageMode.HomeMode});
   }
 
   close() {

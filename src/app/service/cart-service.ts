@@ -15,6 +15,8 @@ import {CurrencyStore} from "./repository/specific/currency-store.service";
 import {ComplectItem} from '../../components/complect/complect';
 import {ItemDetailPage} from '../../pages/item-detail/item-detail';
 import {Shipment} from '../model/shipment';
+import {LoDeliveryType} from '../model/lo-delivery-type';
+import {LoEntityOffice} from '../model/lo-entity-office';
 
 
 export class LoShipmentDeliveryOption {
@@ -26,6 +28,9 @@ export class LoShipmentDeliveryOption {
   public loName?: string;
   public isChecked?: boolean;
   public pickupLocationName?: string;
+  public deliveryType?: LoDeliveryType;
+  public loEntityOfficeId?: number;
+  public loEntityOfficesList?: LoEntityOffice[]
 
   constructor(){};
 }
@@ -50,7 +55,7 @@ export class CartService {
   min_loan_amt = 0;
   max_loan_amt = 0;
 
-  public loan: CreditCalc = null;
+  private _loan: CreditCalc = null;
 
   public bonus: number = null;
   private _payByPromoBonus = false;
@@ -106,6 +111,28 @@ export class CartService {
     this.localeCartService();
 
     this.currStoreService.initCurrencyRate();
+  }
+
+  public set loan(value: CreditCalc) {
+    try
+    {
+      this._httpCallInProgress = true;
+      this._loan = value;
+      this.order.idCreditProduct = value.creditProduct.sId;
+      this.order.creditPeriod = value.clMonths;
+      this.order.creditMonthlyPmt = value.clMonthAmt;
+      this.saveOrder().then(() => {
+        this._httpCallInProgress = false;
+        }
+      );
+    }
+    finally {
+
+    }
+  }
+
+  public get loan(): CreditCalc {
+    return this._loan;
   }
 
   getCartOrderProductById(id: number): ClientOrderProducts {
@@ -218,7 +245,18 @@ export class CartService {
     return _res;
   }
 
-  public get promoCodeDiscount(): number {
+
+  public async saveOrder() {
+    let order = await this.repo.saveClientDraftOrder(this.order);
+    if (order) // check if order has not been submitted from another device
+      this.order = order
+    else {
+      this.gotoCartPageIfDataChanged();
+      return;
+    };
+  }
+
+public get promoCodeDiscount(): number {
     let _res = 0;
     this.orderProducts.forEach(i => {
       _res += i.payPromoCodeDiscount*i.qty;

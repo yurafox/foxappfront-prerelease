@@ -159,6 +159,21 @@
       </dataTypeUsage>
       <notNull>false</notNull>
     </column>
+    <column>
+      <name>ID_LO_DELIVERY_TYPE</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">18</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+    </column>
   </columns>
   <constraints>
     <constraint class="oracle.javatools.db.PKConstraint">
@@ -284,6 +299,32 @@
         <name>LO_ENTITY_OFFICE_PK</name>
         <parent class="oracle.javatools.db.NameBasedID">
           <name>LO_ENTITY_OFFICE</name>
+          <schemaName>FOXSTORE</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>FOXSTORE</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <name>SHIPMENT_FK5</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.NameBasedID">
+          <name>ID_LO_DELIVERY_TYPE</name>
+          <parent class="oracle.javatools.db.NameBasedID">
+            <name>SHIPMENT</name>
+            <schemaName>FOXSTORE</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>FOXSTORE</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <referenceID class="oracle.javatools.db.NameBasedID">
+        <name>LO_DELIVERY_TYPES_PK</name>
+        <parent class="oracle.javatools.db.NameBasedID">
+          <name>LO_DELIVERY_TYPES</name>
           <schemaName>FOXSTORE</schemaName>
           <type>TABLE</type>
         </parent>

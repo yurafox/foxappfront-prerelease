@@ -25,7 +25,9 @@ export class ClientOrder {
       loIdClientAddress: this.loIdClientAddress,
       itemsTotal: this.itemsTotal, shippingTotal: this.shippingTotal,
       bonusTotal: this.bonusTotal, promoBonusTotal: this.promoBonusTotal, bonusEarned: this.bonusEarned,
-      promoCodeDiscTotal: this.promoCodeDiscTotal, idPerson: this.idPerson};
+      promoCodeDiscTotal: this.promoCodeDiscTotal, idPerson: this.idPerson, idCreditProduct: this.idCreditProduct,
+      creditPeriod: this.creditPeriod, creditMonthlyPmt: this.creditMonthlyPmt
+    };
   }
 
   constructor(
@@ -48,6 +50,9 @@ export class ClientOrder {
     public idPerson?: number,
     public orderHistProducts?: ClientOrderProducts[],
     public clientHistFIO?: string,
-    public clientHistAddress?: string
+    public clientHistAddress?: string,
+    public idCreditProduct?: number,
+    public creditPeriod?: number,
+    public creditMonthlyPmt?: number
   ){this._repo = RefInjector.pull(AbstractDataRepository);}
 }

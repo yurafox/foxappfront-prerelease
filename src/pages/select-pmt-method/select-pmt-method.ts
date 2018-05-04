@@ -100,6 +100,9 @@ export class SelectPmtMethodPage extends ComponentBase {
       this.cart.order.idPerson = this.cart.person.id;
     };
 
+    this.cart.saveOrder();
+
+/*
     let order = await this.repo.saveClientDraftOrder(this.cart.order);
     if (order) // check if order has not been submitted from another device
       this.cart.order = order
@@ -107,6 +110,7 @@ export class SelectPmtMethodPage extends ComponentBase {
       this.cart.gotoCartPageIfDataChanged();
       return;
     };
+*/
 
 
     if ((this.cart.availBonus > 0) || (this.cart.availPromoBonus > 0)) {

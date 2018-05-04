@@ -4,11 +4,16 @@ import {ShipmentItems} from './shipment-items';
 import {Supplier} from './supplier';
 import {LoEntity} from './lo-entity';
 import {StorePlace} from './store-place';
+import {LoEntityOffice} from './lo-entity-office';
+import {LoDeliveryType} from './lo-delivery-type';
 
 @LazyLoad([
   {options: { constructor: Supplier}, action: 'getSupplierById', params: ['idSupplier']},
   {options: {constructor: LoEntity}, action: 'getLoEntitiyById', params: ['idLoEntity']},
-  {options: {constructor: StorePlace}, action: 'getStorePlaceById', params: ['idStorePlace']}
+  {options: {constructor: StorePlace}, action: 'getStorePlaceById', params: ['idStorePlace']},
+  {options: {constructor: LoEntityOffice }, action: 'getLoEntityOfficeById', params: ['idLoEntityOffice']},
+  {options: {constructor: LoDeliveryType}, action: 'getLoDeliveryTypeById', params: ['idLoDeliveryType']},
+
 ])
 
 export class Shipment {
@@ -23,6 +28,7 @@ export class Shipment {
       loDeliveryCompletedDate: this.loDeliveryCompletedDate,
       idStorePlace: this.idStorePlace,
       idLoEntityOffice: this.idLoEntityOffice,
+      idLoDeliveryType: this.idLoDeliveryType,
       shipmentItems: this.shipmentItems
     };
   }
@@ -40,6 +46,7 @@ export class Shipment {
     public loDeliveryCompletedDate?: Date,
     public idStorePlace?: number,
     public idLoEntityOffice?: number,
+    public idLoDeliveryType?: number,
     public shipmentItems?: ShipmentItems[]
   ){this._repo = RefInjector.pull(AbstractDataRepository);}
 }

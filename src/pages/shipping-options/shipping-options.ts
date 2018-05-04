@@ -3,6 +3,7 @@ import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angu
 import {CartService, LoShipmentDeliveryOption} from '../../app/service/cart-service';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {LoDeliveryType} from '../../app/model/lo-delivery-type';
 
 @IonicPage()
 @Component({
@@ -36,6 +37,9 @@ export class ShippingOptionsPage extends ComponentBase {
     loading.present();
 
     let i = 0;
+    //let cityId =
+    const addr = await this.repo.getClientAddressById(this.cart.order.loIdClientAddress);
+    const cityId = addr.idCity;
 
     for (let ship of this.cart.loShipments) {
 
@@ -48,6 +52,7 @@ export class ShippingOptionsPage extends ComponentBase {
         item.deliveryDate = new Date(); //await this.repo.getDeliveryDateByShipment(ship.id, loEnt.idLoEntity, this.cart.order.loIdClientAddress);
         item.loName = null;
         item.isChecked = true;
+        item.deliveryType = new LoDeliveryType(3); //Самомвьівоз
         item.pickupLocationName = (await this.repo.getStorePlaceById(ship.idStorePlace)).name; // '';
         this.cart.loShipmentDeliveryOptions.push(item);
       }
@@ -56,16 +61,30 @@ export class ShippingOptionsPage extends ComponentBase {
         let supplLoEnt = await this.repo.getLoEntitiesForSupplier(ship.idSupplier);
         for (let loEnt of supplLoEnt) {
           let ent = await this.repo.getLoEntitiyById(loEnt.idLoEntity);
-          let item = new LoShipmentDeliveryOption();
+          ent.loDeliveryTypes = await (<any>ent).lodeliverytype_p;
 
-          item.shipment = ship;
-          item.loEntityId = loEnt.idLoEntity;
-          item.itemIdx = i;
-          item.deliveryCost = await this.repo.getDeliveryCostByShipment(ship, loEnt.idLoEntity, this.cart.order.loIdClientAddress);
-          item.deliveryDate = await this.repo.getDeliveryDateByShipment(ship, loEnt.idLoEntity, this.cart.order.loIdClientAddress);
-          item.loName = ent.name;
-          item.isChecked = (supplLoEnt.length === 1);
-          this.cart.loShipmentDeliveryOptions.push(item);
+          for (let delType of ent.loDeliveryTypes) {
+            let item = new LoShipmentDeliveryOption();
+
+            item.shipment = ship;
+            item.loEntityId = loEnt.idLoEntity;
+            item.itemIdx = i;
+            item.deliveryCost = await this.repo.getDeliveryCostByShipment(ship, loEnt.idLoEntity, this.cart.order.loIdClientAddress, delType.id);
+            item.deliveryDate = await this.repo.getDeliveryDateByShipment(ship, loEnt.idLoEntity, this.cart.order.loIdClientAddress, delType.id);
+            item.loName = ent.name;
+            item.isChecked = ((supplLoEnt.length === 1) && (ent.loDeliveryTypes.length === 1));
+            item.deliveryType = delType;
+            if (item.deliveryType.id === 1) {
+              item.loEntityOfficesList = (await this.repo.getLoOfficesByLoEntityAndCity(loEnt.idLoEntity, cityId))
+                .sort((a,b) => {
+                  if(a.name < b.name) return -1;
+                  if(a.name > b.name) return 1;
+                  return 0;
+                });
+            }
+           this.cart.loShipmentDeliveryOptions.push(item);
+          }
+
         }
       }
       i++;
@@ -83,17 +102,22 @@ export class ShippingOptionsPage extends ComponentBase {
     );
   }
 
-  isAnyOptionSelected():boolean {
-    let res = false;
+  validatePage():boolean {
+    let res: LoShipmentDeliveryOption = null;
     for (let item of this.cart.loShipmentDeliveryOptions) {
       if (item.itemIdx === this.itemIndex) {
+
         if (item.isChecked){
-          res = true;
+          res = item;
           break;
         }
       }
     }
-    return res;
+
+    if ((res) && (res.deliveryType.id === 1))
+      return (typeof res.loEntityOfficeId !== 'undefined')
+    else
+      return (res !== null);
  }
 
   async onContinueClick() {
@@ -107,6 +131,8 @@ export class ShippingOptionsPage extends ComponentBase {
             ship.idLoEntity = i.loEntityId;
             ship.loEstimatedDeliveryDate = i.deliveryDate;
             ship.loDeliveryCost = i.deliveryCost;
+            ship.idLoDeliveryType = i.deliveryType.id;
+            ship.idLoEntityOffice = i.loEntityOfficeId;
             ship = await this.repo.saveShipment(ship);
           }
       };

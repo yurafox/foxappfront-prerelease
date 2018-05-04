@@ -34,7 +34,9 @@ import { QuotationProduct,
           ClientMessage,
           CurrencyRate,
           ActionByProduct,
-          Shipment
+          Shipment,
+          LoDeliveryType,
+          LoEntityOffice
        } from '../../../model/index';
 import {IDictionary, Providers} from "../../../core/app-core";
 import {AppParam} from '../../../model/app-param';
@@ -81,8 +83,8 @@ export abstract class AbstractDataRepository {
   public async abstract getLoEntitiyById(entityId: number):Promise<LoEntity>;
   public async abstract getLoTrackLogByOrderSpecId(id: number): Promise<LoTrackLog[]>;
 
-  public async abstract getDeliveryDateByShipment(shpmt: Shipment, loEntityId: number, loIdClientAddress: number): Promise<Date>;
-  public async abstract getDeliveryCostByShipment(shpmt: Shipment, loEntityId: number, loIdClientAddress: number): Promise<number>;
+  public async abstract getDeliveryDateByShipment(shpmt: Shipment, loEntityId: number, loIdClientAddress: number, delivTypeId: number): Promise<Date>;
+  public async abstract getDeliveryCostByShipment(shpmt: Shipment, loEntityId: number, loIdClientAddress: number, delivTypeId: number): Promise<number>;
 
 
   public async abstract getProductCreditSize(idProduct: number, isSupplier: number): Promise<any>;
@@ -188,5 +190,9 @@ export abstract class AbstractDataRepository {
   public async abstract getProductsByActionId(actionId: number):  Promise<Product[]>;
   public async abstract generateShipments(): Promise<Shipment[]>;
   public async abstract saveShipment(value: Shipment): Promise<Shipment>;
+  public async abstract getLoDeliveryTypeById(id: number): Promise<LoDeliveryType>;
+  public async abstract getLoEntityOfficeById(id: number): Promise<LoEntityOffice>;
+  public async abstract getLoEntityDeliveryTypes(idLoEntity: number): Promise<LoDeliveryType[]>;
+  public async abstract getLoOfficesByLoEntityAndCity(idLoEntity: number, idCity: number): Promise<LoEntityOffice[]>;
 
 }

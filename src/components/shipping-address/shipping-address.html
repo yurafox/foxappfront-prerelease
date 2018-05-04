@@ -18,10 +18,14 @@
             <br>
             {{sa?.bldApp}}
             <br>
-            {{sa?.city}}, {{sa?.zip}}
+            {{sa?.city}}
+
+<!--
+            , {{sa?.zip}}
             <span *ngIf="sa?.idCountry"><br>
                   {{sa?.country?.name}} </span>
 
+-->
             <span *ngIf="sa?.phone" loc="Телефон" name="Phone"><br>{{locale['Phone']}}: {{sa?.phone}} </span>
           </ion-col>
         </ion-row>

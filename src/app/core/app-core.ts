@@ -15,6 +15,8 @@ import {Region} from '../model/region';
 import {Store} from "../model/store";
 import { AppConstants } from '../app-constants';
 import {AppParam} from '../model/app-param';
+import {LoDeliveryType} from '../model/lo-delivery-type';
+import {LoEntityOffice} from '../model/lo-entity-office';
 
 export interface IDictionary<T> {
   [k: string]: T;
@@ -158,6 +160,8 @@ export namespace Providers {
     private _cacheEnumPaymentMethod: IKeyedCollection<EnumPaymentMethod> = null;
     private _cacheRegion: IKeyedCollection<Region> = null;
     private _cacheAppParams: IKeyedCollection<AppParam> = null;
+    private _cacheDeliveryType: IKeyedCollection<LoDeliveryType> = null;
+    private _cacheLoEntityOffice: IKeyedCollection<LoEntityOffice> = null;
 
 
     public get Products(): IKeyedCollection<Product> {
@@ -268,9 +272,21 @@ export namespace Providers {
     public get AppParams(): IKeyedCollection<AppParam> {
       if (this._cacheAppParams == null)
         this._cacheAppParams = new CacheItems<AppParam>();
-
       return this._cacheAppParams;
     }
+
+    public get LoDeliveryType(): IKeyedCollection<LoDeliveryType> {
+      if (this._cacheDeliveryType == null)
+        this._cacheDeliveryType = new CacheItems<LoDeliveryType>();
+      return this._cacheDeliveryType;
+    }
+
+    public get LoEntityOffice(): IKeyedCollection<LoEntityOffice> {
+      if (this._cacheLoEntityOffice  == null)
+        this._cacheLoEntityOffice = new CacheItems<LoEntityOffice>();
+      return this._cacheLoEntityOffice;
+    }
+
 
   }
 }
@@ -446,4 +462,6 @@ export namespace System {
   export class PushContainer {
     public static pushStore:IDictionary<any> = {};
   }
+
+
 }
