@@ -555,7 +555,8 @@ export class AppDataRepository extends AbstractDataRepository {
           data.idPerson,null,null,null,
           data.idCreditProduct,
           data.creditPeriod,
-          data.creditMonthlyPmt
+          data.creditMonthlyPmt,
+          data.idApp
         );
         return cClientOrder;
       }
@@ -598,7 +599,8 @@ export class AppDataRepository extends AbstractDataRepository {
           data.idPerson,null,null,null,
           data.idCreditProduct,
           data.creditPeriod,
-          data.creditMonthlyPmt
+          data.creditMonthlyPmt,
+          data.idApp
         );
         return cClientOrder;
       }

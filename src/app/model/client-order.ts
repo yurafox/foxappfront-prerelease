@@ -26,7 +26,7 @@ export class ClientOrder {
       itemsTotal: this.itemsTotal, shippingTotal: this.shippingTotal,
       bonusTotal: this.bonusTotal, promoBonusTotal: this.promoBonusTotal, bonusEarned: this.bonusEarned,
       promoCodeDiscTotal: this.promoCodeDiscTotal, idPerson: this.idPerson, idCreditProduct: this.idCreditProduct,
-      creditPeriod: this.creditPeriod, creditMonthlyPmt: this.creditMonthlyPmt
+      creditPeriod: this.creditPeriod, creditMonthlyPmt: this.creditMonthlyPmt, idApp: this.idApp
     };
   }
 
@@ -53,6 +53,7 @@ export class ClientOrder {
     public clientHistAddress?: string,
     public idCreditProduct?: number,
     public creditPeriod?: number,
-    public creditMonthlyPmt?: number
+    public creditMonthlyPmt?: number,
+    public idApp?: number
   ){this._repo = RefInjector.pull(AbstractDataRepository);}
 }
