@@ -74,6 +74,9 @@ export class ShippingOptionsPage extends ComponentBase {
             item.loName = ent.name;
             item.isChecked = ((supplLoEnt.length === 1) && (ent.loDeliveryTypes.length === 1));
             item.deliveryType = delType;
+
+            let needAddToOptionsList = true;
+
             if (item.deliveryType.id === 1) {
               item.loEntityOfficesList = (await this.repo.getLoOfficesByLoEntityAndCity(loEnt.idLoEntity, cityId))
                 .sort((a,b) => {
@@ -81,8 +84,11 @@ export class ShippingOptionsPage extends ComponentBase {
                   if(a.name > b.name) return 1;
                   return 0;
                 });
+              needAddToOptionsList = !(item.loEntityOfficesList.length === 0);
             }
-           this.cart.loShipmentDeliveryOptions.push(item);
+
+            if (needAddToOptionsList)
+              this.cart.loShipmentDeliveryOptions.push(item);
           }
 
         }

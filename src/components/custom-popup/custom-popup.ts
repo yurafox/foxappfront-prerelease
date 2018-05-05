@@ -56,7 +56,9 @@ export class CustomPopupComponent extends ComponentBase {
         {
           text: 'OK',
           handler: () => {
-            (<any>this.itemPage).selectedStorePlace = sp;
+            const ipage = <any>this.itemPage;
+            ipage.selectedStorePlace = sp;
+            ipage.onAddToCart();
             this.viewCtrl.dismiss();
           }
         },

@@ -1,6 +1,19 @@
 <div class="{{options?.buttonClass}}">
 <button ion-button (click)="openView($event)">
-  <div>
+
+  <ion-grid no-padding>
+    <ion-row>
+      <ion-col col-10 text-left class="f-cut-long-text">
+        {{displayValue}}
+      </ion-col>
+      <ion-col col-2 text-end>
+        <ion-icon name="unfold_more"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+<!--
+  <div class="f-btn-text-area">
     <label>{{displayValue}}</label>
   </div>
   <div style="color: black" class="f-left-15">
@@ -8,6 +21,8 @@
       <ion-icon name="unfold_more"></ion-icon>
     </div>
   </div>
+-->
+
 </button>
 </div>
 

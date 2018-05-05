@@ -18,6 +18,13 @@ dropdown-list {
     margin-top: -10px;
   }
 
+  .f-cut-long-text  {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .f-left-15 {
     //margin-left: 15px;
     text-align: right;

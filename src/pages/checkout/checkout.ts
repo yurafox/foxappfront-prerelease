@@ -139,6 +139,8 @@ export class CheckoutPage extends ComponentBase {
         spmt.loEstimatedDeliveryDate = await this.repo.getDeliveryDateByShipment(spmt, spmt.idLoEntity, this.cart.order.loIdClientAddress, spmt.idLoDeliveryType);
         spmt = await this.repo.saveShipment(spmt);
       }
+      await this.cart.saveOrder();
+
 
       this.evServ.events['cartUpdateEvent'].emit();
     }

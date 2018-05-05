@@ -116,15 +116,17 @@ export class CartService {
   public set loan(value: CreditCalc) {
     try
     {
-      this._httpCallInProgress = true;
       this._loan = value;
-      this.order.idCreditProduct = value.creditProduct.sId;
-      this.order.creditPeriod = value.clMonths;
-      this.order.creditMonthlyPmt = value.clMonthAmt;
-      this.saveOrder().then(() => {
-        this._httpCallInProgress = false;
-        }
-      );
+      if (this.order) {
+        this._httpCallInProgress = true;
+        this.order.idCreditProduct = value ? value.creditProduct.sId : null ;
+        this.order.creditPeriod = value ? value.clMonths : null;
+        this.order.creditMonthlyPmt = value ? value.clMonthAmt : null;
+        this.saveOrder().then(() => {
+          this._httpCallInProgress = false;
+          }
+        );
+      }
     }
     finally {
 
@@ -232,6 +234,7 @@ export class CartService {
 
       cObj.clMonthAmt = this.calculateLoan(this.cartGrandTotal, cObj.clMonths,
         cObj.creditProduct.monthCommissionPct, cObj.creditProduct.sGracePeriod);
+      this.loan = cObj;
     }
   }
 
