@@ -37,9 +37,11 @@ export class MainToolbarComponent {
       return;
 
     if (this.host) {
-      this.host.pageMode = PageMode.HomeMode;
-      this.host.searchButtonControl.clearInput(null);
-      this.host.initData();
+      if (this.host.pageMode !== PageMode.HomeMode) {
+        this.host.pageMode = PageMode.HomeMode;
+        this.host.searchButtonControl.clearInput(null);
+        this.host.initData();
+      }
     }
     else
       this.navCtrl.setRoot('HomePage', {pageMode: PageMode.HomeMode});
