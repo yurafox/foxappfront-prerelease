@@ -16,4 +16,5 @@ export class AppConstants {
   public static readonly BONUS_TO_CURRENCY_RATE = 1;
   public static readonly ACTION_BONUS_TO_CURRENCY_RATE = 0.1;
   public static readonly BONUS_PMT_FOR_PRODUCT_ONLY = true;
+  public static readonly ID_APP =1;
 }
