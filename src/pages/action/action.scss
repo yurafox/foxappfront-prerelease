@@ -2,7 +2,7 @@ page-action {
   .default-container {
     background-color: white;
     height:100%;
-    padding: 10px 5px;
+    //padding: 10px 5px;
   }
 
   .default-container > span:first-child {
@@ -14,6 +14,7 @@ page-action {
 
   .default-timeViewer{
     margin-top: 20px;
+    padding: 10px 5px;
     div {
       text-align: center;
       float: left;
@@ -39,6 +40,18 @@ page-action {
     h3 {
       color:#f04124;
       text-align:center
+    }
+  }
+
+  .action-product-filter-div {
+    position:sticky !important;
+    top:-4px;
+    z-index: 1;
+    progress-bar {
+      position: sticky !important;
+      .progress-bar span {
+        top: -6px !important;
+      }
     }
   }
 }

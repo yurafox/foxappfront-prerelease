@@ -32,6 +32,7 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
   private alive:boolean;
   private monitor:{};
   private me:any;
+  private divsHeight:number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private _repo:AbstractDataRepository,private srch: SearchService,
@@ -42,10 +43,11 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
     this.alive = true;
     this.expire = {};
     this.me=this;
+    this.divsHeight=0;
   }
   
   ngDoCheck() {
-    this.updateScrollHeight();
+    //this.updateScrollHeight();
   }
 
   async ngOnInit() {
@@ -54,8 +56,21 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
      this.action = await this._repo.getAction(this.actionId);
 
     // get dynamic content
-    this.content = this.action.action_content;
+    if (this.action) this.content = this.action.action_content;
     this.srch.hostPage = this.me;
+
+    /*if (this.action && this.action.action_content) {
+      let actHeader:Element = document.querySelector('h3');
+      let defContainer:Element = document.querySelector('div.default-container');
+      if (defContainer) {
+        let otherDivs = defContainer.children;
+        for (let i = 0; i < otherDivs.length - 4; i++) {
+          if (i === 1) this.divsHeight += otherDivs[i].children[0].clientHeight;
+          this.divsHeight += otherDivs[i].clientHeight;
+        }
+        this.divsHeight += actHeader.clientHeight;
+      }
+    }*/
 
     if(!Monitor.isMustWait()){
       Monitor.enter();
@@ -78,7 +93,8 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
       });
       Monitor.exit();
     }
-      
+    
+    this.updateScrollHeight();
   }
 
   ngOnDestroy():void {
@@ -144,8 +160,8 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
   }
 
   public updateScrollHeight() {
-    const hdrH = (this.me.header) ?  this.me.header.nativeElement.scrollHeight : 0;
-    this.scrollHeight = (window.screen.height) - hdrH;
+    const hdrH = (this.me.header) ? this.me.header.nativeElement.scrollHeight : 0;
+    this.scrollHeight = (window.screen.height) - hdrH /*- this.divsHeight*/;
   }
 }
 

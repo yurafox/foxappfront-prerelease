@@ -40,6 +40,7 @@ export class SearchService {
   private readonly TYPE = null;
   private SIZE = 30;
   private MAX_ITEMS_COUNT = 360;
+  private infiniteScroll:any;
 
   products = [];
   searchItems = new Array<string>();
@@ -128,12 +129,17 @@ export class SearchService {
     await this.getProductsData();
   }
 
-  loadNext() {
+  loadNext(infiniteScroll) {
     if (
           (this.products.length > this.MAX_ITEMS_COUNT)
             ||
           (this.products.length === this.hitsTotal)
-       ) return;
+       ) {
+         infiniteScroll.enable(false);
+         if (this.infiniteScroll && this.infiniteScroll !== null) this.infiniteScroll = null;
+         return;
+        }
+    this.infiniteScroll = infiniteScroll;
     this.getProductsData();
   }
 
@@ -171,8 +177,11 @@ export class SearchService {
     }
     finally
     {
-      this.hostPage.cont.resize();
+      if (this.hostPage && this.hostPage.cont) {
+        this.hostPage.cont.resize();
+      }
       this.inSearch = false;
+      if (this.infiniteScroll && this.infiniteScroll !== null) this.infiniteScroll.complete();
     }
   }
 
@@ -404,5 +413,11 @@ export class SearchService {
       localStorage.setItem(this.cKey, JSON.stringify(this.searchItems));
     }
   }
+
+  
+  public get maxItemsCount() : number {
+    return this.MAX_ITEMS_COUNT; 
+  }
+  
 
 }

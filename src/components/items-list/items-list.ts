@@ -16,8 +16,8 @@ export class ItemsListComponent extends ComponentBase {
     super();
   }
 
-  onScroll() {
-    this.srchService.loadNext();
+  onScroll(event) {
+    this.srchService.loadNext(event);
   }
 
   getListHeight(): number {

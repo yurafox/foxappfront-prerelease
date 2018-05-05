@@ -110,9 +110,10 @@ export class FoxApp extends ComponentBase implements OnDestroy {
         }
       });
 
-      this.platform.ready().then(() => {
+      let readyness = await this.platform.ready();
+      if (readyness && readyness!=='') {
         this.splashScreen.hide();
-      });
+      }
     }
   }
 
