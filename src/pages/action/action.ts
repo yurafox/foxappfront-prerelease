@@ -46,9 +46,7 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
     this.divsHeight=0;
   }
   
-  ngDoCheck() {
-    //this.updateScrollHeight();
-  }
+  ngDoCheck() {}
 
   async ngOnInit() {
     super.ngOnInit();
@@ -59,22 +57,12 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
     if (this.action) this.content = this.action.action_content;
     this.srch.hostPage = this.me;
 
-    /*if (this.action && this.action.action_content) {
-      let actHeader:Element = document.querySelector('h3');
-      let defContainer:Element = document.querySelector('div.default-container');
-      if (defContainer) {
-        let otherDivs = defContainer.children;
-        for (let i = 0; i < otherDivs.length - 4; i++) {
-          if (i === 1) this.divsHeight += otherDivs[i].children[0].clientHeight;
-          this.divsHeight += otherDivs[i].clientHeight;
-        }
-        this.divsHeight += actHeader.clientHeight;
-      }
-    }*/
-
     if(!Monitor.isMustWait()){
       Monitor.enter();
       await this.srch.searchByAction(this.actionId);
+      this.scrOrientationSub = this.screenOrientation.onChange().subscribe(() => {
+        this.changeDet.detectChanges();
+      });
       Monitor.exit();
     }
     this.actionExpire(); // for design display
@@ -84,16 +72,7 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
     .subscribe(() => {
       this.actionExpire();
     });
-    
-    if(!Monitor.isMustWait()){
-      Monitor.enter();
-      this.actionProducts = await this._repo.getProductsByActionId(this.actionId);
-      this.scrOrientationSub = this.screenOrientation.onChange().subscribe(() => {
-        this.changeDet.detectChanges();
-      });
-      Monitor.exit();
-    }
-    
+
     this.updateScrollHeight();
   }
 
@@ -161,7 +140,7 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
 
   public updateScrollHeight() {
     const hdrH = (this.me.header) ? this.me.header.nativeElement.scrollHeight : 0;
-    this.scrollHeight = (window.screen.height) - hdrH /*- this.divsHeight*/;
+    this.scrollHeight = (window.screen.height) - hdrH;
   }
 }
 

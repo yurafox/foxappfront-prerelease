@@ -2,7 +2,6 @@ page-action {
   .default-container {
     background-color: white;
     height:100%;
-    //padding: 10px 5px;
   }
 
   .default-container > span:first-child {
@@ -14,12 +13,14 @@ page-action {
 
   .default-timeViewer{
     margin-top: 20px;
-    padding: 10px 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+
     div {
       text-align: center;
       float: left;
       height: 48px;
-      margin-right: 5px;
       width: 17%;
       padding-top: 7px;
       border: 1px solid  rgba(199,226,90,.8);
@@ -28,7 +29,8 @@ page-action {
   }
 
   .default-image-section {
-    margin-top: 100px;
+    margin-top: 15px;
+    padding: 10px;
     img {
       width: 100%;
       height: auto;
@@ -45,7 +47,7 @@ page-action {
 
   .action-product-filter-div {
     position:sticky !important;
-    top:-4px;
+    top:-3px;
     z-index: 1;
     progress-bar {
       position: sticky !important;
