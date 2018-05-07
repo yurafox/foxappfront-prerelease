@@ -177,7 +177,7 @@ export class SearchService {
   }
 
   packPropsArray(inArray: PropFilterCondition[]): ProductPropsAgg[] {
-    let res = new Array<ProductPropsAgg>() ;
+    let res = new Array<ProductPropsAgg>();
     inArray.forEach(x => {
         let fnd: ProductPropsAgg = res.find( a => a.propId === x.propId );
         if (!fnd)
