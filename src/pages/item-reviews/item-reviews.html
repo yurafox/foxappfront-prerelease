@@ -37,10 +37,10 @@
     <ion-row *ngFor="let rev of reviews" class="f-border-ligthgray">
       <ion-col>
         <item-review [review]=rev [displayTextLength]="250" [collapsibleMode]="true"></item-review>
-        <button ion-button (click)="onShowReviewClick(rev)" class="f-btn-secondary"
+        <!--<button ion-button (click)="onShowReviewClick(rev)" class="f-btn-secondary"
                 *ngIf="rev.reviewAnswers.length > 0">
           <span loc="Показать ответы" name="ShowAnswers">{{locale['ShowAnswers']}} ({{rev.reviewAnswers.length}})</span>
-        </button>
+        </button>-->
       </ion-col>
     </ion-row>
   </ion-grid>

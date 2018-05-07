@@ -1,6 +1,7 @@
 import {Component, Input, ViewChild} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {SearchService} from '../../app/service/search-service';
+import {NavController} from 'ionic-angular';
 
 @Component({
   selector: 'items-list',
@@ -12,7 +13,7 @@ export class ItemsListComponent extends ComponentBase {
   @ViewChild('searchResults') srchResDiv;
   @Input() parentControl;
 
-  constructor(public srchService: SearchService) {
+  constructor(public srchService: SearchService, private navCtrl: NavController) {
     super();
   }
 
@@ -24,4 +25,7 @@ export class ItemsListComponent extends ComponentBase {
     return this.parentControl.scrollHeight;
   }
 
+  toHomePage() {
+    this.navCtrl.setRoot('HomePage').catch(err => console.error(err));
+  }
 }

@@ -47,4 +47,12 @@ item-review {
     }
   }
 
+  .f-btn-color-green, .f-btn-color-green.activated {
+    background: forestgreen;
+  }
+
+  .f-btn-color-red, .f-btn-color-red.activated {
+    background: red;
+  }
+
 }

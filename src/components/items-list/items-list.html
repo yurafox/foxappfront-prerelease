@@ -1,7 +1,19 @@
-<div class="f-color-secondary f-padding-lr-10 f-padding-t-10" *ngIf="(srchService.products.length === 0) && !srchService.inSearch">
-  <span loc="Ваш поиск" name="YourSearch">{{locale['YourSearch']}}</span>
+<div class="f-color-secondary f-padding-lr-10 f-padding-t-10" style="height: 100%" *ngIf="(srchService.products.length === 0) && !srchService.inSearch">
+  <!--<span loc="Ваш поиск" name="YourSearch">{{locale['YourSearch']}}</span>
   <span *ngIf="srchService.lastSearch">"{{srchService.lastSearch}}"</span>
-  <span loc="" name="DidNotMatch">{{locale['DidNotMatch']}}</span>
+  <span loc="" name="DidNotMatch">{{locale['DidNotMatch']}}</span>-->
+  <ion-grid style="height: 100%">
+    <ion-row justify-content-center align-items-center style="height: 100%">
+      <span loc="Ваш поиск" name="YourSearch">{{locale['YourSearch']}}</span>&nbsp;
+      <span *ngIf="srchService.lastSearch">"{{srchService.lastSearch}}"</span>
+      <span loc="" name="DidNotMatch">{{locale['DidNotMatch']}}</span>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button class="f-btn-action" ion-button block (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']}}</span></button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </div>
 
 <div class="search-results" #searchResults
