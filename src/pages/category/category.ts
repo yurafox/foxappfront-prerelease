@@ -20,7 +20,7 @@ export class CategoryPage extends ComponentBase implements DoCheck {
   scrOrientationSub: Subscription;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private repo: AbstractDataRepository, private srch: SearchService,
+              private repo: AbstractDataRepository, public srch: SearchService,
               private screenOrientation: ScreenOrientation, private changeDet: ChangeDetectorRef) {
     super();
   }
@@ -31,7 +31,7 @@ export class CategoryPage extends ComponentBase implements DoCheck {
   }
 
   ngDoCheck() {
-    this.updateScrollHeight();
+    //this.updateScrollHeight();
   }
 
   async ngOnInit() {
@@ -41,6 +41,7 @@ export class CategoryPage extends ComponentBase implements DoCheck {
     this.scrOrientationSub = this.screenOrientation.onChange().subscribe(() => {
       this.changeDet.detectChanges();
     });
+    this.updateScrollHeight();
   }
 
   ngOnDestroy() {

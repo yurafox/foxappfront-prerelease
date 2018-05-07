@@ -44,4 +44,16 @@ page-action {
       text-align:center
     }
   }
+
+  .action-product-filter-div {
+    position:sticky !important;
+    top:-3px;
+    z-index: 1;
+    progress-bar {
+      position: sticky !important;
+      .progress-bar span {
+        top: -6px !important;
+      }
+    }
+  }
 }

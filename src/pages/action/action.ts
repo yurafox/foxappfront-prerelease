@@ -32,6 +32,7 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
   private alive:boolean;
   private monitor:{};
   private me:any;
+  private divsHeight:number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private _repo:AbstractDataRepository,private srch: SearchService,
@@ -42,11 +43,10 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
     this.alive = true;
     this.expire = {};
     this.me=this;
+    this.divsHeight=0;
   }
   
-  ngDoCheck() {
-    this.updateScrollHeight();
-  }
+  ngDoCheck() {}
 
   async ngOnInit() {
     super.ngOnInit();
@@ -54,7 +54,7 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
      this.action = await this._repo.getAction(this.actionId);
 
     // get dynamic content
-    this.content = this.action.action_content;
+    if (this.action) this.content = this.action.action_content;
     this.srch.hostPage = this.me;
 
     if(!Monitor.isMustWait()){
@@ -72,7 +72,8 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
     .subscribe(() => {
       this.actionExpire();
     });
-      
+
+    this.updateScrollHeight();
   }
 
   ngOnDestroy():void {
@@ -138,7 +139,7 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
   }
 
   public updateScrollHeight() {
-    const hdrH = (this.me.header) ?  this.me.header.nativeElement.scrollHeight : 0;
+    const hdrH = (this.me.header) ? this.me.header.nativeElement.scrollHeight : 0;
     this.scrollHeight = (window.screen.height) - hdrH;
   }
 }
