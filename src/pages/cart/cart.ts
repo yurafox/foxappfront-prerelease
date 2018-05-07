@@ -103,4 +103,8 @@ export class CartPage extends ComponentBase implements DoCheck {
     return (thisOp) && (prevOp);
   }
 
+  toHomePage() {
+    this.navCtrl.setRoot('HomePage').catch(err => console.error(err));
+  }
+
 }

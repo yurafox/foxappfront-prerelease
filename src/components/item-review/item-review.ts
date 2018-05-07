@@ -3,7 +3,7 @@ import {ComponentBase} from '../component-extension/component-base';
 import {ProductReview} from '../../app/model/product-review';
 import {StoreReview} from "../../app/model/store-review";
 import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
-import {ToastController} from "ionic-angular";
+import {ToastController, NavController} from "ionic-angular";
 
 @Component({
   selector: 'item-review',
@@ -21,7 +21,7 @@ export class ItemReviewComponent extends ComponentBase {
   isAuth: boolean;
 
   constructor(private changeDetector: ChangeDetectorRef, private repo: AbstractDataRepository,
-              private toastCtrl: ToastController) {
+              private toastCtrl: ToastController, private navCtrl: NavController) {
     super();
     this.isAuth = this.userService.isAuth;
   }
@@ -102,5 +102,11 @@ export class ItemReviewComponent extends ComponentBase {
       duration: 3000
     });
     toast.present();
+  }
+
+  onShowReviewClick(data: any): void {
+    this.navCtrl.push('ItemReviewPage', data).catch(err => {
+      console.log(`Error navigating to ItemReviewPage: ${err}`);
+    });
   }
 }
