@@ -1,28 +1,32 @@
 category-btn {
   .ctb-wrapper{
-    background-color:#ef4123;
-    margin-top:-3px;
-    margin-bottom:2px;
-    min-height: 40px;
-    padding-top: 8px;
+    min-height: 84px;
+    padding-top: 10px;
+    margin-top: -4px;
   }
 
   .ctb-content{
     width: 150px;
-    height: 24px;
+    height: 64px;
     margin-left: 40px;
-    padding-top: 2px;float: left
+    padding-top: 21px;
+    float: left
+  }
+
+  .ctb-content span{
+    color: #4e4e4e;
+    font-size: 18px;
   }
 
   .ctb-inbox {
-    width: 24px;
-    height: 24px;
+    width: 64px;
+    height: 64px;
     margin-left: 19px;
     float: left
   }
 
   .ctb-arrow {
-    padding-top: 4px;
+    padding-top: 19px;
     text-align: right;
     padding-right: 10px
   }

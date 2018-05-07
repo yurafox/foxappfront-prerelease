@@ -409,7 +409,7 @@ export class RequestFactory {
     h.set('Authorization', `Bearer ${localStorage.getItem('token') || ''}`);
     h.set('X-Currency',localStorage.getItem('currency') || `${AppConstants.CURRENCY_DEFAULT_VALUE}`);
     h.set('X-Lang',localStorage.getItem('lang') || `${AppConstants.LOCALE_DEFAULT_VALUE}`);
-    // h.set('X-User',localStorage.getItem('id') || '');
+    h.set('X-APP',`${AppConstants.ID_APP}`);
 
     return {headers:h}
    }

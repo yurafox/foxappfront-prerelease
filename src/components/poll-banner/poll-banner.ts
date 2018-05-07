@@ -30,8 +30,14 @@ export class PollBannerComponent extends ComponentBase{
 
       this.canView = new Date() <= this.currentPoll.dateEnd
                         && this.clientAnswers.length===0;
+      
+      if(!this.canView)
+        this.removeVariableBlock();
     }
-    else this.canView = false;
+    else {
+      this.canView = false;
+      this.removeVariableBlock();   
+    }
   }
 
   public openItem():void {
@@ -40,5 +46,11 @@ export class PollBannerComponent extends ComponentBase{
         console.log(`Error navigating to PollPage: ${err}`);
       }
     );
+  }
+
+  private removeVariableBlock():void {
+    let dynamicHtml = document.getElementsByTagName('dynamic-html')[0];
+    let poll=document.getElementsByTagName('poll-banner')[0].parentElement;
+    dynamicHtml.removeChild(poll);
   }
 }
