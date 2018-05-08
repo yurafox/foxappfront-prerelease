@@ -49,6 +49,12 @@
         <span class="f-color-green f-item-nopadding"><span loc="В наличии" name="InStock">{{locale['InStock']}}</span></span>
       </ion-col>
     </ion-row>
+    <ion-row *ngIf="!OnStock && resolved">
+      <ion-col>
+        <span class="f-color-secondary f-item-nopadding"><span loc="Нет в наличии" name="NoOnStock">{{locale['NoOnStock']}}</span></span>
+      </ion-col>
+    </ion-row>
+
     <ion-row *ngIf="valueQuot?.quotation?.supplier">
       <ion-col>
         <span class="f-item-nopadding"><span loc="Продавец" name="SoldBy">{{locale['SoldBy']}}</span> {{valueQuot?.quotation?.supplier?.name}}</span>
@@ -94,7 +100,9 @@
     </ion-row>
     <ion-row *ngIf="actionsArr.length>0">
       <ion-col>
-        <complect [actionsArr]="complectsArr" [mainProductId]="this.product.id"></complect>
+        <complect [actionsArr]="complectsArr" [mainProductId]="this.product.id"
+                  [disableAddToCartButton]="!OnStock">
+        </complect>
       </ion-col>
     </ion-row>
 

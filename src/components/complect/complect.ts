@@ -77,6 +77,9 @@ export class ComplectComponent extends ComponentBase {
     this.initData();
   }
 
+  @Input()
+  public disableAddToCartButton = false;
+
   get actionsArr(): Array<ActionByProduct> {
     return this._actionsArr;
   }

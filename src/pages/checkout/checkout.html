@@ -222,7 +222,7 @@
 
                           <ion-row *ngIf="cart.getCartOrderProductById(sitem.idOrderSpecProd)?.complect">
                             <ion-col class="f-size-small f-bundle-text">
-                              <span><i>*This item is a part of bundle. Quantities of all bundle's parts will be automatically synchronized upon change</i></span>
+                              <span><i>{{locale['BundleInfo']}}</i></span>
                             </ion-col>
                           </ion-row>
 

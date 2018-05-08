@@ -116,7 +116,8 @@
                     <ion-row>
                       <ion-col style="padding-top: 5px;">
                         <button class="f-btn-action f-btn-bottom" ion-button block
-                                (click)="onAddToCart(item)"><span>Add to Cart</span>
+                                [attr.disabled]="(disableAddToCartButton)?'':null"
+                                (click)="onAddToCart(item)"><span>{{locale['AddToCart']}}</span>
                         </button>
                       </ion-col>
                     </ion-row>

@@ -25,7 +25,7 @@ export class ItemBase extends ComponentBase implements OnInit {
   }
 
   public get OnStock(): boolean {
-    return !(this.valueQuot == null);
+    return !(this.product.valueQP == null);
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
