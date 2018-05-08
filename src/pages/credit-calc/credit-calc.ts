@@ -142,7 +142,7 @@ export class CreditCalcPage extends ComponentBase {
         this.cart.pmtMethod = _p;
       }
 */
-      this.cart.order.idPaymentMethod = 3;
+
       this.navParams.data.itemPage.onAddToCart();
 
       if (!this.userService.isAuth) {

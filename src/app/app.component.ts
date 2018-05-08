@@ -123,8 +123,8 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   }
 
   openPage(page: PageInterface) {
-    if ((this.userService.isAuth === false) && (page.component === 'AccountMenuPage')) {
-      this.nav.push('LoginPage', {continuePage: 'AccountMenuPage'}).catch((err: any) => {
+    if (!(this.userService.isAuth) && (page.component === 'AccountMenuPage')) {
+      this.nav.push('LoginPage', {continuePage: null}).catch((err: any) => {
         console.log(`Couldn't navigate to LoginPage: ${err}`);
       });
     } else {
