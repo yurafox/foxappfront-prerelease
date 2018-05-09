@@ -39,6 +39,7 @@ export class ShippingOptionsPage extends ComponentBase {
     let i = 0;
     //let cityId =
     const addr = await this.repo.getClientAddressById(this.cart.order.loIdClientAddress);
+    console.log(this.cart.loShipments.length);
     const cityId = addr.idCity;
 
     for (let ship of this.cart.loShipments) {
