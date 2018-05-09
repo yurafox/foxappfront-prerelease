@@ -22,12 +22,12 @@
         <ion-grid style="width: 100%">
           <ion-row>
             <ion-col>
-              <button ion-button icon-only class="f-btn-secondary" (click)="answerClicked=!answerClicked" *ngIf="answerClicked === false"><ion-icon name="ios-undo"></ion-icon></button>
-              <button ion-button icon-start class="f-btn-secondary" *ngIf="review.reviewAnswers.length > 0" (click)="onShowReviewClick(review)"><ion-icon name="create"></ion-icon>{{review.reviewAnswers.length}}</button>
+              <button ion-button icon-only class="f-btn-secondary" (click)="answerClicked=!answerClicked" *ngIf="!answerClicked"><ion-icon name="ios-undo-outline"></ion-icon></button>
+              <button ion-button icon-start class="f-btn-secondary" *ngIf="review.reviewAnswers.length > 0" (click)="onShowReviewClick(review)"><ion-icon name="ios-chatboxes-outline"></ion-icon>{{review.reviewAnswers.length}}</button>
             </ion-col>
             <ion-col text-end >
-              <button ion-button icon-start class="f-btn-color-green" (click)="onHelpfulClick()"><ion-icon name="thumbs-up"></ion-icon>{{review.upvotes}}</button>
-              <button ion-button icon-start class="f-btn-color-red" (click)="onNotHelpfulClick()"><ion-icon name="thumbs-down"></ion-icon>{{review.downvotes}}</button>
+              <button ion-button icon-start class="f-btn-secondary f-btn-color-green" (click)="onHelpfulClick()"><ion-icon name="ios-thumbs-up-outline"></ion-icon><span *ngIf="review.upvotes>0">{{review.upvotes}}</span></button>
+              <button ion-button icon-start class="f-btn-secondary f-btn-color-red" (click)="onNotHelpfulClick()"><ion-icon name="ios-thumbs-down-outline"></ion-icon><span *ngIf="review.downvotes>0">{{review.downvotes}}</span></button>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -71,11 +71,11 @@
         <ion-grid style="width: 100%">
           <ion-row>
             <ion-col>
-              <button ion-button icon-only class="f-btn-secondary" (click)="answerClicked=!answerClicked" *ngIf="answerClicked === false"><ion-icon name="ios-undo"></ion-icon></button>
+              <button ion-button icon-only class="f-btn-secondary" (click)="answerClicked=!answerClicked" *ngIf="!answerClicked"><ion-icon name="ios-undo-outline"></ion-icon></button>
             </ion-col>
             <ion-col text-end>
-              <button ion-button icon-start class="f-btn-color-green" (click)="onHelpfulClick()"><ion-icon name="thumbs-up"></ion-icon>{{review.upvotes}}</button>
-              <button ion-button icon-start class="f-btn-color-red" (click)="onNotHelpfulClick()"><ion-icon name="thumbs-down"></ion-icon>{{review.downvotes}}</button>
+              <button ion-button icon-start class="f-btn-secondary f-btn-color-green" (click)="onHelpfulClick()"><ion-icon name="ios-thumbs-up-outline"></ion-icon><span *ngIf="review.upvotes>0">{{review.upvotes}}</span></button>
+              <button ion-button icon-start class="f-btn-secondary f-btn-color-red" (click)="onNotHelpfulClick()"><ion-icon name="ios-thumbs-down-outline"></ion-icon><span *ngIf="review.downvotes>0">{{review.downvotes}}</span></button>
             </ion-col>
           </ion-row>
         </ion-grid>
