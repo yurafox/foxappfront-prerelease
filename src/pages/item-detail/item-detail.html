@@ -101,7 +101,7 @@
     <ion-row *ngIf="actionsArr.length>0">
       <ion-col>
         <complect [actionsArr]="complectsArr" [mainProductId]="this.product.id"
-                  [disableAddToCartButton]="!OnStock">
+                  [disableAddToCartButton]="!valueQuot">
         </complect>
       </ion-col>
     </ion-row>
