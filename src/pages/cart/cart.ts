@@ -63,7 +63,7 @@ export class CartPage extends ComponentBase implements DoCheck {
       return true;
   }
 
-  checkout() {
+  async checkout() {
     if (!this.validateStep())
       return;
 
@@ -71,7 +71,12 @@ export class CartPage extends ComponentBase implements DoCheck {
       this.navCtrl.push('LoginPage', {continuePage: 'SelectShipAddressPage'});
     }
     else {
-      this.navCtrl.push('SelectShipAddressPage', {fromCart: 1});
+      if (this.cart.checkIsPickupOnly) {
+        this.cart.loShipments = await this.cart.repo.generateShipments();
+        this.navCtrl.push('ShippingOptionsPage');
+      }
+      else
+        this.navCtrl.push('SelectShipAddressPage', {fromCart: 1});
     };
   }
 

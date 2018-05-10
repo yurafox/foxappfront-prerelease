@@ -3,6 +3,8 @@ import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angula
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {UserService} from '../../app/service/bll/user-service';
 import {ClientAddress} from '../../app/model/client-address';
+import {CartService} from '../../app/service/cart-service';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 @IonicPage()
 @Component({
@@ -16,8 +18,21 @@ export class SelectShipAddressPage extends ComponentBase {
   withDelivery: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public uService: UserService, public alertCtrl: AlertController) {
+              public uService: UserService, public alertCtrl: AlertController,
+              private cart: CartService, private repo: AbstractDataRepository) {
     super();
+
+  }
+
+
+  async ngOnInit() {
+    super.ngOnInit();
+
+    if (this.cart.checkIsPickupOnly) {
+      this.cart.loShipments = await this.cart.repo.generateShipments();
+      this.navCtrl.push('ShippingOptionsPage');
+      this.navCtrl.remove((this.navCtrl.getActive().index)-1, 1);
+    }
 
     this.getDefaultShipAddress().then(data => {
         this.shippingAddresses = data;

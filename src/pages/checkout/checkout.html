@@ -30,8 +30,9 @@
         </ion-row>
       </ion-grid>
       <grid-hr></grid-hr>
+
       <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
-        <ion-row>
+        <ion-row *ngIf="cart.order?.clientaddress && !cart.checkIsPickupOnly">
           <ion-col>
             <span loc="Доставка на" name="ShippingTo">{{locale['ShippingTo']}}</span>:
             <b>{{cart.order?.clientaddress?.recName}}</b>, {{cart.order?.clientaddress?.addressString}}

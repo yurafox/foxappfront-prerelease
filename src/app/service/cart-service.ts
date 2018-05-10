@@ -113,6 +113,10 @@ export class CartService {
     this.currStoreService.initCurrencyRate();
   }
 
+  get checkIsPickupOnly(): boolean {
+    return !(this.orderProducts.filter(x => x.idStorePlace === null).length>0);
+  }
+
   public set loan(value: CreditCalc) {
     try
     {
@@ -358,7 +362,7 @@ public get promoCodeDiscount(): number {
         spec.idQuotationProduct = val.idQuotationProduct;
         spec.price = val.price;
         spec.qty = val.qty;
-        spec.idStorePlace = val.storePlace;
+        spec.idStorePlace = val.idStorePlace;
         spec.complect = val.complect;
         spec.idAction = val.idAction;
         spec.actionTitle = val.actionTitle;
