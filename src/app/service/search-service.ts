@@ -40,7 +40,6 @@ export class SearchService {
   private readonly TYPE = null;
   private SIZE = 30;
   private MAX_ITEMS_COUNT = 360;
-  private infiniteScroll:any;
 
   products = [];
   searchItems = new Array<string>();
@@ -94,7 +93,7 @@ export class SearchService {
 
   private async connect() {
     this.client = new Client({
-      host: await this.repo.getAppParam('ELASTIC_ENDPOINT')
+      host: (await this.repo.getAppParam('ELASTIC_ENDPOINT')).split(" ") 
     });
   }
 
@@ -129,17 +128,12 @@ export class SearchService {
     await this.getProductsData();
   }
 
-  loadNext(infiniteScroll) {
+  loadNext() {
     if (
           (this.products.length > this.MAX_ITEMS_COUNT)
             ||
           (this.products.length === this.hitsTotal)
-       ) {
-         infiniteScroll.enable(false);
-         if (this.infiniteScroll && this.infiniteScroll !== null) this.infiniteScroll = null;
-         return;
-        }
-    this.infiniteScroll = infiniteScroll;
+       ) return;
     this.getProductsData();
   }
 
@@ -157,13 +151,10 @@ export class SearchService {
 
         if (_chunk)
         {
-          if (this.lastItemIndex === 0){
+          if (this.lastItemIndex === 0)
             this.products =_chunk;
-            this.hostPage.products=this.products
-          }
-          else {
+          else{
             this.products = this.products.concat(_chunk);
-            this.hostPage.products=this.products
           }
           this.lastItemIndex = this.lastItemIndex + _chunk.length;
         }
@@ -180,16 +171,13 @@ export class SearchService {
     }
     finally
     {
-      if (this.hostPage && this.hostPage.cont) {
-        this.hostPage.cont.resize();
-      }
+      this.hostPage.cont.resize();
       this.inSearch = false;
-      if (this.infiniteScroll && this.infiniteScroll !== null) this.infiniteScroll.complete();
     }
   }
 
   packPropsArray(inArray: PropFilterCondition[]): ProductPropsAgg[] {
-    let res = new Array<ProductPropsAgg>();
+    let res = new Array<ProductPropsAgg>() ;
     inArray.forEach(x => {
         let fnd: ProductPropsAgg = res.find( a => a.propId === x.propId );
         if (!fnd)
@@ -416,11 +404,5 @@ export class SearchService {
       localStorage.setItem(this.cKey, JSON.stringify(this.searchItems));
     }
   }
-
-  
-  public get maxItemsCount() : number {
-    return this.MAX_ITEMS_COUNT; 
-  }
-  
 
 }
