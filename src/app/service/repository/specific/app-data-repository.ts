@@ -979,7 +979,7 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
 
-  public async getProductReviewsByProductId(productId: number): Promise<ProductReview[]> {
+  public async getProductReviewsByProductId(productId: number): Promise<{reviews:ProductReview[], idClient:number}> {
     try {
       const response = await this.http
         .get(`${productReviewsUrl}/${productId}`,RequestFactory.makeAuthHeader()).toPromise();
@@ -990,8 +990,8 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const qProductsRevs = new Array<ProductReview>();
       let answers: IDictionary<ReviewAnswer[]> = {};
-      if (data != null) {
-        data.forEach(val => {
+      if (data.productReviews != null) {
+        data.productReviews.forEach(val => {
           let substrings = val.reviewDate.toString().split("T");
           let substring1 = substrings[0].slice(0, substrings[0].length);
           let substring2 = substrings[1].slice(0, substrings[1].length - 1);
@@ -1003,55 +1003,58 @@ export class AppDataRepository extends AbstractDataRepository {
             answers[val.idReview.toString()].push(new ReviewAnswer(
               val.id,
               val.idReview,
+              val.idClient,
               val.user,
               new Date(date),
               val.reviewText
             ));
           }
         });
-        data.forEach(val => {
+        data.productReviews.forEach(val => {
           let substrings = val.reviewDate.toString().split("T");
           let substring1 = substrings[0].slice(0, substrings[0].length);
           let substring2 = substrings[1].slice(0, substrings[1].length - 1);
           let date = substring1 + " " + substring2;
           if (val.idReview === null) {
             if (answers[val.id.toString()]) {
-              qProductsRevs.push(
-                new ProductReview(
-                  val.id,
-                  val.idProduct,
-                  val.user,
-                  new Date(date),
-                  val.reviewText,
-                  val.rating,
-                  val.advantages,
-                  val.disadvantages,
-                  val.upvotes,
-                  val.downvotes,
-                  answers[val.id.toString()]
-                )
-              )
+              let review = new ProductReview(
+                val.id,
+                val.idProduct,
+                val.idClient,
+                val.user,
+                new Date(date),
+                val.reviewText,
+                val.rating,
+                val.advantages,
+                val.disadvantages,
+                val.upvotes,
+                val.downvotes,
+                answers[val.id.toString()]
+              );
+              review.vote = val.vote;
+              qProductsRevs.push(review);
             } else {
-              qProductsRevs.push(
-                new ProductReview(
-                  val.id,
-                  val.idProduct,
-                  val.user,
-                  new Date(date),
-                  val.reviewText,
-                  val.rating,
-                  val.advantages,
-                  val.disadvantages,
-                  val.upvotes,
-                  val.downvotes,
-                  []
-                )
-              )
+              let review = new ProductReview(
+                val.id,
+                val.idProduct,
+                val.idClient,
+                val.user,
+                new Date(date),
+                val.reviewText,
+                val.rating,
+                val.advantages,
+                val.disadvantages,
+                val.upvotes,
+                val.downvotes,
+                []
+              );
+              review.vote = val.vote;
+              qProductsRevs.push(review);
             }
           }
         })
       }
-      return qProductsRevs;
+      return {reviews: qProductsRevs, idClient: data.currentUser};
     } catch (err) {
       return await this.handleError(err);
     }
@@ -1084,10 +1087,8 @@ export class AppDataRepository extends AbstractDataRepository {
             qProductsStorePlaces.push(psp);
         }
       }
-      /*
-      return qProductsStorePlaces.sort((a, b) =>
-        {return ( (<any>a).idStorePlace.storeplace.city.name - (<any>b).idStorePlace.storeplace.city.name)});
-*/
+      /*return qProductsStorePlaces.sort((a, b) =>
+        {return ( (<any>a).idStorePlace.storeplace.city.name - (<any>b).idStorePlace.storeplace.city.name)});*/
       return qProductsStorePlaces;
     } catch (err) {
       return await this.handleError(err);
@@ -2609,7 +2610,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]> {
+  public async getStoreReviewsByStoreId(storeId: number): Promise<{reviews:StoreReview[], idClient:number}> {
     try {
       const response = await this.http
         .get(`${storeReviewsByStoreIdUrl}/${storeId}`,RequestFactory.makeAuthHeader()).toPromise();
@@ -2620,8 +2621,8 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const storesRevs = new Array<StoreReview>();
       let answers: IDictionary<ReviewAnswer[]> = {};
-      if (data != null) {
-        data.forEach(val => {
+      if (data.storeReviews != null) {
+        data.storeReviews.forEach(val => {
           let substrings = val.reviewDate.toString().split("T");
           let substring1 = substrings[0].slice(0, substrings[0].length);
           let substring2 = substrings[1].slice(0, substrings[1].length - 1);
@@ -2633,61 +2634,64 @@ export class AppDataRepository extends AbstractDataRepository {
             answers[val.idReview.toString()].push(new ReviewAnswer(
               val.id,
               val.idReview,
+              val.idClient,
               val.user,
               new Date(date),
               val.reviewText
             ));
           }
         });
-        data.forEach(val => {
+        data.storeReviews.forEach(val => {
           let substrings = val.reviewDate.toString().split("T");
           let substring1 = substrings[0].slice(0, substrings[0].length);
           let substring2 = substrings[1].slice(0, substrings[1].length - 1);
           let date = substring1 + " " + substring2;
           if (val.idReview === null) {
             if (answers[val.id.toString()]) {
-              storesRevs.push(
-                new StoreReview(
-                  val.id,
-                  val.idStore,
-                  val.user,
-                  new Date(date),
-                  val.reviewText,
-                  val.rating,
-                  val.advantages,
-                  val.disadvantages,
-                  val.upvotes,
-                  val.downvotes,
-                  answers[val.id.toString()]
-                )
-              )
+              let storeRev = new StoreReview(
+                val.id,
+                val.idStore,
+                val.idClient,
+                val.user,
+                new Date(date),
+                val.reviewText,
+                val.rating,
+                val.advantages,
+                val.disadvantages,
+                val.upvotes,
+                val.downvotes,
+                answers[val.id.toString()]
+              );
+              storeRev.vote = val.vote;
+              storesRevs.push(storeRev);
             } else {
-              storesRevs.push(
-                new StoreReview(
-                  val.id,
-                  val.idStore,
-                  val.user,
-                  new Date(date),
-                  val.reviewText,
-                  val.rating,
-                  val.advantages,
-                  val.disadvantages,
-                  val.upvotes,
-                  val.downvotes,
-                  []
-                )
+              let storeRev = new StoreReview(
+                val.id,
+                val.idStore,
+                val.idClient,
+                val.user,
+                new Date(date),
+                val.reviewText,
+                val.rating,
+                val.advantages,
+                val.disadvantages,
+                val.upvotes,
+                val.downvotes,
+                []
               )
+              storeRev.vote = val.vote;
+              storesRevs.push(storeRev);
             }
           }
         })
       }
-      return storesRevs;
+      return {reviews:storesRevs, idClient:data.currentUser};
     } catch (err) {
       return await this.handleError(err);
     }
   }
 
-  public async getStoreReviews(): Promise<IDictionary<StoreReview[]>> {
+  public async getStoreReviews(): Promise<{reviews:IDictionary<StoreReview[]>, idClient:number}> {
     try {
       const response = await this.http
         .get(`${storeReviewsUrl}`,RequestFactory.makeAuthHeader()).toPromise();
@@ -2697,11 +2701,11 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
       let reviews: IDictionary<StoreReview[]> = {};
-      if (data != null) {
+      if (data.storeReviews != null) {
         const storesRevs = new Array<StoreReview>();
         let answers: IDictionary<ReviewAnswer[]> = {};
         let idStore: number = 0;
-        data.forEach(val => {
+        data.storeReviews.forEach(val => {
           let substrings = val.reviewDate.toString().split("T");
           let substring1 = substrings[0].slice(0, substrings[0].length);
           let substring2 = substrings[1].slice(0, substrings[1].length - 1);
@@ -2713,13 +2717,14 @@ export class AppDataRepository extends AbstractDataRepository {
             answers[val.idReview.toString()].push(new ReviewAnswer(
               val.id,
               val.idReview,
+              val.idClient,
               val.user,
               new Date(date),
               val.reviewText
             ));
           }
         });
-        data.forEach(val => {
+        data.storeReviews.forEach(val => {
           idStore = val.idStore;
           let substrings = val.reviewDate.toString().split("T");
           let substring1 = substrings[0].slice(0, substrings[0].length);
@@ -2727,43 +2732,45 @@ export class AppDataRepository extends AbstractDataRepository {
           let date = substring1 + " " + substring2;
           if (val.idReview === null) {
             if (answers[val.id.toString()]) {
-              storesRevs.push(
-                new StoreReview(
-                  val.id,
-                  val.idStore,
-                  val.user,
-                  new Date(date),
-                  val.reviewText,
-                  val.rating,
-                  val.advantages,
-                  val.disadvantages,
-                  val.upvotes,
-                  val.downvotes,
-                  answers[val.id.toString()]
-                )
-              )
+              let storeRev = new StoreReview(
+                val.id,
+                val.idStore,
+                val.idClient,
+                val.user,
+                new Date(date),
+                val.reviewText,
+                val.rating,
+                val.advantages,
+                val.disadvantages,
+                val.upvotes,
+                val.downvotes,
+                answers[val.id.toString()]
+              );
+              storeRev.vote = val.vote;
+              storesRevs.push(storeRev);
             } else {
-              storesRevs.push(
-                new StoreReview(
-                  val.id,
-                  val.idStore,
-                  val.user,
-                  new Date(date),
-                  val.reviewText,
-                  val.rating,
-                  val.advantages,
-                  val.disadvantages,
-                  val.upvotes,
-                  val.downvotes,
-                  []
-                )
-              )
+              let storeRev = new StoreReview(
+                val.id,
+                val.idStore,
+                val.idClient,
+                val.user,
+                new Date(date),
+                val.reviewText,
+                val.rating,
+                val.advantages,
+                val.disadvantages,
+                val.upvotes,
+                val.downvotes,
+                []
+              );
+              storeRev.vote = val.vote;
+              storesRevs.push(storeRev);
             }
           }
         });
         reviews[idStore.toString()] = storesRevs;
       }
-      return reviews;
+      return  {reviews:reviews, idClient:data.currentUser};
     } catch (err) {
       return await this.handleError(err);
     }
@@ -3401,6 +3408,8 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
         throw new Error("server side status error");
       }
+      let data = response.json();
+      return data;
     } catch (err) {
       return await this.handleError(err);
     }
@@ -3412,6 +3421,8 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
         throw new Error("server side status error");
       }
+      let data = response.json();
+      return data;
     } catch (err) {
       return await this.handleError(err);
     }

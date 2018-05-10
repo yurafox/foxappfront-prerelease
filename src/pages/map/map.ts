@@ -125,7 +125,8 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     try {
       this.markersArr = await this.repo.getStores();
       this.cities = await this.repo.getCitiesWithStores();
-      this.storeReviews = await this.repo.getStoreReviews();
+      let reviews = await this.repo.getStoreReviews();
+      this.storeReviews = reviews.reviews;
 
       await this.loadMap();
     } catch(err) {

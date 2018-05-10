@@ -3,7 +3,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid>
+  <ion-grid *ngIf="dataLoaded">
 
     <ion-row>
       <ion-col class="f-item-section-header"><span loc="Отзывы покупателей" name="CustomerReviews">{{locale['CustomerReviews']}}</span>
@@ -13,7 +13,7 @@
     <ion-row>
       <ion-col class="f-item-nopadding-tb">
         <rating class="rating-large" [ngModel]="item?.rating"
-                readOnly="true">
+                readOnly="true" *ngIf="item?.rating">
         </rating>
         &nbsp;<b class="f-size-larger">{{reviews?.length}}</b>
         <br>
@@ -25,7 +25,7 @@
         <span class="f-color-info" *ngIf="item?.rating">{{item?.rating}} <span loc="из 5 звёзд" name="Of5Stars">{{locale['Of5Stars']}}</span></span>
       </ion-col>
       <ion-col text-end class="f-item-nopadding-tb">
-        <span class="f-color-info" (click)="onWriteReviewClick()"><span loc="Оставить отзыв" name="WriteReview">{{locale['WriteReview']}}</span></span>
+        <span class="f-color-info" (click)="onWriteReviewClick()" *ngIf="!cantShow"><span loc="Оставить отзыв" name="WriteReview">{{locale['WriteReview']}}</span></span>
       </ion-col>
     </ion-row>
     <ion-row>
