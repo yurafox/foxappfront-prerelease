@@ -1600,7 +1600,6 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async searchProducts(srchString: string): Promise<Product[]> {
-    //TODO This method should be implemented in back end in production mode!
     try {
       if (!AppConstants.USE_PRODUCTION) {
           const response = await this.http.get(productsUrl,RequestFactory.makeAuthHeader()).toPromise();
@@ -1817,8 +1816,6 @@ export class AppDataRepository extends AbstractDataRepository {
     return await this.getValueQuotByProduct(originalQP.idProduct);
   }
 
-  //TODO при реализации бекенда возвращать в этом методе только те QuotationProducts, по которым остаток > 0
-  // и не закрытые (т.е. актуальные на сейчас предложения продавцов, а не позавчерашние)
   public async getQuotationProductsByProductId(productId: number): Promise<QuotationProduct[]> {
     try {
       const response = await this.http

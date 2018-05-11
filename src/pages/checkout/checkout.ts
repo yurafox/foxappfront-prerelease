@@ -55,8 +55,7 @@ export class CheckoutPage extends ComponentBase {
         this.navCtrl.push('PaymentPage').catch(err => console.error(err));
       }
       else
-      // TODO show messagebox
-      {
+       {
         let res = await this.repo.postOrder(this.cart.order);
 
         if (res.isSuccess)

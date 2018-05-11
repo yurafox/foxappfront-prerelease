@@ -314,7 +314,7 @@ public get promoCodeDiscount(): number {
 
   public async initBonusData() {
     let cl = await (<any>this.userService).profile.client_p;
-    let bonusData = await this.repo.getBonusesInfo( 11049778713/*cl.id*/); //TODO
+    let bonusData = await this.repo.getBonusesInfo( cl.id);
 
     this.availBonus = (bonusData.bonusLimit) ? bonusData.bonusLimit : 0;
     this.availPromoBonus = (bonusData.actionBonusLimit) ? bonusData.actionBonusLimit : 0;
@@ -428,8 +428,7 @@ public get promoCodeDiscount(): number {
   }
 
   async addComplect(item: ComplectItem, qty: number, page: any) {
-    //TODO implement local storage
-    const vrnt = item.variants[item.selIndex];
+     const vrnt = item.variants[item.selIndex];
 
     let firstItem = new ClientOrderProducts();
     firstItem.idQuotationProduct = vrnt.mainProductQP;

@@ -5574,7 +5574,6 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   //</editor-fold>
 
   //<editor-fold desc="Users">
-  // TODO: Добавить в базу юзеру набор FCM айди (набор строк) его девайсов и обрабатывать их на сервере для PUSH-уведомлений
   users = [
     {
       name: "sergey",
