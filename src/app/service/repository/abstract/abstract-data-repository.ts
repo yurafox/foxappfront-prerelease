@@ -44,7 +44,7 @@ import IKeyedCollection = Providers.IKeyedCollection;
 import {OrdersFilter} from '../../../../pages/your-orders/your-orders';
 
 export abstract class AbstractDataRepository {
-  public async abstract getProductReviewsByProductId(productId: number): Promise<ProductReview[]>;
+  public async abstract getProductReviewsByProductId(productId: number): Promise<{reviews:ProductReview[], idClient:number}>;
   public async abstract getProducts(urlQuery: string, cacheForce: boolean): Promise<Product[]>;
   public async abstract getProductsOfDay(): Promise<number[]>;
   public async abstract getProductsSalesHits(): Promise<number[]>;
@@ -140,8 +140,8 @@ export abstract class AbstractDataRepository {
   public async abstract getCitiesWithStores(): Promise<City[]>;
   public async abstract getStores(): Promise<IDictionary<Store[]>>;
   public async abstract getStoreById(id: number): Promise<Store>;
-  public async abstract getStoreReviews(): Promise<IDictionary<StoreReview[]>>;
-  public async abstract getStoreReviewsByStoreId(storeId: number): Promise<StoreReview[]>;
+  public async abstract getStoreReviews(): Promise<{reviews:IDictionary<StoreReview[]>, idClient:number}>;
+  public async abstract getStoreReviewsByStoreId(storeId: number): Promise<{reviews:StoreReview[], idClient:number}>;
   public async abstract getFavoriteStores(): Promise<Store[]>;
   public async abstract addFavoriteStore(idStore: number): Promise<number>;
   public async abstract deleteFavoriteStore(idStore: number): Promise<number>;

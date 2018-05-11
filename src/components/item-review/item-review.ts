@@ -44,27 +44,32 @@ export class ItemReviewComponent extends ComponentBase {
   }
 
   async onHelpfulClick() {
-    this.review.upvotes += 1;
+    this.review.vote = 1; // 1 -- like
     this.helpfulClicked = true;
     if (this.review && (<any>this.review).idStore) {
       let storeReview = this.review;
-      await this.repo.updateStoreReview(storeReview);
+      let rev = await this.repo.updateStoreReview(storeReview);
+      this.updateCurrentReview(rev);
     } else if (this.review && (<any>this.review).idProduct) {
       let productReview = this.review;
-      await this.repo.updateProductReview(productReview);
+      let rev = await this.repo.updateProductReview(productReview);
+      this.updateCurrentReview(rev);
     }
     this.changeDetector.detectChanges();
 
   }
+
   async onNotHelpfulClick() {
-    this.review.downvotes += 1;
+    this.review.vote = 2; // 2 -- dislike
     this.helpfulClicked = true;
     if (this.review && (<any>this.review).idStore) {
       let storeReview = this.review;
-      await this.repo.updateStoreReview(storeReview);
+      let rev = await this.repo.updateStoreReview(storeReview);
+      this.updateCurrentReview(rev);
     } else if (this.review && (<any>this.review).idProduct) {
       let productReview = this.review;
-      await this.repo.updateProductReview(productReview);
+      let rev = await this.repo.updateProductReview(productReview);
+      this.updateCurrentReview(rev);
     }
     this.changeDetector.detectChanges();
   }
@@ -108,5 +113,13 @@ export class ItemReviewComponent extends ComponentBase {
     this.navCtrl.push('ItemReviewPage', data).catch(err => {
       console.log(`Error navigating to ItemReviewPage: ${err}`);
     });
+  }
+
+  private updateCurrentReview(rev: ProductReview) {
+    if (this.review) {
+      this.review.upvotes = rev.upvotes;
+      this.review.downvotes = rev.downvotes;
+      this.review.vote = rev.vote;
+    }
   }
 }

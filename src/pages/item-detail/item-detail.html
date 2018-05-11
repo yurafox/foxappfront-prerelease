@@ -178,7 +178,7 @@
     </ion-row>
   </ion-grid>
 
-  <ion-grid>
+  <ion-grid *ngIf="hasClientReview() === false">
     <ion-row>
       <ion-col>
         <button text-center class="f-btn-secondary" ion-item block (click)="onWriteReview(product)"><span loc="Оставить Отзыв" name="WriteReview">{{locale['WriteReview']}}</span></button>

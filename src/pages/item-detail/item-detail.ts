@@ -26,6 +26,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   maxLoanAmt = 0;
   actionsArr = new Array<ActionByProduct>();
   complectsArr = new Array<ActionByProduct>();
+  clientId: number = 0;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
@@ -44,7 +45,10 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   async ngOnInit() {
     super.ngOnInit();
     this.repo.getProductReviewsByProductId(this.product.id).then( x => {
-        this.reviews = x;
+        if (x && x.reviews && x.idClient) {
+          this.reviews = x.reviews;
+          this.clientId = x.idClient; 
+        }
       }
     );
 
@@ -117,6 +121,15 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   showLocationPopover() {
     let modal = this.modalCtrl.create(CustomPopupComponent, {itemPage: this}, {showBackdrop:true, enableBackdropDismiss:true});
     modal.present({});
+  }
+
+  hasClientReview(): boolean {
+    let present = false;
+    let clientId = this.clientId;
+    for (let i = 0; i < this.reviews.length; i++) {
+      if (this.reviews[i].idClient === clientId) present = true;
+    }
+    return present;
   }
 
 }

@@ -32,7 +32,8 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
         let city = await this.repo.getCityById(favStores[i].idCity);
         let store: IStore = {city: null, store: null};
         store = {city: city, store: favStores[i], hasReviews: false};
-        let revs = await this.repo.getStoreReviewsByStoreId(store.store.id);
+        let reviews = await this.repo.getStoreReviewsByStoreId(store.store.id);
+        let revs = reviews.reviews;
         store.hasReviews = !!(revs && (revs.length > 0));
         this.stores.push(store);
       }

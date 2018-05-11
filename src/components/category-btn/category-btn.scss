@@ -6,10 +6,10 @@ category-btn {
   }
 
   .ctb-content{
-    width: 150px;
+    width: auto;
     height: 64px;
-    margin-left: 40px;
-    padding-top: 21px;
+    margin-left: 10px;
+    padding-top: 13px;
     float: left
   }
 
@@ -21,6 +21,7 @@ category-btn {
   .ctb-inbox {
     width: 64px;
     height: 64px;
+    padding-top: 16px;
     margin-left: 19px;
     float: left
   }
@@ -28,6 +29,5 @@ category-btn {
   .ctb-arrow {
     padding-top: 19px;
     text-align: right;
-    padding-right: 10px
   }
 }
