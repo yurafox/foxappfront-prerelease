@@ -27,18 +27,8 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
               public loadingCtrl: LoadingController) {
     super();
     this.initLocalization();
-    this.cantShow = true;
     this.dataLoaded = false;
-    if (navParams.data.product) {
-      this.product = navParams.data.product;
-      this.item = this.product;
-    } else if (navParams.data.store) {
-      this.store = navParams.data.store;
-      this.item = this.store;
-    }
-    if (this.navParams.data.reviews) {
-      this.reviews = navParams.data.reviews;
-    }
+    this.cantShow = true;
   }
 
   async ngOnInit () {
@@ -47,9 +37,24 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
       content: content
     });
 
-    loading.present();
+    await loading.present();
 
-    if (!this.navParams.data.reviews || this.navParams.data.product || this.navParams.data.store) {
+    if (this.navParams.data.page && this.navParams.data.page.reviews) {
+      this.reviews = this.navParams.data.page.reviews;
+    }
+    if (this.navParams.data.page && this.navParams.data.page.clientId) {
+      this.clientId = this.navParams.data.page.clientId;
+    }
+
+    if (this.navParams.data.product) {
+      this.product = this.navParams.data.product;
+      this.item = this.product;
+    } else if (this.navParams.data.store) {
+      this.store = this.navParams.data.store;
+      this.item = this.store;
+    }
+
+    if (!this.reviews && (this.navParams.data.product || this.navParams.data.store)) {
       if (this.navParams.data.product) {
         this.reviewsObj = await this.repo.getProductReviewsByProductId(this.product.id);
       } else if (this.navParams.data.store) {
@@ -60,20 +65,21 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
       this.reviews = this.reviewsObj.reviews;
       this.clientId = this.reviewsObj.idClient;
     }
+
     this.cantShow = this.hasClientReview();
     
     this.dataLoaded = true;
-    loading.dismiss();
+    await loading.dismiss();
   }
 
   onWriteReviewClick(): void {
     if (this.product) {
       if (!this.userService.isAuth) {
-        this.navCtrl.push('LoginPage', {continuePage: 'ItemReviewWritePage', params:this.product}).catch((err) => {
+        this.navCtrl.push('LoginPage', {continuePage: 'ItemReviewWritePage', params: {product: this.product, page: this}}).catch((err) => {
           console.log(`Couldn't navigate to LoginPage: ${err}`);
         });
       } else {
-        this.navCtrl.push('ItemReviewWritePage', this.product).catch(err => {
+        this.navCtrl.push('ItemReviewWritePage', {product: this.product, page: this}).catch(err => {
           console.log(`Error navigating to ItemReviewWritePage: ${err}`);
         });
       }
@@ -90,8 +96,8 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
     }
   }
 
-  onShowReviewClick(data: any): void {
-    this.navCtrl.push('ItemReviewPage', data).catch(err => {
+  onShowReviewClick(review: any): void {
+    this.navCtrl.push('ItemReviewPage', review).catch(err => {
       console.log(`Error navigating to ItemReviewPage: ${err}`);
     });
   }

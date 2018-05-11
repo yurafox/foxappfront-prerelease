@@ -1,0 +1,45 @@
+<ion-header>
+  <main-toolbar></main-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid text-center>
+    <ion-row>
+      <ion-col>
+        <span class="f-page-header">{{locale['Contacts']?locale['Contacts']:'Контакты'}}</span>
+      </ion-col>
+    </ion-row><br>
+    <ion-row>
+      <ion-col>
+          <span class="f-size-large">{{locale['InfoService']?locale['InfoService']:'Информационная служба'}}:</span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+          <span class="f-page-header" (click)="callNumber()" 
+                style="color:#ffbc2e;"><b>0 800 300-353</b></span>
+      </ion-col>
+    </ion-row><br>
+    <ion-row>
+      <ion-col>
+          <span class="f-size-large">{{locale['Schedule']?locale['Schedule']:'График работы Call-Центра'}}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+          <span class="f-size-large"><b>{{locale['MonTillFri']?locale['MonTillFri']:'Пн-Пт'}} </b>08:30 - 21:00</span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+          <span class="f-size-large"><b>{{locale['SutTillSun']?locale['SutTillSun']:'Сб-Вс'}} </b>08:30 - 21:00</span>
+      </ion-col>
+    </ion-row><br>
+    <ion-row>
+      <ion-col>
+          <span>{{locale['Free']?locale['Free']:'Бесплатно со стационарных и мобильных телефонов в Украине'}}</span>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
