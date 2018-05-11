@@ -123,7 +123,7 @@ export class CartService {
       this._loan = value;
       if (this.order) {
         this._httpCallInProgress = true;
-        //this.order.idPaymentMethod = value ? 3 : null;
+        if (value) this.order.idPaymentMethod = 3;
         this.order.idCreditProduct = value ? value.creditProduct.sId : null ;
         this.order.creditPeriod = value ? value.clMonths : null;
         this.order.creditMonthlyPmt = value ? value.clMonthAmt : null;
