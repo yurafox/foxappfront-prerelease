@@ -188,12 +188,11 @@ export class AppDataRepository extends AbstractDataRepository {
     super();
   }
 
-  public async getClientBonusesExpireInfo(clientId: number): Promise <ClientBonus[]> {
+  public async getClientBonusesExpireInfo(): Promise <ClientBonus[]> {
     try {
       const response = await this.http
-        .get(getClientBonusesExpireInfoUrl,RequestFactory.makeSearch([
-          {key: "clientId", value: clientId.toString()}
-        ])).toPromise();
+        .get(getClientBonusesExpireInfoUrl,RequestFactory.makeAuthHeader())
+        .toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -264,11 +263,10 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
 
-  public async getBonusesInfo(clientId: number): Promise<{ bonusLimit: number, actionBonusLimit: number }> {
+  public async getBonusesInfo(): Promise<{ bonusLimit: number, actionBonusLimit: number }> {
     try {
-      let _id = clientId.toString();
       const response = await this.http
-        .get(getBonusesInfoUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
+        .get(getBonusesInfoUrl,RequestFactory.makeAuthHeader()).toPromise();
       const val = response.json();
       if (response.status == 204)
         return {bonusLimit: 0, actionBonusLimit: 0};

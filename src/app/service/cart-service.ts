@@ -313,8 +313,7 @@ public get promoCodeDiscount(): number {
   }
 
   public async initBonusData() {
-    let cl = await (<any>this.userService).profile.client_p;
-    let bonusData = await this.repo.getBonusesInfo( cl.id);
+    let bonusData = await this.repo.getBonusesInfo();
 
     this.availBonus = (bonusData.bonusLimit) ? bonusData.bonusLimit : 0;
     this.availPromoBonus = (bonusData.actionBonusLimit) ? bonusData.actionBonusLimit : 0;
