@@ -100,6 +100,7 @@ import {Device} from "@ionic-native/device";
 import {Network} from "@ionic-native/network";
 import {Keyboard} from "@ionic-native/keyboard";
 import {CallNumber} from '@ionic-native/call-number';
+import {BackgroundMode} from '@ionic-native/background-mode';
 
 @NgModule({
   declarations: [
@@ -188,6 +189,7 @@ import {CallNumber} from '@ionic-native/call-number';
     Network,
     Keyboard,
     CallNumber,
+    BackgroundMode,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
     {provide: AbstractAccountRepository, useClass: AccountRepository},

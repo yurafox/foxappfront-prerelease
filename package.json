@@ -22,6 +22,7 @@
     "@angular/platform-browser": "4.4.4",
     "@angular/platform-browser-dynamic": "4.4.4",
     "@ionic-native/app-availability": "^4.5.3",
+    "@ionic-native/background-mode": "^4.7.0",
     "@ionic-native/barcode-scanner": "^4.5.3",
     "@ionic-native/call-number": "^4.7.0",
     "@ionic-native/core": "4.3.2",
@@ -45,6 +46,7 @@
     "cordova-browser": "^5.0.3",
     "cordova-plugin-actionsheet": "^2.3.3",
     "cordova-plugin-appavailability": "^0.4.2",
+    "cordova-plugin-background-mode": "^0.7.2",
     "cordova-plugin-device": "^1.1.7",
     "cordova-plugin-dialogs": "^2.0.1",
     "cordova-plugin-exoplayer": "^2.5.3",
@@ -102,7 +104,8 @@
       },
       "uk.co.workingedge.phonegap.plugin.launchnavigator": {},
       "cordova-plugin-network-information": {},
-      "mx.ferreyra.callnumber": {}
+      "mx.ferreyra.callnumber": {},
+      "cordova-plugin-background-mode": {}
     },
     "platforms": [
       "browser",

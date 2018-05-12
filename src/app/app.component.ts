@@ -9,6 +9,7 @@ import {DeviceData} from "./model/index";
 import {System} from "./core/app-core";
 import {CartService} from "./service/cart-service";
 import {ConnectivityService} from "./service/connectivity-service";
+import {BackgroundMode} from '@ionic-native/background-mode';
 
 export interface PageInterface {
   title: string;
@@ -48,12 +49,12 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   constructor(private platform: Platform, private alertCtrl: AlertController, private splashScreen: SplashScreen,
               public menuCtrl: MenuController, private repo: AbstractDataRepository,
               private appAvailability: AppAvailability, private device: Device, private cartService: CartService,
-              private connService: ConnectivityService) {
+              private connService: ConnectivityService, private backgroundMode: BackgroundMode) {
     super();
+    this.initLocalization();
   }
 
   async ngOnInit() {
-    super.ngOnInit();
     this.connService.nav = this.nav;
     if (!this.userService.isAuth && this.userService.token) {
       this.userService.userMutex = true;
@@ -97,6 +98,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
       let readyness = await this.platform.ready();
       if (readyness && readyness!=='') {
         this.splashScreen.hide();
+        this.backgroundMode.enable();
       }
     }
   }
