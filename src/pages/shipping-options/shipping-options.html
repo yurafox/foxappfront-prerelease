@@ -48,17 +48,21 @@
               <span *ngIf="!(opt.deliveryCost === 0)">
                 <span loc="Стоимость доставки" name="DeliveryCost">{{locale['DeliveryCost']}}</span> <span class="f-color-green" >{{opt.deliveryCost | localeCurrency:userService.currency}} </span>
               </span>
-              <span *ngIf="(opt.deliveryCost === 0)">
-                <span class="f-color-green"><b><span loc="БЕСПЛАТНАЯ доставка" name="FreeDelivery">{{locale['FreeDelivery']}}</span></b></span>
-              </span>
-              <br>
+              <div *ngIf="(opt.deliveryCost === 0) && (opt.deliveryType.id !== 3)">
+                <span>
+                  <span class="f-color-green"><b><span loc="БЕСПЛАТНАЯ доставка" name="FreeDelivery">{{locale['FreeDelivery']}}</span></b></span>
+                </span>
+                <br>
+              </div>
 
               <span *ngIf="opt.loName" loc="Доставляется" name="DeliveryBy">{{locale['DeliveryBy']}}</span> <span class="f-color-green">{{opt.loName}}</span>
               <span *ngIf="opt.pickupLocationName" loc="Самовивоз" name="PickupPlace">{{locale['PickupPlace']}}</span> <span class="f-color-green">{{opt.pickupLocationName}}</span>
 
 
               <br>
-              <span loc="Тип доставки:" name="DeliveryType">{{locale['DeliveryType']}}</span> <span class="f-color-green">{{opt.deliveryType.name }}</span>
+              <div *ngIf="opt.deliveryType.name">
+                <span loc="Тип доставки:" name="DeliveryType">{{locale['DeliveryType']}}</span> <span class="f-color-green">{{opt.deliveryType.name }}</span>
+              </div>
 
               <div *ngIf="opt.loEntityOfficesList && opt.loEntityOfficesList.length>0">
                 <dropdown-list id="btnLoOffice" class="truncate" [param]="opt.loEntityOfficeId"

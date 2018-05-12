@@ -1,15 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {AlertController, IonicPage, ModalController, NavController, NavParams, ToastController} from 'ionic-angular';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {ProductReview} from '../../app/model/product-review';
 import {ItemBase} from '../../components/component-extension/item-base';
 import {CartService} from '../../app/service/cart-service';
 import {CustomPopupComponent} from '../../components/custom-popup/custom-popup';
 import {StorePlace} from '../../app/model/store-place';
-import {System} from '../../app/core/app-core';
+import {EmailValidator, System} from '../../app/core/app-core';
 import {CreditCalcPage} from '../credit-calc/credit-calc';
 import {EventService} from '../../app/service/event-service';
 import {ActionByProduct} from '../../app/model/action-by-product';
+import {UserService} from '../../app/service/bll/user-service';
 
 @IonicPage()
 @Component({
@@ -31,7 +32,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
               public modalCtrl: ModalController, public toastCtrl: ToastController,
-              public evServ: EventService) {
+              public evServ: EventService, public alertCtrl: AlertController, public uService: UserService) {
     super(navCtrl, navParams, repo);
     this.product = this.navParams.data.prod;
     this.preloadQuotes = this.navParams.data.loadQuotes;
@@ -47,7 +48,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
     this.repo.getProductReviewsByProductId(this.product.id).then( x => {
         if (x && x.reviews && x.idClient) {
           this.reviews = x.reviews;
-          this.clientId = x.idClient; 
+          this.clientId = x.idClient;
         }
       }
     );
@@ -130,6 +131,59 @@ export class ItemDetailPage extends ItemBase implements OnInit {
       if (this.reviews[i].idClient === clientId) present = true;
     }
     return present;
+  }
+
+  notifyOnArrivalResult(email: string): boolean {
+    if (EmailValidator.isValid(email)) {
+      this.repo.notifyOnProductArrival(email, this.product.id).then(() => {
+          this.showToast(this.locale['InformUponArrivalConfirmation']);
+          return true;
+        }
+      );
+    }
+    else {
+      this.showToast(this.locale['IvalidEmail']);
+      return false;
+    }
+  }
+
+  async onArrivalNotify() {
+
+    if ((this.uService.isAuth) && (this.uService.profile.email) && (EmailValidator.isValid(this.uService.profile.email))) {
+      this.notifyOnArrivalResult(this.uService.profile.email)
+    }
+    else
+    {
+      let alert = this.alertCtrl.create({
+        title: this.locale['InformUponArrival'],
+        inputs: [
+          {
+            name: 'email',
+            type: 'email',
+            placeholder: this.locale['EmailPlaceholderText']
+          }
+        ],
+        buttons: [
+          {
+            text: 'OK',
+            handler: data => {
+              return this.notifyOnArrivalResult(data.email);
+            }
+          }
+        ]
+      });
+      alert.present();
+    }
+  }
+
+  showToast(data: any) {
+    let toast = this.toastCtrl.create({
+      message: data,
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.present();
   }
 
 }

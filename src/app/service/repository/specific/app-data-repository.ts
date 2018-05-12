@@ -135,6 +135,7 @@ const getLoDeliveryTypeUrl =`${AppConstants.BASE_URL}/api/lo/LoDeliveryType`;
 const getLoEntityOfficeUrl =`${AppConstants.BASE_URL}/api/lo/LoEntityOffice`;
 const getLoDeliveryTypesByLoEntityUrl = `${AppConstants.BASE_URL}/api/lo/LoDeliveryTypesByLoEntity`;
 const getLoOfficesByLoEntityAndCityUrl = `${AppConstants.BASE_URL}/api/lo/LoEntityOfficesByLoEntityAndCity`;
+const notifyOnProductArrivalUrl = `${AppConstants.BASE_URL}/api/product/NotifyOnProductArrival`;
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -3782,6 +3783,20 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
 
+  }
+
+  public async notifyOnProductArrival(email: string, productId: number) {
+    try {
+      const response = await this.http
+        .post(notifyOnProductArrivalUrl, {email: email, productId: productId},
+          RequestFactory.makeAuthHeader()).toPromise();
+
+      if (response.status !== 201) {
+        throw new Error("server side status error");
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
   }
 
 

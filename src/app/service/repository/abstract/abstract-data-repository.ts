@@ -194,5 +194,6 @@ export abstract class AbstractDataRepository {
   public async abstract getLoEntityOfficeById(id: number): Promise<LoEntityOffice>;
   public async abstract getLoEntityDeliveryTypes(idLoEntity: number): Promise<LoDeliveryType[]>;
   public async abstract getLoOfficesByLoEntityAndCity(idLoEntity: number, idCity: number): Promise<LoEntityOffice[]>;
+  public async abstract notifyOnProductArrival(email: string, productId: number);
 
 }

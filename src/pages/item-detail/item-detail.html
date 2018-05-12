@@ -13,6 +13,11 @@
         <span class="f-size-default ">{{product.name}}</span>
       </ion-col>
     </ion-row>
+    <ion-row>
+      <ion-col class="f-item-nopadding f-padding-l-5">
+        <span class="f-size-small">{{locale['ProductID']}} {{product.id}}</span>
+      </ion-col>
+    </ion-row>
 
     <ion-row>
 
@@ -55,6 +60,8 @@
       </ion-col>
     </ion-row>
 
+  <div *ngIf="OnStock && resolved">
+
     <ion-row *ngIf="valueQuot?.quotation?.supplier">
       <ion-col>
         <span class="f-item-nopadding"><span loc="Продавец" name="SoldBy">{{locale['SoldBy']}}</span> {{valueQuot?.quotation?.supplier?.name}}</span>
@@ -85,31 +92,45 @@
       </ion-col>
     </ion-row>
 
-    <ion-row>
-      <ion-col>
-        <button class="f-btn-action" ion-button block [attr.disabled]="!valueQuot?'':null"
-                (click)="onAddToCart()"><span loc="Добавить в корзину" name="AddToCart">{{locale['AddToCart']}}</span></button>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="valueQuot && (valueQuot.price >= minLoanAmt)
-                              && (valueQuot.price <= maxLoanAmt)">
-      <ion-col>
-        <button class="f-btn-secondary" ion-button block [attr.disabled]="!valueQuot?'':null"
-                (click)="onGetForLoan()"><span loc="Взять в кредит" name="GetForLoan">{{locale['GetForLoan']}}</span></button>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="actionsArr.length>0">
-      <ion-col>
-        <complect [actionsArr]="complectsArr" [mainProductId]="this.product.id"
-                  [disableAddToCartButton]="!valueQuot">
-        </complect>
-      </ion-col>
-    </ion-row>
+
+
+      <ion-row>
+        <ion-col>
+          <button class="f-btn-action" ion-button block [attr.disabled]="!valueQuot?'':null"
+                  (click)="onAddToCart()"><span loc="Добавить в корзину" name="AddToCart">{{locale['AddToCart']}}</span></button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="valueQuot && (valueQuot.price >= minLoanAmt)
+                                && (valueQuot.price <= maxLoanAmt)">
+        <ion-col>
+          <button class="f-btn-secondary" ion-button block [attr.disabled]="!valueQuot?'':null"
+                  (click)="onGetForLoan()"><span loc="Взять в кредит" name="GetForLoan">{{locale['GetForLoan']}}</span></button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="actionsArr.length>0">
+        <ion-col>
+          <complect [actionsArr]="complectsArr" [mainProductId]="this.product.id"
+                    [disableAddToCartButton]="!valueQuot">
+          </complect>
+        </ion-col>
+      </ion-row>
+
+    </div>
+
+    <div *ngIf="!OnStock && resolved">
+      <ion-row *ngIf="actionsArr.length>0">
+        <ion-col>
+          <button class="f-btn-secondary" ion-button block
+                  (click)="onArrivalNotify()"><span>{{locale['OnArrivalNotify']}}</span></button>
+        </ion-col>
+      </ion-row>
+    </div>
 
   </ion-grid>
 
   <hr>
   <!-- No of quotes -->
+
   <ion-grid class="f-item-nopadding-tb" *ngIf="(noOfQuotes>1) && (quotes)" (click)="onShowMoreQuotesClick()">
     <ion-row>
       <ion-col>
@@ -131,15 +152,6 @@
       </ion-col>
     </ion-row>
 
-<!--
-
-    <ion-row *ngIf="description" (click)="onShowProductDescription()">
-      <ion-item class="f-border-ligthgray" detail-push text-wrap>
-        <item-description [description]=description [displayTextLength]="250"></item-description>
-      </ion-item>
-    </ion-row>
-
--->
     <ion-row *ngIf="product.props" (click)="onShowProductProps()">
       <ion-item class="f-border-ligthgray" detail-push text-wrap>
         <item-props [product]=product [displayPropCount]="3"></item-props>
