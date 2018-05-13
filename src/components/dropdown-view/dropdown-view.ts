@@ -137,6 +137,6 @@ export class DropdownViewComponent implements AfterViewInit{
   }
 
   public hasQtyExtension():boolean {
-    return this.parent.isQty;
+    return this.parent.IsCentering;
   }
 }

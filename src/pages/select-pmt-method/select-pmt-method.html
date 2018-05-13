@@ -158,9 +158,9 @@ Passport Data
                 </div>
                 <label for="birthDate"><span loc="Дата рождения" name="BirthDate">{{locale['BirthDate']}}</span>:*</label>
                 <input type="date" [ngModel]="cart.person.birthDate | date: 'yyyy-MM-dd'" (ngModelChange)="birthDateChanged($event)"
-                       id="birthDate" name="birthDate"
+                       id="birthDate" name="birthDate" max="{{getMaxDate()}}"
                        required #birthDate="ngModel">
-
+   
                 <div *ngIf="!birthDate.valid && birthDate.touched ">
                 <span *ngIf="birthDate.hasError('required')"
                       class="f-color-validation-error"><span loc="Пожалуйста, введите дату рождения" name="EnterBirthDate">{{locale['EnterBirthDate']}}</span></span>
