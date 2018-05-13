@@ -41,7 +41,8 @@
     </ion-row>
     <ion-row>
       <ion-col class="f-item-nopadding f-padding-l-5 f-item-padding-bottom f-price" >
-        <span class="f-product-price">{{product.price | localeCurrency:userService.currency}}</span>
+        <span [ngClass]="{'f-product-price-color-onstock':OnStock, 'f-product-price-color-outofstock':!OnStock}">
+          {{product.price | localeCurrency:userService.currency}}</span>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="product.bonuses">

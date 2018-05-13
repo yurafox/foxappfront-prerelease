@@ -331,14 +331,17 @@ ion-app.md {
   font-size: 18px;
 }
 
-.f-product-price-small-out-of-stock {
+.f-product-price-color-outofstock {
   color: #b7b7b7;
-  font-size: 16px;
-  font-weight: 400;
 }
 
-.f-product-price-small {
+
+.f-product-price-color-onstock {
   color: #616161;
+}
+
+
+.f-product-price-small {
   font-size: 16px;
   font-weight: 400;
 }

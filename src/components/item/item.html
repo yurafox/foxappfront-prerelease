@@ -33,8 +33,8 @@
          </ion-row>
 
          <ion-row *ngIf="product.price" >
-           <ion-col class="f-item-col"
-                    [ngClass]="{'f-product-price-small':OnStock, 'f-product-price-small-out-of-stock':!OnStock}">
+           <ion-col class="f-item-col f-product-price-small"
+                    [ngClass]="{'ff-product-price-color-onstockl':OnStock, 'f-product-price-color-outofstock':!OnStock}">
              {{product.price | localeCurrency:userService.currency}}
            </ion-col>
          </ion-row>
