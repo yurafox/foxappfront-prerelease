@@ -20,7 +20,6 @@
     </ion-row>
 
     <ion-row>
-
       <ion-col text-center *ngIf="product?.slideImageUrls && product?.slideImageUrls?.length === 0">
         <img *ngIf="product?.imageUrl" class="f-img-item-lg" [src]="product.imageUrl">
         <img *ngIf="!product?.imageUrl" class="f-img-item-lg" src="assets/imgs/nophoto.png">
@@ -32,34 +31,36 @@
           </ion-slide>
         </ion-slides>
       </ion-col>
+    </ion-row>
 
-    </ion-row>
-    <ion-row *ngIf="product.oldPrice">
-      <ion-col class="f-item-nopadding f-padding-l-5 f-old-price f-size-20" >
-        <span>{{product.oldPrice | localeCurrency:userService.currency}}</span>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col class="f-item-nopadding f-padding-l-5 f-item-padding-bottom f-price" >
-        <span [ngClass]="{'f-product-price-color-onstock':OnStock, 'f-product-price-color-outofstock':!OnStock}">
-          {{product.price | localeCurrency:userService.currency}}</span>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="product.bonuses">
-      <ion-col class="f-item-nopadding f-padding-l-5 f-item-padding-bottom" >
-        <bonus [bonusCnt]="product.bonuses"></bonus>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="OnStock && resolved">
-      <ion-col>
-        <span class="f-color-green f-item-nopadding"><span loc="В наличии" name="InStock">{{locale['InStock']}}</span></span>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="!OnStock && resolved">
-      <ion-col>
-        <span class="f-color-secondary f-item-nopadding"><span loc="Нет в наличии" name="NoOnStock">{{locale['NoOnStock']}}</span></span>
-      </ion-col>
-    </ion-row>
+    <div *ngIf="resolved">
+      <ion-row *ngIf="product.oldPrice">
+        <ion-col class="f-item-nopadding f-padding-l-5 f-old-price f-size-20" >
+          <span>{{product.oldPrice | localeCurrency:userService.currency}}</span>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="f-item-nopadding f-padding-l-5 f-item-padding-bottom f-price" >
+          <span [ngClass]="{'f-product-price-color-onstock':OnStock, 'f-product-price-color-outofstock':!OnStock}">
+            {{product.price | localeCurrency:userService.currency}}</span>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="product.bonuses">
+        <ion-col class="f-item-nopadding f-padding-l-5 f-item-padding-bottom" >
+          <bonus [bonusCnt]="product.bonuses"></bonus>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="OnStock && resolved">
+        <ion-col>
+          <span class="f-color-green f-item-nopadding"><span loc="В наличии" name="InStock">{{locale['InStock']}}</span></span>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="!OnStock && resolved">
+        <ion-col>
+          <span class="f-color-secondary f-item-nopadding"><span loc="Нет в наличии" name="NoOnStock">{{locale['NoOnStock']}}</span></span>
+        </ion-col>
+      </ion-row>
+    </div>
 
   <div *ngIf="OnStock && resolved">
 
@@ -129,74 +130,77 @@
 
   </ion-grid>
 
-  <hr>
+
+  <div *ngIf="resolved">
+    <hr>
   <!-- No of quotes -->
 
-  <ion-grid class="f-item-nopadding-tb" *ngIf="(noOfQuotes>1) && (quotes)" (click)="onShowMoreQuotesClick()">
-    <ion-row>
-      <ion-col>
-        <span class="f-color-info">{{noOfQuotes}} <span loc="больше предложений от" name="MoreQuotes">{{locale['MoreQuotes']}}</span> {{Price | localeCurrency:userService.currency}}</span>
-        <hr>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+    <ion-grid class="f-item-nopadding-tb" *ngIf="(noOfQuotes>1) && (quotes)" (click)="onShowMoreQuotesClick()">
+      <ion-row>
+        <ion-col>
+          <span class="f-color-info">{{noOfQuotes}} <span loc="больше предложений от" name="MoreQuotes">{{locale['MoreQuotes']}}</span> {{Price | localeCurrency:userService.currency}}</span>
+          <hr>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
-  <ion-grid class="f-item-nopadding-tb">
-    <ion-row>
-      <ion-col class="f-item-section-header"><span loc="Об этом товаре" name="AboutItem">{{locale['AboutItem']}}</span>
-      </ion-col>
-    </ion-row>
+    <ion-grid class="f-item-nopadding-tb">
+      <ion-row>
+        <ion-col class="f-item-section-header"><span loc="Об этом товаре" name="AboutItem">{{locale['AboutItem']}}</span>
+        </ion-col>
+      </ion-row>
 
-    <ion-row *ngIf="description">
-      <ion-col>
-        <item-description [description]=description [displayTextLength]="-1"></item-description>
-      </ion-col>
-    </ion-row>
+      <ion-row *ngIf="description">
+        <ion-col>
+          <item-description [description]=description [displayTextLength]="-1"></item-description>
+        </ion-col>
+      </ion-row>
 
-    <ion-row *ngIf="product.props" (click)="onShowProductProps()">
-      <ion-item class="f-border-ligthgray" detail-push text-wrap>
-        <item-props [product]=product [displayPropCount]="3"></item-props>
-      </ion-item>
-    </ion-row>
+      <ion-row *ngIf="product.props" (click)="onShowProductProps()">
+        <ion-item class="f-border-ligthgray" detail-push text-wrap>
+          <item-props [product]=product [displayPropCount]="3"></item-props>
+        </ion-item>
+      </ion-row>
 
-  </ion-grid>
+    </ion-grid>
 
-  <ion-grid class="f-item-nopadding-tb" *ngIf="reviews && reviews?.length >0">
+    <ion-grid class="f-item-nopadding-tb" *ngIf="reviews && reviews?.length >0">
 
-    <ion-row>
-      <ion-col class="f-item-section-header"><span loc="Отзывы покупателей" name="CustomerReviews">{{locale['CustomerReviews']}}</span>
-      </ion-col>
-    </ion-row>
-
-
-    <ion-row (click)="onShowReviewsClick({reviews: reviews, product: product})">
-      <ion-item class="f-border-ligthgray" detail-push text-wrap>
-        <b class="f-size-larger">{{reviews.length}} <span loc="отзывов покупателей" name="customerReviews">{{locale['customerReviews']}}</span></b><br>
-          <rating class="rating-large" [ngModel]="product.rating"
-                  readOnly="true">
-          </rating>
-      </ion-item>
-    </ion-row>
+      <ion-row>
+        <ion-col class="f-item-section-header"><span loc="Отзывы покупателей" name="CustomerReviews">{{locale['CustomerReviews']}}</span>
+        </ion-col>
+      </ion-row>
 
 
-    <ion-row>
-      <ion-col class="f-item-section-header"><span loc="Лучшие отзывы" name="TopReviews">{{locale['TopReviews']}}</span>
-      </ion-col>
-    </ion-row>
+      <ion-row (click)="onShowReviewsClick({reviews: reviews, product: product})">
+        <ion-item class="f-border-ligthgray" detail-push text-wrap>
+          <b class="f-size-larger">{{reviews.length}} <span loc="отзывов покупателей" name="customerReviews">{{locale['customerReviews']}}</span></b><br>
+            <rating class="rating-large" [ngModel]="product.rating"
+                    readOnly="true">
+            </rating>
+        </ion-item>
+      </ion-row>
 
-    <ion-row *ngFor="let rev of reviews; let i= index" (click)="onShowReviewClick(rev)">
-      <ion-item class="f-border-ligthgray" detail-push text-wrap *ngIf="i < 3">
-        <item-review [review]=rev [displayTextLength]="200" [collapsibleMode]="false"></item-review>
-      </ion-item>
-    </ion-row>
-  </ion-grid>
 
-  <ion-grid *ngIf="hasClientReview() === false">
-    <ion-row>
-      <ion-col>
-        <button text-center class="f-btn-secondary" ion-item block (click)="onWriteReview(product)"><span loc="Оставить Отзыв" name="WriteReview">{{locale['WriteReview']}}</span></button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+      <ion-row>
+        <ion-col class="f-item-section-header"><span loc="Лучшие отзывы" name="TopReviews">{{locale['TopReviews']}}</span>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let rev of reviews; let i= index" (click)="onShowReviewClick(rev)">
+        <ion-item class="f-border-ligthgray" detail-push text-wrap *ngIf="i < 3">
+          <item-review [review]=rev [displayTextLength]="200" [collapsibleMode]="false"></item-review>
+        </ion-item>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid *ngIf="hasClientReview() === false">
+      <ion-row>
+        <ion-col>
+          <button text-center class="f-btn-secondary" ion-item block (click)="onWriteReview(product)"><span loc="Оставить Отзыв" name="WriteReview">{{locale['WriteReview']}}</span></button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 
 </ion-content>
