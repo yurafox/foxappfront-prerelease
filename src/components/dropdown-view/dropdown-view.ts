@@ -40,8 +40,8 @@ export class DropdownViewComponent implements AfterViewInit{
     this.scrollToIdentity();
   }
 
-  public isActive(item: any): boolean {
-    return item[this.valueName] === this.bindedObject[this.valueName];
+  public isActive(item: any): string {
+    return (item[this.valueName] === this.bindedObject[this.valueName]) ? 'f-active':'f-item-default';
   }
 
   public onSelect(item:any): void {
@@ -134,5 +134,9 @@ export class DropdownViewComponent implements AfterViewInit{
 
   public get refBind(){
     return this.parent.ref;
+  }
+
+  public hasQtyExtension():boolean {
+    return this.parent.isQty;
   }
 }
