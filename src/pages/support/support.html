@@ -6,7 +6,7 @@
 <ion-content>
   <ion-list no-lines>
     <ion-item>
-      <ion-label floating><span style="font-size: 20px; color: black;" loc="Укажите здесь Ваше сообщение"
+      <ion-label floating><span style="font-size: 20px; color: black;" loc="Опишите Вашу проблему"
                                             name="SpecifyProblem">{{locale['SpecifyProblem']}}</span></ion-label>
       <ion-textarea [(ngModel)]="supportMessage" rows="3" (input)="adjustTextarea($event);"></ion-textarea>
     </ion-item>
