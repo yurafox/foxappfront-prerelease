@@ -91,13 +91,16 @@ import {
   OrderDetailsPageModule,
   PaymentPageModule,
   WarningViewPageModule,
-  OrdersFilterPageModule
+  OrdersFilterPageModule,
+  ContactsPageModule
 } from '../pages/index-modules';
 import {NgxQRCodeModule} from 'ngx-qrcode2';
 import {AppAvailability} from '@ionic-native/app-availability';
 import {Device} from "@ionic-native/device";
 import {Network} from "@ionic-native/network";
 import {Keyboard} from "@ionic-native/keyboard";
+import {CallNumber} from '@ionic-native/call-number';
+import {BackgroundMode} from '@ionic-native/background-mode';
 
 @NgModule({
   declarations: [
@@ -162,7 +165,8 @@ import {Keyboard} from "@ionic-native/keyboard";
     OrderDetailsPageModule,
     PaymentPageModule,
     WarningViewPageModule,
-    OrdersFilterPageModule
+    OrdersFilterPageModule,
+    ContactsPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -184,6 +188,8 @@ import {Keyboard} from "@ionic-native/keyboard";
     Device,
     Network,
     Keyboard,
+    CallNumber,
+    BackgroundMode,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
     {provide: AbstractAccountRepository, useClass: AccountRepository},

@@ -81,6 +81,8 @@ export class ItemReviewWritePage extends ComponentBase {
 
   private showToast() {
     this.reviewText = '';
+    this.advantages = '';
+    this.disadvantages = '';
     this.submitted = false;
     let message = this.locale['ToastMessage'];
     let toast = this.toastCtrl.create({
@@ -88,7 +90,11 @@ export class ItemReviewWritePage extends ComponentBase {
       duration: 3000
     });
     toast.present().then(() => {
-      this.navCtrl.pop()
+      this.navCtrl.pop().then(() => {
+        if (this.navParams.data.page) {
+          this.navParams.data.page.cantShow = true;
+        }
+      })
     });
   }
 

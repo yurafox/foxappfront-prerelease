@@ -15,10 +15,7 @@ export class NoConnectionPage extends ComponentBase implements OnInit, OnDestroy
 
   constructor(private navCtrl: NavController, private network: Network, private connServ: ConnectivityService) {
     super();
-  }
-
-  async ngOnInit() {
-    super.ngOnInit();
+    this.initLocalization();
     const index = this.navCtrl.getActive().index;
     const prevPage = this.navCtrl.getByIndex(index-1);
     if ((1 < index) && (prevPage.name !== 'HomePage')) {
@@ -27,6 +24,9 @@ export class NoConnectionPage extends ComponentBase implements OnInit, OnDestroy
       this.navCtrl.remove(index - 1).catch();
       this.navCtrl.insert(index - 1, 'HomePage').catch();
     }
+  }
+
+  async ngOnInit() {
     this.checkAndHandleConnectionState();
   }
   ngOnDestroy() {

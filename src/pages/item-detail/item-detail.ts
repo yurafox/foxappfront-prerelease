@@ -22,18 +22,21 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   qty = new System.FoxNumber();
   selectedStorePlace: StorePlace;
   reviews = new Array<ProductReview>();
+  reviewsObj: {reviews: ProductReview[], idClient: number};
   description: string;
   minLoanAmt = 0;
   maxLoanAmt = 0;
   actionsArr = new Array<ActionByProduct>();
   complectsArr = new Array<ActionByProduct>();
   clientId: number = 0;
+  cantShow: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
               public modalCtrl: ModalController, public toastCtrl: ToastController,
               public evServ: EventService, public alertCtrl: AlertController, public uService: UserService) {
     super(navCtrl, navParams, repo);
+    this.cantShow = true;
     this.product = this.navParams.data.prod;
     this.preloadQuotes = this.navParams.data.loadQuotes;
     this.qty.value = 1;
@@ -45,14 +48,11 @@ export class ItemDetailPage extends ItemBase implements OnInit {
 
   async ngOnInit() {
     super.ngOnInit();
-    this.repo.getProductReviewsByProductId(this.product.id).then( x => {
-        if (x && x.reviews && x.idClient) {
-          this.reviews = x.reviews;
-          this.clientId = x.idClient;
-        }
-      }
-    );
-
+    this.reviewsObj = await this.repo.getProductReviewsByProductId(this.product.id);
+    if (this.reviewsObj) {
+      this.reviews = this.reviewsObj.reviews;
+      this.clientId = this.reviewsObj.idClient;
+    }
 
     this.repo.getProductDescription(this.product.id).then( x => {
         this.description = x;
@@ -67,6 +67,8 @@ export class ItemDetailPage extends ItemBase implements OnInit {
 
     this.minLoanAmt = parseInt(await this.repo.getAppParam('MIN_LOAN_AMT'));
     this.maxLoanAmt = parseInt(await this.repo.getAppParam('MAX_LOAN_AMT'));
+
+    this.cantShow = this.hasClientReview();
   }
 
   onShowProductDescription(): void {
@@ -77,21 +79,21 @@ export class ItemDetailPage extends ItemBase implements OnInit {
     this.navCtrl.push('ItemPropsPage', this.product);
   }
 
-  onShowReviewClick(data: any): void {
-    this.navCtrl.push('ItemReviewPage', data);
+  onShowReviewClick(review: any): void {
+    this.navCtrl.push('ItemReviewPage', review);
   }
 
-  onShowReviewsClick(data: any): void {
-    this.navCtrl.push('ItemReviewsPage', data);
+  onShowReviewsClick(): void {
+    this.navCtrl.push('ItemReviewsPage', {page: this, product: this.product});
   }
 
-  onWriteReview(data: any): void {
+  onWriteReview(): void {
     if (!this.userService.isAuth) {
-      this.navCtrl.push('LoginPage', {continuePage: 'ItemReviewWritePage', params: this.product}).catch((err) => {
+      this.navCtrl.push('LoginPage', {continuePage: 'ItemReviewWritePage', params: {product: this.product, page: this}}).catch((err) => {
         console.log(`Couldn't navigate to LoginPage: ${err}`);
       });
     } else {
-      this.navCtrl.push('ItemReviewWritePage', this.product).catch(err => {
+      this.navCtrl.push('ItemReviewWritePage', {product: this.product, page: this}).catch(err => {
         console.log(`Error navigating to ItemReviewWritePage: ${err}`);
       });
     }
@@ -126,9 +128,8 @@ export class ItemDetailPage extends ItemBase implements OnInit {
 
   hasClientReview(): boolean {
     let present = false;
-    let clientId = this.clientId;
     for (let i = 0; i < this.reviews.length; i++) {
-      if (this.reviews[i].idClient === clientId) present = true;
+      if (this.reviews[i].idClient === this.clientId) present = true;
     }
     return present;
   }

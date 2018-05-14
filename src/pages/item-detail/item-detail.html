@@ -172,14 +172,14 @@
       </ion-row>
 
 
-      <ion-row (click)="onShowReviewsClick({reviews: reviews, product: product})">
-        <ion-item class="f-border-ligthgray" detail-push text-wrap>
-          <b class="f-size-larger">{{reviews.length}} <span loc="отзывов покупателей" name="customerReviews">{{locale['customerReviews']}}</span></b><br>
-            <rating class="rating-large" [ngModel]="product.rating"
-                    readOnly="true">
-            </rating>
-        </ion-item>
-      </ion-row>
+    <ion-row (click)="onShowReviewsClick()">
+      <ion-item class="f-border-ligthgray" detail-push text-wrap>
+        <b class="f-size-larger">{{reviews.length}} <span loc="отзывов покупателей" name="customerReviews">{{locale['customerReviews']}}</span></b><br>
+          <rating class="rating-large" [ngModel]="product.rating"
+                  readOnly="true">
+          </rating>
+      </ion-item>
+    </ion-row>
 
 
       <ion-row>
@@ -194,13 +194,12 @@
       </ion-row>
     </ion-grid>
 
-    <ion-grid *ngIf="hasClientReview() === false">
-      <ion-row>
-        <ion-col>
-          <button text-center class="f-btn-secondary" ion-item block (click)="onWriteReview(product)"><span loc="Оставить Отзыв" name="WriteReview">{{locale['WriteReview']}}</span></button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
+  <ion-grid *ngIf="!cantShow">
+    <ion-row>
+      <ion-col>
+        <button text-center class="f-btn-secondary" ion-item block (click)="onWriteReview()"><span loc="Оставить Отзыв" name="WriteReview">{{locale['WriteReview']}}</span></button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>

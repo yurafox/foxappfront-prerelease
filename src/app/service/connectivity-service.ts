@@ -3,6 +3,7 @@ import 'rxjs/add/operator/map';
 import {Network} from "@ionic-native/network";
 import {AlertController, NavController} from "ionic-angular";
 import {NoConnectionPage} from "../../pages/no-connection/no-connection";
+import {Device} from '@ionic-native/device';
 
 @Injectable()
 export class ConnectivityService {
@@ -21,7 +22,7 @@ export class ConnectivityService {
     return this.count;
   }
 
-  constructor(private network: Network, private alertCtrl: AlertController) {
+  constructor(private network: Network, private alertCtrl: AlertController, private device: Device) {
     this.count = 0;
   }
 
@@ -29,14 +30,11 @@ export class ConnectivityService {
     let activePage = this.navCtrl ? this.navCtrl.getActive() : undefined;
     // <editor-fold desc="For browser testing only">
     if (!this.network || !this.network.type) {
-      /*if (activePage && activePage.name !== 'NoConnectionPage') {
-        this.showNoConnectionPage(error);
-      }*/
       console.error(error.message ? error.message : error);
     }
     // </editor-fold>
 
-    if (this.network.type !== 'none') {
+    if (!this.device.cordova) {
       console.error(error.message ? error.message : error);
       let alert = this.alertCtrl.create({
         title: 'Ooops',
@@ -49,7 +47,7 @@ export class ConnectivityService {
       });
       alert.present().catch((err) => console.log(`Alert error: ${err}`));
       return;
-    } else if (this.network.type === 'none') {
+    } else if (this.network && this.network.type === 'none') {
       if (activePage && activePage.name !== 'NoConnectionPage') {
         this.showNoConnectionPage(error);
       }
