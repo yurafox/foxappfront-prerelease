@@ -162,6 +162,9 @@ export class DropdownListComponent extends ComponentBase implements OnChanges {
 
   @Input()
   afterUpdate: (item: any) => void;
+  
+  @Input()
+  IsCentering:boolean = true;
 
   public sourceContext: any;
 

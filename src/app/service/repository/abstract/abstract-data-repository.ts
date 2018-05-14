@@ -104,7 +104,7 @@ export abstract class AbstractDataRepository {
   public async abstract saveCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
   public async abstract insertCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
   public async abstract deleteCartProduct(prod: ClientOrderProducts);
-  public async abstract getBonusesInfo(clientId: number): Promise<{bonusLimit: number, actionBonusLimit: number}>;
+  public async abstract getBonusesInfo(): Promise<{bonusLimit: number, actionBonusLimit: number}>;
   public async abstract calculateCart(promoCode: string,
                                       maxBonusCnt: number,
                                       usePromoBonus: boolean,
@@ -115,7 +115,7 @@ export abstract class AbstractDataRepository {
                                                                           promoBonusDisc: number, earnedBonus: number,
                                                                           qty: number}[]>;
 
-  public async abstract getClientBonusesExpireInfo(clientId: number): Promise <ClientBonus[]>;
+  public async abstract getClientBonusesExpireInfo(): Promise <ClientBonus[]>;
 
   public async abstract getCountryById(id: number): Promise<Country>;
   public async abstract getCountries(): Promise<Country[]>;

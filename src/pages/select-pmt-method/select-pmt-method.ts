@@ -129,4 +129,21 @@ export class SelectPmtMethodPage extends ComponentBase {
   onApplyPromoCodeClick() {
     //console.log('ApplyPromoCode click.. ');
   }
+
+  public getMaxDate(age:number=undefined):string {
+    const cDate:Date = new Date();
+    const checkPoint:number = age || 21;;
+
+    return `${ cDate.getFullYear() - checkPoint}-${this.convertDateNumber(cDate.getMonth(),true)}-${this.convertDateNumber(cDate.getDate())}`;
+  }
+
+  private convertDateNumber(value:number, isMonth:boolean = false):string {
+    if(!value)
+     return '';
+    
+    if(isMonth)
+     value += 1;
+
+    return (value < 10) ? `0${value}`:`${value}`;
+  }
 }
