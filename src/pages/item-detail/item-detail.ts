@@ -169,6 +169,12 @@ export class ItemDetailPage extends ItemBase implements OnInit {
             handler: data => {
               return this.notifyOnArrivalResult(data.email);
             }
+          },
+          {
+            text: this.locale['CancelBtnCaption'],
+            role: 'cancel',
+            handler: data => {
+            }
           }
         ]
       });
