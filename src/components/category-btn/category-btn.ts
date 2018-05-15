@@ -11,13 +11,12 @@ export class CategoryBtnComponent extends ComponentBase {
   public productCountInOneCatalog:string;
   constructor(public navCtrl: NavController, private _repo:AbstractDataRepository) {
         super();
+        this.initLocalization();
   }
 
   async ngOnInit() {
-    super.ngOnInit();
-    const countStr:any = await this._repo.getAppParam('CATEGORY_COUNT');
+    const countStr:string = await this._repo.getAppParam('CATEGORY_COUNT');
     this.productCountInOneCatalog = eval('`'+ this.locale['CategoryCount'] +'`') || `более ${countStr} товаров в каталоге`;
-    
   }
 
   toCategories():void{

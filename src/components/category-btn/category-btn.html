@@ -4,7 +4,7 @@
     </div>
     <div class="ctb-content">
         <span loc="Каталог товаров" name="Catalog">{{locale['Catalog'] || "Каталог товаров"}}</span><br/>
-        <span style="font-size:12px">{{productCountInOneCatalog}}</span>
+        <span *ngIf="productCountInOneCatalog" style="font-size:12px">{{productCountInOneCatalog ? productCountInOneCatalog : ''}}</span>
     </div>
     <div class="ctb-arrow">
         <img src='assets/icon/arrowright.ico'>
