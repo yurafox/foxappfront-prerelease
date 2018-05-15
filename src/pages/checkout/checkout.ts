@@ -68,6 +68,7 @@ export class CheckoutPage extends ComponentBase {
           let alert = this.alertCtrl.create({
             title: title,
             message: message,
+            enableBackdropDismiss:false,
             buttons: [
               {
                 text: btnText,
