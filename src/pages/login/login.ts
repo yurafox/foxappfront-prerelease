@@ -13,7 +13,7 @@ export class LoginPage extends ComponentBase implements OnInit {
 
   private _authError = false;
   private _phone = '';
-  private isSendAsync = false;
+  public isSendAsync = false;
   public loginForm: FormGroup;
 
   public get authError() {

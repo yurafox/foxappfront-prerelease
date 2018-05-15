@@ -4,13 +4,13 @@
   <span loc="" name="DidNotMatch">{{locale['DidNotMatch']}}</span>-->
   <ion-grid style="height: 100%">
     <ion-row justify-content-center align-items-center style="height: 100%">
-      <span loc="Ваш поиск" name="YourSearch">{{locale['YourSearch']}}</span>&nbsp;
+      <span loc="Ваш поиск" name="YourSearch">{{locale['YourSearch']?locale['YourSearch']:'По вашему запросу '}}</span>&nbsp;
       <span *ngIf="srchService.lastSearch">"{{srchService.lastSearch}}"</span>
-      <span loc="" name="DidNotMatch">{{locale['DidNotMatch']}}</span>
+      <span loc="" name="DidNotMatch">{{locale['DidNotMatch']?locale['DidNotMatch']:' товаров не найдено'}}</span>
     </ion-row>
     <ion-row>
       <ion-col>
-        <button class="f-btn-action" ion-button block (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']}}</span></button>
+        <button class="f-btn-action" ion-button block (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']?locale['ToHomePage']:'На главную'}}</span></button>
       </ion-col>
     </ion-row>
   </ion-grid>
