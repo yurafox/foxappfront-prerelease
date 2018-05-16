@@ -132,7 +132,14 @@ export class SelectPmtMethodPage extends ComponentBase {
 
   public getMaxDate(age:number=undefined):string {
     const cDate:Date = new Date();
-    const checkPoint:number = age || 21;;
+    const checkPoint:number = age || 21;
+
+    return `${ cDate.getFullYear() - checkPoint}-${this.convertDateNumber(cDate.getMonth(),true)}-${this.convertDateNumber(cDate.getDate())}`;
+  }
+
+  public getMinDate(age:number=undefined):string {
+    const cDate:Date = new Date();
+    const checkPoint:number = age || 100;
 
     return `${ cDate.getFullYear() - checkPoint}-${this.convertDateNumber(cDate.getMonth(),true)}-${this.convertDateNumber(cDate.getDate())}`;
   }
