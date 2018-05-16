@@ -98,7 +98,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
       let readyness = await this.platform.ready();
       if (readyness && readyness!=='') {
         this.splashScreen.hide();
-        this.backgroundMode.enable();
+        //this.backgroundMode.enable();
       }
     }
   }

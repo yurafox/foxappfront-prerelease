@@ -60,7 +60,7 @@ export class PaymentPage extends ComponentBase implements OnInit {
   }
 
   receiveMessage(event) {
-    if (event.origin !== 'https://mobile.foxtrot.com.ua') {
+    if (event.origin !== AppConstants.BASE_URL) {
       console.log('Event origin is not foxtrot');
       return;
     }
