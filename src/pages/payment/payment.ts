@@ -1,9 +1,10 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, NavController, NavParams, AlertController} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {CartService} from "../../app/service/cart-service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {AppConstants} from "../../app/app-constants";
+import { AbstractDataRepository } from '../../app/service/repository/abstract/abstract-data-repository';
 
 @IonicPage()
 @Component({
@@ -20,7 +21,8 @@ export class PaymentPage extends ComponentBase implements OnInit {
   success: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private cart: CartService,
-              private sanitizer: DomSanitizer, private changeDetector: ChangeDetectorRef) {
+              private sanitizer: DomSanitizer, private changeDetector: ChangeDetectorRef,
+              private repo: AbstractDataRepository, private alertCtrl: AlertController) {
     super();
     (<any>window).appPage = this;
     this.formInput = '';
@@ -39,7 +41,33 @@ export class PaymentPage extends ComponentBase implements OnInit {
     if (this.navParams.data.result === 0) {
       this.success = true;
       this.formInput = null;
-      this.cart.emptyCart();
+      let res = await this.repo.postOrder(this.cart.order);
+      if (res.isSuccess) {
+        this.cart.emptyCart();
+        this.cart.initCart();
+      }
+      else {
+        let title = this.locale['AlertErrorTitle'];
+        let message = this.locale['AlertErrorMessage'] + ' ' + res.errorMessage;
+        let btnText = this.locale['BtnErrorText'];
+        let alert = this.alertCtrl.create({
+          title: title,
+          message: message,
+          buttons: [
+            {
+              text: btnText,
+              handler: () => {
+                this.cart.emptyCart();
+                this.cart.initCart().then(() => {
+                  this.navCtrl.setRoot('CartPage');
+                }
+                );
+              }
+            }
+          ]
+        });
+        alert.present();
+      };
       this.changeDetector.detectChanges();
     } else if (this.navParams.data.result === 1) {
       this.fail = true;
