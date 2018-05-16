@@ -15,8 +15,10 @@ export class CategoryBtnComponent extends ComponentBase {
   }
 
   async ngOnInit() {
-    const countStr:string = await this._repo.getAppParam('CATEGORY_COUNT');
-    this.productCountInOneCatalog = eval('`'+ this.locale['CategoryCount'] +'`') || `более ${countStr} товаров в каталоге`;
+    const countStr = await this._repo.getAppParam('CATEGORY_COUNT');
+    if (countStr && this.locale['CategoryCount']) {
+      this.productCountInOneCatalog = this.locale['CategoryCount'].replace('${countStr}',countStr);
+    }
   }
 
   toCategories():void{

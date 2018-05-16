@@ -39,11 +39,16 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
 
     await loading.present();
 
-    if (this.navParams.data.page && this.navParams.data.page.reviews) {
-      this.reviews = this.navParams.data.page.reviews;
-    }
-    if (this.navParams.data.page && this.navParams.data.page.clientId) {
-      this.clientId = this.navParams.data.page.clientId;
+    if (this.navParams.data.page) {
+      if (this.navParams.data.page.reviews) {
+        this.reviews = this.navParams.data.page.reviews;
+      }
+      if (this.navParams.data.page.clientId) {
+        this.clientId = this.navParams.data.page.clientId;
+      }
+      if (this.navParams.data.page.cantShow) {
+        this.cantShow = this.navParams.data.page.cantShow;
+      }
     }
 
     if (this.navParams.data.product) {
@@ -66,7 +71,7 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
       this.clientId = this.reviewsObj.idClient;
     }
 
-    this.cantShow = this.hasClientReview();
+    //this.cantShow = this.hasClientReview();
     
     this.dataLoaded = true;
     await loading.dismiss();
