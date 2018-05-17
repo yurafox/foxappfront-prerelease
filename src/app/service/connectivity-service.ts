@@ -37,7 +37,7 @@ export class ConnectivityService {
     if (!this.device.cordova) {
       console.error(error.message ? error.message : error);
       let alert = this.alertCtrl.create({
-        title: 'Ooops',
+        title: 'Trouble',
         message: error.message ? error.message :  error,
         buttons: [
           {
@@ -60,8 +60,8 @@ export class ConnectivityService {
 
   private showNoConnectionPage(error: any) {
     if (1 > this.count) {
-      this.navCtrl.push('NoConnectionPage', {error: error});
       this.count++;
+      this.navCtrl.setRoot('NoConnectionPage', {error: error}).catch();
     }
   }
 }

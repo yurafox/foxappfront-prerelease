@@ -84,7 +84,7 @@ export class PaymentPage extends ComponentBase implements OnInit {
   }
 
   toHomePage() {
-    this.navCtrl.setRoot('HomePage').catch(err => console.error(err));
+    this.navCtrl.setRoot('HomePage',{pageMode: 1}).catch(err => console.error(err));
   }
 
   receiveMessage(event) {

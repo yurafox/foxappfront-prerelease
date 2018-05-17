@@ -61,6 +61,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
   dropDownCityOpts: any;
   dropDownAddressOpts: any;
   isAuthorized: boolean;
+  clientId: number = 0;
 
   markerSubscriptions: Subscription[];
 
@@ -198,6 +199,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
 
     let citiesArr: City[] = this.cities;
     this.cities = [];
+    let cantShow: boolean = true;
 
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
       for (let i = 0; i < citiesArr.length; i++) {
@@ -235,6 +237,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
               let reviews: StoreReview[] = [];
               if (this.storeReviews[this.markersArr[cityID][i].id.toString()]) {
                 reviews = this.storeReviews[this.markersArr[cityID][i].id.toString()];
+                cantShow = this.hasClientReview(this.storeReviews[this.markersArr[cityID][i].id.toString()]);
               }
 
               let shopOpensTime: string = markerData.openTime;
@@ -261,13 +264,13 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
                 `<p style="padding: 0; margin: 0;">${markerData.address}</p>`,
                 `<p style="padding: 0; margin: 0;">${workingHours}</p>`,
                 `<p style="color: ${(isWorking === this.open) ? 'green' : 'red'}; padding: 0; margin: 0;">${(isWorking) ? isWorking : '' }</p>`,
-                `<span id="revs" #revs style="color: darkblue; padding: 0; margin: 0;">${(reviews && (reviews.length > 0)) ? (this.reviewsStr + '<span style=""> (' + reviews.length + ')</span>') : this.writeReviewStr}</span>`,
+                `<span id="revs" #revs style="color: darkblue; padding: 0; margin: 0;">${(reviews && (reviews.length > 0)) ? (this.reviewsStr + '<span style=""> (' + reviews.length + ')</span>') : (cantShow === false) ? this.writeReviewStr : ''}</span>`,
                 `</div>`].join('');
               let revs = html.getElementsByTagName('span')[0];
-              if (revs) {
+              if (revs && !cantShow) {
                 revs.addEventListener('click', () => {
                   if (reviews && (reviews.length > 0)) {
-                    this.onShowReviewsClick(reviews, markerData);
+                    this.onShowReviewsClick(reviews, markerData, cantShow);
                   } else {
                     this.onWriteReviewClick(markerData);
                   }
@@ -436,6 +439,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     if (this.previousPage === 'FavoriteStoresPage') {
       let store = this.navParams.data.store;
       let city: City = this.navParams.data.city;
+      this.clientId = this.navParams.data.page.clientId;
       this.selectedCity = city;
       this.makeShopList();
       this.selectedMarker = {label: store.address, value: store.position};
@@ -443,8 +447,8 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     }
   }
 
-  onShowReviewsClick(reviews: StoreReview[], store: Store): void {
-    this.nav.push('ItemReviewsPage', { reviews: reviews, store: store }).catch(err => {
+  onShowReviewsClick(reviews: StoreReview[], store: Store, cantShow: boolean): void {
+    this.nav.push('ItemReviewsPage', { reviews: reviews, store: store, cantShow: cantShow }).catch(err => {
       console.log(`Error navigating to ItemReviewPage: ${err}`);
     });
   }
@@ -489,5 +493,13 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
       });
       toast.present().catch((err) => console.log(`Toast error: ${err}`));
     }
+  }
+
+  hasClientReview(reviews): boolean {
+    let present = false;
+    for (let i = 0; i < reviews.length; i++) {
+      if (reviews[i].idClient === this.clientId) present = true;
+    }
+    return present;
   }
 }

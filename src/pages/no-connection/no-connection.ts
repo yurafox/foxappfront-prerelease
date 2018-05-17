@@ -22,7 +22,7 @@ export class NoConnectionPage extends ComponentBase implements OnInit, OnDestroy
       this.navCtrl.remove(index - 1).catch();
     } else if (prevPage && prevPage.name === 'HomePage')  {
       this.navCtrl.remove(index - 1).catch();
-      this.navCtrl.insert(index - 1, 'HomePage').catch();
+      this.navCtrl.insert(index - 1, 'HomePage', {pageMode: 1}).catch();
     }
   }
 
@@ -35,6 +35,10 @@ export class NoConnectionPage extends ComponentBase implements OnInit, OnDestroy
   }
   ionViewWillLeave() {
     this.connServ.counter = 0;
+  }
+
+  toHomePage() {
+    this.navCtrl.setRoot('HomePage', {pageMode: 1}).catch();
   }
 
   /**

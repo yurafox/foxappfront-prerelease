@@ -46,11 +46,14 @@ page-action {
   }
 
   .action-product-filter-div {
+    overflow: hidden;
     position:sticky !important;
+    position:-webkit-sticky !important;
     top:-3px;
     z-index: 1;
     progress-bar {
       position: sticky !important;
+      position:-webkit-sticky !important;
       .progress-bar span {
         top: -6px !important;
       }

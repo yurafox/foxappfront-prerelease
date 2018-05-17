@@ -3,6 +3,7 @@ import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {City, Store} from "../../app/model";
 import {AbstractDataRepository} from "../../app/service";
+import {StoreReview} from "../../app/model/store-review";
 
 export interface IStore {
   city: City;
@@ -18,10 +19,14 @@ export interface IStore {
 export class FavoriteStoresPage extends ComponentBase implements OnInit {
 
   stores: Array<IStore>;
+  reviews: Array<StoreReview>;
+  clientId: number = 0;
+  cantShow: boolean;
 
   constructor(private navCtrl: NavController, private repo: AbstractDataRepository, private alertCtrl: AlertController) {
     super();
     this.stores = [];
+    this.cantShow = true;
   }
 
   async ngOnInit() {
@@ -34,8 +39,11 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
         store = {city: city, store: favStores[i], hasReviews: false};
         let reviews = await this.repo.getStoreReviewsByStoreId(store.store.id);
         let revs = reviews.reviews;
+        this.reviews = reviews.reviews;
+        this.clientId = reviews.idClient;
         store.hasReviews = !!(revs && (revs.length > 0));
         this.stores.push(store);
+        this.cantShow = this.hasClientReview(reviews.reviews);
       }
     }
   }
@@ -81,7 +89,7 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
   }
 
   onShowReviewsClick(store: Store): void {
-    this.navCtrl.push('ItemReviewsPage', {store: store}).catch(err => {
+    this.navCtrl.push('ItemReviewsPage', {store: store, page:this}).catch(err => {
       console.log(`Error navigating to ItemReviewPage: ${err}`);
     });
   }
@@ -106,5 +114,12 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
         }
       }
     }
+  }
+  hasClientReview(reviews): boolean {
+    let present = false;
+    for (let i = 0; i < reviews.length; i++) {
+      if (reviews[i].idClient === this.clientId) present = true;
+    }
+    return present;
   }
 }

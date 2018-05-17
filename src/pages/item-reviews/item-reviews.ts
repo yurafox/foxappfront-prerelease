@@ -23,7 +23,7 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
   cantShow: boolean;
   dataLoaded: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public repo: AbstractDataRepository, 
+  constructor(public navCtrl: NavController, public navParams: NavParams, public repo: AbstractDataRepository,
               public loadingCtrl: LoadingController) {
     super();
     this.initLocalization();
@@ -58,6 +58,12 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
       this.store = this.navParams.data.store;
       this.item = this.store;
     }
+    if (this.navParams.data.reviews) {
+      this.reviews = this.navParams.data.reviews;
+    }
+    if (this.navParams.data.cantShow) {
+      this.cantShow = this.navParams.data.cantShow;
+    }
 
     if (!this.reviews && (this.navParams.data.product || this.navParams.data.store)) {
       if (this.navParams.data.product) {
@@ -72,7 +78,7 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
     }
 
     //this.cantShow = this.hasClientReview();
-    
+
     this.dataLoaded = true;
     await loading.dismiss();
   }
