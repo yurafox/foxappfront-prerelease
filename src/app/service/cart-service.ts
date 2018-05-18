@@ -114,7 +114,9 @@ export class CartService {
   }
 
   get checkIsPickupOnly(): boolean {
-    return !(this.orderProducts.filter(x => x.idStorePlace === null).length>0);
+    if (!this.orderProducts) return false;
+    const pickupProdsCnt = this.orderProducts.filter(x => x.idStorePlace !== null).length;
+    return ((pickupProdsCnt === this.orderProducts.length) &&  (this.orderProducts.length>0));
   }
 
   public set loan(value: CreditCalc) {

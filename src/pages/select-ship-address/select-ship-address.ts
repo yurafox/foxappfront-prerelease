@@ -28,7 +28,9 @@ export class SelectShipAddressPage extends ComponentBase {
   async ngOnInit() {
     super.ngOnInit();
 
-    if (this.cart.checkIsPickupOnly) {
+    this.withDelivery = this.navParams.data.fromCart === 1;
+
+    if ((this.withDelivery) && (this.cart.checkIsPickupOnly)) {
       this.cart.loShipments = await this.cart.repo.generateShipments();
       this.navCtrl.push('ShippingOptionsPage');
       this.navCtrl.remove((this.navCtrl.getActive().index)-1, 1);
@@ -39,8 +41,6 @@ export class SelectShipAddressPage extends ComponentBase {
         this.dataLoaded = true;
       }
     );
-
-    this.withDelivery = this.navParams.data.fromCart === 1;
   }
 
   async getDefaultShipAddress(): Promise<ClientAddress[]> {
