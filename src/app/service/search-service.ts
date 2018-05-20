@@ -94,7 +94,7 @@ export class SearchService {
 
   private async connect() {
     this.client = new Client({
-      host: (await this.repo.getAppParam('ELASTIC_ENDPOINT')).split(" ") 
+      host: (await this.repo.getAppParam('ELASTIC_ENDPOINT')).split(" ")
     });
   }
 
@@ -374,7 +374,11 @@ export class SearchService {
                 'terms': {"script":"doc ['propsF.id_Prop.id'].value + '|' + doc ['propsF.id_Prop.name'].value + '|' + doc ['propsF.out_bmask'].value"},
                 'aggs': {
                   'propVal': {
-                    'terms': {'field': 'propsF.pVal' }
+                    'terms': {'field': 'propsF.pVal',
+                      "order": {
+                        "_key": "asc"
+                      }
+                    }
                   }
                 }
               }
@@ -417,10 +421,10 @@ export class SearchService {
     }
   }
 
-  
+
   public get maxItemsCount() : number {
-    return this.MAX_ITEMS_COUNT; 
+    return this.MAX_ITEMS_COUNT;
   }
-  
+
 
 }

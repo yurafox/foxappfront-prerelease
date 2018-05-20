@@ -85,10 +85,10 @@ export class SearchBtnComponent extends ComponentBase {
   private getIncSearchDisplayText(txt: string): string {
     if ((!txt) || (!this.searchValue))
       return txt;
-    const idx = txt.indexOf(this.searchValue);
+    const idx = txt.toLowerCase().indexOf(this.searchValue.toLowerCase(),0);
     const emTxt = txt.substr(idx + this.searchValue.length, txt.length);
-    return  ((idx === -1) ? txt : txt.substr(idx, this.searchValue.length))
-            + ((emTxt) ? '<b>' + txt.substr(idx + this.searchValue.length, txt.length) + '</b>' : '');
+    return  ((idx === -1) ? txt : txt.substr(0, this.searchValue.length))
+            + ((emTxt) ? '<b>' + emTxt + '</b>' : '');
   }
 
   async incSearch() {
@@ -97,7 +97,8 @@ export class SearchBtnComponent extends ComponentBase {
     let ar = [];
     if (this.searchValue)
       ar = this.searchService.searchItems.filter((value) => {
-        return !(value.toLowerCase().indexOf(this.searchValue.toLowerCase()) === -1);
+        return value.toLowerCase().startsWith(this.searchValue.toLowerCase(),0);
+        //return !(value.toLowerCase().indexOf(this.searchValue.toLowerCase()) === -1);
       }).slice()
     else
       ar = this.searchService.searchItems;
