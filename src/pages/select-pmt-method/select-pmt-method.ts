@@ -60,7 +60,7 @@ export class SelectPmtMethodPage extends ComponentBase {
 
     switch (this.cart.order.idPaymentMethod) {
       case 3: {
-        return ((this.isAnyOptionSelected()) && (this.personInfoValid()) && !(this.cart.loan === null));
+        return ((this.isAnyOptionSelected()) && (this.personInfoValid()) && !(this.cart.loan === null) && (this.cart.loanValid));
       }
       default: {
         return this.isAnyOptionSelected();
@@ -147,7 +147,7 @@ export class SelectPmtMethodPage extends ComponentBase {
   private convertDateNumber(value:number, isMonth:boolean = false):string {
     if(!value)
      return '';
-    
+
     if(isMonth)
      value += 1;
 

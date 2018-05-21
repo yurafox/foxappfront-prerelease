@@ -340,6 +340,10 @@ public get promoCodeDiscount(): number {
     return Math.ceil((_am + (_am * _com / 100 * (months - _gr))) / months);
   }
 
+  get loanValid(): boolean {
+    return this.validateLoan(this.cartGrandTotal).isValid;
+  }
+
   validateLoan (loanAmt: number): {isValid:boolean, validationErrors:string[]} {
     let maxLoan = this.localization['MaxLoan'] ? this.localization['MaxLoan'] : 'Максимальный лимит кредита перевышен';
     let minLoan = this.localization['MinLoan'] ? this.localization['MinLoan'] : 'Сумма кредита ниже лимита';
