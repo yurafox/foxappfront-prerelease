@@ -94,7 +94,7 @@ export class SearchService {
 
   private async connect() {
     this.client = new Client({
-      host: (await this.repo.getAppParam('ELASTIC_ENDPOINT')).split(" ")
+      host: 'http://localhost:9200/' //(await this.repo.getAppParam('ELASTIC_ENDPOINT')).split(" ")
     });
   }
 

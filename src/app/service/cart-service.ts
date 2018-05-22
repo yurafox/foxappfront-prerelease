@@ -569,7 +569,7 @@ public get promoCodeDiscount(): number {
 
     if (this.userService.isAuth) {
       item = await this.repo.saveCartProduct(item);
-        if (!(item)) {
+        if (!item) {
           this.gotoCartPageIfDataChanged();
         }
       //this.initCart();
