@@ -82,16 +82,20 @@ export namespace Providers {
 
     Remove(key: string): T;
 
-    Values(): T[];
+    Values(): any[];
 
     MaxSize(): number;
+
+    HasNotValidCachedValue(key:string):boolean;
+
+    HasNotValidCachedRange():boolean;
   }
 
   export class CacheItems<T> implements IKeyedCollection<T> {
     private items: { [index: string]: T } = {};
     private count: number = 0;
 
-    public constructor(private maxSize: number = 100) {
+    public constructor(private maxSize: number = 0) {
     }
 
     public ContainsKey(key: string): boolean {
@@ -104,12 +108,10 @@ export namespace Providers {
 
     public Add(key: string, value: T) {
       if (key && value) {
-        if ((<any>value).id) {
           if (!this.items.hasOwnProperty(key))
             this.count++;
 
           this.items[key] = value;
-        }
       }
     }
 
@@ -136,12 +138,12 @@ export namespace Providers {
       return keySet;
     }
 
-    public Values(): T[] {
-      var values: T[] = [];
+    public Values(): any[] {
+      var values: any[] = [];
 
       for (var prop in this.items) {
         if (this.items.hasOwnProperty(prop)) {
-          values.push(this.items[prop]);
+          values.push((<any>this.items[prop]).item);
         }
       }
 
@@ -151,150 +153,175 @@ export namespace Providers {
     public MaxSize(): number {
       return this.maxSize;
     }
+
+    public HasNotValidCachedValue(key:string):boolean {
+       let entity:T = this.Item(key);
+       if(!entity) return true;
+
+       let currentExpire = (<any>entity).expire;
+       if(!currentExpire) return true;
+
+       return currentExpire < Date.now();
+    }
+
+    public HasNotValidCachedRange():boolean {
+      if(this.Count()===0)
+       return true;
+      
+      const firstValue:any = this.items[Object.keys(this.items)[0]];
+      return firstValue.expire < Date.now();
+    }
+  }
+  
+  // data model for CacheProvider collection
+  export interface CacheDataContainer<T> {
+     item:T;
+     expire:number;
   }
 
   export class CacheProvider {
-    private _cacheProduct: IKeyedCollection<Product> = null;
-    private _cacheSupplier: IKeyedCollection<Supplier> = null;
-    private _cacheCurrency: IKeyedCollection<Currency> = null;
-    private _cacheLang: IKeyedCollection<Lang> = null;
-    private _cacheManufacturer: IKeyedCollection<Manufacturer> = null;
-    private _cacheCity: IKeyedCollection<City> = null;
-    private _cacheCityWithStore: IKeyedCollection<City> = null;
-    private _cacheStorePlace: IKeyedCollection<StorePlace> = null;
-    private _cacheStore: IKeyedCollection<{id:number, stores: Store[]}> = null;
-    private _cacheMeasureUnit: IKeyedCollection<MeasureUnit> = null;
+    private _cacheProduct: IKeyedCollection<CacheDataContainer<Product>> = null;
+    private _cacheSupplier: IKeyedCollection<CacheDataContainer<Supplier>> = null;
+    private _cacheCurrency: IKeyedCollection<CacheDataContainer<Currency>> = null;
+    private _cacheLang: IKeyedCollection<CacheDataContainer<Lang>> = null;
+    private _cacheManufacturer: IKeyedCollection<CacheDataContainer<Manufacturer>> = null;
+    private _cacheCity: IKeyedCollection<CacheDataContainer<City>> = null;
+    private _cacheCityWithStore: IKeyedCollection<CacheDataContainer<City>> = null;
+    private _cacheStorePlace: IKeyedCollection<CacheDataContainer<StorePlace>> = null;
+    private _cacheStore: IKeyedCollection<CacheDataContainer<{id:number, stores: Store[]}>> = null;
+    private _cacheMeasureUnit: IKeyedCollection<CacheDataContainer<MeasureUnit>> = null;
 
-    private _cacheQuotation: IKeyedCollection<Quotation> = null;
-    private _cacheLoEntity: IKeyedCollection<LoEntity> = null;
-    private _cacheCountry: IKeyedCollection<Country> = null;
-    private _cacheEnumPaymentMethod: IKeyedCollection<EnumPaymentMethod> = null;
-    private _cacheRegion: IKeyedCollection<Region> = null;
-    private _cacheAppParams: IKeyedCollection<AppParam> = null;
-    private _cacheDeliveryType: IKeyedCollection<LoDeliveryType> = null;
-    private _cacheLoEntityOffice: IKeyedCollection<LoEntityOffice> = null;
-
-
-    public get Products(): IKeyedCollection<Product> {
+    private _cacheQuotation: IKeyedCollection<CacheDataContainer<Quotation>> = null;
+    private _cacheLoEntity: IKeyedCollection<CacheDataContainer<LoEntity>> = null;
+    private _cacheCountry: IKeyedCollection<CacheDataContainer<Country>> = null;
+    private _cacheEnumPaymentMethod: IKeyedCollection<CacheDataContainer<EnumPaymentMethod>> = null;
+    private _cacheRegion: IKeyedCollection<CacheDataContainer<Region>> = null;
+    private _cacheAppParams: IKeyedCollection<CacheDataContainer<AppParam>> = null;
+    private _cacheDeliveryType: IKeyedCollection<CacheDataContainer<LoDeliveryType>> = null;
+    private _cacheLoEntityOffice: IKeyedCollection<CacheDataContainer<LoEntityOffice>> = null;
+   
+    public static Settings:any;
+    
+    public get Products(): IKeyedCollection<CacheDataContainer<Product>> {
       if (this._cacheProduct == null)
-        this._cacheProduct = new CacheItems<Product>(1500);
+        this._cacheProduct = new CacheItems<CacheDataContainer<Product>>();
 
       return this._cacheProduct;
     }
 
-    public get Suppliers(): IKeyedCollection<Supplier> {
+    public get Suppliers(): IKeyedCollection<CacheDataContainer<Supplier>> {
       if (this._cacheSupplier == null)
-        this._cacheSupplier = new CacheItems<Supplier>(200);
+        this._cacheSupplier = new CacheItems<CacheDataContainer<Supplier>>();
 
       return this._cacheSupplier;
     }
 
-    public get Currency(): IKeyedCollection<Currency> {
+    public get Currency(): IKeyedCollection<CacheDataContainer<Currency>> {
       if (this._cacheCurrency == null)
-        this._cacheCurrency = new CacheItems<Currency>(10);
+        this._cacheCurrency = new CacheItems<CacheDataContainer<Currency>>();
 
       return this._cacheCurrency;
     }
 
-    public get Lang(): IKeyedCollection<Lang> {
+    public get Lang(): IKeyedCollection<CacheDataContainer<Lang>> {
       if (this._cacheLang == null)
-        this._cacheLang = new CacheItems<Lang>();
+        this._cacheLang = new CacheItems<CacheDataContainer<Lang>>();
 
       return this._cacheLang;
     }
 
-    public get Manufacturer(): IKeyedCollection<Manufacturer> {
+    public get Manufacturer(): IKeyedCollection<CacheDataContainer<Manufacturer>> {
       if (this._cacheManufacturer == null)
-        this._cacheManufacturer = new CacheItems<Manufacturer>(500);
+        this._cacheManufacturer = new CacheItems<CacheDataContainer<Manufacturer>>();
 
       return this._cacheManufacturer;
     }
 
-    public get City(): IKeyedCollection<City> {
+    public get City(): IKeyedCollection<CacheDataContainer<City>> {
       if (this._cacheCity == null)
-        this._cacheCity = new CacheItems<City>(300);
+        this._cacheCity = new CacheItems<CacheDataContainer<City>>();
 
       return this._cacheCity;
     }
 
-    public get CityWithStore(): IKeyedCollection<City> {
+    public get CityWithStore(): IKeyedCollection<CacheDataContainer<City>> {
       if (this._cacheCityWithStore == null)
-        this._cacheCityWithStore = new CacheItems<City>(300);
+        this._cacheCityWithStore = new CacheItems<CacheDataContainer<City>>();
 
       return this._cacheCityWithStore;
     }
 
-    public get StorePlace(): IKeyedCollection<StorePlace> {
+    public get StorePlace(): IKeyedCollection<CacheDataContainer<StorePlace>> {
       if (this._cacheStorePlace == null)
-        this._cacheStorePlace = new CacheItems<StorePlace>(300);
+        this._cacheStorePlace = new CacheItems<CacheDataContainer<StorePlace>>();
 
       return this._cacheStorePlace;
     }
 
-    public get Store(): IKeyedCollection<{id:number, stores: Store[]}> {
+    public get Store(): IKeyedCollection<CacheDataContainer<{id:number, stores: Store[]}>> {
       if (this._cacheStore == null)
-        this._cacheStore = new CacheItems<{id:number, stores: Store[]}>(300);
+        this._cacheStore = new CacheItems<CacheDataContainer<{id:number, stores: Store[]}>>();
 
       return this._cacheStore;
     }
 
-    public get MeasureUnit(): IKeyedCollection<MeasureUnit> {
+    public get MeasureUnit(): IKeyedCollection<CacheDataContainer<MeasureUnit>> {
       if (this._cacheMeasureUnit == null)
-        this._cacheMeasureUnit = new CacheItems<MeasureUnit>(200);
+        this._cacheMeasureUnit = new CacheItems<CacheDataContainer<MeasureUnit>>();
 
       return this._cacheMeasureUnit;
     }
 
-    public get Quotation(): IKeyedCollection<Quotation> {
+    public get Quotation(): IKeyedCollection<CacheDataContainer<Quotation>> {
       if (this._cacheQuotation == null)
-        this._cacheQuotation = new CacheItems<Quotation>(100);
+        this._cacheQuotation = new CacheItems<CacheDataContainer<Quotation>>();
 
       return this._cacheQuotation;
     }
 
-    public get LoEntity(): IKeyedCollection<LoEntity> {
+    public get LoEntity(): IKeyedCollection<CacheDataContainer<LoEntity>> {
       if (this._cacheLoEntity == null)
-        this._cacheLoEntity = new CacheItems<LoEntity>(10);
+        this._cacheLoEntity = new CacheItems<CacheDataContainer<LoEntity>>();
 
       return this._cacheLoEntity;
     }
 
-    public get Country(): IKeyedCollection<Country> {
+    public get Country(): IKeyedCollection<CacheDataContainer<Country>> {
       if (this._cacheCountry == null)
-        this._cacheCountry = new CacheItems<Country>(10);
+        this._cacheCountry = new CacheItems<CacheDataContainer<Country>>();
 
       return this._cacheCountry;
     }
 
-    public get EnumPaymentMethod(): IKeyedCollection<EnumPaymentMethod> {
+    public get EnumPaymentMethod(): IKeyedCollection<CacheDataContainer<EnumPaymentMethod>> {
       if (this._cacheEnumPaymentMethod == null)
-        this._cacheEnumPaymentMethod = new CacheItems<EnumPaymentMethod>(10);
+        this._cacheEnumPaymentMethod = new CacheItems<CacheDataContainer<EnumPaymentMethod>>();
 
       return this._cacheEnumPaymentMethod;
     }
 
-    public get Region(): IKeyedCollection<Region> {
+    public get Region(): IKeyedCollection<CacheDataContainer<Region>> {
       if (this._cacheRegion == null)
-        this._cacheRegion = new CacheItems<Region>(50);
+        this._cacheRegion = new CacheItems<CacheDataContainer<Region>>();
 
       return this._cacheRegion;
     }
 
-    public get AppParams(): IKeyedCollection<AppParam> {
+    public get AppParams(): IKeyedCollection<CacheDataContainer<AppParam>> {
       if (this._cacheAppParams == null)
-        this._cacheAppParams = new CacheItems<AppParam>();
+        this._cacheAppParams = new CacheItems<CacheDataContainer<AppParam>>();
       return this._cacheAppParams;
     }
 
-    public get LoDeliveryType(): IKeyedCollection<LoDeliveryType> {
+    public get LoDeliveryType(): IKeyedCollection<CacheDataContainer<LoDeliveryType>> {
       if (this._cacheDeliveryType == null)
-        this._cacheDeliveryType = new CacheItems<LoDeliveryType>();
+        this._cacheDeliveryType = new CacheItems<CacheDataContainer<LoDeliveryType>>();
       return this._cacheDeliveryType;
     }
 
-    public get LoEntityOffice(): IKeyedCollection<LoEntityOffice> {
+    public get LoEntityOffice(): IKeyedCollection<CacheDataContainer<LoEntityOffice>> {
       if (this._cacheLoEntityOffice  == null)
-        this._cacheLoEntityOffice = new CacheItems<LoEntityOffice>();
+        this._cacheLoEntityOffice = new CacheItems<CacheDataContainer<LoEntityOffice>>();
       return this._cacheLoEntityOffice;
     }
 
