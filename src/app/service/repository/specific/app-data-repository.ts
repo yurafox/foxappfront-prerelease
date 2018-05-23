@@ -1469,8 +1469,17 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getStorePlaceById(id: number): Promise<StorePlace> {
     try {
       const _id: string = id.toString();
-      let storeplace = new StorePlace();
-      if (this.isEmpty(this.cache.StorePlace.Item(_id))) {
+      if (this.cache.StorePlace.HasNotValidCachedValue(_id)) {
+        const entity: Providers.CacheDataContainer<StorePlace> = this.cache.StorePlace.Item(_id);
+        const storePlace: StorePlace = (entity) ? entity.item : new StorePlace();
+
+        if (!entity) {
+          this.cache.StorePlace.Add(_id, { item: storePlace, expire: Date.now() + CacheProvider.Settings.storeplace.expire });
+        }
+
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.storeplace.expire;
+
         // http request
         const response = await this.http
           .get(storePlacesUrl + `/${_id}`, RequestFactory.makeAuthHeader())
@@ -1482,25 +1491,22 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error("server side status error");
         }
 
-        if (data != null) {
-          //storeplace = new StorePlace();
-          storeplace.id = id;
-          storeplace.name = data.name;
-          storeplace.idSupplier = data.idSupplier;
-          storeplace.idCity = data.idCity;
-          storeplace.zip = data.zip;
-          storeplace.address_line = data.address_line;
-          storeplace.lat = data.lat;
-          storeplace.lng = data.lng;
-          storeplace.type = data.type;
+        if (data) {
+          storePlace.id = id;
+          storePlace.name = data.name;
+          storePlace.idSupplier = data.idSupplier;
+          storePlace.idCity = data.idCity;
+          storePlace.zip = data.zip;
+          storePlace.address_line = data.address_line;
+          storePlace.lat = data.lat;
+          storePlace.lng = data.lng;
+          storePlace.type = data.type;
 
-          // add to cache
-          this.cache.StorePlace.Add(_id, storeplace);
+          return storePlace;
         }
-        return storeplace;
+        return this.cache.StorePlace.Remove(_id).item;
       } else {
-        // </editor-fold>
-        return this.cache.StorePlace.Item(_id);
+        return this.cache.StorePlace.Item(_id).item;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -1520,12 +1526,22 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data != null) {
         data.forEach(val => {
           let city = new City();
-          city.id = val.id;
-          city.name = val.name;
-          city.idRegion = val.idRegion;
-          if (this.isEmpty(this.cache.City.Item(val.id.toString()))) {
-            this.cache.City.Add(val.id.toString(), city);
-          };
+
+          if (this.cache.City.HasNotValidCachedValue(val.id.toString())) {
+            const entity: Providers.CacheDataContainer<City> = this.cache.City.Item(val.id.toString());
+            const city: City = (entity) ? entity.item : new City();
+
+            if (!entity) {
+              this.cache.City.Add(val.id.toString(), { item: city, expire: Date.now() + CacheProvider.Settings.city.expire });
+            }
+
+            else
+              entity.expire = Date.now() + CacheProvider.Settings.city.expire;
+
+            city.id = val.id;
+            city.name = val.name;
+            city.idRegion = val.idRegion;
+          }
         }
         );
       }
@@ -1547,12 +1563,20 @@ export class AppDataRepository extends AbstractDataRepository {
 
       if (data != null) {
         data.forEach(val => {
-          let region = new Region();
-          region.id = val.id;
-          region.name = val.name;
-          if (this.isEmpty(this.cache.Region.Item(val.id.toString()))) {
-            this.cache.Region.Add(val.id.toString(), region);
-          };
+          if (this.cache.Region.HasNotValidCachedValue(val.id.toString())) {
+            const entity: Providers.CacheDataContainer<Region> = this.cache.Region.Item(val.id.toString());
+            const region: Region = (entity) ? entity.item : new Region();
+
+            if (!entity) {
+              this.cache.Region.Add(val.id.toString(), { item: region, expire: Date.now() + CacheProvider.Settings.region.expire });
+            }
+
+            else
+              entity.expire = Date.now() + CacheProvider.Settings.region.expire;
+
+            region.id = val.id;
+            region.name = val.name;
+          }
         }
         );
       }
@@ -1566,10 +1590,19 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getRegionById(id: number): Promise<Region> {
     if (!id) return null;
     try {
-      const region: Region = new Region();
       const _id: string = id.toString();
       //let city = null;
-      if (this.isEmpty(this.cache.Region.Item(_id))) {
+      if (this.cache.Region.HasNotValidCachedValue(_id)) {
+        const entity: Providers.CacheDataContainer<Region> = this.cache.Region.Item(_id);
+        const region: Region = (entity) ? entity.item : new Region();
+
+        if (!entity) {
+          this.cache.Region.Add(_id, { item: region, expire: Date.now() + CacheProvider.Settings.region.expire });
+        }
+
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.region.expire;
+
         // http request
         const response = await this.http.get(regionsUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
 
@@ -1579,17 +1612,15 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error("server side status error");
         }
 
-        if (data != null) {
+        if (data) {
           region.id = id;
           region.name = data.name;
-
-          // add to cache
-          this.cache.Region.Add(_id, region);
+          return region;
         }
-        return region;
+        return this.cache.Region.Remove(_id).item;
       } else {
         // </editor-fold>
-        return this.cache.Region.Item(_id);
+        return this.cache.Region.Item(_id).item;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -1620,11 +1651,17 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getCityById(id: number): Promise<City> {
     if (!id) return null;
     try {
-      let city: City = new City(id);
       const _id: string = id.toString();
-      //let city = null;
-      if (this.isEmpty(this.cache.City.Item(_id))) {
-        this.cache.City.Add(_id, city);
+      if (this.cache.City.HasNotValidCachedValue(_id)) {
+        const entity: Providers.CacheDataContainer<City> = this.cache.City.Item(_id);
+        const city: City = (entity) ? entity.item : new City();
+
+        if (!entity) {
+          this.cache.City.Add(_id, { item: city, expire: Date.now() + CacheProvider.Settings.city.expire });
+        }
+
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.city.expire;
         // http request
         const response = await this.http.get(citiesUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
 
@@ -1634,19 +1671,17 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error("server side status error");
         }
 
-        if (data != null) {
+        if (data) {
           city.id = id;
           city.name = data.name;
           city.idRegion = data.idRegion;
+
+          return city;
         }
-        else {
-          this.cache.City.Remove(_id);
-          city = null;
-        }
-        return city;
+        return this.cache.City.Remove(_id).item;
       } else {
         // </editor-fold>
-        return this.cache.City.Item(_id);
+        return this.cache.City.Item(_id).item;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -2056,10 +2091,17 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getQuotationById(quotationId: number): Promise<Quotation> {
     if (!quotationId) return null;
     try {
-      let quotation: Quotation = new Quotation(quotationId);
       const id: string = quotationId.toString();
-      if (this.isEmpty(this.cache.Quotation.Item(id))) {
-        this.cache.Quotation.Add(id, quotation);
+      if (this.cache.Quotation.HasNotValidCachedValue(id)) {
+        const entity: Providers.CacheDataContainer<Quotation> = this.cache.Quotation.Item(id);
+        const quotation: Quotation = (entity) ? entity.item : new Quotation();
+
+        if (!entity) {
+          this.cache.Quotation.Add(id, { item: quotation, expire: Date.now() + CacheProvider.Settings.quotation.expire });
+        }
+
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.quotation.expire;
 
         const response = await this.http
           .get(quotationsUrl + `/${quotationId}`, RequestFactory.makeAuthHeader())
@@ -2070,17 +2112,19 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error("server side status error");
         }
 
-        if (data != null) {
+        if (data) {
           quotation.id = data.id;
           quotation.idSupplier = data.idSupplier;
           quotation.dateStart = data.dateStart;
           quotation.dateEnd = data.dateEnd;
           quotation.currencyId = data.currencyId;
-          this.cache.Quotation.Add(id, quotation);
+
+          return quotation;
         }
-        return quotation;
+        return this.cache.Quotation.Remove(id).item;
+
       } else {
-        return this.cache.Quotation.Item(id);
+        return this.cache.Quotation.Item(id).item;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -2180,17 +2224,25 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
 
-      if (data != null) {
+      if (data) {
         data.forEach(val => {
-          let supplier = new Supplier();
-          supplier.id = val.id;
-          supplier.name = val.name;
-          supplier.paymentMethodId = val.paymentMethodId;
-          supplier.rating = val.rating;
-          supplier.positiveFeedbackPct = val.positiveFeedbackPct;
-          supplier.refsCount = val.refsCount;
-          if (this.isEmpty(this.cache.Suppliers.Item(val.id.toString()))) {
-            this.cache.Suppliers.Add(val.id.toString(), supplier);
+          if (this.cache.Suppliers.HasNotValidCachedValue(val.id.toString())) {
+            const entity: Providers.CacheDataContainer<Supplier> = this.cache.Suppliers.Item(val.id.toString());
+            const supplier: Supplier = (entity) ? entity.item : new Supplier();
+
+            if (!entity) {
+              this.cache.Suppliers.Add(val.id.toString(), { item: supplier, expire: Date.now() + CacheProvider.Settings.supplier.expire });
+            }
+
+            else
+              entity.expire = Date.now() + CacheProvider.Settings.supplier.expire;
+
+            supplier.id = val.id;
+            supplier.name = val.name;
+            supplier.paymentMethodId = val.paymentMethodId;
+            supplier.rating = val.rating;
+            supplier.positiveFeedbackPct = val.positiveFeedbackPct;
+            supplier.refsCount = val.refsCount;
           };
         }
         );
@@ -2203,12 +2255,18 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getSupplierById(supplierId: number): Promise<Supplier> {
     try {
-      const suppl: Supplier = new Supplier();
       const id: string = supplierId.toString();
 
-      // <editor-fold desc = "id in cache is empty"
-      if (this.isEmpty(this.cache.Suppliers.Item(id))) {
-        this.cache.Suppliers.Add(id, suppl);
+      if (this.cache.Suppliers.HasNotValidCachedValue(id)) {
+        const entity: Providers.CacheDataContainer<Supplier> = this.cache.Suppliers.Item(id);
+        const supplier: Supplier = (entity) ? entity.item : new Supplier();
+
+        if (!entity) {
+          this.cache.Suppliers.Add(id, { item: supplier, expire: Date.now() + CacheProvider.Settings.supplier.expire });
+        }
+
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.supplier.expire;
 
         const response = await this.http
           .get(suppliersUrl + `/${id}`, RequestFactory.makeAuthHeader())
@@ -2219,20 +2277,18 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error("server side status error");
         }
 
-        if (data != null) {
-          suppl.id = data.id;
-          suppl.name = data.name;
-          suppl.paymentMethodId = data.paymentMethodId;
-          suppl.rating = data.rating;
-          suppl.positiveFeedbackPct = data.positiveFeedbackPct;
-          suppl.refsCount = data.refsCount;
-          this.cache.Suppliers.Add(id, suppl);
+        if (data) {
+          supplier.id = data.id;
+          supplier.name = data.name;
+          supplier.paymentMethodId = data.paymentMethodId;
+          supplier.rating = data.rating;
+          supplier.positiveFeedbackPct = data.positiveFeedbackPct;
+          supplier.refsCount = data.refsCount;
+          return supplier;
         }
-        return suppl;
+        return this.cache.Products.Remove(id).item;
       } else {
-        // </editor-fold>
-
-        return this.cache.Suppliers.Item(id);
+        return this.cache.Suppliers.Item(id).item;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -2283,7 +2339,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getSuppliers(cacheForce: boolean): Promise<Supplier[]> {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
-      if (this.cache.Suppliers.Count() === 0 || cacheForce === true) {
+      if (this.cache.Suppliers.HasNotValidCachedRange() || cacheForce === true) {
         const response = await this.http.get(suppliersUrl, RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
@@ -2306,7 +2362,7 @@ export class AppDataRepository extends AbstractDataRepository {
             suppliers.push(supplierItem);
 
             // add supplier to cashe
-            this.cache.Suppliers.Add(supplierItem.id.toString(), supplierItem);
+            this.cache.Suppliers.Add(supplierItem.id.toString(), { item: supplierItem, expire: Date.now() + CacheProvider.Settings.supplier.expire});
           });
         }
         return suppliers;
@@ -2382,11 +2438,19 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getManufacturerById(manufacturerId: number): Promise<Manufacturer> {
     try {
-      const manufacturer: Manufacturer = new Manufacturer();
       const id: string = manufacturerId.toString();
       // <editor-fold desc = "id in cache is empty"
-      if (this.isEmpty(this.cache.Manufacturer.Item(id))) {
-        //this.cache.Manufacturer.Add(id, manufacturer);
+      if (this.cache.Manufacturer.HasNotValidCachedValue(id)) {
+        const entity: Providers.CacheDataContainer<Manufacturer> = this.cache.Manufacturer.Item(id);
+        const manufacturer: Manufacturer = (entity) ? entity.item : new Manufacturer();
+
+        if (!entity) {
+          this.cache.Manufacturer.Add(id, { item: manufacturer, expire: Date.now() + CacheProvider.Settings.manufacturer.expire });
+        }
+
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.manufacturer.expire;
+
         const response = await this.http
           .get(manufacturersUrl + `/${id}`, RequestFactory.makeAuthHeader())
           .toPromise();
@@ -2395,16 +2459,16 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error("server side status error");
         }
 
-        if (data != null) {
+        if (data) {
           manufacturer.id = data.id;
           manufacturer.name = data.name;
-          this.cache.Manufacturer.Add(id, manufacturer);
+          return manufacturer;
         }
-        return manufacturer;
+        return this.cache.Manufacturer.Remove(id).item;
       } else {
         // </editor-fold>
 
-        return this.cache.Manufacturer.Item(id);
+        return this.cache.Manufacturer.Item(id).item;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -2414,7 +2478,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getManufacturers(cacheForce: boolean): Promise<Manufacturer[]> {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
-      if (this.cache.Manufacturer.Count() === 0 || cacheForce === true) {
+      if (this.cache.Manufacturer.HasNotValidCachedRange() || cacheForce === true) {
         const response = await this.http.get(manufacturersUrl, RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
@@ -2435,7 +2499,7 @@ export class AppDataRepository extends AbstractDataRepository {
             // add manufacturer to cashe
             this.cache.Manufacturer.Add(
               manufacturerItem.id.toString(),
-              manufacturerItem
+              { item: manufacturerItem, expire: Date.now() + CacheProvider.Settings.manufacturer.expire }
             );
           });
         }
