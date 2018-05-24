@@ -788,6 +788,7 @@ export class AppDataRepository extends AbstractDataRepository {
       p.idAction = val.idAction;
       p.actionList = val.actionList;
       p.actionTitle = val.actionTitle;
+      SCN.value = parseInt(response.headers.get('X-SCN'));
       return p;
     } catch (err) {
       return await this.handleError(err);
@@ -838,6 +839,7 @@ export class AppDataRepository extends AbstractDataRepository {
       const response = await this.http
         .delete(cartProductsUrl + `/${prod.id}`,RequestFactory.makeAuthHeader())
         .toPromise();
+      SCN.value = parseInt(response.headers.get('X-SCN'));
       if (response.status !== 204) {
         throw new Error("server side status error");
       }

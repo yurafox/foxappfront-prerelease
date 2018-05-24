@@ -10,7 +10,7 @@ import {AlertController, App} from 'ionic-angular';
 import {PersonInfo} from '../model/person';
 import {CreditCalc} from '../model/credit-calc';
 import {AbstractLocalizationRepository} from "./repository/abstract/abstract-localization-repository";
-import {IDictionary} from "../core/app-core";
+import {IDictionary, SCN} from "../core/app-core";
 import {CurrencyStore} from "./repository/specific/currency-store.service";
 import {ComplectItem} from '../../components/complect/complect';
 import {ItemDetailPage} from '../../pages/item-detail/item-detail';
@@ -257,8 +257,12 @@ export class CartService {
 
 
   public async saveOrder() {
+    const before_scn = SCN.value;
     let order = await this.repo.saveClientDraftOrder(this.order);
-    if (order) // check if order has not been submitted from another device
+    const after_scn = SCN.value;
+
+
+    if ((order) && (before_scn !== after_scn)) // check if order has not been submitted from another device
       this.order = order
     else {
       this.gotoCartPageIfDataChanged();
@@ -568,8 +572,10 @@ public get promoCodeDiscount(): number {
     }
 
     if (this.userService.isAuth) {
+      const before_scn = SCN.value;
       item = await this.repo.saveCartProduct(item);
-        if (!item) {
+      const after_scn = SCN.value;
+        if ((!item) || (before_scn == after_scn)) {
           this.gotoCartPageIfDataChanged();
         }
       //this.initCart();
@@ -578,8 +584,15 @@ public get promoCodeDiscount(): number {
 
   async removeItem(itemIndex: number) {
     const cmpl: string = this.orderProducts[itemIndex].complect;
+
     if (this.userService.isAuth) {
+      const before_scn = SCN.value;
       await this.repo.deleteCartProduct(this.orderProducts[itemIndex]);
+      const after_scn = SCN.value;
+      if ((before_scn == after_scn)) {
+        this.gotoCartPageIfDataChanged();
+      }
+
     }
     this.orderProducts.splice(itemIndex, 1);
     if (cmpl) {
