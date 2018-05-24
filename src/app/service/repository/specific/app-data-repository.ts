@@ -52,7 +52,7 @@ import {
 } from '../../../model/index';
 
 import { AbstractDataRepository } from '../../index';
-import {IDictionary, Providers } from '../../../core/app-core';
+import {IDictionary, Providers, SCN } from '../../../core/app-core';
 import {ConnectivityService} from '../../connectivity-service';
 import IKeyedCollection = Providers.IKeyedCollection;
 import {OrdersFilter} from '../../../../pages/your-orders/your-orders';
@@ -558,6 +558,7 @@ export class AppDataRepository extends AbstractDataRepository {
           data.idApp,
           data.scn
         );
+        SCN.value = data.scn;
         return cClientOrder;
       }
     }
@@ -603,6 +604,7 @@ export class AppDataRepository extends AbstractDataRepository {
           data.idApp,
           data.scn
         );
+        SCN.value = data.scn;
         return cClientOrder;
       }
       ;
@@ -795,7 +797,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async saveCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
     try {
       const response = await this.http
-        .put(cartProductsUrl, prod.dto,RequestFactory.makeAuthHeader())
+        .put(cartProductsUrl, prod.dto, RequestFactory.makeAuthHeader())
         .toPromise();
       const val = response.json();
 
@@ -822,6 +824,8 @@ export class AppDataRepository extends AbstractDataRepository {
       p.idAction = val.idAction;
       p.actionList = val.actionList;
       p.actionTitle = val.actionTitle;
+
+      SCN.value = parseInt(response.headers.get('X-SCN'));
 
       return p;
     } catch (err) {

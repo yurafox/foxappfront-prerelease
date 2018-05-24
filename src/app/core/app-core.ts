@@ -396,6 +396,18 @@ function lazyParamToValue(pointer: any, params: string[]): any[] {
 }
 // </editor-fold>
 
+export class SCN {
+  private static _scn: number = 0;
+
+  public static get value(): number {
+    return this._scn;
+  }
+
+  public static set value(_value: number) {
+    this._scn = _value;
+  }
+}
+
 // #region requestFactory
 export class RequestFactory {
   /** only search param
@@ -421,6 +433,7 @@ export class RequestFactory {
     h.set('X-Currency',localStorage.getItem('currency') || `${AppConstants.CURRENCY_DEFAULT_VALUE}`);
     h.set('X-Lang',localStorage.getItem('lang') || `${AppConstants.LOCALE_DEFAULT_VALUE}`);
     h.set('X-APP',`${AppConstants.ID_APP}`);
+    h.set('X-SCN', SCN.value.toString());
 
     return {headers:h}
    }
@@ -473,6 +486,7 @@ export namespace System {
   export class PushContainer {
     public static pushStore:IDictionary<any> = {};
   }
+
 
 
 }
