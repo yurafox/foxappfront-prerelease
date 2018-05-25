@@ -21,6 +21,15 @@ page-map {
     position: relative;
     bottom: 10px;
   }
+  .f-map-buttons-div {
+    position: fixed;
+    bottom: 9px;
+    left: 32%;
+    //right: 33%;
+    z-index: 1;
+    width: 140px;
+    text-align: center;
+  }
   .button-md {
     margin: 0.2rem 0;
   }
@@ -37,7 +46,7 @@ page-map {
     height: 0;
   }
   .f-map-footer {
-    width: 100vw;
+    width: 140px;
     text-align: center;
   }
 
@@ -63,7 +72,7 @@ page-map {
   }
 
   page-map #map_canvas {
-    overflow: auto;
+    overflow: hidden;
     opacity: 0;
     transition: opacity 150ms ease-in
   }

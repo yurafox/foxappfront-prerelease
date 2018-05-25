@@ -29,16 +29,9 @@
         <ion-list-header style="margin-bottom:0;">
           <span loc="Информация" name="InfoMenu">{{locale['InfoMenu']?locale['InfoMenu']:'Информация'}}</span>
         </ion-list-header>
-        <button ion-item menuClose *ngFor="let p of infoPages" (click)="openPage(p)">
+        <button ion-item menuClose *ngFor="let p of infoPages" (click)="openPage(p)" [hidden]="!userService.isAuth && p.name === 'Support'">
           <ion-icon item-start [name]="p.icon"></ion-icon>
-          <span [loc]="p.title" [name]="p.name">{{locale[p.name]?locale[p.name]:p.title}}</span>
-        </button>
-      </ion-list>
-
-      <ion-list [hidden]="!userService.isAuth">
-        <button ion-item menuClose (click)="openPage(supportPage)">
-          <ion-icon item-start [name]="supportPage.icon"></ion-icon>
-          <span [loc]="supportPage.title" [name]="supportPage.name">{{locale[supportPage.name]?locale[supportPage.name]:supportPage.title}}</span>
+          <span [loc]="p.title" [name]="p.name">{{locale[p.name] ? locale[p.name] : p.title}}</span>
         </button>
       </ion-list>
 

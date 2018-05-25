@@ -1,13 +1,13 @@
-import { ActionOffer, QuotationProduct, Product } from './../../app/model/index';
+import {QuotationProduct, Product} from './../../app/model/index';
 import {System} from '../../app/core/app-core';
-import { ChangeDetectorRef,Component,OnInit,DoCheck,OnDestroy,ViewChild} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { AbstractDataRepository } from '../../app/service/index';
-import { Action } from './../../app/model/index';
-import { Observable } from 'rxjs';
+import {ChangeDetectorRef, Component, OnInit, DoCheck, OnDestroy, ViewChild, HostListener, NgZone} from '@angular/core';
+import {Content, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AbstractDataRepository} from '../../app/service/index';
+import {Action} from './../../app/model/index';
+import {Observable} from 'rxjs';
 import 'rxjs/add/operator/takeWhile';
-import { IntervalObservable } from "rxjs/observable/IntervalObservable";
-import { ComponentBase } from '../../components/component-extension/component-base';
+import {IntervalObservable} from "rxjs/observable/IntervalObservable";
+import {ComponentBase} from '../../components/component-extension/component-base';
 import {SearchService} from '../../app/service/search-service';
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {Subscription} from "rxjs/Subscription";
@@ -20,8 +20,10 @@ import {Subscription} from "rxjs/Subscription";
 export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoCheck {
   @ViewChild('cont') cont;
   @ViewChild('header') header;
+  @ViewChild(Content) mainContent: Content;
   scrollHeight: number;
   scrOrientationSub: Subscription;
+  contentSub: Subscription;
 
   public actionId:number;
   public content:string='';
@@ -34,18 +36,25 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
   private me:any;
   private divsHeight:number;
 
+  public position;
+  public top;
+  public offsetTop;
+  public scrolledEnough: boolean;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private _repo:AbstractDataRepository,private srch: SearchService,
-              private screenOrientation: ScreenOrientation,private changeDet: ChangeDetectorRef) {
+              private screenOrientation: ScreenOrientation,private changeDet: ChangeDetectorRef,
+              private zone: NgZone) {
     super();
     this.actionId = this.navParams.data.id;
     this.action = this.navParams.data.action;
     this.alive = true;
     this.expire = {};
-    this.me=this;
-    this.divsHeight=0;
+    this.me = this;
+    this.divsHeight = 0;
+    this.scrolledEnough = false;
   }
-  
+
   ngDoCheck() {}
 
   async ngOnInit() {
@@ -76,10 +85,15 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
     this.updateScrollHeight();
   }
 
+  ngAfterViewInit() {
+    //this.handleStickyStyle();
+  }
+
   ngOnDestroy():void {
     super.ngOnDestroy();
     this.alive= false;
     if (this.scrOrientationSub) this.scrOrientationSub.unsubscribe();
+    if (this.contentSub) this.contentSub.unsubscribe();
   }
 
   public get id ():number {
@@ -141,6 +155,25 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
   public updateScrollHeight() {
     const hdrH = (this.me.header) ? this.me.header.nativeElement.scrollHeight : 0;
     this.scrollHeight = (window.screen.height) - hdrH;
+  }
+
+  private handleStickyStyle() {
+    let filterElem = document.getElementsByTagName('filter');
+    if (filterElem && filterElem.item(0)) {
+      let filterDivOffset = filterElem.item(0).parentElement.offsetTop;
+      /*this.mainContent.ionScroll.subscribe((data) => {
+        this.zone.run(() => {
+          if (data.scrollTop+45 >= filterDivOffset) {
+            this.top = '45px';
+            this.position = 'fixed';
+          }
+          else {
+            this.top = '';
+            this.position = 'static';
+          }
+        });
+      });*/
+    }
   }
 }
 

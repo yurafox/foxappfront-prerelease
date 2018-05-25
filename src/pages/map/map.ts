@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Platform, IonicPage, NavController, NavParams, AlertController, ToastController} from 'ionic-angular';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Platform, IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { AbstractDataRepository } from '../../app/service/repository/abstract/abstract-data-repository';
 import {
   GoogleMaps,
@@ -19,8 +19,8 @@ import { ComponentBase } from "../../components/component-extension/component-ba
 import { Geolocation } from '@ionic-native/geolocation';
 import { FavoriteStoresPage } from "../favorite-stores/favorite-stores";
 import { StoreReview } from "../../app/model/store-review";
-import {IDictionary} from "../../app/core/app-core";
-import {Subscription} from "rxjs/Subscription";
+import { IDictionary } from "../../app/core/app-core";
+import { Subscription } from "rxjs/Subscription";
 
 declare var google: any;
 
@@ -100,9 +100,9 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
         this.userPos.lat = res.coords.latitude;
         this.userPos.lng = res.coords.longitude;
         this.userPosIsKnown = true;
-      }).catch(() => {
-        this.userPosIsKnown = false;
-      });
+      })
+    }).catch(() => {
+      this.userPosIsKnown = false;
     });
 
     this.openHoursStr = this.locale['OpenHours'] ? this.locale['OpenHours'] : 'Время работы';
@@ -128,6 +128,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
       this.cities = await this.repo.getCitiesWithStores();
       let reviews = await this.repo.getStoreReviews();
       this.storeReviews = reviews.reviews;
+      this.clientId = reviews.idClient;
 
       await this.loadMap();
     } catch(err) {
@@ -156,8 +157,8 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     if (this.userPosIsKnown === true) {
       this.options = {
         controls: {
-          compass: false,
-          myLocationButton: true,
+          compass: true,
+          myLocationButton: false,
           mapToolbar: true,
           zoom: false,
         },
@@ -175,7 +176,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     } else {
       this.options = {
         controls: {
-          compass: false,
+          compass: true,
           myLocationButton: false,
           mapToolbar: true,
           zoom: false,
@@ -228,16 +229,14 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
               disableAutoPan: false
             };
 
-            //let markerPosition = markerOptions.position;
-
             // <editor-fold desc="Marker events"
 
             // Native
             this.map.addMarker(markerOptions).then((marker: Marker) => {
               let reviews: StoreReview[] = [];
-              if (this.storeReviews[this.markersArr[cityID][i].id.toString()]) {
-                reviews = this.storeReviews[this.markersArr[cityID][i].id.toString()];
-                cantShow = this.hasClientReview(this.storeReviews[this.markersArr[cityID][i].id.toString()]);
+                if (this.storeReviews[markerData.id.toString()]) {
+                  reviews = this.storeReviews[markerData.id.toString()];
+                  cantShow = this.hasClientReview(this.storeReviews[markerData.id.toString()]);
               }
 
               let shopOpensTime: string = markerData.openTime;
@@ -264,16 +263,17 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
                 `<p style="padding: 0; margin: 0;">${markerData.address}</p>`,
                 `<p style="padding: 0; margin: 0;">${workingHours}</p>`,
                 `<p style="color: ${(isWorking === this.open) ? 'green' : 'red'}; padding: 0; margin: 0;">${(isWorking) ? isWorking : '' }</p>`,
-                `<span id="revs" #revs style="color: darkblue; padding: 0; margin: 0;">${(reviews && (reviews.length > 0)) ? (this.reviewsStr + '<span style=""> (' + reviews.length + ')</span>') : (cantShow === false) ? this.writeReviewStr : ''}</span>`,
+                `<span id="revs" #revs style="color: darkblue; padding: 0; margin: 0;">${(reviews && (reviews.length > 0)) ? (this.reviewsStr + '<span style=""> (' + reviews.length + ')</span>') : (cantShow && this.isAuthorized) ? this.writeReviewStr : ''}</span>`,
                 `</div>`].join('');
               let revs = html.getElementsByTagName('span')[0];
-              if (revs && !cantShow) {
+                if (revs && revs!==null) {
                 revs.addEventListener('click', () => {
                   if (reviews && (reviews.length > 0)) {
-                    this.onShowReviewsClick(reviews, markerData, cantShow);
+                      this.onShowReviewsClick(reviews, markerData);
                   } else {
                     this.onWriteReviewClick(markerData);
                   }
+                    if (htmlInfoWnd) htmlInfoWnd.close();
                 });
               }
               htmlInfoWnd.setContent(html);
@@ -350,8 +350,10 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     if (this.markersArr[this.selectedCity.id.toString()]) {
       this.makeShopList();
       try {
-        this.map.setCameraTarget(this.markersArr[this.selectedCity.id.toString()][0].position);
-        this.map.setCameraZoom(10);
+        this.map.moveCamera({
+          target: this.markersArr[this.selectedCity.id.toString()][0].position,
+          zoom: 10
+        }).catch();
       } catch (error) {
         console.log('Markers change error: ' + error);
       }
@@ -363,8 +365,10 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
    */
   handleListSelect() {
     if (this.selectedMarker.value !== null) {
-      this.map.setCameraTarget(this.selectedMarker.value);
-      this.map.setCameraZoom(17);
+      this.map.moveCamera({
+        target: this.selectedMarker.value,
+        zoom: 17
+      }).catch();
     } else {
       return;
     }
@@ -447,8 +451,8 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     }
   }
 
-  onShowReviewsClick(reviews: StoreReview[], store: Store, cantShow: boolean): void {
-    this.nav.push('ItemReviewsPage', { reviews: reviews, store: store, cantShow: cantShow }).catch(err => {
+  onShowReviewsClick(reviews: StoreReview[], store: Store): void {
+    this.nav.push('ItemReviewsPage', { reviews: reviews, store: store, page: this }).catch(err => {
       console.log(`Error navigating to ItemReviewPage: ${err}`);
     });
   }
@@ -456,11 +460,11 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
   onWriteReviewClick(store: Store): void {
     if (store) {
       if (!this.userService.isAuth) {
-        this.nav.push('LoginPage', {continuePage: 'ItemReviewWritePage', params: {store}}).catch((err) => {
+        this.nav.push('LoginPage', {continuePage: 'ItemReviewWritePage', params: {store:store, page:this}}).catch((err) => {
           console.log(`Couldn't navigate to LoginPage: ${err}`);
         });
       } else {
-        this.nav.push('ItemReviewWritePage', store).catch(err => {
+        this.nav.push('ItemReviewWritePage', {store:store, page:this}).catch(err => {
           console.log(`Error navigating to ItemReviewWritePage: ${err}`);
         });
       }
@@ -498,7 +502,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
   hasClientReview(reviews): boolean {
     let present = false;
     for (let i = 0; i < reviews.length; i++) {
-      if (reviews[i].idClient === this.clientId) present = true;
+      if (reviews[i] && reviews[i].idClient === this.clientId) present = true;
     }
     return present;
   }

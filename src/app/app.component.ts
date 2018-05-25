@@ -9,7 +9,6 @@ import {DeviceData} from "./model/index";
 import {System} from "./core/app-core";
 import {CartService} from "./service/cart-service";
 import {ConnectivityService} from "./service/connectivity-service";
-import {BackgroundMode} from '@ionic-native/background-mode';
 
 export interface PageInterface {
   title: string;
@@ -40,8 +39,8 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     {title: 'Магазины', name: 'Map', component: 'MapPage', index: 0, icon: 'ios-map-outline'},
     {title: 'Акции', name: 'Actions', component: 'ActionsPage', index: 1, icon: 'ios-briefcase-outline'},
     {title: 'Контакты', name: 'Contacts', component: 'ContactsPage', index: 2, icon: 'ios-information-circle-outline'},
+    {title: 'Поддержка', name: 'Support', component: 'SupportPage', index: 3, icon: 'ios-text-outline'},
   ];
-  supportPage: PageInterface = {title: 'Поддержка', name: 'Support', component: 'SupportPage', index: 0, icon: 'ios-text-outline'};
 
   private noveltyPushEventDescriptor: any;
   private actionPushEventDescriptor: any;
@@ -49,7 +48,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   constructor(private platform: Platform, private alertCtrl: AlertController, private splashScreen: SplashScreen,
               public menuCtrl: MenuController, private repo: AbstractDataRepository,
               private appAvailability: AppAvailability, private device: Device, private cartService: CartService,
-              private connService: ConnectivityService, private backgroundMode: BackgroundMode) {
+              private connService: ConnectivityService) {
     super();
     this.initLocalization();
   }
@@ -62,45 +61,47 @@ export class FoxApp extends ComponentBase implements OnDestroy {
       this.userService.userMutex = false;
     }
 
-    /**
-     * Subscribing to the push events and putting our dynamic components to special pushStore dictionary in PushContainer
-     */
-    this.noveltyPushEventDescriptor = this.evServ.events['noveltyPushEvent'].subscribe(data => {
-      System.PushContainer.pushStore[`novelty${data.innerId}`] = data;
-    });
-    this.actionPushEventDescriptor = this.evServ.events['actionPushEvent'].subscribe(data => {
-      System.PushContainer.pushStore[`action${data.innerId}`] = data;
-    });
-
-    if (this.device.cordova) {
-      if (this.userService.isAuth && this.userService.token) {
-        // Getting FCM device token and send device data
-        FCMPlugin.getToken((token) => {
-          if (token) {
-            // Collecting and send data about device including device FCM token
-            this.collectAndSendDeviceData(token).catch((err) => console.log(`Sending device's data err: ${err}`));
-          }
-        });
-      }
-      // Subscribing this device to the main topic to send PUSH-notifications to this topic
-      FCMPlugin.subscribeToTopic('main');
-      // Handling incoming PUSH-notifications
-      FCMPlugin.onNotification((data) => {
-        if (data.wasTapped) {
-          //Notification was received on device tray and tapped by the user.
-          this.pushNotificationHandling(data);
-        } else {
-          //Notification was received in foreground. Maybe the user needs to be notified.
-          this.pushNotificationHandling(data);
-        }
+    this.platform.ready().then((ready) => {
+      /**
+       * Subscribing to the push events and putting our dynamic components to special pushStore dictionary in PushContainer
+       */
+      this.noveltyPushEventDescriptor = this.evServ.events['noveltyPushEvent'].subscribe(data => {
+        System.PushContainer.pushStore[`novelty${data.innerId}`] = data;
+      });
+      this.actionPushEventDescriptor = this.evServ.events['actionPushEvent'].subscribe(data => {
+        System.PushContainer.pushStore[`action${data.innerId}`] = data;
       });
 
-      let readyness = await this.platform.ready();
-      if (readyness && readyness!=='') {
-        this.splashScreen.hide();
-        //this.backgroundMode.enable();
+      if (this.device.cordova) {
+        if (this.userService.isAuth && this.userService.token) {
+          // Getting FCM device token and send device data
+          FCMPlugin.getToken((token) => {
+            if (token) {
+              // Collecting and send data about device including device FCM token
+              this.collectAndSendDeviceData(token).catch((err) => console.log(`Sending device's data err: ${err}`));
+            }
+          });
+        }
+        // Subscribing this device to the main topic to send PUSH-notifications to this topic
+        FCMPlugin.subscribeToTopic('main');
+        // Handling incoming PUSH-notifications
+        FCMPlugin.onNotification((data) => {
+          if (data.wasTapped) {
+            //Notification was received on device tray and tapped by the user.
+            this.pushNotificationHandling(data).catch();
+          } else {
+            //Notification was received in foreground. Maybe the user needs to be notified.
+            this.pushNotificationHandling(data).catch();
+          }
+        });
+
+        //let readyness = await this.platform.ready();
+        if (ready && ready !== '') {
+          this.splashScreen.hide();
+          //this.backgroundMode.enable();
+        }
       }
-    }
+    });
   }
 
   ngOnDestroy() {

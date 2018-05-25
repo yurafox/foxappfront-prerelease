@@ -46,17 +46,25 @@ page-action {
   }
 
   .action-product-filter-div {
+    -webkit-backface-visibility: hidden;
     overflow: hidden;
-    position:sticky !important;
-    position:-webkit-sticky !important;
-    top:-3px;
+    position:sticky;
+    position:-webkit-sticky;
+    top:0.1px;
     z-index: 1;
+    background-color: white;
     progress-bar {
-      position: sticky !important;
-      position:-webkit-sticky !important;
+      position: sticky;
+      position:-webkit-sticky;
+      top: 3px;
+      height: 5px;
       .progress-bar span {
-        top: -6px !important;
+        top: -8px;
       }
+    }
+    filter {
+      position: sticky;
+      position:-webkit-sticky;
     }
   }
 }

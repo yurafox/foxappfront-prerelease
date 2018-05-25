@@ -92,7 +92,9 @@ export class ItemReviewWritePage extends ComponentBase {
     toast.present().then(() => {
       this.navCtrl.pop().then(() => {
         if (this.navParams.data.page) {
-          this.navParams.data.page.cantShow = true;
+          if (this.navParams.data.page.cantShow) {
+            this.navParams.data.page.cantShow = true;
+          }
         }
       })
     });

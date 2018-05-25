@@ -1,23 +1,35 @@
 <ion-header>
-  <main-toolbar [showCartIcon]="false"></main-toolbar>
+  <main-toolbar [showCartIcon]="false" [showSearchButton]="false"></main-toolbar>
 </ion-header>
 
 
 <ion-content padding>
-  <ion-grid text-center>
-    <ion-row>
-      <ion-col><span style="font-size: 60px;">:(</span></ion-col>
-    </ion-row><br>
-    <ion-row>
-      <ion-col>{{locale['CouldntReach'] ? locale['CouldntReach'] : 'Не получилось связаться с сервером'}}</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>{{locale['Check'] ? locale['Check'] : 'Пожалуйста, проверьте соединение с сетью'}}</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <button class="f-btn-action" ion-button block (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']?locale['ToHomePage']:'На главную'}}</span></button>
-      </ion-col>
-    </ion-row>
+  <ion-grid text-left>
+    <ion-col>
+      <ion-row text-center>
+        <ion-col><img src="./assets/img/corgi.jpg"></ion-col>
+      </ion-row>
+      <br>
+      <ion-row>
+        <ion-col class="uppercase f-noconn-text-large">
+          {{locale['CouldntReach'] ? locale['CouldntReach'] : 'Нет связи'}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="f-noconn-text-smaller">
+          {{locale['Check'] ? locale['Check'] : 'Пожалуйста, проверьте соединение с сетью.'}}
+        </ion-col>
+      </ion-row>
+      <br><br>
+      <ion-row>
+        <ion-col>
+          <button class="f-btn-secondary" ion-button block (click)="toHomePage()">
+            <span loc="На главную" name="ToHomePage" class="uppercase">
+              {{locale['ToHomePage']?locale['ToHomePage']:'На главную'}}
+            </span>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-col>
   </ion-grid>
 </ion-content>

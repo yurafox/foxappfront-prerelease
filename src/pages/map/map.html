@@ -25,8 +25,8 @@
   <!-- Map -->
   <div style="height: calc(100% - 45px); top: 45px;" #mapCanvas id="map_canvas"></div>
 
-  <div *ngIf="selectedMarker && selectedMarker.value">
-    <ion-buttons align="center" class="f-map-buttons f-map-footer">
+  <div *ngIf="selectedMarker && selectedMarker.value" class="f-map-buttons-div">
+    <ion-buttons class="f-map-buttons f-map-footer">
       <span *ngIf="isAuthorized === true">
         <button ion-button icon-left (click)="addToFavorite()"
                 [disabled]="!selectedMarker.value.lat || !selectedMarker.value.lng"
