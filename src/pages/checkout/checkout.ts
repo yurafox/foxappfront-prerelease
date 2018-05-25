@@ -74,7 +74,7 @@ export class CheckoutPage extends ComponentBase {
                 text: btnText,
                 handler: () => {
                   this.navCtrl.setRoot('HomePage');
-                  this.cart.emptyCart();
+                  //this.cart.emptyCart();
                   this.cart.initCart();
                 }
               }
@@ -95,7 +95,7 @@ export class CheckoutPage extends ComponentBase {
               {
                 text: btnText,
                 handler: () => {
-                  this.cart.emptyCart();
+                  //this.cart.emptyCart();
                   this.cart.initCart().then(() => {
                       this.navCtrl.setRoot('CartPage');
                     }

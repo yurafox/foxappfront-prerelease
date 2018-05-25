@@ -129,10 +129,17 @@ export class CartService {
         this.order.idCreditProduct = value ? value.creditProduct.sId : null ;
         this.order.creditPeriod = value ? value.clMonths : null;
         this.order.creditMonthlyPmt = value ? value.clMonthAmt : null;
-        this.saveOrder().then(() => {
+
+        if (this._inCartInit) {
           this._httpCallInProgress = false;
-          }
-        );
+        }
+        else {
+          this.saveOrder().then(() => {
+              this._httpCallInProgress = false;
+            }
+          )
+        }
+
       }
     }
     finally {
@@ -202,19 +209,6 @@ export class CartService {
     }
   }
 
-  public emptyCart(): void {
-    this.lastItemCreditCalc = null;
-    this.order = null;
-    this.orderProducts = [];
-    this.loan = null;
-    this.bonus  = null;
-    this._payByPromoBonus = false;
-    this._promoCode = null;
-    this.promocodeInvalid = false;
-    this.availBonus = null;
-    this.availPromoBonus = null;
-    this.cartValidationNeeded = false;
-  }
 
   public get promoCode(): string {
     return this._promoCode;
@@ -255,7 +249,6 @@ export class CartService {
     return _res;
   }
 
-
   public async saveOrder() {
     const before_scn = SCN.value;
     let order = await this.repo.saveClientDraftOrder(this.order);
@@ -270,7 +263,7 @@ export class CartService {
     };
   }
 
-public get promoCodeDiscount(): number {
+  public get promoCodeDiscount(): number {
     let _res = 0;
     this.orderProducts.forEach(i => {
       _res += i.payPromoCodeDiscount*i.qty;
@@ -381,14 +374,35 @@ public get promoCodeDiscount(): number {
     return ar;
   }
 
-    async initCart() {
+/*
+  public emptyCart(): void {
+  }
+*/
+
+  async initCart() {
     if (this._inCartInit)
       return;
     try {
       this._inCartInit = true;
+
+      // emptyCart code
+      this.lastItemCreditCalc = null;
+      //this.order = null;
+      //this.orderProducts = [];
+      this.loan = null;
+      this.bonus  = null;
+      this._payByPromoBonus = false;
+      this._promoCode = null;
+      this.promocodeInvalid = false;
+      this.availBonus = null;
+      this.availPromoBonus = null;
+      this.cartValidationNeeded = false;
+      // end of emptyCart code
+
       this.min_loan_amt = parseInt(await this.repo.getAppParam('MIN_LOAN_AMT'));
       this.max_loan_amt = parseInt(await this.repo.getAppParam('MAX_LOAN_AMT'));
-      //console.log('CartInit call. Is auth: '+ this.userService.isAuth);
+
+
       if (this.userService.isAuth)
       {
         this.order = await this.repo.getClientDraftOrder();
@@ -437,7 +451,9 @@ public get promoCodeDiscount(): number {
   }
 
   async addComplect(item: ComplectItem, qty: number, page: any) {
-     const vrnt = item.variants[item.selIndex];
+
+
+    const vrnt = item.variants[item.selIndex];
 
     let firstItem = new ClientOrderProducts();
     firstItem.idQuotationProduct = vrnt.mainProductQP;
@@ -465,10 +481,26 @@ public get promoCodeDiscount(): number {
     secondItem.actionTitle = vrnt.title;
 
     if (this.userService.isAuth) {
+
+      const before_scn = SCN.value;
       firstItem = await this.repo.insertCartProduct(firstItem);
-      //this.orderProducts.push(firstItem);
+      const after_scn = SCN.value;
+
+      if (before_scn === after_scn) {
+        this.gotoCartPageIfDataChanged();
+        return;
+      };
+
+
+      const before_scn1 = SCN.value;
       secondItem = await this.repo.insertCartProduct(secondItem);
-      //this.orderProducts.push(secondItem);
+      const after_scn1 = SCN.value;
+
+      if (before_scn1 === after_scn1) {
+        this.gotoCartPageIfDataChanged();
+        return;
+      };
+
       this.showAddedItemToast(page);
       this.orderProducts = [];
       await this.initCart();
@@ -505,7 +537,9 @@ public get promoCodeDiscount(): number {
       {
         foundQuot.qty += qty;
         foundQuot.price = price;
+
         await this.updateItem(foundQuot);
+
       }
       else
       {
@@ -516,7 +550,16 @@ public get promoCodeDiscount(): number {
         orderItem.idStorePlace = (storePlace ? storePlace.id : null);
 
         if (this.userService.isAuth) {
+
+          const before_scn = SCN.value;
           orderItem = await this.repo.insertCartProduct(orderItem);
+          const after_scn = SCN.value;
+
+          if (before_scn === after_scn) {
+            this.gotoCartPageIfDataChanged();
+            return;
+          }
+
         }
         this.orderProducts.push(orderItem);
       }
@@ -546,10 +589,14 @@ public get promoCodeDiscount(): number {
       buttons: [
         {
           text: this.localization['BtnText'] ? this.localization['BtnText'] : 'Перейти в корзину',
+          role: 'cancel',
           handler: () => {
-            this.emptyCart();
+            //this.emptyCart();
             this.initCart().then(() => {
-                this.app.getActiveNav().setRoot('CartPage');
+                this.app.getActiveNav().setRoot('CartPage').then(() => {
+                    return true;
+                  }
+                );
               }
             );
           }
@@ -575,8 +622,9 @@ public get promoCodeDiscount(): number {
       const before_scn = SCN.value;
       item = await this.repo.saveCartProduct(item);
       const after_scn = SCN.value;
-        if ((!item) || (before_scn == after_scn)) {
+        if ((!item) || (before_scn === after_scn)) {
           this.gotoCartPageIfDataChanged();
+          return;
         }
       //this.initCart();
     }
@@ -589,8 +637,9 @@ public get promoCodeDiscount(): number {
       const before_scn = SCN.value;
       await this.repo.deleteCartProduct(this.orderProducts[itemIndex]);
       const after_scn = SCN.value;
-      if ((before_scn == after_scn)) {
+      if ((before_scn === after_scn)) {
         this.gotoCartPageIfDataChanged();
+        return;
       }
 
     }

@@ -43,7 +43,7 @@ export class PaymentPage extends ComponentBase implements OnInit {
       this.formInput = null;
       let res = await this.repo.postOrder(this.cart.order);
       if (res.isSuccess) {
-        this.cart.emptyCart();
+        //this.cart.emptyCart();
         this.cart.initCart();
       }
       else {
@@ -57,7 +57,7 @@ export class PaymentPage extends ComponentBase implements OnInit {
             {
               text: btnText,
               handler: () => {
-                this.cart.emptyCart();
+                //this.cart.emptyCart();
                 this.cart.initCart().then(() => {
                   this.navCtrl.setRoot('CartPage');
                 }

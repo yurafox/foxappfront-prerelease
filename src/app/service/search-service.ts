@@ -3,6 +3,7 @@ import {Product} from '../model/product';
 import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
 import { Client } from 'elasticsearch';
 import {PropFilterCondition} from '../../components/filter/filter';
+import {AppConstants} from '../app-constants';
 
 export enum SortOrderEnum {
   Relevance = 1,
@@ -94,8 +95,8 @@ export class SearchService {
 
   private async connect() {
     this.client = new Client({
-      host: 'http://localhost:9200/' //(await this.repo.getAppParam('ELASTIC_ENDPOINT')).split(" ")
-    });
+      host: AppConstants.ELASTIC_PROD_MODE ? (await this.repo.getAppParam('ELASTIC_ENDPOINT')).split(" ") : AppConstants.DEV_ELASTIC_ENDPOINT
+    })
   }
 
   resetSearch() {
