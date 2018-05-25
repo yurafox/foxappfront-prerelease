@@ -145,8 +145,6 @@ export class SearchService {
   }
 
   async getProductsData() {
-    if (this.inSearch)
-      return;
     try {
       this.inSearch = true;
       let response = await this.getProducts(this.lastItemIndex);
@@ -399,7 +397,7 @@ export class SearchService {
   async searchProducts(srchString: string, hostPage: any) {
     this.hostPage = hostPage;
     await this.searchByText(srchString);
-
+    
     if (this.products.length > 0) //сохраняем поисковые запросы, которые вернули данные
     {
       const i = this.searchItems.indexOf(srchString);

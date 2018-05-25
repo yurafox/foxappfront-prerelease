@@ -187,12 +187,26 @@ export class AppDataRepository extends AbstractDataRepository {
 
   constructor(private http: Http, private connServ: ConnectivityService) {
     super();
+    this.CacheProviderOptInit();
   }
 
-  public async getClientBonusesExpireInfo(): Promise <ClientBonus[]> {
+  public async CacheProviderOptInit() {
+    try {
+      let result: string = await this.getAppParam("CLIENT_CACHE_SETTINGS");
+      if (!result)
+        throw new Error("server side error")
+
+      CacheProvider.Settings = JSON.parse(result.toLowerCase());
+    }
+    catch (err) {
+      await this.handleError(err);
+    }
+  }
+
+  public async getClientBonusesExpireInfo(): Promise<ClientBonus[]> {
     try {
       const response = await this.http
-        .get(getClientBonusesExpireInfoUrl,RequestFactory.makeAuthHeader())
+        .get(getClientBonusesExpireInfoUrl, RequestFactory.makeAuthHeader())
         .toPromise();
 
       const data = response.json();
@@ -202,8 +216,8 @@ export class AppDataRepository extends AbstractDataRepository {
       const arr = new Array<ClientBonus>();
       if (data != null) {
         data.forEach(val =>
-          arr.push(new ClientBonus(val.id,val.clientId, val.bonus, val.dueDate))
-          );
+          arr.push(new ClientBonus(val.id, val.clientId, val.bonus, val.dueDate))
+        );
       }
       return arr;
     } catch (err) {
@@ -214,7 +228,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async postProductView(idProduct: number, params: string) {
     try {
       const response = await this.http
-        .post(postProductViewUrl, {idProduct: idProduct.toString(), params: params, },
+        .post(postProductViewUrl, { idProduct: idProduct.toString(), params: params, },
         RequestFactory.makeAuthHeader()).toPromise();
 
       if (response.status !== 201) {
@@ -228,9 +242,10 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async calculateCart(promoCode: string, maxBonusCnt: number, usePromoBonus: boolean, creditProductId: number/*,
                              cartContent: ClientOrderProducts[]*/):
-      Promise<{clOrderSpecProdId: number, promoCodeDisc: number, bonusDisc: number, promoBonusDisc: number,
-               earnedBonus: number, qty: number}[]>
-  {
+    Promise<{
+      clOrderSpecProdId: number, promoCodeDisc: number, bonusDisc: number, promoBonusDisc: number,
+      earnedBonus: number, qty: number
+    }[]> {
     try {
       /*
       let _dtoContent = [];
@@ -240,10 +255,11 @@ export class AppDataRepository extends AbstractDataRepository {
       );
     */
       const response = await this.http
-        .post(calculateCartUrl, {promoCode: promoCode, maxBonusCnt: maxBonusCnt,
-                                      usePromoBonus: usePromoBonus, creditProductId: creditProductId /*,
+        .post(calculateCartUrl, {
+          promoCode: promoCode, maxBonusCnt: maxBonusCnt,
+          usePromoBonus: usePromoBonus, creditProductId: creditProductId /*,
                                       cartContent: _dtoContent*/}
-             ,RequestFactory.makeAuthHeader())
+        , RequestFactory.makeAuthHeader())
         .toPromise();
       const val = response.json();
 
@@ -253,8 +269,10 @@ export class AppDataRepository extends AbstractDataRepository {
       let _res = [];
       if (val) {
         val.forEach(i => {
-          _res.push({clOrderSpecProdId: i.clOrderSpecProdId, promoCodeDisc: i.promoCodeDisc,
-            bonusDisc: i.bonusDisc, promoBonusDisc: i.promoBonusDisc, earnedBonus: i.earnedBonus, qty: i.qty});
+          _res.push({
+            clOrderSpecProdId: i.clOrderSpecProdId, promoCodeDisc: i.promoCodeDisc,
+            bonusDisc: i.bonusDisc, promoBonusDisc: i.promoBonusDisc, earnedBonus: i.earnedBonus, qty: i.qty
+          });
         });
       }
       return _res;
@@ -267,10 +285,10 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getBonusesInfo(): Promise<{ bonusLimit: number, actionBonusLimit: number }> {
     try {
       const response = await this.http
-        .get(getBonusesInfoUrl,RequestFactory.makeAuthHeader()).toPromise();
+        .get(getBonusesInfoUrl, RequestFactory.makeAuthHeader()).toPromise();
       const val = response.json();
       if (response.status == 204)
-        return {bonusLimit: 0, actionBonusLimit: 0};
+        return { bonusLimit: 0, actionBonusLimit: 0 };
       if (response.status !== 201 && response.status !== 200) {
         throw new Error("server side status error");
       }
@@ -282,7 +300,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getCreditProducts(): Promise<CreditProduct[]> {
     try {
-      const response = await this.http.get(creditProductsUrl,RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.get(creditProductsUrl, RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -321,7 +339,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async loadPmtMethodsCache() {
     try {
-      const response = await this.http.get(getPaymentMethodsUrl,RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.get(getPaymentMethodsUrl, RequestFactory.makeAuthHeader()).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
@@ -330,13 +348,22 @@ export class AppDataRepository extends AbstractDataRepository {
 
       if (data != null) {
         data.forEach(val => {
-            let pmtMethod = new EnumPaymentMethod();
-            pmtMethod.id = val.id;
-            pmtMethod.name = val.name;
-            if (this.isEmpty(this.cache.EnumPaymentMethod.Item(val.id.toString()))) {
-              this.cache.EnumPaymentMethod.Add(val.id.toString(), pmtMethod);
-            };
+          if (this.cache.EnumPaymentMethod.HasNotValidCachedValue(val.id.toString())) {
+            const entity: Providers.CacheDataContainer<EnumPaymentMethod> = this.cache.EnumPaymentMethod.Item(val.id.toString());
+            const enumPayMethod: EnumPaymentMethod = (entity) ? entity.item : new EnumPaymentMethod();
+
+            if (!entity) {
+              this.cache.EnumPaymentMethod.Add(val.id.toString(), { item: enumPayMethod, expire: Date.now() + CacheProvider.Settings.enumpaymentmethod.expire });
+            }
+
+            else
+              entity.expire = Date.now() + CacheProvider.Settings.enumpaymentmethod.expire;
+
+            // change in reference
+            enumPayMethod.id = val.id;
+            enumPayMethod.name = val.name;
           }
+        }
         );
       }
     }
@@ -348,9 +375,9 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getPmtMethods(): Promise<EnumPaymentMethod[]> {
     try {
-      if (this.cache.EnumPaymentMethod.Count() === 0) {
+      if (this.cache.EnumPaymentMethod.HasNotValidCachedRange()) {
 
-        const response = await this.http.get(getPaymentMethodsUrl,RequestFactory.makeAuthHeader()).toPromise();
+        const response = await this.http.get(getPaymentMethodsUrl, RequestFactory.makeAuthHeader()).toPromise();
         const data = response.json();
         if (response.status !== 200) {
           throw new Error("server side status error");
@@ -358,7 +385,9 @@ export class AppDataRepository extends AbstractDataRepository {
         const cItems = new Array<EnumPaymentMethod>();
         if (data != null) {
           data.forEach(val => {
-            cItems.push(new EnumPaymentMethod(val.id, val.name));
+            const enumPayMethod: EnumPaymentMethod = new EnumPaymentMethod(val.id, val.name);
+            cItems.push(enumPayMethod);
+            this.cache.EnumPaymentMethod.Add(enumPayMethod.id.toString(), { item: enumPayMethod, expire: Date.now() + CacheProvider.Settings.enumpaymentmethod.expire });
           });
         }
         return cItems;
@@ -375,26 +404,35 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getPmtMethodById(id: number): Promise<EnumPaymentMethod> {
     try {
       const _id = id.toString();
-      const pmtMethod = new EnumPaymentMethod();
-      if (this.isEmpty(this.cache.EnumPaymentMethod.Item(_id))) {
+      if (this.cache.EnumPaymentMethod.HasNotValidCachedValue(_id)) {
+        const entity: Providers.CacheDataContainer<EnumPaymentMethod> = this.cache.EnumPaymentMethod.Item(_id);
+        const pmtMethod: EnumPaymentMethod = (entity) ? entity.item : new EnumPaymentMethod();
+
+        if (!entity) {
+          this.cache.EnumPaymentMethod.Add(_id, { item: pmtMethod, expire: Date.now() + CacheProvider.Settings.enumpaymentmethod.expire });
+        }
+
+        // change current reference
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.enumpaymentmethod.expire;
+
         const response = await this.http
-          .get(getPaymentMethodsUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
+          .get(getPaymentMethodsUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
-        if (data)
-        {
+        if (data != null) {
           pmtMethod.id = data.id;
           pmtMethod.name = data.name;
-          this.cache.EnumPaymentMethod.Add(_id, pmtMethod);
+          return pmtMethod;
         }
-        return pmtMethod;
+        return this.cache.EnumPaymentMethod.Remove(_id).item;
+
       }
-      else
-      {
-        return this.cache.EnumPaymentMethod.Item(_id);
+      else {
+        return this.cache.EnumPaymentMethod.Item(_id).item;
       };
     }
     catch (err) {
@@ -405,9 +443,9 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getProductCreditSize(idProduct: number, isSupplier: number): Promise<any> {
     try {
       const response = await this.http
-        .get(productSupplCreditGradesUrl,RequestFactory.makeSearch([
-          {key: "idProduct", value: idProduct.toString()},
-          {key: "idSupplier", value: isSupplier.toString()}
+        .get(productSupplCreditGradesUrl, RequestFactory.makeSearch([
+          { key: "idProduct", value: idProduct.toString() },
+          { key: "idSupplier", value: isSupplier.toString() }
         ]))
         .toPromise();
 
@@ -416,7 +454,7 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
       if (data[0])
-        return {partsPmtCnt: data[0].partsPmtCnt, creditSize: data[0].creditSize}
+        return { partsPmtCnt: data[0].partsPmtCnt, creditSize: data[0].creditSize }
       else
         return null;
 
@@ -428,10 +466,21 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getLoEntitiyById(entityId: number): Promise<LoEntity> {
     try {
       const id = entityId.toString();
-      const loEntity = new LoEntity();
-      if (this.isEmpty(this.cache.LoEntity.Item(id))) {
+      if (this.cache.LoEntity.HasNotValidCachedValue(id)) {
+
+        const entity: Providers.CacheDataContainer<LoEntity> = this.cache.LoEntity.Item(id);
+        const loEntity: LoEntity = (entity) ? entity.item : new LoEntity();
+
+        if (!entity) {
+          this.cache.LoEntity.Add(id, { item: loEntity, expire: Date.now() + CacheProvider.Settings.loentity.expire });
+        }
+
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.loentity.expire;
+
+
         const response = await this.http
-          .get(loEntitiesUrl + `/${entityId}`,RequestFactory.makeAuthHeader())
+          .get(loEntitiesUrl + `/${entityId}`, RequestFactory.makeAuthHeader())
           .toPromise();
 
         const data = response.json();
@@ -442,13 +491,12 @@ export class AppDataRepository extends AbstractDataRepository {
         if (data) {
           loEntity.id = data.id;
           loEntity.name = data.name;
-          this.cache.LoEntity.Add(id, loEntity);
+          return loEntity;
         }
-        return loEntity;
+        return this.cache.LoEntity.Remove(id).item;
       }
-      else
-      {
-        return this.cache.LoEntity.Item(id);
+      else {
+        return this.cache.LoEntity.Item(id).item;
       }
 
     } catch (err) {
@@ -460,7 +508,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getLoTrackLogByOrderSpecId(id: number): Promise<LoTrackLog[]> {
     try {
       const response = await this.http
-        .get(specLOTrackingLogUrl,RequestFactory.makeSearch([{key: "idOrderSpecProd", value: id.toString()}]))
+        .get(specLOTrackingLogUrl, RequestFactory.makeSearch([{ key: "idOrderSpecProd", value: id.toString() }]))
         .toPromise();
 
       const data = response.json();
@@ -480,9 +528,9 @@ export class AppDataRepository extends AbstractDataRepository {
           )
         );
 
-        arr.sort((x,y) => {
-            return (+new Date(y.trackDate) - +new Date(x.trackDate));
-          }
+        arr.sort((x, y) => {
+          return (+new Date(y.trackDate) - +new Date(x.trackDate));
+        }
         );
       }
 
@@ -496,8 +544,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getLoEntitiesForSupplier(supplierId: number): Promise<LoSupplEntity[]> {
     try {
       const response = await this.http
-        .get(loSupplEntitiesUrl,RequestFactory.makeSearch([
-          {key: "idSupplier", value: supplierId.toString()}
+        .get(loSupplEntitiesUrl, RequestFactory.makeSearch([
+          { key: "idSupplier", value: supplierId.toString() }
         ])).toPromise();
 
       const data = response.json();
@@ -526,7 +574,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async saveClientDraftOrder(order: ClientOrder): Promise<ClientOrder> {
     try {
       const response = await this.http
-        .put(clientDraftOrderUrl, order.dto,RequestFactory.makeAuthHeader())
+        .put(clientDraftOrderUrl, order.dto, RequestFactory.makeAuthHeader())
         .toPromise();
       const data = response.json();
 
@@ -551,7 +599,7 @@ export class AppDataRepository extends AbstractDataRepository {
           data.promoBonusTotal,
           data.bonusEarned,
           data.promoCodeDiscTotal,
-          data.idPerson,null,null,null,
+          data.idPerson, null, null, null,
           data.idCreditProduct,
           data.creditPeriod,
           data.creditMonthlyPmt,
@@ -573,7 +621,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getClientDraftOrder(): Promise<ClientOrder> {
     try {
       const response = await this.http
-        .get(clientDraftOrderUrl,RequestFactory.makeAuthHeader()).toPromise();
+        .get(clientDraftOrderUrl, RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -597,7 +645,7 @@ export class AppDataRepository extends AbstractDataRepository {
           data.promoBonusTotal,
           data.bonusEarned,
           data.promoCodeDiscTotal,
-          data.idPerson,null,null,null,
+          data.idPerson, null, null, null,
           data.idCreditProduct,
           data.creditPeriod,
           data.creditMonthlyPmt,
@@ -612,94 +660,94 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
-/*
+  /*
 
-  public async getClientOrders(): Promise<ClientOrder[]> {
-    try {
+    public async getClientOrders(): Promise<ClientOrder[]> {
+      try {
 
-      const response = await this.http
-        .get(clientOrdersUrl,RequestFactory.makeSearch([
-          {key: "idClient", value: "100"},
-          {key: "idStatus", value: "1"}
-        ])).toPromise();
+        const response = await this.http
+          .get(clientOrdersUrl,RequestFactory.makeSearch([
+            {key: "idClient", value: "100"},
+            {key: "idStatus", value: "1"}
+          ])).toPromise();
 
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      const cClientOrders = new Array<ClientOrder>();
-      if (data != null) {
-        data.forEach(val =>
-          cClientOrders.push(
-            new ClientOrder(
-              val.id,
-              val.orderDate,
-              val.idCur,
-              val.idClient,
-              val.total,
-              val.idPaymentMethod,
-              val.idPaymentStatus,
-              val.idStatus,
-              null,
-              val.loIdClientAddress,
-              val.itemsTotal,
-              val.shippingTotal,
-              val.bonusTotal,
-              val.promoBonusTotal,
-              val.bonusEarned,
-              val.promoCodeDiscTotal,
-              val.idPerson
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        const cClientOrders = new Array<ClientOrder>();
+        if (data != null) {
+          data.forEach(val =>
+            cClientOrders.push(
+              new ClientOrder(
+                val.id,
+                val.orderDate,
+                val.idCur,
+                val.idClient,
+                val.total,
+                val.idPaymentMethod,
+                val.idPaymentStatus,
+                val.idStatus,
+                null,
+                val.loIdClientAddress,
+                val.itemsTotal,
+                val.shippingTotal,
+                val.bonusTotal,
+                val.promoBonusTotal,
+                val.bonusEarned,
+                val.promoCodeDiscTotal,
+                val.idPerson
+              )
             )
-          )
-        );
-      };
-      return cClientOrders;
-    } catch (err) {
-      return await this.handleError(err);
-    }
-  }
-*/
-
-
-/*
-  public async getClientOrderById(orderId: number): Promise<ClientOrder> {
-    try {
-
-      const response = await this.http
-        .get(clientOrdersUrl + `/${orderId}`, RequestFactory.makeAuthHeader())
-        .toPromise();
-
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
+          );
+        };
+        return cClientOrders;
+      } catch (err) {
+        return await this.handleError(err);
       }
-
-      if (data != null) {
-            return new ClientOrder(
-              data.id,
-              data.orderDate,
-              data.idCur,
-              data.idClient,
-              data.total,
-              data.idPaymentMethod,
-              data.idPaymentStatus,
-              data.idStatus,
-              null,
-              data.loIdClientAddress,
-              data.itemsTotal,
-              data.shippingTotal,
-              data.bonusTotal,
-              data.promoBonusTotal,
-              data.bonusEarned,
-              data.promoCodeDiscTotal,
-              data.idPerson
-            );
-      };
-    } catch (err) {
-      return await this.handleError(err);
     }
-  }
-*/
+  */
+
+
+  /*
+    public async getClientOrderById(orderId: number): Promise<ClientOrder> {
+      try {
+
+        const response = await this.http
+          .get(clientOrdersUrl + `/${orderId}`, RequestFactory.makeAuthHeader())
+          .toPromise();
+
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+
+        if (data != null) {
+              return new ClientOrder(
+                data.id,
+                data.orderDate,
+                data.idCur,
+                data.idClient,
+                data.total,
+                data.idPaymentMethod,
+                data.idPaymentStatus,
+                data.idStatus,
+                null,
+                data.loIdClientAddress,
+                data.itemsTotal,
+                data.shippingTotal,
+                data.bonusTotal,
+                data.promoBonusTotal,
+                data.bonusEarned,
+                data.promoCodeDiscTotal,
+                data.idPerson
+              );
+        };
+      } catch (err) {
+        return await this.handleError(err);
+      }
+    }
+  */
 
   public async getClientHistOrderById(orderId: number): Promise<ClientOrder> {
     try {
@@ -742,16 +790,16 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async postOrder(order: ClientOrder): Promise<{isSuccess: boolean, errorMessage: string}> {
+  public async postOrder(order: ClientOrder): Promise<{ isSuccess: boolean, errorMessage: string }> {
     try {
       const response = await this.http
-        .put(postOrderUrl, order.dto,RequestFactory.makeAuthHeader()).toPromise();
+        .put(postOrderUrl, order.dto, RequestFactory.makeAuthHeader()).toPromise();
       const val = response.json();
 
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      return {isSuccess: val.isSuccess, errorMessage: val.errorMessage};
+      return { isSuccess: val.isSuccess, errorMessage: val.errorMessage };
     } catch (err) {
       return await this.handleError(err);
     }
@@ -761,7 +809,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async insertCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
     try {
       const response = await this.http
-        .post(cartProductsUrl, prod.dto,RequestFactory.makeAuthHeader())
+        .post(cartProductsUrl, prod.dto, RequestFactory.makeAuthHeader())
         .toPromise();
       const val = response.json();
 
@@ -837,7 +885,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async deleteCartProduct(prod: ClientOrderProducts) {
     try {
       const response = await this.http
-        .delete(cartProductsUrl + `/${prod.id}`,RequestFactory.makeAuthHeader())
+        .delete(cartProductsUrl + `/${prod.id}`, RequestFactory.makeAuthHeader())
         .toPromise();
       SCN.value = parseInt(response.headers.get('X-SCN'));
       if (response.status !== 204) {
@@ -850,7 +898,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getCartProducts(): Promise<ClientOrderProducts[]> {
     try {
-      const response = await this.http.get(cartProductsUrl,RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.get(cartProductsUrl, RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -897,8 +945,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getClientOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]> {
     try {
       const response = await this.http
-        .get(clientOrderSpecProductsUrl,RequestFactory.makeSearch([
-          {key: "idOrder", value: orderId.toString()}
+        .get(clientOrderSpecProductsUrl, RequestFactory.makeSearch([
+          { key: "idOrder", value: orderId.toString() }
         ])).toPromise();
 
       let orderProducts = [];
@@ -943,8 +991,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getClientHistOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]> {
     try {
       const response = await this.http
-        .get(clientOrderHistSpecProductsUrl,RequestFactory.makeSearch([
-          {key: "idOrder", value: orderId.toString()}
+        .get(clientOrderHistSpecProductsUrl, RequestFactory.makeSearch([
+          { key: "idOrder", value: orderId.toString() }
         ])).toPromise();
 
       let orderProducts = [];
@@ -986,10 +1034,10 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
 
-  public async getProductReviewsByProductId(productId: number): Promise<{reviews:ProductReview[], idClient:number}> {
+  public async getProductReviewsByProductId(productId: number): Promise<{ reviews: ProductReview[], idClient: number }> {
     try {
       const response = await this.http
-        .get(`${productReviewsUrl}/${productId}`,RequestFactory.makeAuthHeader()).toPromise();
+        .get(`${productReviewsUrl}/${productId}`, RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -1005,7 +1053,7 @@ export class AppDataRepository extends AbstractDataRepository {
           let substring2 = substrings[1].slice(0, substrings[1].length - 1);
           let date = substring1 + " " + substring2;
           if (val.idReview && val.idReview !== null) {
-            if(!answers[val.idReview.toString()]) {
+            if (!answers[val.idReview.toString()]) {
               answers[val.idReview.toString()] = [];
             }
             answers[val.idReview.toString()].push(new ReviewAnswer(
@@ -1062,7 +1110,7 @@ export class AppDataRepository extends AbstractDataRepository {
           }
         })
       }
-      return {reviews: qProductsRevs, idClient: data.currentUser};
+      return { reviews: qProductsRevs, idClient: data.currentUser };
     } catch (err) {
       return await this.handleError(err);
     }
@@ -1071,8 +1119,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getProductStorePlacesByQuotId(quotId: number): Promise<ProductStorePlace[]> {
     try {
       const response = await this.http
-        .get(productStorePlacesUrl,RequestFactory.makeSearch([
-          {key: "idQuotationProduct", value: quotId.toString()}
+        .get(productStorePlacesUrl, RequestFactory.makeSearch([
+          { key: "idQuotationProduct", value: quotId.toString() }
         ])).toPromise();
 
       const data = response.json();
@@ -1091,7 +1139,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
           let sp = await (<any>psp).storeplace_p;
           if (sp.type == 1)
-          //select only storeplaces with type of store
+            //select only storeplaces with type of store
             qProductsStorePlaces.push(psp);
         }
       }
@@ -1104,26 +1152,29 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async getCountries(): Promise<Country[]> {
-    if (this.cache.Country.Count() > 0)
-      return this.cache.Country.Values();
     try {
-      const response = await this.http.get(countriesUrl,RequestFactory.makeAuthHeader()).toPromise();
+      if (this.cache.Country.HasNotValidCachedRange()) {
+        const response = await this.http.get(countriesUrl, RequestFactory.makeAuthHeader()).toPromise();
 
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        const cCountries = new Array<Country>();
+        if (data != null) {
+          data.forEach(val => {
+            let p = new Country();
+            p.id = val.id;
+            p.name = val.name;
+            cCountries.push(p);
+            this.cache.Country.Add(p.id.toString(), { item: p, expire: Date.now() + CacheProvider.Settings.country.expire });
+          });
+
+          return cCountries;
+        }
+      } else {
+        return this.cache.Country.Values();
       }
-      const cCountries = new Array<Country>();
-      if (data != null) {
-        data.forEach(val => {
-          let p = new Country();
-          p.id = val.id;
-          p.name = val.name;
-          cCountries.push(p);
-          this.cache.Country.Add(p.id.toString(), p);
-        });
-      }
-      return cCountries;
     } catch (err) {
       return await this.handleError(err);
     }
@@ -1133,25 +1184,34 @@ export class AppDataRepository extends AbstractDataRepository {
     if (!id) return null;
     try {
       const _id = id.toString();
-      let country = new Country();
-      if (this.isEmpty(this.cache.Country.Item(_id))) {
+      if (this.cache.Country.HasNotValidCachedValue(_id)) {
+        const entity: Providers.CacheDataContainer<Country> = this.cache.Country.Item(_id);
+        const country: Country = (entity) ? entity.item : new Country();
+
+        if (!entity) {
+          this.cache.Country.Add(_id, { item: country, expire: Date.now() + CacheProvider.Settings.country.expire });
+        }
+
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.country.expire;
+
         const response = await this.http
-          .get(countriesUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
+          .get(countriesUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
         let data: any = response.json();
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
 
-        if (data != null) {
+        if (data) {
           country.id = data.id;
           country.name = data.name;
-          this.cache.Country.Add(_id, country);
           return country;
         }
+
+        return this.cache.Country.Remove(_id).item;
       }
-      else
-      {
-        return this.cache.Country.Item(_id);
+      else {
+        return this.cache.Country.Item(_id).item;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -1163,7 +1223,7 @@ export class AppDataRepository extends AbstractDataRepository {
       const _id = id.toString();
       let client = new Client();
       const response = await this.http
-        .get(clientsUrl,RequestFactory.makeSearch([{key: "userId", value: _id}]))
+        .get(clientsUrl, RequestFactory.makeSearch([{ key: "userId", value: _id }]))
         .toPromise();
       let data: any = response.json();
       if (response.status !== 200) {
@@ -1189,12 +1249,11 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getClientByPhone (phonenum: string ): Promise<Client> {
-    try
-    {
+  public async getClientByPhone(phonenum: string): Promise<Client> {
+    try {
       let client = new Client();
       const response = await this.http
-        .get(clientsUrl,RequestFactory.makeSearch([{key: "phone", value: phonenum}]))
+        .get(clientsUrl, RequestFactory.makeSearch([{ key: "phone", value: phonenum }]))
         .toPromise();
       let data: any = response.json();
       if (response.status !== 200) {
@@ -1213,16 +1272,16 @@ export class AppDataRepository extends AbstractDataRepository {
         client.lname = data.lname;
         return client;
       }
-  } catch (err) {
-    return await this.handleError(err);
-  }
+    } catch (err) {
+      return await this.handleError(err);
+    }
 
   }
 
   public async createClientAddress(address: ClientAddress): Promise<ClientAddress> {
     try {
       const response = await this.http
-        .post(clientAddressesUrl, address.dto,RequestFactory.makeAuthHeader())
+        .post(clientAddressesUrl, address.dto, RequestFactory.makeAuthHeader())
         .toPromise();
       const data = response.json();
 
@@ -1255,7 +1314,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async deleteClientAddress(address: ClientAddress) {
     try {
       const response = await this.http
-        .delete(clientAddressesUrl + `/${address.id}`,RequestFactory.makeAuthHeader())
+        .delete(clientAddressesUrl + `/${address.id}`, RequestFactory.makeAuthHeader())
         .toPromise();
       if (response.status !== 204) {
         throw new Error("server side status error");
@@ -1268,7 +1327,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async saveClientAddress(address: ClientAddress): Promise<ClientAddress> {
     try {
       const response = await this.http
-        .put(clientAddressesUrl, address.dto,RequestFactory.makeAuthHeader())
+        .put(clientAddressesUrl, address.dto, RequestFactory.makeAuthHeader())
         .toPromise();
       const data = response.json();
 
@@ -1306,7 +1365,7 @@ export class AppDataRepository extends AbstractDataRepository {
       let _id = id.toString();
 
       const response = await this.http
-        .get(clientAddressesUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
+        .get(clientAddressesUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
@@ -1341,7 +1400,7 @@ export class AppDataRepository extends AbstractDataRepository {
       let clientAdresses = new Array<ClientAddress>();
 
       const response = await this.http
-        .get(clientAddressesUrl,RequestFactory.makeSearch([{key: "idClient", value: _id}]))
+        .get(clientAddressesUrl, RequestFactory.makeSearch([{ key: "idClient", value: _id }]))
         .toPromise();
 
       let data: any = response.json();
@@ -1376,7 +1435,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async loadStorePlaceCache() {
     try {
       const response = await this.http
-        .get(storePlacesUrl,RequestFactory.makeAuthHeader()).toPromise();
+        .get(storePlacesUrl, RequestFactory.makeAuthHeader()).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
@@ -1385,20 +1444,28 @@ export class AppDataRepository extends AbstractDataRepository {
 
       if (data != null) {
         data.forEach(val => {
-          let storeplace = new StorePlace();
-          storeplace.id = val.id;
-          storeplace.name = val.name;
-          storeplace.idSupplier = val.idSupplier;
-          storeplace.idCity = val.idCity;
-          storeplace.zip = val.zip;
-          storeplace.address_line = val.address_line;
-          storeplace.lat = val.lat;
-          storeplace.lng = val.lng;
-          storeplace.type = val.type;
-          if (this.isEmpty(this.cache.StorePlace.Item(val.id.toString()))) {
-            this.cache.StorePlace.Add(val.id.toString(), storeplace);
-            };
-          }
+          if (this.cache.StorePlace.HasNotValidCachedValue(val.id.toString())) {
+            const entity: Providers.CacheDataContainer<StorePlace> = this.cache.StorePlace.Item(val.id.toString());
+            const storePlace: StorePlace = (entity) ? entity.item : new StorePlace();
+
+            if (!entity) {
+              this.cache.StorePlace.Add(val.id.toString(), { item: storePlace, expire: Date.now() + CacheProvider.Settings.storeplace.expire });
+            }
+
+            else
+              entity.expire = Date.now() + CacheProvider.Settings.storeplace.expire;
+
+            storePlace.id = val.id;
+            storePlace.name = val.name;
+            storePlace.idSupplier = val.idSupplier;
+            storePlace.idCity = val.idCity;
+            storePlace.zip = val.zip;
+            storePlace.address_line = val.address_line;
+            storePlace.lat = val.lat;
+            storePlace.lng = val.lng;
+            storePlace.type = val.type;
+          };
+        }
         );
       }
     }
@@ -1410,11 +1477,20 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getStorePlaceById(id: number): Promise<StorePlace> {
     try {
       const _id: string = id.toString();
-      let storeplace = new StorePlace();
-      if (this.isEmpty(this.cache.StorePlace.Item(_id))) {
+      if (this.cache.StorePlace.HasNotValidCachedValue(_id)) {
+        const entity: Providers.CacheDataContainer<StorePlace> = this.cache.StorePlace.Item(_id);
+        const storePlace: StorePlace = (entity) ? entity.item : new StorePlace();
+
+        if (!entity) {
+          this.cache.StorePlace.Add(_id, { item: storePlace, expire: Date.now() + CacheProvider.Settings.storeplace.expire });
+        }
+
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.storeplace.expire;
+
         // http request
         const response = await this.http
-          .get(storePlacesUrl + `/${_id}`,RequestFactory.makeAuthHeader())
+          .get(storePlacesUrl + `/${_id}`, RequestFactory.makeAuthHeader())
           .toPromise();
 
         // response data binding
@@ -1423,25 +1499,22 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error("server side status error");
         }
 
-        if (data != null) {
-          //storeplace = new StorePlace();
-          storeplace.id = id;
-          storeplace.name = data.name;
-          storeplace.idSupplier = data.idSupplier;
-          storeplace.idCity = data.idCity;
-          storeplace.zip = data.zip;
-          storeplace.address_line = data.address_line;
-          storeplace.lat = data.lat;
-          storeplace.lng = data.lng;
-          storeplace.type = data.type;
+        if (data) {
+          storePlace.id = id;
+          storePlace.name = data.name;
+          storePlace.idSupplier = data.idSupplier;
+          storePlace.idCity = data.idCity;
+          storePlace.zip = data.zip;
+          storePlace.address_line = data.address_line;
+          storePlace.lat = data.lat;
+          storePlace.lng = data.lng;
+          storePlace.type = data.type;
 
-          // add to cache
-          this.cache.StorePlace.Add(_id, storeplace);
+          return storePlace;
         }
-        return storeplace;
+        return this.cache.StorePlace.Remove(_id).item;
       } else {
-        // </editor-fold>
-        return this.cache.StorePlace.Item(_id);
+        return this.cache.StorePlace.Item(_id).item;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -1451,7 +1524,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async loadCityCache() {
     try {
       const response = await this.http
-        .get(citiesWithStoresUrl,RequestFactory.makeAuthHeader()).toPromise();
+        .get(citiesWithStoresUrl, RequestFactory.makeAuthHeader()).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
@@ -1460,14 +1533,24 @@ export class AppDataRepository extends AbstractDataRepository {
 
       if (data != null) {
         data.forEach(val => {
-            let city = new City();
+          let city = new City();
+
+          if (this.cache.City.HasNotValidCachedValue(val.id.toString())) {
+            const entity: Providers.CacheDataContainer<City> = this.cache.City.Item(val.id.toString());
+            const city: City = (entity) ? entity.item : new City();
+
+            if (!entity) {
+              this.cache.City.Add(val.id.toString(), { item: city, expire: Date.now() + CacheProvider.Settings.city.expire });
+            }
+
+            else
+              entity.expire = Date.now() + CacheProvider.Settings.city.expire;
+
             city.id = val.id;
             city.name = val.name;
             city.idRegion = val.idRegion;
-            if (this.isEmpty(this.cache.City.Item(val.id.toString()))) {
-              this.cache.City.Add(val.id.toString(), city);
-            };
           }
+        }
         );
       }
     }
@@ -1476,10 +1559,10 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async loadRegionsCache(){
+  public async loadRegionsCache() {
     try {
       const response = await this.http
-        .get(regionsUrl,RequestFactory.makeAuthHeader()).toPromise();
+        .get(regionsUrl, RequestFactory.makeAuthHeader()).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
@@ -1488,13 +1571,21 @@ export class AppDataRepository extends AbstractDataRepository {
 
       if (data != null) {
         data.forEach(val => {
-            let region = new Region();
+          if (this.cache.Region.HasNotValidCachedValue(val.id.toString())) {
+            const entity: Providers.CacheDataContainer<Region> = this.cache.Region.Item(val.id.toString());
+            const region: Region = (entity) ? entity.item : new Region();
+
+            if (!entity) {
+              this.cache.Region.Add(val.id.toString(), { item: region, expire: Date.now() + CacheProvider.Settings.region.expire });
+            }
+
+            else
+              entity.expire = Date.now() + CacheProvider.Settings.region.expire;
+
             region.id = val.id;
             region.name = val.name;
-            if (this.isEmpty(this.cache.Region.Item(val.id.toString()))) {
-              this.cache.Region.Add(val.id.toString(), region);
-            };
           }
+        }
         );
       }
     }
@@ -1507,12 +1598,21 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getRegionById(id: number): Promise<Region> {
     if (!id) return null;
     try {
-      const region: Region = new Region();
       const _id: string = id.toString();
       //let city = null;
-      if (this.isEmpty(this.cache.Region.Item(_id))) {
+      if (this.cache.Region.HasNotValidCachedValue(_id)) {
+        const entity: Providers.CacheDataContainer<Region> = this.cache.Region.Item(_id);
+        const region: Region = (entity) ? entity.item : new Region();
+
+        if (!entity) {
+          this.cache.Region.Add(_id, { item: region, expire: Date.now() + CacheProvider.Settings.region.expire });
+        }
+
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.region.expire;
+
         // http request
-        const response = await this.http.get(regionsUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
+        const response = await this.http.get(regionsUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
 
         // response data binding
         let data: any = response.json();
@@ -1520,17 +1620,15 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error("server side status error");
         }
 
-        if (data != null) {
+        if (data) {
           region.id = id;
           region.name = data.name;
-
-          // add to cache
-          this.cache.Region.Add(_id, region);
+          return region;
         }
-        return region;
+        return this.cache.Region.Remove(_id).item;
       } else {
         // </editor-fold>
-        return this.cache.Region.Item(_id);
+        return this.cache.Region.Item(_id).item;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -1539,7 +1637,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getRegions(): Promise<Region[]> {
     try {
-      const response = await this.http.get(regionsUrl,RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.get(regionsUrl, RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -1561,13 +1659,19 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getCityById(id: number): Promise<City> {
     if (!id) return null;
     try {
-      let city: City = new City(id);
       const _id: string = id.toString();
-      //let city = null;
-      if (this.isEmpty(this.cache.City.Item(_id))) {
-        this.cache.City.Add(_id, city);
+      if (this.cache.City.HasNotValidCachedValue(_id)) {
+        const entity: Providers.CacheDataContainer<City> = this.cache.City.Item(_id);
+        const city: City = (entity) ? entity.item : new City();
+
+        if (!entity) {
+          this.cache.City.Add(_id, { item: city, expire: Date.now() + CacheProvider.Settings.city.expire });
+        }
+
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.city.expire;
         // http request
-        const response = await this.http.get(citiesUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
+        const response = await this.http.get(citiesUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
 
         // response data binding
         let data: any = response.json();
@@ -1575,19 +1679,17 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error("server side status error");
         }
 
-        if (data != null) {
+        if (data) {
           city.id = id;
           city.name = data.name;
           city.idRegion = data.idRegion;
+
+          return city;
         }
-        else {
-          this.cache.City.Remove(_id);
-          city = null;
-        }
-        return city;
+        return this.cache.City.Remove(_id).item;
       } else {
         // </editor-fold>
-        return this.cache.City.Item(_id);
+        return this.cache.City.Item(_id).item;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -1610,57 +1712,56 @@ export class AppDataRepository extends AbstractDataRepository {
   public async searchProducts(srchString: string): Promise<Product[]> {
     try {
       if (!AppConstants.USE_PRODUCTION) {
-          const response = await this.http.get(productsUrl,RequestFactory.makeAuthHeader()).toPromise();
-          const data = response.json();
-          if (response.status !== 200) {
-            throw new Error("server side status error");
-          }
-          const products = new Array<Product>();
+        const response = await this.http.get(productsUrl, RequestFactory.makeAuthHeader()).toPromise();
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        const products = new Array<Product>();
 
-          if (data != null) {
-            for (let val of data) {
-              let props = new Array<ProductPropValue>();
-              if (val.props && val.props.length !== 0) {
-                props = this.getPropValuefromProduct(val);
-              }
+        if (data != null) {
+          for (let val of data) {
+            let props = new Array<ProductPropValue>();
+            if (val.props && val.props.length !== 0) {
+              props = this.getPropValuefromProduct(val);
+            }
 
-              // create current product
-              const productItem: Product = new Product(
-                val.id,
-                val.name,
-                val.price,
-                val.oldPrice,
-                val.bonuses,
-                val.manufacturerId,
-                props,
-                val.imageUrl,
-                val.rating,
-                val.recall,
-                val.supplOffers,
-                val.description,
-                val.slideImageUrls,
-                val.barcode
-              );
+            // create current product
+            const productItem: Product = new Product(
+              val.id,
+              val.name,
+              val.price,
+              val.oldPrice,
+              val.bonuses,
+              val.manufacturerId,
+              props,
+              val.imageUrl,
+              val.rating,
+              val.recall,
+              val.supplOffers,
+              val.description,
+              val.slideImageUrls,
+              val.barcode
+            );
 
-              let mnf = await (<any>productItem).manufacturer_p;
-              if (
-                this.search(mnf.name, srchString) ||
-                this.search(productItem.id.toString(), srchString) ||
-                this.search(productItem.name, srchString) ||
-                this.search(productItem.barcode, srchString)
-              ) {
-                products.push(productItem);
-              }
+            let mnf = await (<any>productItem).manufacturer_p;
+            if (
+              this.search(mnf.name, srchString) ||
+              this.search(productItem.id.toString(), srchString) ||
+              this.search(productItem.name, srchString) ||
+              this.search(productItem.barcode, srchString)
+            ) {
+              products.push(productItem);
             }
           }
-          return products;
+        }
+        return products;
       }
-      else
-      {
+      else {
         const response = await this.http
           .get(productsUrl, {
             search: this.createSearchParams([
-              {key: "srch", value: srchString}
+              { key: "srch", value: srchString }
             ])
           })
           .toPromise();
@@ -1697,23 +1798,22 @@ export class AppDataRepository extends AbstractDataRepository {
             );
             products.push(productItem);
           }
-         return products;
+          return products;
         }
       }
     }
-    catch (err)
-    {
+    catch (err) {
       await this.handleError(err);
     }
   }
 
   public async getProducts(urlQuery: string,
-                           cacheForce: boolean): Promise<Product[]> {
+    cacheForce: boolean): Promise<Product[]> {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
-      if (this.cache.Products.Count() === 0 || cacheForce === true) {
+      if (this.cache.Products.HasNotValidCachedRange() || cacheForce === true) {
         const response = await this.http
-          .get(productsUrl,RequestFactory.makeSearch([{key: "url", value: urlQuery}]))
+          .get(productsUrl, RequestFactory.makeSearch([{ key: "url", value: urlQuery }]))
           .toPromise();
 
         const data = response.json();
@@ -1750,7 +1850,7 @@ export class AppDataRepository extends AbstractDataRepository {
             products.push(productItem);
 
             // add product to cashe
-            this.cache.Products.Add(productItem.id.toString(), productItem);
+            this.cache.Products.Add(productItem.id.toString(), { item: productItem, expire: Date.now() + CacheProvider.Settings.product.expire });
           });
         }
         return products;
@@ -1766,7 +1866,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getQuotationProductById(qpId: number): Promise<QuotationProduct> {
     try {
       const response = await this.http
-        .get(quotationProductsUrl + `/${qpId}`,RequestFactory.makeAuthHeader())
+        .get(quotationProductsUrl + `/${qpId}`, RequestFactory.makeAuthHeader())
         .toPromise();
 
       const data = response.json();
@@ -1798,10 +1898,10 @@ export class AppDataRepository extends AbstractDataRepository {
       return null;
 
     // Возвращаем предложение с минимальной ценой
-    return _qps.sort((x,y) => {
+    return _qps.sort((x, y) => {
       return (x.price - y.price);
     })
-      .find((i) => {return (i.stockQuant > 0)});
+      .find((i) => { return (i.stockQuant > 0) });
   }
 
   public async getByItAgainQP(originalQP: QuotationProduct): Promise<QuotationProduct> {
@@ -1827,8 +1927,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getQuotationProductsByProductId(productId: number): Promise<QuotationProduct[]> {
     try {
       const response = await this.http
-        .get(quotationProductsUrl,RequestFactory.makeSearch([
-          {key: "idProduct", value: productId.toString()}
+        .get(quotationProductsUrl, RequestFactory.makeSearch([
+          { key: "idProduct", value: productId.toString() }
         ])).toPromise();
 
       const data = response.json();
@@ -1892,7 +1992,7 @@ export class AppDataRepository extends AbstractDataRepository {
       const res = [];
       // http request
       const response = await this.http
-        .get(productsOfDayUrl,RequestFactory.makeAuthHeader())
+        .get(productsOfDayUrl, RequestFactory.makeAuthHeader())
         .toPromise();
 
       // response data binding
@@ -1916,7 +2016,7 @@ export class AppDataRepository extends AbstractDataRepository {
       const res = [];
       // http request
       const response = await this.http
-        .get(productsSalesHitsUrl,RequestFactory.makeAuthHeader())
+        .get(productsSalesHitsUrl, RequestFactory.makeAuthHeader())
         .toPromise();
 
       // response data binding
@@ -1939,15 +2039,23 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getProductById(productId: number): Promise<Product> {
     if (!productId) return null;
     try {
-      let prod: Product = new Product(productId);
       const id: string = productId.toString();
       // <editor-fold desc="id in cache is empty">
-      if (this.isEmpty(this.cache.Products.Item(id))) {
-        this.cache.Products.Add(id, prod);
+      if (this.cache.Products.HasNotValidCachedValue(id)) {
+        const entity: Providers.CacheDataContainer<Product> = this.cache.Products.Item(id);
+        const prod: Product = (entity) ? entity.item : new Product();
+
+        if (!entity) {
+          this.cache.Products.Add(id, { item: prod, expire: Date.now() + CacheProvider.Settings.product.expire});
+        }
+
+        // change current reference
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.product.expire;
 
         // http request
         const response = await this.http
-          .get(productsUrl + `/${id}`,RequestFactory.makeAuthHeader())
+          .get(productsUrl + `/${id}`, RequestFactory.makeAuthHeader())
           .toPromise();
 
         // response data binding
@@ -1958,26 +2066,30 @@ export class AppDataRepository extends AbstractDataRepository {
         }
         const _prod = this.getProductFromResponse(data);
 
-        prod.id = _prod.id;
-        prod.name = _prod.name;
-        prod.price = _prod.price;
-        prod.manufacturerId = _prod.manufacturerId;
-        prod.props = _prod.props;
-        prod.imageUrl = _prod.imageUrl;
-        prod.rating = _prod.rating;
-        prod.recall = _prod.recall;
-        prod.supplOffers = _prod.supplOffers;
-        prod.description = _prod.description;
-        prod.slideImageUrls = _prod.slideImageUrls;
-        prod.barcode = _prod.barcode;
-        prod.valueQP = _prod.valueQP;
-        prod.oldPrice = _prod.oldPrice;
-        prod.bonuses = _prod.bonuses;
+        if (_prod != null) {
+          prod.id = _prod.id;
+          prod.name = _prod.name;
+          prod.price = _prod.price;
+          prod.manufacturerId = _prod.manufacturerId;
+          prod.props = _prod.props;
+          prod.imageUrl = _prod.imageUrl;
+          prod.rating = _prod.rating;
+          prod.recall = _prod.recall;
+          prod.supplOffers = _prod.supplOffers;
+          prod.description = _prod.description;
+          prod.slideImageUrls = _prod.slideImageUrls;
+          prod.barcode = _prod.barcode;
+          prod.valueQP = _prod.valueQP;
+          prod.oldPrice = _prod.oldPrice;
+          prod.bonuses = _prod.bonuses;
+          return prod;
+        }
 
-        return prod;
+        return this.cache.Products.Remove(id).item;
+
       } else {
         // </editor-fold>
-        return this.cache.Products.Item(id);
+        return this.cache.Products.Item(id).item;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -1987,13 +2099,20 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getQuotationById(quotationId: number): Promise<Quotation> {
     if (!quotationId) return null;
     try {
-      let quotation: Quotation = new Quotation(quotationId);
       const id: string = quotationId.toString();
-      if (this.isEmpty(this.cache.Quotation.Item(id))) {
-        this.cache.Quotation.Add(id, quotation);
+      if (this.cache.Quotation.HasNotValidCachedValue(id)) {
+        const entity: Providers.CacheDataContainer<Quotation> = this.cache.Quotation.Item(id);
+        const quotation: Quotation = (entity) ? entity.item : new Quotation();
+
+        if (!entity) {
+          this.cache.Quotation.Add(id, { item: quotation, expire: Date.now() + CacheProvider.Settings.quotation.expire });
+        }
+
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.quotation.expire;
 
         const response = await this.http
-          .get(quotationsUrl + `/${quotationId}`,RequestFactory.makeAuthHeader())
+          .get(quotationsUrl + `/${quotationId}`, RequestFactory.makeAuthHeader())
           .toPromise();
 
         const data = response.json();
@@ -2001,17 +2120,19 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error("server side status error");
         }
 
-        if (data != null) {
+        if (data) {
           quotation.id = data.id;
           quotation.idSupplier = data.idSupplier;
           quotation.dateStart = data.dateStart;
-          quotation.dateEnd =  data.dateEnd;
+          quotation.dateEnd = data.dateEnd;
           quotation.currencyId = data.currencyId;
-          this.cache.Quotation.Add(id, quotation);
+
+          return quotation;
         }
-        return quotation;
+        return this.cache.Quotation.Remove(id).item;
+
       } else {
-        return this.cache.Quotation.Item(id);
+        return this.cache.Quotation.Item(id).item;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -2023,7 +2144,7 @@ export class AppDataRepository extends AbstractDataRepository {
       let p = new PersonInfo();
 
       const response = await this.http
-        .post(personsUrl, person,RequestFactory.makeAuthHeader()).toPromise();
+        .post(personsUrl, person, RequestFactory.makeAuthHeader()).toPromise();
       const data = response.json();
 
       if (response.status !== 201) {
@@ -2032,13 +2153,13 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data != null) {
         p.id = data.id;
         p.firstName = data.firstName;
-        p.lastName= data.lastName;
-        p.middleName= data.middleName;
-        p.passportSeries= data.passportSeries;
-        p.passportNum= data.passportNum;
-        p.issuedAuthority= data.issuedAuthority;
-        p.taxNumber= data.taxNumber;
-        p.birthDate= data.birthDate;
+        p.lastName = data.lastName;
+        p.middleName = data.middleName;
+        p.passportSeries = data.passportSeries;
+        p.passportNum = data.passportNum;
+        p.issuedAuthority = data.issuedAuthority;
+        p.taxNumber = data.taxNumber;
+        p.birthDate = data.birthDate;
         return p;
       }
     } catch (err) {
@@ -2052,7 +2173,7 @@ export class AppDataRepository extends AbstractDataRepository {
       let p = new PersonInfo();
 
       const response = await this.http
-        .put(personsUrl, person,RequestFactory.makeAuthHeader()).toPromise();
+        .put(personsUrl, person, RequestFactory.makeAuthHeader()).toPromise();
       const data = response.json();
 
       if (response.status !== 200) {
@@ -2061,13 +2182,13 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data != null) {
         p.id = data.id;
         p.firstName = data.firstName;
-        p.lastName= data.lastName;
-        p.middleName= data.middleName;
-        p.passportSeries= data.passportSeries;
-        p.passportNum= data.passportNum;
-        p.issuedAuthority= data.issuedAuthority;
-        p.taxNumber= data.taxNumber;
-        p.birthDate= data.birthDate;
+        p.lastName = data.lastName;
+        p.middleName = data.middleName;
+        p.passportSeries = data.passportSeries;
+        p.passportNum = data.passportNum;
+        p.issuedAuthority = data.issuedAuthority;
+        p.taxNumber = data.taxNumber;
+        p.birthDate = data.birthDate;
         return p;
       }
     } catch (err) {
@@ -2079,7 +2200,7 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
       const _id = personId.toString();
       let p = new PersonInfo();
-      const response = await this.http.get(personsUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.get(personsUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
       let data: any = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -2087,13 +2208,13 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data != null) {
         p.id = data.id;
         p.firstName = data.firstName;
-        p.lastName= data.lastName;
-        p.middleName= data.middleName;
-        p.passportSeries= data.passportSeries;
-        p.passportNum= data.passportNum;
-        p.issuedAuthority= data.issuedAuthority;
-        p.taxNumber= data.taxNumber;
-        p.birthDate= data.birthDate;
+        p.lastName = data.lastName;
+        p.middleName = data.middleName;
+        p.passportSeries = data.passportSeries;
+        p.passportNum = data.passportNum;
+        p.issuedAuthority = data.issuedAuthority;
+        p.taxNumber = data.taxNumber;
+        p.birthDate = data.birthDate;
         return p;
       }
     } catch (err) {
@@ -2104,26 +2225,34 @@ export class AppDataRepository extends AbstractDataRepository {
   public async loadSuppliersCache() {
     try {
       const response = await this.http
-        .get(suppliersUrl,RequestFactory.makeAuthHeader()).toPromise();
+        .get(suppliersUrl, RequestFactory.makeAuthHeader()).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
 
-      if (data != null) {
+      if (data) {
         data.forEach(val => {
-            let supplier = new Supplier();
+          if (this.cache.Suppliers.HasNotValidCachedValue(val.id.toString())) {
+            const entity: Providers.CacheDataContainer<Supplier> = this.cache.Suppliers.Item(val.id.toString());
+            const supplier: Supplier = (entity) ? entity.item : new Supplier();
+
+            if (!entity) {
+              this.cache.Suppliers.Add(val.id.toString(), { item: supplier, expire: Date.now() + CacheProvider.Settings.supplier.expire });
+            }
+
+            else
+              entity.expire = Date.now() + CacheProvider.Settings.supplier.expire;
+
             supplier.id = val.id;
             supplier.name = val.name;
             supplier.paymentMethodId = val.paymentMethodId;
             supplier.rating = val.rating;
             supplier.positiveFeedbackPct = val.positiveFeedbackPct;
             supplier.refsCount = val.refsCount;
-            if (this.isEmpty(this.cache.Suppliers.Item(val.id.toString()))) {
-              this.cache.Suppliers.Add(val.id.toString(), supplier);
-            };
-          }
+          };
+        }
         );
       }
     }
@@ -2134,15 +2263,21 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getSupplierById(supplierId: number): Promise<Supplier> {
     try {
-      const suppl: Supplier = new Supplier();
       const id: string = supplierId.toString();
 
-      // <editor-fold desc = "id in cache is empty"
-      if (this.isEmpty(this.cache.Suppliers.Item(id))) {
-        this.cache.Suppliers.Add(id, suppl);
+      if (this.cache.Suppliers.HasNotValidCachedValue(id)) {
+        const entity: Providers.CacheDataContainer<Supplier> = this.cache.Suppliers.Item(id);
+        const supplier: Supplier = (entity) ? entity.item : new Supplier();
+
+        if (!entity) {
+          this.cache.Suppliers.Add(id, { item: supplier, expire: Date.now() + CacheProvider.Settings.supplier.expire });
+        }
+
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.supplier.expire;
 
         const response = await this.http
-          .get(suppliersUrl + `/${id}`,RequestFactory.makeAuthHeader())
+          .get(suppliersUrl + `/${id}`, RequestFactory.makeAuthHeader())
           .toPromise();
 
         const data = response.json();
@@ -2150,20 +2285,18 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error("server side status error");
         }
 
-        if (data != null) {
-          suppl.id = data.id;
-          suppl.name = data.name;
-          suppl.paymentMethodId = data.paymentMethodId;
-          suppl.rating = data.rating;
-          suppl.positiveFeedbackPct = data.positiveFeedbackPct;
-          suppl.refsCount = data.refsCount;
-          this.cache.Suppliers.Add(id, suppl);
+        if (data) {
+          supplier.id = data.id;
+          supplier.name = data.name;
+          supplier.paymentMethodId = data.paymentMethodId;
+          supplier.rating = data.rating;
+          supplier.positiveFeedbackPct = data.positiveFeedbackPct;
+          supplier.refsCount = data.refsCount;
+          return supplier;
         }
-        return suppl;
+        return this.cache.Suppliers.Remove(id).item;
       } else {
-        // </editor-fold>
-
-        return this.cache.Suppliers.Item(id);
+        return this.cache.Suppliers.Item(id).item;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -2172,14 +2305,22 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getCurrencyById(currencyId: number): Promise<Currency> {
     try {
-      const curr: Currency = new Currency();
       const id: string = currencyId.toString();
 
-      // <editor-fold desc = "id in cache is empty"
-      if (this.isEmpty(this.cache.Currency.Item(id))) {
-        this.cache.Currency.Add(id, curr);
+      if (this.cache.Currency.HasNotValidCachedValue(id)) {
+        const currentEntity: Providers.CacheDataContainer<Currency> = this.cache.Currency.Item(id);
+        const curr: Currency = (currentEntity) ? currentEntity.item : new Currency();
+
+        if (!currentEntity)
+          this.cache.Currency.Add(id, { item: curr, expire: Date.now() + CacheProvider.Settings.currency.expire });
+
+        // change current reference
+        else
+          currentEntity.expire = Date.now() + CacheProvider.Settings.currency.expire;
+
+        // request
         const response = await this.http
-          .get(currenciesUrl + `/${id}`,RequestFactory.makeAuthHeader())
+          .get(currenciesUrl + `/${id}`, RequestFactory.makeAuthHeader())
           .toPromise();
 
         const data = response.json();
@@ -2190,13 +2331,13 @@ export class AppDataRepository extends AbstractDataRepository {
         if (data != null) {
           curr.id = data.id;
           curr.shortName = data.shortName;
-          this.cache.Currency.Add(id, curr);
+          return curr;
         }
-        return curr;
-      } else {
-        // </editor-fold>
 
-        return this.cache.Currency.Item(id);
+        return this.cache.Currency.Remove(id).item;
+
+      } else {
+        return this.cache.Currency.Item(id).item;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -2206,8 +2347,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getSuppliers(cacheForce: boolean): Promise<Supplier[]> {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
-      if (this.cache.Suppliers.Count() === 0 || cacheForce === true) {
-        const response = await this.http.get(suppliersUrl,RequestFactory.makeAuthHeader()).toPromise();
+      if (this.cache.Suppliers.HasNotValidCachedRange() || cacheForce === true) {
+        const response = await this.http.get(suppliersUrl, RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
@@ -2229,7 +2370,7 @@ export class AppDataRepository extends AbstractDataRepository {
             suppliers.push(supplierItem);
 
             // add supplier to cashe
-            this.cache.Suppliers.Add(supplierItem.id.toString(), supplierItem);
+            this.cache.Suppliers.Add(supplierItem.id.toString(), { item: supplierItem, expire: Date.now() + CacheProvider.Settings.supplier.expire });
           });
         }
         return suppliers;
@@ -2245,8 +2386,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getCurrencies(cacheForce: boolean): Promise<Currency[]> {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
-      if (this.cache.Currency.Count() === 0 || cacheForce === true) {
-        const response = await this.http.get(currenciesUrl,RequestFactory.makeAuthHeader()).toPromise();
+      if (this.cache.Currency.HasNotValidCachedRange() || cacheForce === true) {
+        const response = await this.http.get(currenciesUrl, RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
@@ -2260,7 +2401,7 @@ export class AppDataRepository extends AbstractDataRepository {
             currencies.push(currencyItem);
 
             // add currency to cashe
-            this.cache.Currency.Add(currencyItem.id.toString(), currencyItem);
+            this.cache.Currency.Add(currencyItem.id.toString(), { item: currencyItem, expire: Date.now() + CacheProvider.Settings.currency.expire });
           });
         }
         return currencies;
@@ -2276,8 +2417,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getLocale(cacheForce: boolean): Promise<Lang[]> {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
-      if (this.cache.Lang.Count() === 0 || cacheForce === true) {
-        const response = await this.http.get(LangUrl,RequestFactory.makeAuthHeader()).toPromise();
+      if (this.cache.Lang.HasNotValidCachedRange() || cacheForce === true) {
+        const response = await this.http.get(LangUrl, RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
@@ -2286,12 +2427,11 @@ export class AppDataRepository extends AbstractDataRepository {
         const languages = new Array<Lang>();
         if (data != null) {
           data.forEach(val => {
-            // create current currency
-            const langItem: Currency = new Lang(val.id, val.name);
+            const langItem: Lang = new Lang(val.id, val.name);
             languages.push(langItem);
 
             // add currency to cashe
-            this.cache.Currency.Add(langItem.id.toString(), langItem);
+            this.cache.Lang.Add(langItem.id.toString(), { item: langItem, expire: Date.now() + CacheProvider.Settings.lang.expire });
           });
         }
         return languages;
@@ -2306,29 +2446,37 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getManufacturerById(manufacturerId: number): Promise<Manufacturer> {
     try {
-      const manufacturer: Manufacturer = new Manufacturer();
       const id: string = manufacturerId.toString();
       // <editor-fold desc = "id in cache is empty"
-      if (this.isEmpty(this.cache.Manufacturer.Item(id))) {
-        //this.cache.Manufacturer.Add(id, manufacturer);
+      if (this.cache.Manufacturer.HasNotValidCachedValue(id)) {
+        const entity: Providers.CacheDataContainer<Manufacturer> = this.cache.Manufacturer.Item(id);
+        const manufacturer: Manufacturer = (entity) ? entity.item : new Manufacturer();
+
+        if (!entity) {
+          this.cache.Manufacturer.Add(id, { item: manufacturer, expire: Date.now() + CacheProvider.Settings.manufacturer.expire });
+        }
+
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.manufacturer.expire;
+
         const response = await this.http
-          .get(manufacturersUrl + `/${id}`,RequestFactory.makeAuthHeader())
+          .get(manufacturersUrl + `/${id}`, RequestFactory.makeAuthHeader())
           .toPromise();
         const data = response.json();
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
 
-        if (data != null) {
+        if (data) {
           manufacturer.id = data.id;
           manufacturer.name = data.name;
-          this.cache.Manufacturer.Add(id, manufacturer);
+          return manufacturer;
         }
-        return manufacturer;
+        return this.cache.Manufacturer.Remove(id).item;
       } else {
         // </editor-fold>
 
-        return this.cache.Manufacturer.Item(id);
+        return this.cache.Manufacturer.Item(id).item;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -2338,8 +2486,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getManufacturers(cacheForce: boolean): Promise<Manufacturer[]> {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
-      if (this.cache.Manufacturer.Count() === 0 || cacheForce === true) {
-        const response = await this.http.get(manufacturersUrl,RequestFactory.makeAuthHeader()).toPromise();
+      if (this.cache.Manufacturer.HasNotValidCachedRange() || cacheForce === true) {
+        const response = await this.http.get(manufacturersUrl, RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
@@ -2359,7 +2507,7 @@ export class AppDataRepository extends AbstractDataRepository {
             // add manufacturer to cashe
             this.cache.Manufacturer.Add(
               manufacturerItem.id.toString(),
-              manufacturerItem
+              { item: manufacturerItem, expire: Date.now() + CacheProvider.Settings.manufacturer.expire }
             );
           });
         }
@@ -2399,12 +2547,12 @@ export class AppDataRepository extends AbstractDataRepository {
       let enumVal =
         val.prop_Value_Enum !== null
           ? new PropEnumList(
-          val.prop_Value_Enum.id,
-          this.getSingleProp(val.prop_Value_Enum.id_Prop),
-          val.prop_Value_Enum.name,
-          val.prop_Value_Enum.list_Index,
-          val.prop_Value_Enum.bit_Index,
-          val.prop_Value_Enum.url
+            val.prop_Value_Enum.id,
+            this.getSingleProp(val.prop_Value_Enum.id_Prop),
+            val.prop_Value_Enum.name,
+            val.prop_Value_Enum.list_Index,
+            val.prop_Value_Enum.bit_Index,
+            val.prop_Value_Enum.url
           )
           : null;
 
@@ -2453,8 +2601,8 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getCitiesWithStores(): Promise<City[]> {
     try {
-      if (this.cache.CityWithStore.Count() === 0) {
-        const response = await this.http.get(citiesWithStoresUrl,RequestFactory.makeAuthHeader()).toPromise();
+      if (this.cache.CityWithStore.HasNotValidCachedRange()) {
+        const response = await this.http.get(citiesWithStoresUrl, RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
@@ -2466,7 +2614,7 @@ export class AppDataRepository extends AbstractDataRepository {
             // create current city
             const cityItem: City = new City(val.id, val.name, val.idRegion);
             cities.push(cityItem);
-            this.cache.CityWithStore.Add(val.id.toString(),cityItem);
+            this.cache.CityWithStore.Add(val.id.toString(), { item: cityItem, expire: Date.now() + CacheProvider.Settings.city.expire });
           });
         }
         return cities;
@@ -2480,8 +2628,8 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async searchCities(srchString: string): Promise<City[]> {
     try {
-      const response = await this.http.get(citiesUrl,RequestFactory.makeSearch([
-        {key: "srch", value: srchString}
+      const response = await this.http.get(citiesUrl, RequestFactory.makeSearch([
+        { key: "srch", value: srchString }
       ])).toPromise();
 
       const data = response.json();
@@ -2506,8 +2654,8 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getCities(): Promise<City[]> {
     try {
-      if (this.cache.City.Count() === 0) {
-        const response = await this.http.get(citiesUrl,RequestFactory.makeAuthHeader()).toPromise();
+      if (this.cache.City.HasNotValidCachedRange()) {
+        const response = await this.http.get(citiesUrl, RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
@@ -2519,7 +2667,7 @@ export class AppDataRepository extends AbstractDataRepository {
             // create current city
             const cityItem: City = new City(val.id, val.name, val.idRegion);
             cities.push(cityItem);
-            this.cache.City.Add(val.id.toString(),cityItem);
+            this.cache.City.Add(val.id.toString(), { item: cityItem, expire: Date.now() + CacheProvider.Settings.city.expire });
           });
         }
         return cities;
@@ -2533,8 +2681,8 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getStores(): Promise<IDictionary<Store[]>> {
     try {
-      if (this.cache.Store.Count() === 0) {
-        const response = await this.http.get(storesUrl,RequestFactory.makeAuthHeader()).toPromise();
+      if (this.cache.Store.HasNotValidCachedRange()) {
+        const response = await this.http.get(storesUrl, RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
@@ -2553,7 +2701,7 @@ export class AppDataRepository extends AbstractDataRepository {
               let storeArr: Store[] = [];
               for (let i = 0; i < storeFiltered.length; i++) {
                 let store = storeFiltered[i];
-                let position = {lat: store.lat, lng: store.lng};
+                let position = { lat: store.lat, lng: store.lng };
                 if (store.openTime !== null && store.closeTime !== null && store.rating === null && store.idFeedbacks === null) {
                   let s = new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime);
                   storeArr.push(s);
@@ -2569,7 +2717,7 @@ export class AppDataRepository extends AbstractDataRepository {
                 }
               }
               stores[dataStore.idCity.toString()] = storeArr;
-              this.cache.Store.Add(dataStore.idCity.toString(),{id: dataStore.idCity.toString(), stores: storeArr});
+              this.cache.Store.Add(dataStore.idCity.toString(), { item: { id: dataStore.idCity.toString(), stores: storeArr }, expire: Date.now() + CacheProvider.Settings.store.expire });
             }
           });
         }
@@ -2588,7 +2736,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getStoreById(id: number): Promise<Store> {
     try {
-      const response = await this.http.get(`${storesUrl}/${id}`,RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.get(`${storesUrl}/${id}`, RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2596,7 +2744,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       let resultStore: Store;
       if (data != null) {
-        let position = {lat: data.lat, lng: data.lng};
+        let position = { lat: data.lat, lng: data.lng };
         if (data.id === id) {
           if (data.openTime !== null && data.closeTime !== null && data.rating === null && data.idFeedbacks === null) {
             resultStore = new Store(data.id, data.idCity, data.address, position, data.openTime, data.closeTime);
@@ -2615,10 +2763,10 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getStoreReviewsByStoreId(storeId: number): Promise<{reviews:StoreReview[], idClient:number}> {
+  public async getStoreReviewsByStoreId(storeId: number): Promise<{ reviews: StoreReview[], idClient: number }> {
     try {
       const response = await this.http
-        .get(`${storeReviewsByStoreIdUrl}/${storeId}`,RequestFactory.makeAuthHeader()).toPromise();
+        .get(`${storeReviewsByStoreIdUrl}/${storeId}`, RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2634,7 +2782,7 @@ export class AppDataRepository extends AbstractDataRepository {
           let substring2 = substrings[1].slice(0, substrings[1].length - 1);
           let date = substring1 + " " + substring2;
           if (val.idReview && val.idReview !== null) {
-            if(!answers[val.idReview.toString()]) {
+            if (!answers[val.idReview.toString()]) {
               answers[val.idReview.toString()] = [];
             }
             answers[val.idReview.toString()].push(new ReviewAnswer(
@@ -2691,16 +2839,16 @@ export class AppDataRepository extends AbstractDataRepository {
           }
         })
       }
-      return {reviews:storesRevs, idClient:data.currentUser};
+      return { reviews: storesRevs, idClient: data.currentUser };
     } catch (err) {
       return await this.handleError(err);
     }
   }
 
-  public async getStoreReviews(): Promise<{reviews:IDictionary<StoreReview[]>, idClient:number}> {
+  public async getStoreReviews(): Promise<{ reviews: IDictionary<StoreReview[]>, idClient: number }> {
     try {
       const response = await this.http
-        .get(`${storeReviewsUrl}`,RequestFactory.makeAuthHeader()).toPromise();
+        .get(`${storeReviewsUrl}`, RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -2777,7 +2925,7 @@ export class AppDataRepository extends AbstractDataRepository {
         });
         reviews[idStore.toString()] = storesRevs;
       }
-      return  {reviews:reviews, idClient:data.currentUser};
+      return { reviews: reviews, idClient: data.currentUser };
     } catch (err) {
       return await this.handleError(err);
     }
@@ -2798,7 +2946,7 @@ export class AppDataRepository extends AbstractDataRepository {
             val.id,
             val.idCity,
             val.address,
-            {lat: val.lat, lng: val.lng},
+            { lat: val.lat, lng: val.lng },
             val.openTime,
             val.closeTime,
             val.rating,
@@ -2848,7 +2996,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getPageContent(id: number): Promise<string> {
     try {
       const response = await this.http
-        .get(`${pagesDynamicUrl}/${id}`,RequestFactory.makeAuthHeader())
+        .get(`${pagesDynamicUrl}/${id}`, RequestFactory.makeAuthHeader())
         .toPromise();
 
       const data = response.json();
@@ -2864,7 +3012,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getAction(id: number): Promise<Action> {
     try {
       const response = await this.http
-        .get(`${actionDynamicUrl}/${id}`,RequestFactory.makeAuthHeader())
+        .get(`${actionDynamicUrl}/${id}`, RequestFactory.makeAuthHeader())
         .toPromise();
 
       const data = response.json();
@@ -2882,12 +3030,12 @@ export class AppDataRepository extends AbstractDataRepository {
           data.priority,
           data.sketch_content,
           data.action_content,
-          (data.isActive) ? true:false,
+          (data.isActive) ? true : false,
           data.id_type,
           data.badge_url,
           data.id_supplier,
           data.title,
-          (data.is_landing)? true:false
+          (data.is_landing) ? true : false
         );
       }
       return action;
@@ -2898,7 +3046,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getActions(): Promise<Action[]> {
     try {
-      const response = await this.http.get(actionDynamicUrl,RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.get(actionDynamicUrl, RequestFactory.makeAuthHeader()).toPromise();
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -2915,12 +3063,12 @@ export class AppDataRepository extends AbstractDataRepository {
             val.priority,
             val.sketch_content,
             val.action_content,
-            (data.isActive) ? true:false,
+            (data.isActive) ? true : false,
             data.id_type,
             data.badge_url,
             data.id_supplier,
             data.title,
-           (data.is_landing)? true:false
+            (data.is_landing) ? true : false
           );
 
           actions.push(actionItem);
@@ -2932,46 +3080,46 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getProductsByActionId(actionId: number):  Promise<Product[]> {
+  public async getProductsByActionId(actionId: number): Promise<Product[]> {
     try {
-        const response = await this.http
-          .get(`${getProductsByActionUrl}/${actionId}`,RequestFactory.makeAuthHeader())
-          .toPromise();
+      const response = await this.http
+        .get(`${getProductsByActionUrl}/${actionId}`, RequestFactory.makeAuthHeader())
+        .toPromise();
 
-        const data = response.json();
-        if (response.status !== 200) {
-          throw new Error("server side status error");
-        }
-        const products = new Array<Product>();
-        if (data != null) {
-          data.forEach(val => {
-            let props = new Array<ProductPropValue>();
-            if (val.props && val.props.length !== 0) {
-              props = this.getPropValuefromProduct(val);
-            }
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const products = new Array<Product>();
+      if (data != null) {
+        data.forEach(val => {
+          let props = new Array<ProductPropValue>();
+          if (val.props && val.props.length !== 0) {
+            props = this.getPropValuefromProduct(val);
+          }
 
-            // create current product
-            const productItem: Product = new Product(
-              val.id,
-              val.name,
-              val.price,
-              val.oldPrice,
-              val.bonuses,
-              val.manufacturerId,
-              props,
-              val.imageUrl,
-              val.rating,
-              val.recall,
-              val.supplOffers,
-              val.description,
-              val.slideImageUrls,
-              val.barcode
-            );
+          // create current product
+          const productItem: Product = new Product(
+            val.id,
+            val.name,
+            val.price,
+            val.oldPrice,
+            val.bonuses,
+            val.manufacturerId,
+            props,
+            val.imageUrl,
+            val.rating,
+            val.recall,
+            val.supplOffers,
+            val.description,
+            val.slideImageUrls,
+            val.barcode
+          );
 
-            products.push(productItem);
-          });
-        }
-        return products;
+          products.push(productItem);
+        });
+      }
+      return products;
     } catch (err) {
       return await this.handleError(err);
     }
@@ -2980,8 +3128,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getQuotationProductsByQuotationId(quotationId: number): Promise<QuotationProduct[]> {
     try {
       const response = await this.http
-        .get(quotationProductsUrl,RequestFactory.makeSearch([
-          {key: "idQuotation", value: quotationId.toString()}
+        .get(quotationProductsUrl, RequestFactory.makeSearch([
+          { key: "idQuotation", value: quotationId.toString() }
         ])).toPromise();
 
       const data = response.json();
@@ -3015,7 +3163,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getNovelty(id: number): Promise<Novelty> {
     try {
       const response = await this.http
-        .get(`${noveltyByIdDynamicUrl}/${id}`,RequestFactory.makeAuthHeader())
+        .get(`${noveltyByIdDynamicUrl}/${id}`, RequestFactory.makeAuthHeader())
         .toPromise();
 
       const data = response.json();
@@ -3042,7 +3190,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getNovelties(): Promise<Novelty[]> {
     try {
-      const response = await this.http.get(noveltiesDynamicUrl,RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.get(noveltiesDynamicUrl, RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -3124,7 +3272,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getNoveltyDetailsByNoveltyId(id: number): Promise<NoveltyDetails[]> {
     try {
-      const response = await this.http.get(`${noveltyDetailsDynamicUrl}/${id}`,RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.get(`${noveltyDetailsDynamicUrl}/${id}`, RequestFactory.makeAuthHeader()).toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -3183,7 +3331,7 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
       const clientPollLast: ClientPollAnswer = new ClientPollAnswer
-      (data.id, data.idClient, data.idPoll, data.idPollQuestions, data.clientAnswer);
+        (data.id, data.idClient, data.idPoll, data.idPollQuestions, data.clientAnswer);
 
       return clientPollLast;
     } catch (err) {
@@ -3194,8 +3342,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getClientPoolAnswersForUserByPollId(pollId: number): Promise<ClientPollAnswer[]> {
     try {
       const response = await this.http
-      .get(`${clientPollAnswersUrl}/${pollId}`, RequestFactory.makeAuthHeader())
-      .toPromise();
+        .get(`${clientPollAnswersUrl}/${pollId}`, RequestFactory.makeAuthHeader())
+        .toPromise();
 
       const data = response.json();
       if (response.status !== 200) {
@@ -3217,7 +3365,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async postDeviceData(deviceData: DeviceData) {
     try {
-      const response = await this.http.post(deviceDataUrl, deviceData,RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.post(deviceDataUrl, deviceData, RequestFactory.makeAuthHeader()).toPromise();
 
       if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
         throw new Error("server side status error");
@@ -3230,7 +3378,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getCategories(): Promise<Category[]> {
     try {
       const response = await this.http
-        .get(categoriesUrl,RequestFactory.makeAuthHeader()).toPromise();
+        .get(categoriesUrl, RequestFactory.makeAuthHeader()).toPromise();
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -3239,8 +3387,8 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data != null) {
         data.forEach(val =>
           categories.push(
-            new Category(val.id,val.name,val.parent_id,val.id_product_cat,val.prefix,
-                         val.icon,val.is_show,val.priority_index,val.priority_show)
+            new Category(val.id, val.name, val.parent_id, val.id_product_cat, val.prefix,
+              val.icon, val.is_show, val.priority_index, val.priority_show)
           )
         );
       }
@@ -3253,22 +3401,30 @@ export class AppDataRepository extends AbstractDataRepository {
   public async loadMeasureUnitCache() {
     try {
       const response = await this.http
-        .get(measureUnitUrl,RequestFactory.makeAuthHeader()).toPromise();
+        .get(measureUnitUrl, RequestFactory.makeAuthHeader()).toPromise();
 
       let data: any = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
 
-      if (data != null) {
+      if (data) {
         data.forEach(val => {
-            let mUnit = new MeasureUnit();
-            mUnit.id = val.id;
-            mUnit.name = val.name;
-            if (this.isEmpty(this.cache.MeasureUnit.Item(val.id.toString()))) {
-              this.cache.MeasureUnit.Add(val.id.toString(), mUnit);
-            };
+          if (this.cache.MeasureUnit.HasNotValidCachedValue(val.id.toString())) {
+            const entity: Providers.CacheDataContainer<MeasureUnit> = this.cache.MeasureUnit.Item(val.id.toString());
+            const measureunit: MeasureUnit = (entity) ? entity.item : new MeasureUnit();
+
+            if (!entity) {
+              this.cache.MeasureUnit.Add(val.id.toString(), { item: measureunit, expire: Date.now() + CacheProvider.Settings.measureunit.expire });
+            }
+
+            else
+              entity.expire = Date.now() + CacheProvider.Settings.measureunit.expire;
+
+            measureunit.id = val.id;
+            measureunit.name = val.name;
           }
+        }
         );
       }
     }
@@ -3280,34 +3436,42 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getMeasureUnitById(unitId: number): Promise<MeasureUnit> {
     try {
-        const munit: MeasureUnit = new MeasureUnit();
-        const id: string = unitId.toString();
+      const id: string = unitId.toString();
 
-        // <editor-fold desc = "id in cache is empty"
-        if (this.isEmpty(this.cache.MeasureUnit.Item(id))) {
-          this.cache.MeasureUnit.Add(id, munit);
+      // <editor-fold desc = "id in cache is empty"
+      if (this.cache.MeasureUnit.HasNotValidCachedValue(id)) {
+        const entity: Providers.CacheDataContainer<MeasureUnit> = this.cache.MeasureUnit.Item(id);
+        const measureUnit: MeasureUnit = (entity) ? entity.item : new MeasureUnit();
 
-          const response = await this.http
-            .get(measureUnitUrl + `/${id}`,RequestFactory.makeAuthHeader())
-            .toPromise();
-
-          const data = response.json();
-          if (response.status !== 200) {
-            throw new Error("server side status error");
-          }
-
-          if (data != null) {
-            munit.id = data.id;
-            munit.name = data.name;
-
-            this.cache.MeasureUnit.Add(id, munit);
-          }
-          return munit;
-        } else {
-          // </editor-fold>
-
-          return this.cache.MeasureUnit.Item(id);
+        if (!entity) {
+          this.cache.MeasureUnit.Add(id, { item: measureUnit, expire: Date.now() + CacheProvider.Settings.measureunit.expire });
         }
+
+        // change current reference
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.measureunit.expire;
+
+        const response = await this.http
+          .get(measureUnitUrl + `/${id}`, RequestFactory.makeAuthHeader())
+          .toPromise();
+
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+
+        if (data) {
+          measureUnit.id = data.id;
+          measureUnit.name = data.name;
+
+          return measureUnit;
+        }
+        return this.cache.MeasureUnit.Remove(id).item;
+      } else {
+        // </editor-fold>
+
+        return this.cache.MeasureUnit.Item(id).item;
+      }
     } catch (err) {
       return await this.handleError(err);
     }
@@ -3316,7 +3480,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getProductDescription(id: number): Promise<string> {
     try {
       const _id = id.toString();
-      const response = await this.http.get(productDescriptionsUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.get(productDescriptionsUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
       let data: any = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -3334,7 +3498,7 @@ export class AppDataRepository extends AbstractDataRepository {
       let res = [];
       let data: any = null;
       const _id = id.toString();
-      const response = await this.http.get(productImagesUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.get(productImagesUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
       if (response) {
         data = response.json();
         if (response.status !== 200) {
@@ -3342,8 +3506,8 @@ export class AppDataRepository extends AbstractDataRepository {
         }
         if (data != null) {
           data.images.forEach(x => {
-              res.push(x);
-            }
+            res.push(x);
+          }
           );
         }
       }
@@ -3356,7 +3520,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getBannerSlides(): Promise<BannerSlide[]> {
     try {
-      const response = await this.http.get(bannerSlidesUrl,RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.get(bannerSlidesUrl, RequestFactory.makeAuthHeader()).toPromise();
       let data: any = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -3411,7 +3575,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async updateProductReview(productReview: ProductReview): Promise<ProductReview> {
     try {
-      const response = await this.http.post(updateProductReviewUrl, productReview,RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.post(updateProductReviewUrl, productReview, RequestFactory.makeAuthHeader()).toPromise();
       if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
         throw new Error("server side status error");
       }
@@ -3424,7 +3588,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async updateStoreReview(storeReview: StoreReview): Promise<StoreReview> {
     try {
-      const response = await this.http.post(updateStoreReviewUrl, storeReview,RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.post(updateStoreReviewUrl, storeReview, RequestFactory.makeAuthHeader()).toPromise();
       if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
         throw new Error("server side status error");
       }
@@ -3435,9 +3599,9 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getAppParams(): Promise<IKeyedCollection<AppParam>> {
+  public async getAppParams(): Promise<IKeyedCollection<Providers.CacheDataContainer<AppParam>>> {
     try {
-      if (this.cache.EnumPaymentMethod.Count() === 0) {
+      if (this.cache.AppParams.HasNotValidCachedRange()) {
         const response = await this.http
           .get(appParamsUrl).toPromise();
 
@@ -3448,16 +3612,16 @@ export class AppDataRepository extends AbstractDataRepository {
 
         if (data != null) {
           data.forEach(val => {
-              let param = new AppParam(val.id, val.propName, val.propVal);
+            let param = new AppParam(val.id, val.propName, val.propVal);
 
-              if (this.isEmpty(this.cache.AppParams.Item(val.propName))) {
-                this.cache.AppParams.Add(val.propName, param);
-              }
-              ;
+            if (this.cache.AppParams.HasNotValidCachedValue(val.propName)) {
+              this.cache.AppParams.Add(val.propName, { item: param, expire: Date.now() + AppConstants.ROOT_APP_PARAMS_CACHE_LIFETIME });
             }
+
+          }
           );
         }
-      };
+      }
       return this.cache.AppParams;
     }
     catch (err) {
@@ -3466,13 +3630,13 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async getAppParam(param: string): Promise<string> {
-    return (<IKeyedCollection<AppParam>>(await this.getAppParams())).Item(param).propVal;
+    return (<IKeyedCollection<Providers.CacheDataContainer<AppParam>>>(await this.getAppParams())).Item(param).item.propVal;
   }
 
   public async getClientOrderDatesRanges(): Promise<OrdersFilter[]> {
     try {
       const response = await this.http
-        .get(clientOrderDatesRangeUrl,RequestFactory.makeAuthHeader()).toPromise();
+        .get(clientOrderDatesRangeUrl, RequestFactory.makeAuthHeader()).toPromise();
 
       const data: any = response.json();
       if (response.status !== 200) {
@@ -3483,8 +3647,8 @@ export class AppDataRepository extends AbstractDataRepository {
 
       if (data != null) {
         data.forEach(val => {
-            res.push(new OrdersFilter(val.key, val.displayName, val.isDefault));
-          }
+          res.push(new OrdersFilter(val.key, val.displayName, val.isDefault));
+        }
         );
       }
       return res;
@@ -3497,8 +3661,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getDefaultClientOrderDatesRanges(isDefault: boolean): Promise<OrdersFilter> {
     try {
       const response = await this.http
-        .get(clientOrderDatesRangeUrl,RequestFactory.makeSearch([
-          {key: "isDefault", value: String(isDefault)}
+        .get(clientOrderDatesRangeUrl, RequestFactory.makeSearch([
+          { key: "isDefault", value: String(isDefault) }
         ])).toPromise();
 
       const data: any = response.json();
@@ -3517,11 +3681,13 @@ export class AppDataRepository extends AbstractDataRepository {
 
 
   public async getClientOrderProductsByDate(datesRange: string):
-              Promise<{orderId: string, orderDate: Date, orderSpecId: number, idProduct: number,
-                       productName: string, productImageUrl: string, loTrackTicket: string, idQuotation: number}[]> {
+    Promise<{
+      orderId: string, orderDate: Date, orderSpecId: number, idProduct: number,
+      productName: string, productImageUrl: string, loTrackTicket: string, idQuotation: number
+    }[]> {
     try {
-      const response = await this.http.get(clientOrderProductsByDateUrl,RequestFactory.makeSearch([
-        {key: "datesRange", value: datesRange}
+      const response = await this.http.get(clientOrderProductsByDateUrl, RequestFactory.makeSearch([
+        { key: "datesRange", value: datesRange }
       ])).toPromise();
 
       const data: any = response.json();
@@ -3533,10 +3699,12 @@ export class AppDataRepository extends AbstractDataRepository {
 
       if (data != null) {
         data.forEach(val => {
-            res.push({orderId: val.orderId, orderDate: val.orderDate, orderSpecId: val.orderSpecId,
-              idProduct: val.idProduct, productName: val.productName, productImageUrl: val.productImageUrl,
-              loTrackTicket: val.loTrackTicket, idQuotation: val.idQuotation});
-          }
+          res.push({
+            orderId: val.orderId, orderDate: val.orderDate, orderSpecId: val.orderSpecId,
+            idProduct: val.idProduct, productName: val.productName, productImageUrl: val.productImageUrl,
+            loTrackTicket: val.loTrackTicket, idQuotation: val.idQuotation
+          });
+        }
         );
       }
       return res;
@@ -3546,10 +3714,10 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getCurrencyRate():Promise<CurrencyRate[]>{
+  public async getCurrencyRate(): Promise<CurrencyRate[]> {
     try {
       const response = await this.http
-        .get(getCurrencyRate,RequestFactory.makeAuthHeader()).toPromise();
+        .get(getCurrencyRate, RequestFactory.makeAuthHeader()).toPromise();
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -3558,7 +3726,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data !== null) {
         data.forEach(val =>
           currencyRates.push(
-            new CurrencyRate(val.defaultId,val.targetId,val.rate)
+            new CurrencyRate(val.defaultId, val.targetId, val.rate)
           )
         );
       }
@@ -3572,7 +3740,7 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
       const _id = idProduct.toString();
       const response = await this.http
-        .get(getActionsByProductUrl + `/${_id}` ).toPromise();
+        .get(getActionsByProductUrl + `/${_id}`).toPromise();
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -3581,9 +3749,9 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data !== null) {
         data.forEach(val =>
           arr.push(
-            new ActionByProduct(val.actionId,val.actionType,val.idQuotationProduct,val.idProduct,val.idCur,val.actionPrice,
-                                val.regularPrice,val.bonusQty,val.productName,val.complect,val.isMain,val.idGroup,
-                                val.imgUrl,val.title)
+            new ActionByProduct(val.actionId, val.actionType, val.idQuotationProduct, val.idProduct, val.idCur, val.actionPrice,
+              val.regularPrice, val.bonusQty, val.productName, val.complect, val.isMain, val.idGroup,
+              val.imgUrl, val.title)
           )
         );
       }
@@ -3596,10 +3764,10 @@ export class AppDataRepository extends AbstractDataRepository {
   private getShipmentItemsFromJson(data: any): ShipmentItems[] {
     let arr = [];
     data.forEach(
-     x => {
-       let si = new ShipmentItems(x.id, x.idShipment, x.idOrderSpecProd, x.qty, x.errorMessage);
-       arr.push(si);
-     }
+      x => {
+        let si = new ShipmentItems(x.id, x.idShipment, x.idOrderSpecProd, x.qty, x.errorMessage);
+        arr.push(si);
+      }
     );
     return arr;
   }
@@ -3617,8 +3785,8 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data !== null) {
         data.forEach(val =>
           arr.push(
-            new Shipment(val.id,val.idOrder,val.idSupplier,val.idLoEntity,val.loTrackTicket,val.loDeliveryCost,
-              val.loDeliveryCompleted,val.loEstimatedDeliveryDate,val.loDeliveryCompletedDate,val.idStorePlace,
+            new Shipment(val.id, val.idOrder, val.idSupplier, val.idLoEntity, val.loTrackTicket, val.loDeliveryCost,
+              val.loDeliveryCompleted, val.loEstimatedDeliveryDate, val.loDeliveryCompletedDate, val.idStorePlace,
               val.idLoEntityOffice, val.idLoDeliveryType, this.getShipmentItemsFromJson(val.shipmentItems))
           )
         );
@@ -3632,8 +3800,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getDeliveryDateByShipment(shpmt: Shipment, loEntityId: number, loIdClientAddress: number, delivTypeId: number): Promise<Date> {
     try {
       const response = await this.http
-        .post(getDeliveryDateByShipmentUrl, {shpmt: shpmt.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress, delivTypeId: delivTypeId},
-          RequestFactory.makeAuthHeader())
+        .post(getDeliveryDateByShipmentUrl, { shpmt: shpmt.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress, delivTypeId: delivTypeId },
+        RequestFactory.makeAuthHeader())
         .toPromise();
       const val = response.json();
 
@@ -3649,8 +3817,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getDeliveryCostByShipment(shpmt: Shipment, loEntityId: number, loIdClientAddress: number, delivTypeId: number): Promise<number> {
     try {
       const response = await this.http
-        .post(getDeliveryCostByShipmentUrl, {shpmt: shpmt.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress, delivTypeId: delivTypeId},
-          RequestFactory.makeAuthHeader())
+        .post(getDeliveryCostByShipmentUrl, { shpmt: shpmt.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress, delivTypeId: delivTypeId },
+        RequestFactory.makeAuthHeader())
         .toPromise();
       const val = response.json();
 
@@ -3689,25 +3857,33 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getLoDeliveryTypeById(id: number): Promise<LoDeliveryType> {
     try {
       const _id = id.toString();
-      const delType = new LoDeliveryType(id);
-      if (this.isEmpty(this.cache.LoDeliveryType.Item(_id))) {
-        this.cache.LoDeliveryType.Add(_id, delType);
+      if (this.cache.LoDeliveryType.HasNotValidCachedValue(_id)) {
+
+        const entity: Providers.CacheDataContainer<LoDeliveryType> = this.cache.LoDeliveryType.Item(_id);
+        const delType: LoDeliveryType = (entity) ? entity.item : new LoDeliveryType();
+
+        if (!entity) {
+          this.cache.LoDeliveryType.Add(_id, { item: delType, expire: Date.now() + CacheProvider.Settings.lodeliverytype.expire });
+        }
+
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.lodeliverytype.expire;
+
         const response = await this.http
-          .get(getLoDeliveryTypeUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
+          .get(getLoDeliveryTypeUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
-        if (data)
-        {
+        if (data) {
           delType.name = data.name;
+          return delType;
         }
-        return delType;
+        return this.cache.LoDeliveryType.Remove(_id).item;
       }
-      else
-      {
-        return this.cache.LoDeliveryType.Item(_id);
+      else {
+        return this.cache.LoDeliveryType.Item(_id).item;
       };
     }
     catch (err) {
@@ -3718,27 +3894,36 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getLoEntityOfficeById(id: number): Promise<LoEntityOffice> {
     try {
       const _id = id.toString();
-      const entOff = new LoEntityOffice(id);
-      if (this.isEmpty(this.cache.LoEntityOffice.Item(_id))) {
-        this.cache.LoDeliveryType.Add(_id, entOff);
+      if (this.cache.LoEntityOffice.HasNotValidCachedValue(_id)) {
+        const entity: Providers.CacheDataContainer<LoEntityOffice> = this.cache.LoEntityOffice.Item(_id);
+        const entOff: LoEntityOffice = (entity) ? entity.item : new LoEntityOffice();
+
+        if (!entity) {
+          this.cache.LoEntityOffice.Add(_id, { item: entOff, expire: Date.now() + CacheProvider.Settings.loentityoffice.expire });
+        }
+
+        // change current reference
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.loentityoffice.expire;
+
+
         const response = await this.http
-          .get(getLoEntityOfficeUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
+          .get(getLoEntityOfficeUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
-        if (data)
-        {
+        if (data) {
           entOff.name = data.name;
           entOff.idLoEntity = data.idLoEntity;
           entOff.idCity = data.idCity;
+          return entOff;
         }
-        return entOff;
+        return this.cache.LoEntityOffice.Remove(_id).item;
       }
-      else
-      {
-        return this.cache.LoEntityOffice.Item(_id);
+      else {
+        return this.cache.LoEntityOffice.Item(_id).item;
       };
     }
     catch (err) {
@@ -3750,7 +3935,7 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
       const _id = idLoEntity.toString();
       const response = await this.http
-        .get(getLoDeliveryTypesByLoEntityUrl + `/${_id}` ).toPromise();
+        .get(getLoDeliveryTypesByLoEntityUrl + `/${_id}`).toPromise();
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -3759,7 +3944,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data !== null) {
         data.forEach(val =>
           arr.push(
-            new LoDeliveryType(val.id,val.name)
+            new LoDeliveryType(val.id, val.name)
           )
         );
       }
@@ -3773,7 +3958,7 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getLoOfficesByLoEntityAndCity(idLoEntity: number, idCity: number): Promise<LoEntityOffice[]> {
     try {
       const response = await this.http
-        .post(getLoOfficesByLoEntityAndCityUrl, {idLoEntity: idLoEntity, idCity: idCity}).toPromise();
+        .post(getLoOfficesByLoEntityAndCityUrl, { idLoEntity: idLoEntity, idCity: idCity }).toPromise();
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -3797,8 +3982,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async notifyOnProductArrival(email: string, productId: number) {
     try {
       const response = await this.http
-        .post(notifyOnProductArrivalUrl, {email: email, productId: productId},
-          RequestFactory.makeAuthHeader()).toPromise();
+        .post(notifyOnProductArrivalUrl, { email: email, productId: productId },
+        RequestFactory.makeAuthHeader()).toPromise();
 
       if (response.status !== 201) {
         throw new Error("server side status error");
