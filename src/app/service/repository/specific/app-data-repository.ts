@@ -2038,12 +2038,12 @@ export class AppDataRepository extends AbstractDataRepository {
         const prod: Product = (entity) ? entity.item : new Product();
 
         if (!entity) {
-          this.cache.Products.Add(id, { item: prod, expire: Date.now() + CacheProvider.Settings.product.expire });
+          this.cache.Products.Add(id, { item: prod, expire: Date.now() + 50000/*CacheProvider.Settings.product.expire*/ });
         }
 
         // change current reference
         else
-          entity.expire = Date.now() + CacheProvider.Settings.product.expire;
+          entity.expire = Date.now() + 50000/*CacheProvider.Settings.product.expire*/;
 
         // http request
         const response = await this.http
@@ -2286,7 +2286,7 @@ export class AppDataRepository extends AbstractDataRepository {
           supplier.refsCount = data.refsCount;
           return supplier;
         }
-        return this.cache.Products.Remove(id).item;
+        return this.cache.Suppliers.Remove(id).item;
       } else {
         return this.cache.Suppliers.Item(id).item;
       }
@@ -2362,7 +2362,7 @@ export class AppDataRepository extends AbstractDataRepository {
             suppliers.push(supplierItem);
 
             // add supplier to cashe
-            this.cache.Suppliers.Add(supplierItem.id.toString(), { item: supplierItem, expire: Date.now() + CacheProvider.Settings.supplier.expire});
+            this.cache.Suppliers.Add(supplierItem.id.toString(), { item: supplierItem, expire: Date.now() + CacheProvider.Settings.supplier.expire });
           });
         }
         return suppliers;
@@ -2593,7 +2593,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getCitiesWithStores(): Promise<City[]> {
     try {
-      if (this.cache.CityWithStore.Count() === 0) {
+      if (this.cache.CityWithStore.HasNotValidCachedRange()) {
         const response = await this.http.get(citiesWithStoresUrl, RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
@@ -2606,7 +2606,7 @@ export class AppDataRepository extends AbstractDataRepository {
             // create current city
             const cityItem: City = new City(val.id, val.name, val.idRegion);
             cities.push(cityItem);
-            this.cache.CityWithStore.Add(val.id.toString(), cityItem);
+            this.cache.CityWithStore.Add(val.id.toString(), { item: cityItem, expire: Date.now() + CacheProvider.Settings.city.expire });
           });
         }
         return cities;
@@ -2646,7 +2646,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getCities(): Promise<City[]> {
     try {
-      if (this.cache.City.Count() === 0) {
+      if (this.cache.City.HasNotValidCachedRange()) {
         const response = await this.http.get(citiesUrl, RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
@@ -2659,7 +2659,7 @@ export class AppDataRepository extends AbstractDataRepository {
             // create current city
             const cityItem: City = new City(val.id, val.name, val.idRegion);
             cities.push(cityItem);
-            this.cache.City.Add(val.id.toString(), cityItem);
+            this.cache.City.Add(val.id.toString(), { item: cityItem, expire: Date.now() + CacheProvider.Settings.city.expire });
           });
         }
         return cities;
@@ -2673,7 +2673,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getStores(): Promise<IDictionary<Store[]>> {
     try {
-      if (this.cache.Store.Count() === 0) {
+      if (this.cache.Store.HasNotValidCachedRange()) {
         const response = await this.http.get(storesUrl, RequestFactory.makeAuthHeader()).toPromise();
 
         const data = response.json();
@@ -2709,7 +2709,7 @@ export class AppDataRepository extends AbstractDataRepository {
                 }
               }
               stores[dataStore.idCity.toString()] = storeArr;
-              this.cache.Store.Add(dataStore.idCity.toString(), { id: dataStore.idCity.toString(), stores: storeArr });
+              this.cache.Store.Add(dataStore.idCity.toString(), { item: { id: dataStore.idCity.toString(), stores: storeArr }, expire: Date.now() + CacheProvider.Settings.store.expire });
             }
           });
         }
@@ -3400,14 +3400,22 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
 
-      if (data != null) {
+      if (data) {
         data.forEach(val => {
-          let mUnit = new MeasureUnit();
-          mUnit.id = val.id;
-          mUnit.name = val.name;
-          if (this.isEmpty(this.cache.MeasureUnit.Item(val.id.toString()))) {
-            this.cache.MeasureUnit.Add(val.id.toString(), mUnit);
-          };
+          if (this.cache.MeasureUnit.HasNotValidCachedValue(val.id.toString())) {
+            const entity: Providers.CacheDataContainer<MeasureUnit> = this.cache.MeasureUnit.Item(val.id.toString());
+            const measureunit: MeasureUnit = (entity) ? entity.item : new MeasureUnit();
+
+            if (!entity) {
+              this.cache.MeasureUnit.Add(val.id.toString(), { item: measureunit, expire: Date.now() + CacheProvider.Settings.measureunit.expire });
+            }
+
+            else
+              entity.expire = Date.now() + CacheProvider.Settings.measureunit.expire;
+
+            measureunit.id = val.id;
+            measureunit.name = val.name;
+          }
         }
         );
       }
@@ -3420,12 +3428,20 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getMeasureUnitById(unitId: number): Promise<MeasureUnit> {
     try {
-      const munit: MeasureUnit = new MeasureUnit();
       const id: string = unitId.toString();
 
       // <editor-fold desc = "id in cache is empty"
-      if (this.isEmpty(this.cache.MeasureUnit.Item(id))) {
-        this.cache.MeasureUnit.Add(id, munit);
+      if (this.cache.MeasureUnit.HasNotValidCachedValue(id)) {
+        const entity: Providers.CacheDataContainer<MeasureUnit> = this.cache.MeasureUnit.Item(id);
+        const measureUnit: MeasureUnit = (entity) ? entity.item : new MeasureUnit();
+
+        if (!entity) {
+          this.cache.MeasureUnit.Add(id, { item: measureUnit, expire: Date.now() + CacheProvider.Settings.measureunit.expire });
+        }
+
+        // change current reference
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.measureunit.expire;
 
         const response = await this.http
           .get(measureUnitUrl + `/${id}`, RequestFactory.makeAuthHeader())
@@ -3436,17 +3452,17 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error("server side status error");
         }
 
-        if (data != null) {
-          munit.id = data.id;
-          munit.name = data.name;
+        if (data) {
+          measureUnit.id = data.id;
+          measureUnit.name = data.name;
 
-          this.cache.MeasureUnit.Add(id, munit);
+          return measureUnit;
         }
-        return munit;
+        return this.cache.MeasureUnit.Remove(id).item;
       } else {
         // </editor-fold>
 
-        return this.cache.MeasureUnit.Item(id);
+        return this.cache.MeasureUnit.Item(id).item;
       }
     } catch (err) {
       return await this.handleError(err);
@@ -3575,9 +3591,9 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getAppParams(): Promise<IKeyedCollection<AppParam>> {
+  public async getAppParams(): Promise<IKeyedCollection<Providers.CacheDataContainer<AppParam>>> {
     try {
-      if (this.cache.EnumPaymentMethod.Count() === 0) {
+      if (this.cache.AppParams.HasNotValidCachedRange()) {
         const response = await this.http
           .get(appParamsUrl).toPromise();
 
@@ -3590,14 +3606,14 @@ export class AppDataRepository extends AbstractDataRepository {
           data.forEach(val => {
             let param = new AppParam(val.id, val.propName, val.propVal);
 
-            if (this.isEmpty(this.cache.AppParams.Item(val.propName))) {
-              this.cache.AppParams.Add(val.propName, param);
+            if (this.cache.AppParams.HasNotValidCachedValue(val.propName)) {
+              this.cache.AppParams.Add(val.propName, { item: param, expire: Date.now() + AppConstants.ROOT_APP_PARAMS_CACHE_LIFETIME });
             }
-            ;
+            
           }
           );
         }
-      };
+      }
       return this.cache.AppParams;
     }
     catch (err) {
@@ -3606,7 +3622,7 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async getAppParam(param: string): Promise<string> {
-    return (<IKeyedCollection<AppParam>>(await this.getAppParams())).Item(param).propVal;
+    return (<IKeyedCollection<Providers.CacheDataContainer<AppParam>>>(await this.getAppParams())).Item(param).item.propVal;
   }
 
   public async getClientOrderDatesRanges(): Promise<OrdersFilter[]> {
@@ -3833,9 +3849,18 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getLoDeliveryTypeById(id: number): Promise<LoDeliveryType> {
     try {
       const _id = id.toString();
-      const delType = new LoDeliveryType(id);
-      if (this.isEmpty(this.cache.LoDeliveryType.Item(_id))) {
-        this.cache.LoDeliveryType.Add(_id, delType);
+      if (this.cache.LoDeliveryType.HasNotValidCachedValue(_id)) {
+        
+        const entity: Providers.CacheDataContainer<LoDeliveryType> = this.cache.LoDeliveryType.Item(_id);
+        const delType: LoDeliveryType = (entity) ? entity.item : new LoDeliveryType();
+
+        if (!entity) {
+          this.cache.LoDeliveryType.Add(_id, { item: delType, expire: Date.now() + CacheProvider.Settings.lodeliverytype.expire });
+        }
+
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.lodeliverytype.expire;
+
         const response = await this.http
           .get(getLoDeliveryTypeUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
 
@@ -3845,11 +3870,12 @@ export class AppDataRepository extends AbstractDataRepository {
         }
         if (data) {
           delType.name = data.name;
+          return delType;
         }
-        return delType;
+        return this.cache.LoDeliveryType.Remove(_id).item;
       }
       else {
-        return this.cache.LoDeliveryType.Item(_id);
+        return this.cache.LoDeliveryType.Item(_id).item;
       };
     }
     catch (err) {
@@ -3860,9 +3886,19 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getLoEntityOfficeById(id: number): Promise<LoEntityOffice> {
     try {
       const _id = id.toString();
-      const entOff = new LoEntityOffice(id);
-      if (this.isEmpty(this.cache.LoEntityOffice.Item(_id))) {
-        this.cache.LoDeliveryType.Add(_id, entOff);
+      if (this.cache.LoEntityOffice.HasNotValidCachedValue(_id)) {
+        const entity: Providers.CacheDataContainer<LoEntityOffice> = this.cache.LoEntityOffice.Item(_id);
+        const entOff: LoEntityOffice = (entity) ? entity.item : new LoEntityOffice();
+
+        if (!entity) {
+          this.cache.LoEntityOffice.Add(_id, { item: entOff, expire: Date.now() + CacheProvider.Settings.loentityoffice.expire });
+        }
+
+        // change current reference
+        else
+          entity.expire = Date.now() + CacheProvider.Settings.loentityoffice.expire;
+
+
         const response = await this.http
           .get(getLoEntityOfficeUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
 
@@ -3874,11 +3910,12 @@ export class AppDataRepository extends AbstractDataRepository {
           entOff.name = data.name;
           entOff.idLoEntity = data.idLoEntity;
           entOff.idCity = data.idCity;
+          return entOff;
         }
-        return entOff;
+        return this.cache.LoEntityOffice.Remove(_id).item;
       }
       else {
-        return this.cache.LoEntityOffice.Item(_id);
+        return this.cache.LoEntityOffice.Item(_id).item;
       };
     }
     catch (err) {

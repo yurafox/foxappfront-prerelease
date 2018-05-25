@@ -16,4 +16,5 @@ export class AppConstants {
   public static readonly ACTION_BONUS_TO_CURRENCY_RATE = 0.1;
   public static readonly BONUS_PMT_FOR_PRODUCT_ONLY = true;
   public static readonly ID_APP =6;
+  public static readonly ROOT_APP_PARAMS_CACHE_LIFETIME = 100000;
 }

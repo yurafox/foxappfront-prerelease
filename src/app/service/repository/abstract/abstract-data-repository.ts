@@ -175,7 +175,7 @@ export abstract class AbstractDataRepository {
   public async abstract postStoreReview(review: StoreReview): Promise<StoreReview>;
   public async abstract updateProductReview(review: ProductReview): Promise<ProductReview>;
   public async abstract updateStoreReview(review: StoreReview): Promise<StoreReview>;
-  public async abstract getAppParams(): Promise<IKeyedCollection<AppParam>>;
+  public async abstract getAppParams():  Promise<IKeyedCollection<Providers.CacheDataContainer<AppParam>>>;
   public async abstract getAppParam(param: string): Promise<string>;
   public async abstract getClientOrderDatesRanges(): Promise<OrdersFilter[]>;
   public async abstract getDefaultClientOrderDatesRanges(isDefault: boolean): Promise<OrdersFilter>;
