@@ -2038,12 +2038,12 @@ export class AppDataRepository extends AbstractDataRepository {
         const prod: Product = (entity) ? entity.item : new Product();
 
         if (!entity) {
-          this.cache.Products.Add(id, { item: prod, expire: Date.now() + 50000/*CacheProvider.Settings.product.expire*/ });
+          this.cache.Products.Add(id, { item: prod, expire: Date.now() + CacheProvider.Settings.product.expire});
         }
 
         // change current reference
         else
-          entity.expire = Date.now() + 50000/*CacheProvider.Settings.product.expire*/;
+          entity.expire = Date.now() + CacheProvider.Settings.product.expire;
 
         // http request
         const response = await this.http
