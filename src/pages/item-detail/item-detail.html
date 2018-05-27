@@ -39,13 +39,13 @@
           <span>{{product.oldPrice | localeCurrency:userService.currency}}</span>
         </ion-col>
       </ion-row>
-      <ion-row>
+      <ion-row *ngIf="product.price>0">
         <ion-col class="f-item-nopadding f-padding-l-5 f-item-padding-bottom f-price" >
           <span [ngClass]="{'f-product-price-color-onstock':OnStock, 'f-product-price-color-outofstock':!OnStock}">
             {{product.price | localeCurrency:userService.currency}}</span>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="product.bonuses">
+      <ion-row *ngIf="product.price>0 && product.bonuses">
         <ion-col class="f-item-nopadding f-padding-l-5 f-item-padding-bottom" >
           <bonus [bonusCnt]="product.bonuses"></bonus>
         </ion-col>
@@ -62,37 +62,37 @@
       </ion-row>
     </div>
 
-  <div *ngIf="OnStock && resolved">
+    <div *ngIf="OnStock && resolved">
 
-    <ion-row *ngIf="valueQuot?.quotation?.supplier">
-      <ion-col>
-        <span class="f-item-nopadding"><span loc="Продавец" name="SoldBy">{{locale['SoldBy']}}</span> {{valueQuot?.quotation?.supplier?.name}}</span>
-      </ion-col>
-    </ion-row>
-    <!-- Pickup places -->
-    <ion-row *ngIf="productStorePlaces?.length > 0" (click)="showLocationPopover()">
-      <ion-col>
-        <span class="f-color-info f-item-nopadding"><span loc="Доступно для бесплатного получения в" name="AvailableForFreePickup">{{locale['AvailableForFreePickup']}}</span> {{productStorePlaces.length}} <span loc="местах" name="Places">{{locale['Places']}}</span></span>
-      </ion-col>
-    </ion-row>
-    <!-- Selected pickup place -->
-    <ion-row *ngIf="selectedStorePlace">
-      <ion-col>
-        <span class="f-item-nopadding"><span loc="Заберите бесплатно в" name="FreePickupAt">{{locale['FreePickupAt']}}</span></span>
-        <span class="f-color-green f-item-nopadding">{{selectedStorePlace?.city?.name}}, {{selectedStorePlace.address_line}}
-        </span>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col class="f-item-padding-bottom">
-        <dropdown-list id="btnQty"
-                       [reference]="qty"
-                       [options]="{popupHeader:locale['Quantity'], buttonHeader:locale['Qty']}"
-                       [isQty]="true">
-        </dropdown-list>
+      <ion-row *ngIf="valueQuot?.quotation?.supplier">
+        <ion-col>
+          <span class="f-item-nopadding"><span loc="Продавец" name="SoldBy">{{locale['SoldBy']}}</span> {{valueQuot?.quotation?.supplier?.name}}</span>
+        </ion-col>
+      </ion-row>
+      <!-- Pickup places -->
+      <ion-row *ngIf="productStorePlaces?.length > 0" (click)="showLocationPopover()">
+        <ion-col>
+          <span class="f-color-info f-item-nopadding"><span loc="Доступно для бесплатного получения в" name="AvailableForFreePickup">{{locale['AvailableForFreePickup']}}</span> {{productStorePlaces.length}} <span loc="местах" name="Places">{{locale['Places']}}</span></span>
+        </ion-col>
+      </ion-row>
+      <!-- Selected pickup place -->
+      <ion-row *ngIf="selectedStorePlace">
+        <ion-col>
+          <span class="f-item-nopadding"><span loc="Заберите бесплатно в" name="FreePickupAt">{{locale['FreePickupAt']}}</span></span>
+          <span class="f-color-green f-item-nopadding">{{selectedStorePlace?.city?.name}}, {{selectedStorePlace.address_line}}
+          </span>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="f-item-padding-bottom">
+          <dropdown-list id="btnQty"
+                         [reference]="qty"
+                         [options]="{popupHeader:locale['Quantity'], buttonHeader:locale['Qty']}"
+                         [isQty]="true">
+          </dropdown-list>
 
-      </ion-col>
-    </ion-row>
+        </ion-col>
+      </ion-row>
 
 
 
@@ -120,7 +120,7 @@
     </div>
 
     <div *ngIf="!OnStock && resolved">
-      <ion-row *ngIf="actionsArr.length>0">
+      <ion-row>
         <ion-col>
           <button class="f-btn-secondary" ion-button block
                   (click)="onArrivalNotify()"><span>{{locale['OnArrivalNotify']}}</span></button>

@@ -81,7 +81,8 @@ export class CreditCalcPage extends ComponentBase {
       _cpMgnovCredit.maxAmt = null;
       _cpOplataChastyami.minAmt = parseInt(await this.repo.getAppParam('MIN_LOAN_AMT'));
       _cpMgnovCredit.minTerm = 2;
-      this.credits.push(new CreditCalc(false, _cpMgnovCredit));
+      if (_cpMgnovCredit.maxTerm>0)
+        this.credits.push(new CreditCalc(false, _cpMgnovCredit));
 
       //Сортируем по макс грейсу
       arr.sort((a,b) => {

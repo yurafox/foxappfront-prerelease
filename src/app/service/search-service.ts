@@ -244,19 +244,19 @@ export class SearchService {
     let postFilterArr = [];
 
     if (this.prodSrchParams.sortOrder === SortOrderEnum.Relevance) {
-      sort = [{'_score': {'order' : 'desc'}}];
+      sort = [{"status": {'order' : 'asc'}}];
     };
     if (this.prodSrchParams.sortOrder === SortOrderEnum.Rating) {
-      sort = [{'rating': {'order' : 'desc'}}];
+      sort = [{"status": {'order' : 'asc'}},{'rating': {'order' : 'desc'}}];
     };
     if (this.prodSrchParams.sortOrder === SortOrderEnum.Popularity) {
-      sort = [{'popularity': {'order' : 'desc'}}];
+      sort = [{"status": {'order' : 'asc'}}, {'popularity': {'order' : 'desc'}}];
     };
     if (this.prodSrchParams.sortOrder === SortOrderEnum.PriceLowToHigh) {
-      sort = [{'price': {'order' : 'asc'}}];
+      sort = [{"status": {'order' : 'asc'}}, {'price': {'order' : 'asc'}}];
     };
     if (this.prodSrchParams.sortOrder === SortOrderEnum.PriceHighToLow) {
-      sort = [{'price': {'order' : 'desc'}}];
+      sort = [{"status": {'order' : 'asc'}}, {'price': {'order' : 'desc'}}];
     };
 
     if ((this.prodSrchParams.supplier) && (this.prodSrchParams.supplier.length >=1)) {
@@ -397,7 +397,7 @@ export class SearchService {
   async searchProducts(srchString: string, hostPage: any) {
     this.hostPage = hostPage;
     await this.searchByText(srchString);
-    
+
     if (this.products.length > 0) //сохраняем поисковые запросы, которые вернули данные
     {
       const i = this.searchItems.indexOf(srchString);
