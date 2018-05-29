@@ -58,7 +58,7 @@ export class CheckoutPage extends ComponentBase {
        {
         let res = await this.repo.postOrder(this.cart.order);
 
-        if (res.isSuccess)
+        if ((res) && (res.isSuccess))
         {
           //console.log('Success!!!!');
 
@@ -86,7 +86,7 @@ export class CheckoutPage extends ComponentBase {
         {
           //console.log(res.errorMessage);
           let title = this.locale['AlertErrorTitle'];
-          let message = this.locale['AlertErrorMessage'] + ' ' + res.errorMessage;
+          let message = this.locale['AlertErrorMessage']; // + ' ' + res.errorMessage;
           let btnText = this.locale['BtnErrorText'];
           let alert = this.alertCtrl.create({
             title: title,

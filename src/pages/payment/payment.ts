@@ -42,13 +42,13 @@ export class PaymentPage extends ComponentBase implements OnInit {
       this.success = true;
       this.formInput = null;
       let res = await this.repo.postOrder(this.cart.order);
-      if (res.isSuccess) {
+      if ((res) && (res.isSuccess)) {
         //this.cart.emptyCart();
         this.cart.initCart();
       }
       else {
         let title = this.locale['AlertErrorTitle'];
-        let message = this.locale['AlertErrorMessage'] + ' ' + res.errorMessage;
+        let message = this.locale['AlertErrorMessage']; // + ' ' + res.errorMessage;
         let btnText = this.locale['BtnErrorText'];
         let alert = this.alertCtrl.create({
           title: title,

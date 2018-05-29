@@ -23,6 +23,7 @@ export class Product {
               public description?: string,
               public slideImageUrls?: string[],
               public barcode?: string,
-              public valueQP?: number
+              public valueQP?: number,
+              public status?: number
   )  { this._repo = RefInjector.pull(AbstractDataRepository);}
 }

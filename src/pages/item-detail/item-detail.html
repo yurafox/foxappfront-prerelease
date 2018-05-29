@@ -55,11 +55,17 @@
           <span class="f-color-green f-item-nopadding"><span loc="В наличии" name="InStock">{{locale['InStock']}}</span></span>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="!OnStock && resolved">
+      <ion-row *ngIf="!OnStock && resolved && product.status !== 3">
         <ion-col>
           <span class="f-color-secondary f-item-nopadding"><span loc="Нет в наличии" name="NoOnStock">{{locale['NoOnStock']}}</span></span>
         </ion-col>
       </ion-row>
+      <ion-row *ngIf="!OnStock && resolved && product.status === 3">
+        <ion-col>
+          <span class="f-color-secondary f-item-nopadding"><span loc="Снят с производства" name="Discontinued">{{locale['Discontinued']}}</span></span>
+        </ion-col>
+      </ion-row>
+
     </div>
 
     <div *ngIf="OnStock && resolved">
@@ -119,7 +125,7 @@
 
     </div>
 
-    <div *ngIf="!OnStock && resolved">
+    <div *ngIf="!OnStock && resolved && (product.status !== 3)">
       <ion-row>
         <ion-col>
           <button class="f-btn-secondary" ion-button block

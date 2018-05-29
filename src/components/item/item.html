@@ -58,11 +58,18 @@
          </ion-col>
        </ion-row>
 
-       <ion-row *ngIf="!OnStock">
+       <ion-row *ngIf="!OnStock && product.status !== 3">
          <ion-col class="f-item-col f-size-small f-color-secondary">
            <span loc="Нет в наличии" name="NoOnStock">{{locale['NoOnStock']}}</span>
          </ion-col>
        </ion-row>
+
+       <ion-row *ngIf="!OnStock && product.status === 3">
+         <ion-col class="f-item-col f-size-small f-color-secondary">
+           <span loc="Снят с производства" name="Discontinued">{{locale['Discontinued']}}</span>
+         </ion-col>
+       </ion-row>
+
 
        <ion-row *ngIf="(noOfQuotes > 1)">
          <ion-col class="f-item-col f-size-small f-size-smaller">

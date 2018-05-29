@@ -612,7 +612,12 @@ export class AppDataRepository extends AbstractDataRepository {
       }
     }
     catch (err) {
-      return await this.handleError(err);
+      if ((err.status) && (err.status === 404)) {
+        SCN.value = parseInt(err.headers.get('X-SCN'));
+        return null;
+      }
+      else
+        return await this.handleError(err);
     }
 
   }
@@ -661,94 +666,6 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
-  /*
-
-    public async getClientOrders(): Promise<ClientOrder[]> {
-      try {
-
-        const response = await this.http
-          .get(clientOrdersUrl,RequestFactory.makeSearch([
-            {key: "idClient", value: "100"},
-            {key: "idStatus", value: "1"}
-          ])).toPromise();
-
-        const data = response.json();
-        if (response.status !== 200) {
-          throw new Error("server side status error");
-        }
-        const cClientOrders = new Array<ClientOrder>();
-        if (data != null) {
-          data.forEach(val =>
-            cClientOrders.push(
-              new ClientOrder(
-                val.id,
-                val.orderDate,
-                val.idCur,
-                val.idClient,
-                val.total,
-                val.idPaymentMethod,
-                val.idPaymentStatus,
-                val.idStatus,
-                null,
-                val.loIdClientAddress,
-                val.itemsTotal,
-                val.shippingTotal,
-                val.bonusTotal,
-                val.promoBonusTotal,
-                val.bonusEarned,
-                val.promoCodeDiscTotal,
-                val.idPerson
-              )
-            )
-          );
-        };
-        return cClientOrders;
-      } catch (err) {
-        return await this.handleError(err);
-      }
-    }
-  */
-
-
-  /*
-    public async getClientOrderById(orderId: number): Promise<ClientOrder> {
-      try {
-
-        const response = await this.http
-          .get(clientOrdersUrl + `/${orderId}`, RequestFactory.makeAuthHeader())
-          .toPromise();
-
-        const data = response.json();
-        if (response.status !== 200) {
-          throw new Error("server side status error");
-        }
-
-        if (data != null) {
-              return new ClientOrder(
-                data.id,
-                data.orderDate,
-                data.idCur,
-                data.idClient,
-                data.total,
-                data.idPaymentMethod,
-                data.idPaymentStatus,
-                data.idStatus,
-                null,
-                data.loIdClientAddress,
-                data.itemsTotal,
-                data.shippingTotal,
-                data.bonusTotal,
-                data.promoBonusTotal,
-                data.bonusEarned,
-                data.promoCodeDiscTotal,
-                data.idPerson
-              );
-        };
-      } catch (err) {
-        return await this.handleError(err);
-      }
-    }
-  */
 
   public async getClientHistOrderById(orderId: number): Promise<ClientOrder> {
     try {
@@ -802,7 +719,11 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       return { isSuccess: val.isSuccess, errorMessage: val.errorMessage };
     } catch (err) {
-      return await this.handleError(err);
+      if ((err.status) && (err.status === 404)) {
+        return null;
+      }
+      else
+        return await this.handleError(err);
     }
   }
 
@@ -843,7 +764,7 @@ export class AppDataRepository extends AbstractDataRepository {
       SCN.value = parseInt(response.headers.get('X-SCN'));
       return p;
     } catch (err) {
-      if ((err.status) && (err.status === 409)) {
+      if ((err.status) && (err.status === 404)) {
         SCN.value = parseInt(err.headers.get('X-SCN'));
         return null;
       }
@@ -887,7 +808,12 @@ export class AppDataRepository extends AbstractDataRepository {
 
       return p;
     } catch (err) {
-      return await this.handleError(err);
+      if ((err.status) && (err.status === 404)) {
+        SCN.value = parseInt(err.headers.get('X-SCN'));
+        return null;
+      }
+      else
+        return await this.handleError(err);
     }
   }
 
@@ -1853,7 +1779,8 @@ export class AppDataRepository extends AbstractDataRepository {
               val.description,
               val.slideImageUrls,
               val.barcode,
-              val.valueQP
+              val.valueQP,
+              val.status
             );
 
             products.push(productItem);
@@ -1990,6 +1917,7 @@ export class AppDataRepository extends AbstractDataRepository {
       prod.valueQP = data.valueQP;
       prod.oldPrice = data.oldPrice;
       prod.bonuses = data.bonuses;
+      prod.status = data.status;
       return prod;
     }
     else return null;
@@ -2089,6 +2017,7 @@ export class AppDataRepository extends AbstractDataRepository {
           prod.slideImageUrls = _prod.slideImageUrls;
           prod.barcode = _prod.barcode;
           prod.valueQP = _prod.valueQP;
+          prod.status = _prod.status;
           prod.oldPrice = _prod.oldPrice;
           prod.bonuses = _prod.bonuses;
           return prod;
