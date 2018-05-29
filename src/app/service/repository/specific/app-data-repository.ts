@@ -808,12 +808,15 @@ export class AppDataRepository extends AbstractDataRepository {
 
 
   public async insertCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
+    let response = null;
     try {
-      const response = await this.http
+      // Attention!: if http method returns status others than 2xx, exception raised
+      // handle responses of such methods in catch block via analyzing err.status & headers & body content
+      response = await this.http
         .post(cartProductsUrl, prod.dto, RequestFactory.makeAuthHeader())
         .toPromise();
-      const val = response.json();
 
+      const val = response.json();
       if (response.status !== 201) {
         throw new Error("server side status error");
       }
@@ -840,7 +843,12 @@ export class AppDataRepository extends AbstractDataRepository {
       SCN.value = parseInt(response.headers.get('X-SCN'));
       return p;
     } catch (err) {
-      return await this.handleError(err);
+      if ((err.status) && (err.status === 409)) {
+        SCN.value = parseInt(err.headers.get('X-SCN'));
+        return null;
+      }
+      else
+        return await this.handleError(err);
     }
   }
 
