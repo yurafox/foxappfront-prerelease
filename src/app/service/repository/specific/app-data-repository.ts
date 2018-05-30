@@ -612,7 +612,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
     }
     catch (err) {
-      if ((err.status) && (err.status === 404)) {
+      if ((err.status) && (err.status === 409)) {
         SCN.value = parseInt(err.headers.get('X-SCN'));
         return null;
       }
@@ -764,7 +764,7 @@ export class AppDataRepository extends AbstractDataRepository {
       SCN.value = parseInt(response.headers.get('X-SCN'));
       return p;
     } catch (err) {
-      if ((err.status) && (err.status === 404)) {
+      if ((err.status) && (err.status === 409)) {
         SCN.value = parseInt(err.headers.get('X-SCN'));
         return null;
       }
@@ -808,7 +808,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
       return p;
     } catch (err) {
-      if ((err.status) && (err.status === 404)) {
+      if ((err.status) && (err.status === 409)) {
         SCN.value = parseInt(err.headers.get('X-SCN'));
         return null;
       }
