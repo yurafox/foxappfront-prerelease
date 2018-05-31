@@ -1,14 +1,15 @@
 <ion-header>
   <main-toolbar></main-toolbar>
-  <div class="f-drop-buttons" *ngIf="cities && cities.length > 0">
-    <dropdown-list
-      [options]="dropDownCityOpts"
-      [reference]="selectedCity"
-      [store]="cities"
-      [map]="{valueName:'id',displayName:'name'}"
-      [afterUpdate]="changeMarkers"
-      *ngIf="cities">
-    </dropdown-list>
+  <div class="f-drop-buttons">
+    <div *ngIf="cities && (cities !== []) && cities[0]">
+      <dropdown-list
+        [options]="dropDownCityOpts"
+        [reference]="selectedCity"
+        [store]="cities"
+        [map]="{valueName:'id',displayName:'name'}"
+        [afterUpdate]="changeMarkers">
+      </dropdown-list>
+    </div>
     <div *ngIf="shopList && (shopList !== []) && shopList[0] && shopList[0].value">
       <dropdown-list
         [options]="dropDownAddressOpts"

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import { Platform, IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { AbstractDataRepository } from '../../app/service/repository/abstract/abstract-data-repository';
 import {
@@ -6,12 +6,9 @@ import {
   GoogleMap,
   GoogleMapsEvent,
   GoogleMapOptions,
-  //CameraPosition,
   MarkerOptions,
   Marker,
   LatLng,
-  //MarkerCluster,
-  //MarkerClusterOptions,
   HtmlInfoWindow
 } from '@ionic-native/google-maps';
 import { City, Store } from "../../app/model/index";
@@ -21,8 +18,6 @@ import { FavoriteStoresPage } from "../favorite-stores/favorite-stores";
 import { StoreReview } from "../../app/model/store-review";
 import { IDictionary } from "../../app/core/app-core";
 import { Subscription } from "rxjs/Subscription";
-
-declare var google: any;
 
 interface SelectItem {
   label: string;
@@ -35,6 +30,7 @@ interface SelectItem {
   templateUrl: 'map.html'
 })
 export class MapPage extends ComponentBase implements OnInit, OnDestroy {
+  @ViewChild('mapCanvas') mapCanvas;
 
   previousPage: string;
 
@@ -62,6 +58,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
   dropDownAddressOpts: any;
   isAuthorized: boolean;
   clientId: number = 0;
+  cantShowDict: IDictionary<boolean>;
 
   markerSubscriptions: Subscription[];
 
@@ -79,6 +76,8 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     this.selectedMarker = {label: '', value: null};
     this.userPos = new LatLng(0, 0);
     this.markerSubscriptions = [];
+    this.userPosIsKnown = false;
+    this.cantShowDict = {};
 
     try {
       if (this.nav.last()) {
@@ -94,36 +93,38 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     if (this.userService.isAuth) {
       this.isAuthorized = true;
     }
-
-    this.platform.ready().then(() => {
-      this.getLocation().then(res => {
-        this.userPos.lat = res.coords.latitude;
-        this.userPos.lng = res.coords.longitude;
-        this.userPosIsKnown = true;
-      })
-    }).catch(() => {
-      this.userPosIsKnown = false;
-    });
-
-    this.openHoursStr = this.locale['OpenHours'] ? this.locale['OpenHours'] : 'Время работы';
-    this.open = this.locale['Open'] ? this.locale['Open'] : 'Открыто';
-    this.close = this.locale['Closed'] ? this.locale['Closed'] : 'Закрыто';
-    this.reviewsStr = this.locale['Reviews'] ? this.locale['Reviews'] : 'Отзывы';
-    this.writeReviewStr = this.locale['WriteReview'] ? this.locale['WriteReview'] : 'Оставить отзыв';
-    this.dropDownCityOpts = {
-      popupClass: 'f-middle-dictionary',
-      buttonClass: 'f-drop-button-full',
-      popupHeader: this.locale['City'] ? this.locale['City'] : 'Город',
-      buttonHeader: this.locale['City'] ? this.locale['City'] : 'Город'
-    };
-    this.dropDownAddressOpts = {
-      popupClass: 'f-large-dictionary',
-      buttonClass: 'f-drop-button-full',
-      popupHeader: this.locale['Address'] ? this.locale['Address'] : 'Адрес',
-      buttonHeader: this.locale['Address'] ? this.locale['Address'] : 'Адрес'
-    };
-
     try {
+      this.platform.ready().then(() => {
+        this.getLocation().then(res => {
+          this.userPos.lat = res.lat;
+          this.userPos.lng = res.lng;
+          if (res && res.lat && res.lng) {
+            this.userPosIsKnown = true;
+          }
+        }).catch(() => {
+          this.userPosIsKnown = false;
+        });
+      });
+
+      this.openHoursStr = this.locale['OpenHours'] ? this.locale['OpenHours'] : 'Время работы';
+      this.open = this.locale['Open'] ? this.locale['Open'] : 'Открыто';
+      this.close = this.locale['Closed'] ? this.locale['Closed'] : 'Закрыто';
+      this.reviewsStr = this.locale['Reviews'] ? this.locale['Reviews'] : 'Отзывы';
+      this.writeReviewStr = this.locale['WriteReview'] ? this.locale['WriteReview'] : 'Оставить отзыв';
+      this.dropDownCityOpts = {
+        popupClass: 'f-middle-dictionary',
+        buttonClass: 'f-drop-button-full',
+        popupHeader: this.locale['City'] ? this.locale['City'] : 'Город',
+        buttonHeader: this.locale['City'] ? this.locale['City'] : 'Город'
+      };
+      this.dropDownAddressOpts = {
+        popupClass: 'f-large-dictionary',
+        buttonClass: 'f-drop-button-full',
+        popupHeader: this.locale['Address'] ? this.locale['Address'] : 'Адрес',
+        buttonHeader: this.locale['Address'] ? this.locale['Address'] : 'Адрес'
+      };
+
+
       this.markersArr = await this.repo.getStores();
       this.cities = await this.repo.getCitiesWithStores();
       let reviews = await this.repo.getStoreReviews();
@@ -131,7 +132,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
       this.clientId = reviews.idClient;
 
       await this.loadMap();
-    } catch(err) {
+    } catch (err) {
       let alert = this.alertCtrl.create({
         title: this.locale['AlertFailTitle'] ? this.locale['AlertFailTitle'] : 'Что-то пошло не так',
         message: this.locale['AlertFailMessage'] ? this.locale['AlertFailMessage'] : 'Пожалуйста, проверьте соединение с сетью и попробуйте перезапустить приложение',
@@ -196,11 +197,10 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
 
     this.makeShopList();
 
-    this.map = GoogleMaps.create('map_canvas', this.options);
+    this.map = GoogleMaps.create(this.mapCanvas.nativeElement, this.options);
 
     let citiesArr: City[] = this.cities;
     this.cities = [];
-    let cantShow: boolean = true;
 
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
       for (let i = 0; i < citiesArr.length; i++) {
@@ -234,9 +234,9 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
             // Native
             this.map.addMarker(markerOptions).then((marker: Marker) => {
               let reviews: StoreReview[] = [];
-                if (this.storeReviews[markerData.id.toString()]) {
-                  reviews = this.storeReviews[markerData.id.toString()];
-                  cantShow = this.hasClientReview(this.storeReviews[markerData.id.toString()]);
+              if (this.storeReviews[markerData.id.toString()]) {
+                reviews = this.storeReviews[markerData.id.toString()];
+                this.cantShowDict[markerData.id.toString()] = this.hasClientReview(reviews);
               }
 
               let shopOpensTime: string = markerData.openTime;
@@ -257,23 +257,23 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
 
               let htmlInfoWnd = new HtmlInfoWindow();
               let html: HTMLElement = document.createElement('div');
-              html.innerHTML =  [`<div style="font-size: 17px;">`,
+              html.innerHTML = [`<div style="font-size: 17px;">`,
                 `<p style="color: #ef4123; padding: 0; margin: 0; font-size: 18px; text-align: center"><b>Фокстрот</b></p>`,
                 `<p style="padding: 0; margin: 0; text-align: center">${shopRating > 0 ? `${rating}` : ''}</p>`,
                 `<p style="padding: 0; margin: 0;">${markerData.address}</p>`,
                 `<p style="padding: 0; margin: 0;">${workingHours}</p>`,
                 `<p style="color: ${(isWorking === this.open) ? 'green' : 'red'}; padding: 0; margin: 0;">${(isWorking) ? isWorking : '' }</p>`,
-                `<span id="revs" #revs style="color: darkblue; padding: 0; margin: 0;">${(reviews && (reviews.length > 0)) ? (this.reviewsStr + '<span style=""> (' + reviews.length + ')</span>') : (cantShow && this.isAuthorized) ? this.writeReviewStr : ''}</span>`,
+                `<span id="revs" #revs style="color: darkblue; padding: 0; margin: 0;">${(reviews && (reviews.length > 0)) ? (this.reviewsStr + '<span style=""> (' + reviews.length + ')</span>') : (this.cantShowDict[markerData.id.toString()] && this.cantShowDict[markerData.id.toString()] === true && this.isAuthorized) ? this.writeReviewStr : ''}</span>`,
                 `</div>`].join('');
               let revs = html.getElementsByTagName('span')[0];
-                if (revs && revs!==null) {
+              if (revs && revs !== null) {
                 revs.addEventListener('click', () => {
                   if (reviews && (reviews.length > 0)) {
-                      this.onShowReviewsClick(reviews, markerData);
+                    this.onShowReviewsClick(reviews, markerData);
                   } else {
                     this.onWriteReviewClick(markerData);
                   }
-                    if (htmlInfoWnd) htmlInfoWnd.close();
+                  if (htmlInfoWnd) htmlInfoWnd.close();
                 });
               }
               htmlInfoWnd.setContent(html);
@@ -319,18 +319,20 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
       if (this.selectedCity.id === this.cities[i].id) {
         this.shopList = [];
         try {
-          for (let j = 0; j < this.markersArr[this.cities[i].id.toString()].length; j++) {
-            try {
-              this.shopList.push({
-                label: this.markersArr[this.cities[i].id.toString()][j].address,
-                value: this.markersArr[this.cities[i].id.toString()][j].position
-              });
-            } catch (error) {
-              console.log('In-view shops push error: ' + error);
+          if (this.markersArr[this.cities[i].id.toString()]) {
+            for (let j = 0; j < this.markersArr[this.cities[i].id.toString()].length; j++) {
+              try {
+                this.shopList.push({
+                  label: this.markersArr[this.cities[i].id.toString()][j].address,
+                  value: this.markersArr[this.cities[i].id.toString()][j].position
+                });
+              } catch (error) {
+                console.log('In-view shops push error: ' + error);
+              }
             }
           }
         } catch (error) {
-          console.log('View error: ' + error);
+          console.log('makeShopList error: ' + error);
         }
       }
     }
@@ -383,7 +385,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
         if (marker.position.lat === this.selectedMarker.value.lat && marker.position.lng === this.selectedMarker.value.lng) {
           if (this.isAuthorized === true) {
             try {
-              this.addFavoriteStore(marker);
+              this.addFavoriteStore(marker).catch();
             } catch (err) {
               console.log(`Error while adding to favorite: ${err}`);
               return;
@@ -398,8 +400,9 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
    * Receive user's location
    * @returns {Promise<Geoposition>}
    */
-  getLocation() {
-    return this.geolocation.getCurrentPosition();
+  async getLocation() {
+    let location = await this.map.getMyLocation({enableHighAccuracy:true}).catch();
+    return location.latLng;
   }
 
   /**
