@@ -49,6 +49,7 @@
     "cordova-plugin-actionsheet": "2.3.3",
     "cordova-plugin-appavailability": "0.4.2",
     "cordova-plugin-background-mode": "0.7.2",
+    "cordova-plugin-crosswalk-webview": "2.4.0",
     "cordova-plugin-device": "1.1.7",
     "cordova-plugin-dialogs": "2.0.1",
     "cordova-plugin-exoplayer": "2.5.3",
@@ -113,6 +114,13 @@
         "API_KEY_FOR_ANDROID": "AIzaSyAKDQzb3RKdVlh0gqZMhY4MEjl53Lh-Dmk",
         "API_KEY_FOR_IOS": "AIzaSyAKDQzb3RKdVlh0gqZMhY4MEjl53Lh-Dmk",
         "PLAY_SERVICES_VERSION": "11.4.2"
+      },
+      "cordova-plugin-crosswalk-webview": {
+        "XWALK_VERSION": "23+",
+        "XWALK_LITEVERSION": "xwalk_core_library_canary:17+",
+        "XWALK_COMMANDLINE": "--disable-pull-to-refresh-effect",
+        "XWALK_MODE": "embedded",
+        "XWALK_MULTIPLEAPK": "true"
       }
     },
     "platforms": [
