@@ -30,7 +30,7 @@ interface SelectItem {
   templateUrl: 'map.html'
 })
 export class MapPage extends ComponentBase implements OnInit, OnDestroy {
-  @ViewChild('mapCanvas') mapCanvas;
+  @ViewChild('mapCanvas') mapCanvas; 
 
   previousPage: string;
 
