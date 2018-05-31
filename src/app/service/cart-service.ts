@@ -406,8 +406,9 @@ export class CartService {
       if (this.userService.isAuth)
       {
         this.order = await this.repo.getClientDraftOrder();
-        if (this.order.idPerson)
+        if (this.order && this.order.idPerson) {
           this.person = await this.repo.getPersonById(this.order.idPerson);
+        }
 
         let op = await this.repo.getCartProducts();
 

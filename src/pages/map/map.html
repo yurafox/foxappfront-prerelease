@@ -1,14 +1,15 @@
 <ion-header>
   <main-toolbar></main-toolbar>
-  <div class="f-drop-buttons" *ngIf="cities && cities.length > 0">
-    <dropdown-list
-      [options]="dropDownCityOpts"
-      [reference]="selectedCity"
-      [store]="cities"
-      [map]="{valueName:'id',displayName:'name'}"
-      [afterUpdate]="changeMarkers"
-      *ngIf="cities">
-    </dropdown-list>
+  <div class="f-drop-buttons">
+    <div *ngIf="cities && (cities !== []) && cities[0]">
+      <dropdown-list
+        [options]="dropDownCityOpts"
+        [reference]="selectedCity"
+        [store]="cities"
+        [map]="{valueName:'id',displayName:'name'}"
+        [afterUpdate]="changeMarkers">
+      </dropdown-list>
+    </div>
     <div *ngIf="shopList && (shopList !== []) && shopList[0] && shopList[0].value">
       <dropdown-list
         [options]="dropDownAddressOpts"
@@ -25,8 +26,8 @@
   <!-- Map -->
   <div style="height: calc(100% - 45px); top: 45px;" #mapCanvas id="map_canvas"></div>
 
-  <div *ngIf="selectedMarker && selectedMarker.value">
-    <ion-buttons align="center" class="f-map-buttons f-map-footer">
+  <div *ngIf="selectedMarker && selectedMarker.value" class="f-map-buttons-div">
+    <ion-buttons class="f-map-buttons f-map-footer">
       <span *ngIf="isAuthorized === true">
         <button ion-button icon-left (click)="addToFavorite()"
                 [disabled]="!selectedMarker.value.lat || !selectedMarker.value.lng"
