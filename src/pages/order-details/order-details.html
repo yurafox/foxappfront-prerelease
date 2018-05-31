@@ -34,7 +34,7 @@
             <span loc="Сумма заказа" name="OrderTotal">{{locale['OrderTotal']}}</span>
           </ion-col>
           <ion-col>
-            {{order.total | localeCurrency:userService.currency}}  ({{order.orderHistProducts.length}} <span loc="товар(-а/-ов)" name="Items">{{locale['Items']}}</span>)
+            {{order.total | localeCurrency:userService.currency}}  ({{order.orderProducts.length}} <span loc="товар(-а/-ов)" name="Items">{{locale['Items']}}</span>)
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -47,10 +47,10 @@
     </ion-row>
 
 
-    <div class="f-size-larger" *ngFor="let spec of order.orderHistProducts; let i = index">
+    <div class="f-size-larger" *ngFor="let spec of order.orderProducts; let i = index">
       <ion-row>
         <ion-col class="f-section-subheader">
-          <span loc="Посылка" name="Shipment">{{locale['Shipment']}}</span> {{i+1}} <span loc="из" name="Of">{{locale['Of']}}</span> {{order.orderHistProducts.length}}
+          <span loc="Посылка" name="Shipment">{{locale['Shipment']}}</span> {{i+1}} <span loc="из" name="Of">{{locale['Of']}}</span> {{order.orderProducts.length}}
         </ion-col>
       </ion-row>
 

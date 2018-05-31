@@ -57,6 +57,7 @@ import {ConnectivityService} from '../../connectivity-service';
 import IKeyedCollection = Providers.IKeyedCollection;
 import {OrdersFilter} from '../../../../pages/your-orders/your-orders';
 import {ShipmentItems} from '../../../model/shipment-items';
+import {ClientOrderProductHist} from '../../../model/client-order-product-hist';
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
@@ -241,20 +242,12 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
 
-  public async calculateCart(promoCode: string, maxBonusCnt: number, usePromoBonus: boolean, creditProductId: number/*,
-                             cartContent: ClientOrderProducts[]*/):
+  public async calculateCart(promoCode: string, maxBonusCnt: number, usePromoBonus: boolean, creditProductId: number):
     Promise<{
       clOrderSpecProdId: number, promoCodeDisc: number, bonusDisc: number, promoBonusDisc: number,
       earnedBonus: number, qty: number
     }[]> {
     try {
-      /*
-      let _dtoContent = [];
-      cartContent.forEach(i => {
-          _dtoContent.push(i.dto);
-        }
-      );
-    */
       const response = await this.http
         .post(calculateCartUrl, {
           promoCode: promoCode, maxBonusCnt: maxBonusCnt,
@@ -600,7 +593,7 @@ export class AppDataRepository extends AbstractDataRepository {
           data.promoBonusTotal,
           data.bonusEarned,
           data.promoCodeDiscTotal,
-          data.idPerson, null, null, null,
+          data.idPerson, /*null,*/ null, null,
           data.idCreditProduct,
           data.creditPeriod,
           data.creditMonthlyPmt,
@@ -651,7 +644,7 @@ export class AppDataRepository extends AbstractDataRepository {
           data.promoBonusTotal,
           data.bonusEarned,
           data.promoCodeDiscTotal,
-          data.idPerson, null, null, null,
+          data.idPerson, null, null,
           data.idCreditProduct,
           data.creditPeriod,
           data.creditMonthlyPmt,
@@ -748,12 +741,14 @@ export class AppDataRepository extends AbstractDataRepository {
       p.price = val.price;
       p.qty = val.qty;
       p.idStorePlace = val.idStorePlace;
+      /*
       p.idLoEntity = val.idLoEntity;
       p.loTrackTicket = val.loTrackTicket;
       p.loDeliveryCost = val.loDeliveryCost;
       p.loDeliveryCompleted = val.loDeliveryCompleted;
       p.loEstimatedDeliveryDate = val.loEstimatedDeliveryDate;
       p.loDeliveryCompletedDate = val.loDeliveryCompletedDate;
+      */
       p.errorMessage = val.errorMessage;
       p.warningMessage = val.warningMessage;
       p.warningRead = val.warningRead;
@@ -790,6 +785,7 @@ export class AppDataRepository extends AbstractDataRepository {
       p.price = val.price;
       p.qty = val.qty;
       p.idStorePlace = val.idStorePlace;
+      /*
       p.idLoEntity = val.idLoEntity;
       p.loTrackTicket = val.loTrackTicket;
       p.loDeliveryCost = val.loDeliveryCost;
@@ -797,6 +793,7 @@ export class AppDataRepository extends AbstractDataRepository {
       p.loEstimatedDeliveryDate = val.loEstimatedDeliveryDate;
       p.loDeliveryCompletedDate = val.loDeliveryCompletedDate;
       p.errorMessage = val.errorMessage;
+      */
       p.warningMessage = val.warningMessage;
       p.warningRead = val.warningRead;
       p.complect = val.complect;
@@ -849,12 +846,14 @@ export class AppDataRepository extends AbstractDataRepository {
           p.price = val.price;
           p.qty = val.qty;
           p.idStorePlace = val.idStorePlace;
+          /*
           p.idLoEntity = val.idLoEntity;
           p.loTrackTicket = val.loTrackTicket;
           p.loDeliveryCost = val.loDeliveryCost;
           p.loDeliveryCompleted = val.loDeliveryCompleted;
           p.loEstimatedDeliveryDate = val.loEstimatedDeliveryDate;
           p.loDeliveryCompletedDate = val.loDeliveryCompletedDate;
+          */
           p.errorMessage = val.errorMessage;
           p.warningMessage = val.warningMessage;
           p.payPromoCode = val.payPromoCode;
@@ -897,12 +896,14 @@ export class AppDataRepository extends AbstractDataRepository {
         p.price = i.price;
         p.qty = i.qty;
         p.idStorePlace = i.idStorePlace;
+        /*
         p.idLoEntity = i.idLoEntity;
         p.loTrackTicket = i.loTrackTicket;
         p.loDeliveryCost = i.loDeliveryCost;
         p.loDeliveryCompleted = i.loDeliveryCompleted;
         p.loEstimatedDeliveryDate = i.loEstimatedDeliveryDate;
         p.loDeliveryCompletedDate = i.loDeliveryCompletedDate;
+        */
         p.errorMessage = i.errorMessage;
         p.payPromoCode = i.payPromoCode;
         p.payPromoCodeDiscount = i.payPromoCodeDiscount;
@@ -923,7 +924,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   }
 
-  public async getClientHistOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]> {
+  public async getClientHistOrderProductsByOrderId(orderId: number): Promise<ClientOrderProductHist[]> {
     try {
       const response = await this.http
         .get(clientOrderHistSpecProductsUrl, RequestFactory.makeSearch([
@@ -936,7 +937,7 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
       val.forEach(i => {
-        let p = new ClientOrderProducts();
+        let p = new ClientOrderProductHist();
         p.id = i.id;
         p.idOrder = i.idOrder;
         p.idQuotationProduct = i.idQuotationProduct;
@@ -949,17 +950,19 @@ export class AppDataRepository extends AbstractDataRepository {
         p.loDeliveryCompleted = i.loDeliveryCompleted;
         p.loEstimatedDeliveryDate = i.loEstimatedDeliveryDate;
         p.loDeliveryCompletedDate = i.loDeliveryCompletedDate;
+        p.earnedBonusCnt = i.earnedBonusCnt;
+        /*
         p.errorMessage = i.errorMessage;
         p.payPromoCode = i.payPromoCode;
         p.payPromoCodeDiscount = i.payPromoCodeDiscount;
         p.payBonusCnt = i.payBonusCnt;
         p.payPromoBonusCnt = i.payPromoBonusCnt;
-        p.earnedBonusCnt = i.earnedBonusCnt;
         p.warningRead = i.warningRead;
         p.complect = i.complect;
         p.idAction = i.idAction;
         p.actionList = i.actionList;
         p.actionTitle = i.actionTitle;
+        */
         orderProducts.push(p);
       });
       return orderProducts;

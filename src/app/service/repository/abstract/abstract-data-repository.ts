@@ -42,6 +42,7 @@ import {IDictionary, Providers} from "../../../core/app-core";
 import {AppParam} from '../../../model/app-param';
 import IKeyedCollection = Providers.IKeyedCollection;
 import {OrdersFilter} from '../../../../pages/your-orders/your-orders';
+import {ClientOrderProductHist} from '../../../model/client-order-product-hist';
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<{reviews:ProductReview[], idClient:number}>;
@@ -98,7 +99,7 @@ export abstract class AbstractDataRepository {
 */
   public async abstract getClientHistOrderById(orderId: number): Promise<ClientOrder>;
   public async abstract getClientOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]>;
-  public async abstract getClientHistOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]>;
+  public async abstract getClientHistOrderProductsByOrderId(orderId: number): Promise<ClientOrderProductHist[]>;
 
   public async abstract getCartProducts(): Promise<ClientOrderProducts[]>;
   public async abstract saveCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts>;
