@@ -30,7 +30,7 @@ interface SelectItem {
   templateUrl: 'map.html'
 })
 export class MapPage extends ComponentBase implements OnInit, OnDestroy {
-  @ViewChild('mapCanvas') mapCanvas; 
+  @ViewChild('mapCanvas') mapCanvas;
 
   previousPage: string;
 
@@ -263,7 +263,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
                 `<p style="padding: 0; margin: 0;">${markerData.address}</p>`,
                 `<p style="padding: 0; margin: 0;">${workingHours}</p>`,
                 `<p style="color: ${(isWorking === this.open) ? 'green' : 'red'}; padding: 0; margin: 0;">${(isWorking) ? isWorking : '' }</p>`,
-                `<span id="revs" #revs style="color: darkblue; padding: 0; margin: 0;">${(reviews && (reviews.length > 0)) ? (this.reviewsStr + '<span style=""> (' + reviews.length + ')</span>') : (this.cantShowDict[markerData.id.toString()] && this.cantShowDict[markerData.id.toString()] === true && this.isAuthorized) ? this.writeReviewStr : ''}</span>`,
+                `<span id="revs" #revs style="color: darkblue; padding: 0; margin: 0;">${(reviews && (reviews.length > 0)) ? (this.reviewsStr + '<span style=""> (' + reviews.length + ')</span>') : (this.cantShowDict[markerData.id.toString()] === false && this.isAuthorized) ? this.writeReviewStr : ''}</span>`,
                 `</div>`].join('');
               let revs = html.getElementsByTagName('span')[0];
               if (revs && revs !== null) {
@@ -271,7 +271,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
                   if (reviews && (reviews.length > 0)) {
                     this.onShowReviewsClick(reviews, markerData);
                   } else {
-                    this.onWriteReviewClick(markerData);
+                    this.onWriteReviewClick(reviews, markerData);
                   }
                   if (htmlInfoWnd) htmlInfoWnd.close();
                 });
@@ -460,14 +460,14 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     });
   }
 
-  onWriteReviewClick(store: Store): void {
+  onWriteReviewClick(reviews: StoreReview[],store: Store): void {
     if (store) {
       if (!this.userService.isAuth) {
-        this.nav.push('LoginPage', {continuePage: 'ItemReviewWritePage', params: {store:store, page:this}}).catch((err) => {
+        this.nav.push('LoginPage', {continuePage: 'ItemReviewWritePage', params: {store: store, page: this, reviews: reviews}}).catch((err) => {
           console.log(`Couldn't navigate to LoginPage: ${err}`);
         });
       } else {
-        this.nav.push('ItemReviewWritePage', {store:store, page:this}).catch(err => {
+        this.nav.push('ItemReviewWritePage', {store: store, page: this, reviews: reviews}).catch(err => {
           console.log(`Error navigating to ItemReviewWritePage: ${err}`);
         });
       }

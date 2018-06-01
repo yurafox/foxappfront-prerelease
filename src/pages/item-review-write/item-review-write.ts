@@ -1,5 +1,5 @@
 import {Component, ChangeDetectorRef} from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {Product,Store,ProductReview,StoreReview} from '../../app/model/index';
 import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
@@ -18,12 +18,14 @@ export class ItemReviewWritePage extends ComponentBase {
   reviewText: string;
   advantages: string;
   disadvantages: string;
-  submitted: boolean = false;
+  submitted: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private changeDetector: ChangeDetectorRef,
-              private repo: AbstractDataRepository, private toastCtrl: ToastController) {
+              private repo: AbstractDataRepository, private toastCtrl: ToastController, private alertCtrl: AlertController) {
     super();
+    this.initLocalization();
     this.rating = 0;
+    this.submitted = false;
     if (navParams.data instanceof Product) {
       this.product = navParams.data;
     } else if (navParams.data instanceof Store) {
@@ -37,6 +39,28 @@ export class ItemReviewWritePage extends ComponentBase {
 
   async ngOnInit() {
     super.ngOnInit();
+    if (this.product) {
+      let hasClientReviews = await this.repo.getHasClientProductReview(this.product.id);
+      this.showAlertAndPop(hasClientReviews);
+    } else if (this.store) {
+      let hasClientReviews = await this.repo.getHasClientStoreReview(this.store.id);
+      this.showAlertAndPop(hasClientReviews);
+    }
+  }
+
+  private showAlertAndPop(hasClientReviews) {
+    if (hasClientReviews && hasClientReviews != null && hasClientReviews.hasReview && hasClientReviews.hasReview === true) {
+      let message = this.locale['AlertMessage'] ? this.locale['AlertMessage'] : 'Вы уже оставляли отзыв';
+      let alert = this.alertCtrl.create({
+        message: message,
+        buttons: [
+          {
+            text: 'OK'
+          }
+        ]
+      });
+      alert.present().catch();
+    }
   }
 
   /**
@@ -91,10 +115,8 @@ export class ItemReviewWritePage extends ComponentBase {
     });
     toast.present().then(() => {
       this.navCtrl.pop().then(() => {
-        if (this.navParams.data.page) {
-          if (this.navParams.data.page.cantShow) {
-            this.navParams.data.page.cantShow = true;
-          }
+        if (this.navParams.data.page && this.navParams.data.page.cantShow) {
+          this.navParams.data.page.cantShow = true;
         }
       })
     });

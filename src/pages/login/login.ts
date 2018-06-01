@@ -26,17 +26,7 @@ export class LoginPage extends ComponentBase implements OnInit {
     'password': ''
   };
 
-  public errorMessages = {
-      /*'phone': {
-      'required': 'Обязательное поле',
-      'pattern': 'Не правильный формат номера'
-    },
-    'password': {
-      'required': 'Обязательное поле',
-      'minlength': 'Значение должно быть не менее 6ти символов',
-      'maxlength': 'Значение должно быть не более 25ти символов'
-    }*/
-  };
+  public errorMessages = {};
 
   constructor(public nav: NavController, public navParams: NavParams,
               private formBuilder: FormBuilder, public cart: CartService) {
@@ -100,7 +90,7 @@ export class LoginPage extends ComponentBase implements OnInit {
   private toContinuePage(params:any) {
     this.nav.remove(0).then(() => this.nav.insert(0, 'HomePage'));
     this.nav.push(this.navParams.data.continuePage,params).then(() => {
-      this.nav.remove(this.nav.getActive().index);
+      this.nav.remove(this.nav.getActive().index).catch();
     });
   }
 

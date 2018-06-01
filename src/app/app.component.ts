@@ -40,6 +40,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     {title: 'Акции', name: 'Actions', component: 'ActionsPage', index: 1, icon: 'ios-briefcase-outline'},
     {title: 'Контакты', name: 'Contacts', component: 'ContactsPage', index: 2, icon: 'ios-information-circle-outline'},
     {title: 'Поддержка', name: 'Support', component: 'SupportPage', index: 3, icon: 'ios-text-outline'},
+    {title: 'Выйти', name: 'OutApp', index: 4, icon: 'ios-log-out-outline'},
   ];
 
   private noveltyPushEventDescriptor: any;
