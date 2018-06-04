@@ -12,6 +12,6 @@ export class AppConstants {
   public static readonly EMAIL_SUBSCRIPTION_ENDPOINT = 'http://www.foxtrot.com.ua/Subscription/Subscription/';
   public static readonly LOCALE_DEFAULT_VALUE = 1;
   public static readonly CURRENCY_DEFAULT_VALUE = 4;
-  public static readonly ID_APP =6;
+  public static readonly ID_APP = 6;
   public static readonly ROOT_APP_PARAMS_CACHE_LIFETIME = 100000;
 }

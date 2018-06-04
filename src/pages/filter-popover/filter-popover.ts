@@ -38,6 +38,11 @@ export class FilterPopoverPage extends ComponentBase {
       item.item.isChecked = item.isChecked;
       this.filter.onMnfClick(item, category);
     }
+    if (item.type === CategoryType.ProductGroup) {
+      item.item.isChecked = item.isChecked;
+      this.filter.onGroupsClick(item, category);
+    }
+
 
     if (item.type === CategoryType.Sort) {
 
