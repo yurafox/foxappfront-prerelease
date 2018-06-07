@@ -46,4 +46,8 @@ page-cart {
   .f-header-div {
     border-bottom: solid 1px color($colors, gridlines);
   }
+  
+  .f-icon-scale {
+    transform: scale(8.0);
+  }
 }
