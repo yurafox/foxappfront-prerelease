@@ -1,0 +1,30 @@
+<ion-grid class="f-list-modal">
+  <ion-row>
+    <div>
+      <ion-icon class="f-close" name='close'></ion-icon>
+    </div>
+  </ion-row>
+  <ion-row>
+    <ion-col col-12 style="padding: 0px">
+      <table class="f-table f-table-striped f-table-hover">
+        <thead>
+        <tr style="height: 42px">
+          <th class="f-caption" (click)="close()">
+            <span>{{displayHeader}}</span>
+          </th>
+        </tr>
+        </thead>
+        <tbody [ngStyle]="getImportantStyle()" style="margin-top: -3px;border-top-width: 0px;margin-left:1px">
+        <tr *ngFor="let item of parent.store" valign="middle">
+          <td style="min-height: 45px;display: block" id={{uniqueIdentifier(item)}} [attr.class]="isActive(item)"
+              (click)="onSelect(item)">
+            <div [class.qtyCenter]="hasQtyExtension()">
+              <span>{{item[displayName]}}</span>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </ion-col>
+  </ion-row>
+</ion-grid>

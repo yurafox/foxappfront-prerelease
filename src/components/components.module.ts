@@ -37,6 +37,8 @@ import { ItemTileComponent } from './item-tile/item-tile';
 import { CategoriesComponent } from './categories/categories';
 import { CategoryBtnComponent } from './category-btn/category-btn';
 import { MaskComponent } from './mask/mask';
+import { StarBtnComponent } from './star-btn/star-btn';
+import { StarBtnViewComponent } from './star-btn-view/star-btn-view';
 
 @NgModule({
   declarations: [
@@ -72,12 +74,16 @@ import { MaskComponent } from './mask/mask';
     ItemTileComponent,
     CategoriesComponent,
     CategoryBtnComponent,
-    MaskComponent
+    MaskComponent,
+    StarBtnComponent,
+    StarBtnViewComponent
   ],
   entryComponents: [
     CustomPopupComponent,
     DropdownViewComponent,
     DropdownListComponent,
+    StarBtnComponent,
+    StarBtnViewComponent
   ],
 
   imports: [
@@ -121,7 +127,9 @@ import { MaskComponent } from './mask/mask';
     ItemTileComponent,
     CategoriesComponent,
     CategoryBtnComponent,
-    MaskComponent
+    MaskComponent,
+    StarBtnComponent,
+    StarBtnViewComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

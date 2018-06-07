@@ -103,4 +103,12 @@ page-map {
     text-align: center;
     background-color: white;
   }
+
+  .f-map-favorite-select {
+    right: 1%;
+    position: fixed;
+    top: 130px;
+    z-index: 1;
+  }
+
 }

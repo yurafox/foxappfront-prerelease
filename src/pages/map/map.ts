@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
 import { Platform, IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { AbstractDataRepository } from '../../app/service/repository/abstract/abstract-data-repository';
 import {
@@ -22,7 +22,10 @@ import { Subscription } from "rxjs/Subscription";
 interface SelectItem {
   label: string;
   value: {lat: number, lng: number};
+  city?: City;
 }
+
+const defaultCity = {name: 'Киев', id: 38044, position: {lat: 50.449878, lng: 30.523089}};
 
 @IonicPage({ name: 'MapPage', segment: 'map' })
 @Component({
@@ -30,14 +33,14 @@ interface SelectItem {
   templateUrl: 'map.html'
 })
 export class MapPage extends ComponentBase implements OnInit, OnDestroy {
-  @ViewChild('mapCanvas') mapCanvas;
+  @ViewChild('mapCanvas') mapCanvas: ElementRef;
+  @ViewChild('header') mapPageHeader: ElementRef;
 
   previousPage: string;
 
   map: GoogleMap;
   prevInfoWindow: HtmlInfoWindow;
   city: City;
-  defaultCityId: string;  // Used to set position when map just opened and user's location is unknown.
   cities: Array<City>;
   selectedCity: City = new City(0, ' ', 0);
   selectedMarker: SelectItem;
@@ -56,9 +59,12 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
   // Variables for drop-down buttons
   dropDownCityOpts: any;
   dropDownAddressOpts: any;
+  dropDownFavoritesOpts: any;
   isAuthorized: boolean;
-  clientId: number = 0;
+  clientId: number;
   cantShowDict: IDictionary<boolean>;
+  favoriteStores: Array<SelectItem>;
+  selectedFavStore: SelectItem;
 
   markerSubscriptions: Subscription[];
 
@@ -67,7 +73,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
               private alertCtrl: AlertController, private toastCtrl: ToastController) {
     super();
     this.initLocalization();
-    this.defaultCityId = "38044";
+    this.clientId = 0;
     this.shopList = [{label: '', value: null}];
     this.storeReviews = {};
     this.markersArr = {};
@@ -78,6 +84,8 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     this.markerSubscriptions = [];
     this.userPosIsKnown = false;
     this.cantShowDict = {};
+    this.favoriteStores = [];
+    this.selectedFavStore = {label: '', value: null, city: null};
 
     try {
       if (this.nav.last()) {
@@ -123,10 +131,28 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
         popupHeader: this.locale['Address'] ? this.locale['Address'] : 'Адрес',
         buttonHeader: this.locale['Address'] ? this.locale['Address'] : 'Адрес'
       };
+      this.dropDownFavoritesOpts = {
+        popupClass: 'f-large-dictionary',
+        popupHeader: this.locale['Address'] ? this.locale['Address'] : 'Адрес',
+        buttonHeader: this.locale['Address'] ? this.locale['Address'] : 'Адрес'
+      };
 
 
       this.markersArr = await this.repo.getStores();
       this.cities = await this.repo.getCitiesWithStores();
+      if (this.isAuthorized && this.cities) {
+        let favStores: Store[] = await this.repo.getFavoriteStores();
+        if (favStores && favStores[0]) {
+          for (let city of this.cities) {
+            for (let fav of favStores) {
+              if (city.id === fav.idCity) {
+                let favStore = {label: fav.address, value: fav.position, city: city};
+                this.favoriteStores.push(favStore);
+              }
+            }
+          }
+        }
+      }
       let reviews = await this.repo.getStoreReviews();
       this.storeReviews = reviews.reviews;
       this.clientId = reviews.idClient;
@@ -189,7 +215,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
           rotate: true,
         },
         camera: {
-          target: {lat: 50.449878, lng: 30.523089}, // Center of Kiev
+          target: defaultCity.position,
           zoom: 10
         },
       };
@@ -203,6 +229,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     this.cities = [];
 
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
+      this.map.setPadding(30,0,0,0);
       for (let i = 0; i < citiesArr.length; i++) {
         if (citiesArr[i].id === this.selectedCity.id) {
           this.city = citiesArr[i];
@@ -236,8 +263,8 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
               let reviews: StoreReview[] = [];
               if (this.storeReviews[markerData.id.toString()]) {
                 reviews = this.storeReviews[markerData.id.toString()];
-                this.cantShowDict[markerData.id.toString()] = this.hasClientReview(reviews);
               }
+              this.cantShowDict[markerData.id.toString()] = this.hasClientReview(reviews);
 
               let shopOpensTime: string = markerData.openTime;
               let shopClosesTime: string = markerData.closeTime;
@@ -255,6 +282,10 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
 
               let isWorking = this.shopIsWorking(shopOpensTime, shopClosesTime);
 
+              /**
+               * HtmlInfoWindow is a separate generated js file. So innerHTML is an isolated content.
+               * @type {HtmlInfoWindow}
+               */
               let htmlInfoWnd = new HtmlInfoWindow();
               let html: HTMLElement = document.createElement('div');
               html.innerHTML = [`<div style="font-size: 17px;">`,
@@ -276,65 +307,70 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
                   if (htmlInfoWnd) htmlInfoWnd.close();
                 });
               }
-              htmlInfoWnd.setContent(html);
+              if (htmlInfoWnd) htmlInfoWnd.setContent(html);
 
               /**
                * Center to the marker and show info on click
                */
               let subMarkerClick = marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-                if (this.prevInfoWindow) {
-                  this.prevInfoWindow.close();
-                }
+                try {
+                  if (this.prevInfoWindow) this.prevInfoWindow.close();
 
-                this.selectedMarker = {label: markerData.address, value: markerPosition};
-                if (+cityID !== this.selectedCity.id) {
-                  this.selectedCity = this.cities[c];
-                  {
-                    this.city = this.cities[c];
-                    this.makeShopList();
+                  this.selectedFavStore = {label: '', value: null, city: null};
+                  this.selectedMarker = {label: markerData.address, value: markerPosition, city: this.cities[c]};
+                  if (+cityID !== this.selectedCity.id) {
+                    this.selectedCity.id = this.cities[c].id;
+                    this.selectedCity.name = this.cities[c].name;
+                    this.selectedCity.idRegion = this.cities[c].idRegion;
+                    {
+                      this.city = this.cities[c];
+                      this.makeShopList();
+                    }
                   }
+
+                  this.prevInfoWindow = htmlInfoWnd;
+
+                  if (htmlInfoWnd) htmlInfoWnd.open(marker);
+
+                  this.markerSubscriptions.push(subMarkerClick);
+                } catch (err) {
+                  console.error(err);
                 }
-
-                this.prevInfoWindow = htmlInfoWnd;
-
-                htmlInfoWnd.open(marker);
               });
-              this.markerSubscriptions.push(subMarkerClick);
-
-            });
+            }).catch((err) => {console.error(err)});
 
             // </editor-fold>
           }
         }
       }
       this.navFromFavoriteStoresPage();
-    });
+    }).catch((err) => {console.error(err)});
   }
 
   /**
-   * Making list of shops
+   * Making list of stores
    */
   makeShopList() {
-    for (let i = 0; i < this.cities.length; i++) {
-      if (this.selectedCity.id === this.cities[i].id) {
-        this.shopList = [];
-        try {
-          if (this.markersArr[this.cities[i].id.toString()]) {
-            for (let j = 0; j < this.markersArr[this.cities[i].id.toString()].length; j++) {
-              try {
+    try {
+      if (this.cities && this.cities.length > 0) {
+        for (let i = 0; i < this.cities.length; i++) {
+          if (this.selectedCity.id === this.cities[i].id) {
+            let cityId = this.cities[i].id.toString();
+            this.shopList = [];
+            if (this.markersArr && this.markersArr[cityId]) {
+              for (let j = 0; j < this.markersArr[cityId].length; j++) {
                 this.shopList.push({
-                  label: this.markersArr[this.cities[i].id.toString()][j].address,
-                  value: this.markersArr[this.cities[i].id.toString()][j].position
+                  label: this.markersArr[cityId][j].address,
+                  value: this.markersArr[cityId][j].position,
+                  city: this.cities[i]
                 });
-              } catch (error) {
-                console.log('In-view shops push error: ' + error);
               }
             }
           }
-        } catch (error) {
-          console.log('makeShopList error: ' + error);
         }
       }
+    } catch (error) {
+      console.log('makeShopList error: ' + error);
     }
   }
 
@@ -342,18 +378,22 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
    * Updating stores every time city changes
    */
   changeMarkers() {
-    this.selectedMarker = {label: '', value: null};
-
+    if (this.prevInfoWindow) {
+      this.prevInfoWindow.close();
+      this.prevInfoWindow = undefined;
+    }
     for (let city of this.cities) {
       if (city.id === this.selectedCity.id) {
         this.city = city;
+        this.selectedMarker = {label: '', value: null, city: null};
       }
     }
     if (this.markersArr[this.selectedCity.id.toString()]) {
       this.makeShopList();
       try {
+        let target = this.selectedCity.id === defaultCity.id ? defaultCity.position : this.markersArr[this.selectedCity.id.toString()][0].position;
         this.map.moveCamera({
-          target: this.markersArr[this.selectedCity.id.toString()][0].position,
+          target: target,
           zoom: 10
         }).catch();
       } catch (error) {
@@ -366,11 +406,36 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
    * Actions on list select
    */
   handleListSelect() {
-    if (this.selectedMarker.value !== null) {
+    if (this.prevInfoWindow) {
+      this.prevInfoWindow.close();
+      this.prevInfoWindow = undefined;
+    }
+    if (this.selectedMarker && this.selectedMarker.value !== null) {
+      this.selectedFavStore = {label: '', value: null, city: null};
       this.map.moveCamera({
         target: this.selectedMarker.value,
         zoom: 17
-      }).catch();
+      }).catch((err) => console.error(err));
+    } else {
+      return;
+    }
+  }
+
+  /**
+   * Actions on favorite list select
+   */
+  handleFavoriteListSelect() {
+    if (this.selectedFavStore && this.selectedFavStore.value !== null && this.selectedFavStore.city && this.selectedFavStore.city !== null) {
+      let city = this.selectedFavStore.city;
+      this.selectedMarker = {label: this.selectedFavStore.label, value: this.selectedFavStore.value, city: city};
+      this.selectedCity.id = city.id;
+      this.selectedCity.name = city.name;
+      this.selectedCity.idRegion = city.idRegion;
+      this.makeShopList();
+      this.map.moveCamera({
+        target: this.selectedFavStore.value,
+        zoom: 17
+      }).catch((err) => console.error(err));
     } else {
       return;
     }
@@ -385,7 +450,11 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
         if (marker.position.lat === this.selectedMarker.value.lat && marker.position.lng === this.selectedMarker.value.lng) {
           if (this.isAuthorized === true) {
             try {
-              this.addFavoriteStore(marker).catch();
+              this.addFavoriteStore(marker).then((favStoreId) => {
+                if (favStoreId) {
+                  this.favoriteStores.push({label: this.selectedMarker.label, value: this.selectedMarker.value, city: this.selectedCity});
+                }
+              }).catch((err)=>{console.error(err)});
             } catch (err) {
               console.log(`Error while adding to favorite: ${err}`);
               return;
@@ -499,6 +568,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
         cssClass: 'toast-message'
       });
       toast.present().catch((err) => console.log(`Toast error: ${err}`));
+      return addedId;
     }
   }
 

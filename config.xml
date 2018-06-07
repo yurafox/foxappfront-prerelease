@@ -90,7 +90,6 @@
     <plugin name="cordova-plugin-statusbar" spec="2.4.1" />
     <plugin name="cordova-plugin-geolocation" spec="3.0.0" />
     <plugin name="cordova-plugin-screen-orientation" spec="2.0.2" />
-    <plugin name="cordova-plugin-exoplayer" spec="2.5.3" />
     <plugin name="com.lampa.startapp" spec="0.1.4" />
     <plugin name="cordova-plugin-appavailability" spec="0.4.2" />
     <plugin name="cordova-plugin-fcm" spec="2.1.2" />

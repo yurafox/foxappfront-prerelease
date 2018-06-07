@@ -16,14 +16,6 @@ export class NoConnectionPage extends ComponentBase implements OnInit, OnDestroy
   constructor(private navCtrl: NavController, private network: Network, private connServ: ConnectivityService) {
     super();
     this.initLocalization();
-    const index = this.navCtrl.getActive().index;
-    const prevPage = this.navCtrl.getByIndex(index-1);
-    if ((1 < index) && (prevPage.name !== 'HomePage')) {
-      this.navCtrl.remove(index - 1).catch();
-    } else if (prevPage && prevPage.name === 'HomePage')  {
-      this.navCtrl.remove(index - 1).catch();
-      this.navCtrl.insert(index - 1, 'HomePage', {pageMode: 1}).catch();
-    }
   }
 
   async ngOnInit() {
@@ -38,7 +30,7 @@ export class NoConnectionPage extends ComponentBase implements OnInit, OnDestroy
   }
 
   toHomePage() {
-    this.navCtrl.setRoot('HomePage', {pageMode: 1}).catch();
+    this.navCtrl.setRoot('HomePage', {pageMode: 1}).catch(()=>console.log('NoConnectionPage setRoot error'));
   }
 
   /**
@@ -46,10 +38,8 @@ export class NoConnectionPage extends ComponentBase implements OnInit, OnDestroy
    */
   checkAndHandleConnectionState() {
     this.connected = this.network.onConnect().subscribe(data => {
-      if (data) {
-        if (data.type !== 'none') {
-          this.navCtrl.pop();
-        }
+      if (data && data.type !== 'none') {
+        this.navCtrl.setRoot('HomePage').catch(() => console.log('NoConnectionPage setRoot error'));
       }
     }, error => console.error(error));
   }

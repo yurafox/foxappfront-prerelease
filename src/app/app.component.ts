@@ -9,6 +9,7 @@ import {DeviceData} from "./model/index";
 import {System} from "./core/app-core";
 import {CartService} from "./service/cart-service";
 import {ConnectivityService} from "./service/connectivity-service";
+import {BackgroundMode} from "@ionic-native/background-mode";
 
 export interface PageInterface {
   title: string;
@@ -49,7 +50,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   constructor(private platform: Platform, private alertCtrl: AlertController, private splashScreen: SplashScreen,
               public menuCtrl: MenuController, private repo: AbstractDataRepository,
               private appAvailability: AppAvailability, private device: Device, private cartService: CartService,
-              private connService: ConnectivityService) {
+              private connService: ConnectivityService, private backgroundMode: BackgroundMode) {
     super();
     this.initLocalization();
   }
@@ -89,17 +90,17 @@ export class FoxApp extends ComponentBase implements OnDestroy {
         FCMPlugin.onNotification((data) => {
           if (data.wasTapped) {
             //Notification was received on device tray and tapped by the user.
-            this.pushNotificationHandling(data).catch();
+            this.pushNotificationHandling(data).catch((err)=>console.error(err));
           } else {
             //Notification was received in foreground. Maybe the user needs to be notified.
-            this.pushNotificationHandling(data).catch();
+            this.pushNotificationHandling(data).catch((err)=>console.error(err));
           }
         });
 
-        //let readyness = await this.platform.ready();
-        if (ready && ready !== '') {
+        if (ready && ready !== '' && this) {
           this.splashScreen.hide();
-          //this.backgroundMode.enable();
+          this.backgroundMode.enable();
+          this.backgroundMode.setDefaults({hidden: true, silent: true}).catch((err)=>console.error(err));
         }
       }
     });
