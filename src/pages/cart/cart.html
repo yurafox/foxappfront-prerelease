@@ -20,7 +20,7 @@
 <ion-content>
   <ion-grid style="height: 100%" *ngIf="cart.orderProducts.length == 0" [@fadeInAnimation500]>
     <ion-row justify-content-center align-items-center style="height: 50%">
-          <ion-icon style="zoom:8.0;" name="cart"></ion-icon>
+          <ion-icon class="f-icon-scale" name="cart"></ion-icon>
     </ion-row>
     <ion-row justify-content-center style="height: 50%">
           <span class="f-color-secondary f-size-larger" loc="Корзина пуста" name="CartEmpty">{{locale['CartEmpty']}}</span>

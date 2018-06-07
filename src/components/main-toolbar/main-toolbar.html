@@ -5,13 +5,13 @@
   <img src="assets/imgs/foxlogo.svg" id="button-logo" (click)="goToHome()">
   <ion-buttons end>
     <button id="search-button" ion-button (click)="showSearch()" *ngIf="showSearchButton">
-      <ion-icon name="ios-search" style="zoom:1.5;">
+      <ion-icon class="f-icon-search-scale" name="ios-search">
       </ion-icon>
     </button>
 
     <button id="cart-button" ion-button (click)="goToCart()" *ngIf="showCartIcon">
-      <ion-icon name="shopping-cart" style="zoom:1.2;">
-        <ion-badge style="zoom:0.7;" id="itemscount-badge" *ngIf="cart.cartItemsCount>0">{{cart.cartItemsCount}}</ion-badge>
+      <ion-icon class="f-icon-cart-scale" name="shopping-cart">
+        <ion-badge id="itemscount-badge" *ngIf="cart.cartItemsCount>0">{{cart.cartItemsCount}}</ion-badge>
       </ion-icon>
     </button>
     <button id="close-button" ion-button (click)="close()" *ngIf="showCloseIcon">
