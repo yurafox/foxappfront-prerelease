@@ -1,9 +1,10 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, LoadingController, ModalController, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {CartService} from '../../app/service/cart-service';
 import {NgForm} from '@angular/forms';
+import {load} from 'google-maps';
 
 
 @IonicPage()
@@ -19,7 +20,7 @@ export class SelectPmtMethodPage extends ComponentBase {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
-              public modalCtrl: ModalController)
+              public modalCtrl: ModalController,  public loadingCtrl: LoadingController)
   {
     super();
     this.cart.initBonusData();
@@ -68,7 +69,7 @@ export class SelectPmtMethodPage extends ComponentBase {
     }
   }
 
-  onSelectOptionClick(option) {
+  async onSelectOptionClick(option) {
     if (option.method.id === this.cart.order.idPaymentMethod)
       return;
 
@@ -78,8 +79,18 @@ export class SelectPmtMethodPage extends ComponentBase {
 
       if (match) {
         this.cart.order.idPaymentMethod = option.method.id;
-        if ((this.cart.order.idPaymentMethod === 1) || (this.cart.order.idPaymentMethod === 2))
+        if ((this.cart.order.idPaymentMethod === 1) || (this.cart.order.idPaymentMethod === 2)) {
           this.cart.loan = null;
+
+          let content = this.locale['LoadingContent'];
+          let loading = this.loadingCtrl.create({
+            content: content
+          });
+          loading.present();
+          await this.cart.saveOrder();
+          loading.dismiss();
+
+        }
       }
     }
   }

@@ -25,8 +25,8 @@
         <img *ngIf="!product?.imageUrl" class="f-img-item-lg" src="assets/imgs/nophoto.png">
       </ion-col>
       <ion-col text-center *ngIf="!(product?.slideImageUrls?.length === 0) && product?.slideImageUrls">
-        <ion-slides pager>
-          <ion-slide *ngFor="let slide of product.slideImageUrls">
+        <ion-slides [attr.pager]="product.slideImageUrls.length>1?'':null">
+          <ion-slide *ngFor="let slide of product.slideImageUrls; index as i" (click)="onShowItemImg(i)">
             <img src="{{ slide }}" alt="">
           </ion-slide>
         </ion-slides>
@@ -164,7 +164,7 @@
 
       <ion-row *ngIf="product.props" (click)="onShowProductProps()">
         <ion-item class="f-border-ligthgray" detail-push text-wrap>
-          <item-props [product]=product [displayPropCount]="3"></item-props>
+          <item-props [product]=product [displayPropCount]="5"></item-props>
         </ion-item>
       </ion-row>
 

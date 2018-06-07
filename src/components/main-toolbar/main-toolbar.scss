@@ -1,25 +1,32 @@
-#cart-button {
-  position: relative;
-  width: 42px;
-  top: 1px;
-  right: 0px;
-  overflow: visible;
-}
+main-toolbar {
 
-#itemscount-badge {
-  background-color: color($colors, foxbadges);
-  position: absolute;
-  top: -4px;
-  right: -2px;
-  border-radius: 100%;
-}
+  #srch-icon {
+    color: color($colors, foxprimary);
+  }
 
-#button-logo {
-  position: relative;
-  background-color: color($colors, foxprimary);
-  top: 3px;
-  height: 14px;
-  width: 116px;
-  left: 20px;
+  #cart-button {
+    position: relative;
+    width: 42px;
+    top: 1px;
+    right: 0px;
+    overflow: visible;
+  }
+
+  #itemscount-badge {
+    background-color: color($colors, foxbadges);
+    position: absolute;
+    top: -4px;
+    right: -2px;
+    border-radius: 100%;
+  }
+
+  #button-logo {
+    position: relative;
+    background-color: color($colors, foxclear);
+    top: 3px;
+    height: 18px;
+    //width: 116px;
+    left: 20px;
+  }
 
 }

@@ -263,7 +263,7 @@ export class SearchService {
       sort = [{"status": {'order' : 'asc'}}, {'price': {'order' : 'desc'}}];
     };
 
-    if ((this.prodSrchParams.supplier) && (this.prodSrchParams.supplier.length >=1)) {
+    if ((this.prodSrchParams.supplier) && (this.prodSrchParams.supplier.length != 0)) {
       let terms = [];
       this.prodSrchParams.supplier.forEach(
         x => terms.push({'term': {"manufacturerId" : `${x}`}})
@@ -272,7 +272,7 @@ export class SearchService {
       postFilterArr.push(mnf);
     };
 
-    if ((this.prodSrchParams.category) && (this.prodSrchParams.category.length >=1)) {
+    if ((this.prodSrchParams.category) && (this.prodSrchParams.category.length != 0)) {
       let terms = [];
       this.prodSrchParams.category.forEach(
         x => {
@@ -286,11 +286,12 @@ export class SearchService {
         }
       );
       let cats = {'bool': {'should': terms}};
-      postFilterArr.push(cats);
+      mustArr.push(cats);
+      //postFilterArr.push(cats);
     };
 
 
-    if ((this.prodSrchParams.productProps) && (this.prodSrchParams.productProps.length >= 1)) {
+    if ((this.prodSrchParams.productProps) && (this.prodSrchParams.productProps.length != 0)) {
       let terms = [];
       let propsAgg = this.packPropsArray(this.prodSrchParams.productProps);
 

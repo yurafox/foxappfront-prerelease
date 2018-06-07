@@ -1,6 +1,6 @@
 import {Component, DoCheck, Input, ViewChild} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
-import {PopoverController} from 'ionic-angular';
+import {LoadingController, PopoverController} from 'ionic-angular';
 import {FilterPopoverPage} from '../../pages/filter-popover/filter-popover';
 import {Prop, Manufacturer} from '../../app/model/index';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
@@ -88,7 +88,8 @@ export class FilterComponent extends ComponentBase implements DoCheck {
   filteredManufacturers: GeneralFilterStruct[];
   filteredGroups: GeneralFilterStruct[];
 
-  constructor(public popoverCtrl: PopoverController, public repo: AbstractDataRepository) {
+  constructor(public popoverCtrl: PopoverController, public repo: AbstractDataRepository,
+              public loadingCtrl: LoadingController) {
     super();
   }
 
@@ -105,14 +106,24 @@ export class FilterComponent extends ComponentBase implements DoCheck {
   }
 
   async resetFilter() {
-    this.propFilterCondition = [];
-    this.mnfFilterCondition = [];
-    this.groupsFilterCondition = [];
-    this.srch.prodSrchParams.productProps = [];
-    this.srch.prodSrchParams.supplier = [];
-    this.srch.prodSrchParams.category = [];
-    await this.srch.search();
-    this.initData();
+    let content = this.locale['LoadingContent'];
+    let loading = this.loadingCtrl.create({
+      content: content
+    });
+    try {
+      loading.present();
+      this.propFilterCondition = [];
+      this.mnfFilterCondition = [];
+      this.groupsFilterCondition = [];
+      this.srch.prodSrchParams.productProps = [];
+      this.srch.prodSrchParams.supplier = [];
+      this.srch.prodSrchParams.category = [];
+      await this.srch.search();
+      this.initData();
+    }
+    finally {
+      loading.dismiss();
+    }
   }
 
   initData() {
@@ -179,12 +190,17 @@ export class FilterComponent extends ComponentBase implements DoCheck {
       }
     );
 
+    const justFiltered: boolean = ((this.lastFilteredCat) && (this.lastFilteredCat.type === CategoryType.ProductGroup));
+
+
     let grAr = [];
     for (let m of this.filteredGroups) {
       let isChecked = !(this.groupsFilterCondition.indexOf(m.obj.id) == -1);
       grAr.push(new FilterItem(m.obj.id, m.obj.name, isChecked, m.count, CategoryType.ProductGroup, m));
     }
-    this.fCategories.push(new FilterCategory(0, CategoryType.ProductGroup, 'Category', grAr, false, 6));
+    this.fCategories.push(new FilterCategory(0, CategoryType.ProductGroup, 'Category', grAr, justFiltered, 6));
+    if (justFiltered)
+      this.lastFilteredCat = null;
   }
 
   initFilterManufacturers() {
