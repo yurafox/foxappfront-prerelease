@@ -19,8 +19,8 @@
         <span class="f-size-smaller f-color-secondary">{{locale[cat.filterExpr] ? locale[cat.filterExpr] : cat.filterExpr | truncate: 40}}</span>
       </ion-col>
       <ion-col col-auto>
-        <ion-icon item-end name="ios-arrow-up" *ngIf="cat.isOpened"></ion-icon>
-        <ion-icon item-end name="ios-arrow-down" *ngIf="!cat.isOpened"></ion-icon>
+        <ion-icon class="f-icon-down-tick" item-end name="ios-arrow-up" *ngIf="cat.isOpened"></ion-icon>
+        <ion-icon class="f-icon-down-tick" item-end name="ios-arrow-down" *ngIf="!cat.isOpened"></ion-icon>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -1,15 +1,16 @@
 <div class="f-div-card" #filterControl>
   <div *ngIf="((srch.hitsTotal >= 5) && (srch.products.length > 0)) || (srch.inFilter)">
-    <ion-grid class="f-item-nopadding" style="padding-top: 5px;">
+    <ion-grid class="f-item-nopadding f-color-secondary" style="padding-top: 2px; padding-bottom: 2px;">
       <ion-row>
-        <ion-col  class="f-item-padding-5 f-border-ligthgray">
+        <ion-col text-left class="f-item-padding-5">
           <span> {{srch.hitsTotal}} <span loc="товаров" name="Items">{{locale['Items']}}</span></span>
         </ion-col>
-        <ion-col col-auto text-end class="f-item-padding-5 f-border-ligthgray" (click)="showFilter($event)">
+        <ion-col col-auto text-end class="f-item-padding-5" (click)="showFilter($event)">
           <span>&nbsp;&nbsp;<span loc="Фильтр" name="Filter">{{locale['Filter']}}</span>&nbsp;&nbsp;</span>
-          <ion-icon item-end name="ios-arrow-down"></ion-icon>
+          <ion-icon class="f-icon-down-tick" item-end name="ios-arrow-down"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
 </div>
+<hr class="f-hr-divider">

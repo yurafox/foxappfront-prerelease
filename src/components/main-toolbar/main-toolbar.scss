@@ -16,7 +16,7 @@ main-toolbar {
     background-color: color($colors, foxbadges);
     position: absolute;
     top: -10px;
-    right: -16px;
+    right: -12px;
     border-radius: 100%;
     transform: scale(0.7);
   }
@@ -37,5 +37,6 @@ main-toolbar {
   .f-icon-cart-scale {
     transform: scale(1.2);
   }
+
 
 }

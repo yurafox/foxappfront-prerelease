@@ -11,7 +11,7 @@
 
     <button id="cart-button" ion-button (click)="goToCart()" *ngIf="showCartIcon">
       <ion-icon class="f-icon-cart-scale" name="shopping-cart">
-        <ion-badge style="zoom:0.7;" id="itemscount-badge" *ngIf="cart.cartItemsCount>0">{{cart.cartItemsCount}}</ion-badge>
+        <ion-badge id="itemscount-badge" *ngIf="cart.cartItemsCount>0">{{cart.cartItemsCount}}</ion-badge>
       </ion-icon>
     </button>
     <button id="close-button" ion-button (click)="close()" *ngIf="showCloseIcon">
@@ -21,3 +21,4 @@
 
   </ion-buttons>
 </ion-navbar>
+<hr class="f-hr-divider">
