@@ -1,0 +1,17 @@
+<ion-header>
+  <div>
+    <ion-icon (click)="close()" class="f-close" name='close'></ion-icon>
+  </div>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-slides #slider [attr.pager]="product.slideImageUrls.length>1?'':null" zoom="true" [initialSlide]="imgIdx">
+    <ion-slide *ngFor="let slide of product.slideImageUrls; index as i">
+      <div class="swiper-zoom-container">
+        <img src="{{ slide }}" alt="">
+      </div>
+    </ion-slide>
+  </ion-slides>
+
+</ion-content>

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {CartService} from '../../app/service/cart-service';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
@@ -16,7 +16,8 @@ export class CheckoutPage extends ComponentBase {
   pmtMethodName = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
-              public repo: AbstractDataRepository, public alertCtrl: AlertController) {
+              public repo: AbstractDataRepository, public alertCtrl: AlertController,
+              public loadingCtrl: LoadingController) {
     super();
     this.repo.getPmtMethodById(cart.order.idPaymentMethod).then(x => {this.pmtMethodName = x.name});
   }
@@ -118,6 +119,11 @@ export class CheckoutPage extends ComponentBase {
     try
     {
       this.cart._httpCallInProgress = true;
+      let content = this.locale['LoadingContent'];
+      let loading = this.loadingCtrl.create({
+        content: content
+      });
+      loading.present();
 
       //сохраняем кол-во
       await this.cart.updateItem(objRef);
@@ -143,6 +149,7 @@ export class CheckoutPage extends ComponentBase {
 
 
       this.evServ.events['cartUpdateEvent'].emit();
+      loading.dismiss();
     }
     finally {
       this.cart._httpCallInProgress = false;

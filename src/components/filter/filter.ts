@@ -1,14 +1,15 @@
 import {Component, DoCheck, Input, ViewChild} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
-import {PopoverController} from 'ionic-angular';
+import {LoadingController, PopoverController} from 'ionic-angular';
 import {FilterPopoverPage} from '../../pages/filter-popover/filter-popover';
 import {Prop, Manufacturer} from '../../app/model/index';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {SearchService, SortOrderEnum} from '../../app/service/search-service';
+import {Category} from '../../app/model/category';
 
-class MnfFilterStruct {
+class GeneralFilterStruct {
   constructor(
-    public mnf: Manufacturer,
+    public obj: any,
     public count: number,
     public isChecked: boolean
   ){}
@@ -37,6 +38,7 @@ export enum CategoryType {
   Sort = 1,
   Manufacturer = 2,
   Property = 3,
+  ProductGroup = 4
 }
 
 class FilterItem {
@@ -78,13 +80,16 @@ export class FilterComponent extends ComponentBase implements DoCheck {
   private lastFilteredCat: FilterCategory;
   private propFilterCondition = [];
   private mnfFilterCondition = [];
+  private groupsFilterCondition = [];
   private dataInitialized = false;
   clientHeight = 0;
   fCategories = [];
   filteredProps: PropsFilterStruct[];
-  filteredManufacturers: MnfFilterStruct[];
+  filteredManufacturers: GeneralFilterStruct[];
+  filteredGroups: GeneralFilterStruct[];
 
-  constructor(public popoverCtrl: PopoverController, public repo: AbstractDataRepository) {
+  constructor(public popoverCtrl: PopoverController, public repo: AbstractDataRepository,
+              public loadingCtrl: LoadingController) {
     super();
   }
 
@@ -93,22 +98,39 @@ export class FilterComponent extends ComponentBase implements DoCheck {
   }
 
   public get inFilter(): boolean {
-    return ((this.propFilterCondition.length > 0) || (this.mnfFilterCondition.length > 0));
+    return (
+              (this.propFilterCondition.length > 0)
+              || (this.mnfFilterCondition.length > 0)
+              || (this.groupsFilterCondition.length > 0)
+            );
   }
 
   async resetFilter() {
-    this.propFilterCondition = [];
-    this.mnfFilterCondition = [];
-    this.srch.prodSrchParams.productProps = [];
-    this.srch.prodSrchParams.supplier = [];
-    await this.srch.search();
-    this.initData();
+    let content = this.locale['LoadingContent'];
+    let loading = this.loadingCtrl.create({
+      content: content
+    });
+    try {
+      loading.present();
+      this.propFilterCondition = [];
+      this.mnfFilterCondition = [];
+      this.groupsFilterCondition = [];
+      this.srch.prodSrchParams.productProps = [];
+      this.srch.prodSrchParams.supplier = [];
+      this.srch.prodSrchParams.category = [];
+      await this.srch.search();
+      this.initData();
+    }
+    finally {
+      loading.dismiss();
+    }
   }
 
   initData() {
     this.fCategories = [];
     this.initFilterProps();
     this.initFilterManufacturers();
+    this.initFilterGroups();
     this.initFilter();
     this.fCategories.sort((a, b) => {return (a.sortOrder - b.sortOrder)});
   }
@@ -152,6 +174,35 @@ export class FilterComponent extends ComponentBase implements DoCheck {
     this.fCategories.push(fSortCat);
   }
 
+  initFilterGroups() {
+    this.filteredGroups = [];
+    if (this.srch.prodSrchParams.categoryId)
+      return;
+    this.srch.aggs.catsAgg.buckets.forEach(
+      x => {
+        const grId = x.key.substring(0, x.key.indexOf('|'));
+        const grName = x.key.substring(x.key.indexOf('|')+1, x.key.length);
+
+        const cat = new Category(grId, grName);
+        let catFlt = new GeneralFilterStruct(cat, x.doc_count, false);
+        if (grId != 0) // не выводим null-группы
+          this.filteredGroups.push(catFlt);
+      }
+    );
+
+    const justFiltered: boolean = ((this.lastFilteredCat) && (this.lastFilteredCat.type === CategoryType.ProductGroup));
+
+
+    let grAr = [];
+    for (let m of this.filteredGroups) {
+      let isChecked = !(this.groupsFilterCondition.indexOf(m.obj.id) == -1);
+      grAr.push(new FilterItem(m.obj.id, m.obj.name, isChecked, m.count, CategoryType.ProductGroup, m));
+    }
+    this.fCategories.push(new FilterCategory(0, CategoryType.ProductGroup, 'Category', grAr, justFiltered, 6));
+    if (justFiltered)
+      this.lastFilteredCat = null;
+  }
+
   initFilterManufacturers() {
     this.filteredManufacturers = [];
     this.srch.aggs.mnfAgg.buckets.forEach(
@@ -160,8 +211,9 @@ export class FilterComponent extends ComponentBase implements DoCheck {
         const mnfName = x.key.substring(x.key.indexOf('|')+1, x.key.length);
 
         const mnf = new Manufacturer(mnfId, mnfName);
-        let mnfFlt = new MnfFilterStruct(mnf, x.doc_count, false);
-        this.filteredManufacturers.push(mnfFlt);
+        let mnfFlt = new GeneralFilterStruct(mnf, x.doc_count, false);
+        if (mnfId != 0) //не выводим null-производителей
+          this.filteredManufacturers.push(mnfFlt);
       }
     );
 
@@ -170,8 +222,8 @@ export class FilterComponent extends ComponentBase implements DoCheck {
     ////////////Заполняем модель формьі фильтра брендами////////////////
     let mnfAr = [];
     for (let m of this.filteredManufacturers) {
-      let isChecked = !(this.mnfFilterCondition.indexOf(m.mnf.id) == -1);
-      mnfAr.push(new FilterItem(m.mnf.id, m.mnf.name, isChecked, m.count, CategoryType.Manufacturer, m));
+      let isChecked = !(this.mnfFilterCondition.indexOf(m.obj.id) == -1);
+      mnfAr.push(new FilterItem(m.obj.id, m.obj.name, isChecked, m.count, CategoryType.Manufacturer, m));
     }
     this.fCategories.push(new FilterCategory(0, CategoryType.Manufacturer, 'Brand', mnfAr, justFiltered, 5));
     ////////////////////////////////////////////////////////////////////
@@ -227,14 +279,26 @@ export class FilterComponent extends ComponentBase implements DoCheck {
 
   onMnfClick(filterItem: FilterItem, filterCat: FilterCategory) {
     const mnf = filterItem.item;
-    let i = this.mnfFilterCondition.indexOf(mnf.mnf.id);
+    let i = this.mnfFilterCondition.indexOf(mnf.obj.id);
     if ((i !== -1))
       this.mnfFilterCondition.splice(i, 1);
     if ((i == -1) && (!mnf.isChecked))
-      this.mnfFilterCondition.push(mnf.mnf.id);
+      this.mnfFilterCondition.push(mnf.obj.id);
     this.srch.prodSrchParams.supplier = this.mnfFilterCondition;
     this.applyFilter(filterCat);
   }
+
+  onGroupsClick(filterItem: FilterItem, filterCat: FilterCategory) {
+    const gr = filterItem.item;
+    let i = this.groupsFilterCondition.indexOf(gr.obj.id);
+    if ((i !== -1))
+      this.groupsFilterCondition.splice(i, 1);
+    if ((i == -1) && (!gr.isChecked))
+      this.groupsFilterCondition.push(gr.obj.id);
+    this.srch.prodSrchParams.category = this.groupsFilterCondition;
+    this.applyFilter(filterCat);
+  }
+
 
   async applyFilter(lastFilterItem: FilterCategory) {
     await this.srch.search();

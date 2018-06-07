@@ -1,7 +1,7 @@
 page-cart {
 
   #btnQty button {
-    width: 110px;
+    //width: 110px;
     height: 32px;
   }
   .action-button {
@@ -45,5 +45,9 @@ page-cart {
 
   .f-header-div {
     border-bottom: solid 1px color($colors, gridlines);
+  }
+  
+  .f-icon-scale {
+    transform: scale(8.0);
   }
 }

@@ -41,7 +41,7 @@ export class CartService {
 
   public lastItemCreditCalc: ClientOrderProducts = null;
   private cKey = 'cartItems';
-  private _inCartInit = false;
+  //private _inCartInit = false;
   public _httpCallInProgress = false;
   public order: ClientOrder = null;
   public orderProducts: Array<ClientOrderProducts> = [];
@@ -120,30 +120,12 @@ export class CartService {
   }
 
   public set loan(value: CreditCalc) {
-    try
-    {
-      this._loan = value;
-      if (this.order) {
-        this._httpCallInProgress = true;
-        if (value) this.order.idPaymentMethod = 3;
-        this.order.idCreditProduct = value ? value.creditProduct.sId : null ;
-        this.order.creditPeriod = value ? value.clMonths : null;
-        this.order.creditMonthlyPmt = value ? value.clMonthAmt : null;
-
-        if (this._inCartInit) {
-          this._httpCallInProgress = false;
-        }
-        else {
-          this.saveOrder().then(() => {
-              this._httpCallInProgress = false;
-            }
-          )
-        }
-
-      }
-    }
-    finally {
-
+    this._loan = value;
+    if (this.order) {
+      if (value) this.order.idPaymentMethod = 3;
+      this.order.idCreditProduct = value ? value.creditProduct.sId : null;
+      this.order.creditPeriod = value ? value.clMonths : null;
+      this.order.creditMonthlyPmt = value ? value.clMonthAmt : null;
     }
   }
 
@@ -229,13 +211,14 @@ export class CartService {
     this.evServ.events['cartUpdateEvent'].emit();
   }
 
-  calcLoan() {
+  async calcLoan() {
     if ((this.order.idPaymentMethod === 3) && (this.loan)) {
       let cObj = this.loan;
 
       cObj.clMonthAmt = this.calculateLoan(this.cartGrandTotal, cObj.clMonths,
         cObj.creditProduct.monthCommissionPct, cObj.creditProduct.sGracePeriod);
       this.loan = cObj;
+      await this.saveOrder();
     }
   }
 
@@ -250,12 +233,14 @@ export class CartService {
   }
 
   public async saveOrder() {
+    this._httpCallInProgress = true;
     const before_scn = SCN.value;
     let order = await this.repo.saveClientDraftOrder(this.order);
     const after_scn = SCN.value;
+    this._httpCallInProgress = false;
 
 
-    if ((order) && (before_scn !== after_scn)) // check if order has not been submitted from another device
+    if ((order) && (before_scn != after_scn)) // check if order has not been submitted from another device
       this.order = order
     else {
       this.gotoCartPageIfDataChanged();
@@ -380,10 +365,14 @@ export class CartService {
 */
 
   async initCart() {
+/*
     if (this._inCartInit)
       return;
+*/
     try {
+/*
       this._inCartInit = true;
+*/
 
       // emptyCart code
       this.lastItemCreditCalc = null;
@@ -434,7 +423,7 @@ export class CartService {
       }
     }
     finally {
-      this._inCartInit = false;
+      //this._inCartInit = false;
     }
   }
 
