@@ -1,5 +1,5 @@
 import {Component, DoCheck} from '@angular/core';
-import {NavController, IonicPage, AlertController} from 'ionic-angular';
+import {NavController, IonicPage, AlertController, LoadingController} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {CartService} from '../../app/service/cart-service';
 import {SelectShipAddressPage} from '../select-ship-address/select-ship-address';
@@ -17,7 +17,8 @@ import {fadeInAnimation500} from '../../app/core/animation-core';
 export class CartPage extends ComponentBase implements DoCheck {
 
   constructor(public cart: CartService, private navCtrl: NavController,
-              private uService: UserService, private alertCtrl: AlertController) {
+              private uService: UserService, private alertCtrl: AlertController,
+              public loadingCtrl: LoadingController) {
     super();
   }
 
@@ -83,8 +84,14 @@ export class CartPage extends ComponentBase implements DoCheck {
   }
 
   async onAfterQtyUpdate(item: any, objRef: any) {
+    let content = this.locale['LoadingContent'];
+    let loading = this.loadingCtrl.create({
+      content: content
+    });
+    loading.present();
     await this.cart.updateItem(objRef);
     this.evServ.events['cartUpdateEvent'].emit();
+    loading.dismiss();
     this.ngDoCheck();
   }
 

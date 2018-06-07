@@ -1,3 +1,4 @@
+[![pipeline status](http://gitlab.mc.gcf/dit/foxtrot-mobile-app/badges/develop/pipeline.svg)](http://gitlab.mc.gcf/dit/foxtrot-mobile-app/commits/develop)
 This is a starter template for [Ionic](http://ionicframework.com/docs/) projects.
 
 ## How to use this template

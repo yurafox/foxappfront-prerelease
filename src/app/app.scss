@@ -23,7 +23,7 @@ $full-dictionary-width:99vw;
 
 md, ios, wp,
 .toolbar-background {
-  background-color: color($colors, fox);
+  background-color: color($colors, foxclear);
 }
 
 md, ios, wp,
@@ -39,7 +39,7 @@ md, ios, wp,
 
 md, ios, wp,
 .toolbar-title, .bar-button-default  {
-  color: white;
+  color: color($colors, foxblue);
 }
 
 @import "../theme/icons";
