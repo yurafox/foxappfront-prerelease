@@ -33,7 +33,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
 
   appPages: PageInterface[] = [
     {title: 'Главная', name: 'Home', component: 'HomePage', index: 0, icon: 'ios-home-outline'},
-    {title: 'Категории', name: 'Categories', component: 'CategoriesPage', index: 1, icon: 'ios-list-outline'},
+    {title: 'Категории', name: 'Categories', component: 'CategoryTreePage', index: 1, icon: 'ios-list-outline'},
     {title: 'Профиль', name: 'Account', component: 'AccountMenuPage', index: 2, icon: 'ios-person-outline'},
   ];
   infoPages: PageInterface[] = [

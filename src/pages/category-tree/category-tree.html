@@ -7,7 +7,7 @@
     <div *ngFor="let group of currentGroup">
       <button ion-item detail-push outline (click)="toChildCategory(group.id)">
         <ion-label>
-          <span>{{group.name}}</span>
+          <img [src]='convertImg(group.icon)' class="cat-icon" *ngIf="group.icon && group.icon!==''"> <span>{{group.name}}</span>
         </ion-label>
       </button>
     </div>
