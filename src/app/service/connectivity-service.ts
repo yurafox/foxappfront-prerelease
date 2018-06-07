@@ -28,40 +28,40 @@ export class ConnectivityService {
 
   public checkConnection(error?: any) {
     let activePage = this.navCtrl ? this.navCtrl.getActive() : undefined;
-    // <editor-fold desc="For browser testing only">
-    if (!this.network || !this.network.type) {
-      console.error(error.message ? error.message : error);
-    }
-    // </editor-fold>
 
-    if (!this.device.cordova) {
-      console.error(error.message ? error.message : error);
-      let alert = this.alertCtrl.create({
-        title: 'Trouble',
-        message: error.message ? error.message :  error,
-        buttons: [
-          {
-            text: 'OK'
-          }
-        ]
-      });
-      alert.present().catch((err) => console.log(`Alert error: ${err}`));
-      return;
-    } else if (this.network && this.network.type === 'none') {
-      if (activePage && activePage.name !== 'NoConnectionPage') {
-        this.showNoConnectionPage(error);
-      }
-    } else {
-      if (activePage && activePage.name !== 'NoConnectionPage') {
-        this.showNoConnectionPage(error);
-      }
-    }
+    (!this.device.cordova) ? this.makeBrowserBehavior(error) 
+                          : this.makeCordovaBehavior(activePage,error); 
   }
 
   private showNoConnectionPage(error: any) {
-    if (1 > this.count) {
+    if (this.count < 1) {
       this.count++;
       this.navCtrl.setRoot('NoConnectionPage', {error: error}).catch();
     }
+  }
+
+  private checkActivePage(activePage:any):boolean {
+    let verifyNetwork = this.network && this.network.type==='none';
+    let verifyActPage = activePage && activePage.name !== 'NoConnectionPage';
+    return verifyNetwork && verifyActPage;
+  }
+
+  private makeBrowserBehavior(error?: any):void {
+    console.error(error.message ? error.message : error);
+    let alert = this.alertCtrl.create({
+      title: 'Trouble',
+      message: error.message ? error.message :  error,
+      buttons: [
+        {
+          text: 'OK'
+        }
+      ]
+    });
+    alert.present().catch((err) => console.log(`Alert error: ${err}`));
+  }
+
+  private makeCordovaBehavior(activePage:any,error: any) {
+     if(this.checkActivePage(activePage))
+       this.showNoConnectionPage(error);
   }
 }
