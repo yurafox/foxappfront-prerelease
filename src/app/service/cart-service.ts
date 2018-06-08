@@ -398,14 +398,15 @@ export class CartService {
           this.person = await this.repo.getPersonById(this.order.idPerson);
         }
 
-        let op = await this.repo.getCartProducts();
 
         // Add local storage items
         let lsAr = this.getLocalStorageItems();
         for (let i of lsAr) {
           let itm = await this.repo.insertCartProduct(i);
-          op.push(itm);
+          //op.push(itm);
         }
+
+        let op = await this.repo.getCartProducts();
 
         //переключаем корзину на результирующую
         this.orderProducts = op;

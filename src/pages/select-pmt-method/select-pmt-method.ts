@@ -1,10 +1,9 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {NgForm} from '@angular/forms';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {CartService} from '../../app/service/cart-service';
-import {NgForm} from '@angular/forms';
-
 
 @IonicPage()
 @Component({
@@ -26,16 +25,12 @@ export class SelectPmtMethodPage extends ComponentBase {
     this.getPmtMethods();
   }
 
-
   async getPmtMethods () {
-
     let pmt = await this.repo.getPmtMethods();
-
     pmt.forEach(i => {
         this.pmtMethods.push({isChecked: ((this.cart.order.idPaymentMethod === i.id)), method: i});
       }
     );
-
     this.dataLoaded = true;
   }
 
@@ -104,17 +99,6 @@ export class SelectPmtMethodPage extends ComponentBase {
 
     await this.cart.saveOrder(true);
 
-/*
-    let order = await this.repo.saveClientDraftOrder(this.cart.order);
-    if (order) // check if order has not been submitted from another device
-      this.cart.order = order
-    else {
-      this.cart.gotoCartPageIfDataChanged();
-      return;
-    };
-*/
-
-
     if ((this.cart.availBonus > 0) || (this.cart.availPromoBonus > 0)) {
       this.navCtrl.push('BalancePage', {checkoutMode: true});
     }
@@ -126,10 +110,6 @@ export class SelectPmtMethodPage extends ComponentBase {
   birthDateChanged(newDate: Date) // <-- angular date input handling workaround
   {
     this.cart.person.birthDate = new Date(newDate);
-  }
-
-  onApplyPromoCodeClick() {
-    //console.log('ApplyPromoCode click.. ');
   }
 
   public getMaxDate(age:number=undefined):string {
