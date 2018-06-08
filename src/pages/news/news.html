@@ -1,0 +1,42 @@
+<ion-header>
+  <main-toolbar></main-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-grid  class="f-item-nopadding-tb">
+    <ion-row *ngFor="let item of news" (click)="onOpenOneNews(item)">
+      <ion-grid>
+        <ion-row>
+          <ion-col style="text-align: center">
+            <img [src]="item.previewImgUrl" onError="this.src='assets/imgs/nophoto.png';">
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="f-item-col">
+            <span class="f-product-name">{{item.caption}}</span>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="f-item-col">
+            <span class="f-size-small">{{item.publicDate | date:'longDate'}}</span>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="f-item-col">
+            <span class="f-size-default">{{item.description}}</span>
+            <hr>
+          </ion-col>
+        </ion-row>
+
+      </ion-grid>
+
+    </ion-row>
+
+
+  </ion-grid>
+
+</ion-content>

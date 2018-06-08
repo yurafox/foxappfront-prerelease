@@ -69,3 +69,4 @@ export * from './lo-delivery-type';
 export * from './lo-entity-office';
 export * from './client-order-product-base';
 export * from './client-order-product-hist';
+export * from './news';

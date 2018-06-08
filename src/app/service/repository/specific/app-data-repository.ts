@@ -48,7 +48,8 @@ import {
   Shipment,
   AppParam,
   LoDeliveryType,
-  LoEntityOffice
+  LoEntityOffice,
+  News
 } from '../../../model/index';
 
 import { AbstractDataRepository } from '../../index';
@@ -138,6 +139,9 @@ const getLoEntityOfficeUrl =`${AppConstants.BASE_URL}/api/lo/LoEntityOffice`;
 const getLoDeliveryTypesByLoEntityUrl = `${AppConstants.BASE_URL}/api/lo/LoDeliveryTypesByLoEntity`;
 const getLoOfficesByLoEntityAndCityUrl = `${AppConstants.BASE_URL}/api/lo/LoEntityOfficesByLoEntityAndCity`;
 const notifyOnProductArrivalUrl = `${AppConstants.BASE_URL}/api/product/NotifyOnProductArrival`;
+const legalPolicyUrl = `${AppConstants.BASE_URL}/api/legalpolicy/getLegalPolicy`;
+const newsUrl = `${AppConstants.BASE_URL}/api/News`;
+const newsDescriptionsUrl = `${AppConstants.BASE_URL}/api/news/getNewsDescription`;
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -3928,6 +3932,57 @@ export class AppDataRepository extends AbstractDataRepository {
 
       if (response.status !== 201) {
         throw new Error("server side status error");
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getLegalPolicy(langId: string): Promise<string> {
+    try {
+      const response = await this.http.get(legalPolicyUrl + `/${langId}`, RequestFactory.makeAuthHeader()).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        return data.description;
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getNews(): Promise<News[]> {
+    try {
+      const response = await this.http.get(newsUrl,RequestFactory.makeAuthHeader()).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      let banners: News[] = [];
+      if (data !== null) {
+        data.forEach((banner) => {
+          banners.push(banner);
+        })
+      }
+      return banners;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getNewsDescription(id: number): Promise<string> {
+    try {
+      const _id = id.toString();
+      const response = await this.http.get(newsDescriptionsUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        return data.description;
       }
     } catch (err) {
       return await this.handleError(err);

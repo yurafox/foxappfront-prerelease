@@ -92,7 +92,10 @@ import {
   PaymentPageModule,
   WarningViewPageModule,
   OrdersFilterPageModule,
-  ContactsPageModule
+  ContactsPageModule,
+  LegalPolicyPageModule,
+  NewsPageModule,
+  NewsDetailPageModule
 } from '../pages/index-modules';
 import {NgxQRCodeModule} from 'ngx-qrcode2';
 import {AppAvailability} from '@ionic-native/app-availability';
@@ -166,7 +169,10 @@ import {BackgroundMode} from '@ionic-native/background-mode';
     PaymentPageModule,
     WarningViewPageModule,
     OrdersFilterPageModule,
-    ContactsPageModule
+    ContactsPageModule,
+    LegalPolicyPageModule,
+    NewsPageModule,
+    NewsDetailPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
