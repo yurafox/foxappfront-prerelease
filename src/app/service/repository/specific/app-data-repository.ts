@@ -218,7 +218,7 @@ export class AppDataRepository extends AbstractDataRepository {
       const arr = new Array<ClientBonus>();
       if (data != null) {
         data.forEach(val =>
-          arr.push(new ClientBonus(val.id, val.clientId, val.bonus, val.dueDate))
+          arr.push(new ClientBonus(val.id, val.clientId, val.bonus, val.dueDate, val.type))
         );
       }
       return arr;

@@ -3,6 +3,7 @@ export class ClientBonus {
     public id: number,
     public clientId: number,
     public bonus: number,
-    public dueDate: Date
+    public dueDate: Date,
+    public type: string
   ) { }
 }
