@@ -1,9 +1,17 @@
 search-btn {
 
   #search-button-div {
-    border-width: medium;
-    border-color: color($colors, foxprimary);
+    border-width: 0px;
+    border-color: color($colors, foxclear);
     border-style: solid;
+  }
+
+  #search-button-inner{
+    //margin-left: 2px; margin-right: 2px;
+    border-width: 0px;
+    border-color: color($colors, lightgray);
+    border-style: solid;
+    //border-radius: 3px;
   }
 
   #input {
@@ -22,6 +30,11 @@ search-btn {
 
   .icon {
     color: color($colors, gray);
+  }
+
+  #srch-toolbar {
+    padding-top: 0px;
+    padding-bottom: 0px;
   }
 }
 

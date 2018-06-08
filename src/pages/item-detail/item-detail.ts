@@ -11,6 +11,7 @@ import {CreditCalcPage} from '../credit-calc/credit-calc';
 import {EventService} from '../../app/service/event-service';
 import {ActionByProduct} from '../../app/model/action-by-product';
 import {UserService} from '../../app/service/bll/user-service';
+import {ItemImgPage} from '../item-img/item-img';
 
 @IonicPage()
 @Component({
@@ -104,7 +105,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   }
 
   async onAddToCart() {
-    await this.cart.addItem(this.valueQuot, this.qty.value, this.product.price, this.selectedStorePlace, this);
+    await this.cart.addItem(this.valueQuot, this.qty.value, this.product.price, this.selectedStorePlace, this, true);
   }
 
   onGetForLoan() {
@@ -119,6 +120,12 @@ export class ItemDetailPage extends ItemBase implements OnInit {
         this.navCtrl.push(data.nextPage, data.params);
     });
     calcModal.present();
+  }
+
+  onShowItemImg(imgIdx: number) {
+    let itemImgModal = this.modalCtrl.create(ItemImgPage,
+      {product: this.product, imgIdx: imgIdx});
+    itemImgModal.present();
   }
 
   showLocationPopover() {

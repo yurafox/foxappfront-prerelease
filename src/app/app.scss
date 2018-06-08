@@ -23,7 +23,7 @@ $full-dictionary-width:99vw;
 
 md, ios, wp,
 .toolbar-background {
-  background-color: color($colors, fox);
+  background-color: color($colors, foxclear);
 }
 
 md, ios, wp,
@@ -39,7 +39,7 @@ md, ios, wp,
 
 md, ios, wp,
 .toolbar-title, .bar-button-default  {
-  color: white;
+  color: color($colors, foxblue);
 }
 
 @import "../theme/icons";
@@ -110,7 +110,8 @@ ion-list ion-icon {
 
 // left menu bg
 .menu-bg {
-  background: url("../assets/img/head-bg.png");
+  //background: url("../assets/img/head-bg.png");
+  background-color: color($colors, foxblue);
   background-size: cover;
   opacity: 1;
 }
@@ -257,7 +258,7 @@ ion-slides[pager] {
 
 .f-main-menu-header {
   position: relative;
-  height: inherit;
+  height: 100px; //inherit;
   padding: 10px !important;
 
   .f-main-menu-header-content-text {
@@ -292,6 +293,18 @@ ion-header.header.header-md::after {
   height: 36px;
   font-size: 14px;
 }
+
+.f-hr-divider {
+  color: rgb(78, 78, 78);
+  -webkit-margin-after: 0px;
+  -webkit-margin-before: 0px;
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.f-icon-down-tick {
+  color: color($colors, foxprimary);
+}
+
 
 ////// FONTS
 

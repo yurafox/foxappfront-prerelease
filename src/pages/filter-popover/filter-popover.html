@@ -12,28 +12,28 @@
 </div>
 
 <div  class="f-border-ligthgray" *ngFor="let cat of filter.fCategories; let i = index">
-  <ion-grid (click)="toggleOpen(i)">
+  <ion-grid style="padding-top: 10px; padding-bottom: 10px;" (click)="toggleOpen(i)">
     <ion-row class="f-size-default">
       <ion-col>
         <b>{{locale[cat.catName] ? locale[cat.catName] : cat.catName}}</b><br>
         <span class="f-size-smaller f-color-secondary">{{locale[cat.filterExpr] ? locale[cat.filterExpr] : cat.filterExpr | truncate: 40}}</span>
       </ion-col>
       <ion-col col-auto>
-        <ion-icon item-end name="ios-arrow-up" *ngIf="cat.isOpened"></ion-icon>
-        <ion-icon item-end name="ios-arrow-down" *ngIf="!cat.isOpened"></ion-icon>
+        <ion-icon class="f-icon-down-tick" item-end name="ios-arrow-up" *ngIf="cat.isOpened"></ion-icon>
+        <ion-icon class="f-icon-down-tick" item-end name="ios-arrow-down" *ngIf="!cat.isOpened"></ion-icon>
       </ion-col>
     </ion-row>
   </ion-grid>
 
   <div class="f-light-bkgrd" *ngIf="cat.isOpened">
-    <div  class="f-border-ligthgray" no-padding *ngFor="let item of cat.items">
-      <ion-grid class="f-size-small">
-        <ion-row >
+    <div class="f-border-ligthgray f-light-gray-bkg" no-padding *ngFor="let item of cat.items">
+      <ion-grid style="padding-top: 10px; padding-bottom: 10px;" class="f-size-small">
+        <ion-row (click)="onFilterElementClick(item, cat.items, cat, $event)">
           <ion-col padding-left>
             {{locale[item.name] ? locale[item.name] : item.name}}
           </ion-col>
           <ion-col col-auto>
-            <input type="checkbox" [(ngModel)]="item.isChecked" (click)="onFilterElementClick(item, cat.items, cat, $event)">
+            <input type="checkbox" [(ngModel)]="item.isChecked">
           </ion-col>
         </ion-row>
       </ion-grid>

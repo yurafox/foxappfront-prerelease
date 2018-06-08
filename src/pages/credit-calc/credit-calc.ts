@@ -129,10 +129,11 @@ export class CreditCalcPage extends ComponentBase {
     return res;
   }
 
-  onContinueClick() {
+  async onContinueClick() {
     let data = null;
 
     this.cart.loan = this.selectedLoan;
+    await this.cart.saveOrder(true);
 
     if(this.navParams.data.itemPage) {
 /*

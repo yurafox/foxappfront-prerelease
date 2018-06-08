@@ -6,7 +6,7 @@ import {StorePlace} from '../model/store-place';
 import {UserService} from './bll/user-service';
 import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
 import {EventService} from './event-service';
-import {AlertController, App} from 'ionic-angular';
+import {AlertController, App, LoadingController} from 'ionic-angular';
 import {PersonInfo} from '../model/person';
 import {CreditCalc} from '../model/credit-calc';
 import {AbstractLocalizationRepository} from "./repository/abstract/abstract-localization-repository";
@@ -41,7 +41,7 @@ export class CartService {
 
   public lastItemCreditCalc: ClientOrderProducts = null;
   private cKey = 'cartItems';
-  private _inCartInit = false;
+  //private _inCartInit = false;
   public _httpCallInProgress = false;
   public order: ClientOrder = null;
   public orderProducts: Array<ClientOrderProducts> = [];
@@ -74,7 +74,8 @@ export class CartService {
 
   constructor(public userService: UserService, public repo: AbstractDataRepository,
               public evServ: EventService, private app: App, private locRepo: AbstractLocalizationRepository,
-              public alertCtrl: AlertController, private currStoreService: CurrencyStore) {
+              public alertCtrl: AlertController, private currStoreService: CurrencyStore,
+              public loadingCtrl: LoadingController) {
 
     this.evServ.events['logonEvent'].subscribe(() => {
         this.initCart().then (() => {
@@ -120,30 +121,12 @@ export class CartService {
   }
 
   public set loan(value: CreditCalc) {
-    try
-    {
-      this._loan = value;
-      if (this.order) {
-        this._httpCallInProgress = true;
-        if (value) this.order.idPaymentMethod = 3;
-        this.order.idCreditProduct = value ? value.creditProduct.sId : null ;
-        this.order.creditPeriod = value ? value.clMonths : null;
-        this.order.creditMonthlyPmt = value ? value.clMonthAmt : null;
-
-        if (this._inCartInit) {
-          this._httpCallInProgress = false;
-        }
-        else {
-          this.saveOrder().then(() => {
-              this._httpCallInProgress = false;
-            }
-          )
-        }
-
-      }
-    }
-    finally {
-
+    this._loan = value;
+    if (this.order) {
+      if (value) this.order.idPaymentMethod = 3;
+      this.order.idCreditProduct = value ? value.creditProduct.sId : null;
+      this.order.creditPeriod = value ? value.clMonths : null;
+      this.order.creditMonthlyPmt = value ? value.clMonthAmt : null;
     }
   }
 
@@ -229,13 +212,14 @@ export class CartService {
     this.evServ.events['cartUpdateEvent'].emit();
   }
 
-  calcLoan() {
+  async calcLoan() {
     if ((this.order.idPaymentMethod === 3) && (this.loan)) {
       let cObj = this.loan;
 
       cObj.clMonthAmt = this.calculateLoan(this.cartGrandTotal, cObj.clMonths,
         cObj.creditProduct.monthCommissionPct, cObj.creditProduct.sGracePeriod);
       this.loan = cObj;
+      await this.saveOrder(false);
     }
   }
 
@@ -249,18 +233,35 @@ export class CartService {
     return _res;
   }
 
-  public async saveOrder() {
-    const before_scn = SCN.value;
-    let order = await this.repo.saveClientDraftOrder(this.order);
-    const after_scn = SCN.value;
+  public async saveOrder(showLoading: boolean) {
+    const content = this.localization['LoadingContent'];
+    const loading = this.loadingCtrl.create({
+      content: content
+    });
+
+    if (showLoading)
+      await loading.present();
+
+    try {
+      this._httpCallInProgress = true;
+      const before_scn = SCN.value;
+      let order = await this.repo.saveClientDraftOrder(this.order);
+      const after_scn = SCN.value;
+      if ((order) && (before_scn != after_scn)) // check if order has not been submitted from another device
+        this.order = order
+      else {
+        this.gotoCartPageIfDataChanged();
+        return;
+      };
+
+    }
+    finally {
+      this._httpCallInProgress = false;
+      if (showLoading)
+        await loading.dismiss();
+    }
 
 
-    if ((order) && (before_scn !== after_scn)) // check if order has not been submitted from another device
-      this.order = order
-    else {
-      this.gotoCartPageIfDataChanged();
-      return;
-    };
   }
 
   public get promoCodeDiscount(): number {
@@ -374,21 +375,9 @@ export class CartService {
     return ar;
   }
 
-/*
-  public emptyCart(): void {
-  }
-*/
-
   async initCart() {
-    if (this._inCartInit)
-      return;
     try {
-      this._inCartInit = true;
-
-      // emptyCart code
       this.lastItemCreditCalc = null;
-      //this.order = null;
-      //this.orderProducts = [];
       this.loan = null;
       this.bonus  = null;
       this._payByPromoBonus = false;
@@ -397,7 +386,6 @@ export class CartService {
       this.availBonus = null;
       this.availPromoBonus = null;
       this.cartValidationNeeded = false;
-      // end of emptyCart code
 
       this.min_loan_amt = parseInt(await this.repo.getAppParam('MIN_LOAN_AMT'));
       this.max_loan_amt = parseInt(await this.repo.getAppParam('MAX_LOAN_AMT'));
@@ -434,7 +422,7 @@ export class CartService {
       }
     }
     finally {
-      this._inCartInit = false;
+      //this._inCartInit = false;
     }
   }
 
@@ -451,68 +439,82 @@ export class CartService {
     return this.itemsTotal + this.shippingCost;
   }
 
-  async addComplect(item: ComplectItem, qty: number, page: any) {
+  async addComplect(item: ComplectItem, qty: number, page: any, showLoading: boolean) {
+    const content = this.localization['LoadingContent'];
+    const loading = this.loadingCtrl.create({
+      content: content
+    });
+
+    if (showLoading)
+      await loading.present();
+
+    try {
+
+      const vrnt = item.variants[item.selIndex];
+
+      let firstItem = new ClientOrderProducts();
+      firstItem.idQuotationProduct = vrnt.mainProductQP;
+      if (item.actionType === 4) {
+        firstItem.price = vrnt.mainProductActionPrice;
+      } else if (item.actionType === 5) {
+        firstItem.price = vrnt.mainProductRegularPrice - vrnt.secondProductRegularPrice; //  ActionPrice;
+      }
+
+      firstItem.qty = qty;
+      firstItem.idAction = vrnt.idAction;
+      firstItem.complect = vrnt.complect;
+      firstItem.actionTitle = vrnt.title;
+
+      let secondItem = new ClientOrderProducts();
+      secondItem.idQuotationProduct = vrnt.secondProductQP;
+      if (item.actionType === 4) {
+        secondItem.price = vrnt.secondProductActionPrice
+      } else if (item.actionType === 5) {
+        secondItem.price = vrnt.secondProductRegularPrice
+      }
+      secondItem.qty = qty;
+      secondItem.idAction = vrnt.idAction;
+      secondItem.complect = vrnt.complect;
+      secondItem.actionTitle = vrnt.title;
+
+      if (this.userService.isAuth) {
+
+        const before_scn = SCN.value;
+        firstItem = await this.repo.insertCartProduct(firstItem);
+        const after_scn = SCN.value;
+
+        if (before_scn === after_scn) {
+          this.gotoCartPageIfDataChanged();
+          return;
+        };
 
 
-    const vrnt = item.variants[item.selIndex];
+        const before_scn1 = SCN.value;
+        secondItem = await this.repo.insertCartProduct(secondItem);
+        const after_scn1 = SCN.value;
 
-    let firstItem = new ClientOrderProducts();
-    firstItem.idQuotationProduct = vrnt.mainProductQP;
-    if (item.actionType === 4) {
-      firstItem.price = vrnt.mainProductActionPrice;
-    } else if (item.actionType === 5) {
-      firstItem.price = vrnt.mainProductRegularPrice - vrnt.secondProductRegularPrice; //  ActionPrice;
+        if (before_scn1 === after_scn1) {
+          this.gotoCartPageIfDataChanged();
+          return;
+        };
+
+        this.showAddedItemToast(page);
+        this.orderProducts = [];
+        await this.initCart();
+      }
+      else
+      {
+        this.orderProducts.push(firstItem);
+        this.orderProducts.push(secondItem);
+        this.showAddedItemToast(page);
+      }
+      this.saveToLocalStorage();
+
     }
-
-    firstItem.qty = qty;
-    firstItem.idAction = vrnt.idAction;
-    firstItem.complect = vrnt.complect;
-    firstItem.actionTitle = vrnt.title;
-
-    let secondItem = new ClientOrderProducts();
-    secondItem.idQuotationProduct = vrnt.secondProductQP;
-    if (item.actionType === 4) {
-      secondItem.price = vrnt.secondProductActionPrice
-    } else if (item.actionType === 5) {
-      secondItem.price = vrnt.secondProductRegularPrice
+    finally {
+      if (showLoading)
+        await loading.dismiss();
     }
-    secondItem.qty = qty;
-    secondItem.idAction = vrnt.idAction;
-    secondItem.complect = vrnt.complect;
-    secondItem.actionTitle = vrnt.title;
-
-    if (this.userService.isAuth) {
-
-      const before_scn = SCN.value;
-      firstItem = await this.repo.insertCartProduct(firstItem);
-      const after_scn = SCN.value;
-
-      if (before_scn === after_scn) {
-        this.gotoCartPageIfDataChanged();
-        return;
-      };
-
-
-      const before_scn1 = SCN.value;
-      secondItem = await this.repo.insertCartProduct(secondItem);
-      const after_scn1 = SCN.value;
-
-      if (before_scn1 === after_scn1) {
-        this.gotoCartPageIfDataChanged();
-        return;
-      };
-
-      this.showAddedItemToast(page);
-      this.orderProducts = [];
-      await this.initCart();
-    }
-    else
-    {
-      this.orderProducts.push(firstItem);
-      this.orderProducts.push(secondItem);
-      this.showAddedItemToast(page);
-    }
-    this.saveToLocalStorage();
   }
 
   showAddedItemToast(page: any) {
@@ -528,45 +530,58 @@ export class CartService {
     toast.present();
   }
 
-  async addItem(item: QuotationProduct, qty: number, price: number, storePlace: StorePlace, page: any) {
-    if (item && qty && price) {
-      const sp = (storePlace) ? storePlace.id : null;
-      const _f = this.orderProducts.filter(i => {return ((i.idQuotationProduct === item.id) && (!i.complect)
-                                                          && (i.idStorePlace === sp));});
-      let foundQuot: ClientOrderProducts = (_f) ? _f[0] : null;
-      if (foundQuot)
-      {
-        foundQuot.qty += qty;
-        foundQuot.price = price;
+  async addItem(item: QuotationProduct, qty: number, price: number, storePlace: StorePlace, page: any, showLoading: boolean) {
+    const content = this.localization['LoadingContent'];
+    const loading = this.loadingCtrl.create({
+      content: content
+    });
 
-        await this.updateItem(foundQuot);
+    if (showLoading)
+      loading.present();
+    try {
+      if (item && qty && price) {
+        const sp = (storePlace) ? storePlace.id : null;
+        const _f = this.orderProducts.filter(i => {return ((i.idQuotationProduct === item.id) && (!i.complect)
+          && (i.idStorePlace === sp));});
+        let foundQuot: ClientOrderProducts = (_f) ? _f[0] : null;
+        if (foundQuot)
+        {
+          foundQuot.qty += qty;
+          foundQuot.price = price;
 
-      }
-      else
-      {
-        let orderItem = new ClientOrderProducts();
-        orderItem.idQuotationProduct = item.id;
-        orderItem.price = price;
-        orderItem.qty = qty;
-        orderItem.idStorePlace = (storePlace ? storePlace.id : null);
-
-        if (this.userService.isAuth) {
-
-          const before_scn = SCN.value;
-          orderItem = await this.repo.insertCartProduct(orderItem);
-          const after_scn = SCN.value;
-
-          if (before_scn === after_scn) {
-            this.gotoCartPageIfDataChanged();
-            return;
-          }
+          await this.updateItem(foundQuot, true);
 
         }
-        this.orderProducts.push(orderItem);
+        else
+        {
+          let orderItem = new ClientOrderProducts();
+          orderItem.idQuotationProduct = item.id;
+          orderItem.price = price;
+          orderItem.qty = qty;
+          orderItem.idStorePlace = (storePlace ? storePlace.id : null);
+
+          if (this.userService.isAuth) {
+
+            const before_scn = SCN.value;
+            orderItem = await this.repo.insertCartProduct(orderItem);
+            const after_scn = SCN.value;
+
+            if (before_scn === after_scn) {
+              this.gotoCartPageIfDataChanged();
+              return;
+            }
+
+          }
+          this.orderProducts.push(orderItem);
+        }
+        this.saveToLocalStorage();
+        this.lastItemCreditCalc = null;
+        this.showAddedItemToast(page);
       }
-      this.saveToLocalStorage();
-      this.lastItemCreditCalc = null;
-      this.showAddedItemToast(page);
+    }
+    finally {
+      if (showLoading)
+        await loading.dismiss();
     }
   }
 
@@ -608,53 +623,78 @@ export class CartService {
   }
 
 
-  async updateItem(item: ClientOrderProducts) {
+  async updateItem(item: ClientOrderProducts, showLoading: boolean) {
+    const content = this.localization['LoadingContent'];
+    const loading = this.loadingCtrl.create({
+      content: content
+    });
 
-    if (item.complect) {
-      let cmplArr = this.orderProducts.filter(x => (x.complect === item.complect) && (x.id !== item.id));
+    if (showLoading)
+      loading.present();
 
-      for (let i of cmplArr) {
-        i.qty = item.qty;
-        i = await this.repo.saveCartProduct(i);
+    try {
+      if (item.complect) {
+        let cmplArr = this.orderProducts.filter(x => (x.complect === item.complect) && (x.id !== item.id));
+
+        for (let i of cmplArr) {
+          i.qty = item.qty;
+          i = await this.repo.saveCartProduct(i);
+        }
+      }
+
+      if (this.userService.isAuth) {
+        const before_scn = SCN.value;
+        item = await this.repo.saveCartProduct(item);
+        const after_scn = SCN.value;
+          if ((!item) || (before_scn === after_scn)) {
+            this.gotoCartPageIfDataChanged();
+            return;
+          }
       }
     }
-
-    if (this.userService.isAuth) {
-      const before_scn = SCN.value;
-      item = await this.repo.saveCartProduct(item);
-      const after_scn = SCN.value;
-        if ((!item) || (before_scn === after_scn)) {
-          this.gotoCartPageIfDataChanged();
-          return;
-        }
-      //this.initCart();
+    finally {
+      if (showLoading)
+        loading.dismiss();
     }
   }
 
-  async removeItem(itemIndex: number) {
-    const cmpl: string = this.orderProducts[itemIndex].complect;
+  async removeItem(itemIndex: number, showLoading: boolean) {
+    const content = this.localization['LoadingContent'];
+    const loading = this.loadingCtrl.create({
+      content: content
+    });
 
-    if (this.userService.isAuth) {
-      const before_scn = SCN.value;
-      await this.repo.deleteCartProduct(this.orderProducts[itemIndex]);
-      const after_scn = SCN.value;
-      if ((before_scn === after_scn)) {
-        this.gotoCartPageIfDataChanged();
-        return;
+    if (showLoading)
+      await loading.present();
+    try {
+      const cmpl: string = this.orderProducts[itemIndex].complect;
+
+      if (this.userService.isAuth) {
+        const before_scn = SCN.value;
+        await this.repo.deleteCartProduct(this.orderProducts[itemIndex]);
+        const after_scn = SCN.value;
+        if ((before_scn === after_scn)) {
+          this.gotoCartPageIfDataChanged();
+          return;
+        }
+
+      }
+      this.orderProducts.splice(itemIndex, 1);
+      if (cmpl) {
+        let fnd = this.orderProducts.findIndex(x => x.complect === cmpl);
+        if (fnd !== -1)
+          this.orderProducts.splice(fnd, 1);
       }
 
+      this.saveToLocalStorage();
+      this.lastItemCreditCalc = null;
+      this.evServ.events['cartUpdateEvent'].emit();
     }
-    this.orderProducts.splice(itemIndex, 1);
-    if (cmpl) {
-      //const fltrd: Array<ClientOrderProducts> = this.orderProducts.filter(x => x.complect === cmpl);
-      let fnd = this.orderProducts.findIndex(x => x.complect === cmpl);
-      if (fnd !== -1)
-        this.orderProducts.splice(fnd, 1);
+    finally {
+      if (showLoading)
+        loading.dismiss();
     }
 
-    this.saveToLocalStorage();
-    this.lastItemCreditCalc = null;
-    this.evServ.events['cartUpdateEvent'].emit();
   }
 
   public get cartErrors(): Array<{idQuotProduct: number, errorMessage: string}> {

@@ -93,6 +93,8 @@ import {
   WarningViewPageModule,
   OrdersFilterPageModule,
   ContactsPageModule,
+  ItemImgPageModule
+  ContactsPageModule,
   LegalPolicyPageModule,
   NewsPageModule,
   NewsDetailPageModule
@@ -169,6 +171,8 @@ import {BackgroundMode} from '@ionic-native/background-mode';
     PaymentPageModule,
     WarningViewPageModule,
     OrdersFilterPageModule,
+    ContactsPageModule,
+    ItemImgPageModule
     ContactsPageModule,
     LegalPolicyPageModule,
     NewsPageModule,

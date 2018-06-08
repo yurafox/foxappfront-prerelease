@@ -36,13 +36,13 @@ $item-md-detail-push-color: #888888;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #ef4123,
+  primary:    #E54415,
   secondary:  white,
   danger:     #f53d3d,
   light:      #f4f4f4,
   dark:       #222,
-  foxprimary: #ef4123,
-  fox: #ef4123,
+  foxprimary: #E54415,
+  fox: #E54415,
   favorite: #69BB7B,
   facebook: #3B5999,
   googleplus: #DD4C39,
@@ -53,7 +53,9 @@ $colors: (
   foxclear: white,
   foxbadges: #ffad42,
   foxrating: #ffb400,
-  gridlines: #EBEBEC
+  gridlines: #EBEBEC,
+  lightgray: #cbcbcb,
+  foxblue: #00102A
 );
 
 

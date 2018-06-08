@@ -68,7 +68,7 @@ export class SelectPmtMethodPage extends ComponentBase {
     }
   }
 
-  onSelectOptionClick(option) {
+  async onSelectOptionClick(option) {
     if (option.method.id === this.cart.order.idPaymentMethod)
       return;
 
@@ -78,8 +78,10 @@ export class SelectPmtMethodPage extends ComponentBase {
 
       if (match) {
         this.cart.order.idPaymentMethod = option.method.id;
-        if ((this.cart.order.idPaymentMethod === 1) || (this.cart.order.idPaymentMethod === 2))
+        if ((this.cart.order.idPaymentMethod === 1) || (this.cart.order.idPaymentMethod === 2)) {
           this.cart.loan = null;
+          await this.cart.saveOrder(true);
+        }
       }
     }
   }
@@ -100,7 +102,7 @@ export class SelectPmtMethodPage extends ComponentBase {
       this.cart.order.idPerson = this.cart.person.id;
     };
 
-    this.cart.saveOrder();
+    await this.cart.saveOrder(true);
 
 /*
     let order = await this.repo.saveClientDraftOrder(this.cart.order);

@@ -17,10 +17,11 @@ export class ProductSearchParams {
   constructor (
   public srchText?: string,
   public categoryId?: number,
+  public category?: number[],
   public supplier?: number[],
   public productProps?: PropFilterCondition[],
   public sortOrder: SortOrderEnum = SortOrderEnum.Relevance,
-  public actionId?:number)
+  public actionId?: number)
   {}
 }
 
@@ -80,6 +81,9 @@ export class SearchService {
           ((this.prodSrchParams.supplier) && (this.prodSrchParams.supplier.length > 0))
           ||
           ((this.prodSrchParams.productProps) && (this.prodSrchParams.productProps.length > 0))
+          ||
+          ((this.prodSrchParams.category) && (this.prodSrchParams.category.length > 0))
+
     ) res = true;
     return res;
   }
@@ -259,7 +263,7 @@ export class SearchService {
       sort = [{"status": {'order' : 'asc'}}, {'price': {'order' : 'desc'}}];
     };
 
-    if ((this.prodSrchParams.supplier) && (this.prodSrchParams.supplier.length >=1)) {
+    if ((this.prodSrchParams.supplier) && (this.prodSrchParams.supplier.length != 0)) {
       let terms = [];
       this.prodSrchParams.supplier.forEach(
         x => terms.push({'term': {"manufacturerId" : `${x}`}})
@@ -268,7 +272,26 @@ export class SearchService {
       postFilterArr.push(mnf);
     };
 
-    if ((this.prodSrchParams.productProps) && (this.prodSrchParams.productProps.length >= 1)) {
+    if ((this.prodSrchParams.category) && (this.prodSrchParams.category.length != 0)) {
+      let terms = [];
+      this.prodSrchParams.category.forEach(
+        x => {
+          terms.push(
+            {
+                'term':{
+                  'group.id': {'value': `${x}`}
+                }
+            }
+          );
+        }
+      );
+      let cats = {'bool': {'should': terms}};
+      mustArr.push(cats);
+      //postFilterArr.push(cats);
+    };
+
+
+    if ((this.prodSrchParams.productProps) && (this.prodSrchParams.productProps.length != 0)) {
       let terms = [];
       let propsAgg = this.packPropsArray(this.prodSrchParams.productProps);
 
@@ -363,6 +386,9 @@ export class SearchService {
         'aggs': {
           'mnfAgg': {
             'terms': {"script":"doc ['manufacturer.id'].value + '|' + doc['manufacturer.name'].value"}
+          },
+          'catsAgg': {
+            'terms': {"script":"doc ['group.id'].value + '|' + doc['group.name'].value"}
           },
           'propsAgg': {
             'nested': {

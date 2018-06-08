@@ -26,7 +26,7 @@ export class CartPage extends ComponentBase implements DoCheck {
   }
 
   onDeleteItem(itemIndex: number) {
-    this.cart.removeItem(itemIndex);
+    this.cart.removeItem(itemIndex, true);
     this.ngDoCheck();
   }
 
@@ -83,7 +83,7 @@ export class CartPage extends ComponentBase implements DoCheck {
   }
 
   async onAfterQtyUpdate(item: any, objRef: any) {
-    await this.cart.updateItem(objRef);
+    await this.cart.updateItem(objRef, true);
     this.evServ.events['cartUpdateEvent'].emit();
     this.ngDoCheck();
   }

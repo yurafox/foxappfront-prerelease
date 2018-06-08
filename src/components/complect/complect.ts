@@ -164,6 +164,6 @@ export class ComplectComponent extends ComponentBase {
   }
 
   async onAddToCart(item: ComplectItem) {
-    await this.cart.addComplect(item, 1, this.navCtrl.getActive().instance);
+    await this.cart.addComplect(item, 1, this.navCtrl.getActive().instance, true);
   }
 }

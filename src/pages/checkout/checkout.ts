@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {CartService} from '../../app/service/cart-service';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
@@ -16,7 +16,8 @@ export class CheckoutPage extends ComponentBase {
   pmtMethodName = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
-              public repo: AbstractDataRepository, public alertCtrl: AlertController) {
+              public repo: AbstractDataRepository, public alertCtrl: AlertController,
+              public loadingCtrl: LoadingController) {
     super();
     this.repo.getPmtMethodById(cart.order.idPaymentMethod).then(x => {this.pmtMethodName = x.name});
   }
@@ -118,9 +119,14 @@ export class CheckoutPage extends ComponentBase {
     try
     {
       this.cart._httpCallInProgress = true;
+      let content = this.locale['LoadingContent'];
+      let loading = this.loadingCtrl.create({
+        content: content
+      });
+      loading.present();
 
       //сохраняем кол-во
-      await this.cart.updateItem(objRef);
+      await this.cart.updateItem(objRef, false);
 
       // пересчитьіваем стоимость и дату доставки
       let spmt: Shipment = null;
@@ -139,10 +145,10 @@ export class CheckoutPage extends ComponentBase {
         spmt.loEstimatedDeliveryDate = await this.repo.getDeliveryDateByShipment(spmt, spmt.idLoEntity, this.cart.order.loIdClientAddress, spmt.idLoDeliveryType);
         spmt = await this.repo.saveShipment(spmt);
       }
-      await this.cart.saveOrder();
-
+      await this.cart.saveOrder(false);
 
       this.evServ.events['cartUpdateEvent'].emit();
+      loading.dismiss();
     }
     finally {
       this.cart._httpCallInProgress = false;

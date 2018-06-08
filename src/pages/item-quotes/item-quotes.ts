@@ -31,8 +31,8 @@ export class ItemQuotesPage extends ComponentBase {
                     .filter((i) => {return (i.stockQuant>0);});
   }
 
-  onAddToCart(quote: QuotationProduct, price: number) {
-    this.cart.addItem(quote, 1, price, null, this);
+  async onAddToCart(quote: QuotationProduct, price: number) {
+    await this.cart.addItem(quote, 1, price, null, this, true);
   }
 
 }

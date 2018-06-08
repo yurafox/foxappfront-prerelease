@@ -46,7 +46,7 @@ export class BalancePage extends ComponentBase {
 
   async initData() {
     await this.cart.initBonusData();
-    this.clientBonusArr = await this.repo.getClientBonusesExpireInfo();
+    this.clientBonusArr = (await this.repo.getClientBonusesExpireInfo()).filter(x => {return x.type === 'regular';});
     this.clientBonusArr.sort((x,y) => {
       return +new Date(x.dueDate) - +new Date(y.dueDate);
     });
