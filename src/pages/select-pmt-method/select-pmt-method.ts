@@ -1,10 +1,9 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, LoadingController, ModalController, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {CartService} from '../../app/service/cart-service';
 import {NgForm} from '@angular/forms';
-import {load} from 'google-maps';
 
 
 @IonicPage()
@@ -20,7 +19,7 @@ export class SelectPmtMethodPage extends ComponentBase {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
-              public modalCtrl: ModalController,  public loadingCtrl: LoadingController)
+              public modalCtrl: ModalController)
   {
     super();
     this.cart.initBonusData();
@@ -81,15 +80,7 @@ export class SelectPmtMethodPage extends ComponentBase {
         this.cart.order.idPaymentMethod = option.method.id;
         if ((this.cart.order.idPaymentMethod === 1) || (this.cart.order.idPaymentMethod === 2)) {
           this.cart.loan = null;
-
-          let content = this.locale['LoadingContent'];
-          let loading = this.loadingCtrl.create({
-            content: content
-          });
-          loading.present();
-          await this.cart.saveOrder();
-          loading.dismiss();
-
+          await this.cart.saveOrder(true);
         }
       }
     }
@@ -111,7 +102,7 @@ export class SelectPmtMethodPage extends ComponentBase {
       this.cart.order.idPerson = this.cart.person.id;
     };
 
-    this.cart.saveOrder();
+    await this.cart.saveOrder(true);
 
 /*
     let order = await this.repo.saveClientDraftOrder(this.cart.order);

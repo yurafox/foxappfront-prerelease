@@ -126,7 +126,7 @@ export class CheckoutPage extends ComponentBase {
       loading.present();
 
       //сохраняем кол-во
-      await this.cart.updateItem(objRef);
+      await this.cart.updateItem(objRef, false);
 
       // пересчитьіваем стоимость и дату доставки
       let spmt: Shipment = null;
@@ -145,8 +145,7 @@ export class CheckoutPage extends ComponentBase {
         spmt.loEstimatedDeliveryDate = await this.repo.getDeliveryDateByShipment(spmt, spmt.idLoEntity, this.cart.order.loIdClientAddress, spmt.idLoDeliveryType);
         spmt = await this.repo.saveShipment(spmt);
       }
-      await this.cart.saveOrder();
-
+      await this.cart.saveOrder(false);
 
       this.evServ.events['cartUpdateEvent'].emit();
       loading.dismiss();

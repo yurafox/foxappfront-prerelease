@@ -51,7 +51,7 @@ export class OrdersPage extends ComponentBase {
     const valQ = await this.repo.getByItAgainQP(qp);
     const message = this.locale['AlertMessage'];
     if (valQ) {
-      this.cart.addItem(valQ,  1, valQ.price, null, this)
+      await this.cart.addItem(valQ,  1, valQ.price, null, this, true)
     }
     else {
       let alert = this.alertCtrl.create({

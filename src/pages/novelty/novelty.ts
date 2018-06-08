@@ -84,14 +84,15 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
     return this.novelty.novelty_content;
   }
 
-  public addToCart(): void {
+  public async addToCart() {
     if (this.noveltyDetails.length <= 1) {
       if (this.OnStock) {
-        this.cart.addItem( this.valueQuot,
+        await this.cart.addItem( this.valueQuot,
                             this.qty.value,
                             this.Price,
                             this.selectedStorePlace,
-                            this
+                            this,
+                true
                           );
       } else {
         this.showNotAddedToCartConfirmToast();

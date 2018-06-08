@@ -105,7 +105,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   }
 
   async onAddToCart() {
-    await this.cart.addItem(this.valueQuot, this.qty.value, this.product.price, this.selectedStorePlace, this);
+    await this.cart.addItem(this.valueQuot, this.qty.value, this.product.price, this.selectedStorePlace, this, true);
   }
 
   onGetForLoan() {
