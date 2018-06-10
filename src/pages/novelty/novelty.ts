@@ -96,7 +96,7 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
       } else {
         this.showNotAddedToCartConfirmToast();
       }
-    } else if (this.noveltyDetails.length > 1) {
+    } /*else if (this.noveltyDetails.length > 1) {
       let productsIds: number[] = [];
       for (let noveltyD of this.noveltyDetails) {
         productsIds.push(noveltyD.idProduct);
@@ -104,7 +104,7 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
       this.navCtrl.push('CategoryPage', productsIds).catch(err => {
         console.log(`Couldn't navigate to CategoryPage: ${err}`);
       });
-    } else {
+    }*/ else {
       this.showNotAddedToCartConfirmToast();
     }
   }
