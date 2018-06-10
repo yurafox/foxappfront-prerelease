@@ -1,7 +1,10 @@
+<div style="height: 25px;">
+</div>
 <ion-navbar>
   <button ion-button menuToggle *ngIf="!showCloseIcon">
     <ion-icon name="menu"></ion-icon>
   </button>
+
   <img src="assets/imgs/foxlogo.svg" id="button-logo" (click)="goToHome()">
   <ion-buttons end>
     <button id="search-button"  ion-button (click)="showSearch()" *ngIf="showSearchButton">
@@ -20,5 +23,6 @@
     </button>
 
   </ion-buttons>
+
 </ion-navbar>
 <hr class="f-hr-divider">

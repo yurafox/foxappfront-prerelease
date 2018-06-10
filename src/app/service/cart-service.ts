@@ -80,6 +80,7 @@ export class CartService {
     this.evServ.events['logonEvent'].subscribe(() => {
         this.initCart().then (() => {
             this.localeCartService();
+            this.initBonusData();
         }
         );
       }

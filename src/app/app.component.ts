@@ -9,6 +9,7 @@ import {DeviceData} from "./model/index";
 import {System} from "./core/app-core";
 import {CartService} from "./service/cart-service";
 import {ConnectivityService} from "./service/connectivity-service";
+import {StatusBar} from '@ionic-native/status-bar';
 
 export interface PageInterface {
   title: string;
@@ -33,7 +34,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   appPages: PageInterface[] = [
     {title: 'Главная', name: 'Home', component: 'HomePage', index: 0, icon: 'ios-home-outline'},
     {title: 'Категории', name: 'Categories', component: 'CategoriesPage', index: 1, icon: 'ios-list-outline'},
-    {title: 'Профиль', name: 'Account', component: 'AccountMenuPage', index: 2, icon: 'ios-person-outline'},
+//    {title: 'Профиль', name: 'Account', component: 'AccountMenuPage', index: 2, icon: 'ios-person-outline'},
   ];
   infoPages: PageInterface[] = [
     {title: 'Магазины', name: 'Map', component: 'MapPage', index: 0, icon: 'ios-map-outline'},
@@ -48,9 +49,15 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   constructor(private platform: Platform, private alertCtrl: AlertController, private splashScreen: SplashScreen,
               public menuCtrl: MenuController, private repo: AbstractDataRepository,
               private appAvailability: AppAvailability, private device: Device, private cartService: CartService,
-              private connService: ConnectivityService) {
+              private connService: ConnectivityService, private statusBar: StatusBar) {
     super();
     this.initLocalization();
+
+    platform.ready().then(() => {
+      statusBar.overlaysWebView(true);
+      statusBar.backgroundColorByHexString('#EBEBEC');
+      statusBar.styleDefault();
+    });
   }
 
   async ngOnInit() {
@@ -130,6 +137,14 @@ export class FoxApp extends ComponentBase implements OnDestroy {
         }
       }
     }
+  }
+
+  register() {
+    this.nav.push('RegisterPage');
+  }
+
+  account() {
+    this.nav.push('AccountMenuPage');
   }
 
   signOut() {

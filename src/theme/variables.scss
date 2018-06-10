@@ -37,53 +37,43 @@ $item-md-detail-push-color: #888888;
 
 $colors: (
   primary:    #E54415,
-  secondary:  white,
-  danger:     #f53d3d,
+  secondary: #00102A,
+  badges: #ffad42,
+  clear: white,
+  rating: #ffb400,
   light:      #f4f4f4,
-  dark:       #222,
-  foxprimary: #E54415,
-  fox: #E54415,
-  favorite: #69BB7B,
-  facebook: #3B5999,
-  googleplus: #DD4C39,
-  bgColor: #EBEBEC,
-  gray: #999,
-  green: green,
-  orange: #F44336,
-  foxclear: white,
-  foxbadges: #ffad42,
-  foxrating: #ffb400,
   gridlines: #EBEBEC,
-  lightgray: #cbcbcb,
-  foxblue: #00102A
+  bgColor: #EBEBEC,
+
+  green: green
 );
 
 
 // Use the primary color as the background for the toolbar-md-background
-$toolbar-ios-background: color($colors, fox);
+$toolbar-ios-background: color($colors, primary);
 
 // Change the color of the segment button text
-$toolbar-ios-active-color: color($colors, fox);
+$toolbar-ios-active-color: color($colors, primary);
 
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
 // Use the primary color as the background for the toolbar-md-background
-$toolbar-md-background: color($colors, fox);
+$toolbar-md-background: color($colors, primary);
 
 // Change the color of the segment button text
-$toolbar-md-active-color: color($colors, fox);
+$toolbar-md-active-color: color($colors, primary);
 
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
 
 // Use the primary color as the background for the toolbar-md-background
-$toolbar-wp-background: color($colors, fox);
+$toolbar-wp-background: color($colors, primary);
 
 // Change the color of the segment button text
-$toolbar-wp-active-color: color($colors, fox);
+$toolbar-wp-active-color: color($colors, primary);
 
 // App Theme
 // --------------------------------------------------
@@ -110,3 +100,13 @@ $toolbar-wp-active-color: color($colors, fox);
 @import "roboto";
 @import "noto-sans";
 
+@font-face {
+  font-family: 'Montserrat-Medium';
+  src:url('../assets/fonts/Montserrat-Medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+$font-family-base: "Montserrat-Medium";
+$font-family-ios-base: $font-family-base;
+$font-family-md-base: $font-family-base;
+$font-family-wp-base: $font-family-base;

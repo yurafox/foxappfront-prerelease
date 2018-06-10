@@ -20,7 +20,6 @@ export class UserService {
     'shortLogin':'',
     'register':'',
     'edit':''
-
   };
 
   // <editor-fold desc='.ctor'>

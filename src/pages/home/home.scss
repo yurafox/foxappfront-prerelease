@@ -7,18 +7,18 @@ page-home {
   */
 
   .f-bkg-div {
-    background-color: #dbdde1; 
+    background-color: #dbdde1;
   }
-  
+
   .ion-slides {
     height: auto;
   }
-  
+
   .slides-banner-container {
     background-color: white;
     min-height: 100px
   }
-  
+
   .f-flex-async-container {
     display: flex;
     flex-direction: column;
@@ -26,7 +26,7 @@ page-home {
   }
 
   .f-item-gray {
-    color: color($colors, gray);
+    color: #999;
   }
 
   .f-day-deals-scroll {

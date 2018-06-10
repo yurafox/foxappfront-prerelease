@@ -1,7 +1,7 @@
 main-toolbar {
 
   #srch-icon {
-    color: color($colors, foxprimary);
+    color: color($colors, primary);
   }
 
   #cart-button {
@@ -13,7 +13,7 @@ main-toolbar {
   }
 
   #itemscount-badge {
-    background-color: color($colors, foxbadges);
+    background-color: color($colors, badges);
     position: absolute;
     top: -10px;
     right: -12px;
@@ -23,10 +23,8 @@ main-toolbar {
 
   #button-logo {
     position: relative;
-    background-color: color($colors, foxclear);
     top: 3px;
     height: 18px;
-    //width: 116px;
     left: 20px;
   }
 

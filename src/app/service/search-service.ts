@@ -54,6 +54,7 @@ export class SearchService {
   hitsTotal = 0;
   lastItemIndex = 0;
   aggs: any;
+  connected: boolean = false;
 
   constructor(private repo: AbstractDataRepository) {
     this.initData();
@@ -66,8 +67,6 @@ export class SearchService {
   }
 
   async initData() {
-    if (!this.client)
-      await this.connect();
     this.cMaxSearchItemsCount = parseInt(await this.repo.getAppParam('SEARCH_HISTORY_MAX_LIST_LENGTH'));
     this.MAX_ITEMS_COUNT = parseInt(await this.repo.getAppParam('ELASTIC_PRODUCT_SEARCH_ITEMS_MAX_COUNT'));
     this.SIZE = parseInt(await this.repo.getAppParam('ELASTIC_PRODUCT_SEARCH_PAGE_SIZE'));
@@ -235,6 +234,9 @@ export class SearchService {
       }
     };
 
+    if (!this.client)
+      await this.connect();
+
     return this.client.search({
       index: this.INDEX,
       type: this.TYPE,
@@ -367,6 +369,9 @@ export class SearchService {
         "match": { "actions":`${this.prodSrchParams.actionId}`}
       });
     };
+
+    if (!this.client)
+      await this.connect();
 
     return this.client.search({
       index: this.INDEX,

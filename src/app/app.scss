@@ -16,6 +16,64 @@
 // automatically applied to the <body> element in the app.
 
 // sass variables
+
+#button-logo {
+  position: relative;
+  top: 3px;
+  height: 18px;
+  left: 20px;
+}
+
+//Main menu styles
+.f-main-menu-header {
+  position: relative;
+  height: 132px; //inherit;
+  padding: 10px !important;
+
+  .f-main-menu-header-content-text {
+    position: relative !important;
+    left: auto;
+    top: auto;
+    font-size: 19px;
+    color: white;
+    text-align: center;
+    //text-transform: uppercase;
+  }
+
+  .f-main-menu-col {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    padding-left: 10px !important;
+    color: color($colors, clear);
+
+    span {
+      padding-left: 12px;
+    }
+  }
+}
+
+.f-main-menu-footer {
+  div {
+    height: 63px;
+    background-color: color($colors, secondary);
+    color: color($colors, clear);
+  }
+
+  .f-col-pad-right {
+    padding-right: 10px;
+  }
+
+  .f-col-pad-left {
+    padding-left: 10px;
+  }
+
+}
+
+.f-menu-bg-font {
+  color: color($colors, clear);
+}
+////
+
 $small-dictionary-width:35vw;
 $middle-dictionary-width:50vw;
 $large-dictionary-width:90vw;
@@ -23,12 +81,12 @@ $full-dictionary-width:99vw;
 
 md, ios, wp,
 .toolbar-background {
-  background-color: color($colors, foxclear);
+  background-color: color($colors, clear);
 }
 
 md, ios, wp,
 .toolbar, .ion-navbar.toolbar {
-  min-height: 40px;
+  min-height: 50px;
 }
 
 md, ios, wp,
@@ -39,7 +97,7 @@ md, ios, wp,
 
 md, ios, wp,
 .toolbar-title, .bar-button-default  {
-  color: color($colors, foxblue);
+  color: color($colors, secondary);
 }
 
 @import "../theme/icons";
@@ -67,7 +125,7 @@ html {
 */
 
 ion-list ion-icon {
-  color: color($colors, fox);
+  color: color($colors, primary);
 }
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -78,13 +136,11 @@ ion-list ion-icon {
   background-color: color($colors, primary);
 }
 
+/*
 .secondary-bg {
   background-color: color($colors, secondary);
 }
-
-.gray-bg {
-  background-color: color($colors, gray);
-}
+*/
 
 .light-bg {
   background-color: color($colors, light);
@@ -105,15 +161,15 @@ ion-list ion-icon {
 }
 
 .swiper-pagination-bullet-active {
-  background: color($colors, fox);
+  background: color($colors, primary);
 }
 
 // left menu bg
 .menu-bg {
   //background: url("../assets/img/head-bg.png");
-  background-color: color($colors, foxblue);
-  background-size: cover;
-  opacity: 1;
+  background-color: color($colors, secondary);
+  //background-size: cover;
+  //opacity: 1;
 }
 .barcode-bg {
   background: url("../assets/img/bg.jpg");
@@ -256,22 +312,6 @@ ion-slides[pager] {
   }
 }
 
-.f-main-menu-header {
-  position: relative;
-  height: 100px; //inherit;
-  padding: 10px !important;
-
-  .f-main-menu-header-content-text {
-    position: relative !important;
-    left: auto;
-    top: auto;
-    font-size: 19px;
-    color: white;
-    text-align: center;
-    //text-transform: uppercase;
-  }
-}
-
 ion-header {
   p {
     -webkit-margin-before: 0 !important;
@@ -302,7 +342,7 @@ ion-header.header.header-md::after {
 }
 
 .f-icon-down-tick {
-  color: color($colors, foxprimary);
+  color: color($colors, primary);
 }
 
 

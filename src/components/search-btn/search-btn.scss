@@ -2,14 +2,14 @@ search-btn {
 
   #search-button-div {
     border-width: 0px;
-    border-color: color($colors, foxclear);
+    border-color: color($colors, clear);
     border-style: solid;
   }
 
   #search-button-inner{
     //margin-left: 2px; margin-right: 2px;
     border-width: 0px;
-    border-color: color($colors, lightgray);
+    border-color: #cbcbcb;
     border-style: solid;
     //border-radius: 3px;
   }
@@ -21,7 +21,7 @@ search-btn {
   }
 
   .toolbar-background, .input {
-    background-color: color($colors, foxclear);
+    background-color: color($colors, clear);
   }
 
   .text-input:disabled::-webkit-input-placeholder {
@@ -29,7 +29,7 @@ search-btn {
   }
 
   .icon {
-    color: color($colors, gray);
+    color: #999;
   }
 
   #srch-toolbar {
