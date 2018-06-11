@@ -1,27 +1,37 @@
 [![pipeline status](http://gitlab.mc.gcf/dit/foxtrot-mobile-app/badges/develop/pipeline.svg)](http://gitlab.mc.gcf/dit/foxtrot-mobile-app/commits/develop)
-This is a starter template for [Ionic](http://ionicframework.com/docs/) projects.
 
-## How to use this template
-
-*This template does not work on its own*. The shared files for each starter are found in the [ionic2-app-base repo](https://github.com/ionic-team/ionic2-app-base).
-
-To use this template, either create a new ionic project using the ionic node.js utility, or copy the files from this repository into the [Starter App Base](https://github.com/ionic-team/ionic2-app-base).
-
-### With the Ionic CLI:
-
-Take the name after `ionic2-starter-`, and that is the name of the template to be used when using the `ionic start` command below:
+### Installing and preparing to work with the Ionic CLI:
 
 ```bash
-$ sudo npm install -g ionic cordova
-$ ionic start myBlank blank
+$ npm install -g ionic cordova
+$ npm install
 ```
 
-Then, to run it, cd into `myBlank` and run:
+### Pre-fixing some plugin issues
 
+### 1. The main issue is that cordova-plugin-fcm and cordova-plugin-googlemaps need to use the same google play services version, but they don't by default.
+
+### Go to <project's folder>/plugins/cordova-plugin-fcm/plugin.xml and find two lines starting with "<framework src="com.google.firebase:firebase-core" and "<framework src="com.google.firebase:firebase-messaging". Change them to be:
+		<framework src="com.google.firebase:firebase-core:11.4.2" />
+    <framework src="com.google.firebase:firebase-messaging:11.4.2" />
+		
+### Go to <project's folder>/plugins/cordova-plugin-googlemaps/plugin.xml and find line starting with "<preference name="PLAY_SERVICES_VERSION"". Change it to be:
+		<preference name="PLAY_SERVICES_VERSION" default="11.4.2" />
+		
+### Go to <project's folder>/node_modules/cordova-plugin-googlemaps/plugin.xml and find line starting with "<preference name="PLAY_SERVICES_VERSION"". Change it to be:
+		<preference name="PLAY_SERVICES_VERSION" default="11.4.2" />
+
+### Then:
 ```bash
-$ ionic cordova platform add ios
-$ ionic cordova run ios
+$ ionic cordova platform add android
 ```
 
-Substitute ios for android if not on a Mac.
-
+### After platform have been installed go to <project's folder>/platforms/android/cordova-plugin-fcm/android-FCMPlugin.gradle and add this line to dependencies:
+        classpath 'com.google.gms:google-services:3.1.2'
+### to be like: 
+	dependencies {
+        classpath 'com.android.tools.build:gradle:+'
+        classpath 'com.google.gms:google-services:3.1.2'
+    }
+	
+### 2. Second main issue is related to cordova-plugin-crosswalk-webview. Read crosswalk_fix.md which is located in projects main folder.
