@@ -17,6 +17,11 @@
 
 // sass variables
 
+// small gray square BUG FIX
+.scroll-content{
+  overflow-y:auto !important;
+}
+
 #button-logo {
   position: relative;
   top: 3px;

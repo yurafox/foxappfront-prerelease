@@ -157,6 +157,10 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     });
   }
 
+  openBalancePage() {
+    this.nav.push('BalancePage');
+  }
+
   toLogIn() {
     if (this.userService.isAuth === false) {
       this.nav.push('LoginPage').catch((err: any) => {

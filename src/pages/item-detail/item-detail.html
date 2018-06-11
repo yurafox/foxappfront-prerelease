@@ -70,7 +70,7 @@
 
     <div *ngIf="OnStock && resolved">
 
-      <ion-row *ngIf="valueQuot?.quotation?.supplier">
+      <ion-row *ngIf="appConst.ENABLE_MARKETPLACE_FEATURES && valueQuot?.quotation?.supplier">
         <ion-col>
           <span class="f-item-nopadding"><span loc="Продавец" name="SoldBy">{{locale['SoldBy']}}</span> {{valueQuot?.quotation?.supplier?.name}}</span>
         </ion-col>
@@ -141,7 +141,7 @@
     <hr>
   <!-- No of quotes -->
 
-    <ion-grid class="f-item-nopadding-tb" *ngIf="(noOfQuotes>1) && (quotes)" (click)="onShowMoreQuotesClick()">
+    <ion-grid class="f-item-nopadding-tb" *ngIf="appConst.ENABLE_MARKETPLACE_FEATURES && (noOfQuotes>1) && (quotes)" (click)="onShowMoreQuotesClick()">
       <ion-row>
         <ion-col>
           <span class="f-color-info">{{noOfQuotes}} <span loc="больше предложений от" name="MoreQuotes">{{locale['MoreQuotes']}}</span> {{Price | localeCurrency:userService.currency}}</span>

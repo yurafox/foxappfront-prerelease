@@ -14,4 +14,5 @@ export class AppConstants {
   public static readonly CURRENCY_DEFAULT_VALUE = 4;
   public static readonly ID_APP = 6;
   public static readonly ROOT_APP_PARAMS_CACHE_LIFETIME = 100000;
+  public static readonly ENABLE_MARKETPLACE_FEATURES = false;
 }

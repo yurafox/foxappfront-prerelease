@@ -10,6 +10,7 @@ const loginUrl = `${AppConstants.BASE_URL}/api/account/login`;
 const accountUrl = `${AppConstants.BASE_URL}/api/account`;
 const verifyAccountUrl = `${AppConstants.BASE_URL}/api/account/verify`;
 const changePasswdAccountUrl = `${AppConstants.BASE_URL}/api/account/changePass`;
+const getBonusesInfoUrl = `${AppConstants.BASE_URL}/api/client/getBonusesInfo`;
 // mock url
 // const loginUrl = '/api/mtoken';
 // const accountUrl = '/api/musers';
@@ -197,4 +198,20 @@ export class AccountRepository extends AbstractAccountRepository {
   //   h.set('Authorization', `Bearer: ${token}`);
   //    return { headers: h};
   //  }
+
+  public async getBonusesInfo(): Promise<{bonusLimit: number, actionBonusLimit: number}> {
+    try {
+      const response = await this.http
+        .get(getBonusesInfoUrl, RequestFactory.makeAuthHeader()).toPromise();
+      const val = response.json();
+      if (response.status == 204)
+        return { bonusLimit: 0, actionBonusLimit: 0 };
+      if (response.status !== 201 && response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      return val;
+    } catch (err) {
+      return await this.errorHandler(err);
+    }
+  }
 }

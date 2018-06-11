@@ -3,6 +3,7 @@ import {Product} from '../../app/model/product';
 import {NavController, NavParams} from "ionic-angular";
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {ItemBase} from '../component-extension/item-base';
+import {AppConstants} from '../../app/app-constants';
 
 
 @Component({
@@ -13,7 +14,7 @@ import {ItemBase} from '../component-extension/item-base';
 export class ItemComponent extends ItemBase {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public repo: AbstractDataRepository) {
+              public repo: AbstractDataRepository, public appConst: AppConstants) {
     super(navCtrl, navParams, repo);
   }
 

@@ -8,5 +8,6 @@ export abstract class AbstractAccountRepository {
   public async abstract getUserById(token: string): Promise<User>;
   public async abstract verifyAccount(phone: string): Promise<IUserVerifyAccountData>;
   public async abstract changePassword(passwordModel:ChangePassword):Promise<IUserVerifyAccountData>;
+  public async abstract getBonusesInfo(): Promise<{bonusLimit: number, actionBonusLimit: number}>;
   //public abstract isNotSignOutSelf(): boolean;
 }

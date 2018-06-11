@@ -6,6 +6,7 @@ import {SelectShipAddressPage} from '../select-ship-address/select-ship-address'
 import {UserService} from '../../app/service/bll/user-service';
 import {LoginPage} from '../login/login';
 import {fadeInAnimation500} from '../../app/core/animation-core';
+import {AppConstants} from '../../app/app-constants';
 
 @IonicPage()
 @Component({
@@ -17,7 +18,8 @@ import {fadeInAnimation500} from '../../app/core/animation-core';
 export class CartPage extends ComponentBase implements DoCheck {
 
   constructor(public cart: CartService, private navCtrl: NavController,
-              private uService: UserService, private alertCtrl: AlertController) {
+              private uService: UserService, private alertCtrl: AlertController,
+              public appConst: AppConstants) {
     super();
   }
 

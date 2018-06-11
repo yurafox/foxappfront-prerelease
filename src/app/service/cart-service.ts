@@ -314,8 +314,7 @@ export class CartService {
   }
 
   public async initBonusData() {
-    let bonusData = await this.repo.getBonusesInfo();
-
+    let bonusData = await this.userService.bonusInfo;
     this.availBonus = (bonusData.bonusLimit) ? bonusData.bonusLimit : 0;
     this.availPromoBonus = (bonusData.actionBonusLimit) ? bonusData.actionBonusLimit : 0;
   }
@@ -399,6 +398,7 @@ export class CartService {
           this.person = await this.repo.getPersonById(this.order.idPerson);
         }
 
+        await this.initBonusData();
 
         // Add local storage items
         let lsAr = this.getLocalStorageItems();

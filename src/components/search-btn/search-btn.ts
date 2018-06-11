@@ -58,17 +58,19 @@ export class SearchBtnComponent extends ComponentBase {
     if (searchString) {
       this.searchValue = searchString;
       this.srchService.products = [];
-      this.srchService.searchProducts(searchString, this.hostPage);
+      await this.srchService.searchProducts(searchString, this.hostPage);
       (<any>this.hostPage).pageMode = PageMode.SearchResultsMode;
       this.inputMode = false;
     }
   }
 
-  searchByBarcode() {
+  async searchByBarcode() {
     this.barcodeScanner.scan().then((barcodeData) => {
       this.searchValue = barcodeData.text;
-      this.incSearch();
-      this.searchByText(this.searchValue);
+      this.incSearch().then(
+        () => {this.searchByText(this.searchValue);}
+      );
+
     }, (err) => {
       console.log('An error while scanning barcode occurred: ' + err);
     });

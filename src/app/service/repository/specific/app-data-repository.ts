@@ -99,7 +99,7 @@ const storePlacesUrl = `${AppConstants.BASE_URL}/api/storeplace/storeplace`;
 const loSupplEntitiesUrl = `${AppConstants.BASE_URL}/api/lo/losupplentity`;
 const specLOTrackingLogUrl = `${AppConstants.BASE_URL}/api/lo/specLOTrackingLog`;
 const productImagesUrl = `${AppConstants.BASE_URL}/api/product/getProductImages`;
-const getBonusesInfoUrl = `${AppConstants.BASE_URL}/api/client/getBonusesInfo`;
+//const getBonusesInfoUrl = `${AppConstants.BASE_URL}/api/client/getBonusesInfo`;
 const getClientBonusesExpireInfoUrl = `${AppConstants.BASE_URL}/api/client/GetBonusesExpireInfo`;
 const creditProductsUrl = `${AppConstants.BASE_URL}/api/credit/creditproduct`;
 const productSupplCreditGradesUrl = `${AppConstants.BASE_URL}/api/credit/GetProductCreditSize`;
@@ -270,23 +270,6 @@ export class AppDataRepository extends AbstractDataRepository {
         });
       }
       return _res;
-    } catch (err) {
-      return await this.handleError(err);
-    }
-  }
-
-
-  public async getBonusesInfo(): Promise<{ bonusLimit: number, actionBonusLimit: number }> {
-    try {
-      const response = await this.http
-        .get(getBonusesInfoUrl, RequestFactory.makeAuthHeader()).toPromise();
-      const val = response.json();
-      if (response.status == 204)
-        return { bonusLimit: 0, actionBonusLimit: 0 };
-      if (response.status !== 201 && response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      return val;
     } catch (err) {
       return await this.handleError(err);
     }

@@ -4,6 +4,7 @@ import {AbstractDataRepository} from '../../app/service/repository/abstract/abst
 import {ClientOrder} from '../../app/model/client-order';
 import {UserService} from '../../app/service/bll/user-service';
 import {ComponentBase} from '../../components/component-extension/component-base';
+import {AppConstants} from '../../app/app-constants';
 
 
 @IonicPage()
@@ -17,7 +18,8 @@ export class OrderDetailsPage extends ComponentBase {
   dataLoaded: boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public repo: AbstractDataRepository, public userService: UserService) {
+              public repo: AbstractDataRepository, public userService: UserService,
+              public appConst: AppConstants) {
     super();
     this.order = this.navParams.data.order;
   }

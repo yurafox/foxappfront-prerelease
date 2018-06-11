@@ -4,6 +4,7 @@ import {ComponentBase} from '../../components/component-extension/component-base
 import {CartService} from '../../app/service/cart-service';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {Shipment} from '../../app/model/shipment';
+import {AppConstants} from '../../app/app-constants';
 
 @IonicPage()
 @Component({
@@ -17,7 +18,8 @@ export class CheckoutPage extends ComponentBase {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
               public repo: AbstractDataRepository, public alertCtrl: AlertController,
-              public loadingCtrl: LoadingController) {
+              public loadingCtrl: LoadingController, public appConst: AppConstants)
+  {
     super();
     this.repo.getPmtMethodById(cart.order.idPaymentMethod).then(x => {this.pmtMethodName = x.name});
   }

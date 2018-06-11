@@ -15,6 +15,7 @@ export class UserService {
   private _token: string;
   private shortloginMutex:boolean = false;
 
+
   public errorMessages:IDictionary<string> = {  // field for user service error log
     'login':'',
     'shortLogin':'',
@@ -36,6 +37,10 @@ export class UserService {
   // <editor-fold desc='getters'>
   public get profile(): User {
     return this.user;
+  }
+
+  public get bonusInfo(): Promise<any> {
+    return this._account.getBonusesInfo();
   }
 
   public get token(): string {

@@ -1,13 +1,19 @@
 bonus {
+
   .f-bonuses {
     font-size: 11px;
-    color: #ef4023;
-    border: 1px solid #ef4023;
     margin-top: 3px;
     float: left;
+    display: table;
+    overflow: hidden;
+
+    #cell {
+      display: table-cell;
+      vertical-align: middle;
+    }
 
     span {
-      padding: 0 5px;
+      padding-left: 4px;
       //border: 1px solid #ef4023;
       font-size: 12px;
       font-weight: 400;

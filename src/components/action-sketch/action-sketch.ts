@@ -17,6 +17,8 @@ export class ActionSketchComponent extends ComponentBase {
   public content:string='';
   @Input()
   public action:Action;
+  @Input()
+  public isOnLanding:boolean;
 
   private alive:boolean;
   public expire:{days?:number,hours?:number,minutes?:number,seconds?:number};

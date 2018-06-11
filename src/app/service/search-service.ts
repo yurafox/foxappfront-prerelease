@@ -133,7 +133,7 @@ export class SearchService {
     await this.getProductsData();
   }
 
-  loadNext(infiniteScroll) {
+  async loadNext(infiniteScroll) {
     if (
           (this.products.length > this.MAX_ITEMS_COUNT)
             ||
@@ -144,7 +144,7 @@ export class SearchService {
          return;
         }
     this.infiniteScroll = infiniteScroll;
-    this.getProductsData();
+    await this.getProductsData();
   }
 
   async getProductsData() {

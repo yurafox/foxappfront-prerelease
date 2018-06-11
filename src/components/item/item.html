@@ -34,7 +34,7 @@
 
          <ion-row *ngIf="product.price" >
            <ion-col class="f-item-col f-product-price-small"
-                    [ngClass]="{'ff-product-price-color-onstockl':OnStock, 'f-product-price-color-outofstock':!OnStock}">
+                    [ngClass]="{'f-product-price-color-onstock':OnStock, 'f-product-price-color-outofstock':!OnStock}">
              {{product.price | localeCurrency:userService.currency}}
            </ion-col>
          </ion-row>
@@ -46,7 +46,7 @@
          </ion-col>
        </ion-row>
 
-       <ion-row *ngIf="(resolved) && (noOfQuotes > 1)">
+       <ion-row *ngIf="appConst.ENABLE_MARKETPLACE_FEATURES && (resolved) && (noOfQuotes > 1)">
          <ion-col class="f-item-col f-size-smaller" >
            {{noOfQuotes}} <span loc="предложений от" name="OffersFrom">{{locale['OffersFrom']}}</span> <b>{{Price | localeCurrency:userService.currency}}</b>
          </ion-col>
@@ -71,7 +71,7 @@
        </ion-row>
 
 
-       <ion-row *ngIf="(noOfQuotes > 1)">
+       <ion-row *ngIf="appConst.ENABLE_MARKETPLACE_FEATURES && (noOfQuotes > 1)">
          <ion-col class="f-item-col f-size-small f-size-smaller">
            <span loc="Посмотреть другие варианты" name="SeeMoreChoices">{{locale['SeeMoreChoices']}}</span>
          </ion-col>
