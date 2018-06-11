@@ -3,8 +3,7 @@
   <ion-menu [content]="content" type="overlay">
 
     <ion-header>
-      <div class="menu-bg" style="height: 25px;">
-      </div>
+      <div class="menu-bg f-statusbar"></div>
 
       <div menuClose padding class="menu-bg f-main-menu-header">
         <img src="assets/imgs/foxlogo.svg" id="button-logo">
@@ -51,11 +50,11 @@
       <div padding>
         <ion-grid *ngIf="userService.isAuth">
           <ion-row menuClose>
-            <ion-col class="f-col-pad-right" col-9 (click)="account()">
+            <ion-col class="f-col-pad-right" col-8 (click)="account()">
               <img src="assets/imgs/new-design/user.svg">
               <span class="f-col-pad-left">{{userService.name}}</span>
             </ion-col>
-            <ion-col col-3 text-end (click)="signOut()">
+            <ion-col col-4 text-end (click)="signOut()">
               <span style="color: #2F80ED;">{{locale['OutApp']?locale['OutApp']:'Выйти'}}</span>
             </ion-col>
           </ion-row>

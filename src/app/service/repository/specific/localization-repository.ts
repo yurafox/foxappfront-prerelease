@@ -59,7 +59,9 @@ export class LocalizationRepository extends AbstractLocalizationRepository {
         .filter((value) => {
           return value.lang === data.lang;
         });*/
-      localeArray.forEach((value) => result[value.tagName] = value.text);
+      for (let value of localeArray) {
+        result[value.tagName] = value.text;
+      }
     }
     return result;
   }

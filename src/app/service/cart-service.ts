@@ -17,6 +17,7 @@ import {ItemDetailPage} from '../../pages/item-detail/item-detail';
 import {Shipment} from '../model/shipment';
 import {LoDeliveryType} from '../model/lo-delivery-type';
 import {LoEntityOffice} from '../model/lo-entity-office';
+import {AppConstants} from '../app-constants';
 
 
 export class LoShipmentDeliveryOption {
@@ -79,8 +80,7 @@ export class CartService {
 
     this.evServ.events['logonEvent'].subscribe(() => {
         this.initCart().then (() => {
-            this.localeCartService();
-            this.initBonusData();
+            //this.initBonusData();
         }
         );
       }
@@ -97,7 +97,8 @@ export class CartService {
         this.updateDisplayOrderProducts();
       }
     );
-    locRepo.setLocalization();
+
+    locRepo.setLocalization().then(()=> this.initCart());
 
     repo.loadPmtMethodsCache();
     repo.loadRegionsCache();
@@ -108,9 +109,6 @@ export class CartService {
     repo.getCountries(); //<--- this loads countries cache
     repo.getManufacturers(true); //<--- this loads manufacturers cache
 
-    this.initCart();
-
-    this.localeCartService();
 
     this.currStoreService.initCurrencyRate();
   }
@@ -422,6 +420,7 @@ export class CartService {
         this.orderProducts = this.getLocalStorageItems();
         this.updateDisplayOrderProducts();
       }
+      await this.localeCartService();
     }
     finally {
       //this._inCartInit = false;
@@ -551,7 +550,7 @@ export class CartService {
           foundQuot.qty += qty;
           foundQuot.price = price;
 
-          await this.updateItem(foundQuot, true);
+          await this.updateItem(foundQuot, false);
 
         }
         else
@@ -711,7 +710,13 @@ export class CartService {
 
   // making localization for cart service
   public async localeCartService() {
-    let loc = await this.locRepo.getLocalization({componentName: (<any> this).constructor.name, lang: +localStorage.getItem('lang')});
+    const lng = localStorage.getItem('lang');
+    let loc = await this.locRepo.getLocalization(
+      {
+              componentName: (<any> this).constructor.name,
+              lang: lng ? +lng : AppConstants.LOCALE_DEFAULT_VALUE
+            }
+    );
     if (loc && (Object.keys(loc).length !== 0)) {
       this.localization = loc;
     }
