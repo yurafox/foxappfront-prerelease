@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {Network} from "@ionic-native/network";
 import {Subscription} from "rxjs/Subscription";
@@ -13,9 +13,12 @@ import {ConnectivityService} from "../../app/service/connectivity-service";
 export class NoConnectionPage extends ComponentBase implements OnInit, OnDestroy {
   private connected: Subscription;
 
-  constructor(private navCtrl: NavController, private network: Network, private connServ: ConnectivityService) {
+  constructor(private navCtrl: NavController, private navParam: NavParams, private network: Network, private connServ: ConnectivityService) {
     super();
     this.initLocalization();
+    if (this.navParam.data.error) {
+      console.error(this.navParam.data.error);
+    }
   }
 
   async ngOnInit() {
