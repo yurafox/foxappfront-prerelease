@@ -5,6 +5,8 @@ import {Http} from "@angular/http";
 import {AppConstants} from "../../../app-constants";
 import {ConnectivityService} from "../../connectivity-service";
 
+const appLocUrl = `/api/AppLocalization`;
+
 @Injectable()
 export class LocalizationRepository extends AbstractLocalizationRepository {
   private _localizationStore: IDictionary<Array<ILocalization>> = {};
@@ -15,7 +17,7 @@ export class LocalizationRepository extends AbstractLocalizationRepository {
 
   public async setLocalization() {
     try {
-      let response = await this.http.get(`${AppConstants.BASE_URL}/api/AppLocalization`).toPromise();
+      let response = await this.http.get(`${AppConstants.BASE_URL}${appLocUrl}`).toPromise();
       const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -72,6 +74,19 @@ export class LocalizationRepository extends AbstractLocalizationRepository {
   }
   // </editor-fold>
 
+  public async getLocString(): Promise<string> {
+    try {
+      let response = await this.http.get(`${AppConstants.BASE_URL}${appLocUrl}/LocString`).toPromise();
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      console.log(data);
+      return (data && data !== null && data !== '') ? data : 'ru-UA';
+    } catch(err) {
+      await this.handleError(err);
+    }
+  }
 }
 
 interface ILocalization {
