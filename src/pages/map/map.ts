@@ -13,7 +13,6 @@ import {
 } from '@ionic-native/google-maps';
 import { City, Store } from "../../app/model/index";
 import { ComponentBase } from "../../components/component-extension/component-base";
-import { Geolocation } from '@ionic-native/geolocation';
 import { FavoriteStoresPage } from "../favorite-stores/favorite-stores";
 import { StoreReview } from "../../app/model/store-review";
 import { IDictionary } from "../../app/core/app-core";
@@ -69,8 +68,8 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
   markerSubscriptions: Subscription[];
 
   constructor(private nav: NavController, private navParams: NavParams, private platform: Platform,
-              private repo: AbstractDataRepository, private geolocation: Geolocation,
-              private alertCtrl: AlertController, private toastCtrl: ToastController) {
+              private repo: AbstractDataRepository, private alertCtrl: AlertController,
+              private toastCtrl: ToastController) {
     super();
     this.initLocalization();
     this.clientId = 0;
@@ -103,15 +102,15 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     }
     try {
       this.platform.ready().then(() => {
-        this.getLocation().then(res => {
-          this.userPos.lat = res.lat;
-          this.userPos.lng = res.lng;
+        /*this.getLocation().then(res => {
           if (res && res.lat && res.lng) {
+            this.userPos.lat = res.lat;
+            this.userPos.lng = res.lng;
             this.userPosIsKnown = true;
           }
         }).catch(() => {
           this.userPosIsKnown = false;
-        });
+        });*/
       });
 
       this.openHoursStr = this.locale['OpenHours'] ? this.locale['OpenHours'] : 'Время работы';
@@ -140,7 +139,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
 
       this.markersArr = await this.repo.getStores();
       this.cities = await this.repo.getCitiesWithStores();
-      if (this.isAuthorized && this.cities) {
+      /*if (this.isAuthorized && this.cities) {
         let favStores: Store[] = await this.repo.getFavoriteStores();
         if (favStores && favStores[0]) {
           for (let city of this.cities) {
@@ -152,7 +151,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
             }
           }
         }
-      }
+      }*/
       let reviews = await this.repo.getStoreReviews();
       this.storeReviews = reviews.reviews;
       this.clientId = reviews.idClient;
@@ -175,8 +174,10 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy() {
-    for (let i = 0; i < this.markerSubscriptions.length; i++) {
-      this.markerSubscriptions[i].unsubscribe();
+    if (this.markerSubscriptions.length > 0) {
+      for (let i = 0; i < this.markerSubscriptions.length; i++) {
+        this.markerSubscriptions[i].unsubscribe();
+      }
     }
   }
 
@@ -470,7 +471,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
    * @returns {Promise<Geoposition>}
    */
   async getLocation() {
-    let location = await this.map.getMyLocation({enableHighAccuracy:true}).catch();
+    let location = await this.map.getMyLocation({enableHighAccuracy:true});
     return location.latLng;
   }
 
