@@ -11,6 +11,7 @@ const accountUrl = `${AppConstants.BASE_URL}/api/account`;
 const verifyAccountUrl = `${AppConstants.BASE_URL}/api/account/verify`;
 const changePasswdAccountUrl = `${AppConstants.BASE_URL}/api/account/changePass`;
 const getBonusesInfoUrl = `${AppConstants.BASE_URL}/api/client/getBonusesInfo`;
+const callMeUrl = `${AppConstants.BASE_URL}/api/client/callMe`;
 // mock url
 // const loginUrl = '/api/mtoken';
 // const accountUrl = '/api/musers';
@@ -210,6 +211,21 @@ export class AccountRepository extends AbstractAccountRepository {
         throw new Error("server side status error");
       }
       return val;
+    } catch (err) {
+      return await this.errorHandler(err);
+    }
+  }
+
+  public async callMe(phone: string) {
+    try {
+      const response = await this.http
+        .get(callMeUrl, RequestFactory.makeSearch([
+          { key: "phone", value: phone }
+        ])).toPromise();
+
+      if (response.status !== 204) {
+        throw new Error("server side status error");
+      }
     } catch (err) {
       return await this.errorHandler(err);
     }

@@ -282,4 +282,8 @@ export class UserService {
     this.errorMessages[actionName]='';
   }
   // </editor-fold>
+
+  public callMe(phone: string) {
+    return this._account.callMe(phone);
+  }
 }

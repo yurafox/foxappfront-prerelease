@@ -1,5 +1,5 @@
 import {Component, ViewChild, OnDestroy} from '@angular/core';
-import {Nav, Platform, MenuController, AlertController} from 'ionic-angular';
+import {Nav, Platform, MenuController, AlertController, ModalController} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {AbstractDataRepository} from "./service/index";
 import {ComponentBase} from "../components/component-extension/component-base";
@@ -49,7 +49,8 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   constructor(private platform: Platform, private alertCtrl: AlertController, private splashScreen: SplashScreen,
               public menuCtrl: MenuController, private repo: AbstractDataRepository,
               private appAvailability: AppAvailability, private device: Device, private cartService: CartService,
-              private connService: ConnectivityService, private statusBar: StatusBar) {
+              private connService: ConnectivityService, private statusBar: StatusBar,
+              public modalCtrl: ModalController) {
     super();
     this.initLocalization();
 
@@ -167,6 +168,11 @@ export class FoxApp extends ComponentBase implements OnDestroy {
         console.log(`Couldn't navigate to LoginPage: ${err}`);
       });
     }
+  }
+
+  callMe() {
+    let callMeModal = this.modalCtrl.create('CallMePage');
+    callMeModal.present();
   }
 
   // Collects and sends device's data about model, operation system + it's version and screen size, and FCM device token

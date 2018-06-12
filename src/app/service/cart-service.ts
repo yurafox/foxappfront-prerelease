@@ -100,6 +100,7 @@ export class CartService {
 
     locRepo.setLocalization().then(()=> this.initCart());
 
+    /*
     repo.loadPmtMethodsCache();
     repo.loadRegionsCache();
     repo.loadStorePlaceCache();
@@ -111,6 +112,7 @@ export class CartService {
 
 
     this.currStoreService.initCurrencyRate();
+    */
   }
 
   get checkIsPickupOnly(): boolean {

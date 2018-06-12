@@ -59,6 +59,8 @@ export class HomePage extends ComponentBase implements DoCheck {
     this.srchService.lastSearch = null;
     if (navParams.data.pageMode)
       this._pageMode = navParams.data.pageMode;
+
+    this.initData();
   }
 
   async initData() {
@@ -127,7 +129,7 @@ export class HomePage extends ComponentBase implements DoCheck {
     this.scrOrientationSub = this.screenOrientation.onChange().subscribe(() => {
       if (this._pageMode !== 1) this.changeDet.detectChanges();
     });
-    await this.initData();
+    //await this.initData();
   }
 
   ngOnDestroy() {

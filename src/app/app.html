@@ -10,7 +10,7 @@
 
         <ion-grid>
           <ion-row>
-            <ion-col class="f-main-menu-col">
+            <ion-col class="f-main-menu-col" (click)="callMe()">
               <img src="assets/imgs/new-design/phone.svg">
               <span>{{locale['CallMe']?locale['CallMe']:'перезвоните мне'}}</span>
             </ion-col>

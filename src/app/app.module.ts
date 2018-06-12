@@ -93,7 +93,8 @@ import {
   WarningViewPageModule,
   OrdersFilterPageModule,
   ContactsPageModule,
-  ItemImgPageModule
+  ItemImgPageModule,
+  CallMePageModule
 } from '../pages/index-modules';
 import {NgxQRCodeModule} from 'ngx-qrcode2';
 import {AppAvailability} from '@ionic-native/app-availability';
@@ -168,7 +169,8 @@ import {BackgroundMode} from '@ionic-native/background-mode';
     WarningViewPageModule,
     OrdersFilterPageModule,
     ContactsPageModule,
-    ItemImgPageModule
+    ItemImgPageModule,
+    CallMePageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
