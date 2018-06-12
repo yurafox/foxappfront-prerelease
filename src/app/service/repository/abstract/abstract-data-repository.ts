@@ -37,7 +37,8 @@ import { QuotationProduct,
           Shipment,
           LoDeliveryType,
           LoEntityOffice,
-          News
+          News,
+          NewsCategory
        } from '../../../model/index';
 import {IDictionary, Providers} from "../../../core/app-core";
 import {AppParam} from '../../../model/app-param';
@@ -198,6 +199,7 @@ export abstract class AbstractDataRepository {
   public async abstract getLoOfficesByLoEntityAndCity(idLoEntity: number, idCity: number): Promise<LoEntityOffice[]>;
   public async abstract notifyOnProductArrival(email: string, productId: number);
   public async abstract getLegalPolicy(langId: string): Promise<string>;
-  public async abstract getNews(): Promise<News[]>;
+  public async abstract getNewsByCategory(categoryId: number): Promise<News[]>;
   public async abstract getNewsDescription(id: number): Promise<string>;
+  public async abstract getNewsCategory(): Promise<NewsCategory[]>;
 }

@@ -47,5 +47,5 @@ export * from './contacts/contacts.module';
 export * from './legal-policy/legal-policy.module';
 export * from './news/news.module';
 export * from './news-detail/news-detail.module';
-
 export * from './item-img/item-img.module';
+export * from './manage-news-menu/manage-news-menu.module';

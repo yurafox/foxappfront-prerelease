@@ -49,7 +49,8 @@ import {
   AppParam,
   LoDeliveryType,
   LoEntityOffice,
-  News
+  News,
+  NewsCategory
 } from '../../../model/index';
 
 import { AbstractDataRepository } from '../../index';
@@ -140,9 +141,9 @@ const getLoDeliveryTypesByLoEntityUrl = `${AppConstants.BASE_URL}/api/lo/LoDeliv
 const getLoOfficesByLoEntityAndCityUrl = `${AppConstants.BASE_URL}/api/lo/LoEntityOfficesByLoEntityAndCity`;
 const notifyOnProductArrivalUrl = `${AppConstants.BASE_URL}/api/product/NotifyOnProductArrival`;
 const legalPolicyUrl = `${AppConstants.BASE_URL}/api/legalpolicy/getLegalPolicy`;
-const newsUrl = `${AppConstants.BASE_URL}/api/News`;
 const newsDescriptionsUrl = `${AppConstants.BASE_URL}/api/news/getNewsDescription`;
-
+const newsByCategoryUrl = `${AppConstants.BASE_URL}/api/news/getNewsByCategory`;
+const newsCategoryUrl = `${AppConstants.BASE_URL}/api/NewsCategory`;
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
 // const currenciesUrl = "/api/mcurrencies";
@@ -3953,21 +3954,21 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getNews(): Promise<News[]> {
+  public async getNewsByCategory(categoryId: number): Promise<News[]> {
     try {
-      const response = await this.http.get(newsUrl,RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.get(newsByCategoryUrl + `/${categoryId}`,RequestFactory.makeAuthHeader()).toPromise();
       let data: any = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
 
-      let banners: News[] = [];
+      let news: News[] = [];
       if (data !== null) {
-        data.forEach((banner) => {
-          banners.push(banner);
+        data.forEach((dataNews) => {
+          news.push(dataNews);
         })
       }
-      return banners;
+      return news;
     } catch (err) {
       return await this.handleError(err);
     }
@@ -3989,5 +3990,24 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async getNewsCategory(): Promise<NewsCategory[]> {
+    try {
+      const response = await this.http.get(newsCategoryUrl,RequestFactory.makeAuthHeader()).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      let newsCategory: NewsCategory[] = [];
+      if (data !== null) {
+        data.forEach((dataNewsCategory) => {
+          newsCategory.push(dataNewsCategory);
+        })
+      }
+      return newsCategory;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
 
 }

@@ -22,11 +22,11 @@ export class NewsPage extends ComponentBase {
   async ngOnInit() {
     super.ngOnInit();
 
-    this.news = await this._repo.getNews();
+    this.news = await this._repo.getNewsByCategory(this.navParams.data.indexNews);
 
     this.news.sort((a,b) => {
-      if(a.sort < b.sort) return -1;
-      if(a.sort > b.sort) return 1;
+      if(a.publicDate < b.publicDate) return 1;
+      if(a.publicDate > b.publicDate) return -1;
       return 0;
     });
   }
