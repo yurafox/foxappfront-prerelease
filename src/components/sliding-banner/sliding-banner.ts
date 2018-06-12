@@ -20,11 +20,11 @@ export class SlidingBannerComponent {
 
   handleClick() {
     if (this._slides && this._slides._slides) {
-      if (this._slides.clickedIndex &&
+      if (this._slides.clickedIndex >= 0 &&
         this._slides._slides[this._slides.clickedIndex] &&
         this._slides._slides[this._slides.clickedIndex].getAttribute('data-swiper-slide-index')) {
         let slideIndx: number = +(this._slides._slides[this._slides.clickedIndex].getAttribute('data-swiper-slide-index'));
-        if (this.slides[slideIndx] && this.slides[slideIndx].actionType) {
+        if (this.slides[slideIndx] && this.slides[slideIndx].actionType >= 0) {
           switch (this.slides[slideIndx].actionType) {
             case 1: {
               this._repo.getProductById(this.slides[slideIndx].paramNum).then((product) => {
