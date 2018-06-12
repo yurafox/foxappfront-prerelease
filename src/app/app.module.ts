@@ -201,7 +201,7 @@ import {BackgroundMode} from '@ionic-native/background-mode';
     {
       provide: LOCALE_ID,
       deps: [AbstractLocalizationRepository],
-      useFactory: async (locRepo) => await locRepo.getLocString()  //returns locale string
+      useFactory: (locRepo) => locRepo.getLocString()  //returns locale string
     },
     NewsSubscribeService,
     AppConstants,
