@@ -67,6 +67,7 @@ export class LoginPage extends ComponentBase implements OnInit {
     };
     this.buildForm();
     [this.currencies,this.langs] = await Promise.all([this.repo.getCurrencies(true),this.repo.getLocale(true)]);
+    this.checkUserBehavior();
     this.onLoad=true;
   }
   
@@ -166,11 +167,14 @@ export class LoginPage extends ComponentBase implements OnInit {
   private findBehaviorByStatus(result:IUserVerifyAccountData, phone:string ):void {
     if(result.status === 1) {
       this.changeUseCode(false);
-      this.nav.push('RegisterPage',{phone: phone});
+      const contPage:string = (this.navParams.data 
+                               && this.navParams.data.continuePage
+                              ) ? this.navParams.data.continuePage : null;
+      
+      this.nav.push('RegisterPage',{phone: phone,continuePage:contPage});
     }
 
     else {
-      this.changeUseCode(true);
       this.showSmsPopUp(result.message,phone);
     }
 
@@ -189,7 +193,7 @@ export class LoginPage extends ComponentBase implements OnInit {
         {
           text: 'OK',
           handler: () => {
-           console.log('showSmsPopUp');
+            this.changeUseCode(true);
           }
         }
       ]
@@ -223,5 +227,10 @@ export class LoginPage extends ComponentBase implements OnInit {
       this.nav.remove(this.nav.getActive().index);
     });
   }
-
+  
+  private checkUserBehavior():void {
+    if(this.navParams.data && this.navParams.data.fromRegistry){
+      this.changeUseCode(true);
+    }
+  }
 }

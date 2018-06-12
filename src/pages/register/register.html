@@ -3,104 +3,78 @@
 </ion-header>
 
 <ion-content padding class="register">
-  <div *ngIf="!preRegister">
+  <div class="contentWrapper">
     <ion-list class="list-form" *ngIf="onLoad">
-        <!-- error message block-->
-        <ion-item class='alertDanger' *ngIf="verifyErrorData.errorShow">
-            <span>{{verifyErrorData.errorMessage}}</span>
-        </ion-item>
+      <!-- error message block-->
+      <ion-item class='alertDanger' *ngIf="verifyErrorData.errorShow">
+        <span>{{verifyErrorData.errorMessage}}</span>
+      </ion-item>
 
       <form [formGroup]='registerForm'>
         <ion-item *ngIf='!!(account.errorMessages[register])' class='alertDanger'>
           <span>{{account.errorMessages[register]}}</span>
         </ion-item>
 
-        <ion-item>
-          <ion-label><font class="f-color-red">*</font></ion-label>
-          <ion-input type="text" [mask]="'380999999999'" placeholder="380xxxxxxxxx" formControlName="phone"></ion-input>
-        </ion-item>
+        <div>
+          <span loc="Телефон*" name="Phone" class="lblTxt">{{locale['Phone'] || 'Телефон*'}}</span>
+        </div>
+        <input type="text" [mask]="'380999999999'" placeholder="380xxxxxxxxx" formControlName="phone" />
         <ion-item class='alertDanger' *ngIf="formErrors.phone">
           <span>{{formErrors.phone}}</span>
         </ion-item>
 
 
-        <ion-item>
-          <ion-label><font class="f-color-red">*</font></ion-label>
-          <ion-input type="text" placeholder="{{locale['Email'] ? locale['Email'] : 'Электронная почта'}}" formControlName="email"></ion-input>
-        </ion-item>
+        <div class="contentBlock">
+          <span loc="Электронная почта*" name="Email" class="lblTxt">{{locale['Email'] || 'Электронная почта*'}}</span>
+        </div>
+        <input type="text" placeholder="{{locale['Email'] ? locale['Email'] : 'Электронная почта'}}" formControlName="email" />
         <ion-item class='alertDanger' *ngIf="formErrors.email">
           <span>{{formErrors.email}}</span>
         </ion-item>
 
-      <!-- <ion-item>
-        <ion-label><font class="f-color-red">*</font></ion-label>
-        <ion-input type="text" placeholder="{{locale['NickName'] ? locale['NickName'] : 'Имя в системе'}}" formControlName="name"></ion-input>
-      </ion-item>
-      <ion-item class='alertDanger' *ngIf="formErrors.name">
-        <span>{{formErrors.name}}</span>
-      </ion-item> -->
-
-      <ion-item>
-          <ion-label><font class="f-color-red">*</font></ion-label>
-          <ion-input  type="text" placeholder="{{locale['Name'] ? locale['Name'] : 'Имя'}}" formControlName="fname"></ion-input>
-        </ion-item>
+        <div class="contentBlock">
+          <span loc="Имя*" name="Name" class="lblTxt">{{locale['Name'] || 'Имя*'}}</span>
+        </div>
+        <input type="text" placeholder="{{locale['Name'] ? locale['Name'] : 'Имя'}}" formControlName="fname" />
         <ion-item class='alertDanger' *ngIf="formErrors.fname">
           <span>{{formErrors.fname}}</span>
-      </ion-item>
-
-
-        <ion-item>
-            <ion-input style="margin-left: 13px" type="text" placeholder="{{locale['Surname'] ? locale['Surname'] : 'Фамилия'}}" formControlName="lname"></ion-input>
-          </ion-item>
-          <ion-item class='alertDanger' *ngIf="formErrors.lname">
-            <span>{{formErrors.lname}}</span>
         </ion-item>
 
-
-        <ion-item>
-          <ion-label style="margin-left: 8px;padding-left:18px"><span loc="Валюта" name="Currency">{{locale['Currency']}}</span></ion-label>
-          <ion-select formControlName="currency" multiple="false" cancelText="{{locale['Cancel'] ? locale['Cancel'] : 'Отмена'}}" okText="{{locale['Chose'] ? locale['Chose'] : 'Выбрать'}}">
-            <ion-option  *ngFor="let currency of currencies;" value="{{currency.id}}">{{currency.shortName}}</ion-option>
-          </ion-select>
+        <div class="contentBlock">
+          <span loc="Фамилия*" name="Surname" class="lblTxt">{{locale['Surname'] || 'Фамилия*'}}</span>
+        </div>
+        <input type="text" placeholder="{{locale['Surname'] ? locale['Surname'] : 'Фамилия'}}" formControlName="lname" />
+        <ion-item class='alertDanger' *ngIf="formErrors.lname">
+          <span>{{formErrors.lname}}</span>
         </ion-item>
 
-        <ion-item>
-          <ion-label style="margin-left: 8px;padding-left:18px"><span loc="Локализация" name="Localization">{{locale['Localization']}}</span></ion-label>
-          <ion-select formControlName="lang" multiple="false" cancelText="{{locale['Cancel'] ? locale['Cancel'] : 'Отмена'}}" okText="{{locale['Chose'] ? locale['Chose'] : 'Выбрать'}}">
-              <ion-option  *ngFor="let lang of langs;" value="{{lang.id}}">{{lang.name}}</ion-option>
-          </ion-select>
-        </ion-item>
+        <div class="contentBlock contentFl">
+          <div>
+            <span loc="Валюта" name="Currency" class="lblTxt">{{locale['Currency'] || 'Валюта'}}</span>
+          </div>
+          <dropdown-list [reference]="currentCurrency" 
+                         [store]="currencies"
+                         [map]="{valueName:'id',displayName:'shortName'}"
+                         [options]="{popupHeader:locale['Currency']}">
+          </dropdown-list>
+        </div>
 
-        <button [disabled]="isSendAsync" style="background: #ffbc2e" ion-button block color="fox" (click)="register()"><span loc="Создать аккаунт" name="CreateAccount">{{locale['CreateAccount']}}</span></button>
+
+        <div class="contentBlock contentFr">
+            <span loc="Локализация" name="Localization" class="lblTxt">{{locale['Localization'] || 'Локализация'}}</span>
+            <dropdown-list [reference]="currentLang"
+                           [store]="langs"
+                           [map]="{valueName:'id',displayName:'name'}"
+                           [options]="{popupHeader:locale['Localization']}">
+            </dropdown-list>
+        </div>     
+        <div style="clear: both"></div>
+        <div class="btnAction">
+          <button [disabled]="isSendAsync || !registerForm.valid" (click)="register()">
+            <span class="btnTxt" loc="Создать аккаунт" name="CreateAccount">{{locale['CreateAccount'] || 'Создать аккаунт'}}</span>
+          </button>
+        </div>
       </form>
     </ion-list>
-
-  </div>
-
-  <!-- pre-register view-->
-  <div *ngIf="preRegister">
-    <form [formGroup]='verifyForm'>
-      <ion-item>
-        <h3 class="header-label" loc="Проверка регистрации" name="VerifyRegistration">{{locale['VerifyRegistration']}}</h3>
-      </ion-item>
-      <ion-item>
-       <input type="text" [mask]="'380999999999'" placeholder="380xxxxxxxxx" formControlName="phone" />
-     </ion-item>
-      <ion-item class='alertDanger' *ngIf="formErrors.phone">
-        <span>{{formErrors.phone}}</span>
-      </ion-item>
-       <ion-item class='alertDanger' *ngIf="verifyErrorData.errorShow">
-          <span>{{verifyErrorData.errorMessage}}</span>
-      </ion-item>
-      <button [disabled]="isSendAsync" *ngIf="verifyForm.valid" style="background: #ffbc2e" ion-button block color="fox" (click)="verifyUser()">
-        <span loc="Проверить" name="Verify">{{locale['Verify']}}</span>
-      </button>
-    </form>
-  </div>
-
-  <!-- return your login page-->
-  <div *ngIf="onLoad || preRegister" class="align-bottom" padding text-center>
-    <span loc="Уже имеете аккаунт" name="HaveAccount">{{locale['HaveAccount']}}</span>?
-    <span class="bold" (click)="login()" loc="Войти" name="Login">{{locale['Login']}}</span>
   </div>
 </ion-content>
