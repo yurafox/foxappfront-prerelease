@@ -140,7 +140,7 @@
       <ion-row>
         <ion-col class="f-section-header">
           <b><span loc="Доставка" name="Shipment">{{locale['Shipment']}}</span> {{i+1}} <span loc="из" name="Of">{{locale['Of']}}</span> {{cart.loShipments.length}}</b>
-          <div *ngIf="appConst.ENABLE_MARKETPLACE_FEATURES">
+          <div *ngIf="mPlaceFeaturesEnabled">
             <br>
             <span class="f-size-default"><span loc="Товар поставляется" name="ItemShippedFrom">{{locale['ItemShippedFrom']}}</span> {{item?.supplier?.name}}</span>
           </div>

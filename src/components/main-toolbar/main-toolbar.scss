@@ -12,6 +12,12 @@ main-toolbar {
     overflow: visible;
   }
 
+  #close-button {
+    position: relative;
+    right: 10px;
+//    overflow: visible;
+  }
+
   #itemscount-badge {
     background-color: color($colors, badges);
     position: absolute;

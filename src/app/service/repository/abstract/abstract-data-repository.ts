@@ -47,8 +47,8 @@ import {ClientOrderProductHist} from '../../../model/client-order-product-hist';
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<{reviews:ProductReview[], idClient:number}>;
   public async abstract getProducts(urlQuery: string, cacheForce: boolean): Promise<Product[]>;
-  public async abstract getProductsOfDay(): Promise<number[]>;
-  public async abstract getProductsSalesHits(): Promise<number[]>;
+  public async abstract getProductsOfDay(): Promise<Product[]>;
+  public async abstract getProductsSalesHits(): Promise<Product[]>;
 
   public async abstract searchProducts(srchString: string): Promise<Product[]>;
 

@@ -13,8 +13,9 @@ import {AppConstants} from '../../app/app-constants';
 
 export class ItemComponent extends ItemBase {
 
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public repo: AbstractDataRepository, public appConst: AppConstants) {
+              public repo: AbstractDataRepository) {
     super(navCtrl, navParams, repo);
   }
 

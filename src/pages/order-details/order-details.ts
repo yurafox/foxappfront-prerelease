@@ -16,10 +16,10 @@ export class OrderDetailsPage extends ComponentBase {
 
   order: ClientOrder;
   dataLoaded: boolean = true;
+  mPlaceFeaturesEnabled = AppConstants.ENABLE_MARKETPLACE_FEATURES;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public repo: AbstractDataRepository, public userService: UserService,
-              public appConst: AppConstants) {
+              public repo: AbstractDataRepository, public userService: UserService) {
     super();
     this.order = this.navParams.data.order;
   }

@@ -104,7 +104,7 @@
                   </ion-col>
                 </ion-row>
 
-                <ion-row *ngIf="appConst.ENABLE_MARKETPLACE_FEATURES">
+                <ion-row *ngIf="mPlaceFeaturesEnabled">
                   <ion-col class="f-size-13">
                     <span loc="Продавец" name="SoldBy">{{locale['SoldBy']}}</span>: {{spec?.quotationproduct?.quotation?.supplier?.name}}
                   </ion-col>

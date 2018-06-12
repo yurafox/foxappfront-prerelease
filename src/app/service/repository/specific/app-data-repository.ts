@@ -1910,7 +1910,7 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
 
-  public async getProductsOfDay(): Promise<number[]> {
+  public async getProductsOfDay(): Promise<Product[]> {
     try {
       const res = [];
       // http request
@@ -1926,7 +1926,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
 
       data.forEach(val =>
-        res.push(val)
+        res.push(this.getProductFromResponse(val))
       );
       return res;
     } catch (err) {
@@ -1934,7 +1934,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getProductsSalesHits(): Promise<number[]> {
+  public async getProductsSalesHits(): Promise<Product[]> {
     try {
       const res = [];
       // http request
@@ -1948,9 +1948,8 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-
       data.forEach(val =>
-        res.push(val)
+        res.push(this.getProductFromResponse(val))
       );
       return res;
     } catch (err) {

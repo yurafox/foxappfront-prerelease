@@ -526,6 +526,10 @@ ion-app.md {
   font-size: 18px;
 }
 
+.f-item-padding-left {
+  padding-left: 5px;
+}
+
 .f-no-padding {
   padding: 0px;
 }
@@ -634,8 +638,9 @@ ion-app.md {
 
 //buttons
 .f-btn-action, .f-btn-action.activated {
-  background: #ffbc2e;
-  color: #000000;
+  //background: #ffbc2e;
+  background: color($colors, primaryBtnColor);
+  color: color($colors, clear);
   text-transform: none;
   font-size: 16px;
   font-weight: 400;

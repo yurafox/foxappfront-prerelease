@@ -72,17 +72,16 @@ export class HomePage extends ComponentBase implements DoCheck {
     let ar = await this._repo.getProductsOfDay();
     this.productsOfDay = [];
     for (let i of ar) {
-      let prod = await this._repo.getProductById(i);
-      this.productsOfDay.push(prod);
+      //let prod = await this._repo.getProductById(i);
+      this.productsOfDay.push(i);
     }
 
     let shAr = await this._repo.getProductsSalesHits();
     this.productsSalesHits = [];
     for (let i of shAr) {
-      let prod = await this._repo.getProductById(i);
-      this.productsSalesHits.push(prod);
+      //let prod = await this._repo.getProductById(i);
+      this.productsSalesHits.push(i);
     }
-
   }
 
   ngDoCheck() {

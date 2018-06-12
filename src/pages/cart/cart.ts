@@ -17,9 +17,10 @@ import {AppConstants} from '../../app/app-constants';
 
 export class CartPage extends ComponentBase implements DoCheck {
 
+  mPlaceFeaturesEnabled = AppConstants.ENABLE_MARKETPLACE_FEATURES;
+
   constructor(public cart: CartService, private navCtrl: NavController,
-              private uService: UserService, private alertCtrl: AlertController,
-              public appConst: AppConstants) {
+              private uService: UserService, private alertCtrl: AlertController) {
     super();
   }
 

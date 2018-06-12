@@ -15,10 +15,11 @@ export class CheckoutPage extends ComponentBase {
 
   dataLoaded = true;
   pmtMethodName = '';
+  mPlaceFeaturesEnabled = AppConstants.ENABLE_MARKETPLACE_FEATURES;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
               public repo: AbstractDataRepository, public alertCtrl: AlertController,
-              public loadingCtrl: LoadingController, public appConst: AppConstants)
+              public loadingCtrl: LoadingController)
   {
     super();
     this.repo.getPmtMethodById(cart.order.idPaymentMethod).then(x => {this.pmtMethodName = x.name});

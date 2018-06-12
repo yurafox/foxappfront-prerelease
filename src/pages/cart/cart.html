@@ -122,7 +122,7 @@
               </ng-template>
 
 
-              <ion-row *ngIf="appConst.ENABLE_MARKETPLACE_FEATURES">
+              <ion-row *ngIf="mPlaceFeaturesEnabled">
                 <ion-col no-padding>
                   <span class="f-item-nopadding f-size-small"><span loc="Поставщик" name="ShippedBy">{{locale['ShippedBy']}}</span> </span>
                   <span class="f-item-nopadding f-size-small f-color-info">{{item.orderProduct?.quotationproduct?.quotation?.supplier?.name}}</span>

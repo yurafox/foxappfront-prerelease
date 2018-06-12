@@ -99,6 +99,8 @@ export class CartService {
     );
 
     locRepo.setLocalization().then(()=> this.initCart());
+    repo.loadStorePlaceCache();
+    repo.loadCityCache();
 
     /*
     repo.loadPmtMethodsCache();

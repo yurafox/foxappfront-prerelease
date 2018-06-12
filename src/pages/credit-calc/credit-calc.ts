@@ -65,7 +65,7 @@ export class CreditCalcPage extends ComponentBase {
       _cpOplataChastyami.sId = -2;
       _cpOplataChastyami.sName = await this.locale['PrivatInstallments'];
       _cpOplataChastyami.firstPay = 0;
-      _cpOplataChastyami.maxTerm = pInfo.partsPmtCnt;
+      _cpOplataChastyami.maxTerm = (pInfo.partsPmtCnt) ? pInfo.partsPmtCnt : parseInt(await this.repo.getAppParam('MIN_LOAN_TERM'));
       _cpOplataChastyami.monthCommissionPct = 0;
       _cpOplataChastyami.maxAmt = null;
       _cpOplataChastyami.minAmt = parseInt(await this.repo.getAppParam('MIN_LOAN_AMT'));

@@ -3,6 +3,7 @@ import {NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from './component-base';
 import {Product, ProductStorePlace, QuotationProduct} from '../../app/model/index';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AppConstants} from '../../app/app-constants';
 
 
 export class ItemBase extends ComponentBase implements OnInit {
@@ -13,7 +14,7 @@ export class ItemBase extends ComponentBase implements OnInit {
   quotes: QuotationProduct[];
   valueQuot: QuotationProduct;
   productStorePlaces: ProductStorePlace[];
-
+  mPlaceFeaturesEnabled = AppConstants.ENABLE_MARKETPLACE_FEATURES;
   _noOfQuotes = 0;
   resolved = false;
 
