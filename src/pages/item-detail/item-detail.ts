@@ -12,7 +12,6 @@ import {EventService} from '../../app/service/event-service';
 import {ActionByProduct} from '../../app/model/action-by-product';
 import {UserService} from '../../app/service/bll/user-service';
 import {ItemImgPage} from '../item-img/item-img';
-import {AppConstants} from '../../app/app-constants';
 
 @IonicPage()
 @Component({
@@ -36,8 +35,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
               public modalCtrl: ModalController, public toastCtrl: ToastController,
-              public evServ: EventService, public alertCtrl: AlertController, public uService: UserService,
-              public appConst: AppConstants) {
+              public evServ: EventService, public alertCtrl: AlertController, public uService: UserService) {
     super(navCtrl, navParams, repo);
     this.cantShow = true;
     this.product = this.navParams.data.prod;
