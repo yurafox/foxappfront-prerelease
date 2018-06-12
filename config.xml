@@ -115,4 +115,4 @@
     </plugin>
     <engine name="android" spec="~6.3.0" />
     <allow-navigation href="http://192.168.56.1:8100" />
-</widget>
+</widget>    
