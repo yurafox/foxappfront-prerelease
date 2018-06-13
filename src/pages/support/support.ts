@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NgForm} from '@angular/forms';
-import {IonicPage} from "ionic-angular";
+import {IonicPage, ViewController} from "ionic-angular";
 import {NavController, ToastController} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
@@ -15,30 +15,26 @@ export class SupportPage extends ComponentBase {
 
   submitted: boolean = false;
   supportMessage: string;
+  minMsgLength = 10;
 
-  constructor(private navCtrl: NavController,
-              private toastCtrl: ToastController,
-              private repo: AbstractDataRepository) {
+  constructor(private toastCtrl: ToastController,
+              private repo: AbstractDataRepository,
+              private viewCtrl: ViewController) {
     super();
   }
 
-  /**
-   * function to adjust the height of the message textarea
-   * @param {any} event - the event, which is provided by the textarea input
-   * @return {void}
-   */
-  protected adjustTextarea(event: any): void {
+/*  protected adjustTextarea(event: any): void {
     let textarea: any		= event.target;
     textarea.style.overflow = 'hidden';
     textarea.style.height 	= 'auto';
     textarea.style.height 	= textarea.scrollHeight + 'px';
     return;
-  }
+  }*/
 
   async submit() {
     this.submitted = true;
 
-    if (this.supportMessage && this.supportMessage.length>0) {
+    if (this.supportMessage && this.supportMessage.length>this.minMsgLength) {
       let m = new ClientMessage();
       m.messageDate = new Date(Date.now());
       m.messageText = this.supportMessage;
@@ -52,7 +48,7 @@ export class SupportPage extends ComponentBase {
           duration: 3000
         });
         toast.present().then(() => {
-          this.navCtrl.pop()
+          this.viewCtrl.dismiss()
         });
       }
     }

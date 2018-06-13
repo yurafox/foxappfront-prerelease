@@ -40,7 +40,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     {title: 'Магазины', name: 'Map', component: 'MapPage', index: 0, icon: 'ios-map-outline'},
     {title: 'Акции', name: 'Actions', component: 'ActionsPage', index: 1, icon: 'ios-briefcase-outline'},
     {title: 'Контакты', name: 'Contacts', component: 'ContactsPage', index: 2, icon: 'ios-information-circle-outline'},
-    {title: 'Поддержка', name: 'Support', component: 'SupportPage', index: 3, icon: 'ios-text-outline'},
+    //{title: 'Поддержка', name: 'Support', component: 'SupportPage', index: 3, icon: 'ios-text-outline'},
   ];
 
   private noveltyPushEventDescriptor: any;
@@ -171,8 +171,13 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   }
 
   callMe() {
-    let callMeModal = this.modalCtrl.create('CallMePage');
+    const callMeModal = this.modalCtrl.create('CallMePage');
     callMeModal.present();
+  }
+
+  support() {
+    const supportModal = this.modalCtrl.create('SupportPage');
+    supportModal.present();
   }
 
   // Collects and sends device's data about model, operation system + it's version and screen size, and FCM device token

@@ -1,19 +1,36 @@
 <ion-header>
-  <main-toolbar [showSearchButton]="false"></main-toolbar>
+  <main-toolbar [disableHeaderClickHandler] = "true" [showCartIcon] = "false" [showCloseIcon] = "true" [showSearchButton]="false"></main-toolbar>
 </ion-header>
 
 
-<ion-content>
-  <ion-list no-lines>
-    <ion-item>
-      <ion-label floating><span style="font-size: 20px; color: black;" loc="Опишите Вашу проблему"
-                                            name="SpecifyProblem">{{locale['SpecifyProblem']}}</span></ion-label>
-      <ion-textarea [(ngModel)]="supportMessage" rows="3" (input)="adjustTextarea($event);"></ion-textarea>
-    </ion-item>
-  </ion-list>
-  <div padding>
-    <button ion-button block class="f-btn-action" (click)="submit()"
-            [attr.disabled]="(!supportMessage || (supportMessage && supportMessage.length === 0))?'':null"><span
-      loc="Отправить" name="Submit">{{locale['Submit']}}</span></button>
+<ion-content padding>
+
+  <div id="outer">
+    <ion-grid class="f-size-larger">
+      <ion-row>
+        <ion-col>
+          <div id='label-div'>
+            <label for="txt"><span>{{locale['SpecifyProblem']}}</span></label>
+          </div>
+          <textarea type="text" rows="5" id="txt" name="txt"
+                    placeholder="{{locale['MsgPlaceholder']}}"
+                    [(ngModel)]="supportMessage"
+                    required>
+
+          </textarea>
+        </ion-col>
+      </ion-row>
+
+      <div id="btn-div">
+        <ion-row>
+          <ion-col>
+            <button ion-button block class="f-btn-action" (click)="submit()"
+                    [attr.disabled]="(submitted || !supportMessage || (supportMessage && supportMessage.length < minMsgLength))?'':null"><span
+              loc="Отправить" name="Submit">{{locale['Submit']}}</span>
+            </button>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-grid>
   </div>
 </ion-content>
