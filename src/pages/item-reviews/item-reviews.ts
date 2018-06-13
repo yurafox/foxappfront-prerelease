@@ -28,7 +28,12 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
     super();
     this.initLocalization();
     this.dataLoaded = false;
-    this.cantShow = true;
+    if (this.navParams.data.page && this.navParams.data.page.cantShow){
+      this.cantShow = this.navParams.data.page.cantShow;
+    }
+    if (this.navParams.data.cantShow){
+      this.cantShow = this.navParams.data.cantShow;
+    }
   }
 
   async ngOnInit () {
@@ -45,9 +50,6 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
       }
       if (this.navParams.data.page.clientId) {
         this.clientId = this.navParams.data.page.clientId;
-      }
-      if (this.navParams.data.page.cantShow) {
-        this.cantShow = this.navParams.data.page.cantShow;
       }
     }
 
@@ -77,10 +79,25 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
       this.clientId = this.reviewsObj.idClient;
     }
 
-    //this.cantShow = this.hasClientReview();
+    this.cantShow = this.hasClientReview();
 
     this.dataLoaded = true;
     await loading.dismiss();
+  }
+
+  async ionViewDidEnter() {
+    if (this.product) {
+      let hasClientReviews = await this.repo.getHasClientProductReview(this.product.id);
+      if (hasClientReviews && hasClientReviews != null && hasClientReviews.hasReview) {
+        this.cantShow = hasClientReviews.hasReview;
+      }
+    }
+    if (this.store) {
+      let hasClientReviews = await this.repo.getHasClientStoreReview(this.store.id);
+      if (hasClientReviews && hasClientReviews != null && hasClientReviews.hasReview) {
+        this.cantShow = hasClientReviews.hasReview;
+      }
+    }
   }
 
   onWriteReviewClick(): void {

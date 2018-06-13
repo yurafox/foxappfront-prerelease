@@ -36,10 +36,10 @@
               <ion-col>
                 <button class="f-btn-action" ion-button block (click)="navToMap(store.store, store.city)"><span loc="Показать на карте" name="ShowOnMap">{{locale['ShowOnMap']}}</span></button>
               </ion-col>
-              <ion-col *ngIf="store.hasReviews === true">
-                <button class="f-btn-action" ion-button block (click)="onShowReviewsClick(store.store)"><span loc="Отзывы" name="Reviews">{{locale['Reviews']}}</span></button>
+              <ion-col *ngIf="store.hasReviews">
+                <button class="f-btn-action" ion-button block (click)="onShowReviewsClick(store.store)"><span loc="Отзывы" name="Reviews">{{locale['Reviews']}}</span>  ({{store?.reviews.length}})</button>
               </ion-col>
-              <ion-col *ngIf="store.hasReviews === false && !cantShow">
+              <ion-col *ngIf="!store.hasReviews && !store.cantShow">
                 <button class="f-btn-action" ion-button block (click)="onWriteReviewClick(store.store)"><span loc="Написать отзыв" name="WriteReview">{{locale['WriteReview']}}</span></button>
               </ion-col>
             </ion-row>

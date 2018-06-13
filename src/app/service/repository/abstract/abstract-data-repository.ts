@@ -46,6 +46,7 @@ import {ClientOrderProductHist} from '../../../model/client-order-product-hist';
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<{reviews:ProductReview[], idClient:number}>;
+  public async abstract getHasClientProductReview(productId: number): Promise<{hasReview: boolean, idClient:number}>;
   public async abstract getProducts(urlQuery: string, cacheForce: boolean): Promise<Product[]>;
   public async abstract getProductsOfDay(): Promise<Product[]>;
   public async abstract getProductsSalesHits(): Promise<Product[]>;
@@ -142,6 +143,7 @@ export abstract class AbstractDataRepository {
   public async abstract getStores(): Promise<IDictionary<Store[]>>;
   public async abstract getStoreById(id: number): Promise<Store>;
   public async abstract getStoreReviews(): Promise<{reviews:IDictionary<StoreReview[]>, idClient:number}>;
+  public async abstract getHasClientStoreReview(storeId: number): Promise<{hasReview: boolean, idClient:number}>;
   public async abstract getStoreReviewsByStoreId(storeId: number): Promise<{reviews:StoreReview[], idClient:number}>;
   public async abstract getFavoriteStores(): Promise<Store[]>;
   public async abstract addFavoriteStore(idStore: number): Promise<number>;

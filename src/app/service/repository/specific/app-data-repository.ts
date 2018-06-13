@@ -114,8 +114,10 @@ const pagesDynamicUrl = `${AppConstants.BASE_URL}/api/page`;
 const actionDynamicUrl = `${AppConstants.BASE_URL}/api/action`;
 const storesUrl = `${AppConstants.BASE_URL}/api/storeplace/stores`;
 const productReviewsUrl = `${AppConstants.BASE_URL}/api/reviews/GetProductReviews`;
+const clientProductReviewsUrl = `${AppConstants.BASE_URL}/api/reviews/HasClientProductReviewByProductId`;
 const storeReviewsUrl = `${AppConstants.BASE_URL}/api/reviews/GetStoreReviews`;
 const storeReviewsByStoreIdUrl = `${AppConstants.BASE_URL}/api/reviews/GetStoreReviewsByStoreId`;
+const clientStoreReviewsByStoreIdUrl = `${AppConstants.BASE_URL}/api/reviews/HasClientStoreReviewByStoreId`;
 const noveltyByIdDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNoveltyById`;
 const noveltiesDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNovelties`;
 const noveltyDetailsDynamicUrl = `${AppConstants.BASE_URL}/api/novelty/GetNoveltyDetailsByNoveltyId`;
@@ -1034,6 +1036,20 @@ export class AppDataRepository extends AbstractDataRepository {
       return { reviews: qProductsRevs, idClient: data.currentUser };
     } catch (err) {
       return await this.handleError(err);
+    }
+  }
+
+  public async getHasClientProductReview(productId: number): Promise<{hasReview: boolean, idClient:number}> {
+    try {
+      const response = await this.http.get(`${clientProductReviewsUrl}/${productId}`, RequestFactory.makeAuthHeader()).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      return data;
+    } catch (err) {
+      await this.handleError(err);
     }
   }
 
@@ -2681,6 +2697,20 @@ export class AppDataRepository extends AbstractDataRepository {
         }
       }
       return resultStore;
+    } catch (err) {
+      await this.handleError(err);
+    }
+  }
+
+  public async getHasClientStoreReview(storeId: number): Promise<{hasReview: boolean, idClient:number}> {
+    try {
+      const response = await this.http.get(`${clientStoreReviewsByStoreIdUrl}/${storeId}`, RequestFactory.makeAuthHeader()).toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      return data;
     } catch (err) {
       await this.handleError(err);
     }

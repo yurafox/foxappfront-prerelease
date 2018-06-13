@@ -72,6 +72,15 @@ export class ItemDetailPage extends ItemBase implements OnInit {
     this.cantShow = this.hasClientReview();
   }
 
+  async ionViewDidEnter() {
+    if (this.product) {
+      let hasClientReviews = await this.repo.getHasClientProductReview(this.product.id);
+      if (hasClientReviews && hasClientReviews != null && hasClientReviews.hasReview) {
+        this.cantShow = hasClientReviews.hasReview;
+      }
+    }
+  }
+
   onShowProductDescription(): void {
     this.navCtrl.push('ItemDescriptionPage', this.description);
   }
@@ -90,11 +99,11 @@ export class ItemDetailPage extends ItemBase implements OnInit {
 
   onWriteReview(): void {
     if (!this.userService.isAuth) {
-      this.navCtrl.push('LoginPage', {continuePage: 'ItemReviewWritePage', params: {product: this.product, page: this}}).catch((err) => {
+      this.navCtrl.push('LoginPage', {continuePage: 'ItemReviewWritePage', params: {product: this.product, page: this, reviews: this.reviews}}).catch((err) => {
         console.log(`Couldn't navigate to LoginPage: ${err}`);
       });
     } else {
-      this.navCtrl.push('ItemReviewWritePage', {product: this.product, page: this}).catch(err => {
+      this.navCtrl.push('ItemReviewWritePage', {product: this.product, page: this, reviews: this.reviews}).catch(err => {
         console.log(`Error navigating to ItemReviewWritePage: ${err}`);
       });
     }

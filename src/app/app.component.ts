@@ -10,6 +10,7 @@ import {System} from "./core/app-core";
 import {CartService} from "./service/cart-service";
 import {ConnectivityService} from "./service/connectivity-service";
 import {StatusBar} from '@ionic-native/status-bar';
+import {BackgroundMode} from "@ionic-native/background-mode";
 
 export interface PageInterface {
   title: string;
@@ -33,7 +34,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
 
   appPages: PageInterface[] = [
     {title: 'Главная', name: 'Home', component: 'HomePage', index: 0, icon: 'ios-home-outline'},
-    {title: 'Категории', name: 'Categories', component: 'CategoriesPage', index: 1, icon: 'ios-list-outline'},
+    {title: 'Категории', name: 'Categories', component: 'CategoryTreePage', index: 1, icon: 'ios-list-outline'},
 //    {title: 'Профиль', name: 'Account', component: 'AccountMenuPage', index: 2, icon: 'ios-person-outline'},
   ];
   infoPages: PageInterface[] = [
@@ -50,7 +51,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
               public menuCtrl: MenuController, private repo: AbstractDataRepository,
               private appAvailability: AppAvailability, private device: Device, private cartService: CartService,
               private connService: ConnectivityService, private statusBar: StatusBar,
-              public modalCtrl: ModalController) {
+              public modalCtrl: ModalController, private backgroundMode: BackgroundMode) {
     super();
     this.initLocalization();
 
@@ -96,17 +97,17 @@ export class FoxApp extends ComponentBase implements OnDestroy {
         FCMPlugin.onNotification((data) => {
           if (data.wasTapped) {
             //Notification was received on device tray and tapped by the user.
-            this.pushNotificationHandling(data).catch();
+            this.pushNotificationHandling(data).catch((err)=>console.error(err));
           } else {
             //Notification was received in foreground. Maybe the user needs to be notified.
-            this.pushNotificationHandling(data).catch();
+            this.pushNotificationHandling(data).catch((err)=>console.error(err));
           }
         });
 
-        //let readyness = await this.platform.ready();
-        if (ready && ready !== '') {
+        if (ready && ready !== '' && this) {
           this.splashScreen.hide();
-          //this.backgroundMode.enable();
+          this.backgroundMode.enable();
+          this.backgroundMode.setDefaults({hidden: true, silent: true}).catch((err)=>console.error(err));
         }
       }
     });

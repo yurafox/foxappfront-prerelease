@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ComponentBase } from "../../components/component-extension/component-base";
 import { Category } from './../../app/model/index';
-import { AppConstants } from '../../app/app-constants';
+import {DomSanitizer} from "@angular/platform-browser";
+import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
 
 @IonicPage()
 @Component({
@@ -13,13 +14,14 @@ export class CategoryTreePage extends ComponentBase {
   private groups: Category[] = [];
   private currentGroup: Category[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private _sanitizer: DomSanitizer,
+              private _repo: AbstractDataRepository) {
     super();
   }
 
   async ngOnInit() {
     super.ngOnInit();
-    this.groups = this.navParams.data.groups;
+    this.groups = await this._repo.getCategories();
 
     if (this.groups && this.groups.length != 0) {
       this.setCurrentCategoryList();
@@ -59,5 +61,11 @@ export class CategoryTreePage extends ComponentBase {
     }
 
     return filteredArray;
+  }
+
+  public convertImg(imgTxt:string):any {
+    if (!imgTxt || imgTxt === '') return;
+    let header:string = 'data:image/svg+xml;charset=utf-8;base64,';
+    return this._sanitizer.bypassSecurityTrustResourceUrl(`${header}${imgTxt}`);
   }
 }

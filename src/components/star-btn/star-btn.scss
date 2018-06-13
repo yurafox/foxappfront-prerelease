@@ -1,0 +1,58 @@
+star-btn {
+  button {
+    color: black !important;
+    background-color: #d8d8d8 !important;
+    text-transform: none !important;
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 20px !important;
+    padding: 0 !important;
+    vertical-align: central !important;
+  }
+  button:hover {
+    -webkit-box-shadow: 0 0 5px 2px #e59400;
+    -moz-box-shadow: 0 0 5px 2px #e59400;
+    box-shadow: 0 0 5px 2px #e59400;
+  }
+
+  ion-icon {
+    color: black !important;
+  }
+
+  .f-top-negative {
+    margin-top: -10px;
+  }
+
+  .f-cut-long-text {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .f-span-vert-align {
+    vertical-align: middle;
+    line-height: normal;
+
+  }
+
+  .f-left-15 {
+    //margin-left: 15px;
+    text-align: right;
+    margin: 0 !important;
+    width: 100%;
+  }
+
+  .backdropOpacityPopover {
+    ion-backdrop {
+      opacity: 0.4;
+    }
+    margin: 0px auto;
+  }
+
+  .popover-md .popover-content {
+    width: 125px !important;
+    padding: 0px !important;
+  }
+
+}

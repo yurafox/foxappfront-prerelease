@@ -46,11 +46,11 @@ export class ConnectivityService {
     return verifyNetwork && verifyActPage;
   }
 
-  private makeBrowserBehavior(error?: any):void {
+  private makeBrowserBehavior(error?: Error):void {
     console.error(error.message ? error.message : error);
     let alert = this.alertCtrl.create({
       title: 'Trouble',
-      message: error.message ? error.message :  error,
+      message: error.message,
       buttons: [
         {
           text: 'OK'

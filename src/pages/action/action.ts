@@ -12,8 +12,6 @@ import {SearchService} from '../../app/service/search-service';
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {Subscription} from "rxjs/Subscription";
 
-import stickybits from 'stickybits';
-
 @IonicPage()
 @Component({
   selector: 'page-action',
@@ -87,9 +85,7 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
     this.updateScrollHeight();
   }
 
-  ionViewDidEnter() {
-    this.handleStickyStyle();
-  }
+  ionViewDidEnter() {}
 
   ngOnDestroy():void {
     super.ngOnDestroy();
@@ -157,30 +153,6 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
   public updateScrollHeight() {
     const hdrH = (this.me.header) ? this.me.header.nativeElement.scrollHeight : 0;
     this.scrollHeight = (window.screen.height) - hdrH;
-  }
-
-  private handleStickyStyle() {
-    let element = document.querySelector('.action-product-filter-div');
-    let scrollEl = document.getElementById('cont');
-    if (element && element !== null && scrollEl && scrollEl !== null) {
-      stickybits(element, {scrollEl: scrollEl});
-    }
-    /*let filterElem = document.getElementsByTagName('filter');
-    if (filterElem && filterElem.item(0)) {
-      let filterDivOffset = filterElem.item(0).parentElement.offsetTop;
-      this.mainContent.ionScroll.subscribe((data) => {
-        this.zone.run(() => {
-          if (data.scrollTop+45 >= filterDivOffset) {
-            this.top = '45px';
-            this.position = 'fixed';
-          }
-          else {
-            this.top = '';
-            this.position = 'static';
-          }
-        });
-      });
-    }*/
   }
 }
 

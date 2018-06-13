@@ -22,6 +22,6 @@ export class CategoryBtnComponent extends ComponentBase {
   }
 
   toCategories():void{
-    this.navCtrl.push('CategoriesPage');
+    this.navCtrl.push('CategoryTreePage').catch((err)=>console.error(err));
   }
 }

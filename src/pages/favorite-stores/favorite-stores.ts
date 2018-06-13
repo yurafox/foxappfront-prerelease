@@ -1,13 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
-import {City, Store} from "../../app/model";
+import {City, Store, StoreReview} from "../../app/model";
 import {AbstractDataRepository} from "../../app/service";
-import {StoreReview} from "../../app/model/store-review";
 
 export interface IStore {
   city: City;
   store: Store;
+  reviews: Array<StoreReview>;
+  cantShow: boolean;
   hasReviews?: boolean;
 }
 
@@ -19,14 +20,11 @@ export interface IStore {
 export class FavoriteStoresPage extends ComponentBase implements OnInit {
 
   stores: Array<IStore>;
-  reviews: Array<StoreReview>;
   clientId: number = 0;
-  cantShow: boolean;
 
   constructor(private navCtrl: NavController, private repo: AbstractDataRepository, private alertCtrl: AlertController) {
     super();
     this.stores = [];
-    this.cantShow = true;
   }
 
   async ngOnInit() {
@@ -35,15 +33,18 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
     if (favStores && favStores.length > 0) {
       for (let i = 0; i < favStores.length; i++) {
         let city = await this.repo.getCityById(favStores[i].idCity);
-        let store: IStore = {city: null, store: null};
-        store = {city: city, store: favStores[i], hasReviews: false};
-        let reviews = await this.repo.getStoreReviewsByStoreId(store.store.id);
+        let store: IStore = {city: null, store: null, reviews: null, cantShow: false};
+        store = {city: city, store: favStores[i], reviews: null, cantShow: false, hasReviews: false};
+        let reviews = await this.repo.getStoreReviewsByStoreId(favStores[i].id);
+        let hasClientReviews = await this.repo.getHasClientStoreReview(favStores[i].id);
         let revs = reviews.reviews;
-        this.reviews = reviews.reviews;
-        this.clientId = reviews.idClient;
+        store.reviews = revs;
+        if (!this.clientId) this.clientId = reviews.idClient;
+        if (hasClientReviews && hasClientReviews != null && hasClientReviews.hasReview) {
+          store.cantShow = hasClientReviews.hasReview;
+        }
         store.hasReviews = !!(revs && (revs.length > 0));
         this.stores.push(store);
-        this.cantShow = this.hasClientReview(reviews.reviews);
       }
     }
   }
@@ -69,7 +70,7 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
         {
           text: 'OK',
           handler: () => {
-            this.removeFavoriteStore(item.store.id);
+            this.removeFavoriteStore(item.store.id).catch((err)=>console.error(`Couldn't remove favorite store: `+err));
           }
         },
         {

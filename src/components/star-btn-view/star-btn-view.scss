@@ -1,0 +1,64 @@
+star-btn-view {
+  .f-table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .f-table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #eceeef;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .f-table .f-table {
+    background-color: #fff;
+  }
+
+
+  .f-table-striped tbody tr:nth-of-type(even) {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .f-table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.095);
+  }
+
+  .popover-md .popover-content {
+    width: 125px !important;
+    padding: 0px !important;
+  }
+
+  .f-list-modal {
+    padding: 0px;
+    background-color: rgba(0, 0, 0, 0.05)
+  }
+
+  .f-active {
+    border-left: 3px solid #e59400;
+  }
+
+  .f-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    outline: none;
+    font-size: 17px;
+  }
+
+  .f-caption {
+    text-align: left;
+    span {
+      position: absolute;
+      top:11.5px;
+    }
+  }
+
+  .f-item-default {
+    border-left: 3px solid transparent;
+  }
+
+  .qtyCenter {
+    margin-top: 7px;
+  }
+}

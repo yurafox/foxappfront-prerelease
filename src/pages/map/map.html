@@ -26,16 +26,22 @@
   <!-- Map -->
   <div style="height: calc(100% - 45px); top: 45px;" #mapCanvas id="map_canvas"></div>
 
-  <div *ngIf="selectedMarker && selectedMarker.value" class="f-map-buttons-div">
+  <!--<div class="f-map-favorite-select" *ngIf="isAuthorized && favoriteStores && favoriteStores[0]">
+    <star-btn [options]="dropDownFavoritesOpts"
+              [reference]="selectedFavStore"
+              [store]="favoriteStores"
+              [map]="{valueName:'value',displayName:'label',secondValueName:'city'}"
+              [afterUpdate]="handleFavoriteListSelect">
+    </star-btn>
+  </div>-->
+  <div *ngIf="isAuthorized && selectedMarker && selectedMarker.value" class="f-map-buttons-div">
     <ion-buttons class="f-map-buttons f-map-footer">
-      <span *ngIf="isAuthorized === true">
-        <button ion-button icon-left (click)="addToFavorite()"
-                [disabled]="!selectedMarker.value.lat || !selectedMarker.value.lng"
-                class="f-map-button">
-          <ion-icon name="md-star-outline"></ion-icon>
-          <span loc="В избранное" name="toFav">{{locale['toFav']}}</span>
-        </button>
-      </span>
+      <button ion-button icon-left (click)="addToFavorite()"
+              [disabled]="!selectedMarker.value.lat || !selectedMarker.value.lng"
+              class="f-map-button">
+        <ion-icon name="md-star-outline"></ion-icon>
+        <span loc="В избранное" name="toFav">{{locale['toFav']}}</span>
+      </button>
     </ion-buttons>
   </div>
 </ion-content>

@@ -135,7 +135,7 @@ export class SearchBtnComponent extends ComponentBase {
 
   onKeyUp(event) {
     if (!(event.keyCode === 13))
-      this.srchTextInputStream$.next(event.target.value)
+      this.srchTextInputStream$.next(event.target.value);
     else
       this.renderer.invokeElementMethod(event.target, 'blur');
   }
@@ -150,7 +150,9 @@ export class SearchBtnComponent extends ComponentBase {
       event.stopPropagation();
     this.searchService.lastSearch = '';
     this.incSearch();
-    this.hostPage.pageMode = PageMode.HomeMode;
+    if ((this.navCtrl.length()-1) > 0) {
+      this.navCtrl.pop().catch();
+    } else this.hostPage.pageMode = PageMode.HomeMode;
     this.inputMode = false;
   }
 

@@ -70,7 +70,7 @@ export class LoginPage extends ComponentBase implements OnInit {
     this.checkUserBehavior();
     this.onLoad=true;
   }
-  
+
   public async verifyUser() {
     // clear error message
     this.clearVerifyError();
@@ -98,7 +98,7 @@ export class LoginPage extends ComponentBase implements OnInit {
       this.isSendAsync = false;
     })();
   }
-  
+
   public async logIn() {
     if (!this.verifyForm.valid) {
       return;
@@ -134,7 +134,7 @@ export class LoginPage extends ComponentBase implements OnInit {
       'phone': [this._phone, [Validators.required,
         Validators.pattern('^380\\d{9}$')]],
       'code':['']
-    }); 
+    });
 
     this.verifyForm.valueChanges
       .subscribe(data => this.onVerifyChanged());
@@ -167,10 +167,10 @@ export class LoginPage extends ComponentBase implements OnInit {
   private findBehaviorByStatus(result:IUserVerifyAccountData, phone:string ):void {
     if(result.status === 1) {
       this.changeUseCode(false);
-      const contPage:string = (this.navParams.data 
+      const contPage:string = (this.navParams.data
                                && this.navParams.data.continuePage
                               ) ? this.navParams.data.continuePage : null;
-      
+
       this.nav.push('RegisterPage',{phone: phone,continuePage:contPage});
     }
 
@@ -201,12 +201,12 @@ export class LoginPage extends ComponentBase implements OnInit {
 
     alert.present();
   }
- 
+
   private changeUseCode(codePredicate:boolean):void {
     (codePredicate) ? this.addCodeValidators() : this.removeCodeValidators();
     this.useCode = codePredicate;
   }
-  
+
   private addCodeValidators():void {
       this.verifyForm.controls['code'].setValidators([Validators.required,Validators.pattern('^\\d{5,6}$')]);
       this.makeCodeUpdate();
@@ -227,7 +227,7 @@ export class LoginPage extends ComponentBase implements OnInit {
       this.nav.remove(this.nav.getActive().index);
     });
   }
-  
+
   private checkUserBehavior():void {
     if(this.navParams.data && this.navParams.data.fromRegistry){
       this.changeUseCode(true);
