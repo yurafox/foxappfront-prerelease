@@ -59,7 +59,7 @@ export class ItemReviewWritePage extends ComponentBase {
           }
         ]
       });
-      alert.present().catch();
+      alert.present().then(()=>this.navCtrl.pop()).catch((err)=>console.error(err));
     }
   }
 
