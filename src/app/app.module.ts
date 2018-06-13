@@ -94,7 +94,11 @@ import {
   OrdersFilterPageModule,
   ContactsPageModule,
   ItemImgPageModule,
-  CallMePageModule
+  CallMePageModule,
+  LegalPolicyPageModule,
+  NewsPageModule,
+  NewsDetailPageModule,
+  ManageNewsMenuPageModule
 } from '../pages/index-modules';
 import {NgxQRCodeModule} from 'ngx-qrcode2';
 import {AppAvailability} from '@ionic-native/app-availability';
@@ -169,6 +173,10 @@ import {BackgroundMode} from '@ionic-native/background-mode';
     WarningViewPageModule,
     OrdersFilterPageModule,
     ContactsPageModule,
+    LegalPolicyPageModule,
+    NewsPageModule,
+    NewsDetailPageModule,
+    ManageNewsMenuPageModule,
     ItemImgPageModule,
     CallMePageModule
   ],

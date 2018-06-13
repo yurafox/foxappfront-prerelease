@@ -48,7 +48,9 @@ import {
   Shipment,
   AppParam,
   LoDeliveryType,
-  LoEntityOffice
+  LoEntityOffice,
+  News,
+  NewsCategory
 } from '../../../model/index';
 
 import { AbstractDataRepository } from '../../index';
@@ -140,7 +142,10 @@ const getLoEntityOfficeUrl =`${AppConstants.BASE_URL}/api/lo/LoEntityOffice`;
 const getLoDeliveryTypesByLoEntityUrl = `${AppConstants.BASE_URL}/api/lo/LoDeliveryTypesByLoEntity`;
 const getLoOfficesByLoEntityAndCityUrl = `${AppConstants.BASE_URL}/api/lo/LoEntityOfficesByLoEntityAndCity`;
 const notifyOnProductArrivalUrl = `${AppConstants.BASE_URL}/api/product/NotifyOnProductArrival`;
-
+const legalPolicyUrl = `${AppConstants.BASE_URL}/api/legalpolicy/getLegalPolicy`;
+const newsDescriptionsUrl = `${AppConstants.BASE_URL}/api/news/getNewsDescription`;
+const newsByCategoryUrl = `${AppConstants.BASE_URL}/api/news/getNewsByCategory`;
+const newsCategoryUrl = `${AppConstants.BASE_URL}/api/NewsCategory`;
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
 // const currenciesUrl = "/api/mcurrencies";
@@ -3946,5 +3951,75 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async getLegalPolicy(langId: string): Promise<string> {
+    try {
+      const response = await this.http.get(legalPolicyUrl + `/${langId}`, RequestFactory.makeAuthHeader()).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        return data.description;
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getNewsByCategory(categoryId: number): Promise<News[]> {
+    try {
+      const response = await this.http.get(newsByCategoryUrl + `/${categoryId}`,RequestFactory.makeAuthHeader()).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      let news: News[] = [];
+      if (data !== null) {
+        data.forEach((dataNews) => {
+          news.push(dataNews);
+        })
+      }
+      return news;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getNewsDescription(id: number): Promise<string> {
+    try {
+      const _id = id.toString();
+      const response = await this.http.get(newsDescriptionsUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      if (data != null) {
+        return data.description;
+      }
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getNewsCategory(): Promise<NewsCategory[]> {
+    try {
+      const response = await this.http.get(newsCategoryUrl,RequestFactory.makeAuthHeader()).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      let newsCategory: NewsCategory[] = [];
+      if (data !== null) {
+        data.forEach((dataNewsCategory) => {
+          newsCategory.push(dataNewsCategory);
+        })
+      }
+      return newsCategory;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
 
 }

@@ -1,0 +1,30 @@
+<ion-header>
+  <main-toolbar></main-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col style="text-align: center">
+        <img style="width:100%" [src]="news.previewImgUrl" onError="this.src='assets/imgs/nophoto.png';">
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="f-item-col">
+        <div style="text-align:center;">
+          <span class="f-product-name">{{news.caption}}</span>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="f-item-col">
+        <span class="f-size-small" style="float:right">{{news.publicDate | date:'shortDate'}}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="description">
+      <div class="f-padding-tb-10" [innerHTML]="description"></div>
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>

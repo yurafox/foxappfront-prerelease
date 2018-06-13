@@ -1,0 +1,40 @@
+<ion-header>
+  <main-toolbar></main-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid  class="f-item-nopadding-tb">
+    <ion-row *ngFor="let item of news; let i = index" (click)="onOpenOneNews(item)">
+      <ion-grid>
+        <ion-row *ngIf="!(i == 0)">
+          <ion-col>
+            <hr class="f-hr-divider">
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col style="text-align: center">
+            <img style="width:100%" [src]="item.previewImgUrl" onError="this.src='assets/imgs/nophoto.png';">
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="f-item-col">
+            <div style="text-align:center;">
+              <span class="f-product-name">{{item.caption}}</span>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="f-item-col">
+            <span class="f-size-small" style="float:right">{{item.publicDate | date:'shortDate'}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="f-item-col">
+            <span class="f-size-default">{{item.description}}</span>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
