@@ -2,11 +2,12 @@
   <main-toolbar></main-toolbar>
 </ion-header>
 
-  <ion-content padding class="outer-content">
+<ion-content padding class="outer-content">
+  <div class="contentWrapper">
     <ion-list class="list-form" *ngIf="onLoad">
-       <!--error message block-->
-       <ion-item class='alertDanger' *ngIf="verifyErrorData?.errorShow">
-          <span>{{verifyErrorData.errorMessage}}</span>
+      <!--error message block-->
+      <ion-item class='alertDanger' *ngIf="verifyErrorData?.errorShow">
+        <span>{{verifyErrorData.errorMessage}}</span>
       </ion-item>
 
       <form [formGroup]='editForm'>
@@ -14,77 +15,63 @@
           <span>{{userService.errorMessages[edit]}}</span>
         </ion-item>
 
-        <ion-item>
-          <ion-label floating><font class="f-color-red">*&nbsp;</font>E-mail</ion-label>
-          <ion-input type="text" formControlName="email"></ion-input>
-        </ion-item>
+        <div class="contentBlock">
+            <span loc="Электронная почта*" name="Email" class="lblTxt">{{locale['Email'] || 'Электронная почта*'}}</span>
+        </div>  
+          <input type="text" placeholder="{{locale['Email'] ? locale['Email'] : 'Электронная почта*'}}" formControlName="email"/>
         <ion-item class='alertDanger' *ngIf="formErrors.email">
           <span>{{formErrors.email}}</span>
         </ion-item>
 
-        <ion-item>
-            <ion-label floating><span loc="Имя"><font class="f-color-red">*&nbsp;</font>{{locale['Name']}}</span></ion-label>
-            <ion-input style="margin-left: 13px" type="text"  formControlName="fname"></ion-input>
-          </ion-item>
-          <ion-item class='alertDanger' *ngIf="formErrors.fname">
-            <span>{{formErrors.fname}}</span>
+        <div class="contentBlock">
+            <span loc="Имя*" name="Name" class="lblTxt">{{locale['Name'] || 'Имя*'}}</span>
+        </div>       
+        <input type="text" placeholder="{{locale['Name'] ? locale['Name'] : 'Имя*'}}" formControlName="fname"/>
+    
+        <ion-item class='alertDanger' *ngIf="formErrors.fname">
+          <span>{{formErrors.fname}}</span>
         </ion-item>
-
-        <ion-item>
-            <ion-label floating><span loc="Фамилия">{{locale['Surname']}}</span></ion-label>
-            <ion-input style="margin-left: 13px" type="text" formControlName="lname"></ion-input>
-          </ion-item>
-          <ion-item class='alertDanger' *ngIf="formErrors.lname">
-            <span>{{formErrors.lname}}</span>
+        
+        <div class="contentBlock">
+            <span loc="Фамилия*" name="Surname" class="lblTxt">{{locale['Surname'] || 'Фамилия*'}}</span>
+        </div>
+          <input type="text" placeholder="{{locale['Surname'] ? locale['Surname'] : 'Фамилия*'}}" formControlName="lname"/>
+    
+        <ion-item class='alertDanger' *ngIf="formErrors.lname">
+          <span>{{formErrors.lname}}</span>
         </ion-item>
-
-
-        <!-- <ion-item>
-          <ion-label floating><span loc="Ключ" name="AppKey">{{locale['AppKey']}}</span></ion-label>
-          <ion-input type="text" formControlName="appKey"></ion-input>
-        </ion-item>
-        <ion-item class='alertDanger' *ngIf="formErrors.appKey">
-          <span>{{formErrors.appKey}}</span>
-        </ion-item> -->
-
-        <ion-grid class="f-top20">
-          <ion-row>
-           <ion-col col-7>
-             <ion-label class="f-label-drop-field"><span loc="Валюта" name="Currency">{{locale['Currency']}}</span></ion-label>
-           </ion-col>
-            <ion-col col-4>
-              <dropdown-list [reference]="currentCurrency"
-                             [store]="currencies"
-                             [map]="{valueName:'id',displayName:'shortName'}"
-                             [afterUpdate]="currencyUpdate"
-                             [options]="{popupHeader:locale['Currency']}">
-              </dropdown-list>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-
-        <ion-grid class="f-top20">
-          <ion-row>
-            <ion-col col-7>
-              <ion-label class="f-label-drop-field"><span loc="Язык" name="Language">{{locale['Language']}}</span></ion-label>
-            </ion-col>
-            <ion-col col-4>
+        
+        <div class="contentBlock contentFl">
+            <div>
+              <span loc="Валюта" name="Currency" class="lblTxt">{{locale['Currency'] || 'Валюта'}}</span>
+            </div>
+            <dropdown-list [reference]="currentCurrency" 
+                           [store]="currencies"
+                           [map]="{valueName:'id',displayName:'shortName'}"
+                           [afterUpdate]="currencyUpdate"
+                           [options]="{popupHeader:locale['Currency']}">
+            </dropdown-list>
+          </div>
+  
+  
+          <div class="contentBlock contentFr">
+              <span loc="Локализация" name="Localization" class="lblTxt">{{locale['Localization'] || 'Локализация'}}</span>
               <dropdown-list [reference]="currentLang"
                              [store]="langs"
                              [map]="{valueName:'id',displayName:'name'}"
                              [afterUpdate]="langUpdate"
-                             [options]="{popupHeader:locale['Language']}">
+                             [options]="{popupHeader:locale['Localization']}">
               </dropdown-list>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-
-        <button [disabled]="!isChanged || isSendAsync" style="background: #ffbc2e" ion-button block color="fox" (click)="edit()"><span loc="Применить" name="Apply">{{locale['Apply']}}</span></button>
+          </div>     
+          <div style="clear: both"></div>
+        
+        <div class="btnAction">
+          <button [disabled]="checkDisabled()" (click)="edit()">
+            <span class="btnTxt" loc="Применить" name="Apply">{{locale['Apply'] || 'Применить'}}</span>
+          </button>
+        </div>
       </form>
 
     </ion-list>
-
-    <div *ngIf="onLoad" class="align-bottom" padding text-center>
-      <span class="bold" (click)="logout()"><span loc="Выйти" name="Logoff">{{locale['Logoff']}}</span></span>
-    </div>
-  </ion-content>
+  </div>
+</ion-content>
