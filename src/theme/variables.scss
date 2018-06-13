@@ -45,9 +45,12 @@ $colors: (
   gridlines: #EBEBEC,
   bgColor: #EBEBEC,
   primaryBtnColor: #E54415,
-  green: green
+  green: #005200 //green
 );
 
+
+$item-ios-detail-push-color:  color($colors, primary);
+$item-md-detail-push-color:  color($colors, primary);
 
 // Use the primary color as the background for the toolbar-md-background
 $toolbar-ios-background: color($colors, primary);

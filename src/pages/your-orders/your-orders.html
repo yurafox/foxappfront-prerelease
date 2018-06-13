@@ -10,7 +10,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="filter" class="common-bg f-padding-tb-10 f-padding-lr-5">
+    <ion-row *ngIf="dataLoaded && filter" class="common-bg f-padding-tb-10 f-padding-lr-5">
       <ion-col>
         <span>{{filter.displayName}}</span>
       </ion-col>
