@@ -2,11 +2,52 @@ page-login {
   .alertDanger{
     color: #a94442;
   }
-  .top20{
-    margin-top: 20px;
-  }
   
+  .top100 {
+    margin: 100px auto;
+    width: 80%;
+  }
+
+  .lblTxt {
+    width: 69px;
+    height: 18px;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 14px;
+    color: #000000;
+}
+
+ .btnAction {
+  width: 122px;
+  margin: 10% auto;
+  button {
+    background: #E54415;
+    height: 33px;
+    width: inherit;
+  }
+ }
+ 
+ .btnTxt {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  font-size: 15px;
+  text-align: center;
+  color: #FFFFFF; 
+ }
+ 
+ .formContentWrapper {
+   width: 100%;
+ }
   input[type="text"] {
-    padding-left: 0px !important;
+    padding-left: 10px !important;
+    width: 100%;
+    height: 39px;
+    background: #FFFFFF;
+    border: 1px solid #BDBDBD;
+    box-sizing: border-box;
   }
 }

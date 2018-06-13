@@ -1,8 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, NavParams, IonicPage} from 'ionic-angular';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import {NavController,NavParams, IonicPage, AlertController} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {CartService} from '../../app/service/cart-service';
+import {Currency, Lang, IUserInfo} from "../../app/model/index";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
+import {UserService} from "../../app/service/bll/user-service";
+import {User,IUserVerifyAccountData} from "../../app/model/index";
 
 @IonicPage({name: 'LoginPage', segment: 'login'})
 @Component({
@@ -11,10 +15,15 @@ import {CartService} from '../../app/service/cart-service';
 })
 export class LoginPage extends ComponentBase implements OnInit {
 
+  public currencies:Array<Currency>;
+  public langs:Array<Lang>;
+  public verifyForm: FormGroup;
+  public verifyErrorData:{errorShow:boolean,errorMessage:string};
+  private onLoad = false;
+  private isSendAsync = false;
+  private useCode = false;
   private _authError = false;
   private _phone = '';
-  public isSendAsync = false;
-  public loginForm: FormGroup;
 
   public get authError() {
     return this._authError;
@@ -23,64 +32,87 @@ export class LoginPage extends ComponentBase implements OnInit {
 
   public formErrors = {
     'phone': '',
-    'password': ''
+    'code': '',
   };
 
-  public errorMessages = {
-      /*'phone': {
-      'required': 'Обязательное поле',
-      'pattern': 'Не правильный формат номера'
-    },
-    'password': {
-      'required': 'Обязательное поле',
-      'minlength': 'Значение должно быть не менее 6ти символов',
-      'maxlength': 'Значение должно быть не более 25ти символов'
-    }*/
-  };
+  public errorMessages = {};
 
-  constructor(public nav: NavController, public navParams: NavParams,
-              private formBuilder: FormBuilder, public cart: CartService) {
+
+
+  constructor(public nav: NavController,
+              public navParams: NavParams,
+              private repo: AbstractDataRepository,
+              private formBuilder: FormBuilder,
+              private alertCtrl:AlertController,
+              public cart: CartService,
+              private account:UserService) {
     super();
     this.initLocalization();
     const navData = this.navParams.data;
     this._phone = (navData && navData.phone) ? navData.phone : '';
+    this.verifyErrorData={errorShow:false,errorMessage:''};
   }
 
-  // application hook /
   async ngOnInit(){
+    super.ngOnInit();
     this.errorMessages = {
       'phone': {
         'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
         'pattern': this.locale['WrongPhoneFormat'] ? this.locale['WrongPhoneFormat'] : 'Не правильный формат номера'
       },
-      'password': {
+      'code': {
         'required': this.locale['RequiredField'] ? this.locale['RequiredField'] : 'Обязательное поле',
-        'minlength': this.locale['LengthNLT6'] ? this.locale['LengthNLT6'] : 'Значение должно быть не менее 6-и символов',
-        'maxlength': this.locale['LengthNGT25'] ? this.locale['LengthNGT25'] : 'Значение должно быть не более 25-и символов'
-      }
+        'pattern': this.locale['WrongSmsFormat'] ? this.locale['WrongSmsFormat'] : 'Не правильный формат кода из смс'
+      },
     };
     this.buildForm();
+    [this.currencies,this.langs] = await Promise.all([this.repo.getCurrencies(true),this.repo.getLocale(true)]);
+    this.checkUserBehavior();
+    this.onLoad=true;
   }
+  
+  public async verifyUser() {
+    // clear error message
+    this.clearVerifyError();
+    if (!this.verifyForm.valid) {
+      return;
+    }
 
-  // go to register page
-  register() {
-    this.nav.push('RegisterPage');
+     // start block logic for multiple sending
+     this.isSendAsync = true;
+
+    const phone = this.verifyForm.value.phone;
+    (async ()=>{
+      const result:IUserVerifyAccountData = await this.account.verifyAccount(phone);
+      if(result===null || result.status===0){
+        this.changeUseCode(false);
+        this.verifyErrorData.errorShow = true;
+        this.verifyErrorData.errorMessage = (result) ? result.message : (this.locale['RemoteSourceError'] ? this.locale['RemoteSourceError'] : 'Ошибка удаленного источника');
+      }
+
+      else {
+        this.findBehaviorByStatus(result, phone);
+      }
+
+      // end block logic for multiple sending
+      this.isSendAsync = false;
+    })();
   }
-
-  // go to home page
-  async login() {
-    if (!this.loginForm.valid) {
+  
+  public async logIn() {
+    if (!this.verifyForm.valid) {
       return;
     }
 
     // start block logic for multiple sending
     this.isSendAsync = true;
-    const data = this.loginForm.value;
+    const data = this.verifyForm.value;
 
-    await this.userService.login(data.phone,data.password);
+    await this.userService.login(data.phone,data.code);
     this.isSendAsync = false;
 
     if(this.userService.isAuth) {
+      this.changeUseCode(false);
       this.evServ.events['localeChangeEvent'].emit(this.userService.lang);
       if (this.navParams.data.continuePage) {
         if (this.navParams.data.continuePage === 'SelectShipAddressPage') {
@@ -94,7 +126,99 @@ export class LoginPage extends ComponentBase implements OnInit {
       else
         this.nav.setRoot('HomePage');
     }
-    else this._authError = true;
+    else {this.changeUseCode(true); this._authError = true};
+  }
+
+  private buildForm(): void {
+    this.verifyForm = this.formBuilder.group({
+      'phone': [this._phone, [Validators.required,
+        Validators.pattern('^380\\d{9}$')]],
+      'code':['']
+    }); 
+
+    this.verifyForm.valueChanges
+      .subscribe(data => this.onVerifyChanged());
+
+    this.onVerifyChanged();
+  }
+
+  private onVerifyChanged() {
+    if(this.verifyErrorData.errorShow)
+      this.clearVerifyError();
+
+    if (!this.verifyForm) {
+      return;
+    }
+
+    for (let err in this.formErrors) {
+      this.formErrors[err] = '';
+
+      let control = this.verifyForm.get(err);
+      if (control && control.dirty && !control.valid) {
+        let messages = this.errorMessages[err];
+        for (let key in control.errors) {
+          this.formErrors[err] += messages[key] + ' ';
+        }
+      }
+    }
+
+  }
+
+  private findBehaviorByStatus(result:IUserVerifyAccountData, phone:string ):void {
+    if(result.status === 1) {
+      this.changeUseCode(false);
+      const contPage:string = (this.navParams.data 
+                               && this.navParams.data.continuePage
+                              ) ? this.navParams.data.continuePage : null;
+      
+      this.nav.push('RegisterPage',{phone: phone,continuePage:contPage});
+    }
+
+    else {
+      this.showSmsPopUp(result.message,phone);
+    }
+
+  }
+
+  private clearVerifyError():void {
+    this.verifyErrorData.errorShow = false;
+    this.verifyErrorData.errorMessage = '';
+  }
+
+  private showSmsPopUp(message:string,phone:string){
+    let alert = this.alertCtrl.create({
+      message: message,
+      enableBackdropDismiss:false,
+      buttons:[
+        {
+          text: 'OK',
+          handler: () => {
+            this.changeUseCode(true);
+          }
+        }
+      ]
+    });
+
+    alert.present();
+  }
+ 
+  private changeUseCode(codePredicate:boolean):void {
+    (codePredicate) ? this.addCodeValidators() : this.removeCodeValidators();
+    this.useCode = codePredicate;
+  }
+  
+  private addCodeValidators():void {
+      this.verifyForm.controls['code'].setValidators([Validators.required,Validators.pattern('^\\d{5,6}$')]);
+      this.makeCodeUpdate();
+  }
+
+  private removeCodeValidators():void {
+    this.verifyForm.controls['code'].clearValidators();
+    this.makeCodeUpdate();
+  }
+
+  private makeCodeUpdate(){
+    this.verifyForm.controls['code'].updateValueAndValidity();
   }
 
   private toContinuePage(params:any) {
@@ -103,44 +227,10 @@ export class LoginPage extends ComponentBase implements OnInit {
       this.nav.remove(this.nav.getActive().index);
     });
   }
-
-// <editor-fold desc="form builder">
-  private buildForm(): void {
-    this.loginForm = this.formBuilder.group({
-      'phone': [this._phone, [Validators.required,
-        // obsolete email regex^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$
-        Validators.pattern('^380\\d{9}$')]],
-
-      'password': ['', [Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(25)]]
-    });
-
-    this.loginForm.valueChanges
-      .subscribe(data => this.onValueChanged(data));
-    this.onValueChanged();
-  }
-  // </editor-fold>
-
-  // <editor-fold desc="form value changing hook">
-  private onValueChanged(data?: any) {
-    if (!this.loginForm) {
-      return;
-    }
-    let form = this.loginForm;
-
-    for (let err in this.formErrors) {
-      this.formErrors[err] = '';
-      this._authError = false;
-
-      let control = form.get(err);
-      if (control && control.dirty && !control.valid) {
-        let messages = this.errorMessages[err];
-        for (let key in control.errors) {
-          this.formErrors[err] += messages[key] + ' ';
-        }
-      }
+  
+  private checkUserBehavior():void {
+    if(this.navParams.data && this.navParams.data.fromRegistry){
+      this.changeUseCode(true);
     }
   }
-  // </editor-fold>
 }

@@ -1,32 +1,86 @@
 page-account {
-  /*
-  img {
-    max-width: 140px;
-    border-radius: 50%;
-  }
-  */
-
-  .alertDanger{
-    color: #a94442;
-  }
-
-  .alertCustomCss {
-    text-align:center;
-    .alert-head {
-      background: #ffbc2e;
-      color: black;
-      margin-bottom: 10px;
+    .alertDanger{
+      color: #a94442;
     }
+
+    .alertCustomCss {
+      text-align:center;
+      .alert-head {
+        background: #ffbc2e;
+        color: black;
+        margin-bottom: 10px;
+      }
+    }
+
+  .contentWrapper {
+    margin-top: 20px;
   }
-}
 
-.f-top20 {
-  margin-top: 20px;
-}
+  .contentBlock{
+    margin-top: 10px;
+  }
 
-.f-label-drop-field {
-  font-size: 1.2em;
-  margin-left: 8px;
-  color: grey;
-  opacity: 0.8;
+  .lblTxt {
+    width: 69px;
+    height: 18px;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 14px;
+    color: #000000;
+  }
+
+  .contentFl {
+    float: left;
+  }
+
+  .contentFr {
+    float: right;
+  }
+
+  input[type="text"] {
+    padding-left: 10px !important;
+    width: 100%;
+    height: 39px;
+    background: #FFFFFF;
+    border: 1px solid #BDBDBD;
+    box-sizing: border-box;
+  }
+  
+  .selectOpt{
+    padding-left: 10px !important;
+    width: 100%;
+    height: 41px;
+    background: #FFFFFF;
+    border: 1px solid #BDBDBD;
+    box-sizing: border-box;
+  }
+  
+  .btnTxt {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    font-size: 15px;
+    text-align: center;
+    color: #FFFFFF; 
+   }
+
+  .btnAction {
+    width: 150px;
+    margin: 10% auto;
+    button {
+      background: #E54415;
+      height: 40px;
+      width: inherit;
+    }
+   }
+
+  .f-label-drop-field {
+    font-size: 1.2em;
+    margin-left: 8px;
+    color: grey;
+    opacity: 0.8;
+  }
 }

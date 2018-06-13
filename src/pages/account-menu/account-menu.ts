@@ -31,8 +31,7 @@ export class AccountMenuPage extends ComponentBase {
    ];
   accountSettingsPages: PageInterface[] = [
      {title: 'Login&Security', name: 'Авторизация и Безопасность', component: 'AccountPage', index: 0},
-     {title: 'ChangePassword', name: 'Сменить пароль', component: 'ChangePasswordPage', index: 1},
-     {title: 'ManageYourPlaces', name: 'Управление адресами', component: 'ManagePlacesMenuPage', index: 2},
+     {title: 'ManageYourPlaces', name: 'Управление адресами', component: 'ManagePlacesMenuPage', index: 1},
    ];
   // Categories of pages
   accountMenu: MenuPageInterface[] = [

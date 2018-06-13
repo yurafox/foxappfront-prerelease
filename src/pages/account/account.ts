@@ -248,4 +248,8 @@ export class AccountPage extends ComponentBase {
       this.isChanged = false;
     }
   }
+
+  private checkDisabled():boolean {
+    return !this.isChanged || this.isSendAsync || !this.editForm.valid;
+  }
 }

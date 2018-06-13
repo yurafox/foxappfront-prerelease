@@ -2,10 +2,73 @@ page-register {
   .alertDanger{
     color: #a94442;
   }
-
-  .header-label {
-    color: green;
-    font-size: 16px;
+  
+  .btnTxt {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    font-size: 15px;
     text-align: center;
+    color: #FFFFFF; 
+   }
+  
+   .lblTxt {
+    width: 69px;
+    height: 18px;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 14px;
+    color: #000000;
   }
+  
+  .contentWrapper {
+    margin-top: 20px;
+  }
+  
+  .contentBlock{
+    margin-top: 10px;
+  }
+  
+  .contentFl {
+    float: left;
+  }
+
+  .contentFr {
+    float: right;
+  }
+
+  .shiftRight {
+    text-align: right;
+  }
+
+  input[type="text"] {
+    padding-left: 10px !important;
+    width: 100%;
+    height: 39px;
+    background: #FFFFFF;
+    border: 1px solid #BDBDBD;
+    box-sizing: border-box;
+  }
+  
+  .selectOpt{
+    padding-left: 10px !important;
+    width: 100%;
+    height: 41px;
+    background: #FFFFFF;
+    border: 1px solid #BDBDBD;
+    box-sizing: border-box;
+  }
+
+  .btnAction {
+    width: 150px;
+    margin: 10% auto;
+    button {
+      background: #E54415;
+      height: 40px;
+      width: inherit;
+    }
+   }
 }

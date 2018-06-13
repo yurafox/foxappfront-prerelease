@@ -2,33 +2,47 @@
   <main-toolbar></main-toolbar>
 </ion-header>
 
-<ion-content padding class="top20">
-  <ion-list>
-    <form [formGroup]='loginForm'>
-      <ion-item *ngIf='authError' class='alertDanger'>
-        <span loc="Неверный номер или пароль" name="WrongLoginOrPass">{{locale['WrongLoginOrPass'] ? locale['WrongLoginOrPass'] : 'Неверный номер или пароль'}}</span>
-      </ion-item>
+<ion-content>
+  <div class="top100">
+    <form [formGroup]='verifyForm'>
+        <ion-item *ngIf='authError' class='alertDanger'>
+            <span loc="Неверный номер или код" name="WrongLoginOrCode">{{locale['WrongLoginOrCode'] ? locale['WrongLoginOrCode'] : 'Неверный номер или код'}}</span>
+         </ion-item>
+    
+      <div class="formContentWrapper">
+        <div>
+          <span loc="Телефон*" name="Phone" class="lblTxt">{{locale['Phone'] || 'Телефон*'}}</span>
+        </div>
+        <input type="text" [mask]="'380999999999'" placeholder="380xxxxxxxxx" formControlName="phone" />
 
-      <ion-item>
-        <ion-input type="text"  [mask]="'380999999999'" type="number"  placeholder="380xxxxxxxxx" formControlName="phone"></ion-input>
-      </ion-item>
-      <ion-item class='alertDanger' *ngIf="formErrors.phone">
-        <span>{{formErrors.phone}}</span>
-      </ion-item>
+        <ion-item class='alertDanger' *ngIf="formErrors.phone">
+          <span>{{formErrors.phone}}</span>
+        </ion-item>
+        <ion-item class='alertDanger' *ngIf="verifyErrorData.errorShow">
+          <span>{{verifyErrorData.errorMessage}}</span>
+        </ion-item>
 
-      <ion-item>
-        <ion-input  type="password" placeholder="{{locale['Password'] ? locale['Password'] : 'Пароль'}}" formControlName="password"></ion-input>
-      </ion-item>
-      <ion-item class='alertDanger' *ngIf="formErrors.password">
-         <span>{{formErrors.password}}</span>
-      </ion-item>
+        <div style="margin-top: 10px" *ngIf="useCode">
+          <div>
+            <span loc="Код*" name="Code" class="lblTxt">{{locale['Code'] || 'Код*'}}</span>
+          </div>
+          <input type="text" placeholder="sms code" formControlName="code" />
 
-      <button [disabled]="isSendAsync" style="background: #ffbc2e" ion-button block (click)="login()"><span loc="Войти" name="Login">{{locale['Login'] ? locale['Login'] : 'Войти'}}</span></button>
+          <ion-item class='alertDanger' *ngIf="formErrors.code">
+            <span>{{formErrors.code}}</span>
+          </ion-item>
+        </div>
+
+      </div>
+      <div class="btnAction">
+        <button *ngIf="!useCode" [disabled]="isSendAsync || !verifyForm.valid" (click)="verifyUser()">
+          <span class="btnTxt" loc="Далее" name="GetSmsCode">{{locale['GetSmsCode'] || 'Далее'}}</span>
+        </button>
+        <button *ngIf="useCode" [disabled]="isSendAsync || !verifyForm.valid" (click)="logIn()">
+            <span class="btnTxt" loc="Войти" name="Login">{{locale['Login'] || 'Войти'}}</span>
+          </button>
+      </div>
+
     </form>
-
-  </ion-list>
-
-  <div class="align-bottom" padding text-center>
-    <span loc="Нет аккаунта" name="NoAccount">{{locale['NoAccount'] ? locale['NoAccount'] : 'Нет аккаунта'}}</span>? <span class="bold" (click)="register()"><span loc="Зарегистрироваться" name="SignUp">{{locale['SignUp'] ? locale['SignUp'] : 'Зарегистрироваться'}}</span></span>
   </div>
 </ion-content>
