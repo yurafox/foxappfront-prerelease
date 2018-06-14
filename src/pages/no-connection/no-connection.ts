@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
-import {ComponentBase} from "../../components/component-extension/component-base";
-import {Network} from "@ionic-native/network";
-import {Subscription} from "rxjs/Subscription";
-import {ConnectivityService} from "../../app/service/connectivity-service";
+import {ComponentBase} from '../../components/component-extension/component-base';
+import {Network} from '@ionic-native/network';
+import {Subscription} from 'rxjs/Subscription';
+import {ConnectivityService} from '../../app/service/connectivity-service';
 
 @IonicPage()
 @Component({

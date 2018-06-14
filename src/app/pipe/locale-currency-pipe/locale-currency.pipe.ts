@@ -1,7 +1,7 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import {CurrencyPipe} from '@angular/common';
 import {IDictionary} from '../../core/app-core';
-import {CurrencyStore} from '../../service/index';
+import {CurrencyStore} from '../../service/repository/specific/currency-store.service';
 
 const map: IDictionary<{name: string, culture: string}> = {
   '4': {name: 'UAH', culture: 'uk-UA'},

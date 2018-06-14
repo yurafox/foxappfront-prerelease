@@ -1,7 +1,8 @@
-import { Prop, PropEnumList  } from './index';
 import {MeasureUnit} from './measure-unit';
 import {LazyLoad, RefInjector} from '../core/app-core';
 import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
+import {Prop} from './prop';
+import {PropEnumList} from './prop-enum-list';
 
 @LazyLoad([
   { options:{constructor: MeasureUnit}, action: 'getMeasureUnitById', params: ['id_Measure_Unit']}

@@ -1,4 +1,4 @@
-import {Quotation} from './index';
+import {Quotation} from './quotation';
 
 export class QuotationService {
   constructor(id: number,

@@ -1,8 +1,11 @@
 import {Component, ChangeDetectorRef} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
-import {Product,Store,ProductReview,StoreReview} from '../../app/model/index';
 import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
+import {Product} from '../../app/model/product';
+import {Store} from '../../app/model/store';
+import {StoreReview} from '../../app/model/store-review';
+import {ProductReview} from '../../app/model/product-review';
 
 
 @IonicPage()

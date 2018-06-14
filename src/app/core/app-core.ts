@@ -1,12 +1,11 @@
 import {AbstractControl} from '@angular/forms';
 import {Injector} from '@angular/core';
-import {Product, Supplier, Currency} from '../model/index';
+import { RequestOptionsArgs,Headers,URLSearchParams} from '@angular/http';
 import {Manufacturer} from "../model/manufacturer";
 import {City} from '../model/city';
 import {StorePlace} from '../model/store-place';
-import {Lang} from "../model/lang";
+import {Lang} from '../model/lang';
 import {MeasureUnit} from '../model/measure-unit';
-import { RequestOptionsArgs,Headers,URLSearchParams} from '@angular/http';
 import {Quotation} from '../model/quotation';
 import {LoEntity} from '../model/lo-entity';
 import {Country} from '../model/country';
@@ -17,6 +16,9 @@ import { AppConstants } from '../app-constants';
 import {AppParam} from '../model/app-param';
 import {LoDeliveryType} from '../model/lo-delivery-type';
 import {LoEntityOffice} from '../model/lo-entity-office';
+import {Product} from '../model/product';
+import {Supplier} from '../model/supplier';
+import {Currency} from '../model/currency';
 
 
 export class EmailValidator {
@@ -167,12 +169,12 @@ export namespace Providers {
     public HasNotValidCachedRange():boolean {
       if(this.Count()===0)
        return true;
-      
+
       const firstValue:any = this.items[Object.keys(this.items)[0]];
       return firstValue.expire < Date.now();
     }
   }
-  
+
   // data model for CacheProvider collection
   export interface CacheDataContainer<T> {
      item:T;
@@ -199,9 +201,9 @@ export namespace Providers {
     private _cacheAppParams: IKeyedCollection<CacheDataContainer<AppParam>> = null;
     private _cacheDeliveryType: IKeyedCollection<CacheDataContainer<LoDeliveryType>> = null;
     private _cacheLoEntityOffice: IKeyedCollection<CacheDataContainer<LoEntityOffice>> = null;
-   
+
     public static Settings:any;
-    
+
     public get Products(): IKeyedCollection<CacheDataContainer<Product>> {
       if (this._cacheProduct == null)
         this._cacheProduct = new CacheItems<CacheDataContainer<Product>>();

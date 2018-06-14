@@ -11,12 +11,13 @@ import {
   LatLng,
   HtmlInfoWindow
 } from '@ionic-native/google-maps';
-import { City, Store } from "../../app/model/index";
-import { ComponentBase } from "../../components/component-extension/component-base";
-import { FavoriteStoresPage } from "../favorite-stores/favorite-stores";
-import { StoreReview } from "../../app/model/store-review";
-import { IDictionary } from "../../app/core/app-core";
-import { Subscription } from "rxjs/Subscription";
+import { ComponentBase } from '../../components/component-extension/component-base';
+import { FavoriteStoresPage } from '../favorite-stores/favorite-stores';
+import { StoreReview } from '../../app/model/store-review';
+import { IDictionary } from '../../app/core/app-core';
+import { Subscription } from 'rxjs/Subscription';
+import {City} from '../../app/model/city';
+import {Store} from '../../app/model/store';
 
 interface SelectItem {
   label: string;

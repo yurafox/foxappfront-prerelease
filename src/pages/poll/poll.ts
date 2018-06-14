@@ -1,10 +1,11 @@
 import { IDictionary } from './../../app/core/app-core';
-import { PollQuestion, PollQuestionAnswer, AnswerType } from './../../app/model/index';
 import { Component} from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { ComponentBase } from '../../components/component-extension/component-base';
-import { AbstractDataRepository } from '../../app/service/index';
-import {ClientPollAnswer} from '../../app/model/index';
+import {AnswerType, PollQuestion} from '../../app/model/poll-question';
+import {PollQuestionAnswer} from '../../app/model/poll-question-answer';
+import {ClientPollAnswer} from '../../app/model/client-poll-answer';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 interface IPollResult {
   questionId:number,

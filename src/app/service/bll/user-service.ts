@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
-import {User,IUserVerifyAccountData, IUserInfo, ChangePassword} from '../../model/index';
-import {AbstractAccountRepository} from "../index";
-import {AppConstants} from "../../app-constants";
-import {LoginTemplate} from "../../model/index";
-import {IDictionary} from "../../core/app-core";
-import {EventService} from "../event-service";
-import {AlertController, ToastController} from "ionic-angular";
-import {AbstractLocalizationRepository} from "../repository/abstract/abstract-localization-repository";
+import {AlertController, ToastController} from 'ionic-angular';
+import {AppConstants} from '../../app-constants';
+import {IDictionary} from '../../core/app-core';
+import {EventService} from '../event-service';
+import {AbstractLocalizationRepository} from '../repository/abstract/abstract-localization-repository';
+import {IUserInfo, IUserVerifyAccountData, User} from '../../model/user';
+import {AbstractAccountRepository} from '../repository/abstract/abstract-account-repository';
+import {ChangePassword} from '../../model/change-password';
+import {LoginTemplate} from '../../model/login-template';
 
 @Injectable()
 export class UserService {

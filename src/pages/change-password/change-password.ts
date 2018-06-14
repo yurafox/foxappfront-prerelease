@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController,AlertController } from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { ComponentBase } from '../../components/component-extension/component-base';
-import {AbstractDataRepository} from "../../app/service/index";
-import {CustomValidators} from "../../app/core/app-core";
-import {ChangePassword,IUserVerifyAccountData} from "../../app/model/index";
+import {CustomValidators} from '../../app/core/app-core';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {ChangePassword} from '../../app/model/change-password';
+import {IUserVerifyAccountData} from '../../app/model/user';
 
 @IonicPage()
 @Component({

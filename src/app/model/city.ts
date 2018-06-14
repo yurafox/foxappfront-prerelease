@@ -1,6 +1,6 @@
 import {RefInjector, LazyLoad} from '../core/app-core';
 import {Region} from './region';
-import {AbstractDataRepository} from '../service/index';
+import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
 
 @LazyLoad([
   { options:{constructor: Region}, action: 'getRegionById', params: ['idRegion']}

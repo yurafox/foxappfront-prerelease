@@ -1,9 +1,9 @@
-import { Category } from './../../app/model/index';
 import { Component } from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {ComponentBase} from "../../components/component-extension/component-base";
+import {ComponentBase} from '../../components/component-extension/component-base';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {Category} from '../../app/model/category';
 
 @IonicPage({name: 'CategoriesPage', segment: 'categories'})
 @Component({

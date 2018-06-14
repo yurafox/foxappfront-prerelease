@@ -1,10 +1,10 @@
 import {ChangeDetectorRef, Component,DoCheck, ElementRef, ViewChild} from '@angular/core';
 import {App, NavController, IonicPage, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
-import {AbstractDataRepository} from '../../app/service/index';
 import {SearchService} from '../../app/service/search-service';
-import {ScreenOrientation} from "@ionic-native/screen-orientation";
-import {Subscription} from "rxjs/Subscription";
+import {ScreenOrientation} from '@ionic-native/screen-orientation';
+import {Subscription} from 'rxjs/Subscription';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 export enum PageMode {
   HomeMode = 1,

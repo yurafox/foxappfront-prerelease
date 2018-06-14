@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
-import {AbstractDataRepository} from '../../app/service';
 import {CartService} from '../../app/service/cart-service';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 export class OrdersFilter {
   constructor(

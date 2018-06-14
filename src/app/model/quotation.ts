@@ -1,6 +1,7 @@
-import {Supplier, Currency} from './index';
-import {AbstractDataRepository} from '../service/index';
 import {RefInjector, LazyLoad} from '../core/app-core';
+import {Supplier} from './supplier';
+import {Currency} from './currency';
+import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
 
 @LazyLoad([
   {options: { constructor: Supplier}, action: 'getSupplierById', params: ['idSupplier']},

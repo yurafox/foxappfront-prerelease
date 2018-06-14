@@ -1,8 +1,8 @@
 import {ClientOrderProductBase} from './client-order-product-base';
-import {AbstractDataRepository} from '../service/index';
-import {RefInjector, LazyLoad, IDTO, System} from '../core/app-core';
+import {RefInjector, LazyLoad, IDTO} from '../core/app-core';
 import {QuotationProduct} from './quotation-product';
 import {StorePlace} from './store-place';
+import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
 
 
 @LazyLoad([

@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, IonicPage, AlertController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Currency, Lang, IUserInfo } from "../../app/model/index";
 import { AbstractDataRepository } from "../../app/service/repository/abstract/abstract-data-repository";
-import { UserService } from "../../app/service/bll/user-service";
-import { User, IUserVerifyAccountData } from "../../app/model/index";
-import { ComponentBase } from "../../components/component-extension/component-base";
-import {Activator} from "../../app/core/app-core";
+import { UserService } from '../../app/service/bll/user-service';
+import { ComponentBase } from '../../components/component-extension/component-base';
+import {Currency} from '../../app/model/currency';
+import {Lang} from '../../app/model/lang';
+import {IUserInfo, User} from '../../app/model/user';
+
 
 @IonicPage()
 @Component({
@@ -18,7 +19,7 @@ export class RegisterPage extends ComponentBase {
   public langs: Array<Lang>;
   public registerForm: FormGroup;
   public verifyErrorData: { errorShow: boolean, errorMessage: string };
-  private onLoad = false;
+  onLoad = false;
   private isSendAsync = false;
   public currentCurrency:Currency = new Currency(4,'UAH');
   public currentLang:Lang = new Lang(1,'RUS');

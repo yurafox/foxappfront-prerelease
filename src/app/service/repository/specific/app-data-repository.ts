@@ -1,65 +1,66 @@
-import { AppConstants } from './../../../app-constants';
-import { RequestFactory } from './../../../core/app-core';
 import { Injectable } from '@angular/core';
 import { Http, URLSearchParams} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
+import { AppConstants } from './../../../app-constants';
+import { RequestFactory } from './../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
-import {
-  QuotationProduct,
-  Product,
-  Manufacturer,
-  ProductPropValue,
-  Prop,
-  PropEnumList,
-  Quotation,
-  Supplier,
-  Currency,
-  ProductReview,
-  City,
-  Store,
-  ProductStorePlace,
-  StorePlace,
-  Lang,
-  Action,
-  ActionOffer,
-  Client,
-  ClientAddress,
-  Country,
-  ClientOrder,
-  ClientOrderProducts,
-  StoreReview,
-  LoEntity,
-  LoSupplEntity,
-  EnumPaymentMethod,
-  Novelty,
-  NoveltyDetails,
-  DeviceData,
-  ReviewAnswer,
-  Poll,PollQuestion,PollQuestionAnswer,
-  ClientPollAnswer, CreditProduct, ClientBonus, PersonInfo,
-  LoTrackLog,
-  Category,
-  MeasureUnit,
-  Region,
-  BannerSlide,
-  ClientMessage,
-  CurrencyRate,
-  ActionByProduct,
-  Shipment,
-  AppParam,
-  LoDeliveryType,
-  LoEntityOffice,
-  News,
-  NewsCategory
-} from '../../../model/index';
-
-import { AbstractDataRepository } from '../../index';
 import {IDictionary, Providers, SCN } from '../../../core/app-core';
 import {ConnectivityService} from '../../connectivity-service';
 import IKeyedCollection = Providers.IKeyedCollection;
 import {OrdersFilter} from '../../../../pages/your-orders/your-orders';
 import {ShipmentItems} from '../../../model/shipment-items';
 import {ClientOrderProductHist} from '../../../model/client-order-product-hist';
+import {Product} from '../../../model/product';
+import {ClientBonus} from '../../../model/client-bonus';
+import {Client} from '../../../model/client';
+import {ClientOrder} from '../../../model/client-order';
+import {LoSupplEntity} from '../../../model/lo-suppl-entity';
+import {LoTrackLog} from '../../../model/lo-track-log';
+import {LoEntity} from '../../../model/lo-entity';
+import {EnumPaymentMethod} from '../../../model/enum-payment-method';
+import {CreditProduct} from '../../../model/credit-product';
+import {ClientAddress} from '../../../model/client-address';
+import {StorePlace} from '../../../model/store-place';
+import {ClientOrderProducts} from '../../../model/client-order-products';
+import {ProductStorePlace} from '../../../model/product-store-place';
+import {QuotationProduct} from '../../../model/quotation-product';
+import {ProductReview} from '../../../model/product-review';
+import {Region} from '../../../model/region';
+import {PersonInfo} from '../../../model/person';
+import {Country} from '../../../model/country';
+import {ReviewAnswer} from '../../../model/review-answer';
+import {City} from '../../../model/city';
+import {ProductPropValue} from '../../../model/product-prop-value';
+import {Quotation} from '../../../model/quotation';
+import {Supplier} from '../../../model/supplier';
+import {Lang} from '../../../model/lang';
+import {StoreReview} from '../../../model/store-review';
+import {Manufacturer} from '../../../model/manufacturer';
+import {Store} from '../../../model/store';
+import {PropEnumList} from '../../../model/prop-enum-list';
+import {Currency} from '../../../model/currency';
+import {Prop} from '../../../model/prop';
+import {Poll} from '../../../model/poll';
+import {ClientPollAnswer} from '../../../model/client-poll-answer';
+import {Action} from '../../../model/action';
+import {Novelty} from '../../../model/novelty';
+import {PollQuestion} from '../../../model/poll-question';
+import {NoveltyDetails} from '../../../model/novelty-det';
+import {PollQuestionAnswer} from '../../../model/poll-question-answer';
+import {MeasureUnit} from '../../../model/measure-unit';
+import {Category} from '../../../model/category';
+import {BannerSlide} from '../../../model/banner-slide';
+import {DeviceData} from '../../../model/device-data';
+import {AppParam} from '../../../model/app-param';
+import {ClientMessage} from '../../../model/client-message';
+import {Shipment} from '../../../model/shipment';
+import {ActionByProduct} from '../../../model/action-by-product';
+import {LoEntityOffice} from '../../../model/lo-entity-office';
+import {LoDeliveryType} from '../../../model/lo-delivery-type';
+import {CurrencyRate} from '../../../model/currency-rate';
+import {NewsCategory} from '../../../model/news-category';
+import {News} from '../../../model/news';
+import {AbstractDataRepository} from '../abstract/abstract-data-repository';
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS

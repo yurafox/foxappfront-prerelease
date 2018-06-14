@@ -4,7 +4,7 @@ import {ComponentBase} from '../../components/component-extension/component-base
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {SearchService} from '../../app/service/search-service';
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from 'rxjs/Subscription';
 
 @IonicPage({name: 'CategoryPage', segment: 'category'})
 @Component({

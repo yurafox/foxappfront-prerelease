@@ -1,16 +1,16 @@
 import {Component, ViewChild, OnDestroy} from '@angular/core';
 import {Nav, Platform, MenuController, AlertController, ModalController} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
-import {AbstractDataRepository} from "./service/index";
 import {ComponentBase} from "../components/component-extension/component-base";
 import {AppAvailability} from "@ionic-native/app-availability";
 import {Device} from '@ionic-native/device';
-import {DeviceData} from "./model/index";
 import {System} from "./core/app-core";
 import {CartService} from "./service/cart-service";
 import {ConnectivityService} from "./service/connectivity-service";
 import {StatusBar} from '@ionic-native/status-bar';
 import {BackgroundMode} from "@ionic-native/background-mode";
+import {AbstractDataRepository} from './service/repository/abstract/abstract-data-repository';
+import {DeviceData} from './model/device-data';
 
 export interface PageInterface {
   title: string;

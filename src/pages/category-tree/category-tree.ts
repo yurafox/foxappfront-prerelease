@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { ComponentBase } from "../../components/component-extension/component-base";
-import { Category } from './../../app/model/index';
-import {DomSanitizer} from "@angular/platform-browser";
-import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
+import {DomSanitizer} from '@angular/platform-browser';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import { ComponentBase } from '../../components/component-extension/component-base';
+import {Category} from '../../app/model/category';
 
 @IonicPage()
 @Component({
@@ -12,7 +12,7 @@ import {AbstractDataRepository} from "../../app/service/repository/abstract/abst
 })
 export class CategoryTreePage extends ComponentBase {
   private groups: Category[] = [];
-  private currentGroup: Category[] = [];
+  currentGroup: Category[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private _sanitizer: DomSanitizer,
               private _repo: AbstractDataRepository) {

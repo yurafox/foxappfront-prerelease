@@ -1,9 +1,10 @@
 import { Component, Input} from '@angular/core';
 import {NavController} from "ionic-angular";
-import {AbstractDataRepository} from '../../app/service/index';
 import {fadeInAnimation} from '../../app/core/animation-core';
-import {Novelty, Product} from "../../app/model/index";
 import {ComponentBase} from "../component-extension/component-base";
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {Product} from '../../app/model/product';
+import {Novelty} from '../../app/model/novelty';
 
 @Component({
   selector: 'novelty-sketch',

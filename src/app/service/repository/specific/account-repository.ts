@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
-import {AbstractAccountRepository} from '../../index';
 import {Http} from '@angular/http';
-import {User,IUserVerifyAccountData,IUserInfo,LoginTemplate,ChangePassword} from '../../../model/index';
 import {AppConstants} from "../../../app-constants"
 import { RequestFactory } from '../../../core/app-core';
 import {ConnectivityService} from "../../connectivity-service";
+import {AbstractAccountRepository} from '../abstract/abstract-account-repository';
+import {LoginTemplate} from '../../../model/login-template';
+import {IUserInfo, IUserVerifyAccountData, User} from '../../../model/user';
+import {ChangePassword} from '../../../model/change-password';
 // server url
 const loginUrl = `${AppConstants.BASE_URL}/api/account/login`;
 const accountUrl = `${AppConstants.BASE_URL}/api/account`;

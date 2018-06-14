@@ -1,4 +1,7 @@
-import {QuotationProduct, Currency} from './index';
+
+
+import {QuotationProduct} from './quotation-product';
+import {Currency} from './currency';
 
 export class CartProduct {
   constructor(public id: number,

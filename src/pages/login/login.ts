@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NavController,NavParams, IonicPage, AlertController} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {CartService} from '../../app/service/cart-service';
-import {Currency, Lang, IUserInfo} from "../../app/model/index";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
-import {UserService} from "../../app/service/bll/user-service";
-import {User,IUserVerifyAccountData} from "../../app/model/index";
+import {UserService} from '../../app/service/bll/user-service';
+import {Currency} from '../../app/model/currency';
+import {Lang} from '../../app/model/lang';
+import {IUserVerifyAccountData} from '../../app/model/user';
 
 @IonicPage({name: 'LoginPage', segment: 'login'})
 @Component({
@@ -21,7 +22,7 @@ export class LoginPage extends ComponentBase implements OnInit {
   public verifyErrorData:{errorShow:boolean,errorMessage:string};
   private onLoad = false;
   private isSendAsync = false;
-  private useCode = false;
+  useCode = false;
   private _authError = false;
   private _phone = '';
 

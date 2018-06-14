@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import {ComponentBase} from "../../components/component-extension/component-base";
+import {ComponentBase} from '../../components/component-extension/component-base';
 import {NavController} from "ionic-angular";
-import { AbstractDataRepository } from '../../app/service/index';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 @Component({
   selector: 'category-btn',

@@ -7,6 +7,21 @@ import {ConnectivityService} from "../../connectivity-service";
 
 const appLocUrl = `/api/AppLocalization`;
 
+export function getLocString1(): string {
+  switch (localStorage.getItem('lang')) {
+    case '0':
+      return "en-US";
+    case '1':
+      return "ru-UA";
+    case '2':
+      return "uk-UA";
+    // case '3':
+    //   return "ro-MD";
+    default:
+      return "ru-UA";
+  }
+}
+
 @Injectable()
 export class LocalizationRepository extends AbstractLocalizationRepository {
   private _localizationStore: IDictionary<Array<ILocalization>> = {};
