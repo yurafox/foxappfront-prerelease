@@ -155,6 +155,7 @@ export class CartService {
         prevCompl = z.orderProduct.complect;
       }
     );
+
     this.displayOrderProducts = tmpArr;
   }
 
@@ -241,7 +242,8 @@ export class CartService {
   public async saveOrder(showLoading: boolean) {
     const content = this.localization['LoadingContent'];
     const loading = this.loadingCtrl.create({
-      content: content
+      content: content,
+      duration:60000
     });
 
     if (showLoading)
@@ -540,7 +542,8 @@ export class CartService {
   async addItem(item: QuotationProduct, qty: number, price: number, storePlace: StorePlace, page: any, showLoading: boolean) {
     const content = this.localization['LoadingContent'];
     const loading = this.loadingCtrl.create({
-      content: content
+      content: content,
+      duration: 60000
     });
 
     if (showLoading)
@@ -699,7 +702,7 @@ export class CartService {
     }
     finally {
       if (showLoading)
-        loading.dismiss();
+        await loading.dismiss();
     }
 
   }
