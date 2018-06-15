@@ -23,8 +23,8 @@ export class ItemReviewWritePage extends ComponentBase {
   disadvantages: string;
   submitted: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private changeDetector: ChangeDetectorRef,
-              private repo: AbstractDataRepository, private toastCtrl: ToastController, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public changeDetector: ChangeDetectorRef,
+              public repo: AbstractDataRepository, public toastCtrl: ToastController, public alertCtrl: AlertController) {
     super();
     this.initLocalization();
     this.rating = 0;
@@ -51,7 +51,7 @@ export class ItemReviewWritePage extends ComponentBase {
     }
   }
 
-  private showAlertAndPop(hasClientReviews) {
+  showAlertAndPop(hasClientReviews) {
     if (hasClientReviews && hasClientReviews != null && hasClientReviews.hasReview && hasClientReviews.hasReview === true) {
       let message = this.locale['AlertMessage'] ? this.locale['AlertMessage'] : 'Вы уже оставляли отзыв';
       let alert = this.alertCtrl.create({
@@ -106,7 +106,7 @@ export class ItemReviewWritePage extends ComponentBase {
     }
   }
 
-  private showToast() {
+  showToast() {
     this.reviewText = '';
     this.advantages = '';
     this.disadvantages = '';

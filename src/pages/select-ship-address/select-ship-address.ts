@@ -19,7 +19,7 @@ export class SelectShipAddressPage extends ComponentBase {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public uService: UserService, public alertCtrl: AlertController,
-              private cart: CartService, private repo: AbstractDataRepository) {
+              public cart: CartService, public repo: AbstractDataRepository) {
     super();
 
   }

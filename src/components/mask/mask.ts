@@ -3,27 +3,27 @@ import { NgControl } from '@angular/forms';
 
 
 @Directive({
-    selector: '[mask]' 
+    selector: '[mask]'
 })
 export class MaskComponent {
 
-    private static readonly ALPHA = 'A';
-    private static readonly NUMERIC = '9';
-    private static readonly ALPHANUMERIC = '?';
-    private static readonly REGEX_MAP = new Map([
+    static readonly ALPHA = 'A';
+    static readonly NUMERIC = '9';
+    static readonly ALPHANUMERIC = '?';
+    static readonly REGEX_MAP = new Map([
         [MaskComponent.ALPHA, /\w/],
         [MaskComponent.NUMERIC, /\d/],
         [MaskComponent.ALPHANUMERIC, /\w|\d/],
     ]);
 
-    private value: string = null;
-    private displayValue: string = null;
+    value: string = null;
+    displayValue: string = null;
 
-    @Input('mask') 
-    public maskGenerator: string;
+    @Input('mask')
+    maskGenerator: string;
 
-    @Output('spMaskValueChange') 
-    public changeEmitter = new EventEmitter<string>();
+    @Output('spMaskValueChange')
+    changeEmitter = new EventEmitter<string>();
 
     @HostListener('input', ['$event'])
     public onInput(event: { target: { value?: string }}): void {
@@ -32,9 +32,9 @@ export class MaskComponent {
         this.onValueChange(value);
     }
 
-    constructor(private ngControl: NgControl) { }
+    constructor(public ngControl: NgControl) { }
 
-    private updateValue(value: string) {
+    public updateValue(value: string) {
         this.value = value;
         this.changeEmitter.emit(value);
         MaskComponent.delay().then(
@@ -43,7 +43,7 @@ export class MaskComponent {
     }
 
 
-    private onValueChange(newValue: string) {
+    public onValueChange(newValue: string) {
         if (newValue !== this.displayValue) {
             let displayValue = newValue;
             let value = newValue;
@@ -69,7 +69,7 @@ export class MaskComponent {
     }
 
 
-    private static mask(value: string, mask: string): string {
+  public static mask(value: string, mask: string): string {
         value = value.toString();
 
         let len = value.length;
@@ -97,22 +97,22 @@ export class MaskComponent {
                 } else {
                     len++;
                 }
-              
+
                 newValue += maskChar;
             }
-        }       
+        }
 
         return newValue;
     }
 
-    private static unmask(maskedValue: string, mask: string): string {
+  public static unmask(maskedValue: string, mask: string): string {
         let maskLen = (mask && mask.length) || 0;
         return maskedValue.split('').filter(
             (currChar, idx) => (idx < maskLen) && MaskComponent.REGEX_MAP.has(mask[idx])
         ).join('');
     }
 
-    private static delay(ms: number = 0): Promise<void> {
+  public static delay(ms: number = 0): Promise<void> {
         return new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => null);
     }
 }

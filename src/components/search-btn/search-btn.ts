@@ -22,19 +22,19 @@ class SearchSuggestItem {
 export class SearchBtnComponent extends ComponentBase {
 
   @Input()
-  public hostPage: any = null;
+  hostPage: any = null;
 
   srchTextInputStream$ = new Subject<string>();
 
-  public srchItemsArr = new Array<SearchSuggestItem>();
+  srchItemsArr = new Array<SearchSuggestItem>();
   searchValue = null;
   inputMode = false;
 
 
   constructor(public searchService: SearchService,
               public navCtrl: NavController,
-              private barcodeScanner: BarcodeScanner,
-              private srchService: SearchService, private renderer: Renderer) {
+              public barcodeScanner: BarcodeScanner,
+              public srchService: SearchService, public renderer: Renderer) {
     super();
 
     searchService.lastSearchStringUpdated.subscribe(

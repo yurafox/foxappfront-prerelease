@@ -126,7 +126,7 @@ export class SelectPmtMethodPage extends ComponentBase {
     return `${ cDate.getFullYear() - checkPoint}-${this.convertDateNumber(cDate.getMonth(),true)}-${this.convertDateNumber(cDate.getDate())}`;
   }
 
-  private convertDateNumber(value:number, isMonth:boolean = false):string {
+  convertDateNumber(value:number, isMonth:boolean = false):string {
     if(!value)
      return '';
 

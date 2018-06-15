@@ -15,7 +15,7 @@ const map: IDictionary<{name: string, culture: string}> = {
 })
 
 export class LocaleCurrencyPipe implements PipeTransform {
-  constructor(private currencyStore: CurrencyStore) {
+  constructor(public currencyStore: CurrencyStore) {
 
   }
 

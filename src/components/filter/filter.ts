@@ -78,11 +78,11 @@ class FilterCategory {
 export class FilterComponent extends ComponentBase implements DoCheck {
   @ViewChild('filterControl') filterControl;
   @Input() srch: SearchService;
-  private lastFilteredCat: FilterCategory;
-  private propFilterCondition = [];
-  private mnfFilterCondition = [];
-  private groupsFilterCondition = [];
-  private dataInitialized = false;
+  lastFilteredCat: FilterCategory;
+  propFilterCondition = [];
+  mnfFilterCondition = [];
+  groupsFilterCondition = [];
+  dataInitialized = false;
   clientHeight = 0;
   fCategories = [];
   filteredProps: PropsFilterStruct[];

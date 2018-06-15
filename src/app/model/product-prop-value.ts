@@ -9,7 +9,7 @@ import {PropEnumList} from './prop-enum-list';
 ])
 export class ProductPropValue {
 
-  private _repo: AbstractDataRepository;
+  public _repo: AbstractDataRepository;
 
   constructor (
     public id: number,

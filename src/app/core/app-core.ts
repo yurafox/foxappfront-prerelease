@@ -57,7 +57,7 @@ export class CustomValidators {
 }
 
 export class RefInjector {
-  private static injector: Injector;
+  static injector: Injector;
 
   public static push(value: Injector) {
     RefInjector.injector = value;
@@ -94,10 +94,10 @@ export namespace Providers {
   }
 
   export class CacheItems<T> implements IKeyedCollection<T> {
-    private items: { [index: string]: T } = {};
-    private count: number = 0;
+    items: { [index: string]: T } = {};
+    count: number = 0;
 
-    public constructor(private maxSize: number = 0) {
+    public constructor(public maxSize: number = 0) {
     }
 
     public ContainsKey(key: string): boolean {
@@ -182,25 +182,25 @@ export namespace Providers {
   }
 
   export class CacheProvider {
-    private _cacheProduct: IKeyedCollection<CacheDataContainer<Product>> = null;
-    private _cacheSupplier: IKeyedCollection<CacheDataContainer<Supplier>> = null;
-    private _cacheCurrency: IKeyedCollection<CacheDataContainer<Currency>> = null;
-    private _cacheLang: IKeyedCollection<CacheDataContainer<Lang>> = null;
-    private _cacheManufacturer: IKeyedCollection<CacheDataContainer<Manufacturer>> = null;
-    private _cacheCity: IKeyedCollection<CacheDataContainer<City>> = null;
-    private _cacheCityWithStore: IKeyedCollection<CacheDataContainer<City>> = null;
-    private _cacheStorePlace: IKeyedCollection<CacheDataContainer<StorePlace>> = null;
-    private _cacheStore: IKeyedCollection<CacheDataContainer<{id:number, stores: Store[]}>> = null;
-    private _cacheMeasureUnit: IKeyedCollection<CacheDataContainer<MeasureUnit>> = null;
+     _cacheProduct: IKeyedCollection<CacheDataContainer<Product>> = null;
+     _cacheSupplier: IKeyedCollection<CacheDataContainer<Supplier>> = null;
+     _cacheCurrency: IKeyedCollection<CacheDataContainer<Currency>> = null;
+     _cacheLang: IKeyedCollection<CacheDataContainer<Lang>> = null;
+     _cacheManufacturer: IKeyedCollection<CacheDataContainer<Manufacturer>> = null;
+     _cacheCity: IKeyedCollection<CacheDataContainer<City>> = null;
+     _cacheCityWithStore: IKeyedCollection<CacheDataContainer<City>> = null;
+     _cacheStorePlace: IKeyedCollection<CacheDataContainer<StorePlace>> = null;
+     _cacheStore: IKeyedCollection<CacheDataContainer<{id:number, stores: Store[]}>> = null;
+     _cacheMeasureUnit: IKeyedCollection<CacheDataContainer<MeasureUnit>> = null;
 
-    private _cacheQuotation: IKeyedCollection<CacheDataContainer<Quotation>> = null;
-    private _cacheLoEntity: IKeyedCollection<CacheDataContainer<LoEntity>> = null;
-    private _cacheCountry: IKeyedCollection<CacheDataContainer<Country>> = null;
-    private _cacheEnumPaymentMethod: IKeyedCollection<CacheDataContainer<EnumPaymentMethod>> = null;
-    private _cacheRegion: IKeyedCollection<CacheDataContainer<Region>> = null;
-    private _cacheAppParams: IKeyedCollection<CacheDataContainer<AppParam>> = null;
-    private _cacheDeliveryType: IKeyedCollection<CacheDataContainer<LoDeliveryType>> = null;
-    private _cacheLoEntityOffice: IKeyedCollection<CacheDataContainer<LoEntityOffice>> = null;
+     _cacheQuotation: IKeyedCollection<CacheDataContainer<Quotation>> = null;
+     _cacheLoEntity: IKeyedCollection<CacheDataContainer<LoEntity>> = null;
+     _cacheCountry: IKeyedCollection<CacheDataContainer<Country>> = null;
+     _cacheEnumPaymentMethod: IKeyedCollection<CacheDataContainer<EnumPaymentMethod>> = null;
+     _cacheRegion: IKeyedCollection<CacheDataContainer<Region>> = null;
+     _cacheAppParams: IKeyedCollection<CacheDataContainer<AppParam>> = null;
+     _cacheDeliveryType: IKeyedCollection<CacheDataContainer<LoDeliveryType>> = null;
+     _cacheLoEntityOffice: IKeyedCollection<CacheDataContainer<LoEntityOffice>> = null;
 
     public static Settings:any;
 
@@ -426,7 +426,7 @@ function lazyParamToValue(pointer: any, params: string[]): any[] {
 // </editor-fold>
 
 export class SCN {
-  private static _scn: number = 0;
+  static _scn: number = 0;
 
   public static get value(): number {
     return this._scn;
@@ -495,7 +495,7 @@ export namespace System {
   // custome number
   export class FoxNumber {
     public value:number;
-    private _range:IRange;
+    _range:IRange;
     constructor(value: number = 1) {
          this.value = value;
          this._range = {min:1,max:30};

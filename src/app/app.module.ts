@@ -220,7 +220,7 @@ import {CallMePageModule} from '../pages/call-me/call-me.module';
   ]
 })
 export class AppModule {
-  constructor(private injector: Injector) {
+  constructor(public injector: Injector) {
     RefInjector.push(this.injector);
   }
 }

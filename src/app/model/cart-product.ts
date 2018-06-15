@@ -22,7 +22,7 @@ export class Order {
               public status: number) {
   }
 
-  private get totalItems(): number {
+  get totalItems(): number {
     let count = 0;
     this.orderLine.forEach((value: CartProduct) => {
       count += value.qty;

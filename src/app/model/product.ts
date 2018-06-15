@@ -8,7 +8,7 @@ import {AbstractDataRepository} from '../service/repository/abstract/abstract-da
 ])
 
 export class Product {
-  private _repo: AbstractDataRepository;
+  public _repo: AbstractDataRepository;
   constructor(public id?: number,
               public name?: string,
               public price?: number,

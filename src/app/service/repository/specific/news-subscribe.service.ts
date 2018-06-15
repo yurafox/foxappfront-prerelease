@@ -7,7 +7,7 @@ import {AbstractNewsSubscribeService} from '../abstract/abstract-news-subscribe-
 @Injectable()
 export class NewsSubscribeService extends AbstractNewsSubscribeService {
 
-  constructor(private http: Http) {
+  constructor(public http: Http) {
     super();
   }
 

@@ -24,9 +24,9 @@ export function getLocString1(): string {
 
 @Injectable()
 export class LocalizationRepository extends AbstractLocalizationRepository {
-  private _localizationStore: IDictionary<Array<ILocalization>> = {};
+  _localizationStore: IDictionary<Array<ILocalization>> = {};
 
-  constructor(private http: Http, private connServ: ConnectivityService) {
+  constructor(public http: Http, public connServ: ConnectivityService) {
     super();
   }
 
@@ -84,7 +84,7 @@ export class LocalizationRepository extends AbstractLocalizationRepository {
   }
 
   // <editor-fold desc="error handler"
-  private handleError(error?: Error): any {
+  public handleError(error?: Error): any {
     if (this.connServ.counter < 1) {
       this.connServ.checkConnection(error);
     }

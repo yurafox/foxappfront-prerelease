@@ -6,11 +6,11 @@ const ticksInDay:number = 86400000;
 
 @Injectable()
 export class CurrencyStore {
-  private curStore: Array<CurrencyRate>=[];
-  private currentTicks:number;
-  private lock:boolean;
+  curStore: Array<CurrencyRate>=[];
+  currentTicks:number;
+  lock:boolean;
 
-  constructor(private _repo:AbstractDataRepository) {
+  constructor(public _repo:AbstractDataRepository) {
     this.lock=false;
   }
 
@@ -42,11 +42,11 @@ export class CurrencyStore {
     this.currentTicks = new Date().getTime();
   }
 
-  private get isNextBind():boolean {
+  get isNextBind():boolean {
     return new Date().getTime() > this.currentTicks + ticksInDay;
   }
 
-  private getChangedValue(value: number,currencyCode:number):string {
+  getChangedValue(value: number,currencyCode:number):string {
     let currencyRate: CurrencyRate = this.curStore.filter((value, index, array) => {
       return value.targetId === currencyCode;
     })[0];

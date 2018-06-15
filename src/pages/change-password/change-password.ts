@@ -26,9 +26,9 @@ export class ChangePasswordPage extends ComponentBase {
   public errorMessages = {};
 
   constructor(public navCtrl: NavController,
-              private alertCtrl: AlertController,
-              private repo: AbstractDataRepository,
-              private formBuilder: FormBuilder) {
+              public alertCtrl: AlertController,
+              public repo: AbstractDataRepository,
+              public formBuilder: FormBuilder) {
     super();
     this.verifyErrorData={errorShow:false,errorMessage:''};
   }
@@ -83,7 +83,7 @@ export class ChangePasswordPage extends ComponentBase {
     })();
   }
 
-  private buildForm(): void {
+  public buildForm(): void {
     this.currentForm = this.formBuilder.group({
       'password': ['', [Validators.required,Validators.minLength(6), Validators.maxLength(25)]],
       'newpassword': ['', [Validators.required,Validators.minLength(6), Validators.maxLength(25)]],
@@ -95,7 +95,7 @@ export class ChangePasswordPage extends ComponentBase {
     this.onValueChanged();
   }
 
-  private onValueChanged(data?: any) {
+  public onValueChanged(data?: any) {
     if(this.verifyErrorData.errorShow)
       this.clearVerifyError();
 
@@ -118,12 +118,12 @@ export class ChangePasswordPage extends ComponentBase {
     }
   }
 
-  private clearVerifyError():void {
+  public clearVerifyError():void {
     this.verifyErrorData.errorShow = false;
     this.verifyErrorData.errorMessage = '';
   }
 
-  private showPopUp(message:string):void {
+  public showPopUp(message:string):void {
     let alert = this.alertCtrl.create({
       message: message,
       buttons:[
@@ -139,7 +139,7 @@ export class ChangePasswordPage extends ComponentBase {
     alert.present();
   }
 
-  private logout() {
+  public logout() {
     //this.userService.logOut();
     //this.userService.removeToken();
 

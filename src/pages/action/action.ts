@@ -30,10 +30,10 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
   public actionProducts:Array<Product>=[];
   public quotationProduct:Array<QuotationProduct>=[];
   public expire:{days?:number,hours?:number,minutes?:number,seconds?:number};
-  private alive:boolean;
-  private monitor:{};
-  private me:any;
-  private divsHeight:number;
+  alive:boolean;
+  monitor:{};
+  me:any;
+  divsHeight:number;
 
   public position;
   public top;
@@ -41,9 +41,9 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
   public scrolledEnough: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private _repo:AbstractDataRepository, private srch: SearchService,
-              private screenOrientation: ScreenOrientation,private changeDet: ChangeDetectorRef,
-              private zone: NgZone) {
+              public _repo:AbstractDataRepository, public srch: SearchService,
+              public screenOrientation: ScreenOrientation,public changeDet: ChangeDetectorRef,
+              public zone: NgZone) {
     super();
     this.actionId = this.navParams.data.id;
     this.action = this.navParams.data.action;
@@ -156,7 +156,7 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
 }
 
 class Monitor {
-  private static isLock:boolean=false;
+  static isLock:boolean=false;
   public static enter():void {
     Monitor.isLock=true;
   }

@@ -12,7 +12,7 @@ export class LegalPolicyPage extends ComponentBase {
   legalPolicyText: string;
 
   constructor(public navCtrl: NavController,
-              private repo: AbstractDataRepository) {
+              public repo: AbstractDataRepository) {
     super();
   }
 

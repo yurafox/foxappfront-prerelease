@@ -20,9 +20,9 @@ export class PaymentPage extends ComponentBase implements OnInit {
   error: boolean;
   success: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private cart: CartService,
-              private sanitizer: DomSanitizer, private changeDetector: ChangeDetectorRef,
-              private repo: AbstractDataRepository, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
+              public sanitizer: DomSanitizer, public changeDetector: ChangeDetectorRef,
+              public repo: AbstractDataRepository, public alertCtrl: AlertController) {
     super();
     (<any>window).appPage = this;
     this.formInput = '';

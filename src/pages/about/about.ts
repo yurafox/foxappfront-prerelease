@@ -8,7 +8,7 @@ import {IonicPage, NavController, NavParams, Platform} from 'ionic-angular';
 })
 export class AboutPage {
 
-  constructor(private platform: Platform, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public platform: Platform, public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {

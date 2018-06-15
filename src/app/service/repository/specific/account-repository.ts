@@ -21,7 +21,7 @@ const callMeUrl = `${AppConstants.BASE_URL}/api/client/callMe`;
 @Injectable()
 export class AccountRepository extends AbstractAccountRepository {
 
-  constructor(private http:Http, private connServ: ConnectivityService) {
+  constructor(public http:Http, public connServ: ConnectivityService) {
     super();
   }
 
@@ -188,7 +188,7 @@ export class AccountRepository extends AbstractAccountRepository {
   // }
 
   // <editor-fold desc="error handler">
-  private errorHandler(err: any): any {
+  public errorHandler(err: any): any {
     if (this.connServ.counter < 1) {
       this.connServ.checkConnection(err);
     }

@@ -45,14 +45,14 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     //{title: 'Поддержка', name: 'Support', component: 'SupportPage', index: 3, icon: 'ios-text-outline'},
   ];
 
-  private noveltyPushEventDescriptor: any;
-  private actionPushEventDescriptor: any;
+  noveltyPushEventDescriptor: any;
+  actionPushEventDescriptor: any;
 
-  constructor(private platform: Platform, private alertCtrl: AlertController, private splashScreen: SplashScreen,
-              public menuCtrl: MenuController, private repo: AbstractDataRepository,
-              private appAvailability: AppAvailability, private device: Device, private cartService: CartService,
-              private connService: ConnectivityService, private statusBar: StatusBar,
-              public modalCtrl: ModalController, private backgroundMode: BackgroundMode) {
+  constructor(public platform: Platform, public alertCtrl: AlertController, public splashScreen: SplashScreen,
+              public menuCtrl: MenuController, public repo: AbstractDataRepository,
+              public appAvailability: AppAvailability, public device: Device, public cartService: CartService,
+              public connService: ConnectivityService, public statusBar: StatusBar,
+              public modalCtrl: ModalController, public backgroundMode: BackgroundMode) {
     super();
     this.initLocalization();
 
@@ -195,7 +195,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   }
 
   // Handling incoming PUSH-notifications
-  private async pushNotificationHandling(data) {
+  public async pushNotificationHandling(data) {
     let target = data.target;
     let noveltyTitle = this.locale['NoveltyTitle'];
     let noveltyMessage = this.locale['NoveltyMessage'];

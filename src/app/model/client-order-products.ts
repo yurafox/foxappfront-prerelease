@@ -11,7 +11,7 @@ import {AbstractDataRepository} from '../service/repository/abstract/abstract-da
 ])
 
 export class ClientOrderProducts extends ClientOrderProductBase implements IDTO {
-  private _repo: AbstractDataRepository;
+  public _repo: AbstractDataRepository;
 
   get dto(): any {
     return  {id: this.id, idOrder: this.idOrder, idQuotationProduct: this.idQuotationProduct, qty: this.qty, price: this.price,

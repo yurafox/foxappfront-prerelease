@@ -11,11 +11,11 @@ import {Category} from '../../app/model/category';
   templateUrl: 'category-tree.html',
 })
 export class CategoryTreePage extends ComponentBase {
-  private groups: Category[] = [];
+  groups: Category[] = [];
   currentGroup: Category[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private _sanitizer: DomSanitizer,
-              private _repo: AbstractDataRepository) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public _sanitizer: DomSanitizer,
+              public _repo: AbstractDataRepository) {
     super();
   }
 
@@ -39,14 +39,14 @@ export class CategoryTreePage extends ComponentBase {
   }
 
 
-  private setCurrentCategoryList(): void
+  setCurrentCategoryList(): void
   {
      const isChildLevel = !!this.navParams.data.currentGroup;
      this.currentGroup = (!isChildLevel) ? this.buildRootTree()
                                          : this.navParams.data.currentGroup;
   }
 
-  private buildRootTree():Category[] {
+  buildRootTree():Category[] {
     const rootIndex = this.groups.findIndex((value:Category):boolean => {
          return !value.parent_id;
     });

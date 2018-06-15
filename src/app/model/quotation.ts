@@ -8,7 +8,7 @@ import {AbstractDataRepository} from '../service/repository/abstract/abstract-da
   {options: { constructor: Currency}, action: 'getCurrencyById', params: ['currencyId']}
 ])
 export class Quotation {
-  private _repo: AbstractDataRepository;
+  _repo: AbstractDataRepository;
   constructor(public id?: number,
               public idSupplier?: number,
               public dateStart?: Date,

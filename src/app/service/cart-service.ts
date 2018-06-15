@@ -93,8 +93,10 @@ export class CartService {
     );
 
     this.evServ.events['cartUpdateEvent'].subscribe(() => {
-        this.calculateCart();
-        this.updateDisplayOrderProducts();
+        this.calculateCart().then(() =>
+          this.updateDisplayOrderProducts()
+        );
+
       }
     );
 

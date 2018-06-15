@@ -68,9 +68,9 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
 
   markerSubscriptions: Subscription[];
 
-  constructor(private nav: NavController, private navParams: NavParams, private platform: Platform,
-              private repo: AbstractDataRepository, private alertCtrl: AlertController,
-              private toastCtrl: ToastController) {
+  constructor(public nav: NavController, public navParams: NavParams, public platform: Platform,
+              public repo: AbstractDataRepository, public alertCtrl: AlertController,
+              public toastCtrl: ToastController) {
     super();
     this.initLocalization();
     this.clientId = 0;
