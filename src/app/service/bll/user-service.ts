@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {User,IUserVerifyAccountData, IUserInfo, ChangePassword} from '../../model/index';
-import {AbstractAccountRepository} from "../index";
+import {User,IUserVerifyAccountData, IUserInfo} from '../../model/user';
+import {ChangePassword} from '../../model/change-password';
+import {AbstractAccountRepository} from "../repository/abstract/abstract-account-repository";
 import {AppConstants} from "../../app-constants";
-import {LoginTemplate} from "../../model/index";
+import {LoginTemplate} from "../../model/login-template";
 import {IDictionary} from "../../core/app-core";
 import {EventService} from "../event-service";
 import {AlertController, ToastController} from "ionic-angular";
@@ -10,10 +11,10 @@ import {AbstractLocalizationRepository} from "../repository/abstract/abstract-lo
 
 @Injectable()
 export class UserService {
-  private user: User;
-  private _auth: boolean;
-  private _token: string;
-  private shortloginMutex:boolean = false;
+  public user: User;
+  public _auth: boolean;
+  public _token: string;
+  public shortloginMutex:boolean = false;
 
 
   public errorMessages:IDictionary<string> = {  // field for user service error log
@@ -24,11 +25,11 @@ export class UserService {
   };
 
   // <editor-fold desc='.ctor'>
-  constructor(private _account: AbstractAccountRepository,
-              private evServ:EventService,
-              private alertCtrl:AlertController,
-              private toastCtrl:ToastController,
-              private locRepo: AbstractLocalizationRepository) {
+  constructor(public _account: AbstractAccountRepository,
+              public evServ:EventService,
+              public alertCtrl:AlertController,
+              public toastCtrl:ToastController,
+              public locRepo: AbstractLocalizationRepository) {
     this.callDefaultUser();
   }
 
@@ -216,14 +217,14 @@ export class UserService {
     localStorage.removeItem('token');
   }
   // send fastswiching data
-  // private trySendSettings(): void {
+  // public trySendSettings(): void {
   //   if (this._auth) {
   //     this._account.edit(this.user, this.token)
   //       .then(user => {},error => this.errorMessages['edit'] = error.message);
   //   }
   // }
 
-  private firstOrDefaults(props: Array<string>, defVals: Array<string>): void {
+  public firstOrDefaults(props: Array<string>, defVals: Array<string>): void {
     if (props.length === 0) {
       return;
     }
@@ -241,7 +242,7 @@ export class UserService {
   }
 
   // create default user
-  private callDefaultUser() {
+  public callDefaultUser() {
     this.user = new User();
     this._auth = false;
     const lang: string = AppConstants.LOCALE_DEFAULT_VALUE.toString();
@@ -250,7 +251,7 @@ export class UserService {
   }
 
   // add data to storage and check user status
-  private addImpotantDataToStorage(userFields: Array<string>) {
+  public addImpotantDataToStorage(userFields: Array<string>) {
     localStorage.setItem('currency',this.user.userSetting['currency']);
     localStorage.setItem('lang', this.user.userSetting['lang']);
 
@@ -261,7 +262,7 @@ export class UserService {
   }
 
   // change status method facade
-  private changeAuthStatus(userFields: Array<string>): void {
+  public changeAuthStatus(userFields: Array<string>): void {
     this.addImpotantDataToStorage(userFields);
     let cAuth = this._auth;
     this._auth = true;
@@ -270,7 +271,7 @@ export class UserService {
   }
 
  // remove data from storage and check user status
-  private removeDataFromStorage(fields: Array<string>){
+  public removeDataFromStorage(fields: Array<string>){
     for(let i = 0; i < fields.length; i++) {
       localStorage.removeItem(fields[i]);
     }
@@ -278,7 +279,7 @@ export class UserService {
   // </editor-fold>
 
 // error clear
-  private errorClear(actionName: string){
+  public errorClear(actionName: string){
     this.errorMessages[actionName]='';
   }
   // </editor-fold>

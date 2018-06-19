@@ -33,8 +33,8 @@ export class SearchBtnComponent extends ComponentBase {
 
   constructor(public searchService: SearchService,
               public navCtrl: NavController,
-              private barcodeScanner: BarcodeScanner,
-              private srchService: SearchService, private renderer: Renderer) {
+              public barcodeScanner: BarcodeScanner,
+              public srchService: SearchService, public renderer: Renderer) {
     super();
 
     searchService.lastSearchStringUpdated.subscribe(
@@ -84,7 +84,7 @@ export class SearchBtnComponent extends ComponentBase {
     this.searchValue = this.searchService.lastSearch;
   }
 
-  private getIncSearchDisplayText(txt: string): string {
+  public getIncSearchDisplayText(txt: string): string {
     if ((!txt) || (!this.searchValue))
       return txt;
     const idx = txt.toLowerCase().indexOf(this.searchValue.toLowerCase(),0);

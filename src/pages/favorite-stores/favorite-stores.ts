@@ -22,7 +22,7 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
   stores: Array<IStore>;
   clientId: number = 0;
 
-  constructor(private navCtrl: NavController, private repo: AbstractDataRepository, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public repo: AbstractDataRepository, public alertCtrl: AlertController) {
     super();
     this.stores = [];
   }

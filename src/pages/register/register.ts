@@ -18,11 +18,11 @@ export class RegisterPage extends ComponentBase {
   public langs: Array<Lang>;
   public registerForm: FormGroup;
   public verifyErrorData: { errorShow: boolean, errorMessage: string };
-  private onLoad = false;
-  private isSendAsync = false;
+  public onLoad = false;
+  public isSendAsync = false;
   public currentCurrency:Currency = new Currency(4,'UAH');
   public currentLang:Lang = new Lang(1,'RUS');
-  private _phone: string;
+  public _phone: string;
 
   public formErrors = {
     'phone': '',
@@ -38,10 +38,10 @@ export class RegisterPage extends ComponentBase {
 
   constructor(public nav: NavController,
     public navParams: NavParams,
-    private repo: AbstractDataRepository,
-    private formBuilder: FormBuilder,
-    private alertCtrl: AlertController,
-    private account: UserService) {
+    public repo: AbstractDataRepository,
+    public formBuilder: FormBuilder,
+    public alertCtrl: AlertController,
+    public account: UserService) {
     super();
     this.initLocalization();
     const navData = this.navParams.data;
@@ -114,7 +114,7 @@ export class RegisterPage extends ComponentBase {
   }
 
   // <editor-fold desc="form builder">
-  private buildForm(): void {
+  public buildForm(): void {
     this.registerForm = this.formBuilder.group({
       'phone': [this._phone, [Validators.required,
       Validators.pattern('^380\\d{9}$')]],
@@ -133,7 +133,7 @@ export class RegisterPage extends ComponentBase {
   // </editor-fold>
 
   // <editor-fold desc="form value changing hook">
-  private onValueChanged(data?: any) {
+  public onValueChanged(data?: any) {
     if (this.verifyErrorData.errorShow)
       this.clearVerifyError();
 
@@ -156,12 +156,12 @@ export class RegisterPage extends ComponentBase {
   }
 
 
-  private clearVerifyError(): void {
+  public clearVerifyError(): void {
     this.verifyErrorData.errorShow = false;
     this.verifyErrorData.errorMessage = '';
   }
 
-  private showSmsPopUp(message: string, phone: string) {
+  public showSmsPopUp(message: string, phone: string) {
     let alert = this.alertCtrl.create({
       message: message,
       enableBackdropDismiss: false,

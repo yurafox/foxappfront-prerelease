@@ -19,7 +19,7 @@ export enum PageMode {
 })
 export class HomePage extends ComponentBase implements DoCheck {
 
-  private _pageMode: PageMode = PageMode.HomeMode;
+  public _pageMode: PageMode = PageMode.HomeMode;
 
   // list slides for slider
   slides = [
@@ -38,7 +38,7 @@ export class HomePage extends ComponentBase implements DoCheck {
   @ViewChild('cont') cont;
   @ViewChild('itemsList') itemsList;
   @ViewChild('header') header;
-  private filterRef: ElementRef;
+  public filterRef: ElementRef;
 
   @ViewChild('filter') set filter(elRef: ElementRef) {
     this.filterRef = elRef;
@@ -51,9 +51,9 @@ export class HomePage extends ComponentBase implements DoCheck {
   scrollHeight: number;
   scrOrientationSub: Subscription;
 
-  constructor(public app: App, public nav: NavController, private _repo:AbstractDataRepository,
-              public srchService: SearchService, private changeDet: ChangeDetectorRef,
-              private screenOrientation: ScreenOrientation, private navParams: NavParams) {
+  constructor(public app: App, public nav: NavController, public _repo:AbstractDataRepository,
+              public srchService: SearchService, public changeDet: ChangeDetectorRef,
+              public screenOrientation: ScreenOrientation, public navParams: NavParams) {
     super();
     this.initLocalization();
     this.srchService.lastSearch = null;

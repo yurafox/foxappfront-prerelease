@@ -11,8 +11,8 @@ import {Product} from '../../app/model/product';
 export class ItemImgPage implements DoCheck {
 
   @ViewChild(Slides) slides: Slides;
-  private product: Product;
-  private imgIdx: number = 0;
+  public product: Product;
+  public imgIdx: number = 0;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController) {

@@ -15,9 +15,9 @@ export class NoveltySketchComponent extends ComponentBase{
   @Input() public content:string='';
   @Input() public novelty: Novelty;
   @Input() public product: Product;
-  private productId: number;
+  public productId: number;
 
-  constructor(public navCtrl: NavController, private _repo:AbstractDataRepository) {
+  constructor(public navCtrl: NavController, public _repo:AbstractDataRepository) {
     super();
   }
 

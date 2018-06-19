@@ -1,4 +1,6 @@
-import {User,IUserVerifyAccountData,IUserInfo,LoginTemplate,ChangePassword} from '../../../model/index';
+import {User,IUserVerifyAccountData,IUserInfo} from '../../../model/user';
+import {LoginTemplate} from '../../../model/login-template';
+import {ChangePassword} from '../../../model/change-password';
 
 
 export abstract class AbstractAccountRepository {

@@ -20,8 +20,8 @@ export class CategoryPage extends ComponentBase implements DoCheck {
   scrOrientationSub: Subscription;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private repo: AbstractDataRepository, public srch: SearchService,
-              private screenOrientation: ScreenOrientation, private changeDet: ChangeDetectorRef) {
+              public repo: AbstractDataRepository, public srch: SearchService,
+              public screenOrientation: ScreenOrientation, public changeDet: ChangeDetectorRef) {
     super();
   }
 

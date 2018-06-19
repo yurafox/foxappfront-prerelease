@@ -19,11 +19,11 @@ export class LoginPage extends ComponentBase implements OnInit {
   public langs:Array<Lang>;
   public verifyForm: FormGroup;
   public verifyErrorData:{errorShow:boolean,errorMessage:string};
-  private onLoad = false;
-  private isSendAsync = false;
-  private useCode = false;
-  private _authError = false;
-  private _phone = '';
+  public onLoad = false;
+  public isSendAsync = false;
+  public useCode = false;
+  public _authError = false;
+  public _phone = '';
 
   public get authError() {
     return this._authError;
@@ -41,11 +41,11 @@ export class LoginPage extends ComponentBase implements OnInit {
 
   constructor(public nav: NavController,
               public navParams: NavParams,
-              private repo: AbstractDataRepository,
-              private formBuilder: FormBuilder,
-              private alertCtrl:AlertController,
+              public repo: AbstractDataRepository,
+              public formBuilder: FormBuilder,
+              public alertCtrl:AlertController,
               public cart: CartService,
-              private account:UserService) {
+              public account:UserService) {
     super();
     this.initLocalization();
     const navData = this.navParams.data;
@@ -129,7 +129,7 @@ export class LoginPage extends ComponentBase implements OnInit {
     else {this.changeUseCode(true); this._authError = true};
   }
 
-  private buildForm(): void {
+  public buildForm(): void {
     this.verifyForm = this.formBuilder.group({
       'phone': [this._phone, [Validators.required,
         Validators.pattern('^380\\d{9}$')]],
@@ -142,7 +142,7 @@ export class LoginPage extends ComponentBase implements OnInit {
     this.onVerifyChanged();
   }
 
-  private onVerifyChanged() {
+  public onVerifyChanged() {
     if(this.verifyErrorData.errorShow)
       this.clearVerifyError();
 
@@ -164,7 +164,7 @@ export class LoginPage extends ComponentBase implements OnInit {
 
   }
 
-  private findBehaviorByStatus(result:IUserVerifyAccountData, phone:string ):void {
+  public findBehaviorByStatus(result:IUserVerifyAccountData, phone:string ):void {
     if(result.status === 1) {
       this.changeUseCode(false);
       const contPage:string = (this.navParams.data
@@ -180,12 +180,12 @@ export class LoginPage extends ComponentBase implements OnInit {
 
   }
 
-  private clearVerifyError():void {
+  public clearVerifyError():void {
     this.verifyErrorData.errorShow = false;
     this.verifyErrorData.errorMessage = '';
   }
 
-  private showSmsPopUp(message:string,phone:string){
+  public showSmsPopUp(message:string,phone:string){
     let alert = this.alertCtrl.create({
       message: message,
       enableBackdropDismiss:false,
@@ -202,33 +202,33 @@ export class LoginPage extends ComponentBase implements OnInit {
     alert.present();
   }
 
-  private changeUseCode(codePredicate:boolean):void {
+  public changeUseCode(codePredicate:boolean):void {
     (codePredicate) ? this.addCodeValidators() : this.removeCodeValidators();
     this.useCode = codePredicate;
   }
 
-  private addCodeValidators():void {
+  public addCodeValidators():void {
       this.verifyForm.controls['code'].setValidators([Validators.required,Validators.pattern('^\\d{5,6}$')]);
       this.makeCodeUpdate();
   }
 
-  private removeCodeValidators():void {
+  public removeCodeValidators():void {
     this.verifyForm.controls['code'].clearValidators();
     this.makeCodeUpdate();
   }
 
-  private makeCodeUpdate(){
+  public makeCodeUpdate(){
     this.verifyForm.controls['code'].updateValueAndValidity();
   }
 
-  private toContinuePage(params:any) {
+  public toContinuePage(params:any) {
     this.nav.remove(0).then(() => this.nav.insert(0, 'HomePage'));
     this.nav.push(this.navParams.data.continuePage,params).then(() => {
       this.nav.remove(this.nav.getActive().index);
     });
   }
 
-  private checkUserBehavior():void {
+  public checkUserBehavior():void {
     if(this.navParams.data && this.navParams.data.fromRegistry){
       this.changeUseCode(true);
     }

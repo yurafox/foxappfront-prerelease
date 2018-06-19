@@ -15,7 +15,7 @@ export class OrdersFilterPage extends ComponentBase {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private repo: AbstractDataRepository) {
+              public repo: AbstractDataRepository) {
     super();
     this.InitData();
   }

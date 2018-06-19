@@ -8,11 +8,11 @@ import {DropdownListComponent} from "../dropdown-list/dropdown-list";
 })
 export class DropdownViewComponent implements AfterViewInit{
   public parent:DropdownListComponent;
-  private proxyObj:any;
-  constructor(private nav: NavController,
-              private navParam: NavParams,
-              private viewCtrl: ViewController,
-              private _renderer: Renderer2) {
+  public proxyObj:any;
+  constructor(public nav: NavController,
+              public navParam: NavParams,
+              public viewCtrl: ViewController,
+              public _renderer: Renderer2) {
 
     this.parent = navParam.get('parent');
     this.proxyObj = {};
@@ -107,7 +107,7 @@ export class DropdownViewComponent implements AfterViewInit{
     return `drop-${item[this.valueName]}-${item[this.displayName]}`;
   }
 
-  private makeChange(item:any){
+  public makeChange(item:any){
     if(this.parent.referenceBoot) {
       this.parent.reference[this.parent.map.valueName] = item[this.parent.map.valueName];
       this.parent.reference[this.parent.map.displayName] = item[this.parent.map.displayName];
@@ -123,7 +123,7 @@ export class DropdownViewComponent implements AfterViewInit{
     }
   }
 
-  private scrollToIdentity():void {
+  public scrollToIdentity():void {
     let node:HTMLElement=document.getElementById(this.currentIdentifier);
     if(node)
       node.scrollIntoView();

@@ -20,10 +20,10 @@ export class ActionSketchComponent extends ComponentBase {
   @Input()
   public isOnLanding:boolean;
 
-  private alive:boolean;
+  public alive:boolean;
   public expire:{days?:number,hours?:number,minutes?:number,seconds?:number};
 
-  constructor(public navCtrl: NavController, private _repo:AbstractDataRepository) {
+  constructor(public navCtrl: NavController, public _repo:AbstractDataRepository) {
     super();
     this.alive = true;
     this.expire = {};

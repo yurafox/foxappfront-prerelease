@@ -1,50 +1,53 @@
-import { QuotationProduct,
-          Product,
-          Quotation,
-          Supplier,
-          Currency,
-          Manufacturer,
-          City,
-          Store,
-          StorePlace,
-          ProductReview,
-          ProductStorePlace,
-          Lang,
-          Client,
-          Action,
-          ActionOffer,
-          ClientAddress,
-          Country,
-          ClientOrder,
-          ClientOrderProducts,
-          StoreReview,
-          LoEntity,
-          Novelty,
-          NoveltyDetails,
-          DeviceData,
-          LoSupplEntity,
-          EnumPaymentMethod,
-          Poll,PollQuestion,PollQuestionAnswer,
-          ClientPollAnswer, PersonInfo, CreditProduct, ClientBonus,
-          LoTrackLog,
-          Category,
-          MeasureUnit,
-          Region,
-          BannerSlide,
-          ClientMessage,
-          CurrencyRate,
-          ActionByProduct,
-          Shipment,
-          LoDeliveryType,
-          LoEntityOffice,
-          News,
-          NewsCategory
-       } from '../../../model/index';
-import {IDictionary, Providers} from "../../../core/app-core";
+import {IDictionary, Providers} from '../../../core/app-core';
 import {AppParam} from '../../../model/app-param';
 import IKeyedCollection = Providers.IKeyedCollection;
 import {OrdersFilter} from '../../../../pages/your-orders/your-orders';
 import {ClientOrderProductHist} from '../../../model/client-order-product-hist';
+import {ProductReview} from '../../../model/product-review';
+import {Product} from '../../../model/product';
+import {Supplier} from '../../../model/supplier';
+import {Currency} from '../../../model/currency';
+import {Lang} from '../../../model/lang';
+import {QuotationProduct} from '../../../model/quotation-product';
+import {ProductStorePlace} from '../../../model/product-store-place';
+import {StorePlace} from '../../../model/store-place';
+import {Quotation} from '../../../model/quotation';
+import {PersonInfo} from '../../../model/person';
+import {Manufacturer} from '../../../model/manufacturer';
+import {LoSupplEntity} from '../../../model/lo-suppl-entity';
+import {LoEntity} from '../../../model/lo-entity';
+import {LoTrackLog} from '../../../model/lo-track-log';
+import {Shipment} from '../../../model/shipment';
+import {ClientOrder} from '../../../model/client-order';
+import {ClientOrderProducts} from '../../../model/client-order-products';
+import {ClientBonus} from '../../../model/client-bonus';
+import {Country} from '../../../model/country';
+import {Client} from '../../../model/client';
+import {ClientAddress} from '../../../model/client-address';
+import {City} from '../../../model/city';
+import {Region} from '../../../model/region';
+import {Store} from '../../../model/store';
+import {StoreReview} from '../../../model/store-review';
+import {Action} from '../../../model/action';
+import {EnumPaymentMethod} from '../../../model/enum-payment-method';
+import {Novelty} from '../../../model/novelty';
+import {Poll} from '../../../model/poll';
+import {PollQuestion} from '../../../model/poll-question';
+import {PollQuestionAnswer} from '../../../model/poll-question-answer';
+import {ClientPollAnswer} from '../../../model/client-poll-answer';
+import {CreditProduct} from '../../../model/credit-product';
+import {NoveltyDetails} from '../../../model/novelty-det';
+import {DeviceData} from '../../../model/device-data';
+import {Category} from '../../../model/category';
+import {MeasureUnit} from '../../../model/measure-unit';
+import {BannerSlide} from '../../../model/banner-slide';
+import {ClientMessage} from '../../../model/client-message';
+import {CurrencyRate} from '../../../model/currency-rate';
+import {ActionByProduct} from '../../../model/action-by-product';
+import {LoDeliveryType} from '../../../model/lo-delivery-type';
+import {LoEntityOffice} from '../../../model/lo-entity-office';
+import {News} from '../../../model/news';
+import {NewsCategory} from '../../../model/news-category';
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<{reviews:ProductReview[], idClient:number}>;

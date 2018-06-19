@@ -58,7 +58,7 @@ export class ComplectItem {
 })
 export class ComplectComponent extends ComponentBase {
 
-  private _actionsArr: Array<ActionByProduct>;
+  public _actionsArr: Array<ActionByProduct>;
 
   @ViewChild('slides') slides: Slides;
 
@@ -66,8 +66,8 @@ export class ComplectComponent extends ComponentBase {
 
   mainProdImgUrl: string;
   mainProdName: string;
-  private _actionsBinded = false;
-  private _productBinded = false;
+  public _actionsBinded = false;
+  public _productBinded = false;
 
 
   @Input()
@@ -84,7 +84,7 @@ export class ComplectComponent extends ComponentBase {
     return this._actionsArr;
   }
 
-  private _mainProductId: number;
+  public _mainProductId: number;
 
   @Input()
   set mainProductId (value: number) {
@@ -95,7 +95,7 @@ export class ComplectComponent extends ComponentBase {
 
   get mainProductId(): number {return this._mainProductId};
 
-  constructor(private repo: AbstractDataRepository, public navCtrl: NavController, private cart: CartService) {
+  constructor(public repo: AbstractDataRepository, public navCtrl: NavController, public cart: CartService) {
     super();
   }
 

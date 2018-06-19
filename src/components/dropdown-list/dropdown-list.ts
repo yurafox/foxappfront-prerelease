@@ -162,19 +162,19 @@ export class DropdownListComponent extends ComponentBase implements OnChanges {
 
   @Input()
   afterUpdate: (item: any) => void;
-  
+
   @Input()
   IsCentering:boolean = true;
 
   public sourceContext: any;
 
   // проверка приоритета работы со сылкой
-  private referencePriority:boolean;
+  public referencePriority:boolean;
 
-  private verifyBehaviorList: Array<{ fn: () => boolean, errText: string }> = [];
+  public verifyBehaviorList: Array<{ fn: () => boolean, errText: string }> = [];
 
   constructor(public popoverCtrl: PopoverController,
-    private _viewCtnr: ViewContainerRef) {
+    public _viewCtnr: ViewContainerRef) {
     super();
     // <editor-fold desc="check input behavior init list">
     //this.verifyBehaviorList.push({ fn: this.verifyReference, errText: 'отсутствуют значения для binding поле' });
@@ -225,17 +225,17 @@ export class DropdownListComponent extends ComponentBase implements OnChanges {
   }
 
   // <editor-fold desc="methods for check input fields">
-  private checkInputValues() {
+  public checkInputValues() {
     for (let i = 0, max = this.verifyBehaviorList.length; i < max; i++) {
       if (!this.verifyBehaviorList[i].fn.apply(this)) {
         this.errorThrow(this.verifyBehaviorList[i].errText);
       }
     }
   }
-  // private verifyReference(): boolean {
+  // public verifyReference(): boolean {
   //   return (!this.isNullOrUndefined(this.reference) || !this.referencePriority);
   // }
-  private verifyStore(): boolean {
+  public verifyStore(): boolean {
     const me = this;
     if(this.isQty){
       const range:System.IRange = {min:1,max:31}; //this.reference['range'];
@@ -252,7 +252,7 @@ export class DropdownListComponent extends ComponentBase implements OnChanges {
 
     return (this.store && this.store.length !== 0);
   }
-  private verifyMap(): boolean {
+  public verifyMap(): boolean {
     if(this.isQty)
         this.map = this.map || {valueName:'value',displayName:'value'};
     else {
@@ -262,7 +262,7 @@ export class DropdownListComponent extends ComponentBase implements OnChanges {
     return (!this.referenceBoot) || (this.reference.hasOwnProperty(this.map.valueName)
                                         && this.reference.hasOwnProperty(this.map.displayName));
   }
-  private verifyOptions(): void {
+  public verifyOptions(): void {
     if (!this.options)
       this.options={};
 
@@ -272,10 +272,10 @@ export class DropdownListComponent extends ComponentBase implements OnChanges {
     this.options.buttonHeader = this.options.buttonHeader || buttonDefaultHeader;
   }
 
-  private isNullOrUndefined(value: any): boolean {
+  public isNullOrUndefined(value: any): boolean {
     return (value === null || value === undefined);
   }
-  private errorThrow(errText: string) {
+  public errorThrow(errText: string) {
     throw new Error(errText);
   }
   // </editor-fold>

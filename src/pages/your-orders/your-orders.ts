@@ -23,10 +23,10 @@ export class OrdersPage extends ComponentBase {
   orderProducts = [];
   filter: OrdersFilter = null;
 
-  constructor(private navCtrl: NavController, public navParams: NavParams,
-                private repo: AbstractDataRepository,
-                private cart: CartService, public toastCtrl: ToastController,
-                private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+                public repo: AbstractDataRepository,
+                public cart: CartService, public toastCtrl: ToastController,
+                public alertCtrl: AlertController) {
     super();
 
     this.initData(this.navParams.data.filter);

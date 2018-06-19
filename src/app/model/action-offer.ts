@@ -1,8 +1,8 @@
-import {AbstractDataRepository} from '../service/index';
+import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
 //import {RefInjector} from '../core/app-core';
 
 export class ActionOffer {
-  //private _repo: AbstractDataRepository;
+  //public _repo: AbstractDataRepository;
   constructor(public id?: number,
               public idAction?: number,
               public idQuotation?: number,

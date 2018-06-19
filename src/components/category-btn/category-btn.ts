@@ -9,7 +9,7 @@ import { AbstractDataRepository } from '../../app/service/index';
 })
 export class CategoryBtnComponent extends ComponentBase {
   public productCountInOneCatalog:string;
-  constructor(public navCtrl: NavController, private _repo:AbstractDataRepository) {
+  constructor(public navCtrl: NavController, public _repo:AbstractDataRepository) {
         super();
         this.initLocalization();
   }

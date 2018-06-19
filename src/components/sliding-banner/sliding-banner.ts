@@ -10,9 +10,9 @@ import {BannerSlide} from "../../app/model/banner-slide";
 export class SlidingBannerComponent {
   // list slides for slider
   public slides: BannerSlide[] = [];
-  @ViewChild(Slides) private _slides: Slides;
+  @ViewChild(Slides) public _slides: Slides;
 
-  constructor(private nav: NavController, private _repo: AbstractDataRepository) {}
+  constructor(public nav: NavController, public _repo: AbstractDataRepository) {}
 
   async ngOnInit() {
     this.slides = await this._repo.getBannerSlides();

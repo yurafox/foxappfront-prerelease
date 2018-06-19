@@ -19,8 +19,8 @@ export class CartPage extends ComponentBase implements DoCheck {
 
   mPlaceFeaturesEnabled = AppConstants.ENABLE_MARKETPLACE_FEATURES;
 
-  constructor(public cart: CartService, private navCtrl: NavController,
-              private uService: UserService, private alertCtrl: AlertController) {
+  constructor(public cart: CartService, public navCtrl: NavController,
+              public uService: UserService, public alertCtrl: AlertController) {
     super();
   }
 

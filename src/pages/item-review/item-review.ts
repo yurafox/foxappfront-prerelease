@@ -16,7 +16,7 @@ export class ItemReviewPage extends ComponentBase implements OnInit {
   @Input() rev: ProductReview | StoreReview;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private repo: AbstractDataRepository) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public repo: AbstractDataRepository) {
     super();
     if (this.navParams.data) {
       this.rev = navParams.data;

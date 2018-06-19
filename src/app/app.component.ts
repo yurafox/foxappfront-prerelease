@@ -1,16 +1,17 @@
 import {Component, ViewChild, OnDestroy} from '@angular/core';
 import {Nav, Platform, MenuController, AlertController, ModalController} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
-import {AbstractDataRepository} from "./service/index";
+import {AbstractDataRepository} from "./service/repository/abstract/abstract-data-repository";
 import {ComponentBase} from "../components/component-extension/component-base";
 import {AppAvailability} from "@ionic-native/app-availability";
 import {Device} from '@ionic-native/device';
-import {DeviceData} from "./model/index";
+import {DeviceData} from "./model/device-data";
 import {System} from "./core/app-core";
 import {CartService} from "./service/cart-service";
 import {ConnectivityService} from "./service/connectivity-service";
 import {StatusBar} from '@ionic-native/status-bar';
 import {BackgroundMode} from "@ionic-native/background-mode";
+import {Push, PushObject, PushOptions} from '@ionic-native/push';
 
 export interface PageInterface {
   title: string;
@@ -20,7 +21,8 @@ export interface PageInterface {
   index?: number;
 }
 
-declare var FCMPlugin: any;
+//declare var FirebasePlugin: any;
+//declare var PushNotification: any;
 
 @Component({
   templateUrl: 'app.html'
@@ -45,14 +47,14 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     //{title: 'Поддержка', name: 'Support', component: 'SupportPage', index: 3, icon: 'ios-text-outline'},
   ];
 
-  private noveltyPushEventDescriptor: any;
-  private actionPushEventDescriptor: any;
+  public noveltyPushEventDescriptor: any;
+  public actionPushEventDescriptor: any;
 
-  constructor(private platform: Platform, private alertCtrl: AlertController, private splashScreen: SplashScreen,
-              public menuCtrl: MenuController, private repo: AbstractDataRepository,
-              private appAvailability: AppAvailability, private device: Device, private cartService: CartService,
-              private connService: ConnectivityService, private statusBar: StatusBar,
-              public modalCtrl: ModalController, private backgroundMode: BackgroundMode) {
+  constructor(public platform: Platform, public alertCtrl: AlertController, public splashScreen: SplashScreen,
+              public menuCtrl: MenuController, public repo: AbstractDataRepository,
+              public appAvailability: AppAvailability, public device: Device, public cartService: CartService,
+              public connService: ConnectivityService, public statusBar: StatusBar,
+              public modalCtrl: ModalController, public backgroundMode: BackgroundMode, public push: Push) {
     super();
     this.initLocalization();
 
@@ -85,31 +87,91 @@ export class FoxApp extends ComponentBase implements OnDestroy {
       if (this.device.cordova) {
         if (this.userService.isAuth && this.userService.token) {
           // Getting FCM device token and send device data
-          FCMPlugin.getToken((token) => {
+          /*FirebasePlugin.getToken((token) => {
+            console.log(token);
             if (token) {
               // Collecting and send data about device including device FCM token
-              this.collectAndSendDeviceData(token).catch((err) => console.log(`Sending device's data err: ${err}`));
+              //this.collectAndSendDeviceData(token).catch((err) => console.log(`Sending device's data err: ${err}`));
             }
-          });
+          });*/
+          /*this.push.hasPermission()
+            .then((res: any) => {
+              if (res.isEnabled) {
+                const options: PushOptions = {
+                  android: {
+                    senderID: "431639834815",
+                    clearNotifications: false
+                  },
+                  ios: {
+                    alert: "true",
+                    badge: "true",
+                    sound: "true"
+                  }
+                };
+
+                const pushObject: PushObject = this.push.init(options);
+
+                pushObject.on('notification').subscribe((notification: any) => {
+                  console.log('Received a notification', notification.title);
+                  let alert = this.alertCtrl.create({
+                    message: notification.title,
+                    buttons: [
+                      {
+                        text: 'OK'
+                      }
+                    ]
+                  });
+                  alert.present().catch((err) => console.log(`Alert error: ${err}`));
+                });
+
+                pushObject.on('registration').subscribe((registration: any) => {
+                  console.log('Device registered', registration.registrationId);
+                  let alert = this.alertCtrl.create({
+                    message: registration.registrationId,
+                    buttons: [
+                      {
+                        text: 'OK'
+                      }
+                    ]
+                  });
+                  alert.present().catch((err) => console.log(`Alert error: ${err}`));
+                });
+
+                pushObject.on('error').subscribe(error => {
+                  console.error('Error with Push plugin', error.message);
+                  let alert = this.alertCtrl.create({
+                    message: error.message,
+                    buttons: [
+                      {
+                        text: 'OK'
+                      }
+                    ]
+                  });
+                  alert.present().catch((err) => console.log(`Alert error: ${err}`));
+                });
+              } else {
+                console.log('We do not have permission to send push notifications');
+              }
+            });*/
         }
         // Subscribing this device to the main topic to send PUSH-notifications to this topic
-        FCMPlugin.subscribeToTopic('main');
+        /*FirebasePlugin.subscribe('main');
         // Handling incoming PUSH-notifications
-        FCMPlugin.onNotification((data) => {
-          if (data.wasTapped) {
-            //Notification was received on device tray and tapped by the user.
-            this.pushNotificationHandling(data).catch((err)=>console.error(err));
-          } else {
-            //Notification was received in foreground. Maybe the user needs to be notified.
-            this.pushNotificationHandling(data).catch((err)=>console.error(err));
-          }
-        });
+        FirebasePlugin.onNotificationOpen((data) => {
+          console.log(JSON.stringify(data));
+          // if (data.wasTapped) {
+          //   //Notification was received on device tray and tapped by the user.
+          //   this.pushNotificationHandling(data).catch((err)=>console.error(err));
+          // } else {
+          //   //Notification was received in foreground. Maybe the user needs to be notified.
+          //   this.pushNotificationHandling(data).catch((err)=>console.error(err));
+          // }
+        });*/
 
-        if (ready && ready !== '' && this) {
-          this.splashScreen.hide();
-          this.backgroundMode.enable();
-          this.backgroundMode.setDefaults({hidden: true, silent: true}).catch((err)=>console.error(err));
-        }
+
+        this.splashScreen.hide();
+        this.backgroundMode.enable();
+        this.backgroundMode.setDefaults({silent: true}).catch((err)=>console.error(err));
       }
     });
   }
@@ -158,6 +220,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     this.menuCtrl.close().catch(err => {
       console.log(`Couldn't close the menu: ${err}`);
     });
+    //FirebasePlugin.unsubscribe('main');
   }
 
   openBalancePage() {
@@ -183,7 +246,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   }
 
   // Collects and sends device's data about model, operation system + it's version and screen size, and FCM device token
-  private async collectAndSendDeviceData(pushDeviceToken: any) {
+  public async collectAndSendDeviceData(pushDeviceToken: any) {
     let model = this.device.manufacturer + ' ' + this.device.model;
     let os = this.device.platform + ' ' + this.device.version;
     let height = this.platform.height();
@@ -195,7 +258,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   }
 
   // Handling incoming PUSH-notifications
-  private async pushNotificationHandling(data) {
+  public async pushNotificationHandling(data) {
     let target = data.target;
     let noveltyTitle = this.locale['NoveltyTitle'];
     let noveltyMessage = this.locale['NoveltyMessage'];

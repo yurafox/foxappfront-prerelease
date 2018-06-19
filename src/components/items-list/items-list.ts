@@ -13,7 +13,7 @@ export class ItemsListComponent extends ComponentBase {
   @ViewChild('searchResults') srchResDiv;
   @Input() parentControl;
 
-  constructor(public srchService: SearchService, private navCtrl: NavController) {
+  constructor(public srchService: SearchService, public navCtrl: NavController) {
     super();
   }
 

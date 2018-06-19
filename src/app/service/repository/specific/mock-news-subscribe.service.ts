@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import {Http, Response, ResponseOptions, ResponseType, Headers} from '@angular/http';
+import {Response, ResponseOptions, ResponseType} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/delay';
 import {AbstractNewsSubscribeService} from '../abstract/abstract-news-subscribe-service';
+
 
 @Injectable()
 export class MockNewsSubscribeService extends AbstractNewsSubscribeService {

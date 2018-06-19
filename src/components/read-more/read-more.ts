@@ -20,7 +20,7 @@ export class ReadMoreComponent extends ComponentBase implements OnChanges {
 
   public isCollapsed: boolean = true;
 
-  constructor(private elementRef: ElementRef) {
+  constructor(public elementRef: ElementRef) {
     super();
   }
 

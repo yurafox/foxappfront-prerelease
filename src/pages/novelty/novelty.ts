@@ -20,13 +20,13 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
   public novelty: Novelty;
   public noveltyDetails: NoveltyDetails[];
   public productId: number;
-  private available: boolean = true;
+  public available: boolean = true;
 
   qty = new System.FoxNumber();
   selectedStorePlace: StorePlace;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private cart: CartService,
-              private _repo:AbstractDataRepository, public toastCtrl: ToastController, public evServ: EventService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
+              public _repo:AbstractDataRepository, public toastCtrl: ToastController, public evServ: EventService) {
     super(navCtrl, navParams, _repo);
     if (this.navParams.data.id) this.noveltyId = this.navParams.data.id;
     if (this.navParams.data.productId) this.productId = this.navParams.data.productId;

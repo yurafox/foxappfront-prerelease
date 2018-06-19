@@ -8,11 +8,11 @@ import {StarBtnComponent} from "../star-btn/star-btn";
 })
 export class StarBtnViewComponent implements AfterViewInit{
   public parent: StarBtnComponent;
-  private proxyObj:any;
-  constructor(private nav: NavController,
-              private navParam: NavParams,
-              private viewCtrl: ViewController,
-              private _renderer: Renderer2) {
+  public proxyObj:any;
+  constructor(public nav: NavController,
+              public navParam: NavParams,
+              public viewCtrl: ViewController,
+              public _renderer: Renderer2) {
 
     this.parent = navParam.get('parent');
     this.proxyObj = {};
@@ -112,7 +112,7 @@ export class StarBtnViewComponent implements AfterViewInit{
     return `drop-${item[this.valueName]}-${item[this.displayName]}`;
   }
 
-  private makeChange(item:any){
+  public makeChange(item:any){
     if(this.parent.referenceBoot) {
       this.parent.reference[this.parent.map.valueName] = item[this.parent.map.valueName];
       this.parent.reference[this.parent.map.secondValueName] = item[this.parent.map.secondValueName];
@@ -130,7 +130,7 @@ export class StarBtnViewComponent implements AfterViewInit{
     }
   }
 
-  private scrollToIdentity():void {
+  public scrollToIdentity():void {
     let node:HTMLElement=document.getElementById(this.currentIdentifier);
     if(node)
       node.scrollIntoView();

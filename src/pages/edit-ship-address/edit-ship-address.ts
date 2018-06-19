@@ -80,7 +80,7 @@ export class EditShipAddressPage extends ComponentBase  {
     }
   }
 
-  private async internalSaveAddress(): Promise<ClientAddress> {
+  public async internalSaveAddress(): Promise<ClientAddress> {
     if (!this.addressEditForm.valid) {
       let alert = this.alertCtrl.create({
         title: this.locale['Error'],

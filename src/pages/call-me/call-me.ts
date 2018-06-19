@@ -17,7 +17,7 @@ export class CallMePage  extends ComponentBase {
   btnDisabled = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
-              private toastCtrl: ToastController) {
+              public toastCtrl: ToastController) {
     super();
   }
 

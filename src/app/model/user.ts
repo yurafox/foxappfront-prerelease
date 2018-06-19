@@ -8,11 +8,11 @@ import {Store} from "./store";
   { options:{constructor: Client}, action: 'getClientByPhone', params: ['phone']}
 ])
 export class User {
-  private _repo: AbstractDataRepository;
+  public _repo: AbstractDataRepository;
   constructor(public name?: string,
               public email?: string,
               public password?: string,
-              public appKey?: string, // private application key
+              public appKey?: string, // public application key
               public userSetting: IDictionary<string> = {},
               public favoriteStoresId?: number[],
               public phone?: string,

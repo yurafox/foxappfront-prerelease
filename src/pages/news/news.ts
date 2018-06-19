@@ -15,7 +15,7 @@ export class NewsPage extends ComponentBase {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private _repo: AbstractDataRepository ) {
+              public _repo: AbstractDataRepository ) {
     super();
   }
 

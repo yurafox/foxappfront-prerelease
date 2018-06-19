@@ -11,7 +11,7 @@ import {Observable} from 'rxjs/Observable';
 ])
 export class ClientAddress {
 
-  private _repo: AbstractDataRepository;
+  public _repo: AbstractDataRepository;
 
   public get idC(): number {
     return this.idCountry;

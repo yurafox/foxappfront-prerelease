@@ -67,9 +67,9 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
 
   markerSubscriptions: Subscription[];
 
-  constructor(private nav: NavController, private navParams: NavParams, private platform: Platform,
-              private repo: AbstractDataRepository, private alertCtrl: AlertController,
-              private toastCtrl: ToastController) {
+  constructor(public nav: NavController, public navParams: NavParams, public platform: Platform,
+              public repo: AbstractDataRepository, public alertCtrl: AlertController,
+              public toastCtrl: ToastController) {
     super();
     this.initLocalization();
     this.clientId = 0;
@@ -289,10 +289,10 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
                */
               let htmlInfoWnd = new HtmlInfoWindow();
               let html: HTMLElement = document.createElement('div');
-              html.innerHTML = [`<div style="font-size: 17px;">`,
+              html.innerHTML = [`<div style="font-size: 17px; width: 250px;">`,
                 `<p style="color: #ef4123; padding: 0; margin: 0; font-size: 18px; text-align: center"><b>Фокстрот</b></p>`,
                 `<p style="padding: 0; margin: 0; text-align: center">${shopRating > 0 ? `${rating}` : ''}</p>`,
-                `<p style="padding: 0; margin: 0;">${markerData.address}</p>`,
+                `<p style="padding: 0; margin: 0;">${markerData.address}, ${this.cities[c].name}</p>`,
                 `<p style="padding: 0; margin: 0;">${workingHours}</p>`,
                 `<p style="color: ${(isWorking === this.open) ? 'green' : 'red'}; padding: 0; margin: 0;">${(isWorking) ? isWorking : '' }</p>`,
                 `<span id="revs" #revs style="color: darkblue; padding: 0; margin: 0;">${(reviews && (reviews.length > 0)) ? (this.reviewsStr + '<span style=""> (' + reviews.length + ')</span>') : (this.cantShowDict[markerData.id.toString()] === false && this.isAuthorized) ? this.writeReviewStr : ''}</span>`,

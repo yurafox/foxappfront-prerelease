@@ -14,7 +14,7 @@ export class LoTrackItemPage extends ComponentBase {
   dataLoaded = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-                private repo: AbstractDataRepository) {
+                public repo: AbstractDataRepository) {
     super();
     this.initData(this.navParams.data);
   }

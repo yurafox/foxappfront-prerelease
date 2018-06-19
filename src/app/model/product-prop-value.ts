@@ -1,4 +1,5 @@
-import { Prop, PropEnumList  } from './index';
+import {Prop} from './prop';
+import {PropEnumList} from './prop-enum-list';
 import {MeasureUnit} from './measure-unit';
 import {LazyLoad, RefInjector} from '../core/app-core';
 import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
@@ -8,7 +9,7 @@ import {AbstractDataRepository} from '../service/repository/abstract/abstract-da
 ])
 export class ProductPropValue {
 
-  private _repo: AbstractDataRepository;
+  public _repo: AbstractDataRepository;
 
   constructor (
     public id: number,

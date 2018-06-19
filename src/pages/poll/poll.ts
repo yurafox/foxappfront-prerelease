@@ -23,17 +23,17 @@ interface IQuestionContainer {
   templateUrl: 'poll.html',
 })
 export class PollPage extends ComponentBase{
-  private pollId:number;
-  private pollQuestions:Array<PollQuestion>=[];
-  private pollresults:{pollId:number, pollResult:IDictionary<IPollResult>};
-  private displayContentResult:boolean= false;
+  public pollId:number;
+  public pollQuestions:Array<PollQuestion>=[];
+  public pollresults:{pollId:number, pollResult:IDictionary<IPollResult>};
+  public displayContentResult:boolean= false;
 
   public pollQuestAns:IQuestionContainer[]=[];
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public _repo:AbstractDataRepository,
-              private alertCtrl:AlertController) {
+              public alertCtrl:AlertController) {
     super();
     this.pollId = this.navParams.data.id;
     this.pollresults = {pollId:this.pollId,pollResult:{}};
@@ -106,7 +106,7 @@ export class PollPage extends ComponentBase{
     return answersCount===this.pollQuestions.length;
   }
 
-  private setUsrOptConfig(qAnswer:IQuestionContainer,answerValue:string,isShowOpt:boolean):void {
+  public setUsrOptConfig(qAnswer:IQuestionContainer,answerValue:string,isShowOpt:boolean):void {
     qAnswer.showOpt = isShowOpt;
     if(answerValue) {
       this.pollresults.pollResult[`${qAnswer.questionObj.id}`] = {questionId:qAnswer.questionObj.id,answerValue:`${answerValue}`};

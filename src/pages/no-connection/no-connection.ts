@@ -11,9 +11,9 @@ import {ConnectivityService} from "../../app/service/connectivity-service";
   templateUrl: 'no-connection.html',
 })
 export class NoConnectionPage extends ComponentBase implements OnInit, OnDestroy {
-  private connected: Subscription;
+  public connected: Subscription;
 
-  constructor(private navCtrl: NavController, private navParam: NavParams, private network: Network, private connServ: ConnectivityService) {
+  constructor(public navCtrl: NavController, public navParam: NavParams, public network: Network, public connServ: ConnectivityService) {
     super();
     this.initLocalization();
     if (this.navParam.data.error) {

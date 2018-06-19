@@ -33,7 +33,7 @@ export class ManagePlacesMenuPage extends ComponentBase {
     }
   ];
 
-  constructor(private platform: Platform, private nav: Nav,
+  constructor(public platform: Platform, public nav: Nav,
               public menuCtrl: MenuController) {
     super();
     platform.ready().then(() => {

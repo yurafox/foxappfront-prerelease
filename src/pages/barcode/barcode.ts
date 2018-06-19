@@ -15,7 +15,7 @@ export class BarcodePage extends ComponentBase implements OnInit {
 
   clientBarcode: string;
 
-  constructor(private repo: AbstractDataRepository) {
+  constructor(public repo: AbstractDataRepository) {
     super();
     this.initLocalization();
   }

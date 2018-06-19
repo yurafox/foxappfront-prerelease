@@ -16,7 +16,7 @@ export class BonusPayComponent extends ComponentBase {
 
   bonusInputStream$ = new Subject<string>();
 
-  constructor(public cart: CartService, private keyBoard: Keyboard) {
+  constructor(public cart: CartService, public keyBoard: Keyboard) {
     super();
 
     this.bonusInputStream$.debounceTime(500)

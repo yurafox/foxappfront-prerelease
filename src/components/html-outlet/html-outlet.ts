@@ -47,7 +47,7 @@ export class HtmlOutlet {
   @Input() context:any
   cmpRef: ComponentRef<any>;
 
-  constructor(private vcRef: ViewContainerRef, private compiler: Compiler) {}
+  constructor(public vcRef: ViewContainerRef, public compiler: Compiler) {}
 
   ngOnChanges() {
     const html = this.html;

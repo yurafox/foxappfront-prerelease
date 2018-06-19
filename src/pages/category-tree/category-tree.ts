@@ -11,11 +11,11 @@ import {AbstractDataRepository} from "../../app/service/repository/abstract/abst
   templateUrl: 'category-tree.html',
 })
 export class CategoryTreePage extends ComponentBase {
-  private groups: Category[] = [];
-  private currentGroup: Category[] = [];
+  public groups: Category[] = [];
+  public currentGroup: Category[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private _sanitizer: DomSanitizer,
-              private _repo: AbstractDataRepository) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public _sanitizer: DomSanitizer,
+              public _repo: AbstractDataRepository) {
     super();
   }
 
@@ -39,14 +39,14 @@ export class CategoryTreePage extends ComponentBase {
   }
 
 
-  private setCurrentCategoryList(): void
+  public setCurrentCategoryList(): void
   {
      const isChildLevel = !!this.navParams.data.currentGroup;
      this.currentGroup = (!isChildLevel) ? this.buildRootTree()
                                          : this.navParams.data.currentGroup;
   }
 
-  private buildRootTree():Category[] {
+  public buildRootTree():Category[] {
     const rootIndex = this.groups.findIndex((value:Category):boolean => {
          return !value.parent_id;
     });
