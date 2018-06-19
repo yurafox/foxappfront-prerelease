@@ -7,6 +7,7 @@ import {UserService} from '../../app/service/bll/user-service';
 import {LoginPage} from '../login/login';
 import {fadeInAnimation500} from '../../app/core/animation-core';
 import {AppConstants} from '../../app/app-constants';
+import { Disposable } from '../../app/core/app-core';
 
 @IonicPage()
 @Component({

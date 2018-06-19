@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AlertController, App, LoadingController} from 'ionic-angular';
+import {AlertController, App, LoadingController, Loading} from 'ionic-angular';
 import {ClientOrder} from '../model/client-order';
 import {ClientOrderProducts} from '../model/client-order-products';
 import {QuotationProduct} from '../model/quotation-product';
@@ -10,7 +10,7 @@ import {EventService} from './event-service';
 import {PersonInfo} from '../model/person';
 import {CreditCalc} from '../model/credit-calc';
 import {AbstractLocalizationRepository} from './repository/abstract/abstract-localization-repository';
-import {IDictionary, SCN} from '../core/app-core';
+import {IDictionary, SCN, Disposable} from '../core/app-core';
 import {CurrencyStore} from './repository/specific/currency-store.service';
 import {ComplectItem} from '../../components/complect/complect';
 import {ItemDetailPage} from '../../pages/item-detail/item-detail';
@@ -18,7 +18,6 @@ import {Shipment} from '../model/shipment';
 import {LoDeliveryType} from '../model/lo-delivery-type';
 import {LoEntityOffice} from '../model/lo-entity-office';
 import {AppConstants} from '../app-constants';
-
 
 export class LoShipmentDeliveryOption {
   public shipment?: Shipment;
@@ -77,6 +76,9 @@ export class CartService {
               public evServ: EventService, private app: App, private locRepo: AbstractLocalizationRepository,
               public alertCtrl: AlertController, private currStoreService: CurrencyStore,
               public loadingCtrl: LoadingController) {
+    
+    // change dismiss function in prototype for AOT compilation
+    Disposable.changeDismiss(Loading);
 
     this.evServ.events['logonEvent'].subscribe(() => {
         this.initCart().then (() => {
@@ -637,7 +639,7 @@ export class CartService {
     });
 
     if (showLoading)
-      loading.present();
+      await loading.present();
 
     try {
       if (item.complect) {

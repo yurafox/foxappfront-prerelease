@@ -1,12 +1,13 @@
-import {Component, Renderer2, AfterViewInit,ElementRef} from '@angular/core';
+import {Component, Renderer2} from '@angular/core';
 import {NavController, NavParams, ViewController} from "ionic-angular"
 import {DropdownListComponent} from "../dropdown-list/dropdown-list";
+import {Disposable} from "../../app/core/app-core";
 
 @Component({
   selector: 'dropdown-view',
   templateUrl: 'dropdown-view.html'
 })
-export class DropdownViewComponent implements AfterViewInit{
+export class DropdownViewComponent{
   public parent:DropdownListComponent;
   proxyObj:any;
   constructor(public nav: NavController,
@@ -16,6 +17,9 @@ export class DropdownViewComponent implements AfterViewInit{
 
     this.parent = navParam.get('parent');
     this.proxyObj = {};
+    
+    // change dismiss function in prototype for AOT compilation
+    Disposable.changeDismiss(ViewController);
 
     if(!this.parent.referenceBoot){
       const filtered = this.bindedStore.filter((value)=>{

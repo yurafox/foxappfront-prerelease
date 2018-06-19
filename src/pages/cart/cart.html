@@ -18,7 +18,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid style="height: 100%" *ngIf="cart.orderProducts.length === 0" [@fadeInAnimation500]>
+  <ion-grid style="height: 100%" *ngIf="cart.orderProducts.length === 0">
     <ion-row justify-content-center align-items-center style="height: 50%">
           <ion-icon class="f-icon-scale" name="cart"></ion-icon>
     </ion-row>
@@ -54,7 +54,7 @@
   </ion-grid>
 
 
-  <ion-grid class="f-padding-lr-5-t0" [@fadeInAnimation500]>
+  <ion-grid class="f-padding-lr-5-t0">
     <div *ngFor="let item of cart.displayOrderProducts; let i = index"
          [ngClass]="{'f-item-margin-top': isComplectDivisorItem(i) }">
       <ion-grid *ngIf="item.orderProduct?.quotationproduct?.product && item.orderProduct?.quotationproduct?.quotation?.supplier"

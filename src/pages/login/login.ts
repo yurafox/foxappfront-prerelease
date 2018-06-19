@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {NavController,NavParams, IonicPage, AlertController} from 'ionic-angular';
+import {NavController,NavParams, IonicPage, AlertController, Alert} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {CartService} from '../../app/service/cart-service';
 import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
@@ -8,6 +8,7 @@ import {UserService} from '../../app/service/bll/user-service';
 import {Currency} from '../../app/model/currency';
 import {Lang} from '../../app/model/lang';
 import {IUserVerifyAccountData} from '../../app/model/user';
+import {Disposable} from '../../app/core/app-core';
 
 @IonicPage({name: 'LoginPage', segment: 'login'})
 @Component({
@@ -51,6 +52,7 @@ export class LoginPage extends ComponentBase implements OnInit {
     this.initLocalization();
     const navData = this.navParams.data;
     this._phone = (navData && navData.phone) ? navData.phone : '';
+    Disposable.changeDismiss(Alert);
     this.verifyErrorData={errorShow:false,errorMessage:''};
   }
 
@@ -195,6 +197,7 @@ export class LoginPage extends ComponentBase implements OnInit {
           text: 'OK',
           handler: () => {
             this.changeUseCode(true);
+            alert.dismiss();
           }
         }
       ]
