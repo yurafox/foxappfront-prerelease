@@ -1,12 +1,11 @@
 import {AbstractControl} from '@angular/forms';
 import {Injector} from '@angular/core';
-import {Product, Supplier, Currency} from '../model/index';
+import { RequestOptionsArgs,Headers,URLSearchParams} from '@angular/http';
 import {Manufacturer} from "../model/manufacturer";
 import {City} from '../model/city';
 import {StorePlace} from '../model/store-place';
-import {Lang} from "../model/lang";
+import {Lang} from '../model/lang';
 import {MeasureUnit} from '../model/measure-unit';
-import { RequestOptionsArgs,Headers,URLSearchParams} from '@angular/http';
 import {Quotation} from '../model/quotation';
 import {LoEntity} from '../model/lo-entity';
 import {Country} from '../model/country';
@@ -17,6 +16,9 @@ import { AppConstants } from '../app-constants';
 import {AppParam} from '../model/app-param';
 import {LoDeliveryType} from '../model/lo-delivery-type';
 import {LoEntityOffice} from '../model/lo-entity-office';
+import {Product} from '../model/product';
+import {Supplier} from '../model/supplier';
+import {Currency} from '../model/currency';
 
 
 export class EmailValidator {
@@ -55,7 +57,7 @@ export class CustomValidators {
 }
 
 export class RefInjector {
-  public static injector: Injector;
+  static injector: Injector;
 
   public static push(value: Injector) {
     RefInjector.injector = value;
@@ -92,8 +94,8 @@ export namespace Providers {
   }
 
   export class CacheItems<T> implements IKeyedCollection<T> {
-    public items: { [index: string]: T } = {};
-    public count: number = 0;
+    items: { [index: string]: T } = {};
+    count: number = 0;
 
     public constructor(public maxSize: number = 0) {
     }
@@ -180,25 +182,25 @@ export namespace Providers {
   }
 
   export class CacheProvider {
-    public _cacheProduct: IKeyedCollection<CacheDataContainer<Product>> = null;
-    public _cacheSupplier: IKeyedCollection<CacheDataContainer<Supplier>> = null;
-    public _cacheCurrency: IKeyedCollection<CacheDataContainer<Currency>> = null;
-    public _cacheLang: IKeyedCollection<CacheDataContainer<Lang>> = null;
-    public _cacheManufacturer: IKeyedCollection<CacheDataContainer<Manufacturer>> = null;
-    public _cacheCity: IKeyedCollection<CacheDataContainer<City>> = null;
-    public _cacheCityWithStore: IKeyedCollection<CacheDataContainer<City>> = null;
-    public _cacheStorePlace: IKeyedCollection<CacheDataContainer<StorePlace>> = null;
-    public _cacheStore: IKeyedCollection<CacheDataContainer<{id:number, stores: Store[]}>> = null;
-    public _cacheMeasureUnit: IKeyedCollection<CacheDataContainer<MeasureUnit>> = null;
+     _cacheProduct: IKeyedCollection<CacheDataContainer<Product>> = null;
+     _cacheSupplier: IKeyedCollection<CacheDataContainer<Supplier>> = null;
+     _cacheCurrency: IKeyedCollection<CacheDataContainer<Currency>> = null;
+     _cacheLang: IKeyedCollection<CacheDataContainer<Lang>> = null;
+     _cacheManufacturer: IKeyedCollection<CacheDataContainer<Manufacturer>> = null;
+     _cacheCity: IKeyedCollection<CacheDataContainer<City>> = null;
+     _cacheCityWithStore: IKeyedCollection<CacheDataContainer<City>> = null;
+     _cacheStorePlace: IKeyedCollection<CacheDataContainer<StorePlace>> = null;
+     _cacheStore: IKeyedCollection<CacheDataContainer<{id:number, stores: Store[]}>> = null;
+     _cacheMeasureUnit: IKeyedCollection<CacheDataContainer<MeasureUnit>> = null;
 
-    public _cacheQuotation: IKeyedCollection<CacheDataContainer<Quotation>> = null;
-    public _cacheLoEntity: IKeyedCollection<CacheDataContainer<LoEntity>> = null;
-    public _cacheCountry: IKeyedCollection<CacheDataContainer<Country>> = null;
-    public _cacheEnumPaymentMethod: IKeyedCollection<CacheDataContainer<EnumPaymentMethod>> = null;
-    public _cacheRegion: IKeyedCollection<CacheDataContainer<Region>> = null;
-    public _cacheAppParams: IKeyedCollection<CacheDataContainer<AppParam>> = null;
-    public _cacheDeliveryType: IKeyedCollection<CacheDataContainer<LoDeliveryType>> = null;
-    public _cacheLoEntityOffice: IKeyedCollection<CacheDataContainer<LoEntityOffice>> = null;
+     _cacheQuotation: IKeyedCollection<CacheDataContainer<Quotation>> = null;
+     _cacheLoEntity: IKeyedCollection<CacheDataContainer<LoEntity>> = null;
+     _cacheCountry: IKeyedCollection<CacheDataContainer<Country>> = null;
+     _cacheEnumPaymentMethod: IKeyedCollection<CacheDataContainer<EnumPaymentMethod>> = null;
+     _cacheRegion: IKeyedCollection<CacheDataContainer<Region>> = null;
+     _cacheAppParams: IKeyedCollection<CacheDataContainer<AppParam>> = null;
+     _cacheDeliveryType: IKeyedCollection<CacheDataContainer<LoDeliveryType>> = null;
+     _cacheLoEntityOffice: IKeyedCollection<CacheDataContainer<LoEntityOffice>> = null;
 
     public static Settings:any;
 
@@ -424,7 +426,7 @@ function lazyParamToValue(pointer: any, params: string[]): any[] {
 // </editor-fold>
 
 export class SCN {
-  public static _scn: number = 0;
+  static _scn: number = 0;
 
   public static get value(): number {
     return this._scn;
@@ -493,7 +495,7 @@ export namespace System {
   // custome number
   export class FoxNumber {
     public value:number;
-    public _range:IRange;
+    _range:IRange;
     constructor(value: number = 1) {
          this.value = value;
          this._range = {min:1,max:30};

@@ -34,15 +34,15 @@ class ProductPropsAgg {
 
 @Injectable()
 export class SearchService {
-  public cKey = 'searchItems';
-  public cMaxSearchItemsCount;
-  public _ls: string = '';
-  public client: Client;
-  public readonly INDEX = 'product';
-  public readonly TYPE = null;
-  public SIZE = 30;
-  public MAX_ITEMS_COUNT = 360;
-  public infiniteScroll:any;
+  cKey = 'searchItems';
+  cMaxSearchItemsCount;
+  _ls: string = '';
+  client: Client;
+  readonly INDEX = 'product';
+  readonly TYPE = null;
+  SIZE = 30;
+  MAX_ITEMS_COUNT = 360;
+  infiniteScroll:any;
 
   products = [];
   searchItems = new Array<string>();
@@ -96,7 +96,7 @@ export class SearchService {
     this.lastSearchStringUpdated.emit(value);
   }
 
-  public async connect() {
+  async connect() {
     this.client = new Client({
       host: AppConstants.ELASTIC_PROD_MODE ? (await this.repo.getAppParam('ELASTIC_ENDPOINT')).split(" ") : AppConstants.DEV_ELASTIC_ENDPOINT
     })

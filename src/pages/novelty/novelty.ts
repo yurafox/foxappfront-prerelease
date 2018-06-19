@@ -1,13 +1,14 @@
 import {System} from '../../app/core/app-core';
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
-import {AbstractDataRepository, CartService} from '../../app/service/index';
-import {Novelty} from './../../app/model/index';
 import 'rxjs/add/operator/takeWhile';
-import {ItemBase} from "../../components/component-extension/item-base";
-import {StorePlace} from "../../app/model/store-place";
+import {ItemBase} from '../../components/component-extension/item-base';
+import {StorePlace} from '../../app/model/store-place';
 import {EventService} from '../../app/service/event-service';
-import {NoveltyDetails} from "../../app/model/novelty-det";
+import {NoveltyDetails} from '../../app/model/novelty-det';
+import {Novelty} from '../../app/model/novelty';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {CartService} from '../../app/service/cart-service';
 
 @IonicPage()
 @Component({
@@ -20,7 +21,7 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
   public novelty: Novelty;
   public noveltyDetails: NoveltyDetails[];
   public productId: number;
-  public available: boolean = true;
+  available: boolean = true;
 
   qty = new System.FoxNumber();
   selectedStorePlace: StorePlace;

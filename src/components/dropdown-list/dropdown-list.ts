@@ -169,9 +169,9 @@ export class DropdownListComponent extends ComponentBase implements OnChanges {
   public sourceContext: any;
 
   // проверка приоритета работы со сылкой
-  public referencePriority:boolean;
+  referencePriority:boolean;
 
-  public verifyBehaviorList: Array<{ fn: () => boolean, errText: string }> = [];
+  verifyBehaviorList: Array<{ fn: () => boolean, errText: string }> = [];
 
   constructor(public popoverCtrl: PopoverController,
     public _viewCtnr: ViewContainerRef) {

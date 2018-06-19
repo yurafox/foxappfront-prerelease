@@ -18,7 +18,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid style="height: 100%" *ngIf="cart.orderProducts.length == 0" [@fadeInAnimation500]>
+  <ion-grid style="height: 100%" *ngIf="cart.orderProducts.length === 0" [@fadeInAnimation500]>
     <ion-row justify-content-center align-items-center style="height: 50%">
           <ion-icon class="f-icon-scale" name="cart"></ion-icon>
     </ion-row>

@@ -7,7 +7,7 @@ import {StorePlace} from './store-place'
 ])
 
 export class ProductStorePlace {
-  public _repo: AbstractDataRepository;
+  _repo: AbstractDataRepository;
 
   constructor (
     public id: number,

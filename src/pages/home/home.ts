@@ -1,10 +1,10 @@
 import {ChangeDetectorRef, Component,DoCheck, ElementRef, ViewChild} from '@angular/core';
 import {App, NavController, IonicPage, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
-import {AbstractDataRepository} from '../../app/service/index';
 import {SearchService} from '../../app/service/search-service';
-import {ScreenOrientation} from "@ionic-native/screen-orientation";
-import {Subscription} from "rxjs/Subscription";
+import {ScreenOrientation} from '@ionic-native/screen-orientation';
+import {Subscription} from 'rxjs/Subscription';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 export enum PageMode {
   HomeMode = 1,
@@ -19,26 +19,13 @@ export enum PageMode {
 })
 export class HomePage extends ComponentBase implements DoCheck {
 
-  public _pageMode: PageMode = PageMode.HomeMode;
-
-  // list slides for slider
-  slides = [
-    {
-      src: 'assets/imgs/actions/action3.jpg'
-    },
-    {
-      src: 'assets/imgs/actions/action2.jpg'
-    },
-    {
-      src: 'assets/imgs/actions/action1.jpg'
-    }
-  ];
+  _pageMode: PageMode = PageMode.HomeMode;
 
   @ViewChild('srch') searchButtonControl;
   @ViewChild('cont') cont;
   @ViewChild('itemsList') itemsList;
   @ViewChild('header') header;
-  public filterRef: ElementRef;
+  filterRef: ElementRef;
 
   @ViewChild('filter') set filter(elRef: ElementRef) {
     this.filterRef = elRef;

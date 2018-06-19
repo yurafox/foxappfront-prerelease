@@ -1,9 +1,11 @@
 import {Input, OnInit} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from './component-base';
-import {Product, ProductStorePlace, QuotationProduct} from '../../app/model/index';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {AppConstants} from '../../app/app-constants';
+import {Product} from '../../app/model/product';
+import {QuotationProduct} from '../../app/model/quotation-product';
+import {ProductStorePlace} from '../../app/model/product-store-place';
 
 
 export class ItemBase extends ComponentBase implements OnInit {

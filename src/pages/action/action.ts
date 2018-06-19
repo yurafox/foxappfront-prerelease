@@ -1,16 +1,15 @@
-import {QuotationProduct, Product} from './../../app/model/index';
-import {System} from '../../app/core/app-core';
-import {ChangeDetectorRef, Component, OnInit, DoCheck, OnDestroy, ViewChild, HostListener, NgZone} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, DoCheck, OnDestroy, ViewChild, NgZone} from '@angular/core';
 import {Content, IonicPage, NavController, NavParams} from 'ionic-angular';
-import {AbstractDataRepository} from '../../app/service/index';
-import {Action} from './../../app/model/index';
-import {Observable} from 'rxjs';
 import 'rxjs/add/operator/takeWhile';
-import {IntervalObservable} from "rxjs/observable/IntervalObservable";
+import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {SearchService} from '../../app/service/search-service';
-import {ScreenOrientation} from "@ionic-native/screen-orientation";
-import {Subscription} from "rxjs/Subscription";
+import {ScreenOrientation} from '@ionic-native/screen-orientation';
+import {Subscription} from 'rxjs/Subscription';
+import {Action} from '../../app/model/action';
+import {Product} from '../../app/model/product';
+import {QuotationProduct} from '../../app/model/quotation-product';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 @IonicPage()
 @Component({
@@ -31,10 +30,10 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
   public actionProducts:Array<Product>=[];
   public quotationProduct:Array<QuotationProduct>=[];
   public expire:{days?:number,hours?:number,minutes?:number,seconds?:number};
-  public alive:boolean;
-  public monitor:{};
-  public me:any;
-  public divsHeight:number;
+  alive:boolean;
+  monitor:{};
+  me:any;
+  divsHeight:number;
 
   public position;
   public top;
@@ -42,7 +41,7 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
   public scrolledEnough: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public _repo:AbstractDataRepository,public srch: SearchService,
+              public _repo:AbstractDataRepository, public srch: SearchService,
               public screenOrientation: ScreenOrientation,public changeDet: ChangeDetectorRef,
               public zone: NgZone) {
     super();
@@ -157,7 +156,7 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
 }
 
 class Monitor {
-  public static isLock:boolean=false;
+  static isLock:boolean=false;
   public static enter():void {
     Monitor.isLock=true;
   }

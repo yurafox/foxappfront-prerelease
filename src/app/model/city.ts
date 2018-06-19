@@ -7,7 +7,7 @@ import {AbstractDataRepository} from '../service/repository/abstract/abstract-da
 ])
 export class City {
 
-  public _repo: AbstractDataRepository;
+  _repo: AbstractDataRepository;
 
   public get cityWithRegion(): string {
     const _reg = ((<any>this).region) ? (<any>this).region.name : '';

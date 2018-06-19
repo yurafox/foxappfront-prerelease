@@ -10,7 +10,7 @@ import {BannerSlide} from "../../app/model/banner-slide";
 export class SlidingBannerComponent {
   // list slides for slider
   public slides: BannerSlide[] = [];
-  @ViewChild(Slides) public _slides: Slides;
+  @ViewChild(Slides) _slides: Slides;
 
   constructor(public nav: NavController, public _repo: AbstractDataRepository) {}
 

@@ -66,8 +66,8 @@ export class ComplectComponent extends ComponentBase {
 
   mainProdImgUrl: string;
   mainProdName: string;
-  public _actionsBinded = false;
-  public _productBinded = false;
+  _actionsBinded = false;
+  _productBinded = false;
 
 
   @Input()
@@ -84,7 +84,7 @@ export class ComplectComponent extends ComponentBase {
     return this._actionsArr;
   }
 
-  public _mainProductId: number;
+  _mainProductId: number;
 
   @Input()
   set mainProductId (value: number) {

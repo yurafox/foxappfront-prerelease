@@ -1,10 +1,11 @@
 import { IDictionary } from './../../app/core/app-core';
-import { PollQuestion, PollQuestionAnswer, AnswerType } from './../../app/model/index';
 import { Component} from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { ComponentBase } from '../../components/component-extension/component-base';
-import { AbstractDataRepository } from '../../app/service/index';
-import {ClientPollAnswer} from '../../app/model/index';
+import {AnswerType, PollQuestion} from '../../app/model/poll-question';
+import {PollQuestionAnswer} from '../../app/model/poll-question-answer';
+import {ClientPollAnswer} from '../../app/model/client-poll-answer';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 interface IPollResult {
   questionId:number,
@@ -106,7 +107,7 @@ export class PollPage extends ComponentBase{
     return answersCount===this.pollQuestions.length;
   }
 
-  public setUsrOptConfig(qAnswer:IQuestionContainer,answerValue:string,isShowOpt:boolean):void {
+  setUsrOptConfig(qAnswer:IQuestionContainer,answerValue:string,isShowOpt:boolean):void {
     qAnswer.showOpt = isShowOpt;
     if(answerValue) {
       this.pollresults.pollResult[`${qAnswer.questionObj.id}`] = {questionId:qAnswer.questionObj.id,answerValue:`${answerValue}`};

@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
-import {NavController} from "ionic-angular";
-import { AbstractDataRepository } from '../../app/service/index';
-import {Action} from '../../app/model/index';
+import {NavController} from 'ionic-angular';
 import {fadeInAnimation} from '../../app/core/animation-core';
-import {ComponentBase} from "../component-extension/component-base";
-import {IntervalObservable} from "rxjs/observable/IntervalObservable";
+import {ComponentBase} from '../component-extension/component-base';
+import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
+import {Action} from '../../app/model/action';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 @Component({
   selector: 'action-sketch',

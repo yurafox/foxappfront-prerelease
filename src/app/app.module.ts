@@ -21,8 +21,8 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {HomePage} from '../pages/home/home';
 
 import {AppConstants} from './app-constants';
-// import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
-// import {WebApiService} from './service/webapi/web-api-service';
+import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
+import {WebApiService} from './service/webapi/web-api-service';
 import {RefInjector} from './core/app-core';
 import {ComponentsModule} from '../components/components.module';
 import {PipesModule} from "./pipe/pipes.module";
@@ -102,6 +102,7 @@ import {NewsDetailPageModule} from '../pages/news-detail/news-detail.module';
 import {ManageNewsMenuPageModule} from '../pages/manage-news-menu/manage-news-menu.module';
 import {ItemImgPageModule} from '../pages/item-img/item-img.module';
 import {CallMePageModule} from '../pages/call-me/call-me.module';
+
 
 @NgModule({
   declarations: [
@@ -196,6 +197,7 @@ import {CallMePageModule} from '../pages/call-me/call-me.module';
     CallNumber,
     BackgroundMode,
     Push,
+    //{provide: Compiler, useExisting: RuntimeCompiler },
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
     {provide: AbstractAccountRepository, useClass: AccountRepository},

@@ -1,20 +1,20 @@
 import {Injectable} from '@angular/core';
-import {User,IUserVerifyAccountData, IUserInfo} from '../../model/user';
+import {AlertController, ToastController} from 'ionic-angular';
+import {AppConstants} from '../../app-constants';
+import {IDictionary} from '../../core/app-core';
+import {EventService} from '../event-service';
+import {AbstractLocalizationRepository} from '../repository/abstract/abstract-localization-repository';
+import {IUserInfo, IUserVerifyAccountData, User} from '../../model/user';
+import {AbstractAccountRepository} from '../repository/abstract/abstract-account-repository';
 import {ChangePassword} from '../../model/change-password';
-import {AbstractAccountRepository} from "../repository/abstract/abstract-account-repository";
-import {AppConstants} from "../../app-constants";
-import {LoginTemplate} from "../../model/login-template";
-import {IDictionary} from "../../core/app-core";
-import {EventService} from "../event-service";
-import {AlertController, ToastController} from "ionic-angular";
-import {AbstractLocalizationRepository} from "../repository/abstract/abstract-localization-repository";
+import {LoginTemplate} from '../../model/login-template';
 
 @Injectable()
 export class UserService {
-  public user: User;
-  public _auth: boolean;
-  public _token: string;
-  public shortloginMutex:boolean = false;
+  user: User;
+  _auth: boolean;
+  _token: string;
+  shortloginMutex:boolean = false;
 
 
   public errorMessages:IDictionary<string> = {  // field for user service error log
@@ -224,7 +224,7 @@ export class UserService {
   //   }
   // }
 
-  public firstOrDefaults(props: Array<string>, defVals: Array<string>): void {
+  firstOrDefaults(props: Array<string>, defVals: Array<string>): void {
     if (props.length === 0) {
       return;
     }
@@ -242,7 +242,7 @@ export class UserService {
   }
 
   // create default user
-  public callDefaultUser() {
+  callDefaultUser() {
     this.user = new User();
     this._auth = false;
     const lang: string = AppConstants.LOCALE_DEFAULT_VALUE.toString();
@@ -251,7 +251,7 @@ export class UserService {
   }
 
   // add data to storage and check user status
-  public addImpotantDataToStorage(userFields: Array<string>) {
+  addImpotantDataToStorage(userFields: Array<string>) {
     localStorage.setItem('currency',this.user.userSetting['currency']);
     localStorage.setItem('lang', this.user.userSetting['lang']);
 
@@ -262,7 +262,7 @@ export class UserService {
   }
 
   // change status method facade
-  public changeAuthStatus(userFields: Array<string>): void {
+  changeAuthStatus(userFields: Array<string>): void {
     this.addImpotantDataToStorage(userFields);
     let cAuth = this._auth;
     this._auth = true;
@@ -271,7 +271,7 @@ export class UserService {
   }
 
  // remove data from storage and check user status
-  public removeDataFromStorage(fields: Array<string>){
+  removeDataFromStorage(fields: Array<string>){
     for(let i = 0; i < fields.length; i++) {
       localStorage.removeItem(fields[i]);
     }
@@ -279,7 +279,7 @@ export class UserService {
   // </editor-fold>
 
 // error clear
-  public errorClear(actionName: string){
+  errorClear(actionName: string){
     this.errorMessages[actionName]='';
   }
   // </editor-fold>

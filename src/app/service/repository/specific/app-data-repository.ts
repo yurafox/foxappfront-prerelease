@@ -2791,7 +2791,7 @@ export class AppDataRepository extends AbstractDataRepository {
                 val.upvotes,
                 val.downvotes,
                 []
-              )
+              );
               storeRev.vote = val.vote;
               storesRevs.push(storeRev);
             }
@@ -2804,7 +2804,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getStoreReviews(): Promise<{ reviews: IDictionary<StoreReview[]>, idClient: number }> {
+  public async getStoreReviews(): Promise<{ reviews: StoreReview[], idClient: number }> {
     try {
       const response = await this.http
         .get(`${storeReviewsUrl}`, RequestFactory.makeAuthHeader()).toPromise();
@@ -2813,11 +2813,9 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      let reviews: IDictionary<StoreReview[]> = {};
+      let storesRevs = new Array<StoreReview>();
       if (data.storeReviews != null) {
-        const storesRevs = new Array<StoreReview>();
         let answers: IDictionary<ReviewAnswer[]> = {};
-        let idStore: number = 0;
         for (let i = data.storeReviews.length - 1; i > -1; i--) {
           let val = data.storeReviews[i];
           let substrings = val.reviewDate.toString().split("T");
@@ -2839,7 +2837,6 @@ export class AppDataRepository extends AbstractDataRepository {
           }
         }
         data.storeReviews.forEach(val => {
-          idStore = val.idStore;
           let substrings = val.reviewDate.toString().split("T");
           let substring1 = substrings[0].slice(0, substrings[0].length);
           let substring2 = substrings[1].slice(0, substrings[1].length - 1);
@@ -2882,9 +2879,8 @@ export class AppDataRepository extends AbstractDataRepository {
             }
           }
         });
-        reviews[idStore.toString()] = storesRevs;
       }
-      return { reviews: reviews, idClient: data.currentUser };
+      return { reviews: storesRevs, idClient: data.currentUser };
     } catch (err) {
       return await this.handleError(err);
     }

@@ -7,23 +7,23 @@ import { NgControl } from '@angular/forms';
 })
 export class MaskComponent {
 
-    public static readonly ALPHA = 'A';
-    public static readonly NUMERIC = '9';
-    public static readonly ALPHANUMERIC = '?';
-    public static readonly REGEX_MAP = new Map([
+    static readonly ALPHA = 'A';
+    static readonly NUMERIC = '9';
+    static readonly ALPHANUMERIC = '?';
+    static readonly REGEX_MAP = new Map([
         [MaskComponent.ALPHA, /\w/],
         [MaskComponent.NUMERIC, /\d/],
         [MaskComponent.ALPHANUMERIC, /\w|\d/],
     ]);
 
-    public value: string = null;
-    public displayValue: string = null;
+    value: string = null;
+    displayValue: string = null;
 
     @Input('mask')
-    public maskGenerator: string;
+    maskGenerator: string;
 
     @Output('spMaskValueChange')
-    public changeEmitter = new EventEmitter<string>();
+    changeEmitter = new EventEmitter<string>();
 
     @HostListener('input', ['$event'])
     public onInput(event: { target: { value?: string }}): void {
@@ -69,7 +69,7 @@ export class MaskComponent {
     }
 
 
-    public static mask(value: string, mask: string): string {
+  public static mask(value: string, mask: string): string {
         value = value.toString();
 
         let len = value.length;
@@ -105,14 +105,14 @@ export class MaskComponent {
         return newValue;
     }
 
-    public static unmask(maskedValue: string, mask: string): string {
+  public static unmask(maskedValue: string, mask: string): string {
         let maskLen = (mask && mask.length) || 0;
         return maskedValue.split('').filter(
             (currChar, idx) => (idx < maskLen) && MaskComponent.REGEX_MAP.has(mask[idx])
         ).join('');
     }
 
-    public static delay(ms: number = 0): Promise<void> {
+  public static delay(ms: number = 0): Promise<void> {
         return new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => null);
     }
 }

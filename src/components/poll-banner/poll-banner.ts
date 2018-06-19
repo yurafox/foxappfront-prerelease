@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import {NavController} from "ionic-angular";
-import { AbstractDataRepository } from '../../app/service/index';
+import { Component, Input } from '@angular/core';
+import {NavController} from 'ionic-angular';
 import { ComponentBase } from '../component-extension/component-base';
-import { Poll,ClientPollAnswer } from './../../app/model/index';
 import {fadeInAnimation} from '../../app/core/animation-core';
+import {Poll} from '../../app/model/poll';
+import {ClientPollAnswer} from '../../app/model/client-poll-answer';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 @Component({
   selector: 'poll-banner',

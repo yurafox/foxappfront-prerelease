@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {AlertController, IonicPage, NavController} from 'ionic-angular';
-import {ComponentBase} from "../../components/component-extension/component-base";
-import {City, Store, StoreReview} from "../../app/model";
-import {AbstractDataRepository} from "../../app/service";
+import {ComponentBase} from '../../components/component-extension/component-base';
+import {City} from '../../app/model/city';
+import {Store} from '../../app/model/store';
+import {StoreReview} from '../../app/model/store-review';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 export interface IStore {
   city: City;

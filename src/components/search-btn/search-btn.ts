@@ -22,11 +22,11 @@ class SearchSuggestItem {
 export class SearchBtnComponent extends ComponentBase {
 
   @Input()
-  public hostPage: any = null;
+  hostPage: any = null;
 
   srchTextInputStream$ = new Subject<string>();
 
-  public srchItemsArr = new Array<SearchSuggestItem>();
+  srchItemsArr = new Array<SearchSuggestItem>();
   searchValue = null;
   inputMode = false;
 

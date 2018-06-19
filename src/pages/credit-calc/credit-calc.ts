@@ -20,7 +20,7 @@ export class CreditCalcPage extends ComponentBase {
   quotProduct: QuotationProduct = null;
   lastQp: number = null;
   credits: Array<CreditCalc> = [];
-  public _cProd: {isChecked: boolean, creditProduct: CreditProduct} = null;
+  _cProd: {isChecked: boolean, creditProduct: CreditProduct} = null;
   public dArray: Array<{value: number, displayValue: string}> = [];
 
 

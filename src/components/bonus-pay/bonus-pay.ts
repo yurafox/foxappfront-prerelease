@@ -5,7 +5,7 @@ import 'rxjs/add/operator/switchMap';
 import { Component } from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {CartService} from '../../app/service/cart-service';
-import {Keyboard} from "@ionic-native/keyboard";
+import {Keyboard} from '@ionic-native/keyboard';
 
 
 @Component({

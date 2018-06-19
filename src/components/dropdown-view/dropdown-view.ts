@@ -8,7 +8,7 @@ import {DropdownListComponent} from "../dropdown-list/dropdown-list";
 })
 export class DropdownViewComponent implements AfterViewInit{
   public parent:DropdownListComponent;
-  public proxyObj:any;
+  proxyObj:any;
   constructor(public nav: NavController,
               public navParam: NavParams,
               public viewCtrl: ViewController,

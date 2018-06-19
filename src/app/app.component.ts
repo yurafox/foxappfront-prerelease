@@ -1,16 +1,16 @@
 import {Component, ViewChild, OnDestroy} from '@angular/core';
 import {Nav, Platform, MenuController, AlertController, ModalController} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
-import {AbstractDataRepository} from "./service/repository/abstract/abstract-data-repository";
 import {ComponentBase} from "../components/component-extension/component-base";
 import {AppAvailability} from "@ionic-native/app-availability";
 import {Device} from '@ionic-native/device';
-import {DeviceData} from "./model/device-data";
 import {System} from "./core/app-core";
 import {CartService} from "./service/cart-service";
 import {ConnectivityService} from "./service/connectivity-service";
 import {StatusBar} from '@ionic-native/status-bar';
 import {BackgroundMode} from "@ionic-native/background-mode";
+import {AbstractDataRepository} from './service/repository/abstract/abstract-data-repository';
+import {DeviceData} from './model/device-data';
 import {Push, PushObject, PushOptions} from '@ionic-native/push';
 
 export interface PageInterface {
@@ -20,9 +20,6 @@ export interface PageInterface {
   icon?: string;
   index?: number;
 }
-
-//declare var FirebasePlugin: any;
-//declare var PushNotification: any;
 
 @Component({
   templateUrl: 'app.html'
@@ -47,8 +44,8 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     //{title: 'Поддержка', name: 'Support', component: 'SupportPage', index: 3, icon: 'ios-text-outline'},
   ];
 
-  public noveltyPushEventDescriptor: any;
-  public actionPushEventDescriptor: any;
+  noveltyPushEventDescriptor: any;
+  actionPushEventDescriptor: any;
 
   constructor(public platform: Platform, public alertCtrl: AlertController, public splashScreen: SplashScreen,
               public menuCtrl: MenuController, public repo: AbstractDataRepository,
@@ -84,95 +81,57 @@ export class FoxApp extends ComponentBase implements OnDestroy {
         System.PushContainer.pushStore[`action${data.innerId}`] = data;
       });
 
-      if (this.device.cordova) {
-        if (this.userService.isAuth && this.userService.token) {
-          // Getting FCM device token and send device data
-          /*FirebasePlugin.getToken((token) => {
-            console.log(token);
-            if (token) {
-              // Collecting and send data about device including device FCM token
-              //this.collectAndSendDeviceData(token).catch((err) => console.log(`Sending device's data err: ${err}`));
+      /**
+       * Getting FCM device token and sending device data to back-end
+       */
+      this.push.hasPermission().then((res: any) => {
+        if (res.isEnabled) {
+          const options: PushOptions = {
+            android: {
+              senderID: "431639834815",
+              clearNotifications: false
+            },
+            ios: {
+              alert: "true",
+              badge: "true",
+              sound: "true"
             }
-          });*/
-          /*this.push.hasPermission()
-            .then((res: any) => {
-              if (res.isEnabled) {
-                const options: PushOptions = {
-                  android: {
-                    senderID: "431639834815",
-                    clearNotifications: false
-                  },
-                  ios: {
-                    alert: "true",
-                    badge: "true",
-                    sound: "true"
-                  }
-                };
+          };
 
-                const pushObject: PushObject = this.push.init(options);
+          const pushObject: PushObject = this.push.init(options);
 
-                pushObject.on('notification').subscribe((notification: any) => {
-                  console.log('Received a notification', notification.title);
-                  let alert = this.alertCtrl.create({
-                    message: notification.title,
-                    buttons: [
-                      {
-                        text: 'OK'
-                      }
-                    ]
-                  });
-                  alert.present().catch((err) => console.log(`Alert error: ${err}`));
-                });
+          /**
+           * Subscribing this device to the main topic to send PUSH-notifications to this topic
+           */
+          pushObject.subscribe('main').catch((err) => console.error(err));
 
-                pushObject.on('registration').subscribe((registration: any) => {
-                  console.log('Device registered', registration.registrationId);
-                  let alert = this.alertCtrl.create({
-                    message: registration.registrationId,
-                    buttons: [
-                      {
-                        text: 'OK'
-                      }
-                    ]
-                  });
-                  alert.present().catch((err) => console.log(`Alert error: ${err}`));
-                });
+          pushObject.on('notification').subscribe((notification: any) => {
+            /**
+             * Handling incoming PUSH-notifications
+             */
+            this.pushNotificationHandling(notification).catch((err) => console.error(err));
+          });
 
-                pushObject.on('error').subscribe(error => {
-                  console.error('Error with Push plugin', error.message);
-                  let alert = this.alertCtrl.create({
-                    message: error.message,
-                    buttons: [
-                      {
-                        text: 'OK'
-                      }
-                    ]
-                  });
-                  alert.present().catch((err) => console.log(`Alert error: ${err}`));
-                });
-              } else {
-                console.log('We do not have permission to send push notifications');
-              }
-            });*/
+          pushObject.on('registration').subscribe((registration: any) => {
+            if (registration.registrationId) {
+              /**
+               * Collecting and sending data about device including device FCM token
+               */
+              this.collectAndSendDeviceData(registration.registrationId).catch((err) => console.log(`Sending device's data err: ${err}`));
+            }
+          });
+
+          pushObject.on('error').subscribe(error => {
+            console.error('Error with Push plugin', error.message);
+          });
+        } else {
+          console.log('We do not have permission to send push notifications');
         }
-        // Subscribing this device to the main topic to send PUSH-notifications to this topic
-        /*FirebasePlugin.subscribe('main');
-        // Handling incoming PUSH-notifications
-        FirebasePlugin.onNotificationOpen((data) => {
-          console.log(JSON.stringify(data));
-          // if (data.wasTapped) {
-          //   //Notification was received on device tray and tapped by the user.
-          //   this.pushNotificationHandling(data).catch((err)=>console.error(err));
-          // } else {
-          //   //Notification was received in foreground. Maybe the user needs to be notified.
-          //   this.pushNotificationHandling(data).catch((err)=>console.error(err));
-          // }
-        });*/
+      });
 
-
-        this.splashScreen.hide();
-        this.backgroundMode.enable();
-        this.backgroundMode.setDefaults({silent: true}).catch((err)=>console.error(err));
-      }
+      this.splashScreen.hide();
+      this.backgroundMode.enable();
+      this.backgroundMode.setDefaults({silent: true}).catch((err) => console.error(err));
     });
   }
 
@@ -205,11 +164,11 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   }
 
   register() {
-    this.nav.push('RegisterPage');
+    this.nav.push('RegisterPage').catch((err)=>console.error(err));
   }
 
   account() {
-    this.nav.push('AccountMenuPage');
+    this.nav.push('AccountMenuPage').catch((err)=>console.error(err));
   }
 
   signOut() {
@@ -220,11 +179,10 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     this.menuCtrl.close().catch(err => {
       console.log(`Couldn't close the menu: ${err}`);
     });
-    //FirebasePlugin.unsubscribe('main');
   }
 
   openBalancePage() {
-    this.nav.push('BalancePage');
+    this.nav.push('BalancePage').catch((err)=>console.error(err));
   }
 
   toLogIn() {
@@ -237,15 +195,20 @@ export class FoxApp extends ComponentBase implements OnDestroy {
 
   callMe() {
     const callMeModal = this.modalCtrl.create('CallMePage');
-    callMeModal.present();
+    callMeModal.present().catch((err)=>console.error(err));
   }
 
   support() {
     const supportModal = this.modalCtrl.create('SupportPage');
-    supportModal.present();
+    supportModal.present().catch((err)=>console.error(err));
   }
 
-  // Collects and sends device's data about model, operation system + it's version and screen size, and FCM device token
+  /**
+   * Collects and sends device's data about model, operation system + it's version and screen size, and FCM device token
+   *
+   * @param pushDeviceToken
+   * @returns {Promise<void>}
+   */
   public async collectAndSendDeviceData(pushDeviceToken: any) {
     let model = this.device.manufacturer + ' ' + this.device.model;
     let os = this.device.platform + ' ' + this.device.version;
@@ -257,9 +220,15 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     });
   }
 
-  // Handling incoming PUSH-notifications
+  /**
+   * Handles incoming PUSH-notifications
+   *
+   * @param data
+   * @returns {Promise<void>}
+   */
   public async pushNotificationHandling(data) {
-    let target = data.target;
+    let target = data.additionalData.target;
+    let additionalData = data.additionalData;
     let noveltyTitle = this.locale['NoveltyTitle'];
     let noveltyMessage = this.locale['NoveltyMessage'];
     let promoTitle = this.locale['PromoTitle'];
@@ -269,81 +238,32 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     let cancel = this.locale['Cancel'];
     switch (target) {
       case 'novelty': {
-        if (data.id) {
-          let alert = this.alertCtrl.create({
-            title: noveltyTitle,
-            message: noveltyMessage,
-            buttons: [
-              {
-                text: 'OK',
-                handler: () => {
-                  let noveltySketch = System.PushContainer.pushStore[`novelty${data.id}`];
-                  if (noveltySketch.novelty && noveltySketch.product) {
-                    noveltySketch.openNovelty();
-                  }
-                }
-              },
-              {
-                text: cancel
-              }
-            ]
-          });
-          alert.present().catch((err) => console.log(`Alert error: ${err}`));
+        if (additionalData.id) {
+          this.showNoveltyAlert(noveltyTitle, noveltyMessage, additionalData, cancel);
         }
         break;
       }
-      case 'action' || 'promotion' || 'promo': {
-        if (data.id) {
-          let alert = this.alertCtrl.create({
-            title: promoTitle,
-            message: promoMessage,
-            buttons: [
-              {
-                text: 'OK',
-                handler: () => {
-                  let actionSketch = System.PushContainer.pushStore[`action${data.id}`];
-                  if (actionSketch.action) {
-                    actionSketch.openAction();
-                  }
-                }
-              },
-              {
-                text: cancel
-              }
-            ]
-          });
-          alert.present().catch((err) => console.log(`Alert error: ${err}`));
+      case 'action': {
+        if (additionalData.id) {
+          this.showPromoAlert(promoTitle, promoMessage, additionalData, cancel);
+        }
+        break;
+      }
+      case 'promotion': {
+        if (additionalData.id) {
+          this.showPromoAlert(promoTitle, promoMessage, additionalData, cancel);
+        }
+        break;
+      }
+      case 'promo': {
+        if (additionalData.id) {
+          this.showPromoAlert(promoTitle, promoMessage, additionalData, cancel);
         }
         break;
       }
       case 'promocode': {
-        if (data.promocode) {
-          this.cartService.promoCode = data.promocode;
-          if (this.cartService.cartItemsCount > 0) {
-            this.cartService.calculateCart().catch((err) => {
-              console.log(`Couldn't get discount:${err}`);
-            });
-          }
-          this.evServ.events['cartUpdateEvent'].emit();
-          this.evServ.events['cartItemsUpdateEvent'].emit();
-          let alert = this.alertCtrl.create({
-            title: promocodeTitle,
-            message: promocodeMessage,
-            buttons: [
-              {
-                text: 'OK',
-                handler: () => {
-                  this.nav.push('CartPage').catch((err: any) => {
-                    console.log(`Couldn't navigate to CartPage: ${err}`);
-                  })
-                }
-              },
-              {
-                text: cancel
-              }
-            ]
-          });
-          alert.present().catch((err) => console.log(`Alert error: ${err}`));
+        if (additionalData.promocode) {
+          this.usePromocodeAndShowAlert(additionalData, promocodeTitle, promocodeMessage, cancel);
         }
         break;
       }
@@ -352,6 +272,82 @@ export class FoxApp extends ComponentBase implements OnDestroy {
         break;
       }
     }
+  }
+
+  showNoveltyAlert(noveltyTitle, noveltyMessage, additionalData, cancel) {
+    let alert = this.alertCtrl.create({
+      title: noveltyTitle,
+      message: noveltyMessage,
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            let noveltySketch = System.PushContainer.pushStore[`novelty${additionalData.id}`];
+            if (noveltySketch.novelty && noveltySketch.product) {
+              noveltySketch.openNovelty();
+            }
+          }
+        },
+        {
+          text: cancel
+        }
+      ],
+      enableBackdropDismiss: false
+    });
+    alert.present().catch((err) => console.log(`Alert error: ${err}`));
+  }
+
+  showPromoAlert(promoTitle, promoMessage, additionalData, cancel) {
+    let alert = this.alertCtrl.create({
+      title: promoTitle,
+      message: promoMessage,
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            let actionSketch = System.PushContainer.pushStore[`action${additionalData.id}`];
+            if (actionSketch.action) {
+              actionSketch.openAction();
+            }
+          }
+        },
+        {
+          text: cancel
+        }
+      ],
+      enableBackdropDismiss: false
+    });
+    alert.present().catch((err) => console.log(`Alert error: ${err}`));
+  }
+
+  usePromocodeAndShowAlert(additionalData, promocodeTitle, promocodeMessage, cancel) {
+    this.cartService.promoCode = additionalData.promocode;
+    if (this.cartService.cartItemsCount > 0) {
+      this.cartService.calculateCart().catch((err) => {
+        console.log(`Couldn't get discount:${err}`);
+      });
+    }
+    this.evServ.events['cartUpdateEvent'].emit();
+    this.evServ.events['cartItemsUpdateEvent'].emit();
+    let alert = this.alertCtrl.create({
+      title: promocodeTitle,
+      message: promocodeMessage,
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.nav.push('CartPage').catch((err: any) => {
+              console.log(`Couldn't navigate to CartPage: ${err}`);
+            })
+          }
+        },
+        {
+          text: cancel
+        }
+      ],
+      enableBackdropDismiss: false
+    });
+    alert.present().catch((err) => console.log(`Alert error: ${err}`));
   }
 }
 

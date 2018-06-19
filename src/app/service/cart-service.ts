@@ -1,4 +1,5 @@
-import {Injectable, Injector, OnDestroy} from '@angular/core';
+import {Injectable} from '@angular/core';
+import {AlertController, App, LoadingController} from 'ionic-angular';
 import {ClientOrder} from '../model/client-order';
 import {ClientOrderProducts} from '../model/client-order-products';
 import {QuotationProduct} from '../model/quotation-product';
@@ -6,12 +7,11 @@ import {StorePlace} from '../model/store-place';
 import {UserService} from './bll/user-service';
 import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
 import {EventService} from './event-service';
-import {AlertController, App, LoadingController} from 'ionic-angular';
 import {PersonInfo} from '../model/person';
 import {CreditCalc} from '../model/credit-calc';
-import {AbstractLocalizationRepository} from "./repository/abstract/abstract-localization-repository";
-import {IDictionary, SCN} from "../core/app-core";
-import {CurrencyStore} from "./repository/specific/currency-store.service";
+import {AbstractLocalizationRepository} from './repository/abstract/abstract-localization-repository';
+import {IDictionary, SCN} from '../core/app-core';
+import {CurrencyStore} from './repository/specific/currency-store.service';
 import {ComplectItem} from '../../components/complect/complect';
 import {ItemDetailPage} from '../../pages/item-detail/item-detail';
 import {Shipment} from '../model/shipment';
@@ -93,8 +93,10 @@ export class CartService {
     );
 
     this.evServ.events['cartUpdateEvent'].subscribe(() => {
-        this.calculateCart();
-        this.updateDisplayOrderProducts();
+        this.calculateCart().then(() =>
+          this.updateDisplayOrderProducts()
+        );
+
       }
     );
 

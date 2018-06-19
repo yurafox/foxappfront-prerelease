@@ -1,7 +1,6 @@
-import {User,IUserVerifyAccountData,IUserInfo} from '../../../model/user';
+import {IUserInfo, IUserVerifyAccountData, User} from '../../../model/user';
 import {LoginTemplate} from '../../../model/login-template';
 import {ChangePassword} from '../../../model/change-password';
-
 
 export abstract class AbstractAccountRepository {
   public async abstract register(user: User): Promise<IUserInfo>;

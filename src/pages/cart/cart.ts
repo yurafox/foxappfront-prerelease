@@ -1,4 +1,4 @@
-import {Component, DoCheck} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController, IonicPage, AlertController} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {CartService} from '../../app/service/cart-service';
@@ -15,29 +15,24 @@ import {AppConstants} from '../../app/app-constants';
   animations:[fadeInAnimation500]
 })
 
-export class CartPage extends ComponentBase implements DoCheck {
+export class CartPage extends ComponentBase {
 
-  mPlaceFeaturesEnabled = AppConstants.ENABLE_MARKETPLACE_FEATURES;
+  public mPlaceFeaturesEnabled = AppConstants.ENABLE_MARKETPLACE_FEATURES;
 
   constructor(public cart: CartService, public navCtrl: NavController,
               public uService: UserService, public alertCtrl: AlertController) {
     super();
   }
 
-  ngDoCheck() {
-
+  public async onDeleteItem(itemIndex: number) {
+    await this.cart.removeItem(itemIndex, true);
   }
 
-  onDeleteItem(itemIndex: number) {
-    this.cart.removeItem(itemIndex, true);
-    this.ngDoCheck();
-  }
-
-  async onShowWarningsClick() {
+  public async onShowWarningsClick() {
     this.navCtrl.push('WarningViewPage');
   }
 
-  get containsWarnings(): boolean {
+  public get containsWarnings(): boolean {
     let res = false;
     for (let i of this.cart.orderProducts) {
       res = (!(i.warningRead) && !(i.warningMessage == null));
@@ -47,7 +42,7 @@ export class CartPage extends ComponentBase implements DoCheck {
     return res;
   }
 
-  validateStep(): boolean {
+  public validateStep(): boolean {
     // Proceed to checkout rule
     let err = this.cart.cartErrors;
     if (err) {
@@ -68,7 +63,7 @@ export class CartPage extends ComponentBase implements DoCheck {
       return true;
   }
 
-  async checkout() {
+  public async checkout() {
     if (!this.validateStep())
       return;
 
@@ -85,25 +80,24 @@ export class CartPage extends ComponentBase implements DoCheck {
     };
   }
 
-  async onAfterQtyUpdate(item: any, objRef: any) {
+  public async onAfterQtyUpdate(item: any, objRef: any) {
     await this.cart.updateItem(objRef, true);
     this.evServ.events['cartUpdateEvent'].emit();
-    this.ngDoCheck();
   }
 
 
-  isFirstComplectItem(i: number): boolean {
+  public isFirstComplectItem(i: number): boolean {
     const op = this.cart.displayOrderProducts[i];
     return (op.orderProduct.complect) && !(op.prevComplect === op.orderProduct.complect);
   }
 
-  isLastComplectItem(i: number): boolean {
+  public isLastComplectItem(i: number): boolean {
     const op = this.cart.displayOrderProducts[i];
     return (op.orderProduct.complect)
       && (op.prevComplect === op.orderProduct.complect);
   }
 
-  isComplectDivisorItem(i: number): boolean {
+  public isComplectDivisorItem(i: number): boolean {
     if (i === 0) return false;
     if (i === this.cart.displayOrderProducts.length-1) return false;
 
@@ -113,7 +107,7 @@ export class CartPage extends ComponentBase implements DoCheck {
     return (thisOp) && (prevOp);
   }
 
-  toHomePage() {
+  public toHomePage() {
     this.navCtrl.setRoot('HomePage').catch(err => console.error(err));
   }
 

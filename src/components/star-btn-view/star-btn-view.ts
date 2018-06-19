@@ -8,7 +8,7 @@ import {StarBtnComponent} from "../star-btn/star-btn";
 })
 export class StarBtnViewComponent implements AfterViewInit{
   public parent: StarBtnComponent;
-  public proxyObj:any;
+  proxyObj:any;
   constructor(public nav: NavController,
               public navParam: NavParams,
               public viewCtrl: ViewController,

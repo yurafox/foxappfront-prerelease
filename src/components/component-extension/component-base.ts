@@ -1,6 +1,8 @@
 import {IDictionary, RefInjector} from '../../app/core/app-core';
-import {EventService, AbstractLocalizationRepository, UserService} from '../../app/service/index';
 import {OnDestroy, OnInit} from '@angular/core';
+import {AbstractLocalizationRepository} from '../../app/service/repository/abstract/abstract-localization-repository';
+import {EventService} from '../../app/service/event-service';
+import {UserService} from '../../app/service/bll/user-service';
 
 
 export abstract class ComponentBase implements OnDestroy, OnInit {

@@ -1,5 +1,5 @@
 import {IDictionary} from '../../../core/app-core';
-import {AbstractLocalizationRepository} from '../..';
+import {AbstractLocalizationRepository} from '../abstract/abstract-localization-repository';
 import {Injectable} from '@angular/core';
 import {Http} from "@angular/http";
 import {AppConstants} from "../../../app-constants";
@@ -24,7 +24,7 @@ const appLocUrl = `/api/AppLocalization`;
 
 @Injectable()
 export class LocalizationRepository extends AbstractLocalizationRepository {
-  public _localizationStore: IDictionary<Array<ILocalization>> = {};
+  _localizationStore: IDictionary<Array<ILocalization>> = {};
 
   constructor(public http: Http, public connServ: ConnectivityService) {
     super();

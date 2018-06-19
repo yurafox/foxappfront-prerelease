@@ -2,10 +2,11 @@ import {Component, DoCheck, Input, ViewChild} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {LoadingController, PopoverController} from 'ionic-angular';
 import {FilterPopoverPage} from '../../pages/filter-popover/filter-popover';
-import {Prop, Manufacturer} from '../../app/model/index';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {SearchService, SortOrderEnum} from '../../app/service/search-service';
 import {Category} from '../../app/model/category';
+import {Manufacturer} from '../../app/model/manufacturer';
+import {Prop} from '../../app/model/prop';
 
 class GeneralFilterStruct {
   constructor(
@@ -77,11 +78,11 @@ class FilterCategory {
 export class FilterComponent extends ComponentBase implements DoCheck {
   @ViewChild('filterControl') filterControl;
   @Input() srch: SearchService;
-  public lastFilteredCat: FilterCategory;
-  public propFilterCondition = [];
-  public mnfFilterCondition = [];
-  public groupsFilterCondition = [];
-  public dataInitialized = false;
+  lastFilteredCat: FilterCategory;
+  propFilterCondition = [];
+  mnfFilterCondition = [];
+  groupsFilterCondition = [];
+  dataInitialized = false;
   clientHeight = 0;
   fCategories = [];
   filteredProps: PropsFilterStruct[];

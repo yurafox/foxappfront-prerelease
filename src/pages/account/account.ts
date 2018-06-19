@@ -1,13 +1,14 @@
-import { System } from './../../app/core/app-core';
 import {Component} from '@angular/core';
 import {NavController, IonicPage} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Currency, User, Lang, IUserInfo} from "../../app/model/index";
-import {AbstractDataRepository} from "../../app/service/index";
 import { AlertController } from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {Activator} from "../../app/core/app-core";
 import {CartService} from "../../app/service/cart-service";
+import {Currency} from '../../app/model/currency';
+import {IUserInfo, User} from '../../app/model/user';
+import {Lang} from '../../app/model/lang';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 @IonicPage({name: 'AccountPage', segment: 'account'})
 @Component({

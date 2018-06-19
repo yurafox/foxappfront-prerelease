@@ -1,8 +1,11 @@
 import {Component, ChangeDetectorRef} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
-import {Product,Store,ProductReview,StoreReview} from '../../app/model/index';
 import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
+import {Product} from '../../app/model/product';
+import {Store} from '../../app/model/store';
+import {StoreReview} from '../../app/model/store-review';
+import {ProductReview} from '../../app/model/product-review';
 
 
 @IonicPage()
@@ -48,7 +51,7 @@ export class ItemReviewWritePage extends ComponentBase {
     }
   }
 
-  public showAlertAndPop(hasClientReviews) {
+  showAlertAndPop(hasClientReviews) {
     if (hasClientReviews && hasClientReviews != null && hasClientReviews.hasReview && hasClientReviews.hasReview === true) {
       let message = this.locale['AlertMessage'] ? this.locale['AlertMessage'] : 'Вы уже оставляли отзыв';
       let alert = this.alertCtrl.create({
@@ -103,7 +106,7 @@ export class ItemReviewWritePage extends ComponentBase {
     }
   }
 
-  public showToast() {
+  showToast() {
     this.reviewText = '';
     this.advantages = '';
     this.disadvantages = '';

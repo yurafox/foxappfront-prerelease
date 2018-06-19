@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
-import {AbstractDataRepository} from '../../app/service';
 import {CartService} from '../../app/service/cart-service';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 export class OrdersFilter {
   constructor(
@@ -24,9 +24,9 @@ export class OrdersPage extends ComponentBase {
   filter: OrdersFilter = null;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-                public repo: AbstractDataRepository,
-                public cart: CartService, public toastCtrl: ToastController,
-                public alertCtrl: AlertController) {
+              public repo: AbstractDataRepository,
+              public cart: CartService, public toastCtrl: ToastController,
+              public alertCtrl: AlertController) {
     super();
 
     this.initData(this.navParams.data.filter);
