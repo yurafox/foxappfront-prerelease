@@ -39,6 +39,7 @@ import { CategoryBtnComponent } from './category-btn/category-btn';
 import { MaskComponent } from './mask/mask';
 import { StarBtnComponent } from './star-btn/star-btn';
 import { StarBtnViewComponent } from './star-btn-view/star-btn-view';
+import {DirectivesModule} from '../app/directives/directives.module';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,7 @@ import { StarBtnViewComponent } from './star-btn-view/star-btn-view';
     Ionic2RatingModule,
     LazyLoadImagesModule,
     InfiniteScrollModule,
-
+    DirectivesModule
   ],
   exports: [
     SearchBtnComponent,

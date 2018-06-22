@@ -5,7 +5,7 @@
 <ion-content>
   <div class="top100">
     <form [formGroup]='verifyForm'>
-        <ion-item *ngIf='authError' class='alertDanger'>
+        <ion-item *aotIf='authError' class='alertDanger'>
             <span loc="Неверный номер или код" name="WrongLoginOrCode">{{locale['WrongLoginOrCode'] ? locale['WrongLoginOrCode'] : 'Неверный номер или код'}}</span>
          </ion-item>
     
@@ -15,30 +15,30 @@
         </div>
         <input type="text" [mask]="'380999999999'" placeholder="380xxxxxxxxx" formControlName="phone" />
 
-        <ion-item class='alertDanger' *ngIf="formErrors.phone">
+        <ion-item class='alertDanger' *aotIf="formErrors.phone">
           <span>{{formErrors.phone}}</span>
         </ion-item>
-        <ion-item class='alertDanger' *ngIf="verifyErrorData.errorShow">
+        <ion-item class='alertDanger' *aotIf="verifyErrorData.errorShow">
           <span>{{verifyErrorData.errorMessage}}</span>
         </ion-item>
 
-        <div style="margin-top: 10px" *ngIf="useCode">
+        <div style="margin-top: 10px" *aotIf="useCode">
           <div>
             <span loc="Код*" name="Code" class="lblTxt">{{locale['Code'] || 'Код*'}}</span>
           </div>
           <input type="text" placeholder="sms code" formControlName="code" />
 
-          <ion-item class='alertDanger' *ngIf="formErrors.code">
+          <ion-item class='alertDanger' *aotIf="formErrors.code">
             <span>{{formErrors.code}}</span>
           </ion-item>
         </div>
 
       </div>
       <div class="btnAction">
-        <button *ngIf="!useCode" [disabled]="isSendAsync || !verifyForm.valid" (click)="verifyUser()">
+        <button *aotIf="!useCode" [disabled]="isSendAsync || !verifyForm.valid" (click)="verifyUser()">
           <span class="btnTxt" loc="Далее" name="GetSmsCode">{{locale['GetSmsCode'] || 'Далее'}}</span>
         </button>
-        <button *ngIf="useCode" [disabled]="isSendAsync || !verifyForm.valid" (click)="logIn()">
+        <button *aotIf="useCode" [disabled]="isSendAsync || !verifyForm.valid" (click)="logIn()">
             <span class="btnTxt" loc="Войти" name="Login">{{locale['Login'] || 'Войти'}}</span>
           </button>
       </div>

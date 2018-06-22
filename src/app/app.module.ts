@@ -26,7 +26,7 @@ import {WebApiService} from './service/webapi/web-api-service';
 import {RefInjector} from './core/app-core';
 import {ComponentsModule} from '../components/components.module';
 import {PipesModule} from "./pipe/pipes.module";
-import {DirectivesModule} from './directive/directives.module';
+import {DirectivesModule} from './directives/directives.module';
 import {Geolocation} from '@ionic-native/geolocation';
 import {ScreenOrientation} from '@ionic-native/screen-orientation';
 import {LaunchNavigator} from '@ionic-native/launch-navigator';

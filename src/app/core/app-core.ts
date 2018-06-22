@@ -19,7 +19,6 @@ import {LoEntityOffice} from '../model/lo-entity-office';
 import {Product} from '../model/product';
 import {Supplier} from '../model/supplier';
 import {Currency} from '../model/currency';
-import {ViewController} from "ionic-angular";
 
 export class EmailValidator {
 

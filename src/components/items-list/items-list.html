@@ -1,11 +1,11 @@
-<div class="f-color-secondary f-padding-lr-10 f-padding-t-10" style="height: 100%" *ngIf="(srchService.products.length === 0) && !srchService.inSearch">
+<div class="f-color-secondary f-padding-lr-10 f-padding-t-10" style="height: 100%" *aotIf="(srchService.products.length === 0) && !srchService.inSearch">
   <!--<span loc="Ваш поиск" name="YourSearch">{{locale['YourSearch']}}</span>
-  <span *ngIf="srchService.lastSearch">"{{srchService.lastSearch}}"</span>
+  <span *aotIf="srchService.lastSearch">"{{srchService.lastSearch}}"</span>
   <span loc="" name="DidNotMatch">{{locale['DidNotMatch']}}</span>-->
   <ion-grid style="height: 100%">
     <ion-row justify-content-center align-items-center style="height: 100%">
       <span loc="Ваш поиск" name="YourSearch">{{locale['YourSearch']?locale['YourSearch']:'По вашему запросу '}}</span>&nbsp;
-      <span *ngIf="srchService.lastSearch">"{{srchService.lastSearch}}"</span>
+      <span *aotIf="srchService.lastSearch">"{{srchService.lastSearch}}"</span>
       <span loc="" name="DidNotMatch">{{locale['DidNotMatch']?locale['DidNotMatch']:' товаров не найдено'}}</span>
     </ion-row>
     <ion-row>
@@ -17,14 +17,14 @@
 </div>
 
 <div class="search-results" #searchResults>
-  <div *ngIf="srchService.products" class="f-item-padding-top">
+  <div *aotIf="srchService.products"  class="f-item-padding-top">
     <div *ngFor="let productElement of srchService.products, let i=index">
-      <hr *ngIf="!(i == 0)">
+      <hr *aotIf="!(i == 0)">
       <item [product]="productElement">
       </item>
     </div>
   </div>
-  <ion-infinite-scroll (ionInfinite)="onScroll($event)" threshold="150" *ngIf="!((srchService.products.length >= srchService.maxItemsCount)||(srchService.products.length === srchService.hitsTotal))">
+  <ion-infinite-scroll (ionInfinite)="onScroll($event)" threshold="150" *aotIf="!((srchService.products.length >= srchService.maxItemsCount)||(srchService.products.length === srchService.hitsTotal))">
     <ion-infinite-scroll-content loadingSpinner="android" style="height:30px; min-height:1px;">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>

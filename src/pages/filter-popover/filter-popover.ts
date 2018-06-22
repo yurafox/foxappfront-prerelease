@@ -1,24 +1,36 @@
-import { Component } from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams, ViewController} from 'ionic-angular';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import {IonicPage, LoadingController, NavController, NavParams, ViewController,Loading} from 'ionic-angular';
 import {CategoryType, FilterComponent} from '../../components/filter/filter';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {SortOrderEnum} from '../../app/service/search-service';
+import {AppConstants} from '../../app/app-constants';
+import {Disposable} from '../../app/core/app-core';
+import{NgIf} from '@angular/common';
 
 @IonicPage()
 @Component({
   selector: 'page-filter-popover',
-  templateUrl: 'filter-popover.html',
+  templateUrl: 'filter-popover.html'
 })
 export class FilterPopoverPage extends ComponentBase {
 
   public filter: FilterComponent;
   brandsSectionOpened = false;
-
+  
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
               public loadingCtrl: LoadingController) {
     super();
+    
+    // change dismiss function in prototype for AOT compilation
+    if(AppConstants.AOT_MODE) { Disposable.changeDismiss(ViewController);}
+    
     this.filter = navParams.get('filterControl');
     this.brandsSectionOpened = false;
+  }
+ 
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    Disposable.dispose();
   }
 
   toggleOpen(index: number) {
@@ -38,6 +50,7 @@ export class FilterPopoverPage extends ComponentBase {
 
     try {
       loading.present();
+
       if (item.type === CategoryType.Property) {
         item.item.isChecked = item.isChecked;
         this.filter.onPropsClick(item, category);
@@ -87,6 +100,7 @@ export class FilterPopoverPage extends ComponentBase {
     }
     finally {
       loading.dismiss();
+      this.close();
     }
 
   }

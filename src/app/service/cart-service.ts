@@ -78,8 +78,8 @@ export class CartService {
               public loadingCtrl: LoadingController) {
     
     // change dismiss function in prototype for AOT compilation
-    Disposable.changeDismiss(Loading);
-
+    if(AppConstants.AOT_MODE) { Disposable.changeDismiss(Loading);}
+      
     this.evServ.events['logonEvent'].subscribe(() => {
         this.initCart().then (() => {
             //this.initBonusData();
@@ -546,7 +546,8 @@ export class CartService {
     });
 
     if (showLoading)
-      loading.present();
+     await loading.present();
+
     try {
       if (item && qty && price) {
         const sp = (storePlace) ? storePlace.id : null;
@@ -663,7 +664,7 @@ export class CartService {
     }
     finally {
       if (showLoading)
-        loading.dismiss();
+        await loading.dismiss();
     }
   }
 
@@ -701,7 +702,7 @@ export class CartService {
     }
     finally {
       if (showLoading)
-        loading.dismiss();
+        await loading.dismiss();
     }
 
   }
