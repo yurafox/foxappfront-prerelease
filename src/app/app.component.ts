@@ -63,6 +63,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   }
 
   async ngOnInit() {
+    super.ngOnInit();
     this.connService.nav = this.nav;
     if (!this.userService.isAuth && this.userService.token) {
       this.userService.userMutex = true;
@@ -70,68 +71,74 @@ export class FoxApp extends ComponentBase implements OnDestroy {
       this.userService.userMutex = false;
     }
 
-    this.platform.ready().then((ready) => {
-      /**
-       * Subscribing to the push events and putting our dynamic components to special pushStore dictionary in PushContainer
-       */
-      this.noveltyPushEventDescriptor = this.evServ.events['noveltyPushEvent'].subscribe(data => {
-        System.PushContainer.pushStore[`novelty${data.innerId}`] = data;
-      });
-      this.actionPushEventDescriptor = this.evServ.events['actionPushEvent'].subscribe(data => {
-        System.PushContainer.pushStore[`action${data.innerId}`] = data;
-      });
+    /**
+    * Subscribing to the push events and putting our dynamic components to special pushStore dictionary in PushContainer
+    */
+    this.actionPushEventDescriptor = this.evServ.events['actionPushEvent'].subscribe(data => {
+      System.PushContainer.pushStore[`action${data.innerId}`] = data;
+    });
+    this.noveltyPushEventDescriptor = this.evServ.events['noveltyPushEvent'].subscribe(data => {
+      System.PushContainer.pushStore[`novelty${data.innerId}`] = data;
+    });
 
-      /**
-       * Getting FCM device token and sending device data to back-end
-       */
-      this.push.hasPermission().then((res: any) => {
-        if (res.isEnabled) {
-          const options: PushOptions = {
-            android: {
-              senderID: "431639834815",
-              clearNotifications: false
-            },
-            ios: {
-              alert: "true",
-              badge: "true",
-              sound: "true"
-            }
-          };
+    this.platform.ready().then(() => {
+      if (this.device.platform) {
+        this.splashScreen.hide();
 
-          const pushObject: PushObject = this.push.init(options);
+        this.backgroundMode.enable();
+        this.backgroundMode.setDefaults({ silent: true }).catch((err) => console.error(err.message));
 
-          /**
-           * Subscribing this device to the main topic to send PUSH-notifications to this topic
-           */
-          pushObject.subscribe('main').catch((err) => console.error(err));
+        /**
+         * Getting FCM device token and sending device data to back-end
+         */
+        this.push.hasPermission().then((res: any) => {
+          if (res && res.isEnabled) {
+            const options: PushOptions = {
+              android: {
+                senderID: "431639834815",
+                clearNotifications: false
+              },
+              ios: {
+                alert: "true",
+                badge: "true",
+                sound: "true"
+              }
+            };
 
-          pushObject.on('notification').subscribe((notification: any) => {
+            const pushObject: PushObject = this.push.init(options);
+
             /**
-             * Handling incoming PUSH-notifications
+             * Subscribing this device to the main topic to send PUSH-notifications to this topic
              */
-            this.pushNotificationHandling(notification).catch((err) => console.error(err));
-          });
+            pushObject.subscribe('main').catch((err) => console.error(err.message));
 
-          pushObject.on('registration').subscribe((registration: any) => {
-            if (registration.registrationId) {
-              /**
-               * Collecting and sending data about device including device FCM token
-               */
-              this.collectAndSendDeviceData(registration.registrationId).catch((err) => console.log(`Sending device's data err: ${err}`));
-            }
-          });
+            pushObject.on('notification').subscribe((notification: any) => {
+              if (notification && notification.additionalData) {
+                /**
+                 * Handling incoming PUSH-notifications
+                 */
+                this.pushNotificationHandling(notification).catch((err) => console.error(err.message));
+              }
+            });
 
-          pushObject.on('error').subscribe(error => {
-            console.error('Error with Push plugin', error.message);
-          });
-        } else {
-          console.log('We do not have permission to send push notifications');
-        }
-      });
+            pushObject.on('registration').subscribe((registration: any) => {
+              if (registration && registration.registrationId) {
+                console.log('FCM device token: ' + registration.registrationId);
+                /**
+                 * Collecting and sending data about device including device FCM token
+                 */
+                this.collectAndSendDeviceData(registration.registrationId).catch((err) => console.log(`Sending device's data err: ${err.message}`));
+              }
+            });
 
-      this.splashScreen.hide();
-      this.backgroundMode.enable();
-      this.backgroundMode.setDefaults({silent: true}).catch((err) => console.error(err));
+            pushObject.on('error').subscribe(error => {
+              console.error('Error with Push plugin', error.message);
+            });
+          } else {
+            console.log('We do not have permission to send push notifications');
+          }
+        });
+      }
     });
   }
 
@@ -216,7 +223,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     let width = this.platform.width();
     let deviceData = new DeviceData(model, os, height, width, pushDeviceToken);
     this.repo.postDeviceData(deviceData).catch(err => {
-      console.log(`Couldn't send device data: ${err}`);
+      console.log(`Couldn't send device data: ${err.message}`);
     });
   }
 
@@ -236,40 +243,17 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     let promocodeTitle = this.locale['PromocodeTitle'];
     let promocodeMessage = this.locale['PromocodeMessage'];
     let cancel = this.locale['Cancel'];
-    switch (target) {
-      case 'novelty': {
-        if (additionalData.id) {
-          this.showNoveltyAlert(noveltyTitle, noveltyMessage, additionalData, cancel);
-        }
-        break;
+    if (additionalData.id) {
+      if (target === 'novelty') {
+        this.showNoveltyAlert(noveltyTitle, noveltyMessage, additionalData, cancel);
       }
-      case 'action': {
-        if (additionalData.id) {
-          this.showPromoAlert(promoTitle, promoMessage, additionalData, cancel);
-        }
-        break;
+      else {
+        this.showPromoAlert(promoTitle, promoMessage, additionalData, cancel);
       }
-      case 'promotion': {
-        if (additionalData.id) {
-          this.showPromoAlert(promoTitle, promoMessage, additionalData, cancel);
-        }
-        break;
-      }
-      case 'promo': {
-        if (additionalData.id) {
-          this.showPromoAlert(promoTitle, promoMessage, additionalData, cancel);
-        }
-        break;
-      }
-      case 'promocode': {
-        if (additionalData.promocode) {
-          this.usePromocodeAndShowAlert(additionalData, promocodeTitle, promocodeMessage, cancel);
-        }
-        break;
-      }
-      default: {
-        console.log('The target is not valid');
-        break;
+    }
+    if (additionalData.promocode) {
+      if (target === 'promocode') {
+        this.usePromocodeAndShowAlert(additionalData, promocodeTitle, promocodeMessage, cancel);
       }
     }
   }
@@ -282,10 +266,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
         {
           text: 'OK',
           handler: () => {
-            let noveltySketch = System.PushContainer.pushStore[`novelty${additionalData.id}`];
-            if (noveltySketch.novelty && noveltySketch.product) {
-              noveltySketch.openNovelty();
-            }
+            System.PushContainer.pushStore[`novelty${additionalData.id}`].openNovelty();
           }
         },
         {
@@ -294,7 +275,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
       ],
       enableBackdropDismiss: false
     });
-    alert.present().catch((err) => console.log(`Alert error: ${err}`));
+    alert.present().catch((err) => console.log(`Alert error: ${err.message}`));
   }
 
   showPromoAlert(promoTitle, promoMessage, additionalData, cancel) {
@@ -305,10 +286,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
         {
           text: 'OK',
           handler: () => {
-            let actionSketch = System.PushContainer.pushStore[`action${additionalData.id}`];
-            if (actionSketch.action) {
-              actionSketch.openAction();
-            }
+            System.PushContainer.pushStore[`action${additionalData.id}`].openAction();
           }
         },
         {
@@ -317,14 +295,14 @@ export class FoxApp extends ComponentBase implements OnDestroy {
       ],
       enableBackdropDismiss: false
     });
-    alert.present().catch((err) => console.log(`Alert error: ${err}`));
+    alert.present().catch((err) => console.log(`Alert error: ${err.message}`));
   }
 
   usePromocodeAndShowAlert(additionalData, promocodeTitle, promocodeMessage, cancel) {
     this.cartService.promoCode = additionalData.promocode;
     if (this.cartService.cartItemsCount > 0) {
       this.cartService.calculateCart().catch((err) => {
-        console.log(`Couldn't get discount:${err}`);
+        console.log(`Couldn't get discount:${err.message}`);
       });
     }
     this.evServ.events['cartUpdateEvent'].emit();
@@ -337,7 +315,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
           text: 'OK',
           handler: () => {
             this.nav.push('CartPage').catch((err: any) => {
-              console.log(`Couldn't navigate to CartPage: ${err}`);
+              console.log(`Couldn't navigate to CartPage: ${err.message}`);
             })
           }
         },
@@ -347,7 +325,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
       ],
       enableBackdropDismiss: false
     });
-    alert.present().catch((err) => console.log(`Alert error: ${err}`));
+    alert.present().catch((err) => console.log(`Alert error: ${err.message}`));
   }
 }
 

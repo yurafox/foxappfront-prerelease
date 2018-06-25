@@ -36,6 +36,7 @@ export class ActionSketchComponent extends ComponentBase {
     }
     if(this.action && this.action.sketch_content && this.dateEnd > new Date()) {
       this.content=this.action.sketch_content;
+      this.evServ.events['actionPushEvent'].emit(this);
     }
 
     this.actionExpire(); // for design display
@@ -46,7 +47,6 @@ export class ActionSketchComponent extends ComponentBase {
       .subscribe(() => {
         this.actionExpire();
       });
-    this.evServ.events['actionPushEvent'].emit(this);
   }
 
   ngOnDestroy():void {
@@ -54,12 +54,21 @@ export class ActionSketchComponent extends ComponentBase {
     this.alive= false;
   }
 
-  public openAction() {
-    this.navCtrl.push('ActionPage', {id:this.innerId || this.action.id, action:this.action}).catch(
-      err => {
-        console.log(`Error navigating to ActionPage: ${err}`);
+  public async openAction() {
+    if (!this.action) {
+      this.action = await this._repo.getAction(this.innerId);
+      if (this.action) {
+        this.pushActionPage();
       }
-    );
+    } else {
+      this.pushActionPage();
+    }
+  }
+
+  private pushActionPage() {
+    this.navCtrl.push('ActionPage', { id: this.innerId || this.action.id, action: this.action }).catch(err => {
+      console.log(`Error navigating to ActionPage: ${err.message}`);
+    });
   }
 
   public get id ():number {
