@@ -13,9 +13,9 @@ import {Novelty} from '../../app/model/novelty';
 })
 export class NoveltySketchComponent extends ComponentBase{
   @Input() public innerId:number;
-  @Input() public content:string='';
   @Input() public novelty: Novelty;
   @Input() public product: Product;
+  public content:boolean;
   productId: number;
 
   constructor(public navCtrl: NavController, private _repo:AbstractDataRepository) {
@@ -36,7 +36,7 @@ export class NoveltySketchComponent extends ComponentBase{
         this.product = await this._repo.getProductById(this.novelty.idProduct);
       }
     }
-    if (this.novelty && this.novelty.sketch_content) this.content=this.novelty.sketch_content;
+    this.content = !!(this.novelty && this.novelty.sketch_content);
     this.evServ.events['noveltyPushEvent'].emit(this);
   }
 

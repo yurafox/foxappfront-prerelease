@@ -1,3 +1,11 @@
-<div *ngIf='content' (click)="openAction()" [@fadeInAnimation]>
-    <html-outlet [html]='content' [context]="this"></html-outlet>
+<div *aotIf='content' (click)="openAction()">
+    <div style="padding: 10px 11px;">
+        <span loc="Акция" name="Action" style="color: #4e4e4e;font-size:18px" *aotIf="isOnLanding">{{locale['Action'] ? locale['Action'] : 'Акция'}}</span>
+          <div style="margin-top:10px;text-align: center">
+            <div style="width: 270px;margin:0px auto">
+             <img src='{{img_url}}'>
+             <div style="margin-top:10px"><span style="font-size: 14px;"><b>{{name}}</b></span></div>
+            </div>
+          <div style="margin-top:10px;"><span style="font-size: 14px"><b>Осталось</b> <b>{{expire?.days}}</b> дн. <b>{{expire?.hours}}</b> ч. <b>{{expire?.minutes}}</b> м. <b>{{expire?.seconds}}</b> с.</span>
+        </div>
 </div>

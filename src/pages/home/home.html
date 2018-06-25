@@ -1,8 +1,8 @@
 <ion-header #header>
   <main-toolbar [showSearchButton]="false" [host]="this"></main-toolbar>
   <search-btn #srch [hostPage]="this" (click)="onSearchClick()"></search-btn>
-  <progress-bar *ngIf="pageMode === 3" [active]="srchService.inSearch"></progress-bar>
-  <filter #filter *ngIf="(pageMode === 3) && (srchService.products)" [srch]="srchService"></filter>
+  <progress-bar *aotIf="pageMode === 3" [active]="srchService.inSearch"></progress-bar>
+  <filter #filter *aotIf="(pageMode === 3) && (srchService.products)" [srch]="srchService"></filter>
 </ion-header>
 
 <ion-content #cont>
@@ -16,20 +16,74 @@
     </ion-refresher>
   -->
 
-    <div *ngIf="(pageMode === 1)" class="slides-banner-container">
+    <div *aotIf="(pageMode === 1)" class="slides-banner-container">
       <sliding-banner></sliding-banner>
     </div>
 
-    <div *ngIf="content && !userService.userMutex && (pageMode === 1)">
+    <div *aotIf="content && !userService.userMutex && (pageMode === 1)">
       <div class="f-div-card">
         <category-btn></category-btn>
       </div>
-      <html-outlet [html]='content' [context]="this"></html-outlet>
+      <div class="f-flex-async-container">
+        <!--novelty 1-->
+        <div style="min-height:310px;order:1" class="f-div-card-margin">
+          <novelty-sketch [innerId]=1></novelty-sketch>
+        </div>
+        <!--actions 1-->
+        <div style="min-height:176px;order:3" class="f-div-card-margin">
+          <action-sketch [innerId]=126651 [isOnLanding]="true"></action-sketch>
+        </div>
+        <!--novelty 2-->
+        <div style="min-height:310px;order:4" class="f-div-card-margin">
+          <novelty-sketch [innerId]=2></novelty-sketch>
+        </div>
+
+        <div *aotIf="productsOfDay && productsOfDay.length>0" style="min-height:168px;order:5" class="f-div-card-margin">
+          <ion-grid>
+            <ion-row>
+              <ion-col class="f-item-section-header" style="padding-top: 5px;">
+                <span loc="Товар дня" name="Deals">{{locale['Deals']}}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col style="padding-bottom: 20px; padding-left: 0px; padding-right: 0px;">
+                <div *ngFor="let productElement of productsOfDay, let i=index">
+                  <hr *aotIf="!(i == 0)">
+                  <item [product]="productElement">
+                  </item>
+                </div>
+
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+
+        <div style="min-height:266px;order:6" class="f-div-card-margin">
+          <ion-grid *aotIf="productsSalesHits && productsSalesHits.length>0">
+            <ion-row>
+              <ion-col class="f-padding-lr-5 f-item-section-header" style="padding-top: 5px;">
+                <span loc="Хиты продаж" name="Hits">{{locale['Hits']}}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col class="f-padding-lr-5">
+                <ion-scroll class="f-day-deals-scroll" scrollX="true">
+                  <ion-row nowrap>
+                    <div *ngFor="let prod of productsSalesHits">
+                      <item-tile [product]="prod"></item-tile>
+                    </div>
+                  </ion-row>
+                </ion-scroll>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+      </div>
     </div>
 
-    <div class="f-div-card" *ngIf="pageMode === 2">
+    <div class="f-div-card" *aotIf="pageMode === 2">
       <ion-item *ngFor="let sItem of searchButtonControl.srchItemsArr; let i=index" (click)="search(sItem.itemText)">
-        <ion-icon class="f-item-gray" *ngIf="sItem.isClosable" name="md-close" item-left (click)="deleteSearchItem($event, i)"></ion-icon>
+        <ion-icon class="f-item-gray" *aotIf="sItem.isClosable" name="md-close" item-left (click)="deleteSearchItem($event, i)"></ion-icon>
         <div [ngClass]="sItem.isClosable ? 'f-color-info' : 'f-product'">
           <span [innerHTML]="sItem.itemDisplayText"> </span>
         </div>
@@ -37,7 +91,7 @@
       </ion-item>
     </div>
 
-    <div class="f-div-card" *ngIf="pageMode === 3">
+    <div class="f-div-card" *aotIf="pageMode === 3">
       <items-list #itemsList [parentControl]="this"></items-list>
     </div>
   </div>

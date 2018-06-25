@@ -3,7 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { ActionPage } from './action';
 import {ComponentsModule} from '../../components/components.module';
 import {SearchService} from '../../app/service/search-service';
-
+import {DirectivesModule} from '../../app/directives/directives.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +11,8 @@ import {SearchService} from '../../app/service/search-service';
   ],
   imports: [
     IonicPageModule.forChild(ActionPage),
-    ComponentsModule
+    ComponentsModule,
+    DirectivesModule
   ],
   exports: [
     ActionPage

@@ -36,7 +36,7 @@ export class AotIf extends NgIf {
     // node after "angular-commit" element
     let nextSibling = (<any>this.elementRef.nativeElement).nextSibling;
 
-    if (pNode)
+    if (pNode && this.isCorrectNode(nextSibling))
       pNode.removeChild(nextSibling);
   }
 
@@ -49,5 +49,10 @@ export class AotIf extends NgIf {
       this.ngIf = false;
       this.removeNegative();
     }
+  }
+
+  private isCorrectNode(el:HTMLElement):boolean {
+    if(!el) return false;
+    return el.nodeType === Node.ELEMENT_NODE;
   }
 }

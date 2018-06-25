@@ -8,17 +8,19 @@ import {AbstractDataRepository} from '../../app/service/repository/abstract/abst
   templateUrl: 'category-btn.html'
 })
 export class CategoryBtnComponent extends ComponentBase {
-  public productCountInOneCatalog:string;
+  public countStr:string;
+  public get productCountInOneCatalog():string {
+     if(this.locale['CategoryCount'] && this.countStr)
+       return this.locale['CategoryCount'].replace('${countStr}',this.countStr);
+  }
+
   constructor(public navCtrl: NavController, public _repo:AbstractDataRepository) {
         super();
         this.initLocalization();
   }
 
   async ngOnInit() {
-    const countStr = await this._repo.getAppParam('CATEGORY_COUNT');
-    if (countStr && this.locale['CategoryCount']) {
-      this.productCountInOneCatalog = this.locale['CategoryCount'].replace('${countStr}',countStr);
-    }
+    this.countStr = await this._repo.getAppParam('CATEGORY_COUNT');
   }
 
   toCategories():void{
