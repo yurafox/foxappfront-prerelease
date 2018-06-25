@@ -1,33 +1,34 @@
-import { Input, Directive, TemplateRef, ElementRef, ViewContainerRef } from '@angular/core';
+import { Input, Directive, TemplateRef, ElementRef, ViewContainerRef, SimpleChange } from '@angular/core';
 import { NgIf, NgIfContext } from '@angular/common';
 
 @Directive({ selector: "[aotIf]" })
 export class AotIf extends NgIf {
+  private _reset:boolean;
+
   constructor(public viewContainer: ViewContainerRef,
     public templateRef: TemplateRef<NgIfContext>,
-    public elementRef: ElementRef) { super(viewContainer, templateRef); }
+    public elementRef: ElementRef) { super(viewContainer, templateRef);}
 
-  // @override NgIf setter
-  @Input()
-  public set aotIf(condition: any) {
-      this.changeDOM(condition);
+  @Input() aotIf:boolean;
+
+  @Input("aotIfReset")
+  public set aotIfReset(state:boolean) {
+     this._reset = state;
   }
 
-  @Input('aotReset')
-  public aotReset = 'false';
+  ngOnChanges(changes:{[property:string]:SimpleChange}) {
+    let change = changes["aotIf"];
+    this.changeDOM(change.currentValue);
+  }
 
   private changeDOM(condition: any): void {
-    console.log(this.aotReset);
-
-    // check for boolean correct condition
     let notCondition = this.isNotCondition(condition);
-      // if(this.aotReset && !notCondition)
-      //     this.removeNegative();   
-
-      // call base setter
-      this.ngIf = condition;
-      if(notCondition)
-          this.removeNegative();   
+    // check for reset
+    this.tryReset();
+    // call base setter
+    this.ngIf = condition;
+    if(notCondition)
+      this.removeNegative();   
   }
 
   private removeNegative():void {
@@ -41,5 +42,12 @@ export class AotIf extends NgIf {
 
   private isNotCondition(condition:any) :boolean {
       return !condition || condition===[];
+  }
+
+  private tryReset():void {
+    if(this._reset) {
+      this.ngIf = false;
+      this.removeNegative();
+    }
   }
 }

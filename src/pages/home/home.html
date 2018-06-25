@@ -24,9 +24,7 @@
       <div class="f-div-card">
         <category-btn></category-btn>
       </div>
-      <div class="f-flex-async-container">
-        <html-outlet [html]="content" [context]="this"></html-outlet>
-      </div>
+      <html-outlet [html]='content' [context]="this"></html-outlet>
     </div>
 
     <div class="f-div-card" *ngIf="pageMode === 2">

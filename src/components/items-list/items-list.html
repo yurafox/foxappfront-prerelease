@@ -17,7 +17,7 @@
 </div>
 
 <div class="search-results" #searchResults>
-  <div *aotIf="srchService.products"  class="f-item-padding-top">
+  <div *aotIf="srchService.products;reset:'true'" class="f-item-padding-top">
     <div *ngFor="let productElement of srchService.products, let i=index">
       <hr *aotIf="!(i == 0)">
       <item [product]="productElement">

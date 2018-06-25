@@ -77,7 +77,8 @@ import {DirectivesModule} from '../app/directives/directives.module';
     CategoryBtnComponent,
     MaskComponent,
     StarBtnComponent,
-    StarBtnViewComponent
+    StarBtnViewComponent,
+
   ],
   entryComponents: [
     CustomPopupComponent,

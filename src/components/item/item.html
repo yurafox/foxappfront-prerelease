@@ -1,10 +1,10 @@
-<ion-grid class="f-no-padding" (click)="openItemDetails(product)" *ngIf="product">
+<ion-grid class="f-no-padding" (click)="openItemDetails(product)" *aotIf="product">
   <ion-row>
    <ion-col col-auto>
-     <div *ngIf="product && product?.imageUrl" lazy-load-images>
+     <div *aotIf="product && product?.imageUrl" lazy-load-images>
        <img class="f-img-item" src="assets/imgs/spiner-load.gif" [attr.data-src]="product?.imageUrl" onError="this.src='assets/imgs/nophoto.png';">
      </div>
-     <img *ngIf="product && !product.imageUrl" class="f-img-item" src="assets/imgs/nophoto.png">
+     <img *aotIf="product && !product.imageUrl" class="f-img-item" src="assets/imgs/nophoto.png">
    </ion-col>
    <ion-col>
      <ion-grid class="f-item-nopadding-tb">
@@ -19,20 +19,20 @@
          </ion-col>
        </ion-row>
 
-       <ion-row *ngIf="product.rating || product.recall>0">
+       <ion-row *aotIf="product.rating || product.recall>0">
          <ion-col nowrap class="f-item-col">
            <product-rating [product]=product></product-rating>
          </ion-col>
        </ion-row>
 
        <div class="f-padding-t-5">
-         <ion-row *ngIf="product.oldPrice">
+         <ion-row *aotIf="product.oldPrice">
            <ion-col class="f-item-col f-old-price f-size-small" >
              <span>{{product.oldPrice | localeCurrency:userService.currency}}</span>
            </ion-col>
          </ion-row>
 
-         <ion-row *ngIf="product.price" >
+         <ion-row *aotIf="product.price" >
            <ion-col class="f-item-col f-product-price-small"
                     [ngClass]="{'f-product-price-color-onstock':OnStock, 'f-product-price-color-outofstock':!OnStock}">
              {{product.price | localeCurrency:userService.currency}}
@@ -40,38 +40,38 @@
          </ion-row>
        </div>
 
-       <ion-row *ngIf="product.bonuses">
+       <ion-row *aotIf="product.bonuses">
          <ion-col class="f-item-col" >
            <bonus [bonusCnt]="product.bonuses"></bonus>
          </ion-col>
        </ion-row>
 
-       <ion-row *ngIf="mPlaceFeaturesEnabled && (resolved) && (noOfQuotes > 1)">
+       <ion-row *aotIf="mPlaceFeaturesEnabled && (resolved) && (noOfQuotes > 1)">
          <ion-col class="f-item-col f-size-smaller" >
            {{noOfQuotes}} <span loc="предложений от" name="OffersFrom">{{locale['OffersFrom']}}</span> <b>{{Price | localeCurrency:userService.currency}}</b>
          </ion-col>
        </ion-row>
 
-       <ion-row *ngIf="OnStock">
+       <ion-row *aotIf="OnStock">
          <ion-col class="f-item-col f-size-small f-color-green">
            <span loc="В наличии" name="InStock">{{locale['InStock']}}</span>
          </ion-col>
        </ion-row>
 
-       <ion-row *ngIf="!OnStock && product.status !== 3">
+       <ion-row *aotIf="!OnStock && product.status !== 3">
          <ion-col class="f-item-col f-size-small f-color-secondary">
            <span loc="Нет в наличии" name="NoOnStock">{{locale['NoOnStock']}}</span>
          </ion-col>
        </ion-row>
 
-       <ion-row *ngIf="!OnStock && product.status === 3">
+       <ion-row *aotIf="!OnStock && product.status === 3">
          <ion-col class="f-item-col f-size-small f-color-secondary">
            <span loc="Снят с производства" name="Discontinued">{{locale['Discontinued']}}</span>
          </ion-col>
        </ion-row>
 
 
-       <ion-row *ngIf="mPlaceFeaturesEnabled && (noOfQuotes > 1)">
+       <ion-row *aotIf="mPlaceFeaturesEnabled && (noOfQuotes > 1)">
          <ion-col class="f-item-col f-size-small f-size-smaller">
            <span loc="Посмотреть другие варианты" name="SeeMoreChoices">{{locale['SeeMoreChoices']}}</span>
          </ion-col>
