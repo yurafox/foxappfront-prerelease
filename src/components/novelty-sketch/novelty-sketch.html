@@ -1,4 +1,4 @@
-<div *aotIf='content && novelty && product' (click)="openNovelty()">
+<div *ngIf='content && novelty && product' (click)="openNovelty()">
   <div style="padding:10px 11px;">
     <span loc="Новинка" name="Novelty" style="color: #4e4e4e;font-size:18px">{{locale['Novelty'] || 'Новинка'}}</span>
     <div style="width:250px;margin:0px auto;padding:10px;text-align: center;">

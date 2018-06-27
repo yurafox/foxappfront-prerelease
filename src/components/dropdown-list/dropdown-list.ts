@@ -110,7 +110,7 @@
                     [map]="{valueName:'id', displayName:'name'}" >
     </dropdown-list>
      **/
-import { System, Disposable} from './../../app/core/app-core';
+import { System} from './../../app/core/app-core';
 import { Component, Input, OnChanges } from '@angular/core';
 import { PopoverController } from "ionic-angular";
 import { DropdownViewComponent } from "../dropdown-view/dropdown-view";

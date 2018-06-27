@@ -8,7 +8,6 @@ import {UserService} from '../../app/service/bll/user-service';
 import {Currency} from '../../app/model/currency';
 import {Lang} from '../../app/model/lang';
 import {IUserVerifyAccountData} from '../../app/model/user';
-import {Disposable} from '../../app/core/app-core';
 
 @IonicPage({name: 'LoginPage', segment: 'login'})
 @Component({
@@ -52,7 +51,6 @@ export class LoginPage extends ComponentBase implements OnInit {
     this.initLocalization();
     const navData = this.navParams.data;
     this._phone = (navData && navData.phone) ? navData.phone : '';
-    Disposable.changeDismiss(Alert);
     this.verifyErrorData={errorShow:false,errorMessage:''};
   }
 

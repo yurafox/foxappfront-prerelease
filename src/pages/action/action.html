@@ -2,7 +2,7 @@
   <main-toolbar></main-toolbar>
 </ion-header>
 <ion-content #cont>
-  <div *aotIf=content>
+  <div *ngIf=content>
     <h3 style='text-align: center'>{{name}}</h3>
     <div class='default-container'>
       <span>{{actionActiveLine}}</span>
@@ -28,7 +28,7 @@
       <div class="default-action-product-header">
         <h3>Акционные товары:</h3>
       </div>
-      <div *aotIf="content && srch.products">
+      <div *ngIf="content && srch.products">
         <div class="action-product-filter-div">
           <progress-bar [active]="srch.inSearch"></progress-bar>
           <filter [srch]="srch"></filter>

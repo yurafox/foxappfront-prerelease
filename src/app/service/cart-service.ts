@@ -10,7 +10,7 @@ import {EventService} from './event-service';
 import {PersonInfo} from '../model/person';
 import {CreditCalc} from '../model/credit-calc';
 import {AbstractLocalizationRepository} from './repository/abstract/abstract-localization-repository';
-import {IDictionary, SCN, Disposable} from '../core/app-core';
+import {IDictionary, SCN} from '../core/app-core';
 import {CurrencyStore} from './repository/specific/currency-store.service';
 import {ComplectItem} from '../../components/complect/complect';
 import {ItemDetailPage} from '../../pages/item-detail/item-detail';
@@ -77,8 +77,6 @@ export class CartService {
               public alertCtrl: AlertController, private currStoreService: CurrencyStore,
               public loadingCtrl: LoadingController) {
     
-    // change dismiss function in prototype for AOT compilation
-    if(AppConstants.AOT_MODE) { Disposable.changeDismiss(Loading);}
       
     this.evServ.events['logonEvent'].subscribe(() => {
         this.initCart().then (() => {

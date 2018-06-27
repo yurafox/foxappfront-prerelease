@@ -1,15 +1,12 @@
 import {NgModule} from "@angular/core";
 import {LocaleDirective} from "./locale-directive.directive";
-import {AotIf} from './fox-aot-if';
 
 @NgModule({
   declarations:[
-    LocaleDirective,
-    AotIf
+    LocaleDirective
   ],
   exports:[
-    LocaleDirective,
-    AotIf
+    LocaleDirective
   ]
 })
 

@@ -25,7 +25,7 @@
     </ion-row>
   </ion-grid>
 
-  <div class="f-light-bkgrd" *aotIf="cat.isOpened">
+  <div class="f-light-bkgrd" *ngIf="cat.isOpened">
     <div class="f-border-ligthgray f-light-gray-bkg" no-padding *ngFor="let item of cat.items">
       <ion-grid style="padding-top: 10px; padding-bottom: 10px;" class="f-size-small">
         <ion-row (click)="onFilterElementClick(item, cat.items, cat, $event)">

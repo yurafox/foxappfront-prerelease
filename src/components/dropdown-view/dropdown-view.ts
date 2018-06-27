@@ -1,8 +1,6 @@
 import {Component, Renderer2} from '@angular/core';
 import {NavController, NavParams, ViewController} from "ionic-angular"
 import {DropdownListComponent} from "../dropdown-list/dropdown-list";
-import {Disposable} from "../../app/core/app-core";
-import {AppConstants} from "../../app/app-constants";
 
 @Component({
   selector: 'dropdown-view',
@@ -19,8 +17,6 @@ export class DropdownViewComponent{
     this.parent = navParam.get('parent');
     this.proxyObj = {};
     
-    // change dismiss function in prototype for AOT compilation
-    if(AppConstants.AOT_MODE) { Disposable.changeDismiss(ViewController);}
 
     if(!this.parent.referenceBoot){
       const filtered = this.bindedStore.filter((value)=>{

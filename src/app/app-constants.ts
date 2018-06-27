@@ -15,5 +15,4 @@ export class AppConstants {
   public static readonly ID_APP = 6;
   public static readonly ROOT_APP_PARAMS_CACHE_LIFETIME = 100000;
   public static readonly ENABLE_MARKETPLACE_FEATURES = false;
-  public static readonly AOT_MODE = true;
 }

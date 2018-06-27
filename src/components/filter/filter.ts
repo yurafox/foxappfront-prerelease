@@ -7,8 +7,7 @@ import {SearchService, SortOrderEnum} from '../../app/service/search-service';
 import {Category} from '../../app/model/category';
 import {Manufacturer} from '../../app/model/manufacturer';
 import {Prop} from '../../app/model/prop';
-import {AppConstants} from '../../app/app-constants'
-import {Disposable} from '../../app/core/app-core';
+
 
 class GeneralFilterStruct {
   constructor(
@@ -95,8 +94,6 @@ export class FilterComponent extends ComponentBase implements DoCheck {
   constructor(public popoverCtrl: PopoverController, public repo: AbstractDataRepository,
               public loadingCtrl: LoadingController) {
     super();
-    // change dismiss function in prototype for AOT compilation
-    if(AppConstants.AOT_MODE) { Disposable.changeDismiss(Loading);}
   }
 
   ngDoCheck() {
