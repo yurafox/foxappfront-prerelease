@@ -20,6 +20,7 @@ export class CategoryBtnComponent extends ComponentBase {
   }
 
   async ngOnInit() {
+    super.ngOnInit();
     this.countStr = await this._repo.getAppParam('CATEGORY_COUNT');
   }
 

@@ -207,4 +207,5 @@ export abstract class AbstractDataRepository {
   public async abstract getNewsByCategory(categoryId: number): Promise<News[]>;
   public async abstract getNewsDescription(id: number): Promise<string>;
   public async abstract getNewsCategory(): Promise<NewsCategory[]>;
+  public async abstract getPageOptionsById(id:number):Promise<any>;
 }
