@@ -71,3 +71,4 @@ export * from './client-order-product-base';
 export * from './client-order-product-hist';
 export * from './news';
 export * from './news-category';
+export * from './lo-delivery-type-attr';

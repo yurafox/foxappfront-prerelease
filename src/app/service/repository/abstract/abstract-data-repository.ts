@@ -38,7 +38,8 @@ import { QuotationProduct,
           LoDeliveryType,
           LoEntityOffice,
           News,
-          NewsCategory
+          NewsCategory,
+          LoDeliveryTypeAttr
        } from '../../../model/index';
 import {IDictionary, Providers} from "../../../core/app-core";
 import {AppParam} from '../../../model/app-param';
@@ -204,4 +205,6 @@ export abstract class AbstractDataRepository {
   public async abstract getNewsByCategory(categoryId: number): Promise<News[]>;
   public async abstract getNewsDescription(id: number): Promise<string>;
   public async abstract getNewsCategory(): Promise<NewsCategory[]>;
+  public async abstract getLoEntityDeliveryTypesAttr(shpmt: Shipment, loIdClientAddress: number): Promise<LoDeliveryTypeAttr[]>;
+  
 }

@@ -50,7 +50,8 @@ import {
   LoDeliveryType,
   LoEntityOffice,
   News,
-  NewsCategory
+  NewsCategory,
+  LoDeliveryTypeAttr
 } from '../../../model/index';
 
 import { AbstractDataRepository } from '../../index';
@@ -146,6 +147,8 @@ const legalPolicyUrl = `${AppConstants.BASE_URL}/api/legalpolicy/getLegalPolicy`
 const newsDescriptionsUrl = `${AppConstants.BASE_URL}/api/news/getNewsDescription`;
 const newsByCategoryUrl = `${AppConstants.BASE_URL}/api/news/getNewsByCategory`;
 const newsCategoryUrl = `${AppConstants.BASE_URL}/api/NewsCategory`;
+const getLoDeliveryTypesAttrByLoEntityUrl = `${AppConstants.BASE_URL}/api/lo/LoDeliveryTypesAttrByLoEntity`;
+
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
 // const currenciesUrl = "/api/mcurrencies";
@@ -3749,6 +3752,7 @@ export class AppDataRepository extends AbstractDataRepository {
           )
         );
       }
+
       return arr;
     } catch (err) {
       return await this.handleError(err);
@@ -4020,6 +4024,32 @@ export class AppDataRepository extends AbstractDataRepository {
     } catch (err) {
       return await this.handleError(err);
     }
+  }
+
+  public async getLoEntityDeliveryTypesAttr(shpmt: Shipment, loIdClientAddress: number): Promise<LoDeliveryTypeAttr[]> {
+    try {
+      const response = await this.http
+        .post(getLoDeliveryTypesAttrByLoEntityUrl, { shpmt: shpmt.dto, loIdClientAddress: loIdClientAddress },
+        RequestFactory.makeAuthHeader())
+        .toPromise();
+      const data = response.json();
+
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      const arr: LoDeliveryTypeAttr[] = new Array<LoDeliveryTypeAttr>();
+      if (data !== null) {
+        data.forEach(val =>
+          arr.push(
+            new LoDeliveryTypeAttr(val.loEntityId, val.deliveryTypeId, val.deliveryDate )
+          )
+        );
+      }
+      return arr;
+    } catch (err) {
+      return await this.handleError(err);
+    }  
   }
 
 }

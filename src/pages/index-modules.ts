@@ -50,3 +50,7 @@ export * from './news-detail/news-detail.module';
 export * from './item-img/item-img.module';
 export * from './call-me/call-me.module';
 export * from './manage-news-menu/manage-news-menu.module';
+export * from './product-compare/product-compare.module';
+export * from './product-favorites/product-favorites.module';
+
+

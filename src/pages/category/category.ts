@@ -5,6 +5,7 @@ import {AbstractDataRepository} from '../../app/service/repository/abstract/abst
 import {SearchService} from '../../app/service/search-service';
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {Subscription} from "rxjs/Subscription";
+import {ProductCompareService} from '../../app/service/product-compare-service';
 
 @IonicPage({name: 'CategoryPage', segment: 'category'})
 @Component({
@@ -18,10 +19,13 @@ export class CategoryPage extends ComponentBase implements DoCheck {
   @ViewChild('header') header;
   scrollHeight: number;
   scrOrientationSub: Subscription;
+  countCompareProducts: number;
+  private rerender: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private repo: AbstractDataRepository, public srch: SearchService,
-              private screenOrientation: ScreenOrientation, private changeDet: ChangeDetectorRef) {
+              private screenOrientation: ScreenOrientation, private changeDet: ChangeDetectorRef,
+              private prodCompService: ProductCompareService) {
     super();
   }
 
@@ -36,6 +40,9 @@ export class CategoryPage extends ComponentBase implements DoCheck {
 
   async ngOnInit() {
     super.ngOnInit();
+
+    await this.getCountCompareProducts();
+
     this.srch.hostPage = this;
     await this.srch.searchByCategory(this.navParams.data);
     this.scrOrientationSub = this.screenOrientation.onChange().subscribe(() => {
@@ -46,6 +53,23 @@ export class CategoryPage extends ComponentBase implements DoCheck {
 
   ngOnDestroy() {
     if (this.scrOrientationSub) this.scrOrientationSub.unsubscribe();
+  }
+
+  async getCountCompareProducts() {
+    this.countCompareProducts = await this.prodCompService.getCountProductsByCategory(this.navParams.data);
+  }
+
+  clearCompareProducts()
+  {
+    this.prodCompService.clearProductsByCategory(this.navParams.data);
+    this.countCompareProducts = 0;
+ 
+    this.updateScrollHeight();
+  }
+
+  openCompareProducts()
+  {
+    this.navCtrl.push('ProductComparePage', {categorytId: this.navParams.data});
   }
 
 }

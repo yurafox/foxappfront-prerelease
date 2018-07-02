@@ -14,4 +14,5 @@ export * from './repository/specific/mock-news-subscribe.service';
 export * from './search-service';
 export * from './cart-service';
 export * from './connectivity-service';
-
+export * from './product-compare-service';
+export * from './product-favorite-service';

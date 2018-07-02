@@ -12,6 +12,8 @@ import {EventService} from '../../app/service/event-service';
 import {ActionByProduct} from '../../app/model/action-by-product';
 import {UserService} from '../../app/service/bll/user-service';
 import {ItemImgPage} from '../item-img/item-img';
+import {ProductCompareService} from '../../app/service/product-compare-service';
+import {ProductFavoriteService} from '../../app/service/product-favorite-service';
 
 @IonicPage()
 @Component({
@@ -31,15 +33,20 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   complectsArr = new Array<ActionByProduct>();
   clientId: number = 0;
   cantShow: boolean;
+  productIsCompare: boolean;
+  hideProductCompare: boolean;
+  productIsFavorite: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
               public modalCtrl: ModalController, public toastCtrl: ToastController,
-              public evServ: EventService, public alertCtrl: AlertController, public uService: UserService) {
+              public evServ: EventService, public alertCtrl: AlertController, public uService: UserService,
+              public prodCompService: ProductCompareService, public prodFavoriteService: ProductFavoriteService) {
     super(navCtrl, navParams, repo);
     this.cantShow = true;
     this.product = this.navParams.data.prod;
     this.preloadQuotes = this.navParams.data.loadQuotes;
+    this.hideProductCompare = this.navParams.data.hideProductCompare;
     this.qty.value = 1;
     repo.getProductImages(this.product.id).then(
         x =>
@@ -70,6 +77,9 @@ export class ItemDetailPage extends ItemBase implements OnInit {
     this.maxLoanAmt = parseInt(await this.repo.getAppParam('MAX_LOAN_AMT'));
 
     this.cantShow = this.hasClientReview();
+
+    this.checkProductIsCompare();
+    this.checkProductIsFavorite();
   }
 
   async ionViewDidEnter() {
@@ -207,6 +217,34 @@ export class ItemDetailPage extends ItemBase implements OnInit {
     });
 
     toast.present();
+  }
+
+  checkProductIsCompare() {
+    this.productIsCompare = (this.prodCompService.findCompareProducts(this.product.id) !== undefined);
+  }
+
+  onAddProductToCompare() {
+    this.prodCompService.addCompareProducts(this.product.id);
+    this.checkProductIsCompare();
+    this.showToast(this.locale['ProductAddСompare']);
+  }
+
+  onOpenProductComparePage() {
+    this.navCtrl.push('ProductComparePage', {productId: this.product.id});
+  }
+
+  checkProductIsFavorite() {
+    this.productIsFavorite = (this.prodFavoriteService.findFavoriteProduct(this.product.id) !== undefined);
+  }
+
+  onAddProductToFavorites() {
+    this.prodFavoriteService.addFavoriteProduct(this.product.id);
+    this.checkProductIsFavorite();
+  }
+
+  onRemoveProductFromFavorites() {
+    this.prodFavoriteService.removeFavoriteProduct(this.product.id);
+    this.checkProductIsFavorite();
   }
 
 }

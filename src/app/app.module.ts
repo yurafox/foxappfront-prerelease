@@ -34,7 +34,9 @@ import {
   UserService,
   CurrencyStore,
   CartService,
-  ConnectivityService
+  ConnectivityService,
+  ProductCompareService,
+  ProductFavoriteService
 } from '../app/service/index';
 
 import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
@@ -217,7 +219,9 @@ import {BackgroundMode} from '@ionic-native/background-mode';
     AppConstants,
     CurrencyStore,
     CartService,
-    ConnectivityService
+    ConnectivityService,
+    ProductCompareService,
+    ProductFavoriteService
   ]
 })
 export class AppModule {
