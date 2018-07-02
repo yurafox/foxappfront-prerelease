@@ -11,7 +11,7 @@ import { Device } from '@ionic-native/device';
 })
 export class ContactsPage extends ComponentBase {
 
-  constructor(public navCtrl: NavController, private device: Device, private numberCaller: CallNumber) {
+  constructor(public navCtrl: NavController, public device: Device, public numberCaller: CallNumber) {
     super();
     this.initLocalization();
   }

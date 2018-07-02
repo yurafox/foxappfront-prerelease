@@ -40,7 +40,7 @@ export class AccountMenuPage extends ComponentBase {
      {title: 'Settings', name: 'Настройки', pages: this.accountSettingsPages, index: 1}
    ];
 
-  constructor(private nav: Nav) {
+  constructor(public nav: Nav) {
     super();
   }
 

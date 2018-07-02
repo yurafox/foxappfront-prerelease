@@ -1,9 +1,9 @@
-import { Category } from './../../app/model/index';
 import { Component } from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {ComponentBase} from "../../components/component-extension/component-base";
+import {ComponentBase} from '../../components/component-extension/component-base';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {Category} from '../../app/model/category';
 
 @IonicPage({name: 'CategoriesPage', segment: 'categories'})
 @Component({
@@ -13,7 +13,7 @@ import {AbstractDataRepository} from '../../app/service/repository/abstract/abst
 
 export class CategoriesPage extends ComponentBase   {
 
-  private categoriesArray:Category[]=[];
+  categoriesArray:Category[]=[];
   public  categoryForShow:Category[]=[];
   public canAllCategoryView:boolean=false;
   // categoriesArray = [
@@ -29,8 +29,8 @@ export class CategoriesPage extends ComponentBase   {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private _repo: AbstractDataRepository,
-              private _sanitizer: DomSanitizer) {
+              public _repo: AbstractDataRepository,
+              public _sanitizer: DomSanitizer) {
     super();
 
   }
@@ -61,7 +61,7 @@ export class CategoriesPage extends ComponentBase   {
   public toCategoryTree(){
     this.navCtrl.push('CategoryTreePage',{groups:this.categoriesArray});
   }
-  private sortDesc():void {
+  public sortDesc():void {
     //this.categoriesArray.sort((x,y)=>{return y.priority_index-x.priority_index;});
     this.categoryForShow.sort((x,y)=>{return y.priority_show-x.priority_show;});
   }

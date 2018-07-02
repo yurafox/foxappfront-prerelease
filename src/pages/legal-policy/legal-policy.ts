@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
-import {AbstractDataRepository} from '../../app/service';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 @IonicPage()
 @Component({
@@ -12,7 +12,7 @@ export class LegalPolicyPage extends ComponentBase {
   legalPolicyText: string;
 
   constructor(public navCtrl: NavController,
-              private repo: AbstractDataRepository) {
+              public repo: AbstractDataRepository) {
     super();
   }
 

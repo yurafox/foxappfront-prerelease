@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NavController,NavParams, IonicPage, AlertController} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {CartService} from '../../app/service/cart-service';
-import {Currency, Lang, IUserInfo} from "../../app/model/index";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
-import {UserService} from "../../app/service/bll/user-service";
-import {User,IUserVerifyAccountData} from "../../app/model/index";
+import {UserService} from '../../app/service/bll/user-service';
+import {Currency} from '../../app/model/currency';
+import {Lang} from '../../app/model/lang';
+import {IUserVerifyAccountData} from '../../app/model/user';
 
 @IonicPage({name: 'LoginPage', segment: 'login'})
 @Component({
@@ -19,11 +20,11 @@ export class LoginPage extends ComponentBase implements OnInit {
   public langs:Array<Lang>;
   public verifyForm: FormGroup;
   public verifyErrorData:{errorShow:boolean,errorMessage:string};
-  private onLoad = false;
-  private isSendAsync = false;
-  private useCode = false;
-  private _authError = false;
-  private _phone = '';
+  onLoad = false;
+  isSendAsync = false;
+  useCode = false;
+  _authError = false;
+  _phone = '';
 
   public get authError() {
     return this._authError;
@@ -41,11 +42,11 @@ export class LoginPage extends ComponentBase implements OnInit {
 
   constructor(public nav: NavController,
               public navParams: NavParams,
-              private repo: AbstractDataRepository,
-              private formBuilder: FormBuilder,
-              private alertCtrl:AlertController,
+              public repo: AbstractDataRepository,
+              public formBuilder: FormBuilder,
+              public alertCtrl:AlertController,
               public cart: CartService,
-              private account:UserService) {
+              public account:UserService) {
     super();
     this.initLocalization();
     const navData = this.navParams.data;
@@ -129,7 +130,7 @@ export class LoginPage extends ComponentBase implements OnInit {
     else {this.changeUseCode(true); this._authError = true};
   }
 
-  private buildForm(): void {
+  buildForm(): void {
     this.verifyForm = this.formBuilder.group({
       'phone': [this._phone, [Validators.required,
         Validators.pattern('^380\\d{9}$')]],
@@ -142,7 +143,7 @@ export class LoginPage extends ComponentBase implements OnInit {
     this.onVerifyChanged();
   }
 
-  private onVerifyChanged() {
+  onVerifyChanged() {
     if(this.verifyErrorData.errorShow)
       this.clearVerifyError();
 
@@ -164,7 +165,7 @@ export class LoginPage extends ComponentBase implements OnInit {
 
   }
 
-  private findBehaviorByStatus(result:IUserVerifyAccountData, phone:string ):void {
+  findBehaviorByStatus(result:IUserVerifyAccountData, phone:string ):void {
     if(result.status === 1) {
       this.changeUseCode(false);
       const contPage:string = (this.navParams.data
@@ -180,12 +181,12 @@ export class LoginPage extends ComponentBase implements OnInit {
 
   }
 
-  private clearVerifyError():void {
+  clearVerifyError():void {
     this.verifyErrorData.errorShow = false;
     this.verifyErrorData.errorMessage = '';
   }
 
-  private showSmsPopUp(message:string,phone:string){
+  showSmsPopUp(message:string,phone:string){
     let alert = this.alertCtrl.create({
       message: message,
       enableBackdropDismiss:false,
@@ -202,33 +203,33 @@ export class LoginPage extends ComponentBase implements OnInit {
     alert.present();
   }
 
-  private changeUseCode(codePredicate:boolean):void {
+  changeUseCode(codePredicate:boolean):void {
     (codePredicate) ? this.addCodeValidators() : this.removeCodeValidators();
     this.useCode = codePredicate;
   }
 
-  private addCodeValidators():void {
+  addCodeValidators():void {
       this.verifyForm.controls['code'].setValidators([Validators.required,Validators.pattern('^\\d{5,6}$')]);
       this.makeCodeUpdate();
   }
 
-  private removeCodeValidators():void {
+  removeCodeValidators():void {
     this.verifyForm.controls['code'].clearValidators();
     this.makeCodeUpdate();
   }
 
-  private makeCodeUpdate(){
+  makeCodeUpdate(){
     this.verifyForm.controls['code'].updateValueAndValidity();
   }
 
-  private toContinuePage(params:any) {
+  toContinuePage(params:any) {
     this.nav.remove(0).then(() => this.nav.insert(0, 'HomePage'));
     this.nav.push(this.navParams.data.continuePage,params).then(() => {
       this.nav.remove(this.nav.getActive().index);
     });
   }
 
-  private checkUserBehavior():void {
+  checkUserBehavior():void {
     if(this.navParams.data && this.navParams.data.fromRegistry){
       this.changeUseCode(true);
     }

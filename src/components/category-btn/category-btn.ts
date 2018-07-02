@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import {ComponentBase} from "../../components/component-extension/component-base";
+import {ComponentBase} from '../../components/component-extension/component-base';
 import {NavController} from "ionic-angular";
-import { AbstractDataRepository } from '../../app/service/index';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 @Component({
   selector: 'category-btn',
@@ -9,7 +9,7 @@ import { AbstractDataRepository } from '../../app/service/index';
 })
 export class CategoryBtnComponent extends ComponentBase {
   public productCountInOneCatalog:string;
-  constructor(public navCtrl: NavController, private _repo:AbstractDataRepository) {
+  constructor(public navCtrl: NavController, public _repo:AbstractDataRepository) {
         super();
         this.initLocalization();
   }

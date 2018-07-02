@@ -1,4 +1,4 @@
-import {Supplier} from './index';
+import {Supplier} from './supplier';
 
 export class DeliveryOption {
   constructor(id: number,

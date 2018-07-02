@@ -28,7 +28,7 @@ export class BalancePage extends ComponentBase {
     this.initData();
   }
 
-  private _getTime(date?: Date): number {
+  _getTime(date?: Date): number {
     return date != null ? date.getTime() : 0;
   }
 

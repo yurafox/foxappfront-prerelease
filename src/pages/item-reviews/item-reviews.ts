@@ -5,7 +5,7 @@ import {ProductReview} from '../../app/model/product-review';
 import {Product} from '../../app/model/product';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {StoreReview} from "../../app/model/store-review";
-import {Store} from "../../app/model";
+import {Store} from '../../app/model/store';
 
 @IonicPage()
 @Component({

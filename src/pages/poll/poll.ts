@@ -1,10 +1,11 @@
 import { IDictionary } from './../../app/core/app-core';
-import { PollQuestion, PollQuestionAnswer, AnswerType } from './../../app/model/index';
 import { Component} from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { ComponentBase } from '../../components/component-extension/component-base';
-import { AbstractDataRepository } from '../../app/service/index';
-import {ClientPollAnswer} from '../../app/model/index';
+import {AnswerType, PollQuestion} from '../../app/model/poll-question';
+import {PollQuestionAnswer} from '../../app/model/poll-question-answer';
+import {ClientPollAnswer} from '../../app/model/client-poll-answer';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 interface IPollResult {
   questionId:number,
@@ -23,17 +24,17 @@ interface IQuestionContainer {
   templateUrl: 'poll.html',
 })
 export class PollPage extends ComponentBase{
-  private pollId:number;
-  private pollQuestions:Array<PollQuestion>=[];
-  private pollresults:{pollId:number, pollResult:IDictionary<IPollResult>};
-  private displayContentResult:boolean= false;
+  public pollId:number;
+  public pollQuestions:Array<PollQuestion>=[];
+  public pollresults:{pollId:number, pollResult:IDictionary<IPollResult>};
+  public displayContentResult:boolean= false;
 
   public pollQuestAns:IQuestionContainer[]=[];
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public _repo:AbstractDataRepository,
-              private alertCtrl:AlertController) {
+              public alertCtrl:AlertController) {
     super();
     this.pollId = this.navParams.data.id;
     this.pollresults = {pollId:this.pollId,pollResult:{}};
@@ -106,7 +107,7 @@ export class PollPage extends ComponentBase{
     return answersCount===this.pollQuestions.length;
   }
 
-  private setUsrOptConfig(qAnswer:IQuestionContainer,answerValue:string,isShowOpt:boolean):void {
+  setUsrOptConfig(qAnswer:IQuestionContainer,answerValue:string,isShowOpt:boolean):void {
     qAnswer.showOpt = isShowOpt;
     if(answerValue) {
       this.pollresults.pollResult[`${qAnswer.questionObj.id}`] = {questionId:qAnswer.questionObj.id,answerValue:`${answerValue}`};

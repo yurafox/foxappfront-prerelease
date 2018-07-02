@@ -1,13 +1,14 @@
-import {Quotation, Product} from './index';
-import {AbstractDataRepository} from '../service/index';
+import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
+import {Product} from './product';
 import {RefInjector, LazyLoad} from '../core/app-core';
+import {Quotation} from './quotation';
 
 @LazyLoad([
   { options: {constructor: Quotation}, action: 'getQuotationById', params: ['idQuotation']},
   { options: {constructor: Product}, action: 'getProductById', params: ['idProduct']}
 ])
 export class QuotationProduct {
-  private _repo: AbstractDataRepository;
+  public _repo: AbstractDataRepository;
 
   constructor(public id: number,
               public idQuotation: number,

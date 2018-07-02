@@ -13,7 +13,7 @@ export class ManageNewsMenuPage extends ComponentBase{
   public newsCategory: NewsCategory[];
 
   constructor(public navCtrl: NavController,
-              private _repo: AbstractDataRepository ) {
+              public _repo: AbstractDataRepository ) {
     super();
   }
 

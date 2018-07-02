@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {ComponentBase} from "../../components/component-extension/component-base";
-import { Action } from '../../app/model/index';
-import { AbstractDataRepository } from '../../app/service/index';
+import {ComponentBase} from '../../components/component-extension/component-base';
+import {Action} from '../../app/model/action';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 @IonicPage()
 @Component({
@@ -14,7 +14,7 @@ export class ActionsPage extends ComponentBase {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private _repo: AbstractDataRepository ) {
+              public _repo: AbstractDataRepository ) {
     super();
   }
 

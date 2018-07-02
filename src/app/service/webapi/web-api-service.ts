@@ -1,9 +1,9 @@
-import {InMemoryDbService, RequestInfo} from "angular-in-memory-web-api";
-import {ResponseOptions} from "@angular/http";
-import {Observable} from "rxjs/Observable";
-import {User} from "../../model/index";
-import {IDictionary} from "../../core/app-core";
+import {InMemoryDbService, RequestInfo} from 'angular-in-memory-web-api';
+import {ResponseOptions} from '@angular/http';
+import {Observable} from 'rxjs/Observable';
+import {IDictionary} from '../../core/app-core';
 import {WebApiMockContent} from './web-api-mock-content';
+import {User} from '../../model/user';
 
 export class WebApiService extends WebApiMockContent implements InMemoryDbService {
 

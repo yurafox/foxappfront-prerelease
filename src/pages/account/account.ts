@@ -1,13 +1,14 @@
-import { System } from './../../app/core/app-core';
 import {Component} from '@angular/core';
 import {NavController, IonicPage} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Currency, User, Lang, IUserInfo} from "../../app/model/index";
-import {AbstractDataRepository} from "../../app/service/index";
 import { AlertController } from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {Activator} from "../../app/core/app-core";
 import {CartService} from "../../app/service/cart-service";
+import {Currency} from '../../app/model/currency';
+import {IUserInfo, User} from '../../app/model/user';
+import {Lang} from '../../app/model/lang';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 
 @IonicPage({name: 'AccountPage', segment: 'account'})
 @Component({
@@ -39,10 +40,10 @@ export class AccountPage extends ComponentBase {
   public errorMessages = {};
 
   constructor(public nav: NavController,
-              private alertCtrl: AlertController,
-              private repo: AbstractDataRepository,
-              private formBuilder: FormBuilder,
-              private cartServ: CartService) {
+              public alertCtrl: AlertController,
+              public repo: AbstractDataRepository,
+              public formBuilder: FormBuilder,
+              public cartServ: CartService) {
     super();
     this.verifyErrorData={errorShow:false,errorMessage:''};
   }
@@ -157,7 +158,7 @@ export class AccountPage extends ComponentBase {
   }
 
   // <editor-fold desc="form builder">
-  private buildForm(): void {
+  public buildForm(): void {
     this.editForm = this.formBuilder.group({
       'email': [this.userService.email, [Validators.required,
         Validators.pattern('^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]],
@@ -183,7 +184,7 @@ export class AccountPage extends ComponentBase {
 // </editor-fold>
 
   // <editor-fold desc="form value changing hook">
-  private onValueChanged(data?: any) {
+  public onValueChanged(data?: any) {
     if(this.verifyErrorData.errorShow)
       this.clearVerifyError();
 
@@ -208,7 +209,7 @@ export class AccountPage extends ComponentBase {
   // </editor-fold>
 
   //<editor-fold desc="inner helpers">
-  private setDefaultSetting<T>(store:Array<T>, map:{targetReference:{name:string, ref:any},
+  public setDefaultSetting<T>(store:Array<T>, map:{targetReference:{name:string, ref:any},
                                                     item: {valueName:string,displayValue:string},
                                                     serviceItemName}):void {
 
@@ -228,12 +229,12 @@ export class AccountPage extends ComponentBase {
   }
   //</editor-fold>
 
-  private clearVerifyError():void {
+  public clearVerifyError():void {
     this.verifyErrorData.errorShow = false;
     this.verifyErrorData.errorMessage = '';
   }
 
-  private checkIfDataChanged() {
+  public checkIfDataChanged() {
     if (this.currentData.email !== this.previousData.email) {
       this.isChanged = true;
     } else if (this.currentData.fname !== this.previousData.fname) {
@@ -249,7 +250,7 @@ export class AccountPage extends ComponentBase {
     }
   }
 
-  private checkDisabled():boolean {
+  public checkDisabled():boolean {
     return !this.isChanged || this.isSendAsync || !this.editForm.valid;
   }
 }

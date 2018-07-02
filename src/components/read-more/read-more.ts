@@ -18,9 +18,9 @@ export class ReadMoreComponent extends ComponentBase implements OnChanges {
   currentText: string;
   hideToggle: boolean = true;
 
-  public isCollapsed: boolean = true;
+  isCollapsed: boolean = true;
 
-  constructor(private elementRef: ElementRef) {
+  constructor(public elementRef: ElementRef) {
     super();
   }
 

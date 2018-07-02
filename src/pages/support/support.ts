@@ -17,9 +17,9 @@ export class SupportPage extends ComponentBase {
   supportMessage: string;
   minMsgLength = 10;
 
-  constructor(private toastCtrl: ToastController,
-              private repo: AbstractDataRepository,
-              private viewCtrl: ViewController) {
+  constructor(public toastCtrl: ToastController,
+              public repo: AbstractDataRepository,
+              public viewCtrl: ViewController) {
     super();
   }
 

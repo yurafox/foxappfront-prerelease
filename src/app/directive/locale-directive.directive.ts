@@ -5,16 +5,16 @@ import {Directive, ElementRef, Input, OnInit, ViewContainerRef} from '@angular/c
 })
 export class LocaleDirective implements OnInit {
   @Input('loc')
-  public localeText: string;
+  localeText: string;
   @Input('name')
-  public localeAlias: string;
+  localeAlias: string;
 
-  private get parentComponent(): any {
+  public get parentComponent(): any {
     return (<any>this.componentRef)._view.component;
   }
 
-  constructor(private element: ElementRef,
-              private componentRef: ViewContainerRef) {
+  constructor(public element: ElementRef,
+              public componentRef: ViewContainerRef) {
   }
 
   ngOnInit() {

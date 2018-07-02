@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, IonicPage, AlertController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Currency, Lang, IUserInfo } from "../../app/model/index";
 import { AbstractDataRepository } from "../../app/service/repository/abstract/abstract-data-repository";
-import { UserService } from "../../app/service/bll/user-service";
-import { User, IUserVerifyAccountData } from "../../app/model/index";
-import { ComponentBase } from "../../components/component-extension/component-base";
-import {Activator} from "../../app/core/app-core";
+import { UserService } from '../../app/service/bll/user-service';
+import { ComponentBase } from '../../components/component-extension/component-base';
+import {Currency} from '../../app/model/currency';
+import {Lang} from '../../app/model/lang';
+import {IUserInfo, User} from '../../app/model/user';
+
 
 @IonicPage()
 @Component({
@@ -18,11 +19,11 @@ export class RegisterPage extends ComponentBase {
   public langs: Array<Lang>;
   public registerForm: FormGroup;
   public verifyErrorData: { errorShow: boolean, errorMessage: string };
-  private onLoad = false;
-  private isSendAsync = false;
+  onLoad = false;
+  isSendAsync = false;
   public currentCurrency:Currency = new Currency(4,'UAH');
   public currentLang:Lang = new Lang(1,'RUS');
-  private _phone: string;
+  _phone: string;
 
   public formErrors = {
     'phone': '',
@@ -37,11 +38,11 @@ export class RegisterPage extends ComponentBase {
 
 
   constructor(public nav: NavController,
-    public navParams: NavParams,
-    private repo: AbstractDataRepository,
-    private formBuilder: FormBuilder,
-    private alertCtrl: AlertController,
-    private account: UserService) {
+              public navParams: NavParams,
+              public repo: AbstractDataRepository,
+              public formBuilder: FormBuilder,
+              public alertCtrl: AlertController,
+              public account: UserService) {
     super();
     this.initLocalization();
     const navData = this.navParams.data;
@@ -114,7 +115,7 @@ export class RegisterPage extends ComponentBase {
   }
 
   // <editor-fold desc="form builder">
-  private buildForm(): void {
+  buildForm(): void {
     this.registerForm = this.formBuilder.group({
       'phone': [this._phone, [Validators.required,
       Validators.pattern('^380\\d{9}$')]],
@@ -133,7 +134,7 @@ export class RegisterPage extends ComponentBase {
   // </editor-fold>
 
   // <editor-fold desc="form value changing hook">
-  private onValueChanged(data?: any) {
+  onValueChanged(data?: any) {
     if (this.verifyErrorData.errorShow)
       this.clearVerifyError();
 
@@ -156,12 +157,12 @@ export class RegisterPage extends ComponentBase {
   }
 
 
-  private clearVerifyError(): void {
+  clearVerifyError(): void {
     this.verifyErrorData.errorShow = false;
     this.verifyErrorData.errorMessage = '';
   }
 
-  private showSmsPopUp(message: string, phone: string) {
+  showSmsPopUp(message: string, phone: string) {
     let alert = this.alertCtrl.create({
       message: message,
       enableBackdropDismiss: false,

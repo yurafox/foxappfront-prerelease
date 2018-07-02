@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { ComponentBase } from "../../components/component-extension/component-base";
-import { Category } from './../../app/model/index';
-import {DomSanitizer} from "@angular/platform-browser";
-import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
+import {DomSanitizer} from '@angular/platform-browser';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import { ComponentBase } from '../../components/component-extension/component-base';
+import {Category} from '../../app/model/category';
 
 @IonicPage()
 @Component({
@@ -11,11 +11,11 @@ import {AbstractDataRepository} from "../../app/service/repository/abstract/abst
   templateUrl: 'category-tree.html',
 })
 export class CategoryTreePage extends ComponentBase {
-  private groups: Category[] = [];
-  private currentGroup: Category[] = [];
+  groups: Category[] = [];
+  currentGroup: Category[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private _sanitizer: DomSanitizer,
-              private _repo: AbstractDataRepository) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public _sanitizer: DomSanitizer,
+              public _repo: AbstractDataRepository) {
     super();
   }
 
@@ -39,14 +39,14 @@ export class CategoryTreePage extends ComponentBase {
   }
 
 
-  private setCurrentCategoryList(): void
+  setCurrentCategoryList(): void
   {
      const isChildLevel = !!this.navParams.data.currentGroup;
      this.currentGroup = (!isChildLevel) ? this.buildRootTree()
                                          : this.navParams.data.currentGroup;
   }
 
-  private buildRootTree():Category[] {
+  buildRootTree():Category[] {
     const rootIndex = this.groups.findIndex((value:Category):boolean => {
          return !value.parent_id;
     });

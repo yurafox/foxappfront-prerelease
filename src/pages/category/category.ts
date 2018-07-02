@@ -4,7 +4,7 @@ import {ComponentBase} from '../../components/component-extension/component-base
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {SearchService} from '../../app/service/search-service';
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from 'rxjs/Subscription';
 import {ProductCompareService} from '../../app/service/product-compare-service';
 
 @IonicPage({name: 'CategoryPage', segment: 'category'})
@@ -23,9 +23,9 @@ export class CategoryPage extends ComponentBase implements DoCheck {
   private rerender: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private repo: AbstractDataRepository, public srch: SearchService,
-              private screenOrientation: ScreenOrientation, private changeDet: ChangeDetectorRef,
-              private prodCompService: ProductCompareService) {
+              public repo: AbstractDataRepository, public srch: SearchService,
+              public screenOrientation: ScreenOrientation, public changeDet: ChangeDetectorRef,
+              public prodCompService: ProductCompareService) {
     super();
   }
 

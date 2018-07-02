@@ -1,4 +1,7 @@
-import {QuotationProduct, Currency} from './index';
+
+
+import {QuotationProduct} from './quotation-product';
+import {Currency} from './currency';
 
 export class CartProduct {
   constructor(public id: number,
@@ -19,7 +22,7 @@ export class Order {
               public status: number) {
   }
 
-  private get totalItems(): number {
+  get totalItems(): number {
     let count = 0;
     this.orderLine.forEach((value: CartProduct) => {
       count += value.qty;

@@ -1,4 +1,4 @@
-import {QuotationProduct} from './index';
+import {QuotationProduct} from './quotation-product';
 
 export class Offer {
   constructor(id: number,

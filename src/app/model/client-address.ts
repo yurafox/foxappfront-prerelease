@@ -1,21 +1,13 @@
-import {City} from './city';
 import {Country} from './country';
 import {LazyLoad, RefInjector, System} from '../core/app-core';
 import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
-import FoxNumber = System.FoxNumber;
-import {Observable} from 'rxjs/Observable';
 
 @LazyLoad([
- /* { options: {constructor: City}, action: 'getCityById', params: ['idCity']},*/
   { options: {constructor: Country}, action: 'getCountryById', params: ['idCountry']}
 ])
 export class ClientAddress {
 
   private _repo: AbstractDataRepository;
-
-  public get idC(): number {
-    return this.idCountry;
-  }
 
   get dto(): any {
     return  {id: this.id, idClient: this.idClient, idCity: this.idCity, zip: this.zip, street: this.street,

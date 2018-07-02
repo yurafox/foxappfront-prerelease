@@ -17,7 +17,7 @@ import {LoEntity} from './lo-entity';
 
 export class ClientOrder {
 
-  private _repo: AbstractDataRepository;
+  public _repo: AbstractDataRepository;
 
   get dto(): any {
     return  {id: this.id, orderDate: this.orderDate, idCur: this.idCur, idClient: this.idClient, total: this.total,

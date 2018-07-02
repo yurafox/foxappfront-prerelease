@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
-import {AbstractAccountRepository} from '../../index';
 import {Http} from '@angular/http';
-import {User,IUserVerifyAccountData,IUserInfo,LoginTemplate,ChangePassword} from '../../../model/index';
 import {AppConstants} from "../../../app-constants"
 import { RequestFactory } from '../../../core/app-core';
 import {ConnectivityService} from "../../connectivity-service";
+import {AbstractAccountRepository} from '../abstract/abstract-account-repository';
+import {LoginTemplate} from '../../../model/login-template';
+import {IUserInfo, IUserVerifyAccountData, User} from '../../../model/user';
+import {ChangePassword} from '../../../model/change-password';
 // server url
 const loginUrl = `${AppConstants.BASE_URL}/api/account/login`;
 const accountUrl = `${AppConstants.BASE_URL}/api/account`;
@@ -19,7 +21,7 @@ const callMeUrl = `${AppConstants.BASE_URL}/api/client/callMe`;
 @Injectable()
 export class AccountRepository extends AbstractAccountRepository {
 
-  constructor(private http:Http, private connServ: ConnectivityService) {
+  constructor(public http:Http, public connServ: ConnectivityService) {
     super();
   }
 
@@ -186,7 +188,7 @@ export class AccountRepository extends AbstractAccountRepository {
   // }
 
   // <editor-fold desc="error handler">
-  private errorHandler(err: any): any {
+  public errorHandler(err: any): any {
     if (this.connServ.counter < 1) {
       this.connServ.checkConnection(err);
     }

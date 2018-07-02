@@ -1,8 +1,8 @@
 import {ClientOrderProductBase} from './client-order-product-base';
-import {AbstractDataRepository} from '../service/index';
-import {RefInjector, LazyLoad, IDTO, System} from '../core/app-core';
+import {RefInjector, LazyLoad, IDTO} from '../core/app-core';
 import {QuotationProduct} from './quotation-product';
 import {StorePlace} from './store-place';
+import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
 
 
 @LazyLoad([
@@ -11,7 +11,7 @@ import {StorePlace} from './store-place';
 ])
 
 export class ClientOrderProducts extends ClientOrderProductBase implements IDTO {
-  private _repo: AbstractDataRepository;
+  public _repo: AbstractDataRepository;
 
   get dto(): any {
     return  {id: this.id, idOrder: this.idOrder, idQuotationProduct: this.idQuotationProduct, qty: this.qty, price: this.price,

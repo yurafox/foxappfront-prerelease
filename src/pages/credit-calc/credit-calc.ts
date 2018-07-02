@@ -20,14 +20,14 @@ export class CreditCalcPage extends ComponentBase {
   quotProduct: QuotationProduct = null;
   lastQp: number = null;
   credits: Array<CreditCalc> = [];
-  private _cProd: {isChecked: boolean, creditProduct: CreditProduct} = null;
+  _cProd: {isChecked: boolean, creditProduct: CreditProduct} = null;
   public dArray: Array<{value: number, displayValue: string}> = [];
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController, public cart: CartService,
               public userService: UserService, public loadingCtrl: LoadingController,
-              private repo: AbstractDataRepository) {
+              public repo: AbstractDataRepository) {
     super();
     this.initLocalization();
     this.quotProduct = this.navParams.data.quotProduct;
