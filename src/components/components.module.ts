@@ -40,6 +40,7 @@ import { MaskComponent } from './mask/mask';
 import { StarBtnComponent } from './star-btn/star-btn';
 import { StarBtnViewComponent } from './star-btn-view/star-btn-view';
 import {DirectivesModule} from '../app/directives/directives.module';
+import { ProductCompareComponent } from './product-compare/product-compare';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,7 @@ import {DirectivesModule} from '../app/directives/directives.module';
     MaskComponent,
     StarBtnComponent,
     StarBtnViewComponent,
-
+    ProductCompareComponent
   ],
   entryComponents: [
     CustomPopupComponent,
@@ -131,7 +132,8 @@ import {DirectivesModule} from '../app/directives/directives.module';
     CategoryBtnComponent,
     MaskComponent,
     StarBtnComponent,
-    StarBtnViewComponent
+    StarBtnViewComponent,
+    ProductCompareComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

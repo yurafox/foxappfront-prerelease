@@ -1,0 +1,57 @@
+<div class="f-drop-buttons" *ngIf="showFilter && categories && (categories !== []) && categories[0] && isLoading==false">
+  <dropdown-list
+    [reference]="selectedCategory"
+    [store]="categories"
+    [map]="{valueName:'id',displayName:'name'}"
+    [afterUpdate]="categoryUpdate"
+    [options]="{buttonClass: 'f-drop-button-block', 
+                popupClass: 'f-large-dictionary', 
+                popupHeader: locale['SelectCategory'] ? locale['SelectCategory'] : 'Выбор категории',
+                buttonHeader: locale['Category'] ? locale['Category'] : 'Категория'
+              }">
+  </dropdown-list>
+</div>
+
+<ion-scroll class="f-compare-scroll" padding="false" scrollX="true" scrollY="true" *ngIf="products && (products !== []) && products[0] && isLoading==false">  
+  <table>
+    <tr><td><p> </p></td></tr>
+    <tr>
+        <td></td>
+        <td valign="top" *ngFor="let product of products" class="f-item-tile">      
+          <item-tile (closeProductClick)="closeProductClick($event)" 
+                     [product]=product 
+                     [displayPrice]=false 
+                     [displayRating]=false 
+                     [displayCloseButton]=showFilter
+                     [hideProductCompare]=true>
+          </item-tile>  
+        </td>
+    </tr>
+    <tr *ngIf="(displayPropCount >= 1) || (displayPropCount ==-1)" class="f-even-row">
+        <td class="f-padding-tb-5 f-padding-lr-5">
+            {{locale['Rating'] ? locale['Rating'] : 'Рейтинг'}}
+        </td>
+        <td nowrap class="f-col-vertical-line f-item-col" *ngFor="let product of products">
+            <product-rating [product]=product></product-rating>
+        </td>
+    </tr>
+    <tr *ngIf="(displayPropCount >= 2) || (displayPropCount ==-1)">
+        <td class="f-padding-tb-5 f-padding-lr-5">
+            {{locale['Price'] ? locale['Price'] : 'Цена'}}
+        </td>
+        <td nowrap class="f-col-vertical-line f-product-price-item-tile" *ngFor="let product of products">
+            {{product.price | localeCurrency:userService.currency}}
+        </td>
+    </tr>
+    <tr *ngFor="let p of propsArr; let i = index; let even = even" [class.f-even-row]="even">
+      <td class="f-padding-tb-5 f-padding-lr-5" *ngIf="(i+2<displayPropCount) || (displayPropCount ==-1)">
+        {{p.propName}}
+      </td>
+      <td class="f-col-vertical-line f-padding-lr-5" *ngFor="let v of p.propStr">
+        <span *ngIf="(i+2<displayPropCount) || (displayPropCount ==-1)">{{v}}</span>
+      </td>
+    </tr>
+  </table>
+</ion-scroll>
+
+

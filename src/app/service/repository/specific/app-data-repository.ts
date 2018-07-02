@@ -61,6 +61,7 @@ import {CurrencyRate} from '../../../model/currency-rate';
 import {NewsCategory} from '../../../model/news-category';
 import {News} from '../../../model/news';
 import {AbstractDataRepository} from '../abstract/abstract-data-repository';
+import { LoDeliveryTypeAttr } from '../../../model/lo-delivery-type-attr';
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
@@ -148,6 +149,51 @@ const newsDescriptionsUrl = `${AppConstants.BASE_URL}/api/news/getNewsDescriptio
 const newsByCategoryUrl = `${AppConstants.BASE_URL}/api/news/getNewsByCategory`;
 const newsCategoryUrl = `${AppConstants.BASE_URL}/api/NewsCategory`;
 const pageOptionsUrl = `${AppConstants.BASE_URL}/api/page/GetPageOptions`;
+const getLoDeliveryTypesAttrByLoEntityUrl = `${AppConstants.BASE_URL}/api/lo/LoDeliveryTypesAttrByLoEntity`;
+
+//DEV URLS
+// const productDescriptionsUrl = 'api/mproductDescriptions';
+// const currenciesUrl = "/api/mcurrencies";
+// const productsUrl = "/api/mproducts";
+// const manufacturersUrl = "/api/manufacturers";
+// const quotationProductsUrl = "/api/mquotationProducts";
+// const suppliersUrl = "/api/msuppliers";
+// const mYeasureUnitUrl = '/api/mmeasureUnits';
+// const LangUrl = "/api/mlocalization";
+// const countriesUrl = "/api/mcountries";
+// const citiesUrl = "/api/mcities";
+// const regionsUrl = "/api/mregions";
+// const getPaymentMethodsUrl = "/api/mpaymentMethods";
+// const loEntitiesUrl = "/api/mloEntities";
+// const quotationsUrl = "/api/mquotation";
+// const clientsUrl = "/api/mclients";
+// const cartProductsUrl = "/api/mcartProducts";
+// const productStorePlacesUrl = "/api/mproductStorePlaces";
+// const storePlacesUrl = "/api/mstorePlaces";
+// const loSupplEntitiesUrl = "/api/mloSupplEntities";
+// const specLOTrackingLogUrl = '/api/mspecLOTrackingLog';
+// const clientDraftOrderUrl = "/api/mclientDraftOrder";
+// const personsUrl = "/api/mpersons";
+// const productImagesUrl = "/api/mProductImages";
+// const getBonusesInfoUrl = "/api/mgetBonusesInfoForCheckout";
+// const getClientBonusesExpireInfoUrl = "/api/mclientBonuses";
+// const creditProductsUrl = "/api/mcreditProducts";
+// const productSupplCreditGradesUrl = "/api/mproductSupplCreditGrades";
+// const postProductViewUrl = "/api/mpostProductView";
+// const clientAddressesUrl = "/api/mclientAddresses";
+// const clientOrderSpecProductsUrl = "/api/mclientOrderSpecProducts";
+// const clientOrdersUrl = "/api/mclientOrders";
+// const citiesWithStoresUrl = "/api/mcities";
+// const storesUrl = "/api/mstores";
+// const getDeliveryCostUrl = "/api/mgetDeliveryCost";
+// const getDeliveryDateUrl = "/api/mgetDeliveryDate";
+// const calculateCartUrl = "/api/mcalculateCart";
+// const productReviewsUrl = "/api/mproductReviews";
+// const storeReviewsUrl = "/api/mstoreReviews";
+// const noveltyDynamicUrl = "/api/mnovelties";
+// const noveltyDetailsDynamicUrl = "/api/mnoveltyDetails";
+// const deviceDataUrl = "/api/mdeviceData";
+// </editor-fold
 
 @Injectable()
 export class AppDataRepository extends AbstractDataRepository {
@@ -3704,6 +3750,7 @@ export class AppDataRepository extends AbstractDataRepository {
           )
         );
       }
+
       return arr;
     } catch (err) {
       return await this.handleError(err);
@@ -3990,4 +4037,31 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+
+  public async getLoEntityDeliveryTypesAttr(shpmt: Shipment, loIdClientAddress: number): Promise<LoDeliveryTypeAttr[]> {
+    try {
+      const response = await this.http
+        .post(getLoDeliveryTypesAttrByLoEntityUrl, { shpmt: shpmt.dto, loIdClientAddress: loIdClientAddress },
+        RequestFactory.makeAuthHeader())
+        .toPromise();
+      const data = response.json();
+
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      const arr: LoDeliveryTypeAttr[] = new Array<LoDeliveryTypeAttr>();
+      if (data !== null) {
+        data.forEach(val =>
+          arr.push(
+            new LoDeliveryTypeAttr(val.loEntityId, val.deliveryTypeId, val.deliveryDate )
+          )
+        );
+      }
+      return arr;
+    } catch (err) {
+      return await this.handleError(err);
+    }  
+  }
+
 }

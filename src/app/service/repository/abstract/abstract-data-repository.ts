@@ -48,6 +48,7 @@ import {LoDeliveryType} from '../../../model/lo-delivery-type';
 import {LoEntityOffice} from '../../../model/lo-entity-office';
 import {News} from '../../../model/news';
 import {NewsCategory} from '../../../model/news-category';
+import {LoDeliveryTypeAttr} from '../../../model/lo-delivery-type-attr';
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<{reviews:ProductReview[], idClient:number}>;
@@ -208,4 +209,5 @@ export abstract class AbstractDataRepository {
   public async abstract getNewsDescription(id: number): Promise<string>;
   public async abstract getNewsCategory(): Promise<NewsCategory[]>;
   public async abstract getPageOptionsById(id:number):Promise<any>;
+  public async abstract getLoEntityDeliveryTypesAttr(shpmt: Shipment, loIdClientAddress: number): Promise<LoDeliveryTypeAttr[]>;
 }

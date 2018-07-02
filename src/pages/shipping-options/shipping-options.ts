@@ -38,64 +38,44 @@ export class ShippingOptionsPage extends ComponentBase {
 
     let i = 0;
 
-
     const addr = this.cart.order.loIdClientAddress ? await this.repo.getClientAddressById(this.cart.order.loIdClientAddress) : null;
     const cityId = addr ? addr.idCity : null;
 
     for (let ship of this.cart.loShipments) {
+      let loDeliveryTypes = await this.repo.getLoEntityDeliveryTypesAttr(ship, this.cart.order.loIdClientAddress);
 
-      if (ship.idStorePlace) {
+      for (let loEnt of loDeliveryTypes) {
         let item = new LoShipmentDeliveryOption();
+
         item.shipment = ship;
-        item.loEntityId = null;
-        item.itemIdx = i;
-        item.deliveryCost = 0;
-        item.deliveryDate = new Date(); //await this.repo.getDeliveryDateByShipment(ship.id, loEnt.idLoEntity, this.cart.order.loIdClientAddress);
-        item.loName = null;
-        item.isChecked = true;
-        item.deliveryType = new LoDeliveryType(3); //Самомвьівоз
-        item.pickupLocationName = (await this.repo.getStorePlaceById(ship.idStorePlace)).name; // '';
-        this.cart.loShipmentDeliveryOptions.push(item);
-      }
-      else
-      {
-        let supplLoEnt = await this.repo.getLoEntitiesForSupplier(ship.idSupplier);
-        for (let loEnt of supplLoEnt) {
-          let ent = await this.repo.getLoEntitiyById(loEnt.idLoEntity);
-          ent.loDeliveryTypes = await (<any>ent).lodeliverytype_p;
+        item.loEntityId = ship.idStorePlace ? null : loEnt.loEntityId;
+        item.itemIdx = i; 
+        item.deliveryCost = ship.idStorePlace ? 0 : await this.repo.getDeliveryCostByShipment(ship, loEnt.loEntityId, this.cart.order.loIdClientAddress, loEnt.deliveryTypeId);
+        item.deliveryDate = loEnt.deliveryDate;
+        item.loName = ship.idStorePlace ? null : (await this.repo.getLoEntitiyById(item.loEntityId)).name;
+        item.pickupLocationName = ship.idStorePlace ? (await this.repo.getStorePlaceById(ship.idStorePlace)).name : null; 
+        item.isChecked = ship.idStorePlace ? true : (loDeliveryTypes.length === 1);
+        let delivName =  ship.idStorePlace ? null : (await this.repo.getLoDeliveryTypeById(loEnt.deliveryTypeId)).name;
+        item.deliveryType = new LoDeliveryType(loEnt.deliveryTypeId, delivName);
+  
+        let needAddToOptionsList = true;
 
-          for (let delType of ent.loDeliveryTypes) {
-            let item = new LoShipmentDeliveryOption();
-
-            item.shipment = ship;
-            item.loEntityId = loEnt.idLoEntity;
-            item.itemIdx = i;
-            item.deliveryCost = await this.repo.getDeliveryCostByShipment(ship, loEnt.idLoEntity, this.cart.order.loIdClientAddress, delType.id);
-            item.deliveryDate = await this.repo.getDeliveryDateByShipment(ship, loEnt.idLoEntity, this.cart.order.loIdClientAddress, delType.id);
-            item.loName = ent.name;
-            item.isChecked = ((supplLoEnt.length === 1) && (ent.loDeliveryTypes.length === 1));
-            item.deliveryType = delType;
-
-            let needAddToOptionsList = true;
-
-            if (item.deliveryType.id === 1) {
-              item.loEntityOfficesList = (await this.repo.getLoOfficesByLoEntityAndCity(loEnt.idLoEntity, cityId))
-                .sort((a,b) => {
-                  if(a.name < b.name) return -1;
-                  if(a.name > b.name) return 1;
-                  return 0;
-                });
-              needAddToOptionsList = !(item.loEntityOfficesList.length === 0);
-            }
-
-            if (needAddToOptionsList)
-              this.cart.loShipmentDeliveryOptions.push(item);
-          }
-
+        if (item.deliveryType.id === 1) {
+          item.loEntityOfficesList = (await this.repo.getLoOfficesByLoEntityAndCity(loEnt.loEntityId, cityId))
+            .sort((a,b) => {
+              if(a.name < b.name) return -1;
+              if(a.name > b.name) return 1;
+              return 0;
+            });
+          needAddToOptionsList = !(item.loEntityOfficesList.length === 0);
         }
+
+        if (needAddToOptionsList)
+          this.cart.loShipmentDeliveryOptions.push(item);
       }
       i++;
     }
+
     this.dataLoaded = true;
     loading.dismiss();
   }
@@ -149,4 +129,5 @@ export class ShippingOptionsPage extends ComponentBase {
       this.navCtrl.remove((this.navCtrl.getActive().index)-1, 1)
     }
   }
+
 }

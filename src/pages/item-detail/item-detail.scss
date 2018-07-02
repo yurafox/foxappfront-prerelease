@@ -25,4 +25,15 @@ page-item-detail {
     }
   }
 
+  .f-icon-scale {
+    transform: scale(1.25);
+  }
+
+  .f-icon-red {
+   background-color: color($colors, badges);
+  }
+
+  .f-icon-color-red {
+    color: color($colors, badges);
+   }
 }

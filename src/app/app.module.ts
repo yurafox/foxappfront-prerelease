@@ -102,6 +102,8 @@ import {NewsDetailPageModule} from '../pages/news-detail/news-detail.module';
 import {ManageNewsMenuPageModule} from '../pages/manage-news-menu/manage-news-menu.module';
 import {ItemImgPageModule} from '../pages/item-img/item-img.module';
 import {CallMePageModule} from '../pages/call-me/call-me.module';
+import {ProductCompareService} from './service/product-compare-service';
+import {ProductFavoriteService} from './service/product-favorite-service';
 
 
 @NgModule({
@@ -213,7 +215,9 @@ import {CallMePageModule} from '../pages/call-me/call-me.module';
     AppConstants,
     CurrencyStore,
     CartService,
-    ConnectivityService
+    ConnectivityService,
+    ProductCompareService,
+    ProductFavoriteService
   ]
 })
 export class AppModule {

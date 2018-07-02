@@ -18,7 +18,12 @@
     </ion-row>
     <ion-row>
       <ion-col class="f-item-col">
-        <span class="f-size-small" style="float:right">{{news.publicDate | date:'shortDate'}}</span>
+        <span class="f-size-small" style="float:right">{{news.publicDate | date:'longDate'}}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <hr class="f-hr-divider">
       </ion-col>
     </ion-row>
     <ion-row *ngIf="description">
