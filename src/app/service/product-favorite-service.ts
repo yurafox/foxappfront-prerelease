@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AbstractDataRepository} from '../../app/service/index';
+import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {Product} from './../../app/model/index';
 
 @Injectable()
