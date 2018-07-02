@@ -1,37 +1,30 @@
 [![pipeline status](http://gitlab.mc.gcf/dit/foxtrot-mobile-app/badges/develop/pipeline.svg)](http://gitlab.mc.gcf/dit/foxtrot-mobile-app/commits/develop)
 
 ### Installing and preparing to work with the Ionic CLI:
+        ```
+        $ npm install -g ionic cordova
+        $ npm install
+        ```
 
-```bash
-$ npm install -g ionic cordova
-$ npm install
-```
-
-### Pre-fixing some plugin issues
-
-### 1. The main issue is that cordova-plugin-fcm and cordova-plugin-googlemaps need to use the same google play services version, but they don't by default.
-
-### Go to <project's folder>/plugins/cordova-plugin-fcm/plugin.xml and find two lines starting with "<framework src="com.google.firebase:firebase-core" and "<framework src="com.google.firebase:firebase-messaging". Change them to be:
-		<framework src="com.google.firebase:firebase-core:11.4.2" />
-    <framework src="com.google.firebase:firebase-messaging:11.4.2" />
-		
-### Go to <project's folder>/plugins/cordova-plugin-googlemaps/plugin.xml and find line starting with "<preference name="PLAY_SERVICES_VERSION"". Change it to be:
-		<preference name="PLAY_SERVICES_VERSION" default="11.4.2" />
-		
-### Go to <project's folder>/node_modules/cordova-plugin-googlemaps/plugin.xml and find line starting with "<preference name="PLAY_SERVICES_VERSION"". Change it to be:
-		<preference name="PLAY_SERVICES_VERSION" default="11.4.2" />
+### 1. Install plugins play-services-gradle-release, firebase-gradle-release, googlemaps phonegap-plugin-push and crosswalk-webview strictly using these commands:
+       ```
+       $ ionic cordova plugin add cordova-android-play-services-gradle-release --variable PLAY_SERVICES_VERSION=15.+
+       $ ionic cordova plugin add cordova-android-firebase-gradle-release  --variable FIREBASE_VERSION=15.+
+       $ ionic cordova plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="AIzaSyAKDQzb3RKdVlh0gqZMhY4MEjl53Lh-Dmk" --variable API_KEY_FOR_IOS="AIzaSyAKDQzb3RKdVlh0gqZMhY4MEjl53Lh-Dmk" --variable PLAY_SERVICES_VERSION=15.+
+       $ ionic cordova plugin add phonegap-plugin-push@2.2.2 --variable SENDER_ID=431639834815 --variable FCM_VERSION=15.+
+       $ ionic cordova plugin add cordova-plugin-crosswalk-webview
+       ```
 
 ### Then:
-```bash
-$ ionic cordova platform add android
-```
+        ```
+        $ ionic cordova platform add android@7.1.0
+        ```
 
-### After platform have been installed go to <project's folder>/platforms/android/cordova-plugin-fcm/android-FCMPlugin.gradle and add this line to dependencies:
-        classpath 'com.google.gms:google-services:3.1.2'
-### to be like: 
-	dependencies {
-        classpath 'com.android.tools.build:gradle:+'
-        classpath 'com.google.gms:google-services:3.1.2'
-    }
+### When platform is installed copy google-services.json file from project's root folder to platforms/android/app.
+
+### Now build with:
+        $ ionic cordova build android
+### or run on device/emulator:
+        $ ionic cordova run android
 	
-### 2. Second main issue is related to cordova-plugin-crosswalk-webview. Read crosswalk_fix.md which is located in projects main folder.
+### If you're experiencing build errors like "ERROR: In <declare-styleable> FontFamilyFont, unable to find attribute ..." read crosswalk_fix.md which is located in project's root folder to fix issue with crosswalk-webview plugin.

@@ -147,9 +147,9 @@ export abstract class AbstractDataRepository {
   public async abstract getCitiesWithStores(): Promise<City[]>;
   public async abstract getStores(): Promise<IDictionary<Store[]>>;
   public async abstract getStoreById(id: number): Promise<Store>;
-  public async abstract getStoreReviews(): Promise<{reviews:IDictionary<StoreReview[]>, idClient:number}>;
+  public async abstract getStoreReviews(): Promise<{reviews: StoreReview[], idClient:number}>;
   public async abstract getHasClientStoreReview(storeId: number): Promise<{hasReview: boolean, idClient:number}>;
-  public async abstract getStoreReviewsByStoreId(storeId: number): Promise<{reviews:StoreReview[], idClient:number}>;
+  public async abstract getStoreReviewsByStoreId(storeId: number): Promise<{reviews: StoreReview[], idClient:number}>;
   public async abstract getFavoriteStores(): Promise<Store[]>;
   public async abstract addFavoriteStore(idStore: number): Promise<number>;
   public async abstract deleteFavoriteStore(idStore: number): Promise<number>;

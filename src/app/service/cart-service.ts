@@ -40,8 +40,8 @@ export class LoShipmentDeliveryOption {
 export class CartService {
 
   public lastItemCreditCalc: ClientOrderProducts = null;
-  private cKey = 'cartItems';
-  //private _inCartInit = false;
+  public cKey = 'cartItems';
+  //public _inCartInit = false;
   public _httpCallInProgress = false;
   public order: ClientOrder = null;
   public orderProducts: Array<ClientOrderProducts> = [];
@@ -55,10 +55,10 @@ export class CartService {
   min_loan_amt = 0;
   max_loan_amt = 0;
 
-  private _loan: CreditCalc = null;
+  public _loan: CreditCalc = null;
 
   public bonus: number = null;
-  private _payByPromoBonus = false;
+  public _payByPromoBonus = false;
 
   public _promoCode: string;
   public promocodeInvalid = false;
@@ -70,11 +70,11 @@ export class CartService {
   public cartValidationNeeded = false;
   public person = new PersonInfo();
 
-  private localization: IDictionary<string> = {};
+  public localization: IDictionary<string> = {};
 
   constructor(public userService: UserService, public repo: AbstractDataRepository,
-              public evServ: EventService, private app: App, private locRepo: AbstractLocalizationRepository,
-              public alertCtrl: AlertController, private currStoreService: CurrencyStore,
+              public evServ: EventService, public app: App, public locRepo: AbstractLocalizationRepository,
+              public alertCtrl: AlertController, public currStoreService: CurrencyStore,
               public loadingCtrl: LoadingController) {
     
       

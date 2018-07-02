@@ -7,7 +7,7 @@ import {City} from './city';
 ])
 
 export class StorePlace {
-  private _repo: AbstractDataRepository;
+  public _repo: AbstractDataRepository;
 
   constructor (
     public id?: number,

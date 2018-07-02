@@ -84,7 +84,7 @@ export class SearchBtnComponent extends ComponentBase {
     this.searchValue = this.searchService.lastSearch;
   }
 
-  private getIncSearchDisplayText(txt: string): string {
+  public getIncSearchDisplayText(txt: string): string {
     if ((!txt) || (!this.searchValue))
       return txt;
     const idx = txt.toLowerCase().indexOf(this.searchValue.toLowerCase(),0);

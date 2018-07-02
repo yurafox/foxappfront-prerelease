@@ -1,5 +1,3 @@
-
-
 import {QuotationProduct} from './quotation-product';
 import {Currency} from './currency';
 

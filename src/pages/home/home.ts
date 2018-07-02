@@ -20,19 +20,6 @@ export enum PageMode {
 export class HomePage extends ComponentBase implements DoCheck {
 
   _pageMode: PageMode = PageMode.HomeMode;
-  
-  // list slides for slider
-  slides = [
-    {
-      src: 'assets/imgs/actions/action3.jpg'
-    },
-    {
-      src: 'assets/imgs/actions/action2.jpg'
-    },
-    {
-      src: 'assets/imgs/actions/action1.jpg'
-    }
-  ];
 
   @ViewChild('srch') searchButtonControl;
   @ViewChild('cont') cont;

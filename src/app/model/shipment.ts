@@ -18,7 +18,7 @@ import {LoDeliveryType} from './lo-delivery-type';
 
 export class Shipment {
 
-  private _repo: AbstractDataRepository;
+  public _repo: AbstractDataRepository;
 
   get dto(): any {
     return  {id: this.id, idOrder: this.idOrder, idSupplier: this.idSupplier, idLoEntity: this.idLoEntity,

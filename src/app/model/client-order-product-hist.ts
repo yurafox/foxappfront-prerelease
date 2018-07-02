@@ -13,7 +13,7 @@ import {LoEntity} from './lo-entity';
 ])
 
 export class ClientOrderProductHist extends ClientOrderProductBase {
-  private _repo: AbstractDataRepository;
+  public _repo: AbstractDataRepository;
 
   constructor(
     public id?: number,

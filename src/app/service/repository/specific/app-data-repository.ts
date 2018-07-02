@@ -151,9 +151,9 @@ const pageOptionsUrl = `${AppConstants.BASE_URL}/api/page/GetPageOptions`;
 
 @Injectable()
 export class AppDataRepository extends AbstractDataRepository {
-  private cache: CacheProvider = new CacheProvider();
+  public cache: CacheProvider = new CacheProvider();
 
-  constructor(private http: Http, private connServ: ConnectivityService) {
+  constructor(public http: Http, public connServ: ConnectivityService) {
     super();
     this.CacheProviderOptInit();
   }
@@ -2425,7 +2425,7 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   // <editor-fold desc="error handler"
-  private handleError(error?: Error): any {
+  public handleError(error?: Error): any {
     if (this.connServ.counter < 1) {
       this.connServ.checkConnection(error);
     }
@@ -2433,7 +2433,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   // </editor-fold>
   // <editor-fold desc="url search factory">
-  private createSearchParams(params: Array<{ key: string; value: string }>): URLSearchParams {
+  public createSearchParams(params: Array<{ key: string; value: string }>): URLSearchParams {
     const searchParams = new URLSearchParams();
     params.forEach(val => {
       searchParams.set(val.key, val.value);
@@ -2444,7 +2444,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   // </editor-fold>
   // <editor-fold desc="get product prop value from product"
-  private getPropValuefromProduct(product: any): Array<ProductPropValue> {
+  public getPropValuefromProduct(product: any): Array<ProductPropValue> {
     const props = new Array<ProductPropValue>();
     product.props.forEach(val => {
       let enumVal =
@@ -2483,7 +2483,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   // </editor-fold>
   // <editor-fold desc="get single prop from parent container"
-  private getSingleProp(val: any): Prop {
+  public getSingleProp(val: any): Prop {
     return new Prop(
       val.id,
       val.name,
@@ -2496,7 +2496,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   // </editor-fold>
   // <editor-fold desc="inspect cache predicate"
-  private isEmpty<T>(value: T) {
+  public isEmpty<T>(value: T) {
     return value === undefined;
   }
 
@@ -2749,7 +2749,7 @@ export class AppDataRepository extends AbstractDataRepository {
                 val.upvotes,
                 val.downvotes,
                 []
-              )
+              );
               storeRev.vote = val.vote;
               storesRevs.push(storeRev);
             }
@@ -2762,7 +2762,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getStoreReviews(): Promise<{ reviews: IDictionary<StoreReview[]>, idClient: number }> {
+  public async getStoreReviews(): Promise<{ reviews: StoreReview[], idClient: number }> {
     try {
       const response = await this.http
         .get(`${storeReviewsUrl}`, RequestFactory.makeAuthHeader()).toPromise();
@@ -2771,11 +2771,9 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      let reviews: IDictionary<StoreReview[]> = {};
+      let storesRevs = new Array<StoreReview>();
       if (data.storeReviews != null) {
-        const storesRevs = new Array<StoreReview>();
         let answers: IDictionary<ReviewAnswer[]> = {};
-        let idStore: number = 0;
         for (let i = data.storeReviews.length - 1; i > -1; i--) {
           let val = data.storeReviews[i];
           let substrings = val.reviewDate.toString().split("T");
@@ -2797,7 +2795,6 @@ export class AppDataRepository extends AbstractDataRepository {
           }
         }
         data.storeReviews.forEach(val => {
-          idStore = val.idStore;
           let substrings = val.reviewDate.toString().split("T");
           let substring1 = substrings[0].slice(0, substrings[0].length);
           let substring2 = substrings[1].slice(0, substrings[1].length - 1);
@@ -2840,9 +2837,8 @@ export class AppDataRepository extends AbstractDataRepository {
             }
           }
         });
-        reviews[idStore.toString()] = storesRevs;
       }
-      return { reviews: reviews, idClient: data.currentUser };
+      return { reviews: storesRevs, idClient: data.currentUser };
     } catch (err) {
       return await this.handleError(err);
     }
@@ -3678,7 +3674,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  private getShipmentItemsFromJson(data: any): ShipmentItems[] {
+  public getShipmentItemsFromJson(data: any): ShipmentItems[] {
     let arr = [];
     data.forEach(
       x => {

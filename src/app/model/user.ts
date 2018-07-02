@@ -12,7 +12,7 @@ export class User {
   constructor(public name?: string,
               public email?: string,
               public password?: string,
-              public appKey?: string, // private application key
+              public appKey?: string, // public application key
               public userSetting: IDictionary<string> = {},
               public favoriteStoresId?: number[],
               public phone?: string,

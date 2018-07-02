@@ -7,8 +7,8 @@ import {Device} from '@ionic-native/device';
 
 @Injectable()
 export class ConnectivityService {
-  private navCtrl: NavController;
-  private count: number;
+  public navCtrl: NavController;
+  public count: number;
 
   public set nav(nav: NavController) {
     this.navCtrl = nav;
@@ -22,31 +22,31 @@ export class ConnectivityService {
     return this.count;
   }
 
-  constructor(private network: Network, private alertCtrl: AlertController, private device: Device) {
+  constructor(public network: Network, public alertCtrl: AlertController, public device: Device) {
     this.count = 0;
   }
 
   public checkConnection(error?: any) {
     let activePage = this.navCtrl ? this.navCtrl.getActive() : undefined;
 
-    (!this.device.cordova) ? this.makeBrowserBehavior(error) 
-                          : this.makeCordovaBehavior(activePage,error); 
+    (!this.device.cordova) ? this.makeBrowserBehavior(error)
+                          : this.makeCordovaBehavior(activePage,error);
   }
 
-  private showNoConnectionPage(error: any) {
+  public showNoConnectionPage(error: any) {
     if (this.count < 1) {
       this.count++;
       this.navCtrl.setRoot('NoConnectionPage', {error: error}).catch();
     }
   }
 
-  private checkActivePage(activePage:any):boolean {
+  public checkActivePage(activePage:any):boolean {
     let verifyNetwork = this.network && this.network.type==='none';
     let verifyActPage = activePage && activePage.name !== 'NoConnectionPage';
     return verifyNetwork && verifyActPage;
   }
 
-  private makeBrowserBehavior(error?: Error):void {
+  public makeBrowserBehavior(error?: Error):void {
     console.error(error.message ? error.message : error);
     let alert = this.alertCtrl.create({
       title: 'Trouble',
@@ -60,7 +60,7 @@ export class ConnectivityService {
     alert.present().catch((err) => console.log(`Alert error: ${err}`));
   }
 
-  private makeCordovaBehavior(activePage:any,error: any) {
+  public makeCordovaBehavior(activePage:any,error: any) {
      if(this.checkActivePage(activePage))
        this.showNoConnectionPage(error);
   }

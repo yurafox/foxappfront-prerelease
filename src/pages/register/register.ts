@@ -38,11 +38,11 @@ export class RegisterPage extends ComponentBase {
 
 
   constructor(public nav: NavController,
-              public navParams: NavParams,
-              public repo: AbstractDataRepository,
-              public formBuilder: FormBuilder,
-              public alertCtrl: AlertController,
-              public account: UserService) {
+    public navParams: NavParams,
+    private repo: AbstractDataRepository,
+    private formBuilder: FormBuilder,
+    private alertCtrl: AlertController,
+    private account: UserService) {
     super();
     this.initLocalization();
     const navData = this.navParams.data;

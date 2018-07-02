@@ -16,7 +16,7 @@ export class CustomPopupComponent extends ComponentBase {
 
   constructor(public renderer: Renderer, public viewCtrl: ViewController, public navCtrl: NavController,
               public navParams: NavParams, public popoverCtrl: PopoverController,
-              private alertCtrl: AlertController) {
+              public alertCtrl: AlertController) {
     super();
     this.renderer.setElementClass(viewCtrl.pageRef().nativeElement, 'custom-popup', true);
     this.itemPage = navParams.get('itemPage');

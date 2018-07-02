@@ -533,28 +533,28 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   ];
   // <editor-fold desc="products">
   // <editor-fold desc='prop'>
-  private prop1 = {
+  public prop1 = {
     id: 7,
     name: "Количество SIM",
     prop_type: 2,
     is_Multi_Select: true,
     url: null
   };
-  private prop2 = {
+  public prop2 = {
     id: 12,
     name: "Встроенная память",
     prop_type: 4,
     is_Multi_Select: null,
     url: null
   };
-  private prop3 = {
+  public prop3 = {
     id: 13,
     name: "Диагональ дисплея",
     prop_type: 4,
     is_Multi_Select: null,
     url: null
   };
-  private prop4 = {
+  public prop4 = {
     id: 10,
     name: "Тип сетевой вилки",
     prop_type: 4,
@@ -563,7 +563,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   };
   // </editor-fold>
   // <editor-fold desc='propEnumList'
-  private propEnumList1 = {
+  public propEnumList1 = {
     id: 17,
     id_Prop: this.prop2,
     name: "16 Гб",
@@ -571,7 +571,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     bit_Index: null,
     url: null
   };
-  private propEnumList2 = {
+  public propEnumList2 = {
     id: 18,
     id_Prop: this.prop2,
     name: "32 Мб",
@@ -579,7 +579,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     bit_Index: null,
     url: null
   };
-  private propEnumList3 = {
+  public propEnumList3 = {
     id: 19,
     id_Prop: this.prop3,
     name: '1.8"',
@@ -587,7 +587,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     bit_Index: null,
     url: null
   };
-  private propEnumList4 = {
+  public propEnumList4 = {
     id: 20,
     id_Prop: this.prop3,
     name: '5.2"',
@@ -595,7 +595,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     bit_Index: null,
     url: null
   };
-  private propEnumList5 = {
+  public propEnumList5 = {
     id: 21,
     id_Prop: this.prop3,
     name: '5.5"',
@@ -603,7 +603,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     bit_Index: null,
     url: null
   };
-  private propEnumList6 = {
+  public propEnumList6 = {
     id: 4,
     id_Prop: this.prop4,
     name: "EURO",
@@ -611,7 +611,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     bit_Index: null,
     url: null
   };
-  private propEnumList7 = {
+  public propEnumList7 = {
     id: 5,
     id_Prop: this.prop4,
     name: "UK",
@@ -619,7 +619,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     bit_Index: null,
     url: null
   };
-  private propEnumList8 = {
+  public propEnumList8 = {
     id: 6,
     id_Prop: this.prop4,
     name: "US",
@@ -629,7 +629,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   };
   // </editor-fold>
   // <editor-fold desc='productPropValue'
-  private productPropValue1 = {
+  public productPropValue1 = {
     id: 1,
     id_Product: 6293680,
     id_Prop: this.prop2,
@@ -642,7 +642,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     idx: 0,
     out_bmask: 3
   };
-  private productPropValue2 = {
+  public productPropValue2 = {
     id: 2,
     id_Product: 6280637,
     id_Prop: this.prop2,
@@ -656,7 +656,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     out_bmask: 3
 
   };
-  private productPropValue3 = {
+  public productPropValue3 = {
     id: 3,
     id_Product: 6294898,
     id_Prop: this.prop2,
@@ -669,7 +669,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     idx: 2,
     out_bmask: 1
   };
-  private productPropValue4 = {
+  public productPropValue4 = {
     id: 4,
     id_Product: 6293680,
     id_Prop: this.prop3,
@@ -682,7 +682,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     idx: 3,
     out_bmask: 3
   };
-  private productPropValue5 = {
+  public productPropValue5 = {
     id: 5,
     id_Product: 6280637,
     id_Prop: this.prop3,
@@ -695,7 +695,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     idx: 3,
     out_bmask: 3
   };
-  private productPropValue6 = {
+  public productPropValue6 = {
     id: 6,
     id_Product: 6294898,
     id_Prop: this.prop3,
@@ -708,7 +708,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     idx: 4,
     out_bmask: 3
   };
-  private productPropValue7 = {
+  public productPropValue7 = {
     id: 7,
     id_Product: 6293680,
     id_Prop: this.prop1,
@@ -721,7 +721,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     idx: 2,
     out_bmask: 1
   };
-  private productPropValue8 = {
+  public productPropValue8 = {
     id: 8,
     id_Product: 6280637,
     id_Prop: this.prop1,
@@ -732,7 +732,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     prop_Value_Long: null,
     id_Measure_Unit: 8796096823908
   };
-  private productPropValue9 = {
+  public productPropValue9 = {
     id: 9,
     id_Product: 6294898,
     id_Prop: this.prop1,
@@ -745,7 +745,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     idx: 2,
     out_bmask: 3
   };
-  private productPropValue10 = {
+  public productPropValue10 = {
     id: 10,
     id_Product: 6293680,
     id_Prop: this.prop4,
@@ -7666,7 +7666,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   }
 
   // <editor-fold desc="monkey controller">
-  private apiController(info: RequestInfo) {
+  public apiController(info: RequestInfo) {
     let resOpt: ResponseOptions = new ResponseOptions({
       status: 200,
       statusText: "OK",
@@ -7891,7 +7891,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
   // </editor-fold>
 
   // <editor-fold desc="HTTP verbs helpers">
-  private getTokenBehavior(email: string,
+  public getTokenBehavior(email: string,
                            password: string): { token: string; user: {} } {
     if (!email || !password) return null;
 
@@ -7907,7 +7907,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
       };
   }
 
-  private getEditBehavior(user: User): User {
+  public getEditBehavior(user: User): User {
     for (let i = 0; i < this.users.length; i++) {
       if (this.users[i].phone=== user.phone) {
         for (let item in this.users[i]) {
@@ -7926,7 +7926,7 @@ export class WebApiService extends WebApiMockContent implements InMemoryDbServic
     return null;
   }
 
-  private verifyToken(token: string) {
+  public verifyToken(token: string) {
     if (!token) return false;
 
     const tokenSplit = token.split(":");

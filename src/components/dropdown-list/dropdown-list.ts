@@ -231,7 +231,7 @@ export class DropdownListComponent extends ComponentBase implements OnChanges {
       }
     }
   }
-  // private verifyReference(): boolean {
+  // public verifyReference(): boolean {
   //   return (!this.isNullOrUndefined(this.reference) || !this.referencePriority);
   // }
   public verifyStore(): boolean {
