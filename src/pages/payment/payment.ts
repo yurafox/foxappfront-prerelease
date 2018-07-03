@@ -1,10 +1,11 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {IonicPage, NavController, NavParams, AlertController} from 'ionic-angular';
-import {ComponentBase} from "../../components/component-extension/component-base";
-import {CartService} from "../../app/service/cart-service";
-import {DomSanitizer} from "@angular/platform-browser";
-import {AppConstants} from "../../app/app-constants";
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { ComponentBase } from "../../components/component-extension/component-base";
+import { CartService } from "../../app/service/cart-service";
+import { DomSanitizer } from "@angular/platform-browser";
+import { AppConstants } from "../../app/app-constants";
 import { AbstractDataRepository } from '../../app/service/repository/abstract/abstract-data-repository';
+import { ClientCreditCardData } from '../../app/model/client-credit-card-data';
 
 @IonicPage()
 @Component({
@@ -14,8 +15,7 @@ import { AbstractDataRepository } from '../../app/service/repository/abstract/ab
 export class PaymentPage extends ComponentBase implements OnInit {
   document: any;
   formInput: any;
-  id: number;
-  total: number;
+  orderId: number;
   fail: boolean;
   error: boolean;
   success: boolean;
@@ -27,9 +27,8 @@ export class PaymentPage extends ComponentBase implements OnInit {
     (<any>window).appPage = this;
     this.formInput = '';
     if (this.cart.order) {
-      if (this.cart.order.id && this.cart.cartGrandTotal) {
-        this.id = this.cart.order.id;
-        this.total = this.cart.cartGrandTotal;
+      if (this.cart.order.id) {
+        this.orderId = this.cart.order.id;
       }
     } else {
       this.navCtrl.pop();
@@ -43,7 +42,6 @@ export class PaymentPage extends ComponentBase implements OnInit {
       this.formInput = null;
       let res = await this.repo.postOrder(this.cart.order);
       if ((res) && (res.isSuccess)) {
-        //this.cart.emptyCart();
         this.cart.initCart();
       }
       else {
@@ -57,7 +55,6 @@ export class PaymentPage extends ComponentBase implements OnInit {
             {
               text: btnText,
               handler: () => {
-                //this.cart.emptyCart();
                 this.cart.initCart().then(() => {
                   this.navCtrl.setRoot('CartPage');
                 }
@@ -73,12 +70,12 @@ export class PaymentPage extends ComponentBase implements OnInit {
       this.fail = true;
       this.formInput = null;
       this.changeDetector.detectChanges();
-    } else if (this.navParams.data.result === 2) {
-      this.error = true;
-      this.formInput = null;
-      this.changeDetector.detectChanges();
     } else {
-      this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(`${AppConstants.BASE_PAYMENT_URL}/?id=${this.id}&total=${this.total}`);
+      if (this.navParams.data.clientCCData && this.navParams.data.clientCCData.id) {
+        this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(`${AppConstants.BASE_PAYMENT_URL}/?id=${this.orderId}&cc=${this.navParams.data.clientCCData.id}`);
+      } else {
+        this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(`${AppConstants.BASE_PAYMENT_URL}/?id=${this.orderId}`);
+      }
       window.addEventListener('message', this.receiveMessage);
     }
   }
@@ -101,12 +98,8 @@ export class PaymentPage extends ComponentBase implements OnInit {
         (<any>window).appPage.navCtrl.setRoot('PaymentPage',{result:1});
         break;
       }
-      case 'error': {
-        (<any>window).appPage.navCtrl.setRoot('PaymentPage',{result:2});
-        break;
-      }
       default: {
-        (<any>window).appPage.navCtrl.setRoot('PaymentPage',{result:2});
+        (<any>window).appPage.navCtrl.setRoot('PaymentPage',{result:1});
         break;
       }
     }

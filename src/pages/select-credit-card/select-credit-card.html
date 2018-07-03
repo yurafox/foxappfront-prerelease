@@ -1,0 +1,17 @@
+<ion-header>
+  <main-toolbar [showCartIcon] = "false" [showSearchButton]="false"></main-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="f-section-header">
+        <span loc="Выберите кредитную карту" name="SelectCC">{{locale['SelectCC']}}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngFor="let clientCC of clientCCs" (click)="toPaymentPage(clientCC)">
+        <br><button ion-button block class="f-btn-action">{{clientCC.ccMask}}</button>
+    </ion-row>
+  </ion-grid>
+</ion-content>

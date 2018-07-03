@@ -48,6 +48,7 @@ import {LoDeliveryType} from '../../../model/lo-delivery-type';
 import {LoEntityOffice} from '../../../model/lo-entity-office';
 import {News} from '../../../model/news';
 import {NewsCategory} from '../../../model/news-category';
+import { ClientCreditCardData } from '../../../model/client-credit-card-data';
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<{reviews:ProductReview[], idClient:number}>;
@@ -207,4 +208,5 @@ export abstract class AbstractDataRepository {
   public async abstract getNewsByCategory(categoryId: number): Promise<News[]>;
   public async abstract getNewsDescription(id: number): Promise<string>;
   public async abstract getNewsCategory(): Promise<NewsCategory[]>;
+  public async abstract getClientCreditCardData(): Promise<ClientCreditCardData[]>;
 }
