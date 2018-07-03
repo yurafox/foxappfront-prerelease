@@ -96,11 +96,24 @@
                          [options]="{popupHeader:locale['Quantity'], buttonHeader:locale['Qty']}"
                          [isQty]="true">
           </dropdown-list>
+        </ion-col>
 
+        <ion-col align="right" class="f-item-padding-bottom">
+          <button ion-button class="f-btn-secondary" (click)="onAddProductToFavorites()" *ngIf="!productIsFavorite">
+            <ion-icon class="f-icon-scale" name="ios-heart-outline"></ion-icon>
+          </button>
+          <button ion-button class="f-btn-secondary" (click)="onRemoveProductFromFavorites()" *ngIf="productIsFavorite">
+            <ion-icon class="f-icon-scale f-icon-color-red" name="ios-heart-outline"></ion-icon>
+          </button>
+
+          <button ion-button class="f-btn-secondary" (click)="onAddProductToCompare()" *ngIf="!productIsCompare && !hideProductCompare">
+            <ion-icon class="f-icon-scale" name="custom-compare"></ion-icon>
+          </button>
+          <button ion-button class="f-btn-secondary" (click)="onOpenProductComparePage()" *ngIf="productIsCompare && !hideProductCompare">
+            <ion-icon class="f-icon-scale f-icon-red" name="custom-compare"></ion-icon>
+          </button>
         </ion-col>
       </ion-row>
-
-
 
       <ion-row>
         <ion-col>

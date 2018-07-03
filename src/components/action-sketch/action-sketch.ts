@@ -14,7 +14,7 @@ import {AbstractDataRepository} from '../../app/service/repository/abstract/abst
 export class ActionSketchComponent extends ComponentBase {
   @Input()
   public innerId:number;
-  public content:string='';
+  public content:boolean;
   @Input()
   public action:Action;
   @Input()
@@ -31,22 +31,7 @@ export class ActionSketchComponent extends ComponentBase {
 
   async ngOnInit() {
     super.ngOnInit();
-    if(!this.action) {
-      this.action = await this._repo.getAction(this.innerId);
-    }
-    if(this.action && this.action.sketch_content && this.dateEnd > new Date()) {
-      this.content=this.action.sketch_content;
-      this.evServ.events['actionPushEvent'].emit(this);
-    }
-
-    this.actionExpire(); // for design display
-
-    // timer action time
-    IntervalObservable.create(1000)
-      .takeWhile(() => this.alive)
-      .subscribe(() => {
-        this.actionExpire();
-      });
+    await this.InitActionOpt();
   }
 
   ngOnDestroy():void {
@@ -69,6 +54,21 @@ export class ActionSketchComponent extends ComponentBase {
     this.navCtrl.push('ActionPage', { id: this.innerId || this.action.id, action: this.action }).catch(err => {
       console.log(`Error navigating to ActionPage: ${err.message}`);
     });
+  }
+
+  private async InitActionOpt() {
+    this.action = this.action || await this._repo.getAction(this.innerId);
+    this.content = this.action && this.dateEnd > new Date();
+   
+    this.evServ.events['actionPushEvent'].emit(this);
+    this.actionExpire(); // for design display
+
+    // timer action time
+    IntervalObservable.create(1000)
+      .takeWhile(() => this.alive)
+      .subscribe(() => {
+        this.actionExpire();
+      });
   }
 
   public get id ():number {

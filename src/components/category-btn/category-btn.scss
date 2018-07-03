@@ -8,7 +8,7 @@ category-btn {
   .ctb-content{
     width: auto;
     height: 64px;
-    margin-left: 10px;
+    //margin-left: 10px;
     padding-top: 13px;
     float: left
   }
@@ -22,12 +22,13 @@ category-btn {
     width: 64px;
     height: 64px;
     padding-top: 16px;
-    margin-left: 19px;
+    margin-left: 15px;
     float: left
   }
 
   .ctb-arrow {
-    padding-top: 19px;
+    padding-top: 24px;
     text-align: right;
+    padding-right: 5px;
   }
 }

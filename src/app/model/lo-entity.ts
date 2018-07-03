@@ -12,5 +12,6 @@ export class LoEntity {
     public id?: number,
     public name?: string,
     public loDeliveryTypes?: LoDeliveryType[]
+    
   ){this._repo = RefInjector.pull(AbstractDataRepository);}
 }

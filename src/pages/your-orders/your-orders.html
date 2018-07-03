@@ -20,7 +20,7 @@
     </ion-row>
   </ion-grid>
 
-  <ion-grid *ngIf="dataLoaded && orderProducts.length === 0" class="f-padding-lr-5 f-padding-tb-10">
+  <ion-grid *ngIf="dataLoaded && orderProducts && orderProducts.length === 0" class="f-padding-lr-5 f-padding-tb-10">
     <ion-row>
       <ion-col>
         <span loc="NoOrdersFound" name="NoOrdersFound">{{locale['NoOrdersFound']}}</span>
@@ -29,13 +29,13 @@
   </ion-grid>
 <!--
 
-  <div *ngIf="dataLoaded && orderProducts.length === 0" class="f-padding-lr-5 f-padding-tb-10">
+  <div *ngIf="dataLoaded && orderProducts && orderProducts.length === 0" class="f-padding-lr-5 f-padding-tb-10">
     <span loc="NoOrdersFound" name="NoOrdersFound">{{locale['NoOrdersFound']}}</span>
   </div>
 
 -->
 
-  <div *ngIf="dataLoaded && orderProducts.length > 0">
+  <div *ngIf="dataLoaded && orderProducts && orderProducts.length > 0">
     <div *ngFor="let ord of orderProducts">
       <ion-grid class="f-padding-tb-10">
 

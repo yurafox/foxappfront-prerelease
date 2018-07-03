@@ -3,7 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { CheckoutPage } from './checkout';
 import {ComponentsModule} from '../../components/components.module';
 import {PipesModule} from '../../app/pipe/pipes.module';
-import { DirectivesModule } from '../../app/directive/directives.module';
+import { DirectivesModule } from '../../app/directives/directives.module';
 
 @NgModule({
   declarations: [

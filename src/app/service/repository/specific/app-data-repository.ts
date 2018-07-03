@@ -62,6 +62,7 @@ import { NewsCategory } from '../../../model/news-category';
 import { News } from '../../../model/news';
 import { AbstractDataRepository } from '../abstract/abstract-data-repository';
 import { ClientCreditCardData } from '../../../model/client-credit-card-data';
+import { LoDeliveryTypeAttr } from '../../../model/lo-delivery-type-attr';
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
@@ -149,6 +150,9 @@ const newsDescriptionsUrl = `${AppConstants.BASE_URL}/api/news/getNewsDescriptio
 const newsByCategoryUrl = `${AppConstants.BASE_URL}/api/news/getNewsByCategory`;
 const newsCategoryUrl = `${AppConstants.BASE_URL}/api/NewsCategory`;
 const creditCardsDataUrl = `${AppConstants.BASE_URL}/api/CreditCardData`;
+const pageOptionsUrl = `${AppConstants.BASE_URL}/api/page/GetPageOptions`;
+const getLoDeliveryTypesAttrByLoEntityUrl = `${AppConstants.BASE_URL}/api/lo/LoDeliveryTypesAttrByLoEntity`;
+
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
 // const currenciesUrl = "/api/mcurrencies";
@@ -3748,6 +3752,7 @@ export class AppDataRepository extends AbstractDataRepository {
           )
         );
       }
+
       return arr;
     } catch (err) {
       return await this.handleError(err);
@@ -4020,6 +4025,46 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+  
+  public async  getPageOptionsById(id:number):Promise<any> {
+    try {
+      const response = await this.http.get(`${pageOptionsUrl}/${id}`,RequestFactory.makeAuthHeader()).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      return data;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getLoEntityDeliveryTypesAttr(shpmt: Shipment, loIdClientAddress: number): Promise<LoDeliveryTypeAttr[]> {
+    try {
+      const response = await this.http
+        .post(getLoDeliveryTypesAttrByLoEntityUrl, { shpmt: shpmt.dto, loIdClientAddress: loIdClientAddress },
+        RequestFactory.makeAuthHeader())
+        .toPromise();
+      const data = response.json();
+
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      const arr: LoDeliveryTypeAttr[] = new Array<LoDeliveryTypeAttr>();
+      if (data !== null) {
+        data.forEach(val =>
+          arr.push(
+            new LoDeliveryTypeAttr(val.loEntityId, val.deliveryTypeId, val.deliveryDate )
+          )
+        );
+      }
+      return arr;
+    } catch (err) {
+      return await this.handleError(err);
+    }  
+  }
 
   public async getClientCreditCardData(): Promise<ClientCreditCardData[]> {
     try {
@@ -4035,7 +4080,6 @@ export class AppDataRepository extends AbstractDataRepository {
         });
       }
       return ccData;
-      //return [new ClientCreditCardData(1,'5452*****352'),new ClientCreditCardData(2,'5442*****892'),new ClientCreditCardData(3,'5205*****117'),new ClientCreditCardData(4,'5114*****778')];
     } catch (err) {
       return await this.handleError(err);
     }

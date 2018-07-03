@@ -25,7 +25,64 @@
         <category-btn></category-btn>
       </div>
       <div class="f-flex-async-container">
-        <html-outlet [html]="content" [context]="this"></html-outlet>
+        <!--novelty 1-->
+        <div *ngIf="pageOptions.novelty_wilefox.is_block_active"  style="min-height:310px"
+              [style.order]="pageOptions.novelty_wilefox.block_order" class="f-div-card-margin">
+          <novelty-sketch [innerId]=pageOptions.novelty_wilefox.block_content_id></novelty-sketch>
+        </div>
+        <!--actions 1-->
+        <div *ngIf="pageOptions.action.is_block_active"  style="min-height:176px"
+             [style.order]="pageOptions.action.block_order" class="f-div-card-margin" >
+          <action-sketch [innerId]=pageOptions.action.block_content_id [isOnLanding]="true"></action-sketch>
+        </div>
+        <!--novelty 2-->
+        <div *ngIf="pageOptions.novelty_samsung.is_block_active"  style="min-height:310px" 
+             [style.order]="pageOptions.novelty_samsung.block_order" class="f-div-card-margin">
+          <novelty-sketch [innerId]=pageOptions.novelty_samsung.block_content_id></novelty-sketch>
+        </div>
+
+        <div *ngIf="pageOptions.deals.is_block_active && productsOfDay && productsOfDay.length>0" style="min-height:168px"
+            [style.order]="pageOptions.deals.block_order" class="f-div-card-margin">
+          <ion-grid>
+            <ion-row>
+              <ion-col class="f-item-section-header" style="padding-top: 5px;">
+                <span loc="Товар дня" name="Deals">{{locale['Deals']}}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col style="padding-bottom: 20px; padding-left: 0px; padding-right: 0px;">
+                <div *ngFor="let productElement of productsOfDay, let i=index">
+                  <hr *ngIf="!(i == 0)">
+                  <item [product]="productElement">
+                  </item>
+                </div>
+
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+
+        <div *ngIf="pageOptions.hits.is_block_active" style="min-height:266px"
+             [style.order]="pageOptions.hits.block_order" class="f-div-card-margin">
+          <ion-grid *ngIf="productsSalesHits && productsSalesHits.length>0">
+            <ion-row>
+              <ion-col class="f-padding-lr-5 f-item-section-header" style="padding-top: 5px;">
+                <span loc="Хиты продаж" name="Hits">{{locale['Hits']}}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col class="f-padding-lr-5">
+                <ion-scroll class="f-day-deals-scroll" scrollX="true">
+                  <ion-row nowrap>
+                    <div *ngFor="let prod of productsSalesHits">
+                      <item-tile [product]="prod"></item-tile>
+                    </div>
+                  </ion-row>
+                </ion-scroll>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
       </div>
     </div>
 

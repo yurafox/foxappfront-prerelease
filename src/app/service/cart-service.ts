@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AlertController, App, LoadingController} from 'ionic-angular';
+import {AlertController, App, LoadingController, Loading} from 'ionic-angular';
 import {ClientOrder} from '../model/client-order';
 import {ClientOrderProducts} from '../model/client-order-products';
 import {QuotationProduct} from '../model/quotation-product';
@@ -18,7 +18,6 @@ import {Shipment} from '../model/shipment';
 import {LoDeliveryType} from '../model/lo-delivery-type';
 import {LoEntityOffice} from '../model/lo-entity-office';
 import {AppConstants} from '../app-constants';
-
 
 export class LoShipmentDeliveryOption {
   public shipment?: Shipment;
@@ -77,7 +76,8 @@ export class CartService {
               public evServ: EventService, public app: App, public locRepo: AbstractLocalizationRepository,
               public alertCtrl: AlertController, public currStoreService: CurrencyStore,
               public loadingCtrl: LoadingController) {
-
+    
+      
     this.evServ.events['logonEvent'].subscribe(() => {
         this.initCart().then (() => {
             //this.initBonusData();
@@ -544,7 +544,8 @@ export class CartService {
     });
 
     if (showLoading)
-      loading.present();
+     await loading.present();
+
     try {
       if (item && qty && price) {
         const sp = (storePlace) ? storePlace.id : null;
@@ -637,7 +638,7 @@ export class CartService {
     });
 
     if (showLoading)
-      loading.present();
+      await loading.present();
 
     try {
       if (item.complect) {
@@ -661,7 +662,7 @@ export class CartService {
     }
     finally {
       if (showLoading)
-        loading.dismiss();
+        await loading.dismiss();
     }
   }
 
@@ -699,7 +700,7 @@ export class CartService {
     }
     finally {
       if (showLoading)
-        loading.dismiss();
+        await loading.dismiss();
     }
 
   }

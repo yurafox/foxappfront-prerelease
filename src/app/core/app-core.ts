@@ -20,7 +20,6 @@ import {Product} from '../model/product';
 import {Supplier} from '../model/supplier';
 import {Currency} from '../model/currency';
 
-
 export class EmailValidator {
 
   static isValid(text: string): boolean {
@@ -515,7 +514,23 @@ export namespace System {
   export class PushContainer {
     public static pushStore:IDictionary<any> = {};
   }
+}
 
+export class Disposable {
+  public static changeDismiss(view:any):void {
+    let viewProto = view.prototype;
 
+    if(viewProto['dismiss']) {
+      viewProto.dismiss= (function() {
+        const oldFn = viewProto.dismiss;
+        return function(){oldFn.call(this); Disposable.dispose()}; 
+      })();
+    }
+  }
 
+  public static dispose():void {
+    const popOvers = Array.from(document.querySelectorAll('ion-popover,ion-loading,ion-toast,ion-alert'));
+      if(popOvers && popOvers.length!=0)
+        popOvers.forEach((el) => {el.parentNode.removeChild(el)});
+  }
 }

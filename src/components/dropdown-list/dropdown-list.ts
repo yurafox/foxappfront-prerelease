@@ -167,7 +167,6 @@ export class DropdownListComponent extends ComponentBase implements OnChanges {
   IsCentering:boolean = true;
 
   public sourceContext: any;
-
   // проверка приоритета работы со сылкой
   referencePriority:boolean;
 
@@ -220,7 +219,7 @@ export class DropdownListComponent extends ComponentBase implements OnChanges {
     return this.referencePriority;
   }
   public openView(event: any) {
-    const popUp = this.popoverCtrl.create(DropdownViewComponent, { parent: this }, { cssClass: 'f-backdrop-opacity-popover' });
+    const popUp = this.popoverCtrl.create(DropdownViewComponent, { parent: this }, { cssClass: 'f-backdrop-opacity-popover',enableBackdropDismiss:false });
     if (popUp) popUp.present();
   }
 

@@ -25,7 +25,7 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
   contentSub: Subscription;
 
   public actionId:number;
-  public content:string='';
+  public content:boolean;
   public action:Action;
   public actionProducts:Array<Product>=[];
   public quotationProduct:Array<QuotationProduct>=[];
@@ -62,7 +62,7 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
      this.action = await this._repo.getAction(this.actionId);
 
     // get dynamic content
-    if (this.action) this.content = this.action.action_content;
+    this.content = !!(this.action);
     this.srch.hostPage = this.me;
 
     if(!Monitor.isMustWait()){

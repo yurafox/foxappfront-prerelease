@@ -1,12 +1,13 @@
 import {Component, DoCheck, Input, ViewChild} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
-import {LoadingController, PopoverController} from 'ionic-angular';
+import {LoadingController, PopoverController,Loading, Popover} from 'ionic-angular';
 import {FilterPopoverPage} from '../../pages/filter-popover/filter-popover';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {SearchService, SortOrderEnum} from '../../app/service/search-service';
 import {Category} from '../../app/model/category';
 import {Manufacturer} from '../../app/model/manufacturer';
 import {Prop} from '../../app/model/prop';
+
 
 class GeneralFilterStruct {
   constructor(
@@ -88,6 +89,7 @@ export class FilterComponent extends ComponentBase implements DoCheck {
   filteredProps: PropsFilterStruct[];
   filteredManufacturers: GeneralFilterStruct[];
   filteredGroups: GeneralFilterStruct[];
+  currentPopover:Popover;
 
   constructor(public popoverCtrl: PopoverController, public repo: AbstractDataRepository,
               public loadingCtrl: LoadingController) {
@@ -112,7 +114,7 @@ export class FilterComponent extends ComponentBase implements DoCheck {
       content: content
     });
     try {
-      loading.present();
+      await loading.present();
       this.propFilterCondition = [];
       this.mnfFilterCondition = [];
       this.groupsFilterCondition = [];
@@ -121,9 +123,13 @@ export class FilterComponent extends ComponentBase implements DoCheck {
       this.srch.prodSrchParams.category = [];
       await this.srch.search();
       this.initData();
+
+      if(this.currentPopover)
+        this.currentPopover.dismiss();
+      
     }
     finally {
-      loading.dismiss();
+      if(loading) {await loading.dismiss();}
     }
   }
 
@@ -321,6 +327,9 @@ export class FilterComponent extends ComponentBase implements DoCheck {
     popover.present({
       ev: event
     });
+    
+    // save reference on current popover for aot fix
+    this.currentPopover= popover;
   }
 
   sort(order: SortOrderEnum) {

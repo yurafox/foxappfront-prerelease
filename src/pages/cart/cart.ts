@@ -8,6 +8,7 @@ import {LoginPage} from '../login/login';
 import {fadeInAnimation500} from '../../app/core/animation-core';
 import {AppConstants} from '../../app/app-constants';
 
+
 @IonicPage()
 @Component({
   selector: 'page-cart',

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {NavController,NavParams, IonicPage, AlertController} from 'ionic-angular';
+import {NavController,NavParams, IonicPage, AlertController, Alert} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {CartService} from '../../app/service/cart-service';
 import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
@@ -195,6 +195,7 @@ export class LoginPage extends ComponentBase implements OnInit {
           text: 'OK',
           handler: () => {
             this.changeUseCode(true);
+            alert.dismiss();
           }
         }
       ]
