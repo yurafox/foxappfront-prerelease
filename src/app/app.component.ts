@@ -218,7 +218,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
    * @param pushDeviceToken
    * @returns {Promise<void>}
    */
-  public async collectAndSendDeviceData(pushDeviceToken: any) {
+  public async collectAndSendDeviceData(pushDeviceToken: string) {
     let model = this.device.manufacturer + ' ' + this.device.model;
     let os = this.device.platform + ' ' + this.device.version;
     let height = this.platform.height();

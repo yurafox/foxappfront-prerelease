@@ -4068,18 +4068,19 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getClientCreditCardData(): Promise<ClientCreditCardData[]> {
     try {
-      const response = await this.http.get(creditCardsDataUrl,RequestFactory.makeAuthHeader()).toPromise();
-      let data: any = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      let ccData: ClientCreditCardData[] = [];
-      if (data != null) {
-        data.creditCardsData.forEach(cc => {
-          ccData.push(new ClientCreditCardData(cc.id, cc.ccMask));
-        });
-      }
-      return ccData;
+      // const response = await this.http.get(creditCardsDataUrl,RequestFactory.makeAuthHeader()).toPromise();
+      // let data: any = response.json();
+      // if (response.status !== 200) {
+      //   throw new Error("server side status error");
+      // }
+      // let ccData: ClientCreditCardData[] = [];
+      // if (data != null) {
+      //   data.creditCardsData.forEach(cc => {
+      //     ccData.push(new ClientCreditCardData(cc.id, cc.ccMask));
+      //   });
+      // }
+      //return ccData;
+      return [new ClientCreditCardData(1, '5423****432'),new ClientCreditCardData(2, '5441****759'),new ClientCreditCardData(3, '5175****118')];
     } catch (err) {
       return await this.handleError(err);
     }
