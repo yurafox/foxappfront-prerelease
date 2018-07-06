@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import {FormBuilder, FormGroup, Validators, AbstractControl} from '@angular/forms';
 import {NavController,NavParams, IonicPage, AlertController, Alert} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {CartService} from '../../app/service/cart-service';
@@ -46,6 +46,7 @@ export class LoginPage extends ComponentBase implements OnInit {
               public formBuilder: FormBuilder,
               public alertCtrl:AlertController,
               public cart: CartService,
+              public cd:ChangeDetectorRef,
               public account:UserService) {
     super();
     this.initLocalization();
@@ -79,25 +80,7 @@ export class LoginPage extends ComponentBase implements OnInit {
       return;
     }
 
-     // start block logic for multiple sending
-     this.isSendAsync = true;
-
-    const phone = this.verifyForm.value.phone;
-    (async ()=>{
-      const result:IUserVerifyAccountData = await this.account.verifyAccount(phone);
-      if(result===null || result.status===0){
-        this.changeUseCode(false);
-        this.verifyErrorData.errorShow = true;
-        this.verifyErrorData.errorMessage = (result) ? result.message : (this.locale['RemoteSourceError'] ? this.locale['RemoteSourceError'] : 'Ошибка удаленного источника');
-      }
-
-      else {
-        this.findBehaviorByStatus(result, phone);
-      }
-
-      // end block logic for multiple sending
-      this.isSendAsync = false;
-    })();
+    await this.verificationAccount();
   }
 
   public async logIn() {
@@ -195,7 +178,6 @@ export class LoginPage extends ComponentBase implements OnInit {
           text: 'OK',
           handler: () => {
             this.changeUseCode(true);
-            alert.dismiss();
           }
         }
       ]
@@ -234,5 +216,42 @@ export class LoginPage extends ComponentBase implements OnInit {
     if(this.navParams.data && this.navParams.data.fromRegistry){
       this.changeUseCode(true);
     }
+  }
+
+  async repeatCode() {
+    this.clearAfterRepeatCode();
+    this.changeUseCode(false);
+  }
+
+  get phone() { return this.verifyForm.get('phone'); }
+  
+  async verificationAccount() {
+       // start block logic for multiple sending
+     this.isSendAsync = true;
+
+     const phone = this.verifyForm.value.phone;
+     (async ()=>{
+       const result:IUserVerifyAccountData = await this.account.verifyAccount(phone);
+       if(result===null || result.status===0){
+         this.changeUseCode(false);
+         this.verifyErrorData.errorShow = true;
+         this.verifyErrorData.errorMessage = (result) ? result.message : (this.locale['RemoteSourceError'] ? this.locale['RemoteSourceError'] : 'Ошибка удаленного источника');
+       }
+ 
+       else {
+         this.findBehaviorByStatus(result, phone);
+       }
+ 
+       // end block logic for multiple sending
+       this.isSendAsync = false;
+     })();
+  }
+
+  clearAfterRepeatCode():void {
+    const smsCodeField:AbstractControl = this.verifyForm.get('code'); 
+    smsCodeField.setValue('');
+    this.formErrors.code='';
+    smsCodeField.markAsPristine();
+    smsCodeField.markAsUntouched();
   }
 }

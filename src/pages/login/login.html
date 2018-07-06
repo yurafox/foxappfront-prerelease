@@ -31,6 +31,9 @@
           <ion-item class='alertDanger' *ngIf="formErrors.code">
             <span>{{formErrors.code}}</span>
           </ion-item>
+          <ion-item class='repeatCodeWrapper' *ngIf="useCode" (click)="repeatCode()">
+            <span loc="Отправить sms код еще раз" name="RepeatCode">{{locale['RepeatCode']}}</span>
+          </ion-item>
         </div>
 
       </div>
