@@ -45,7 +45,7 @@
     "call-number": "^1.0.1",
     "com.lampa.startapp": "0.1.4",
     "cordova": "8.0.0",
-    "cordova-android": "~7.1.0",
+    "cordova-android": "7.1.0",
     "cordova-android-firebase-gradle-release": "^1.0.2",
     "cordova-android-play-services-gradle-release": "^1.4.3",
     "cordova-android-support-gradle-release": "1.4.2",
@@ -58,7 +58,6 @@
     "cordova-plugin-dialogs": "2.0.1",
     "cordova-plugin-geolocation": "3.0.0",
     "cordova-plugin-googlemaps": "^2.3.6",
-    "cordova-plugin-ionic-webview": "1.1.16",
     "cordova-plugin-network-information": "2.0.1",
     "cordova-plugin-screen-orientation": "2.0.2",
     "cordova-plugin-splashscreen": "4.1.0",
@@ -109,7 +108,6 @@
       "cordova-android-support-gradle-release": {
         "ANDROID_SUPPORT_VERSION": "27.+"
       },
-      "cordova-plugin-ionic-webview": {},
       "cordova-android-play-services-gradle-release": {
         "PLAY_SERVICES_VERSION": "15.+"
       },
@@ -127,13 +125,14 @@
         "XWALK_MODE": "embedded",
         "XWALK_MULTIPLEAPK": "true"
       },
+      "cordova-plugin-geolocation": {},
+      "uk.co.workingedge.phonegap.plugin.launchnavigator": {},
       "cordova-plugin-googlemaps": {
         "API_KEY_FOR_ANDROID": "AIzaSyAKDQzb3RKdVlh0gqZMhY4MEjl53Lh-Dmk",
         "API_KEY_FOR_IOS": "AIzaSyAKDQzb3RKdVlh0gqZMhY4MEjl53Lh-Dmk",
-        "PLAY_SERVICES_VERSION": "15.+"
-      },
-      "cordova-plugin-geolocation": {},
-      "uk.co.workingedge.phonegap.plugin.launchnavigator": {}
+        "PLAY_SERVICES_VERSION": "15.+",
+        "ANDROID_SUPPORT_V4_VERSION": "26.1.0"
+      }
     },
     "platforms": [
       "browser",

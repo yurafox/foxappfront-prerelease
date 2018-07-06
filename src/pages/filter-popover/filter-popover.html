@@ -33,7 +33,7 @@
             {{locale[item.name] ? locale[item.name] : item.name}}
           </ion-col>
           <ion-col col-auto>
-            <input type="checkbox" [(ngModel)]="item.isChecked">
+            <input type="checkbox" [(ngModel)]="item.isChecked" onclick="return false;">
           </ion-col>
         </ion-row>
       </ion-grid>

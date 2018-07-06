@@ -4,4 +4,15 @@ page-category {
     height: auto;
   }
 
+  .f-compare-panel  {
+    background-color: color($colors, clear);
+
+    z-index: 5000 !important;
+    position: fixed !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    padding: 0 !important;
+  }
+
 }
