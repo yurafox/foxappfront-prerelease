@@ -18,7 +18,7 @@
         <div>
           <span loc="Телефон*" name="Phone" class="lblTxt">{{locale['Phone'] || 'Телефон*'}}</span>
         </div>
-        <input type="text" [mask]="'380999999999'" placeholder="380xxxxxxxxx" formControlName="phone" />
+        <input type="number" [mask]="'380999999999'" placeholder="380xxxxxxxxx" formControlName="phone" />
         <ion-item class='alertDanger' *ngIf="formErrors.phone">
           <span>{{formErrors.phone}}</span>
         </ion-item>

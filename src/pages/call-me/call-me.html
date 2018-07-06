@@ -12,7 +12,7 @@
             <div id='label-div'>
               <label for="phone"><span>{{locale['CallMeText']}}</span></label>
             </div>
-            <input type="text" [(ngModel)]="callPhone" [mask]="'380999999999'" id="phone" name="phone"
+            <input type="number" [(ngModel)]="callPhone" [mask]="'380999999999'" id="phone" name="phone"
                    placeholder="{{locale['Phone']}}"
                    pattern="[0-9]{12}"
                    minlength="12"
