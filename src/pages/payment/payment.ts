@@ -6,6 +6,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { AppConstants } from "../../app/app-constants";
 import { AbstractDataRepository } from '../../app/service/repository/abstract/abstract-data-repository';
 import { ClientCreditCardData } from '../../app/model/client-credit-card-data';
+import { UserService } from '../../app/service/bll/user-service';
 
 @IonicPage()
 @Component({
@@ -13,8 +14,7 @@ import { ClientCreditCardData } from '../../app/model/client-credit-card-data';
   templateUrl: 'payment.html',
 })
 export class PaymentPage extends ComponentBase implements OnInit {
-  document: any;
-  formInput: any;
+  formInput: string;
   orderId: number;
   fail: boolean;
   error: boolean;
@@ -22,7 +22,7 @@ export class PaymentPage extends ComponentBase implements OnInit {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
               public sanitizer: DomSanitizer, public changeDetector: ChangeDetectorRef,
-              public repo: AbstractDataRepository, public alertCtrl: AlertController) {
+              public repo: AbstractDataRepository, public alertCtrl: AlertController, public userService: UserService) {
     super();
     (<any>window).appPage = this;
     this.formInput = '';
@@ -72,9 +72,9 @@ export class PaymentPage extends ComponentBase implements OnInit {
       this.changeDetector.detectChanges();
     } else {
       if (this.navParams.data.clientCCData && this.navParams.data.clientCCData.id) {
-        this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(`${AppConstants.BASE_PAYMENT_URL}/?id=${this.orderId}&cc=${this.navParams.data.clientCCData.id}`);
+        this.formInput = await this.repo.getPaymentLink(this.orderId, this.navParams.data.clientCCData.id);
       } else {
-        this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(`${AppConstants.BASE_PAYMENT_URL}/?id=${this.orderId}`);
+        this.formInput = await this.repo.getPaymentLink(this.orderId);
       }
       window.addEventListener('message', this.receiveMessage);
     }

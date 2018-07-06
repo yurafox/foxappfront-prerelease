@@ -149,9 +149,10 @@ const legalPolicyUrl = `${AppConstants.BASE_URL}/api/legalpolicy/getLegalPolicy`
 const newsDescriptionsUrl = `${AppConstants.BASE_URL}/api/news/getNewsDescription`;
 const newsByCategoryUrl = `${AppConstants.BASE_URL}/api/news/getNewsByCategory`;
 const newsCategoryUrl = `${AppConstants.BASE_URL}/api/NewsCategory`;
-const creditCardsDataUrl = `${AppConstants.BASE_URL}/api/CreditCardData`;
+const creditCardsDataUrl = `${AppConstants.BASE_URL}/api/CreditCard/CreditCards`;
 const pageOptionsUrl = `${AppConstants.BASE_URL}/api/page/GetPageOptions`;
 const getLoDeliveryTypesAttrByLoEntityUrl = `${AppConstants.BASE_URL}/api/lo/LoDeliveryTypesAttrByLoEntity`;
+const paymentLinkUrl = `${AppConstants.BASE_URL}/api/Payment/Payment`;
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -4068,19 +4069,34 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async getClientCreditCardData(): Promise<ClientCreditCardData[]> {
     try {
-      // const response = await this.http.get(creditCardsDataUrl,RequestFactory.makeAuthHeader()).toPromise();
-      // let data: any = response.json();
-      // if (response.status !== 200) {
-      //   throw new Error("server side status error");
-      // }
-      // let ccData: ClientCreditCardData[] = [];
-      // if (data != null) {
-      //   data.creditCardsData.forEach(cc => {
-      //     ccData.push(new ClientCreditCardData(cc.id, cc.ccMask));
-      //   });
-      // }
-      //return ccData;
-      return [new ClientCreditCardData(1, '5423****432'),new ClientCreditCardData(2, '5441****759'),new ClientCreditCardData(3, '5175****118')];
+      const response = await this.http.get(creditCardsDataUrl,RequestFactory.makeAuthHeader()).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      let ccData: ClientCreditCardData[] = [];
+      if (data != null) {
+        data.forEach(cc => {
+          ccData.push(new ClientCreditCardData(cc.id, cc.card_mask));
+          console.log(cc.id+' '+cc.card_mask);
+        });
+      }
+      return ccData;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getPaymentLink(orderId: number, token?: string): Promise<string> {
+    try {
+      let tokenStr: string = (token && token.length > 0) ? `${token}` : `${null}`;
+      const response = await this.http.get(`${paymentLinkUrl}/${orderId}` + tokenStr, RequestFactory.makeAuthHeader()).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      console.log(data);
+      return data;
     } catch (err) {
       return await this.handleError(err);
     }
