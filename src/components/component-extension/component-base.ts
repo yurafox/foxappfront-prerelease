@@ -11,7 +11,7 @@ export abstract class ComponentBase implements OnDestroy, OnInit {
   // type class name
   protected _componentName: string;
   /*// current LocaleID
-  private _localeID: number = -1;*/
+  public _localeID: number = -1;*/
   // info about current subscribers
   protected listenersObj: Array<any> = [];
   // userSetting service create

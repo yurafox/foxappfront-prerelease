@@ -7,7 +7,7 @@ import {AbstractDataRepository} from '../service/repository/abstract/abstract-da
 ])
 export class ClientAddress {
 
-  private _repo: AbstractDataRepository;
+  public _repo: AbstractDataRepository;
 
   get dto(): any {
     return  {id: this.id, idClient: this.idClient, idCity: this.idCity, zip: this.zip, street: this.street,

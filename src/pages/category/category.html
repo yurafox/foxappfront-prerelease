@@ -2,6 +2,22 @@
   <main-toolbar></main-toolbar>
   <progress-bar [active]="srch.inSearch"></progress-bar>
   <filter *ngIf="srch.products" [srch]="srch"></filter>
+
+  <ion-grid *ngIf="countCompareProducts && countCompareProducts>0">
+      <ion-row>
+        <ion-col class="f-item-padding-bottom">
+          <button ion-button block class="f-btn-secondary" (click)="clearCompareProducts()">
+             <span loc="Очистить" name="Clear">{{locale['Clear']}}</span>
+          </button>
+        </ion-col>
+    
+         <ion-col class="f-item-padding-bottom">
+          <button ion-button block class="f-btn-action" (click)="openCompareProducts()">
+            <span loc="Сравнить" name="Compare">{{locale['Compare']}} ({{countCompareProducts}})</span>
+          </button>
+         </ion-col>
+      </ion-row>
+    </ion-grid>
 </ion-header>
 
 <ion-content #cont>

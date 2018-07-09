@@ -3,8 +3,8 @@ page-login {
     color: #a94442;
   }
   
-  .top100 {
-    margin: 100px auto;
+  .top60 {
+    margin: 60px auto;
     width: 80%;
   }
 
@@ -20,8 +20,8 @@ page-login {
 }
 
  .btnAction {
-  width: 122px;
-  margin: 10% auto;
+  width: 100%;
+  margin-top: 10%;
   button {
     background: #E54415;
     height: 33px;
@@ -49,5 +49,11 @@ page-login {
     background: #FFFFFF;
     border: 1px solid #BDBDBD;
     box-sizing: border-box;
+  }
+
+  .repeatCodeWrapper {
+    color: blue;
+    text-decoration: underline;
+    padding-left: 0px;
   }
 }

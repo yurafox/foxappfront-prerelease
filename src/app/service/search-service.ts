@@ -19,6 +19,7 @@ export class ProductSearchParams {
   public categoryId?: number,
   public category?: number[],
   public supplier?: number[],
+  public ProductId?: number[],
   public productProps?: PropFilterCondition[],
   public sortOrder: SortOrderEnum = SortOrderEnum.Relevance,
   public actionId?: number)
@@ -82,7 +83,8 @@ export class SearchService {
           ((this.prodSrchParams.productProps) && (this.prodSrchParams.productProps.length > 0))
           ||
           ((this.prodSrchParams.category) && (this.prodSrchParams.category.length > 0))
-
+          ||
+          ((this.prodSrchParams.ProductId) && (this.prodSrchParams.ProductId.length > 0))
     ) res = true;
     return res;
   }
@@ -272,6 +274,15 @@ export class SearchService {
       );
       let mnf = {'bool': {'should': terms}};
       postFilterArr.push(mnf);
+    };
+    
+    if ((this.prodSrchParams.ProductId) && (this.prodSrchParams.ProductId.length != 0)) {
+      let terms = [];
+      this.prodSrchParams.ProductId.forEach(
+        x => terms.push({'term': {"id" : `${x}`}})
+      );
+      let prod = {'bool': {'should': terms}};
+      mustArr.push(prod);
     };
 
     if ((this.prodSrchParams.category) && (this.prodSrchParams.category.length != 0)) {

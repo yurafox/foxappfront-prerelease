@@ -20,8 +20,8 @@ export class ItemReviewComponent extends ComponentBase {
   answerClicked: boolean = false;
   isAuth: boolean;
 
-  constructor(private changeDetector: ChangeDetectorRef, private repo: AbstractDataRepository,
-              private toastCtrl: ToastController, private navCtrl: NavController) {
+  constructor(public changeDetector: ChangeDetectorRef, public repo: AbstractDataRepository,
+              public toastCtrl: ToastController, public navCtrl: NavController) {
     super();
     this.isAuth = this.userService.isAuth;
   }
@@ -97,7 +97,7 @@ export class ItemReviewComponent extends ComponentBase {
     }
   }
 
-  private showToast() {
+  public showToast() {
     this.answerText = '';
     this.answered = false;
     this.answerClicked = false;
@@ -115,7 +115,7 @@ export class ItemReviewComponent extends ComponentBase {
     });
   }
 
-  private updateCurrentReview(rev: ProductReview) {
+  public updateCurrentReview(rev: ProductReview) {
     if (this.review) {
       this.review.upvotes = rev.upvotes;
       this.review.downvotes = rev.downvotes;

@@ -19,7 +19,7 @@ export class PollBannerComponent extends ComponentBase{
   canView = false;
 
   constructor(public navCtrl: NavController,
-              private _repo:AbstractDataRepository) {
+              public _repo:AbstractDataRepository) {
     super();
   }
 
@@ -49,7 +49,7 @@ export class PollBannerComponent extends ComponentBase{
     );
   }
 
-  private removeVariableBlock():void {
+  public removeVariableBlock():void {
     let dynamicHtml = document.getElementsByTagName('dynamic-html')[0];
     let poll=document.getElementsByTagName('poll-banner')[0].parentElement;
     dynamicHtml.removeChild(poll);

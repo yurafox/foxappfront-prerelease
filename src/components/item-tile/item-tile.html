@@ -1,27 +1,30 @@
 <div class="f-div-item-tile">
-  <ion-grid class="f-no-padding" (click)="openItemDetails(product)" *ngIf="product">
+  <ion-grid class="f-no-padding" *ngIf="product">
     <ion-row>
-      <ion-col col-auto>
+      <ion-col col-auto (click)="openItemDetails(product)">
         <div *ngIf="product && product?.imageUrl" lazy-load-images>
-          <img class="f-img-item-tile" src="assets/imgs/spiner-load.gif" [attr.data-src]="product?.imageUrl" onError="this.src='assets/imgs/nophoto.png';">
+          <img class="f-img-item-tile" src="assets/imgs/spiner-load.gif" [attr.data-src]="product?.imageUrl" onError="this.src='assets/imgs/nophoto.png';"> 
         </div>
-        <img *ngIf="product && !product.imageUrl" class="f-img-item-tile" src="assets/imgs/nophoto.png">
+        <img *ngIf="product && !product.imageUrl" class="f-img-item-tile" src="assets/imgs/nophoto.png">  
+      </ion-col>
+      <ion-col *ngIf="displayCloseButton">
+          <ion-icon class="f-close-button-scale" name="ios-close-circle-outline" (click)="closeButtonClick(product)"></ion-icon>
       </ion-col>
     </ion-row>
 
-    <ion-row>
+    <ion-row (click)="openItemDetails(product)">
       <ion-col class="f-item-col f-color-info f-item-tile-name">
         {{product?.name | truncate : 40 }}
       </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="product.rating || product.recall>0">
+    <ion-row *ngIf="(product.rating || product.recall>0) && displayRating==true" (click)="openItemDetails(product)">
       <ion-col nowrap class="f-item-col">
         <product-rating [product]=product></product-rating>
       </ion-col>
     </ion-row>
 
-    <div class="f-padding-t-5">
+    <div class="f-padding-t-5" *ngIf="displayPrice==true" (click)="openItemDetails(product)">
       <ion-row *ngIf="product.oldPrice">
         <ion-col class="f-item-col f-old-price f-size-small" >
           <span>{{product.oldPrice | localeCurrency:userService.currency}}</span>

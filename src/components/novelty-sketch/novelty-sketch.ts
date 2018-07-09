@@ -13,12 +13,12 @@ import {Novelty} from '../../app/model/novelty';
 })
 export class NoveltySketchComponent extends ComponentBase{
   @Input() public innerId:number;
-  @Input() public content:string='';
   @Input() public novelty: Novelty;
   @Input() public product: Product;
+  public content:boolean;
   productId: number;
 
-  constructor(public navCtrl: NavController, private _repo:AbstractDataRepository) {
+  constructor(public navCtrl: NavController, public _repo:AbstractDataRepository) {
     super();
   }
 
@@ -30,28 +30,45 @@ export class NoveltySketchComponent extends ComponentBase{
         this.productId = this.novelty.idProduct;
         this.product = await this._repo.getProductById(this.novelty.idProduct);
       }
-    } else {
-      if(this.novelty.idProduct) {
+    }
+    else {
+      if (this.novelty.idProduct) {
         this.productId = this.novelty.idProduct;
         this.product = await this._repo.getProductById(this.novelty.idProduct);
       }
     }
-    if (this.novelty && this.novelty.sketch_content) this.content=this.novelty.sketch_content;
+    this.content = !!(this.novelty && this.novelty.sketch_content);
     this.evServ.events['noveltyPushEvent'].emit(this);
   }
 
-  public openNovelty() {
+  public async openNovelty() {
+    if (!this.novelty || !this.novelty.id) {
+      this.novelty = await this._repo.getNovelty(this.innerId);
+      if (this.novelty) {
+        this.productId = this.novelty.idProduct;
+        if (!this.product) this.product = await this._repo.getProductById(this.novelty.idProduct);
+        await this.pushNoveltyPage();
+      }
+    }
+    else {
+      if (this.novelty.idProduct) {
+        this.productId = this.novelty.idProduct;
+        if (!this.product) this.product = await this._repo.getProductById(this.novelty.idProduct);
+        await this.pushNoveltyPage();
+      }
+    }
+  }
+
+  private pushNoveltyPage() {
     if (this.product && this.novelty) {
       this.navCtrl.push('NoveltyPage', {
         id: this.innerId || this.novelty.id,
         novelty: this.novelty,
         product: this.product,
         productId: this.productId
-      }).catch(
-        err => {
-          console.log(`Error navigating to NoveltyPage: ${err}`);
-        }
-      );
+      }).catch(err => {
+        console.log(`Error navigating to NoveltyPage: ${err}`);
+      });
     }
   }
 

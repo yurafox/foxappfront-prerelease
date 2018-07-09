@@ -15,6 +15,7 @@ import {Store} from '../../app/model/store';
 export class ItemReviewsPage extends ComponentBase implements OnInit {
 
   reviews: ProductReview[] | StoreReview[];
+  reviewsToShow: ProductReview[] | StoreReview[];
   reviewsObj: {reviews: ProductReview[] | StoreReview[], idClient: number};
   product: Product;
   store: Store;
@@ -22,6 +23,8 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
   clientId: number = 0;
   cantShow: boolean;
   dataLoaded: boolean;
+  slicingIndx = 20;
+  infiniteScroll: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public repo: AbstractDataRepository,
               public loadingCtrl: LoadingController) {
@@ -47,6 +50,7 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
     if (this.navParams.data.page) {
       if (this.navParams.data.page.reviews) {
         this.reviews = this.navParams.data.page.reviews;
+        this.reviewsToShow = this.navParams.data.page.reviews.slice(0,this.slicingIndx);
       }
       if (this.navParams.data.page.clientId) {
         this.clientId = this.navParams.data.page.clientId;
@@ -62,6 +66,7 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
     }
     if (this.navParams.data.reviews) {
       this.reviews = this.navParams.data.reviews;
+      this.reviewsToShow = this.navParams.data.reviews.slice(0,this.slicingIndx);
     }
     if (this.navParams.data.cantShow) {
       this.cantShow = this.navParams.data.cantShow;
@@ -76,6 +81,7 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
     }
     if (this.reviewsObj) {
       this.reviews = this.reviewsObj.reviews;
+      this.reviewsToShow = this.reviewsObj.reviews.slice(0,this.slicingIndx);
       this.clientId = this.reviewsObj.idClient;
     }
 
@@ -136,5 +142,25 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
       if (this.reviews[i].idClient === this.clientId) present = true;
     }
     return present;
+  }
+
+  onScroll(infiniteScroll) {
+    if (this.scroll() === false) {
+      infiniteScroll.enable(false);
+      if (this.infiniteScroll && this.infiniteScroll !== null) this.infiniteScroll = null;
+      return;
+    }
+    this.infiniteScroll = infiniteScroll;
+
+    let difference = this.reviews.slice(this.reviewsToShow.length, this.reviewsToShow.length + this.slicingIndx);
+    for (let i = this.reviewsToShow.length, j = 0; i < this.reviewsToShow.length + difference.length, j < difference.length; i++ , j++) {
+      this.reviewsToShow[i] = difference[j];
+    }
+
+    if (this.infiniteScroll && this.infiniteScroll !== null) this.infiniteScroll.complete();
+  }
+
+  scroll():boolean {
+    return (this.reviews.length !== this.reviewsToShow.length) ? true : false;
   }
 }

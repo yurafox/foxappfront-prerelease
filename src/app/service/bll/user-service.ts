@@ -217,7 +217,7 @@ export class UserService {
     localStorage.removeItem('token');
   }
   // send fastswiching data
-  // private trySendSettings(): void {
+  // public trySendSettings(): void {
   //   if (this._auth) {
   //     this._account.edit(this.user, this.token)
   //       .then(user => {},error => this.errorMessages['edit'] = error.message);

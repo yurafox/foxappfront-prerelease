@@ -1,66 +1,68 @@
 import { Injectable } from '@angular/core';
-import { Http, URLSearchParams} from '@angular/http';
+import { Http, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
-import {IDictionary, Providers, SCN } from '../../../core/app-core';
-import {ConnectivityService} from '../../connectivity-service';
+import { IDictionary, Providers, SCN } from '../../../core/app-core';
+import { ConnectivityService } from '../../connectivity-service';
 import IKeyedCollection = Providers.IKeyedCollection;
-import {OrdersFilter} from '../../../../pages/your-orders/your-orders';
-import {ShipmentItems} from '../../../model/shipment-items';
-import {ClientOrderProductHist} from '../../../model/client-order-product-hist';
-import {Product} from '../../../model/product';
-import {ClientBonus} from '../../../model/client-bonus';
-import {Client} from '../../../model/client';
-import {ClientOrder} from '../../../model/client-order';
-import {LoSupplEntity} from '../../../model/lo-suppl-entity';
-import {LoTrackLog} from '../../../model/lo-track-log';
-import {LoEntity} from '../../../model/lo-entity';
-import {EnumPaymentMethod} from '../../../model/enum-payment-method';
-import {CreditProduct} from '../../../model/credit-product';
-import {ClientAddress} from '../../../model/client-address';
-import {StorePlace} from '../../../model/store-place';
-import {ClientOrderProducts} from '../../../model/client-order-products';
-import {ProductStorePlace} from '../../../model/product-store-place';
-import {QuotationProduct} from '../../../model/quotation-product';
-import {ProductReview} from '../../../model/product-review';
-import {Region} from '../../../model/region';
-import {PersonInfo} from '../../../model/person';
-import {Country} from '../../../model/country';
-import {ReviewAnswer} from '../../../model/review-answer';
-import {City} from '../../../model/city';
-import {ProductPropValue} from '../../../model/product-prop-value';
-import {Quotation} from '../../../model/quotation';
-import {Supplier} from '../../../model/supplier';
-import {Lang} from '../../../model/lang';
-import {StoreReview} from '../../../model/store-review';
-import {Manufacturer} from '../../../model/manufacturer';
-import {Store} from '../../../model/store';
-import {PropEnumList} from '../../../model/prop-enum-list';
-import {Currency} from '../../../model/currency';
-import {Prop} from '../../../model/prop';
-import {Poll} from '../../../model/poll';
-import {ClientPollAnswer} from '../../../model/client-poll-answer';
-import {Action} from '../../../model/action';
-import {Novelty} from '../../../model/novelty';
-import {PollQuestion} from '../../../model/poll-question';
-import {NoveltyDetails} from '../../../model/novelty-det';
-import {PollQuestionAnswer} from '../../../model/poll-question-answer';
-import {MeasureUnit} from '../../../model/measure-unit';
-import {Category} from '../../../model/category';
-import {BannerSlide} from '../../../model/banner-slide';
-import {DeviceData} from '../../../model/device-data';
-import {AppParam} from '../../../model/app-param';
-import {ClientMessage} from '../../../model/client-message';
-import {Shipment} from '../../../model/shipment';
-import {ActionByProduct} from '../../../model/action-by-product';
-import {LoEntityOffice} from '../../../model/lo-entity-office';
-import {LoDeliveryType} from '../../../model/lo-delivery-type';
-import {CurrencyRate} from '../../../model/currency-rate';
-import {NewsCategory} from '../../../model/news-category';
-import {News} from '../../../model/news';
-import {AbstractDataRepository} from '../abstract/abstract-data-repository';
+import { OrdersFilter } from '../../../../pages/your-orders/your-orders';
+import { ShipmentItems } from '../../../model/shipment-items';
+import { ClientOrderProductHist } from '../../../model/client-order-product-hist';
+import { Product } from '../../../model/product';
+import { ClientBonus } from '../../../model/client-bonus';
+import { Client } from '../../../model/client';
+import { ClientOrder } from '../../../model/client-order';
+import { LoSupplEntity } from '../../../model/lo-suppl-entity';
+import { LoTrackLog } from '../../../model/lo-track-log';
+import { LoEntity } from '../../../model/lo-entity';
+import { EnumPaymentMethod } from '../../../model/enum-payment-method';
+import { CreditProduct } from '../../../model/credit-product';
+import { ClientAddress } from '../../../model/client-address';
+import { StorePlace } from '../../../model/store-place';
+import { ClientOrderProducts } from '../../../model/client-order-products';
+import { ProductStorePlace } from '../../../model/product-store-place';
+import { QuotationProduct } from '../../../model/quotation-product';
+import { ProductReview } from '../../../model/product-review';
+import { Region } from '../../../model/region';
+import { PersonInfo } from '../../../model/person';
+import { Country } from '../../../model/country';
+import { ReviewAnswer } from '../../../model/review-answer';
+import { City } from '../../../model/city';
+import { ProductPropValue } from '../../../model/product-prop-value';
+import { Quotation } from '../../../model/quotation';
+import { Supplier } from '../../../model/supplier';
+import { Lang } from '../../../model/lang';
+import { StoreReview } from '../../../model/store-review';
+import { Manufacturer } from '../../../model/manufacturer';
+import { Store } from '../../../model/store';
+import { PropEnumList } from '../../../model/prop-enum-list';
+import { Currency } from '../../../model/currency';
+import { Prop } from '../../../model/prop';
+import { Poll } from '../../../model/poll';
+import { ClientPollAnswer } from '../../../model/client-poll-answer';
+import { Action } from '../../../model/action';
+import { Novelty } from '../../../model/novelty';
+import { PollQuestion } from '../../../model/poll-question';
+import { NoveltyDetails } from '../../../model/novelty-det';
+import { PollQuestionAnswer } from '../../../model/poll-question-answer';
+import { MeasureUnit } from '../../../model/measure-unit';
+import { Category } from '../../../model/category';
+import { BannerSlide } from '../../../model/banner-slide';
+import { DeviceData } from '../../../model/device-data';
+import { AppParam } from '../../../model/app-param';
+import { ClientMessage } from '../../../model/client-message';
+import { Shipment } from '../../../model/shipment';
+import { ActionByProduct } from '../../../model/action-by-product';
+import { LoEntityOffice } from '../../../model/lo-entity-office';
+import { LoDeliveryType } from '../../../model/lo-delivery-type';
+import { CurrencyRate } from '../../../model/currency-rate';
+import { NewsCategory } from '../../../model/news-category';
+import { News } from '../../../model/news';
+import { AbstractDataRepository } from '../abstract/abstract-data-repository';
+import { ClientCreditCardData } from '../../../model/client-credit-card-data';
+import { LoDeliveryTypeAttr } from '../../../model/lo-delivery-type-attr';
 
 // <editor-fold desc="url const">
 //PRODUCTION URLS
@@ -147,6 +149,11 @@ const legalPolicyUrl = `${AppConstants.BASE_URL}/api/legalpolicy/getLegalPolicy`
 const newsDescriptionsUrl = `${AppConstants.BASE_URL}/api/news/getNewsDescription`;
 const newsByCategoryUrl = `${AppConstants.BASE_URL}/api/news/getNewsByCategory`;
 const newsCategoryUrl = `${AppConstants.BASE_URL}/api/NewsCategory`;
+const creditCardsDataUrl = `${AppConstants.BASE_URL}/api/CreditCard/CreditCards`;
+const pageOptionsUrl = `${AppConstants.BASE_URL}/api/page/GetPageOptions`;
+const getLoDeliveryTypesAttrByLoEntityUrl = `${AppConstants.BASE_URL}/api/lo/LoDeliveryTypesAttrByLoEntity`;
+const paymentLinkUrl = `${AppConstants.BASE_URL}/api/Payment/Payment`;
+
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
 // const currenciesUrl = "/api/mcurrencies";
@@ -193,9 +200,9 @@ const newsCategoryUrl = `${AppConstants.BASE_URL}/api/NewsCategory`;
 
 @Injectable()
 export class AppDataRepository extends AbstractDataRepository {
-  private cache: CacheProvider = new CacheProvider();
+  public cache: CacheProvider = new CacheProvider();
 
-  constructor(private http: Http, private connServ: ConnectivityService) {
+  constructor(public http: Http, public connServ: ConnectivityService) {
     super();
     this.CacheProviderOptInit();
   }
@@ -2467,7 +2474,7 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   // <editor-fold desc="error handler"
-  private handleError(error?: Error): any {
+  public handleError(error?: Error): any {
     if (this.connServ.counter < 1) {
       this.connServ.checkConnection(error);
     }
@@ -2475,7 +2482,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   // </editor-fold>
   // <editor-fold desc="url search factory">
-  private createSearchParams(params: Array<{ key: string; value: string }>): URLSearchParams {
+  public createSearchParams(params: Array<{ key: string; value: string }>): URLSearchParams {
     const searchParams = new URLSearchParams();
     params.forEach(val => {
       searchParams.set(val.key, val.value);
@@ -2486,7 +2493,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   // </editor-fold>
   // <editor-fold desc="get product prop value from product"
-  private getPropValuefromProduct(product: any): Array<ProductPropValue> {
+  public getPropValuefromProduct(product: any): Array<ProductPropValue> {
     const props = new Array<ProductPropValue>();
     product.props.forEach(val => {
       let enumVal =
@@ -2525,7 +2532,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   // </editor-fold>
   // <editor-fold desc="get single prop from parent container"
-  private getSingleProp(val: any): Prop {
+  public getSingleProp(val: any): Prop {
     return new Prop(
       val.id,
       val.name,
@@ -2538,7 +2545,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   // </editor-fold>
   // <editor-fold desc="inspect cache predicate"
-  private isEmpty<T>(value: T) {
+  public isEmpty<T>(value: T) {
     return value === undefined;
   }
 
@@ -2791,7 +2798,7 @@ export class AppDataRepository extends AbstractDataRepository {
                 val.upvotes,
                 val.downvotes,
                 []
-              )
+              );
               storeRev.vote = val.vote;
               storesRevs.push(storeRev);
             }
@@ -2804,7 +2811,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getStoreReviews(): Promise<{ reviews: IDictionary<StoreReview[]>, idClient: number }> {
+  public async getStoreReviews(): Promise<{ reviews: StoreReview[], idClient: number }> {
     try {
       const response = await this.http
         .get(`${storeReviewsUrl}`, RequestFactory.makeAuthHeader()).toPromise();
@@ -2813,11 +2820,9 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      let reviews: IDictionary<StoreReview[]> = {};
+      let storesRevs = new Array<StoreReview>();
       if (data.storeReviews != null) {
-        const storesRevs = new Array<StoreReview>();
         let answers: IDictionary<ReviewAnswer[]> = {};
-        let idStore: number = 0;
         for (let i = data.storeReviews.length - 1; i > -1; i--) {
           let val = data.storeReviews[i];
           let substrings = val.reviewDate.toString().split("T");
@@ -2839,7 +2844,6 @@ export class AppDataRepository extends AbstractDataRepository {
           }
         }
         data.storeReviews.forEach(val => {
-          idStore = val.idStore;
           let substrings = val.reviewDate.toString().split("T");
           let substring1 = substrings[0].slice(0, substrings[0].length);
           let substring2 = substrings[1].slice(0, substrings[1].length - 1);
@@ -2882,9 +2886,8 @@ export class AppDataRepository extends AbstractDataRepository {
             }
           }
         });
-        reviews[idStore.toString()] = storesRevs;
       }
-      return { reviews: reviews, idClient: data.currentUser };
+      return { reviews: storesRevs, idClient: data.currentUser };
     } catch (err) {
       return await this.handleError(err);
     }
@@ -3720,7 +3723,7 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  private getShipmentItemsFromJson(data: any): ShipmentItems[] {
+  public getShipmentItemsFromJson(data: any): ShipmentItems[] {
     let arr = [];
     data.forEach(
       x => {
@@ -3750,6 +3753,7 @@ export class AppDataRepository extends AbstractDataRepository {
           )
         );
       }
+
       return arr;
     } catch (err) {
       return await this.handleError(err);
@@ -4018,6 +4022,81 @@ export class AppDataRepository extends AbstractDataRepository {
         })
       }
       return newsCategory;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+  
+  public async  getPageOptionsById(id:number):Promise<any> {
+    try {
+      const response = await this.http.get(`${pageOptionsUrl}/${id}`,RequestFactory.makeAuthHeader()).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      return data;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getLoEntityDeliveryTypesAttr(shpmt: Shipment, loIdClientAddress: number): Promise<LoDeliveryTypeAttr[]> {
+    try {
+      const response = await this.http
+        .post(getLoDeliveryTypesAttrByLoEntityUrl, { shpmt: shpmt.dto, loIdClientAddress: loIdClientAddress },
+        RequestFactory.makeAuthHeader())
+        .toPromise();
+      const data = response.json();
+
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      const arr: LoDeliveryTypeAttr[] = new Array<LoDeliveryTypeAttr>();
+      if (data !== null) {
+        data.forEach(val =>
+          arr.push(
+            new LoDeliveryTypeAttr(val.loEntityId, val.deliveryTypeId, val.deliveryDate )
+          )
+        );
+      }
+      return arr;
+    } catch (err) {
+      return await this.handleError(err);
+    }  
+  }
+
+  public async getClientCreditCardData(): Promise<ClientCreditCardData[]> {
+    try {
+      const response = await this.http.get(creditCardsDataUrl,RequestFactory.makeAuthHeader()).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      let ccData: ClientCreditCardData[] = [];
+      if (data != null) {
+        data.forEach(cc => {
+          ccData.push(new ClientCreditCardData(cc.id, cc.card_mask));
+          console.log(cc.id+' '+cc.card_mask);
+        });
+      }
+      return ccData;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
+  public async getPaymentLink(orderId: number, token?: string): Promise<string> {
+    try {
+      let tokenStr: string = (token && token.length > 0) ? `${token}` : `${null}`;
+      const response = await this.http.get(`${paymentLinkUrl}/${orderId}` + tokenStr, RequestFactory.makeAuthHeader()).toPromise();
+      let data: any = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      console.log(data);
+      return data;
     } catch (err) {
       return await this.handleError(err);
     }

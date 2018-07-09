@@ -21,19 +21,6 @@ export class HomePage extends ComponentBase implements DoCheck {
 
   _pageMode: PageMode = PageMode.HomeMode;
 
-  // list slides for slider
-  slides = [
-    {
-      src: 'assets/imgs/actions/action3.jpg'
-    },
-    {
-      src: 'assets/imgs/actions/action2.jpg'
-    },
-    {
-      src: 'assets/imgs/actions/action1.jpg'
-    }
-  ];
-
   @ViewChild('srch') searchButtonControl;
   @ViewChild('cont') cont;
   @ViewChild('itemsList') itemsList;
@@ -47,9 +34,10 @@ export class HomePage extends ComponentBase implements DoCheck {
 
   productsOfDay = [];
   productsSalesHits = [];
-  content: string = '';
+  content: boolean;
   scrollHeight: number;
   scrOrientationSub: Subscription;
+  pageOptions:any;
 
   constructor(public app: App, public nav: NavController, public _repo:AbstractDataRepository,
               public srchService: SearchService, public changeDet: ChangeDetectorRef,
@@ -136,7 +124,8 @@ export class HomePage extends ComponentBase implements DoCheck {
   }
 
   async doRefresh(refresher) {
-    this.content = await this._repo.getPageContent(1);
+    this.pageOptions = await this._repo.getPageOptionsById(1);
+    this.content = !!(this.pageOptions);
     /*if (refresher !== 0) {
       this.changeDet.detectChanges();
       refresher.complete();

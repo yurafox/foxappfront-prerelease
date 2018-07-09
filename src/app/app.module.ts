@@ -12,7 +12,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import {Ionic2Rating, Ionic2RatingModule} from 'ionic2-rating';
 import { LazyLoadImagesModule } from 'ngx-lazy-load-images';
 import {BarcodeScanner} from '@ionic-native/barcode-scanner';
-import {getLocString1} from './service/repository/specific/localization-repository';
+import {getLocString} from './service/repository/specific/localization-repository';
 
 import {FoxApp} from './app.component';
 
@@ -26,10 +26,9 @@ import {WebApiService} from './service/webapi/web-api-service';
 import {RefInjector} from './core/app-core';
 import {ComponentsModule} from '../components/components.module';
 import {PipesModule} from "./pipe/pipes.module";
-import {DirectivesModule} from './directive/directives.module';
-import {Geolocation} from '@ionic-native/geolocation';
+import {DirectivesModule} from './directives/directives.module';
 import {ScreenOrientation} from '@ionic-native/screen-orientation';
-import {LaunchNavigator} from '@ionic-native/launch-navigator';
+import {Push} from '@ionic-native/push';
 
 import {NgxQRCodeModule} from 'ngx-qrcode2';
 import {AppAvailability} from '@ionic-native/app-availability';
@@ -103,6 +102,8 @@ import {NewsDetailPageModule} from '../pages/news-detail/news-detail.module';
 import {ManageNewsMenuPageModule} from '../pages/manage-news-menu/manage-news-menu.module';
 import {ItemImgPageModule} from '../pages/item-img/item-img.module';
 import {CallMePageModule} from '../pages/call-me/call-me.module';
+import {ProductCompareService} from './service/product-compare-service';
+import {ProductFavoriteService} from './service/product-favorite-service';
 
 
 @NgModule({
@@ -113,7 +114,7 @@ import {CallMePageModule} from '../pages/call-me/call-me.module';
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
-    InMemoryWebApiModule.forRoot(WebApiService, {delay: 200, passThruUnknownUrl: true,post204: false, put204: false}),
+    // InMemoryWebApiModule.forRoot(WebApiService, {delay: 200, passThruUnknownUrl: true, post204: false, put204: false}),
     IonicModule.forRoot(FoxApp),
     IonicPageModule.forChild(HomePage),
     InfiniteScrollModule,
@@ -188,10 +189,8 @@ import {CallMePageModule} from '../pages/call-me/call-me.module';
     InAppBrowser,
     UserService,
     GoogleMaps,
-    Geolocation,
     BarcodeScanner,
     ScreenOrientation,
-    LaunchNavigator,
     AppAvailability,
     Ionic2Rating,
     Device,
@@ -199,6 +198,7 @@ import {CallMePageModule} from '../pages/call-me/call-me.module';
     Keyboard,
     CallNumber,
     BackgroundMode,
+    Push,
     //{provide: Compiler, useExisting: RuntimeCompiler },
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
@@ -209,14 +209,15 @@ import {CallMePageModule} from '../pages/call-me/call-me.module';
     {
       provide: LOCALE_ID,
       deps: [AbstractLocalizationRepository],
-      useFactory: getLocString1
-      //useFactory: (locRepo) => locRepo.getLocString()  //returns locale string
+      useFactory: getLocString
     },
     NewsSubscribeService,
     AppConstants,
     CurrencyStore,
     CartService,
-    ConnectivityService
+    ConnectivityService,
+    ProductCompareService,
+    ProductFavoriteService
   ]
 })
 export class AppModule {

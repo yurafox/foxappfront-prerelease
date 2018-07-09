@@ -58,7 +58,7 @@ export class ComplectItem {
 })
 export class ComplectComponent extends ComponentBase {
 
-  private _actionsArr: Array<ActionByProduct>;
+  public _actionsArr: Array<ActionByProduct>;
 
   @ViewChild('slides') slides: Slides;
 
@@ -95,7 +95,7 @@ export class ComplectComponent extends ComponentBase {
 
   get mainProductId(): number {return this._mainProductId};
 
-  constructor(private repo: AbstractDataRepository, public navCtrl: NavController, private cart: CartService) {
+  constructor(public repo: AbstractDataRepository, public navCtrl: NavController, public cart: CartService) {
     super();
   }
 

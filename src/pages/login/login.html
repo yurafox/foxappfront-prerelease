@@ -3,7 +3,7 @@
 </ion-header>
 
 <ion-content>
-  <div class="top100">
+  <div class="top60">
     <form [formGroup]='verifyForm'>
         <ion-item *ngIf='authError' class='alertDanger'>
             <span loc="Неверный номер или код" name="WrongLoginOrCode">{{locale['WrongLoginOrCode'] ? locale['WrongLoginOrCode'] : 'Неверный номер или код'}}</span>
@@ -30,6 +30,9 @@
 
           <ion-item class='alertDanger' *ngIf="formErrors.code">
             <span>{{formErrors.code}}</span>
+          </ion-item>
+          <ion-item class='repeatCodeWrapper' *ngIf="useCode" (click)="repeatCode()">
+            <span loc="Отправить sms код еще раз" name="RepeatCode">{{locale['RepeatCode']}}</span>
           </ion-item>
         </div>
 

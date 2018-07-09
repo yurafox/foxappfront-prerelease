@@ -14,16 +14,16 @@ import {AbstractDataRepository} from '../../app/service/repository/abstract/abst
 export class ActionSketchComponent extends ComponentBase {
   @Input()
   public innerId:number;
-  public content:string='';
+  public content:boolean;
   @Input()
   public action:Action;
   @Input()
   public isOnLanding:boolean;
 
-  private alive:boolean;
+  public alive:boolean;
   public expire:{days?:number,hours?:number,minutes?:number,seconds?:number};
 
-  constructor(public navCtrl: NavController, private _repo:AbstractDataRepository) {
+  constructor(public navCtrl: NavController, public _repo:AbstractDataRepository) {
     super();
     this.alive = true;
     this.expire = {};
@@ -31,13 +31,36 @@ export class ActionSketchComponent extends ComponentBase {
 
   async ngOnInit() {
     super.ngOnInit();
-    if(!this.action) {
-      this.action = await this._repo.getAction(this.innerId);
-    }
-    if(this.action && this.action.sketch_content && this.dateEnd > new Date()) {
-      this.content=this.action.sketch_content;
-    }
+    await this.InitActionOpt();
+  }
 
+  ngOnDestroy():void {
+    super.ngOnDestroy();
+    this.alive= false;
+  }
+
+  public async openAction() {
+    if (!this.action) {
+      this.action = await this._repo.getAction(this.innerId);
+      if (this.action) {
+        this.pushActionPage();
+      }
+    } else {
+      this.pushActionPage();
+    }
+  }
+
+  private pushActionPage() {
+    this.navCtrl.push('ActionPage', { id: this.innerId || this.action.id, action: this.action }).catch(err => {
+      console.log(`Error navigating to ActionPage: ${err.message}`);
+    });
+  }
+
+  private async InitActionOpt() {
+    this.action = this.action || await this._repo.getAction(this.innerId);
+    this.content = this.action && this.dateEnd > new Date();
+   
+    this.evServ.events['actionPushEvent'].emit(this);
     this.actionExpire(); // for design display
 
     // timer action time
@@ -46,20 +69,6 @@ export class ActionSketchComponent extends ComponentBase {
       .subscribe(() => {
         this.actionExpire();
       });
-    this.evServ.events['actionPushEvent'].emit(this);
-  }
-
-  ngOnDestroy():void {
-    super.ngOnDestroy();
-    this.alive= false;
-  }
-
-  public openAction() {
-    this.navCtrl.push('ActionPage', {id:this.innerId || this.action.id, action:this.action}).catch(
-      err => {
-        console.log(`Error navigating to ActionPage: ${err}`);
-      }
-    );
   }
 
   public get id ():number {

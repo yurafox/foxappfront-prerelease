@@ -6,9 +6,12 @@
 
     <ion-row *ngIf="dataLoaded">
       <ion-col class="f-padding-lr-5">
-        <button class="f-btn-action" ion-button block
-                [attr.disabled]="(!continueBtnEnabled)?'':null"
-                (click)="onPlaceOrderClick()"><span loc="Разместить заказ" name="PlaceYourOrder">{{locale['PlaceYourOrder']}}</span></button>
+          <button class="f-btn-action" ion-button block *ngIf="cart.order.idPaymentMethod !== 2"
+                  [attr.disabled]="(!continueBtnEnabled)?'':null"
+                  (click)="onPlaceOrderClick()"><span loc="Разместить заказ" name="PlaceYourOrder">{{locale['PlaceYourOrder']}}</span></button>
+          <button class="f-btn-action" ion-button block *ngIf="cart.order.idPaymentMethod === 2"
+                  [attr.disabled]="(!continueBtnEnabled)?'':null"
+                  (click)="onPlaceOrderClick()"><span loc="Перейти к оплате" name="ToPayment">{{locale['ToPayment']}}</span></button>
       </ion-col>
     </ion-row>
 
@@ -264,9 +267,12 @@
 
     <ion-row *ngIf="dataLoaded">
       <ion-col class="f-padding-lr-5">
-        <button class="f-btn-action" ion-button block
+        <button class="f-btn-action" ion-button block *ngIf="cart.order.idPaymentMethod !== 2"
                 [attr.disabled]="(!continueBtnEnabled)?'':null"
                 (click)="onPlaceOrderClick()"><span loc="Разместить заказ" name="PlaceYourOrder">{{locale['PlaceYourOrder']}}</span></button>
+        <button class="f-btn-action" ion-button block *ngIf="cart.order.idPaymentMethod === 2"
+                [attr.disabled]="(!continueBtnEnabled)?'':null"
+                (click)="onPlaceOrderClick()"><span loc="Перейти к оплате" name="ToPayment">{{locale['ToPayment']}}</span></button>
       </ion-col>
     </ion-row>
 

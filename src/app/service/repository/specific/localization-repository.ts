@@ -5,9 +5,7 @@ import {Http} from "@angular/http";
 import {AppConstants} from "../../../app-constants";
 import {ConnectivityService} from "../../connectivity-service";
 
-const appLocUrl = `/api/AppLocalization`;
-
-export function getLocString1(): string {
+export function getLocString() {
   switch (localStorage.getItem('lang')) {
     case '0':
       return "en-US";
@@ -21,6 +19,8 @@ export function getLocString1(): string {
       return "ru-UA";
   }
 }
+
+const appLocUrl = `/api/AppLocalization`;
 
 @Injectable()
 export class LocalizationRepository extends AbstractLocalizationRepository {

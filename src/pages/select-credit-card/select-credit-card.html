@@ -1,0 +1,45 @@
+<ion-header>
+  <main-toolbar [showCartIcon] = "false" [showSearchButton]="false"></main-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row class="row">
+      <ion-col class="f-section-header">
+        <span loc="Выберите кредитную карту" name="SelectCC">{{locale['SelectCC']}}</span>
+      </ion-col>
+    </ion-row>
+
+    <div *ngFor="let clientCC of clientCCs" >
+      <ion-row class="f-padding-lr-5">
+
+        <ion-grid class="f-border-ligthgray" *ngIf="clientCC.cardData && clientCC.cardData.ccMask">
+
+          <ion-row (click)="onSelectOptionClick(clientCC)">
+            <ion-col col-2 text-center>
+              <div class="pure-radiobutton">
+                <input type="radio" id="radioButton" class="radio" [checked]="clientCC.isChecked">
+                <label for="radioButton"></label>
+              </div>
+            </ion-col>
+            <ion-col class="f-padding-tb-10">
+              {{clientCC.cardData.ccMask}}
+            </ion-col>
+          </ion-row>
+
+        </ion-grid>
+      </ion-row>
+    </div>
+    
+    <ion-row *ngIf="clientCCs && clientCCs.length > 0">
+      <ion-col class="f-padding-lr-5">
+        <button class="f-btn-action" ion-button block
+
+                [attr.disabled]="!validatePage()?'':null"
+
+                (click)="toPaymentPage()"><span loc="Далее" name="Continue">{{locale['Continue']}}</span></button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

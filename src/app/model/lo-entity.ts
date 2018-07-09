@@ -7,10 +7,11 @@ import {AbstractDataRepository} from '../service/repository/abstract/abstract-da
 ])
 
 export class LoEntity {
-  private _repo: AbstractDataRepository;
+  public _repo: AbstractDataRepository;
   constructor (
     public id?: number,
     public name?: string,
     public loDeliveryTypes?: LoDeliveryType[]
+    
   ){this._repo = RefInjector.pull(AbstractDataRepository);}
 }

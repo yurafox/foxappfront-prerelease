@@ -61,11 +61,11 @@
 
 
         <div class="contentBlock contentFr">
-            <span loc="Локализация" name="Localization" class="lblTxt">{{locale['Localization'] || 'Локализация'}}</span>
+            <span loc="Язык" name="Language" class="lblTxt">{{locale['Language'] || 'Язык'}}</span>
             <dropdown-list [reference]="currentLang"
                            [store]="langs"
                            [map]="{valueName:'id',displayName:'name'}"
-                           [options]="{popupHeader:locale['Localization']}">
+                           [options]="{popupHeader:locale['Language']}">
             </dropdown-list>
         </div>     
         <div style="clear: both"></div>

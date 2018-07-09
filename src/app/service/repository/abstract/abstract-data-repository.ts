@@ -48,6 +48,8 @@ import {LoDeliveryType} from '../../../model/lo-delivery-type';
 import {LoEntityOffice} from '../../../model/lo-entity-office';
 import {News} from '../../../model/news';
 import {NewsCategory} from '../../../model/news-category';
+import { ClientCreditCardData } from '../../../model/client-credit-card-data';
+import {LoDeliveryTypeAttr} from '../../../model/lo-delivery-type-attr';
 
 export abstract class AbstractDataRepository {
   public async abstract getProductReviewsByProductId(productId: number): Promise<{reviews:ProductReview[], idClient:number}>;
@@ -147,9 +149,9 @@ export abstract class AbstractDataRepository {
   public async abstract getCitiesWithStores(): Promise<City[]>;
   public async abstract getStores(): Promise<IDictionary<Store[]>>;
   public async abstract getStoreById(id: number): Promise<Store>;
-  public async abstract getStoreReviews(): Promise<{reviews:IDictionary<StoreReview[]>, idClient:number}>;
+  public async abstract getStoreReviews(): Promise<{reviews: StoreReview[], idClient:number}>;
   public async abstract getHasClientStoreReview(storeId: number): Promise<{hasReview: boolean, idClient:number}>;
-  public async abstract getStoreReviewsByStoreId(storeId: number): Promise<{reviews:StoreReview[], idClient:number}>;
+  public async abstract getStoreReviewsByStoreId(storeId: number): Promise<{reviews: StoreReview[], idClient:number}>;
   public async abstract getFavoriteStores(): Promise<Store[]>;
   public async abstract addFavoriteStore(idStore: number): Promise<number>;
   public async abstract deleteFavoriteStore(idStore: number): Promise<number>;
@@ -207,4 +209,8 @@ export abstract class AbstractDataRepository {
   public async abstract getNewsByCategory(categoryId: number): Promise<News[]>;
   public async abstract getNewsDescription(id: number): Promise<string>;
   public async abstract getNewsCategory(): Promise<NewsCategory[]>;
+  public async abstract getClientCreditCardData(): Promise<ClientCreditCardData[]>;
+  public async abstract getPageOptionsById(id:number):Promise<any>;
+  public async abstract getLoEntityDeliveryTypesAttr(shpmt: Shipment, loIdClientAddress: number): Promise<LoDeliveryTypeAttr[]>;
+  public async abstract getPaymentLink(orderId: number, token?: string): Promise<string>;
 }
