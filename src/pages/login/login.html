@@ -13,7 +13,7 @@
         <div>
           <span loc="Телефон*" name="Phone" class="lblTxt">{{locale['Phone'] || 'Телефон*'}}</span>
         </div>
-        <input type="text" [mask]="'380999999999'" placeholder="380xxxxxxxxx" formControlName="phone" />
+        <input type="number" [mask]="'380999999999'" placeholder="380xxxxxxxxx" formControlName="phone"/>
 
         <ion-item class='alertDanger' *ngIf="formErrors.phone">
           <span>{{formErrors.phone}}</span>
@@ -26,7 +26,7 @@
           <div>
             <span loc="Код*" name="Code" class="lblTxt">{{locale['Code'] || 'Код*'}}</span>
           </div>
-          <input type="text" placeholder="sms code" formControlName="code" />
+          <input type="number" placeholder="sms code" formControlName="code" />
 
           <ion-item class='alertDanger' *ngIf="formErrors.code">
             <span>{{formErrors.code}}</span>

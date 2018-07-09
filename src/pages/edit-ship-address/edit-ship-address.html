@@ -46,7 +46,7 @@
           <br>
 
 -->
-          <input [(ngModel)]="shippingAddress.phone" [mask]="'380999999999'" id="phone" name="phone"
+          <input type="number" [(ngModel)]="shippingAddress.phone" [mask]="'380999999999'" id="phone" name="phone"
                  placeholder="{{locale['Phone']}}"
                  pattern="[0-9]{12}"
                  minlength="12"
@@ -71,24 +71,13 @@
 
         </ion-col>
       </ion-row>
-      <div *ngIf="delivery === 0">
+      <div>
         <ion-row>
           <ion-col>
             <button class="f-btn-action" ion-button block
                     [attr.disabled]="!validatePage()?'':null"
                     (click)="saveThisAddress()">
               <span loc="Сохранить этот адрес" name="SaveThisAddress">{{locale['SaveThisAddress']}}</span>
-            </button>
-          </ion-col>
-        </ion-row>
-      </div>
-      <div *ngIf="delivery === 1">
-        <ion-row>
-          <ion-col>
-            <button class="f-btn-action" ion-button block
-                    [attr.disabled]="!validatePage()?'':null"
-                    (click)="deliverToThisAddress()">
-              <span loc="Доставить по этому адресу" name="DeliverToThisAddress">{{locale['DeliverToThisAddress']}}</span>
             </button>
           </ion-col>
         </ion-row>

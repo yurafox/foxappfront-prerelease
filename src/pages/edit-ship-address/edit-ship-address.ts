@@ -111,13 +111,10 @@ export class EditShipAddressPage extends ComponentBase  {
   }
 
   async saveThisAddress() {
-    await this.internalSaveAddress();
-    this.navCtrl.pop();
-  }
-
-  async deliverToThisAddress () {
     let addr = await this.internalSaveAddress();
-    this.cart.order.loIdClientAddress = addr.id;
+    if(this.delivery === 1) {
+      this.cart.order.loIdClientAddress = addr.id;
+    }
     this.navCtrl.pop();
   }
 
