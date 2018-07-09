@@ -3,61 +3,34 @@
 </ion-header>
 
 <ion-content padding>
-
-  <div class="search-results" *ngIf="products && products.length > 0" #searchResults>
-    <div class="f-item-padding-top">
-      <div *ngFor="let productElement of products, let i=index">
-        <hr *ngIf="!(i == 0)">
-        <div style="text-align: right">
-          <ion-icon class="f-close-button-scale" name="ios-close-circle-outline" (click)="closeButtonClick(productElement)"></ion-icon>
+    <div class="search-results" #searchResults *ngIf="products && products.length > 0">
+        <div *ngIf="products" class="f-item-padding-top">
+          <div *ngFor="let productElement of products, let i=index">
+            <hr *ngIf="!(i == 0)">
+            <div style="text-align: right">
+                <ion-icon class="f-close-button-scale" name="ios-close-circle-outline" (click)="closeButtonClick(productElement)"></ion-icon>
+            </div>
+            <item [product]="productElement">
+            </item>
+          </div>
         </div>
-        <item [product]="productElement">
-        </item>
-      </div>
+        <ion-infinite-scroll threshold="150" >
+          <ion-infinite-scroll-content loadingSpinner="android" style="height:30px; min-height:1px;">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
     </div>
-    <ion-infinite-scroll threshold="150">
-      <ion-infinite-scroll-content loadingSpinner="android" style="height:30px; min-height:1px;">
-      </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
-  </div>
 
-  <ion-grid style="height: 100%" *ngIf="products && products.length == 0" [@fadeInAnimation500]>
-    <ion-row justify-content-center align-items-center style="height: 50%">
-      <ion-icon class="f-icon-scale" name="heart"></ion-icon>
-    </ion-row>
-    <ion-row justify-content-center style="height: 50%">
-      <span class="f-color-secondary f-size-larger" loc="У вас нет избранных товаров" name="NoProductsFavorites">{{locale['NoProductsFavorites']}}</span>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <button class="f-btn-action" ion-button block (click)="toHomePage()">
-          <span loc="На главную" name="ToHomePage">{{locale['ToHomePage']}}</span>
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  <!--
-  <product-compare [productsId]=products 
-                   [productId]=productId
-                   [defaultCategoryId]=defaultCategoryId
-                   (closeProductClick)="closeProductClick($event)" 
-                   [displayPropCount]="-1" 
-                   [srchService]="srchService"
-                   *ngIf="!rerender && this.products.length > 0">
-  </product-compare>
-
-  <ion-grid style="height: 100%" *ngIf="!rerender && this.products.length == 0" [@fadeInAnimation500]>
-      <ion-row justify-content-center align-items-center style="height: 50%">
-          <ion-icon class="f-icon-scale" name="custom-compare"></ion-icon>
-      </ion-row>
-      <ion-row justify-content-center style="height: 50%">
-            <span class="f-color-secondary f-size-larger" loc="Нет товаров в сравнении" name="NoProductsComparison">{{locale['NoProductsComparison']}}</span>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <button class="f-btn-action" ion-button block (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']}}</span></button>
-        </ion-col>
-      </ion-row>
+    <ion-grid style="height: 100%" *ngIf="products && products.length == 0" [@fadeInAnimation500]>
+        <ion-row justify-content-center align-items-center style="height: 50%">
+            <ion-icon class="f-icon-scale" name="heart"></ion-icon>
+        </ion-row>
+        <ion-row justify-content-center style="height: 50%">
+              <span class="f-color-secondary f-size-larger" loc="У вас нет избранных товаров" name="NoProductsFavorites">{{locale['NoProductsFavorites']}}</span>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <button class="f-btn-action" ion-button block (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']}}</span></button>
+          </ion-col>
+        </ion-row>
     </ion-grid>
--->
 </ion-content>

@@ -77,13 +77,13 @@ export class ItemDetailPage extends ItemBase implements OnInit {
     this.maxLoanAmt = parseInt(await this.repo.getAppParam('MAX_LOAN_AMT'));
 
     this.cantShow = this.hasClientReview();
-
-    this.checkProductIsCompare();
-    this.checkProductIsFavorite();
   }
 
   async ionViewDidEnter() {
     if (this.product) {
+      this.checkProductIsCompare();
+      this.checkProductIsFavorite();
+
       let hasClientReviews = await this.repo.getHasClientProductReview(this.product.id);
       if (hasClientReviews && hasClientReviews != null && hasClientReviews.hasReview) {
         this.cantShow = hasClientReviews.hasReview;

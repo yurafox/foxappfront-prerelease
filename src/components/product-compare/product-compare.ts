@@ -50,13 +50,120 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
     super();
   }
 
-  ngOnInit () {
+  async ngOnInit () {
     super.ngOnInit();
 
+    await this.loadCategorys();
+    this.loadProducts();
+  }
+  
+  closeProductClick(data: Product): void {
+    this.closeProductEvent.emit({ productId: data.id, defaultCategoryId: this.selectedCategory.id });
+  }
+
+  categoryUpdate(item: any): void {
+    this.defaultCategoryId = this.selectedCategory.id;
+    this.productId=null;
+    this.loadProducts();
+  }
+
+  async loadCategorys() {
+    this.srchService.lastSearch=null;
+    this.srchService.hostPage = this;
+    this.srchService.prodSrchParams = new ProductSearchParams();
+    this.srchService.prodSrchParams.ProductId = this.productsId;
+    await this.srchService.search();
+
+    this.categoryBuildList();
+  }
+
+  async loadProducts() {
     if(this.productId)
-     this.applyFilterByProductId();
-    else
-      this.applyFilter();
+      await this.applyFilterByProductId();
+
+    this.setSelectedCategory();
+
+    if(!this.productId && this.selectedCategory)
+      await this.applyFilterByCategory();
+
+    this.getUniqueProps();
+    this.isLoading = false;   
+  }
+
+  async applyFilterByProductId() {
+    this.srchService.lastSearch = null;
+    this.srchService.hostPage = this;
+    this.srchService.prodSrchParams = new ProductSearchParams();
+    this.srchService.prodSrchParams.ProductId = [this.productId];
+    await this.srchService.search();
+
+    this.srchService.aggs.catsAgg.buckets.forEach(
+      x => {
+       const catId = +(x.key.substring(0, x.key.indexOf('|')));  
+       this.defaultCategoryId = catId;
+      }
+    );
+  }
+
+  async applyFilterByCategory() {
+    let filterProducts = new Array<number>();
+    this.productsId.forEach(element => {
+      filterProducts.push(element);
+    });
+
+    this.srchService.lastSearch=null;
+    this.srchService.hostPage = this;
+    this.srchService.prodSrchParams = new ProductSearchParams();
+    this.srchService.prodSrchParams.ProductId = filterProducts;
+    this.srchService.prodSrchParams.categoryId = this.selectedCategory.id;
+    await this.srchService.search();
+
+    this.parseProduct();
+  }
+
+  categoryBuildList() {
+    this.categories = [];
+    this.srchService.aggs.catsAgg.buckets.forEach(
+       x => {
+        const catId:number = +(x.key.substring(0, x.key.indexOf('|')));
+        const catName = x.key.substring(x.key.indexOf('|')+1, x.key.length);     
+        this.categories.push( new CategoryItem(catId, catName));
+       }
+    );
+
+    this.categories.sort((a,b) => {
+      if(a.name > b.name) return 1;
+      if(a.name < b.name) return -1;
+      return 0;
+    });
+  }
+
+  setSelectedCategory() {
+    if(this.defaultCategoryId) {
+      let findedItem = this.categories.find(x => x.id === this.defaultCategoryId);
+      if(findedItem)
+        this.selectedCategory = new CategoryItem(findedItem.id, findedItem.name);
+    }
+    
+    if((this.selectedCategory === undefined || this.selectedCategory === null) && this.categories.length > 0) {
+      this.selectedCategory = new CategoryItem(this.categories[0].id, this.categories[0].name); 
+      this.defaultCategoryId = this.selectedCategory.id;
+    }
+  }
+
+  parseProduct() {
+    this.products = [];
+
+    this.srchService.products.forEach(element => {
+      if (!this.products.find((x) => {return x.id == element.id}))
+        this.products.push(element);
+    });
+
+    this.products.sort((a,b) => {
+      if(a.name >  b.name) return 1;
+      if(a.name < b.name) return -1;
+      return 0;
+    });
   }
 
   getUniqueProps() {
@@ -87,107 +194,4 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
       }
     );
   }
-  
-  closeProductClick(data: Product): void {
-    this.closeProductEvent.emit({ productId: data.id, defaultCategoryId: this.selectedCategory.id });
-  }
-
-  categoryUpdate(item: any): void {
-    this.applyFilter();
-  }
-
-  async applyFilter() {
-    let filterProducts = new Array<number>();
-
-    this.srchService.lastSearch=null;
-    this.srchService.hostPage = this;
- 
-    this.productsId.forEach(element => {
-      filterProducts.push(element);
-    });
-
-    this.srchService.prodSrchParams = new ProductSearchParams();
-    this.srchService.prodSrchParams.ProductId = filterProducts;
-    if(this.selectedCategory)
-      this.srchService.prodSrchParams.categoryId = this.selectedCategory.id;
-
-    await this.srchService.search();
-
-    if(this.selectedCategory)
-    {
-      this.products = [];
-
-      this.srchService.products.forEach(element => {
-        if (!this.products.find((x) => {return x.id == element.id}))
-          this.products.push(element);
-      });
-
-      this.products.sort((a,b) => {
-        if(a.name >  b.name) return 1;
-        if(a.name < b.name) return -1;
-        return 0;
-      });
-
-      this.getUniqueProps();
-      this.isLoading = false;
-    }
-    else
-      this.categoryBuildList();
-  }
-
-  async applyFilterByProductId() {
-    this.srchService.lastSearch = null;
-    this.srchService.hostPage = this;
-
-    this.srchService.prodSrchParams = new ProductSearchParams();
-    this.srchService.prodSrchParams.ProductId = [this.productId];
-    await this.srchService.search();
-
-    this.srchService.aggs.catsAgg.buckets.forEach(
-      x => {
-       const catId = +(x.key.substring(0, x.key.indexOf('|')));  
-       this.defaultCategoryId = catId;
-      }
-    );
-
-    this.applyFilter();
-  }
-
-  categoryBuildList() {
-    this.srchService.aggs.catsAgg.buckets.forEach(
-       x => {
-        const catId:number = +(x.key.substring(0, x.key.indexOf('|')));
-        const catName = x.key.substring(x.key.indexOf('|')+1, x.key.length);     
-        this.categories.push( new CategoryItem(catId, catName));
-       }
-    );
-
-    this.categories.sort((a,b) => {
-      if(a.name > b.name) return 1;
-      if(a.name < b.name) return -1;
-      return 0;
-    });
-
-    if(!this.selectedCategory)
-      this.setSelectedCategory();
-  }
-
-  setSelectedCategory()
-  {
-    if(this.defaultCategoryId)
-    {
-      let findedItem = this.categories.find(x => x.id === this.defaultCategoryId);
-      if(findedItem)
-        this.selectedCategory = new CategoryItem(findedItem.id, findedItem.name);
-
-      this.applyFilter();
-    }
-    
-    if((this.selectedCategory === undefined || this.selectedCategory === null) && this.categories.length > 0)
-    {
-      this.selectedCategory = new CategoryItem(this.categories[0].id, this.categories[0].name); 
-      this.applyFilter();
-    }
-  }
-
 }
