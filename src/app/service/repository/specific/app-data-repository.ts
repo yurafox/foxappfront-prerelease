@@ -152,7 +152,7 @@ const newsCategoryUrl = `${AppConstants.BASE_URL}/api/NewsCategory`;
 const creditCardsDataUrl = `${AppConstants.BASE_URL}/api/CreditCard/CreditCards`;
 const pageOptionsUrl = `${AppConstants.BASE_URL}/api/page/GetPageOptions`;
 const getLoDeliveryTypesAttrByLoEntityUrl = `${AppConstants.BASE_URL}/api/lo/LoDeliveryTypesAttrByLoEntity`;
-const paymentLinkUrl = `${AppConstants.BASE_URL}/api/Payment/Payment`;
+const paymentLinkUrl = `${AppConstants.BASE_URL}/api/Payment`;
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -4087,15 +4087,13 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async getPaymentLink(orderId: number, token?: string): Promise<string> {
+  public async getPaymentLink(orderId: number, cardId?: number): Promise<string> {
     try {
-      let tokenStr: string = (token && token.length > 0) ? `${token}` : `${null}`;
-      const response = await this.http.get(`${paymentLinkUrl}/${orderId}` + tokenStr, RequestFactory.makeAuthHeader()).toPromise();
+      const response = await this.http.get(`${paymentLinkUrl}/${orderId}&${cardId}`, RequestFactory.makeAuthHeader()).toPromise();
       let data: any = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      console.log(data);
       return data;
     } catch (err) {
       return await this.handleError(err);

@@ -20,6 +20,11 @@
 // small gray square BUG FIX
 .scroll-content{
   overflow-y:auto !important;
+  padding-bottom: 0!important;
+}
+
+ion-col {
+  position: initial;
 }
 
 .f-statusbar {

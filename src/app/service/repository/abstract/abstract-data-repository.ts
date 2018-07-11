@@ -212,5 +212,5 @@ export abstract class AbstractDataRepository {
   public async abstract getClientCreditCardData(): Promise<ClientCreditCardData[]>;
   public async abstract getPageOptionsById(id:number):Promise<any>;
   public async abstract getLoEntityDeliveryTypesAttr(shpmt: Shipment, loIdClientAddress: number): Promise<LoDeliveryTypeAttr[]>;
-  public async abstract getPaymentLink(orderId: number, token?: string): Promise<string>;
+  public async abstract getPaymentLink(orderId: number, cardId?: number): Promise<string>;
 }

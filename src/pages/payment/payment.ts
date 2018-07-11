@@ -1,11 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { ComponentBase } from "../../components/component-extension/component-base";
 import { CartService } from "../../app/service/cart-service";
 import { DomSanitizer } from "@angular/platform-browser";
 import { AppConstants } from "../../app/app-constants";
 import { AbstractDataRepository } from '../../app/service/repository/abstract/abstract-data-repository';
-import { ClientCreditCardData } from '../../app/model/client-credit-card-data';
 import { UserService } from '../../app/service/bll/user-service';
 
 @IonicPage()
@@ -14,7 +13,7 @@ import { UserService } from '../../app/service/bll/user-service';
   templateUrl: 'payment.html',
 })
 export class PaymentPage extends ComponentBase implements OnInit {
-  formInput: string;
+  formInput: any;
   orderId: number;
   fail: boolean;
   error: boolean;
@@ -22,8 +21,10 @@ export class PaymentPage extends ComponentBase implements OnInit {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
               public sanitizer: DomSanitizer, public changeDetector: ChangeDetectorRef,
-              public repo: AbstractDataRepository, public alertCtrl: AlertController, public userService: UserService) {
+              public repo: AbstractDataRepository, public alertCtrl: AlertController, public userService: UserService,
+              public loadingCtrl: LoadingController) {
     super();
+    this.initLocalization();
     (<any>window).appPage = this;
     this.formInput = '';
     if (this.cart.order) {
@@ -71,10 +72,33 @@ export class PaymentPage extends ComponentBase implements OnInit {
       this.formInput = null;
       this.changeDetector.detectChanges();
     } else {
+      let content = this.locale['LoadingContent'];
+      let loading = this.loadingCtrl.create({
+        content: content
+      });
+      loading.present();
+
       if (this.navParams.data.clientCCData && this.navParams.data.clientCCData.id) {
-        this.formInput = await this.repo.getPaymentLink(this.orderId, this.navParams.data.clientCCData.id);
+        let link = await this.repo.getPaymentLink(this.orderId, this.navParams.data.clientCCData.id);
+        if (link === 'success') {
+          this.navCtrl.setRoot('PaymentPage',{result:0});
+        }
+        else if (!link || (link && link === '')) {
+          this.navCtrl.setRoot('PaymentPage',{result:1});
+        }
+        else {
+          this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(link);
+        }
+        loading.dismiss();
       } else {
-        this.formInput = await this.repo.getPaymentLink(this.orderId);
+        let link = await this.repo.getPaymentLink(this.orderId);
+        if (!link || (link && link === '')) {
+          this.navCtrl.setRoot('PaymentPage',{result:1});
+        }
+        else {
+          this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(link);
+        }
+        loading.dismiss();
       }
       window.addEventListener('message', this.receiveMessage);
     }
