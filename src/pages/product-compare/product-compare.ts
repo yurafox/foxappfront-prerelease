@@ -42,10 +42,8 @@ export class ProductComparePage extends ComponentBase implements OnInit {
     this.products = this.prodCompService.getCompareProducts();
     this.productId = null;
     this.defaultCategoryId = dataEmit.defaultCategoryId;
-    if(this.products.length > 0)
-      this.doRerender();
-    else
-      this.navCtrl.pop();
+    
+    this.doRerender();
   }
 
   toHomePage() {
