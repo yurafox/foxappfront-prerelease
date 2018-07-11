@@ -1,4 +1,4 @@
-import {Component, Input, Renderer} from '@angular/core';
+import {Component, Input, Renderer, ViewChild} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {NavController} from 'ionic-angular';
 import {SearchService} from '../../app/service/search-service';
@@ -20,6 +20,8 @@ class SearchSuggestItem {
   templateUrl: 'search-btn.html'
 })
 export class SearchBtnComponent extends ComponentBase {
+  
+  @ViewChild('input') inputField;
 
   @Input()
   hostPage: any = null;
@@ -151,7 +153,7 @@ export class SearchBtnComponent extends ComponentBase {
     this.searchService.lastSearch = '';
     this.incSearch();
     if ((this.navCtrl.length()-1) > 0) {
-      this.navCtrl.pop().catch();
+      this.navCtrl.setRoot('HomePage').catch();
     } else this.hostPage.pageMode = PageMode.HomeMode;
     this.inputMode = false;
   }

@@ -6,7 +6,7 @@
         <ion-icon name="ios-search"></ion-icon>
       </button>
     </ion-buttons>
-    <input type="text" placeholder="{{locale['What']?locale['What']:'Что Вы ищете'}}?" #input id="input" [(ngModel)]="searchValue"
+    <input type="text"  placeholder="{{locale['What']?locale['What']:'Что Вы ищете'}}?" #input id="input" [(ngModel)]="searchValue"
            (keyup.enter)="searchByText(input.value)" (keyup)="onKeyUp($event)">
     <ion-buttons right>
       <button ion-button icon-only (click)="searchByBarcode()" *ngIf="!inputMode">
