@@ -2,7 +2,7 @@
 <widget id="com.foxapp.android" version="0.0.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Foxtrot</name>
     <description>Foxtrot application</description>
-    <author email="" href="http://foxtrot.ua/">Foxtrot Team</author>
+    <author email="" href="http://foxtrot.com.ua/">Foxtrot Team</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

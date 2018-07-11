@@ -38,7 +38,6 @@ export class MainToolbarComponent {
 
     if (this.host) {
       if (this.host.pageMode !== PageMode.HomeMode) {
-        this.host.pageMode = PageMode.HomeMode;
         this.host.searchButtonControl.clearInput(null);
         this.host.initData();
       }
