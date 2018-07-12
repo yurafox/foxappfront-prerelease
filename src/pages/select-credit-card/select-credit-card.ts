@@ -33,7 +33,9 @@ export class SelectCreditCardPage extends ComponentBase {
         creditCard = this.clientCCs[i].cardData;
       }
     }
-    if (creditCard && creditCard.id) this.navCtrl.push('PaymentPage', {clientCCData: creditCard}).catch(err => console.error(err));
+    if (creditCard && creditCard.id) {
+      this.navCtrl.push('PaymentPage', {clientCCData: creditCard}).catch(err => console.error(err));
+    } else this.navCtrl.push('PaymentPage').catch(err => console.error(err));
   }
 
   onSelectOptionClick(clientCC: {cardData: ClientCreditCardData, isChecked:boolean}) {
