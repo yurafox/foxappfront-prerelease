@@ -75,6 +75,31 @@ export class PaymentPage extends ComponentBase implements OnInit {
     } else if (this.navParams.data.result === 2) {
       this.isProcessing = true;
       this.formInput = null;
+      let res = await this.repo.postOrder(this.cart.order);
+      if ((res) && (res.isSuccess)) {
+        this.cart.initCart();
+      }
+      else {
+        let title = this.locale['AlertErrorTitle'];
+        let message = this.locale['AlertErrorMessage']; // + ' ' + res.errorMessage;
+        let btnText = this.locale['BtnErrorText'];
+        let alert = this.alertCtrl.create({
+          title: title,
+          message: message,
+          buttons: [
+            {
+              text: btnText,
+              handler: () => {
+                this.cart.initCart().then(() => {
+                  this.navCtrl.setRoot('CartPage');
+                }
+                );
+              }
+            }
+          ]
+        });
+        alert.present();
+      };
       this.changeDetector.detectChanges();
     } else {
       let content = this.locale['LoadingContent'];
