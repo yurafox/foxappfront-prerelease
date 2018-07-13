@@ -4078,7 +4078,6 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data != null) {
         data.forEach(cc => {
           ccData.push(new ClientCreditCardData(cc.id, cc.card_mask));
-          console.log(cc.id+' '+cc.card_mask);
         });
       }
       return ccData;

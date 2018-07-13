@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { ComponentBase } from "../../components/component-extension/component-base";
 import { CartService } from "../../app/service/cart-service";
@@ -18,6 +18,7 @@ export class PaymentPage extends ComponentBase implements OnInit {
   fail: boolean;
   error: boolean;
   success: boolean;
+  isProcessing: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
               public sanitizer: DomSanitizer, public changeDetector: ChangeDetectorRef,
@@ -71,6 +72,10 @@ export class PaymentPage extends ComponentBase implements OnInit {
       this.fail = true;
       this.formInput = null;
       this.changeDetector.detectChanges();
+    } else if (this.navParams.data.result === 2) {
+      this.isProcessing = true;
+      this.formInput = null;
+      this.changeDetector.detectChanges();
     } else {
       let content = this.locale['LoadingContent'];
       let loading = this.loadingCtrl.create({
@@ -79,25 +84,10 @@ export class PaymentPage extends ComponentBase implements OnInit {
       loading.present();
 
       if (this.navParams.data.clientCCData && this.navParams.data.clientCCData.id) {
-        let link = await this.repo.getPaymentLink(this.orderId, this.navParams.data.clientCCData.id);
-        if (link === 'success') {
-          this.navCtrl.setRoot('PaymentPage',{result:0});
-        }
-        else if (!link || (link && link === '')) {
-          this.navCtrl.setRoot('PaymentPage',{result:1});
-        }
-        else {
-          this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(link);
-        }
+        this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(`${AppConstants.BASE_URL}/api/Payment/${this.orderId}&${this.navParams.data.clientCCData.id}`);
         loading.dismiss();
       } else {
-        let link = await this.repo.getPaymentLink(this.orderId);
-        if (!link || (link && link === '')) {
-          this.navCtrl.setRoot('PaymentPage',{result:1});
-        }
-        else {
-          this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(link);
-        }
+        this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(`${AppConstants.BASE_URL}/api/Payment/${this.orderId}&0`);
         loading.dismiss();
       }
       window.addEventListener('message', this.receiveMessage);
@@ -120,6 +110,10 @@ export class PaymentPage extends ComponentBase implements OnInit {
       }
       case 'fail': {
         (<any>window).appPage.navCtrl.setRoot('PaymentPage',{result:1});
+        break;
+      }
+      case 'is_processing': {
+        (<any>window).appPage.navCtrl.setRoot('PaymentPage',{result:2});
         break;
       }
       default: {

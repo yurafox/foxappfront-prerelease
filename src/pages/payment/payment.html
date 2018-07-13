@@ -9,8 +9,11 @@
     <button ion-button block class="f-btn-secondary" (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']}}</span></button>
   </div>
   <div *ngIf="success" padding>
-    <h3 text-center style="color:green"><span loc="Оплата прошла успешно. Заказ отправлен в обработку" name="Successful">{{locale['Successful']}}</span>
-    </h3>
+    <h3 text-center style="color:#005200"><span loc="Оплата прошла успешно. Заказ отправлен в обработку" name="Successful">{{locale['Successful']}}</span></h3>
+    <button ion-button block class="f-btn-secondary" (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']}}</span></button>
+  </div>
+  <div *ngIf="isProcessing" padding>
+    <h3 text-center style="color:#E54415"><span loc="Оплата вашего заказа находится в обработке" name="IsProcessing">{{locale['IsProcessing']}}</span></h3>
     <button ion-button block class="f-btn-secondary" (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']}}</span></button>
   </div>
 
