@@ -83,7 +83,7 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
 
     this.setSelectedCategory();
 
-    if(!this.productId && this.selectedCategory)
+    if(this.selectedCategory)
       await this.applyFilterByCategory();
 
     this.getUniqueProps();
@@ -112,7 +112,7 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
     });
 
     this.srchService.lastSearch=null;
-    this.srchService.hostPage = this;
+    this.srchService.hostPage = this; 
     this.srchService.prodSrchParams = new ProductSearchParams();
     this.srchService.prodSrchParams.ProductId = filterProducts;
     this.srchService.prodSrchParams.categoryId = this.selectedCategory.id;

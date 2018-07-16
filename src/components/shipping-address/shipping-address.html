@@ -33,7 +33,7 @@
           <div *ngIf="withDelivery === true">
             <ion-row>
               <ion-col class="f-padding-lr-10">
-                <button class="f-btn-action" ion-button block (click)="deliverToThisAddress(sa)">
+                <button class="f-btn-action" ion-button block (click)="deliverToThisAddress($event, sa)">
                   <span loc="Доставить по этому адресу" name="DeliverToThis">{{locale['DeliverToThis']}}</span>
                 </button>
               </ion-col>
