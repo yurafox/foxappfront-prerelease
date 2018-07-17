@@ -4089,11 +4089,10 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getPaymentLink(orderId: number, cardId?: number): Promise<string> {
     try {
       const response = await this.http.get(`${paymentLinkUrl}/${orderId}&${cardId}`, RequestFactory.makeAuthHeader()).toPromise();
-      let data: any = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      return data;
+      return response.text();
     } catch (err) {
       return await this.handleError(err);
     }

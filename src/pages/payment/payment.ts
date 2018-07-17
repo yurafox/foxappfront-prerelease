@@ -109,12 +109,28 @@ export class PaymentPage extends ComponentBase implements OnInit {
       loading.present();
 
       if (this.navParams.data.clientCCData && this.navParams.data.clientCCData.id) {
-        this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(`${AppConstants.BASE_URL}/api/Payment/${this.orderId}&${this.navParams.data.clientCCData.id}`);
+        let link = await this.repo.getPaymentLink(this.orderId, this.navParams.data.clientCCData.id);
+        if (link === 'success') {
+          this.navCtrl.setRoot('PaymentPage',{result:0});
+        }
+        else if (!link || (link && link === '')) {
+          this.navCtrl.setRoot('PaymentPage',{result:1});
+        }
+        else {
+          this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(link);
+        }
         loading.dismiss();
       } else {
-        this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(`${AppConstants.BASE_URL}/api/Payment/${this.orderId}&0`);
+        let link = await this.repo.getPaymentLink(this.orderId);
+        if (!link || (link && link === '')) {
+          this.navCtrl.setRoot('PaymentPage',{result:1});
+        }
+        else {
+          this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(link);
+        }
         loading.dismiss();
       }
+
       window.addEventListener('message', this.receiveMessage);
     }
   }
