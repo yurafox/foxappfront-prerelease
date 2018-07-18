@@ -280,7 +280,7 @@ ion-slides[pager] {
 .f-drop-button-small {
   button {
     color: black !important;
-    background-color: #d8d8d8 !important;
+    background-color: #EBEBEC !important;
     width: $small-dictionary-width;
     height: 36px;
   }
@@ -316,6 +316,7 @@ ion-slides[pager] {
   button {
     display: block;
     clear: both;
+    background-color: #EBEBEC !important;
     width: 100%;
     contain: strict;
     margin-left: 0px;
