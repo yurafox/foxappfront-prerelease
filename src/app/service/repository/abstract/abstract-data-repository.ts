@@ -48,7 +48,6 @@ import {LoDeliveryType} from '../../../model/lo-delivery-type';
 import {LoEntityOffice} from '../../../model/lo-entity-office';
 import {News} from '../../../model/news';
 import {NewsCategory} from '../../../model/news-category';
-import { ClientCreditCardData } from '../../../model/client-credit-card-data';
 import {LoDeliveryTypeAttr} from '../../../model/lo-delivery-type-attr';
 
 export abstract class AbstractDataRepository {
@@ -209,8 +208,6 @@ export abstract class AbstractDataRepository {
   public async abstract getNewsByCategory(categoryId: number): Promise<News[]>;
   public async abstract getNewsDescription(id: number): Promise<string>;
   public async abstract getNewsCategory(): Promise<NewsCategory[]>;
-  public async abstract getClientCreditCardData(): Promise<ClientCreditCardData[]>;
   public async abstract getPageOptionsById(id:number):Promise<any>;
   public async abstract getLoEntityDeliveryTypesAttr(shpmt: Shipment, loIdClientAddress: number): Promise<LoDeliveryTypeAttr[]>;
-  public async abstract getPaymentLink(orderId: number, cardId?: number): Promise<string>;
 }

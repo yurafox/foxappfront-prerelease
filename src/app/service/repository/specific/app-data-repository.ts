@@ -61,7 +61,6 @@ import { CurrencyRate } from '../../../model/currency-rate';
 import { NewsCategory } from '../../../model/news-category';
 import { News } from '../../../model/news';
 import { AbstractDataRepository } from '../abstract/abstract-data-repository';
-import { ClientCreditCardData } from '../../../model/client-credit-card-data';
 import { LoDeliveryTypeAttr } from '../../../model/lo-delivery-type-attr';
 
 // <editor-fold desc="url const">
@@ -149,10 +148,8 @@ const legalPolicyUrl = `${AppConstants.BASE_URL}/api/legalpolicy/getLegalPolicy`
 const newsDescriptionsUrl = `${AppConstants.BASE_URL}/api/news/getNewsDescription`;
 const newsByCategoryUrl = `${AppConstants.BASE_URL}/api/news/getNewsByCategory`;
 const newsCategoryUrl = `${AppConstants.BASE_URL}/api/NewsCategory`;
-const creditCardsDataUrl = `${AppConstants.BASE_URL}/api/CreditCard/CreditCards`;
 const pageOptionsUrl = `${AppConstants.BASE_URL}/api/page/GetPageOptions`;
 const getLoDeliveryTypesAttrByLoEntityUrl = `${AppConstants.BASE_URL}/api/lo/LoDeliveryTypesAttrByLoEntity`;
-const paymentLinkUrl = `${AppConstants.BASE_URL}/api/Payment`;
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -4066,36 +4063,4 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }  
   }
-
-  public async getClientCreditCardData(): Promise<ClientCreditCardData[]> {
-    try {
-      const response = await this.http.get(creditCardsDataUrl,RequestFactory.makeAuthHeader()).toPromise();
-      let data: any = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      let ccData: ClientCreditCardData[] = [];
-      if (data != null) {
-        data.forEach(cc => {
-          ccData.push(new ClientCreditCardData(cc.id, cc.card_mask));
-        });
-      }
-      return ccData;
-    } catch (err) {
-      return await this.handleError(err);
-    }
-  }
-
-  public async getPaymentLink(orderId: number, cardId?: number): Promise<string> {
-    try {
-      const response = await this.http.get(`${paymentLinkUrl}/${orderId}&${cardId}`, RequestFactory.makeAuthHeader()).toPromise();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
-      }
-      return response.text();
-    } catch (err) {
-      return await this.handleError(err);
-    }
-  }
-
 }

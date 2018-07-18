@@ -12,10 +12,11 @@
     <h3 text-center style="color:#005200"><span loc="Оплата прошла успешно. Заказ отправлен в обработку" name="Successful">{{locale['Successful']}}</span></h3>
     <button ion-button block class="f-btn-secondary" (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']}}</span></button>
   </div>
-  <div *ngIf="isProcessing" padding>
-    <h3 text-center style="color:#E54415"><span loc="Оплата вашего заказа находится в обработке" name="IsProcessing">{{locale['IsProcessing']}}</span></h3>
+  <div *ngIf="error" padding>
+    <h3 style="color:red"><span loc="К сожалению, возникла ошибка во время оплаты Вашего заказа" name="WithError">{{locale['WithError']}}</span></h3>
     <button ion-button block class="f-btn-secondary" (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']}}</span></button>
   </div>
+
 
   <iframe height="100%" width="100%" [src]="formInput" *ngIf="formInput" frameborder="0" allowfullscreen id="iframe" name="iframe"></iframe>
 

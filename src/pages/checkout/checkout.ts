@@ -5,7 +5,6 @@ import { CartService } from '../../app/service/cart-service';
 import { AbstractDataRepository } from '../../app/service/repository/abstract/abstract-data-repository';
 import { Shipment } from '../../app/model/shipment';
 import { AppConstants } from '../../app/app-constants';
-import { ClientCreditCardData } from '../../app/model/client-credit-card-data';
 
 @IonicPage()
 @Component({
@@ -17,20 +16,17 @@ export class CheckoutPage extends ComponentBase {
   dataLoaded = true;
   pmtMethodName = '';
   mPlaceFeaturesEnabled = AppConstants.ENABLE_MARKETPLACE_FEATURES;
-  clientCCData: ClientCreditCardData[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
               public repo: AbstractDataRepository, public alertCtrl: AlertController,
               public loadingCtrl: LoadingController)
   {
     super();
-    this.clientCCData = [];
     this.repo.getPmtMethodById(cart.order.idPaymentMethod).then(x => {this.pmtMethodName = x.name});
   }
   
   async ngOnInit() {
     super.ngOnInit();
-    this.clientCCData = await this.repo.getClientCreditCardData();
   }
 
   get continueBtnEnabled(): boolean {
@@ -64,14 +60,7 @@ export class CheckoutPage extends ComponentBase {
       }
 
       if (this.cart.order.idPaymentMethod === 2) {
-        if (this.clientCCData && this.clientCCData.length > 1) {
-          this.navCtrl.push('SelectCreditCardPage', {clientCCData: this.clientCCData}).catch(err => console.error(err));
-        }
-        else if (this.clientCCData && this.clientCCData.length === 1) {
-          this.navCtrl.push('PaymentPage', {clientCCData: this.clientCCData[0]}).catch(err => console.error(err));
-        } else {
-          this.navCtrl.push('PaymentPage').catch(err => console.error(err));
-        }
+        this.navCtrl.push('PaymentPage').catch(err => console.error(err));
       }
       else
        {
