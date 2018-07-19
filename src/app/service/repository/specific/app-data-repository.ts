@@ -982,10 +982,8 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data.productReviews != null) {
         for (let i = data.productReviews.length - 1; i > -1; i--) {
           let val = data.productReviews[i];
-          let substrings = val.reviewDate.toString().split("T");
-          let substring1 = substrings[0].slice(0, substrings[0].length);
-          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
-          let date = substring1 + " " + substring2;
+          let date = val.reviewDate.toString();
+
           if (val.idReview && val.idReview !== null) {
             if (!answers[val.idReview.toString()]) {
               answers[val.idReview.toString()] = [];
@@ -1001,10 +999,7 @@ export class AppDataRepository extends AbstractDataRepository {
           }
         }
         data.productReviews.forEach(val => {
-          let substrings = val.reviewDate.toString().split("T");
-          let substring1 = substrings[0].slice(0, substrings[0].length);
-          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
-          let date = substring1 + " " + substring2;
+          let date = val.reviewDate.toString();
           if (val.idReview === null) {
             if (answers[val.id.toString()]) {
               let review = new ProductReview(
@@ -2741,10 +2736,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data.storeReviews != null) {
         for (let i = data.storeReviews.length - 1; i > -1; i--) {
           let val = data.storeReviews[i];
-          let substrings = val.reviewDate.toString().split("T");
-          let substring1 = substrings[0].slice(0, substrings[0].length);
-          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
-          let date = substring1 + " " + substring2;
+          let date = val.reviewDate.toString();
           if (val.idReview && val.idReview !== null) {
             if (!answers[val.idReview.toString()]) {
               answers[val.idReview.toString()] = [];
@@ -2760,10 +2752,7 @@ export class AppDataRepository extends AbstractDataRepository {
           }
         }
         data.storeReviews.forEach(val => {
-          let substrings = val.reviewDate.toString().split("T");
-          let substring1 = substrings[0].slice(0, substrings[0].length);
-          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
-          let date = substring1 + " " + substring2;
+          let date = val.reviewDate.toString();
           if (val.idReview === null) {
             if (answers[val.id.toString()]) {
               let storeRev = new StoreReview(
@@ -2823,10 +2812,7 @@ export class AppDataRepository extends AbstractDataRepository {
         let answers: IDictionary<ReviewAnswer[]> = {};
         for (let i = data.storeReviews.length - 1; i > -1; i--) {
           let val = data.storeReviews[i];
-          let substrings = val.reviewDate.toString().split("T");
-          let substring1 = substrings[0].slice(0, substrings[0].length);
-          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
-          let date = substring1 + " " + substring2;
+          let date = val.reviewDate.toString();
           if (val.idReview && val.idReview !== null) {
             if (!answers[val.idReview.toString()]) {
               answers[val.idReview.toString()] = [];
@@ -2842,10 +2828,7 @@ export class AppDataRepository extends AbstractDataRepository {
           }
         }
         data.storeReviews.forEach(val => {
-          let substrings = val.reviewDate.toString().split("T");
-          let substring1 = substrings[0].slice(0, substrings[0].length);
-          let substring2 = substrings[1].slice(0, substrings[1].length - 1);
-          let date = substring1 + " " + substring2;
+          let date = val.reviewDate.toString();
           if (val.idReview === null) {
             if (answers[val.id.toString()]) {
               let storeRev = new StoreReview(
