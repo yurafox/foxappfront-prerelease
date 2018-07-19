@@ -14,6 +14,8 @@ import {UserService} from '../../app/service/bll/user-service';
 import {ItemImgPage} from '../item-img/item-img';
 import {ProductCompareService} from '../../app/service/product-compare-service';
 import {ProductFavoriteService} from '../../app/service/product-favorite-service';
+import {SearchService} from '../../app/service/search-service';
+import { Product } from '../../app/model';
 
 @IonicPage()
 @Component({
@@ -36,12 +38,14 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   productIsCompare: boolean;
   hideProductCompare: boolean;
   productIsFavorite: boolean;
+  similarProducts: Array<Product> = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
               public modalCtrl: ModalController, public toastCtrl: ToastController,
               public evServ: EventService, public alertCtrl: AlertController, public uService: UserService,
-              public prodCompService: ProductCompareService, public prodFavoriteService: ProductFavoriteService) {
+              public prodCompService: ProductCompareService, public prodFavoriteService: ProductFavoriteService,
+              public srchService: SearchService,) {
     super(navCtrl, navParams, repo);
     this.cantShow = true;
     this.product = this.navParams.data.prod;
@@ -56,6 +60,9 @@ export class ItemDetailPage extends ItemBase implements OnInit {
 
   async ngOnInit() {
     super.ngOnInit();
+
+    this.similarProducts = await this.repo.getSimilarProducts(this.product.id);
+
     this.reviewsObj = await this.repo.getProductReviewsByProductId(this.product.id);
     if (this.reviewsObj) {
       this.reviews = this.reviewsObj.reviews;

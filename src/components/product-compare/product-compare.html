@@ -14,7 +14,7 @@
 
 <ion-scroll class="f-compare-scroll" padding="false" scrollX="true" scrollY="true" *ngIf="products && (products !== []) && products[0] && isLoading==false">  
   <table>
-    <tr><td><p> </p></td></tr>
+    <tr *ngIf="showFilter && categories && (categories !== []) && categories[0] && isLoading==false"><td><p> </p></td></tr>
     <tr>
         <td></td>
         <td valign="top" *ngFor="let product of products" class="f-item-tile">      

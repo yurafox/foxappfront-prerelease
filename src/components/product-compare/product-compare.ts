@@ -27,6 +27,8 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
   @Input()
   productsId: Array<number>;
   @Input()
+  productObjects: Array<Product>;
+  @Input()
   productId: number;
   @Input()
   defaultCategoryId: number;
@@ -53,8 +55,13 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
   async ngOnInit () {
     super.ngOnInit();
 
-    await this.loadCategorys();
-    this.loadProducts();
+    if(!this.productObjects) {
+      await this.loadCategorys();
+      this.loadProducts();
+    }
+    else {
+      this.loadProductObjects();
+    }
   }
   
   closeProductClick(data: Product): void {
@@ -85,6 +92,13 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
 
     if(this.selectedCategory)
       await this.applyFilterByCategory();
+
+    this.getUniqueProps();
+    this.isLoading = false;   
+  }
+
+  loadProductObjects() {
+    this.products = this.productObjects;
 
     this.getUniqueProps();
     this.isLoading = false;   

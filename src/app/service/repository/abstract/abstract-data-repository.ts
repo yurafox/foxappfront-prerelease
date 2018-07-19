@@ -213,4 +213,5 @@ export abstract class AbstractDataRepository {
   public async abstract getPageOptionsById(id:number):Promise<any>;
   public async abstract getLoEntityDeliveryTypesAttr(shpmt: Shipment, loIdClientAddress: number): Promise<LoDeliveryTypeAttr[]>;
   public async abstract getPaymentLink(orderId: number, token?: string): Promise<string>;
+  public async abstract getSimilarProducts(productId: number): Promise<Product[]>;
 }

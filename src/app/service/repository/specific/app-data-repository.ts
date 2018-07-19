@@ -153,6 +153,7 @@ const creditCardsDataUrl = `${AppConstants.BASE_URL}/api/CreditCard/CreditCards`
 const pageOptionsUrl = `${AppConstants.BASE_URL}/api/page/GetPageOptions`;
 const getLoDeliveryTypesAttrByLoEntityUrl = `${AppConstants.BASE_URL}/api/lo/LoDeliveryTypesAttrByLoEntity`;
 const paymentLinkUrl = `${AppConstants.BASE_URL}/api/Payment/Payment`;
+const similarProductsUrl = `${AppConstants.BASE_URL}/api/ProductCompare/GetSimilarProducts`;
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -4101,5 +4102,51 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+
+  public async getSimilarProducts(productId: number): Promise<Product[]> {
+    try {
+      const response = await this.http
+        .get(`${similarProductsUrl}/${productId}`, RequestFactory.makeAuthHeader())
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const products = new Array<Product>();
+      if (data != null) {
+        data.forEach(val => {
+          let props = new Array<ProductPropValue>();
+          if (val.props && val.props.length !== 0) {
+            props = this.getPropValuefromProduct(val);
+          }
+
+          // create current product
+          const productItem: Product = new Product(
+            val.id,
+            val.name,
+            val.price,
+            val.oldPrice,
+            val.bonuses,
+            val.manufacturerId,
+            props,
+            val.imageUrl,
+            val.rating,
+            val.recall,
+            val.supplOffers,
+            val.description,
+            val.slideImageUrls,
+            val.barcode
+          );
+
+          products.push(productItem);
+        });
+      }
+
+      return products;
+    } catch (err) {
+      return await this.handleError(err);
+  }
+}
 
 }
