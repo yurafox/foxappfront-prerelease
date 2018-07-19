@@ -6,7 +6,7 @@ page-cart {
   }
   .action-button {
     color: black;
-    background-color: #EBEBEC;
+    background-color: color($colors, bgColor) ;
     text-transform: none;
     height: 32px;
   }
@@ -46,7 +46,7 @@ page-cart {
   .f-header-div {
     border-bottom: solid 1px color($colors, gridlines);
   }
-  
+
   .f-icon-scale {
     transform: scale(8.0);
   }

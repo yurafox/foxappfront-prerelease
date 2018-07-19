@@ -12,6 +12,7 @@ import {UserService} from "../../app/service/bll/user-service";
 import {ComponentBase} from "../component-extension/component-base";
 import {CartService} from '../../app/service/cart-service';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {System} from '../../app/core/app-core';
 
 @Component({
   selector: 'shipping-address',
@@ -53,10 +54,13 @@ export class ShippingAddressComponent extends ComponentBase {
     event.preventDefault();
   }
 
-  async deliverToThisAddress(item: any) {
+  async deliverToThisAddress(event: MouseEvent, item: any) { 
+    System.BlockControl.blockButtonControl(event.target);
     this.cart.order.loIdClientAddress = item.id;
     item.isPrimary = true;
     await this.repo.saveClientAddress(item);
+    System.BlockControl.unblockButtonControl(event.target);
+
     this.navCtrl.push('ShippingOptionsPage', {data: item});
   }
 

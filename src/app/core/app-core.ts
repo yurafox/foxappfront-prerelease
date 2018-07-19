@@ -514,6 +514,32 @@ export namespace System {
   export class PushContainer {
     public static pushStore:IDictionary<any> = {};
   }
+
+  export class BlockControl {
+    public static blockButtonControl(object: any) {
+      this.setAttribute(object, true, 'BUTTON');
+    }
+
+    public static unblockButtonControl(object: any) {
+      this.setAttribute(object, false, 'BUTTON');
+    }
+
+    private static setAttribute(object: any, value: boolean, className: string) {
+      if(object.tagName == className)
+        (value) ? object.setAttribute('disabled', value) : object.removeAttribute('disabled'); 
+      else
+      {
+        let findedObject = this.findObject(object, className);
+        if(findedObject)
+          (value) ? findedObject.setAttribute('disabled', value) : findedObject.removeAttribute('disabled'); 
+      }
+    }
+
+    private static findObject(item: any, className: string) {
+      while ((item = item.parentElement) && !(item.tagName == className));
+      return item;
+    }
+  }
 }
 
 export class Disposable {

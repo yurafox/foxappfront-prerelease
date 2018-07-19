@@ -1,7 +1,7 @@
 dropdown-list {
   button {
     color: black !important;
-    background-color: #d8d8d8 !important;
+    background-color: color($colors, bgColor) !important;
     text-transform: none !important;
   }
   button:hover {

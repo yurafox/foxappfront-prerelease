@@ -1,14 +1,16 @@
 <div class="f-div-item-tile">
   <ion-grid class="f-no-padding" *ngIf="product">
+    <ion-row *ngIf="displayCloseButton">
+      <ion-col no-padding style="text-align: right">
+          <ion-icon class="f-close-button-scale" name="ios-close-circle-outline" (click)="closeButtonClick(product)"></ion-icon>
+      </ion-col>
+    </ion-row>
     <ion-row>
       <ion-col col-auto (click)="openItemDetails(product)">
         <div *ngIf="product && product?.imageUrl" lazy-load-images>
           <img class="f-img-item-tile" src="assets/imgs/spiner-load.gif" [attr.data-src]="product?.imageUrl" onError="this.src='assets/imgs/nophoto.png';"> 
         </div>
         <img *ngIf="product && !product.imageUrl" class="f-img-item-tile" src="assets/imgs/nophoto.png">  
-      </ion-col>
-      <ion-col *ngIf="displayCloseButton">
-          <ion-icon class="f-close-button-scale" name="ios-close-circle-outline" (click)="closeButtonClick(product)"></ion-icon>
       </ion-col>
     </ion-row>
 

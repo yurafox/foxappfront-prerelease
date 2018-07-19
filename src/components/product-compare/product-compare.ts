@@ -1,4 +1,4 @@
-import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
+import {Component, Input, Output, OnInit, EventEmitter, ViewChild, ElementRef} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {Product} from '../../app/model/product';
 import {Prop} from '../../app/model/prop';
@@ -27,6 +27,8 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
   @Input()
   productsId: Array<number>;
   @Input()
+  productObjects: Array<Product>;
+  @Input()
   productId: number;
   @Input()
   defaultCategoryId: number;
@@ -40,11 +42,14 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
   @Output("closeProductClick")
   closeProductEvent = new EventEmitter<any>();
 
+  @ViewChild('grid') grid: ElementRef;
+
   categories = new Array<CategoryItem>();
   propsArr = new Array<ItemPropsTable>();
   products = new Array<Product>();
   selectedCategory: CategoryItem;
   isLoading : boolean = true;
+  scrollHeight: number = 0;
 
   constructor(prodCompServic: ProductCompareService) {
     super();
@@ -53,8 +58,13 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
   async ngOnInit () {
     super.ngOnInit();
 
-    await this.loadCategorys();
-    this.loadProducts();
+    if(!this.productObjects) {
+      await this.loadCategorys();
+      this.loadProducts();
+    }
+    else {
+      this.loadProductObjects();
+    }
   }
   
   closeProductClick(data: Product): void {
@@ -83,8 +93,15 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
 
     this.setSelectedCategory();
 
-    if(!this.productId && this.selectedCategory)
+    if(this.selectedCategory)
       await this.applyFilterByCategory();
+
+    this.getUniqueProps();
+    this.isLoading = false;   
+  }
+
+  loadProductObjects() {
+    this.products = this.productObjects;
 
     this.getUniqueProps();
     this.isLoading = false;   
@@ -112,7 +129,7 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
     });
 
     this.srchService.lastSearch=null;
-    this.srchService.hostPage = this;
+    this.srchService.hostPage = this; 
     this.srchService.prodSrchParams = new ProductSearchParams();
     this.srchService.prodSrchParams.ProductId = filterProducts;
     this.srchService.prodSrchParams.categoryId = this.selectedCategory.id;
@@ -194,4 +211,20 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
       }
     );
   }
+
+  ngForCallback() {
+    this.calcScrollHeight();
+  }
+
+  calcScrollHeight() {
+    this.scrollHeight = this.grid.nativeElement.offsetHeight;
+  }
+  
+  getHeightStyle() {
+    if(!this.productObjects)
+      return {'height': '100%'};
+    else
+      return {'height': (this.scrollHeight+32).toString()+'px'};
+  }
+  
 }
