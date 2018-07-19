@@ -25,12 +25,11 @@ export class ConnectivityService {
   constructor(public network: Network, public alertCtrl: AlertController, public device: Device) {
     this.count = 0;
   }
-
   public checkConnection(error?: any) {
     let activePage = this.navCtrl ? this.navCtrl.getActive() : undefined;
+    this.makeCordovaBehavior(activePage,error);
 
-    (!this.device.cordova) ? this.makeBrowserBehavior(error)
-                          : this.makeCordovaBehavior(activePage,error);
+    if (!this.device.cordova) this.makeBrowserBehavior(error);
   }
 
   public showNoConnectionPage(error: any) {
@@ -41,9 +40,9 @@ export class ConnectivityService {
   }
 
   public checkActivePage(activePage:any):boolean {
-    let verifyNetwork = this.network && this.network.type==='none';
+    // let verifyNetwork = this.network && this.network.type==='none';
     let verifyActPage = activePage && activePage.name !== 'NoConnectionPage';
-    return verifyNetwork && verifyActPage;
+    return /*verifyNetwork &&*/ verifyActPage;
   }
 
   public makeBrowserBehavior(error?: Error):void {
@@ -61,7 +60,9 @@ export class ConnectivityService {
   }
 
   public makeCordovaBehavior(activePage:any,error: any) {
+    console.error(error.message ? error.message : error);
      if(this.checkActivePage(activePage))
        this.showNoConnectionPage(error);
   }
+
 }
