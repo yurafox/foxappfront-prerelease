@@ -40,13 +40,12 @@ export class ConnectivityService {
   }
 
   public checkActivePage(activePage:any):boolean {
-    // let verifyNetwork = this.network && this.network.type==='none';
+    let verifyNetwork = this.network && this.network.type==='none';
     let verifyActPage = activePage && activePage.name !== 'NoConnectionPage';
-    return /*verifyNetwork &&*/ verifyActPage;
+    return verifyNetwork && verifyActPage;
   }
 
   public makeBrowserBehavior(error?: Error):void {
-    console.error(error.message ? error.message : error);
     let alert = this.alertCtrl.create({
       title: 'Trouble',
       message: error.message,
@@ -60,7 +59,6 @@ export class ConnectivityService {
   }
 
   public makeCordovaBehavior(activePage:any,error: any) {
-    console.error(error.message ? error.message : error);
      if(this.checkActivePage(activePage))
        this.showNoConnectionPage(error);
   }
