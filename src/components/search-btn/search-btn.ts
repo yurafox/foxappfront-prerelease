@@ -1,4 +1,4 @@
-import {Component, Input, Renderer} from '@angular/core';
+import {Component, Input, Renderer, ViewChild} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {NavController} from 'ionic-angular';
 import {SearchService} from '../../app/service/search-service';
@@ -20,6 +20,8 @@ class SearchSuggestItem {
   templateUrl: 'search-btn.html'
 })
 export class SearchBtnComponent extends ComponentBase {
+  
+  @ViewChild('input') inputField;
 
   @Input()
   hostPage: any = null;

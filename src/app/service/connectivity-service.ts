@@ -24,7 +24,6 @@ export class ConnectivityService {
   constructor(public network: Network, public alertCtrl: AlertController, public device: Device) {
     this.count = 0;
   }
-
   public checkConnection(error?: any) {
     let activePage = this.navCtrl ? this.navCtrl.getActive() : undefined;
     this.makeCordovaBehavior(activePage,error);
@@ -45,7 +44,6 @@ export class ConnectivityService {
   }
 
   public makeBrowserBehavior(error?: Error):void {
-    console.error(error.message ? error.message : error);
     let alert = this.alertCtrl.create({
       title: 'Trouble',
       message: error.message,
@@ -63,4 +61,5 @@ export class ConnectivityService {
      if(this.checkActivePage(activePage))
        this.showNoConnectionPage(error);
   }
+
 }
