@@ -129,7 +129,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
                 /**
                  * Collecting and sending data about device including device FCM token
                  */
-                if (this.userService.token)
+                if (this.userService.token && this.userService.isAuth)
                   this.collectAndSendDeviceData(registration.registrationId).catch((err) => console.log(`Sending device's data err: ${err.message}`));
               }
             });
