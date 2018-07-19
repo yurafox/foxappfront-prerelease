@@ -133,7 +133,8 @@ export class HomePage extends ComponentBase implements DoCheck {
   }
 
   async doRefresh(refresher) {
-    this.pageOptions = await this._repo.getPageOptionsById(1);
+    const homePageOptIndex:number = 1;
+    this.pageOptions = await this._repo.getPageOptionsById(homePageOptIndex);
     this.content = !!(this.pageOptions);
     /*if (refresher !== 0) {
       this.changeDet.detectChanges();
