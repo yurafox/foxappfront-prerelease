@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
 import {Network} from "@ionic-native/network";
 import {AlertController, NavController} from "ionic-angular";
-import {NoConnectionPage} from "../../pages/no-connection/no-connection";
 import {Device} from '@ionic-native/device';
 
 @Injectable()
@@ -28,9 +27,9 @@ export class ConnectivityService {
 
   public checkConnection(error?: any) {
     let activePage = this.navCtrl ? this.navCtrl.getActive() : undefined;
+    this.makeCordovaBehavior(activePage,error);
 
-    (!this.device.cordova) ? this.makeBrowserBehavior(error)
-                          : this.makeCordovaBehavior(activePage,error);
+    if (!this.device.cordova) this.makeBrowserBehavior(error);
   }
 
   public showNoConnectionPage(error: any) {
@@ -41,9 +40,8 @@ export class ConnectivityService {
   }
 
   public checkActivePage(activePage:any):boolean {
-    let verifyNetwork = this.network && this.network.type==='none';
     let verifyActPage = activePage && activePage.name !== 'NoConnectionPage';
-    return verifyNetwork && verifyActPage;
+    return verifyActPage;
   }
 
   public makeBrowserBehavior(error?: Error):void {
@@ -61,6 +59,7 @@ export class ConnectivityService {
   }
 
   public makeCordovaBehavior(activePage:any,error: any) {
+    console.error(error.message ? error.message : error);
      if(this.checkActivePage(activePage))
        this.showNoConnectionPage(error);
   }

@@ -52,23 +52,25 @@ export class HomePage extends ComponentBase implements DoCheck {
   }
 
   async initData() {
-    if (this._pageMode != PageMode.HomeMode)
-      return;
+    try {
+      if (this._pageMode != PageMode.HomeMode)
+        return;
 
-    await this.doRefresh(0);
+      await this.doRefresh(0);
 
-    let ar = await this._repo.getProductsOfDay();
-    this.productsOfDay = [];
-    for (let i of ar) {
-      //let prod = await this._repo.getProductById(i);
-      this.productsOfDay.push(i);
-    }
+      let ar = await this._repo.getProductsOfDay();
+      this.productsOfDay = [];
+      for (let i of ar) {
+        this.productsOfDay.push(i);
+      }
 
-    let shAr = await this._repo.getProductsSalesHits();
-    this.productsSalesHits = [];
-    for (let i of shAr) {
-      //let prod = await this._repo.getProductById(i);
-      this.productsSalesHits.push(i);
+      let shAr = await this._repo.getProductsSalesHits();
+      this.productsSalesHits = [];
+      for (let i of shAr) {
+        this.productsSalesHits.push(i);
+      }
+    } catch(err) {
+      console.log(JSON.stringify(err));
     }
   }
 
@@ -116,7 +118,6 @@ export class HomePage extends ComponentBase implements DoCheck {
     this.scrOrientationSub = this.screenOrientation.onChange().subscribe(() => {
       if (this._pageMode !== 1) this.changeDet.detectChanges();
     });
-    //await this.initData();
   }
 
   ngOnDestroy() {
@@ -126,9 +127,5 @@ export class HomePage extends ComponentBase implements DoCheck {
   async doRefresh(refresher) {
     this.pageOptions = await this._repo.getPageOptionsById(1);
     this.content = !!(this.pageOptions);
-    /*if (refresher !== 0) {
-      this.changeDet.detectChanges();
-      refresher.complete();
-    }*/
   }
 }

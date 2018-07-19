@@ -88,7 +88,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
         this.splashScreen.hide();
 
         this.backgroundMode.enable();
-        this.backgroundMode.setDefaults({ silent: true }).catch((err) => console.error(err.message));
+        this.backgroundMode.setDefaults({ silent: true }).catch((err) => console.error('Background mode set defaults error: '+err.message));
 
         /**
          * Getting FCM device token and sending device data to back-end
@@ -112,7 +112,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
             /**
              * Subscribing this device to the main topic to send PUSH-notifications to this topic
              */
-            pushObject.subscribe('main').catch((err) => console.error(err.message));
+            pushObject.subscribe('main').catch((err) => console.error('Push subcription error: '+err.message));
 
             pushObject.on('notification').subscribe((notification: any) => {
               if (notification && notification.additionalData) {
@@ -129,7 +129,8 @@ export class FoxApp extends ComponentBase implements OnDestroy {
                 /**
                  * Collecting and sending data about device including device FCM token
                  */
-                this.collectAndSendDeviceData(registration.registrationId).catch((err) => console.log(`Sending device's data err: ${err.message}`));
+                if (this.userService.token)
+                  this.collectAndSendDeviceData(registration.registrationId).catch((err) => console.log(`Sending device's data err: ${err.message}`));
               }
             });
 

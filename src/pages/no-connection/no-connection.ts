@@ -18,7 +18,7 @@ export class NoConnectionPage extends ComponentBase implements OnInit, OnDestroy
     super();
     this.initLocalization();
     if (this.navParam.data.error) {
-      console.error(this.navParam.data.error);
+      console.log(JSON.stringify(this.navParam.data.error));
     }
   }
 
