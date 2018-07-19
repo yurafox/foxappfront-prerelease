@@ -50,7 +50,7 @@
           {{p.propName}}
         </td>
         <td class="f-col-vertical-line f-padding-lr-5" *ngFor="let v of p.propStr">
-          <span *ngIf="(i+2<displayPropCount) || (displayPropCount ==-1)">{{v}}</span>
+          <span *ngIf="(i+2<displayPropCount) || (displayPropCount ==-1)">{{v | truncate : truncateSymbCount }}</span>
         </td>
       </tr>
     </td></tr>
