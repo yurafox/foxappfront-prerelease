@@ -39,6 +39,7 @@ export class HomePage extends ComponentBase implements DoCheck {
   scrollHeight: number;
   scrOrientationSub: Subscription;
   pageOptions:any;
+  searchNativeInput:HTMLInputElement;
 
   constructor(public app: App, public nav: NavController, public _repo:AbstractDataRepository,
               public srchService: SearchService, public changeDet: ChangeDetectorRef,
@@ -80,10 +81,13 @@ export class HomePage extends ComponentBase implements DoCheck {
     this.updateScrollHeight();
   }
   
+  ngAfterViewInit() {
+    this.searchNativeInput = this.searchButtonControl.inputField.nativeElement;
+  }
+
   ngAfterViewChecked() {
-     if(this.autoFocus) {
-       let inField:HTMLElement=this.searchButtonControl.inputField.nativeElement;
-       inField.focus();
+     if(this.autoFocus && !this.searchNativeInput.value) {
+      this.searchNativeInput.focus();
      }
   }
 
