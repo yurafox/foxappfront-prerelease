@@ -76,8 +76,8 @@ export class CartService {
               public evServ: EventService, public app: App, public locRepo: AbstractLocalizationRepository,
               public alertCtrl: AlertController, public currStoreService: CurrencyStore,
               public loadingCtrl: LoadingController) {
-    
-      
+
+
     this.evServ.events['logonEvent'].subscribe(() => {
         this.initCart().then (() => {
             //this.initBonusData();
@@ -662,6 +662,8 @@ export class CartService {
             return;
           }
       }
+      else
+        this.saveToLocalStorage();
     }
     finally {
       if (showLoading)

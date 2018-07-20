@@ -39,6 +39,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   hideProductCompare: boolean;
   productIsFavorite: boolean;
   similarProducts: Array<Product> = [];
+  popularAccessories: Array<Product> = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
@@ -62,6 +63,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
     super.ngOnInit();
 
     this.similarProducts = await this.repo.getSimilarProducts(this.product.id);
+    this.popularAccessories = await this.repo.getPopularAccessories(this.product.id);
 
     this.reviewsObj = await this.repo.getProductReviewsByProductId(this.product.id);
     if (this.reviewsObj) {

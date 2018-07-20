@@ -50,6 +50,7 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
   selectedCategory: CategoryItem;
   isLoading : boolean = true;
   scrollHeight: number = 0;
+  truncateSymbCount: number = 512;
 
   constructor(prodCompServic: ProductCompareService) {
     super();
@@ -101,6 +102,7 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
   }
 
   loadProductObjects() {
+    this.truncateSymbCount = 25;
     this.products = this.productObjects;
 
     this.getUniqueProps();
