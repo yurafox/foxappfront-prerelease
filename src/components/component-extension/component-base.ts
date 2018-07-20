@@ -31,7 +31,7 @@ export abstract class ComponentBase implements OnDestroy, OnInit {
   }
 
   protected set localeID(id: number) {
-    this.userService.profile.userSetting['lang'] = id.toString();
+    if (this.userService.profile) this.userService.profile.userSetting['lang'] = id.toString();
   }
 
   protected get currencyID(): number {

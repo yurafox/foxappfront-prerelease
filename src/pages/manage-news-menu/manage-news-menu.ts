@@ -15,6 +15,7 @@ export class ManageNewsMenuPage extends ComponentBase{
   constructor(public navCtrl: NavController,
               public _repo: AbstractDataRepository ) {
     super();
+    this.newsCategory = [];
   }
 
   async ngOnInit() {
@@ -22,11 +23,13 @@ export class ManageNewsMenuPage extends ComponentBase{
 
     this.newsCategory = await this._repo.getNewsCategory();
 
-    this.newsCategory.sort((a,b) => {
-      if(a.sort < b.sort) return -1;
-      if(a.sort > b.sort) return 1;
-      return 0;
-    });
+    if (this.newsCategory && this.newsCategory.length > 0) {
+      this.newsCategory.sort((a,b) => {
+        if(a.sort < b.sort) return -1;
+        if(a.sort > b.sort) return 1;
+        return 0;
+      });
+    }
   }
 
   openPage(page: NewsCategory) {

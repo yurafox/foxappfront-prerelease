@@ -190,7 +190,7 @@ export class AccountRepository extends AbstractAccountRepository {
   // <editor-fold desc="error handler">
   public errorHandler(err: any): any {
     if (this.connServ.counter < 1) {
-      this.connServ.checkConnection(err);
+      this.connServ.handleNoConnection(err);
     }
     //return Promise.reject((err.message) ? err : new Error(`${err.status} ${err.statusText }`));
   }

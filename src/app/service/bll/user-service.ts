@@ -49,7 +49,7 @@ export class UserService {
   }
 
   public get name(): string {
-    return this.user.fname;
+    return this.user ? this.user.fname : '';
   }
 
   // public get uid(): number {
@@ -58,15 +58,15 @@ export class UserService {
 
   public get lang(): number {
     //return 3;
-    return +this.user.userSetting['lang'];
+    return this.user ? +this.user.userSetting['lang'] : AppConstants.LOCALE_DEFAULT_VALUE;
   }
 
   public get currency(): number {
-    return +this.user.userSetting['currency'];
+    return this.user ? +this.user.userSetting['currency'] : AppConstants.CURRENCY_DEFAULT_VALUE;
   }
 
   public get email(): string {
-    return this.user.email;
+    return this.user ? this.user.email : '';
   }
 
   public get isAuth(): boolean {
@@ -74,7 +74,7 @@ export class UserService {
   }
 
   public get appKey(): string {
-    return this.user.appKey;
+    return this.user ? this.user.appKey : '';
   }
   // </editor-fold>
 

@@ -33,7 +33,6 @@ import {Push} from '@ionic-native/push';
 import {NgxQRCodeModule} from 'ngx-qrcode2';
 import {AppAvailability} from '@ionic-native/app-availability';
 import {Device} from "@ionic-native/device";
-import {Network} from "@ionic-native/network";
 import {Keyboard} from "@ionic-native/keyboard";
 import {CallNumber} from '@ionic-native/call-number';
 import {BackgroundMode} from '@ionic-native/background-mode';
@@ -194,7 +193,6 @@ import {ProductFavoriteService} from './service/product-favorite-service';
     AppAvailability,
     Ionic2Rating,
     Device,
-    Network,
     Keyboard,
     CallNumber,
     BackgroundMode,
@@ -210,6 +208,10 @@ import {ProductFavoriteService} from './service/product-favorite-service';
       provide: LOCALE_ID,
       deps: [AbstractLocalizationRepository],
       useFactory: getLocString
+    },
+    {
+      provide: ErrorHandler,
+      useClass: ConnectivityService
     },
     NewsSubscribeService,
     AppConstants,

@@ -72,7 +72,7 @@ export class HomePage extends ComponentBase implements DoCheck {
         this.productsSalesHits.push(i);
       }
     } catch(err) {
-      console.log(JSON.stringify(err));
+      console.error(err);
     }
   }
 

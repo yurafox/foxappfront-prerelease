@@ -21,18 +21,16 @@ export class NewsPage extends ComponentBase {
   }
 
   async ngOnInit() {
-    try {
-      super.ngOnInit();
+    super.ngOnInit();
 
-      this.news = await this._repo.getNewsByCategory(this.navParams.data.indexNews);
+    this.news = await this._repo.getNewsByCategory(this.navParams.data.indexNews);
 
-      if (this.news && this.news.length>0) this.news.sort((a,b) => {
-        if(a.publicDate < b.publicDate) return 1;
-        if(a.publicDate > b.publicDate) return -1;
+    if (this.news && this.news.length > 0) {
+      this.news.sort((a, b) => {
+        if (a.publicDate < b.publicDate) return 1;
+        if (a.publicDate > b.publicDate) return -1;
         return 0;
       });
-    } catch(err) {
-      console.log(JSON.stringify(err));
     }
   }
 

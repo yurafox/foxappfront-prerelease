@@ -40,7 +40,7 @@ export class LocalizationRepository extends AbstractLocalizationRepository {
       let localization: IDictionary<Array<ILocalization>> = {};
       if (data != null) {
         let componentNames: string[] = [];
-        data.forEach(val => {
+        if (data) data.forEach(val => {
           if (!(componentNames.indexOf(val.componentName) > -1)) {
             componentNames.push(val.componentName);
           }
@@ -48,7 +48,7 @@ export class LocalizationRepository extends AbstractLocalizationRepository {
         for (let i = 0; i < componentNames.length; i++) {
           const locales = new Array<ILocalization>();
           let componentName = componentNames[i];
-          data.forEach(val => {
+          if (data) data.forEach(val => {
             if (val.componentName && val.componentName !== '' && val.componentName === componentName) {
               locales.push({tagName: val.tagName, lang: val.lang, text: val.text});
             }
@@ -86,7 +86,7 @@ export class LocalizationRepository extends AbstractLocalizationRepository {
   // <editor-fold desc="error handler"
   public handleError(error?: Error): any {
     if (this.connServ.counter < 1) {
-      this.connServ.checkConnection(error);
+      this.connServ.handleNoConnection(error);
     }
   }
   // </editor-fold>

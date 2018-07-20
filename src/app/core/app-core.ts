@@ -1,24 +1,24 @@
-import {AbstractControl} from '@angular/forms';
-import {Injector} from '@angular/core';
-import { RequestOptionsArgs,Headers,URLSearchParams} from '@angular/http';
-import {Manufacturer} from "../model/manufacturer";
-import {City} from '../model/city';
-import {StorePlace} from '../model/store-place';
-import {Lang} from '../model/lang';
-import {MeasureUnit} from '../model/measure-unit';
-import {Quotation} from '../model/quotation';
-import {LoEntity} from '../model/lo-entity';
-import {Country} from '../model/country';
-import {EnumPaymentMethod} from '../model/enum-payment-method';
-import {Region} from '../model/region';
-import {Store} from "../model/store";
+import { AbstractControl } from '@angular/forms';
+import { Injector } from '@angular/core';
+import { RequestOptionsArgs, Headers, URLSearchParams } from '@angular/http';
+import { Manufacturer } from "../model/manufacturer";
+import { City } from '../model/city';
+import { StorePlace } from '../model/store-place';
+import { Lang } from '../model/lang';
+import { MeasureUnit } from '../model/measure-unit';
+import { Quotation } from '../model/quotation';
+import { LoEntity } from '../model/lo-entity';
+import { Country } from '../model/country';
+import { EnumPaymentMethod } from '../model/enum-payment-method';
+import { Region } from '../model/region';
+import { Store } from "../model/store";
 import { AppConstants } from '../app-constants';
-import {AppParam} from '../model/app-param';
-import {LoDeliveryType} from '../model/lo-delivery-type';
-import {LoEntityOffice} from '../model/lo-entity-office';
-import {Product} from '../model/product';
-import {Supplier} from '../model/supplier';
-import {Currency} from '../model/currency';
+import { AppParam } from '../model/app-param';
+import { LoDeliveryType } from '../model/lo-delivery-type';
+import { LoEntityOffice } from '../model/lo-entity-office';
+import { Product } from '../model/product';
+import { Supplier } from '../model/supplier';
+import { Currency } from '../model/currency';
 
 export class EmailValidator {
 
@@ -45,12 +45,12 @@ export interface IDTO {
 }
 
 export class CustomValidators {
-  public static compare(matchControlName:string){
-    return (control: AbstractControl): { [k: string]: any } =>{
+  public static compare(matchControlName: string) {
+    return (control: AbstractControl): { [k: string]: any } => {
       const data = control.value;
       let dataPrimary = control.root.get(matchControlName);
       dataPrimary = (!dataPrimary) ? '' : dataPrimary.value;
-      return (data !== dataPrimary) ? {'compare': data} : null;
+      return (data !== dataPrimary) ? { 'compare': data } : null;
     };
   }
 }
@@ -87,9 +87,9 @@ export namespace Providers {
 
     MaxSize(): number;
 
-    HasNotValidCachedValue(key:string):boolean;
+    HasNotValidCachedValue(key: string): boolean;
 
-    HasNotValidCachedRange():boolean;
+    HasNotValidCachedRange(): boolean;
   }
 
   export class CacheItems<T> implements IKeyedCollection<T> {
@@ -109,10 +109,10 @@ export namespace Providers {
 
     public Add(key: string, value: T) {
       if (key && value) {
-          if (!this.items.hasOwnProperty(key))
-            this.count++;
+        if (!this.items.hasOwnProperty(key))
+          this.count++;
 
-          this.items[key] = value;
+        this.items[key] = value;
       }
     }
 
@@ -143,7 +143,7 @@ export namespace Providers {
       var values: any[] = [];
 
       for (var prop in this.items) {
-        if (this.items.hasOwnProperty(prop)) {
+        if (this.items.hasOwnProperty(prop) && this.items[prop]) {
           values.push((<any>this.items[prop]).item);
         }
       }
@@ -155,53 +155,75 @@ export namespace Providers {
       return this.maxSize;
     }
 
-    public HasNotValidCachedValue(key:string):boolean {
-       let entity:T = this.Item(key);
-       if(!entity) return true;
+    public HasNotValidCachedValue(key: string): boolean {
+      let entity: T = this.Item(key);
+      if (!entity) return true;
 
-       let currentExpire = (<any>entity).expire;
-       if(!currentExpire) return true;
+      let currentExpire = (<any>entity).expire;
+      if (!currentExpire) return true;
 
-       return currentExpire < Date.now();
+      return currentExpire < Date.now();
     }
 
-    public HasNotValidCachedRange():boolean {
-      if(this.Count()===0)
-       return true;
+    public HasNotValidCachedRange(): boolean {
+      if (this.Count() === 0)
+        return true;
 
-      const firstValue:any = this.items[Object.keys(this.items)[0]];
+      const firstValue: any = this.items[Object.keys(this.items)[0]];
       return firstValue.expire < Date.now();
     }
   }
 
   // data model for CacheProvider collection
   export interface CacheDataContainer<T> {
-     item:T;
-     expire:number;
+    item: T;
+    expire: number;
   }
 
   export class CacheProvider {
-     _cacheProduct: IKeyedCollection<CacheDataContainer<Product>> = null;
-     _cacheSupplier: IKeyedCollection<CacheDataContainer<Supplier>> = null;
-     _cacheCurrency: IKeyedCollection<CacheDataContainer<Currency>> = null;
-     _cacheLang: IKeyedCollection<CacheDataContainer<Lang>> = null;
-     _cacheManufacturer: IKeyedCollection<CacheDataContainer<Manufacturer>> = null;
-     _cacheCity: IKeyedCollection<CacheDataContainer<City>> = null;
-     _cacheCityWithStore: IKeyedCollection<CacheDataContainer<City>> = null;
-     _cacheStorePlace: IKeyedCollection<CacheDataContainer<StorePlace>> = null;
-     _cacheStore: IKeyedCollection<CacheDataContainer<{id:number, stores: Store[]}>> = null;
-     _cacheMeasureUnit: IKeyedCollection<CacheDataContainer<MeasureUnit>> = null;
+    _cacheProduct: IKeyedCollection<CacheDataContainer<Product>> = null;
+    _cacheSupplier: IKeyedCollection<CacheDataContainer<Supplier>> = null;
+    _cacheCurrency: IKeyedCollection<CacheDataContainer<Currency>> = null;
+    _cacheLang: IKeyedCollection<CacheDataContainer<Lang>> = null;
+    _cacheManufacturer: IKeyedCollection<CacheDataContainer<Manufacturer>> = null;
+    _cacheCity: IKeyedCollection<CacheDataContainer<City>> = null;
+    _cacheCityWithStore: IKeyedCollection<CacheDataContainer<City>> = null;
+    _cacheStorePlace: IKeyedCollection<CacheDataContainer<StorePlace>> = null;
+    _cacheStore: IKeyedCollection<CacheDataContainer<{ id: number, stores: Store[] }>> = null;
+    _cacheMeasureUnit: IKeyedCollection<CacheDataContainer<MeasureUnit>> = null;
 
-     _cacheQuotation: IKeyedCollection<CacheDataContainer<Quotation>> = null;
-     _cacheLoEntity: IKeyedCollection<CacheDataContainer<LoEntity>> = null;
-     _cacheCountry: IKeyedCollection<CacheDataContainer<Country>> = null;
-     _cacheEnumPaymentMethod: IKeyedCollection<CacheDataContainer<EnumPaymentMethod>> = null;
-     _cacheRegion: IKeyedCollection<CacheDataContainer<Region>> = null;
-     _cacheAppParams: IKeyedCollection<CacheDataContainer<AppParam>> = null;
-     _cacheDeliveryType: IKeyedCollection<CacheDataContainer<LoDeliveryType>> = null;
-     _cacheLoEntityOffice: IKeyedCollection<CacheDataContainer<LoEntityOffice>> = null;
+    _cacheQuotation: IKeyedCollection<CacheDataContainer<Quotation>> = null;
+    _cacheLoEntity: IKeyedCollection<CacheDataContainer<LoEntity>> = null;
+    _cacheCountry: IKeyedCollection<CacheDataContainer<Country>> = null;
+    _cacheEnumPaymentMethod: IKeyedCollection<CacheDataContainer<EnumPaymentMethod>> = null;
+    _cacheRegion: IKeyedCollection<CacheDataContainer<Region>> = null;
+    _cacheAppParams: IKeyedCollection<CacheDataContainer<AppParam>> = null;
+    _cacheDeliveryType: IKeyedCollection<CacheDataContainer<LoDeliveryType>> = null;
+    _cacheLoEntityOffice: IKeyedCollection<CacheDataContainer<LoEntityOffice>> = null;
 
-    public static Settings:any;
+    static initSettingsIfDataWillBeAbsent() {
+      return { 
+        "product": { "maxsize": 50, "expire": 1800000 }, 
+        "supplier": { "maxsize": 10, "expire": 172800000 }, 
+        "currency": { "maxsize": 10, "expire": 172800000 }, 
+        "lang": { "maxsize": 10, "expire": 172800000 }, 
+        "manufacturer": { "maxsize": 50, "expire": 600000 }, 
+        "city": { "maxsize": 50, "expire": 5000000 }, 
+        "storeplace": { "maxsize": 50, "expire": 10000000000 }, 
+        "store": { "maxsize": 50, "expire": 100000000 }, 
+        "measureunit": { "maxsize": 50, "expire": 10000000000 }, 
+        "quotation": { "maxsize": 50, "expire": 1000000 }, 
+        "loentity": { "maxsize": 10, "expire": 100000000 }, 
+        "country": { "maxsize": 10, "expire": 510000000 }, 
+        "enumpaymentmethod": { "maxsize": 10, "expire": 1728000000 }, 
+        "region": { "maxsize": 29, "expire": 500000000 }, 
+        "appparam": { "maxsize": 15, "expire": 1000000 }, 
+        "lodeliverytype": { "maxsize": 10, "expire": 120000000 }, 
+        "loentityoffice": { "maxsize": 50, "expire": 120000000 }
+      };
+    }
+
+    public static Settings: any = CacheProvider.initSettingsIfDataWillBeAbsent();
 
     public get Products(): IKeyedCollection<CacheDataContainer<Product>> {
       if (this._cacheProduct == null)
@@ -259,9 +281,9 @@ export namespace Providers {
       return this._cacheStorePlace;
     }
 
-    public get Store(): IKeyedCollection<CacheDataContainer<{id:number, stores: Store[]}>> {
+    public get Store(): IKeyedCollection<CacheDataContainer<{ id: number, stores: Store[] }>> {
       if (this._cacheStore == null)
-        this._cacheStore = new CacheItems<CacheDataContainer<{id:number, stores: Store[]}>>();
+        this._cacheStore = new CacheItems<CacheDataContainer<{ id: number, stores: Store[] }>>();
 
       return this._cacheStore;
     }
@@ -321,7 +343,7 @@ export namespace Providers {
     }
 
     public get LoEntityOffice(): IKeyedCollection<CacheDataContainer<LoEntityOffice>> {
-      if (this._cacheLoEntityOffice  == null)
+      if (this._cacheLoEntityOffice == null)
         this._cacheLoEntityOffice = new CacheItems<CacheDataContainer<LoEntityOffice>>();
       return this._cacheLoEntityOffice;
     }
@@ -331,9 +353,10 @@ export namespace Providers {
 }
 
 // <editor-fold desc="Attributes">
-export function LazyLoad(options: Array<{ options:ILazyOption,
-                                          action: string, params: string[] }>): any
-{
+export function LazyLoad(options: Array<{
+  options: ILazyOption,
+  action: string, params: string[]
+}>): any {
   return function (target): any {
     // change function constructor
     const OverCtor: any = function () {
@@ -344,7 +367,7 @@ export function LazyLoad(options: Array<{ options:ILazyOption,
       // <editor-fold desc="add in runtime">
       options.forEach((value) => {
         const baseName: string = (!value.options['navName']) ? value.options.constructor.name.toLowerCase()
-                                                             : value.options['navName'];
+          : value.options['navName'];
 
 
         const loadingProp = `is${baseName}Loading`;
@@ -366,7 +389,7 @@ export function LazyLoad(options: Array<{ options:ILazyOption,
                 const repo = this['_repo'];
 
                 let paramsConvertedList = lazyParamToValue(this, value.params);
-                if(paramsConvertedList.length!==0) {
+                if (paramsConvertedList.length !== 0) {
                   this[navProp] = await repo[fnName].apply(repo, paramsConvertedList);
                 }
 
@@ -376,19 +399,19 @@ export function LazyLoad(options: Array<{ options:ILazyOption,
             return this[navProp];
           }
         });
-        Object.defineProperty(this, baseName+'_p', {
+        Object.defineProperty(this, baseName + '_p', {
           configurable: false,
           get: () => {
             const repo = this['_repo'];
             var paramsConvertedList = lazyParamToValue(this, value.params);
-            if(paramsConvertedList.length!==0) {
-              this[navProp+'_p'] = repo[fnName].apply(repo, paramsConvertedList);
+            if (paramsConvertedList.length !== 0) {
+              this[navProp + '_p'] = repo[fnName].apply(repo, paramsConvertedList);
 
             } else {
-              this[navProp+'_p'] = Promise.resolve(null);
+              this[navProp + '_p'] = Promise.resolve(null);
             }
 
-            return this[navProp+'_p'];
+            return this[navProp + '_p'];
           }
         });
       });
@@ -398,7 +421,7 @@ export function LazyLoad(options: Array<{ options:ILazyOption,
         configurable: false,
         get: () => {
           for (let i = 0; i < navPropNames.length; i++) {
-            if (this[navPropNames[i]]==null) {
+            if (this[navPropNames[i]] == null) {
               return false;
             }
           }
@@ -409,7 +432,7 @@ export function LazyLoad(options: Array<{ options:ILazyOption,
     };
     // return function constructor name
     (<any>OverCtor).prototype = target.prototype;
-    Object.defineProperty(OverCtor, 'name', {value: target.name, writable: false});
+    Object.defineProperty(OverCtor, 'name', { value: target.name, writable: false });
     return OverCtor;
   };
 }
@@ -443,44 +466,44 @@ export class RequestFactory {
    *                     RequestFactory.makeSearch([{ key: "idAction", value: idAction.toString()}]))
    *                    ).toPromise();
   **/
-   public static makeSearch(params: Array<{ key: string; value: string }>):RequestOptionsArgs {
+  public static makeSearch(params: Array<{ key: string; value: string }>): RequestOptionsArgs {
 
     let searchParams = new URLSearchParams();
-    params.forEach(val => {searchParams.set(val.key, val.value);});
+    params.forEach(val => { searchParams.set(val.key, val.value); });
 
     // add user headers
     const headers = RequestFactory.makeAuthHeader().headers;
-    return {search: searchParams, headers:headers};
-   }
-   /** only auth headers (token,uid)
-   * example in http.get(apiUrl, RequestFactory.makeAuthHeader()).toPromise();
-   **/
-   public static makeAuthHeader(): RequestOptionsArgs{
+    return { search: searchParams, headers: headers };
+  }
+  /** only auth headers (token,uid)
+  * example in http.get(apiUrl, RequestFactory.makeAuthHeader()).toPromise();
+  **/
+  public static makeAuthHeader(): RequestOptionsArgs {
     const h = new Headers();
     h.set('Authorization', `Bearer ${localStorage.getItem('token') || ''}`);
-    h.set('X-Currency',localStorage.getItem('currency') || `${AppConstants.CURRENCY_DEFAULT_VALUE}`);
-    h.set('X-Lang',localStorage.getItem('lang') || `${AppConstants.LOCALE_DEFAULT_VALUE}`);
-    h.set('X-APP',`${AppConstants.ID_APP}`);
+    h.set('X-Currency', localStorage.getItem('currency') || `${AppConstants.CURRENCY_DEFAULT_VALUE}`);
+    h.set('X-Lang', localStorage.getItem('lang') || `${AppConstants.LOCALE_DEFAULT_VALUE}`);
+    h.set('X-APP', `${AppConstants.ID_APP}`);
     h.set('X-SCN', SCN.value.toString());
 
-    return {headers:h}
-   }
-   /** both search and auth param
-    * example in http.get(apiUrl,
-    *                      RequestFactory.makeSearchAndAuth([{ key: "idAction", value: idAction.toString()}]
-                          ).toPromise();
-  **/
-   public static makeSearchAndAuth(params: Array<{ key: string; value: string }>): RequestOptionsArgs {
-     const search = RequestFactory.makeSearch(params).search;
-     const headers = RequestFactory.makeAuthHeader().headers;
+    return { headers: h }
+  }
+  /** both search and auth param
+   * example in http.get(apiUrl,
+   *                      RequestFactory.makeSearchAndAuth([{ key: "idAction", value: idAction.toString()}]
+                         ).toPromise();
+ **/
+  public static makeSearchAndAuth(params: Array<{ key: string; value: string }>): RequestOptionsArgs {
+    const search = RequestFactory.makeSearch(params).search;
+    const headers = RequestFactory.makeAuthHeader().headers;
 
-     return {search:search, headers:headers};
-   }
+    return { search: search, headers: headers };
+  }
 }
 // #endregion
 
 // <editor-fold desc="core object methods">
-export function Activator<T>(type:{new():T}):T {
+export function Activator<T>(type: { new(): T }): T {
   return new type();
 }
 // </editor-fold>
@@ -488,16 +511,16 @@ export function Activator<T>(type:{new():T}):T {
 // core system type
 export namespace System {
   export interface IRange {
-    min:number;
-    max:number;
+    min: number;
+    max: number;
   }
   // custome number
   export class FoxNumber {
-    public value:number;
-    _range:IRange;
+    public value: number;
+    _range: IRange;
     constructor(value: number = 1) {
-         this.value = value;
-         this._range = {min:1,max:30};
+      this.value = value;
+      this._range = { min: 1, max: 30 };
     }
 
     public get range(): IRange {
@@ -505,14 +528,14 @@ export namespace System {
     }
   }
 
-  export function customConcat<T>(source:Array<T>,target:Array<T>): void {
-    for(let i=0;i < target.length; i++) {
-       source.push(target[i]);
+  export function customConcat<T>(source: Array<T>, target: Array<T>): void {
+    for (let i = 0; i < target.length; i++) {
+      source.push(target[i]);
     }
- }
+  }
 
   export class PushContainer {
-    public static pushStore:IDictionary<any> = {};
+    public static pushStore: IDictionary<any> = {};
   }
 
   export class BlockControl {
@@ -525,13 +548,12 @@ export namespace System {
     }
 
     private static setAttribute(object: any, value: boolean, className: string) {
-      if(object.tagName == className)
-        (value) ? object.setAttribute('disabled', value) : object.removeAttribute('disabled'); 
-      else
-      {
+      if (object.tagName == className)
+        (value) ? object.setAttribute('disabled', value) : object.removeAttribute('disabled');
+      else {
         let findedObject = this.findObject(object, className);
-        if(findedObject)
-          (value) ? findedObject.setAttribute('disabled', value) : findedObject.removeAttribute('disabled'); 
+        if (findedObject)
+          (value) ? findedObject.setAttribute('disabled', value) : findedObject.removeAttribute('disabled');
       }
     }
 
@@ -543,20 +565,20 @@ export namespace System {
 }
 
 export class Disposable {
-  public static changeDismiss(view:any):void {
+  public static changeDismiss(view: any): void {
     let viewProto = view.prototype;
 
-    if(viewProto['dismiss']) {
-      viewProto.dismiss= (function() {
+    if (viewProto['dismiss']) {
+      viewProto.dismiss = (function () {
         const oldFn = viewProto.dismiss;
-        return function(){oldFn.call(this); Disposable.dispose()}; 
+        return function () { oldFn.call(this); Disposable.dispose() };
       })();
     }
   }
 
-  public static dispose():void {
+  public static dispose(): void {
     const popOvers = Array.from(document.querySelectorAll('ion-popover,ion-loading,ion-toast,ion-alert'));
-      if(popOvers && popOvers.length!=0)
-        popOvers.forEach((el) => {el.parentNode.removeChild(el)});
+    if (popOvers && popOvers.length != 0)
+      popOvers.forEach((el) => { el.parentNode.removeChild(el) });
   }
 }

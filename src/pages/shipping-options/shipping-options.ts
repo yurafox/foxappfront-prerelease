@@ -34,50 +34,56 @@ export class ShippingOptionsPage extends ComponentBase {
       content: content
     });
 
-    loading.present();
+    try {
+      loading.present();
 
-    let i = 0;
+      let i = 0;
 
-    const addr = this.cart.order.loIdClientAddress ? await this.repo.getClientAddressById(this.cart.order.loIdClientAddress) : null;
-    const cityId = addr ? addr.idCity : null;
+      const addr = this.cart.order.loIdClientAddress ? await this.repo.getClientAddressById(this.cart.order.loIdClientAddress) : null;
+      const cityId = addr ? addr.idCity : null;
 
-    for (let ship of this.cart.loShipments) {
-      let loDeliveryTypes = await this.repo.getLoEntityDeliveryTypesAttr(ship, this.cart.order.loIdClientAddress);
+      for (let ship of this.cart.loShipments) {
+        let loDeliveryTypes = await this.repo.getLoEntityDeliveryTypesAttr(ship, this.cart.order.loIdClientAddress);
 
-      for (let loEnt of loDeliveryTypes) {
-        let item = new LoShipmentDeliveryOption();
+        if (loDeliveryTypes && loDeliveryTypes.length > 0) {
+          for (let loEnt of loDeliveryTypes) {
+            let item = new LoShipmentDeliveryOption();
 
-        item.shipment = ship;
-        item.loEntityId = ship.idStorePlace ? null : loEnt.loEntityId;
-        item.itemIdx = i; 
-        item.deliveryCost = ship.idStorePlace ? 0 : await this.repo.getDeliveryCostByShipment(ship, loEnt.loEntityId, this.cart.order.loIdClientAddress, loEnt.deliveryTypeId);
-        item.deliveryDate = loEnt.deliveryDate;
-        item.loName = ship.idStorePlace ? null : (await this.repo.getLoEntitiyById(item.loEntityId)).name;
-        item.pickupLocationName = ship.idStorePlace ? (await this.repo.getStorePlaceById(ship.idStorePlace)).name : null; 
-        item.isChecked = ship.idStorePlace ? true : (loDeliveryTypes.length === 1);
-        let delivName =  ship.idStorePlace ? null : (await this.repo.getLoDeliveryTypeById(loEnt.deliveryTypeId)).name;
-        item.deliveryType = new LoDeliveryType(loEnt.deliveryTypeId, delivName);
-  
-        let needAddToOptionsList = true;
+            item.shipment = ship;
+            item.loEntityId = ship.idStorePlace ? null : loEnt.loEntityId;
+            item.itemIdx = i;
+            item.deliveryCost = ship.idStorePlace ? 0 : await this.repo.getDeliveryCostByShipment(ship, loEnt.loEntityId, this.cart.order.loIdClientAddress, loEnt.deliveryTypeId);
+            item.deliveryDate = loEnt.deliveryDate;
+            item.loName = ship.idStorePlace ? null : (await this.repo.getLoEntitiyById(item.loEntityId)).name;
+            item.pickupLocationName = ship.idStorePlace ? (await this.repo.getStorePlaceById(ship.idStorePlace)).name : null;
+            item.isChecked = ship.idStorePlace ? true : (loDeliveryTypes.length === 1);
+            let delivName = ship.idStorePlace ? null : (await this.repo.getLoDeliveryTypeById(loEnt.deliveryTypeId)).name;
+            item.deliveryType = new LoDeliveryType(loEnt.deliveryTypeId, delivName);
 
-        if (item.deliveryType.id === 1) {
-          item.loEntityOfficesList = (await this.repo.getLoOfficesByLoEntityAndCity(loEnt.loEntityId, cityId))
-            .sort((a,b) => {
-              if(a.name < b.name) return -1;
-              if(a.name > b.name) return 1;
-              return 0;
-            });
-          needAddToOptionsList = !(item.loEntityOfficesList.length === 0);
+            let needAddToOptionsList = true;
+
+            if (item.deliveryType.id === 1) {
+              let loOffices = await this.repo.getLoOfficesByLoEntityAndCity(loEnt.loEntityId, cityId);
+              if (loOffices && loOffices.length > 0) {
+                item.loEntityOfficesList = loOffices.sort((a, b) => {
+                    if (a.name < b.name) return -1;
+                    if (a.name > b.name) return 1;
+                    return 0;
+                  });
+                needAddToOptionsList = !(item.loEntityOfficesList.length === 0);
+              }
+            }
+
+            if (needAddToOptionsList)
+              this.cart.loShipmentDeliveryOptions.push(item);
+          }
         }
-
-        if (needAddToOptionsList)
-          this.cart.loShipmentDeliveryOptions.push(item);
+        i++;
       }
-      i++;
+    } finally {
+      this.dataLoaded = true;
+      loading.dismiss();
     }
-
-    this.dataLoaded = true;
-    loading.dismiss();
   }
 
   onSelectOptionClick(option: any) {
@@ -108,10 +114,11 @@ export class ShippingOptionsPage extends ComponentBase {
  }
 
   async onContinueClick() {
-    if (this.itemIndex < this.cart.loShipments.length-1)
-      this.itemIndex++;
-    else {
-      for (let i of this.cart.loShipmentDeliveryOptions) {
+    if (this.cart.loShipments && this.cart.loShipments.length > 0) {
+      if (this.itemIndex < this.cart.loShipments.length - 1)
+        this.itemIndex++;
+      else {
+        for (let i of this.cart.loShipmentDeliveryOptions) {
 
           if (i.isChecked) {
             let ship = i.shipment;
@@ -122,11 +129,12 @@ export class ShippingOptionsPage extends ComponentBase {
             ship.idLoEntityOffice = i.loEntityOfficeId;
             ship = await this.repo.saveShipment(ship);
           }
-      };
-      this.evServ.events['cartUpdateEvent'].emit();
-      //console.log(this.cart.loShipments);
-      await this.navCtrl.push('SelectPmtMethodPage');
-      this.navCtrl.remove((this.navCtrl.getActive().index)-1, 1)
+        };
+        this.evServ.events['cartUpdateEvent'].emit();
+        //console.log(this.cart.loShipments);
+        await this.navCtrl.push('SelectPmtMethodPage');
+        this.navCtrl.remove((this.navCtrl.getActive().index) - 1, 1)
+      }
     }
   }
 

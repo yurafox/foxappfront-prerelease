@@ -208,10 +208,8 @@ export class AppDataRepository extends AbstractDataRepository {
   public async CacheProviderOptInit() {
     try {
       let result: string = await this.getAppParam("CLIENT_CACHE_SETTINGS");
-      if (!result)
-        throw new Error("server side error")
-
-      CacheProvider.Settings = JSON.parse(result.toLowerCase());
+      if (result)
+        CacheProvider.Settings = JSON.parse(result.toLowerCase());
     }
     catch (err) {
       await this.handleError(err);
@@ -230,7 +228,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const arr = new Array<ClientBonus>();
       if (data != null) {
-        data.forEach(val =>
+        if (data) data.forEach(val =>
           arr.push(new ClientBonus(val.id, val.clientId, val.bonus, val.dueDate, val.type))
         );
       }
@@ -302,7 +300,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
       const cItems = new Array<CreditProduct>();
       if (data != null) {
-        data.forEach(val => {
+        if (data) data.forEach(val => {
           let cp = new CreditProduct();
           cp.sId = val.sId;
           cp.sName = val.sName;
@@ -337,17 +335,17 @@ export class AppDataRepository extends AbstractDataRepository {
       }
 
       if (data != null) {
-        data.forEach(val => {
+        if (data) data.forEach(val => {
           if (this.cache.EnumPaymentMethod.HasNotValidCachedValue(val.id.toString())) {
             const entity: Providers.CacheDataContainer<EnumPaymentMethod> = this.cache.EnumPaymentMethod.Item(val.id.toString());
             const enumPayMethod: EnumPaymentMethod = (entity) ? entity.item : new EnumPaymentMethod();
 
             if (!entity) {
-              this.cache.EnumPaymentMethod.Add(val.id.toString(), { item: enumPayMethod, expire: Date.now() + CacheProvider.Settings.enumpaymentmethod.expire });
+              if (CacheProvider.Settings) this.cache.EnumPaymentMethod.Add(val.id.toString(), { item: enumPayMethod, expire: Date.now() + CacheProvider.Settings.enumpaymentmethod.expire });
             }
 
             else
-              entity.expire = Date.now() + CacheProvider.Settings.enumpaymentmethod.expire;
+              if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.enumpaymentmethod.expire;
 
             // change in reference
             enumPayMethod.id = val.id;
@@ -374,10 +372,10 @@ export class AppDataRepository extends AbstractDataRepository {
         }
         const cItems = new Array<EnumPaymentMethod>();
         if (data != null) {
-          data.forEach(val => {
+          if (data) data.forEach(val => {
             const enumPayMethod: EnumPaymentMethod = new EnumPaymentMethod(val.id, val.name);
             cItems.push(enumPayMethod);
-            this.cache.EnumPaymentMethod.Add(enumPayMethod.id.toString(), { item: enumPayMethod, expire: Date.now() + CacheProvider.Settings.enumpaymentmethod.expire });
+            if (CacheProvider.Settings) this.cache.EnumPaymentMethod.Add(enumPayMethod.id.toString(), { item: enumPayMethod, expire: Date.now() + CacheProvider.Settings.enumpaymentmethod.expire });
           });
         }
         return cItems;
@@ -399,12 +397,12 @@ export class AppDataRepository extends AbstractDataRepository {
         const pmtMethod: EnumPaymentMethod = (entity) ? entity.item : new EnumPaymentMethod();
 
         if (!entity) {
-          this.cache.EnumPaymentMethod.Add(_id, { item: pmtMethod, expire: Date.now() + CacheProvider.Settings.enumpaymentmethod.expire });
+          if (CacheProvider.Settings) this.cache.EnumPaymentMethod.Add(_id, { item: pmtMethod, expire: Date.now() + CacheProvider.Settings.enumpaymentmethod.expire });
         }
 
         // change current reference
         else
-          entity.expire = Date.now() + CacheProvider.Settings.enumpaymentmethod.expire;
+        if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.enumpaymentmethod.expire;
 
         const response = await this.http
           .get(getPaymentMethodsUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
@@ -462,11 +460,11 @@ export class AppDataRepository extends AbstractDataRepository {
         const loEntity: LoEntity = (entity) ? entity.item : new LoEntity();
 
         if (!entity) {
-          this.cache.LoEntity.Add(id, { item: loEntity, expire: Date.now() + CacheProvider.Settings.loentity.expire });
+          if (CacheProvider.Settings) this.cache.LoEntity.Add(id, { item: loEntity, expire: Date.now() + CacheProvider.Settings.loentity.expire });
         }
 
         else
-          entity.expire = Date.now() + CacheProvider.Settings.loentity.expire;
+        if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.loentity.expire;
 
 
         const response = await this.http
@@ -507,7 +505,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const arr = new Array<LoTrackLog>();
       if (data != null) {
-        data.forEach(val =>
+        if (data) data.forEach(val =>
           arr.push(
             new LoTrackLog(
               val.id,
@@ -544,7 +542,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const cloSupplEntArr = new Array<LoSupplEntity>();
       if (data != null) {
-        data.forEach(val =>
+        if (data) data.forEach(val =>
           cloSupplEntArr.push(
             new LoSupplEntity(
               val.id,
@@ -834,7 +832,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const cClientOrderProducts = new Array<ClientOrderProducts>();
       if (data != null) {
-        data.forEach(val => {
+        if (data) data.forEach(val => {
           let p = new ClientOrderProducts();
           p.id = val.id;
           p.idOrder = val.idOrder;
@@ -884,7 +882,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      val.forEach(i => {
+      if (val) val.forEach(i => {
         let p = new ClientOrderProducts();
         p.id = i.id;
         p.idOrder = i.idOrder;
@@ -932,7 +930,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      val.forEach(i => {
+      if (val) val.forEach(i => {
         let p = new ClientOrderProductHist();
         p.id = i.id;
         p.idOrder = i.idOrder;
@@ -998,7 +996,7 @@ export class AppDataRepository extends AbstractDataRepository {
             ));
           }
         }
-        data.productReviews.forEach(val => {
+        if (data && data.productReviews) data.productReviews.forEach(val => {
           let date = val.reviewDate.toString();
           if (val.idReview === null) {
             if (answers[val.id.toString()]) {
@@ -1105,12 +1103,12 @@ export class AppDataRepository extends AbstractDataRepository {
         }
         const cCountries = new Array<Country>();
         if (data != null) {
-          data.forEach(val => {
+          if (data) data.forEach(val => {
             let p = new Country();
             p.id = val.id;
             p.name = val.name;
             cCountries.push(p);
-            this.cache.Country.Add(p.id.toString(), { item: p, expire: Date.now() + CacheProvider.Settings.country.expire });
+            if (CacheProvider.Settings) this.cache.Country.Add(p.id.toString(), { item: p, expire: Date.now() + CacheProvider.Settings.country.expire });
           });
 
           return cCountries;
@@ -1132,11 +1130,11 @@ export class AppDataRepository extends AbstractDataRepository {
         const country: Country = (entity) ? entity.item : new Country();
 
         if (!entity) {
-          this.cache.Country.Add(_id, { item: country, expire: Date.now() + CacheProvider.Settings.country.expire });
+          if (CacheProvider.Settings) this.cache.Country.Add(_id, { item: country, expire: Date.now() + CacheProvider.Settings.country.expire });
         }
 
         else
-          entity.expire = Date.now() + CacheProvider.Settings.country.expire;
+        if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.country.expire;
 
         const response = await this.http
           .get(countriesUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
@@ -1386,17 +1384,17 @@ export class AppDataRepository extends AbstractDataRepository {
       }
 
       if (data != null) {
-        data.forEach(val => {
+        if (data) data.forEach(val => {
           if (this.cache.StorePlace.HasNotValidCachedValue(val.id.toString())) {
             const entity: Providers.CacheDataContainer<StorePlace> = this.cache.StorePlace.Item(val.id.toString());
             const storePlace: StorePlace = (entity) ? entity.item : new StorePlace();
 
             if (!entity) {
-              this.cache.StorePlace.Add(val.id.toString(), { item: storePlace, expire: Date.now() + CacheProvider.Settings.storeplace.expire });
+              if (CacheProvider.Settings) this.cache.StorePlace.Add(val.id.toString(), { item: storePlace, expire: Date.now() + CacheProvider.Settings.storeplace.expire });
             }
 
             else
-              entity.expire = Date.now() + CacheProvider.Settings.storeplace.expire;
+            if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.storeplace.expire;
 
             storePlace.id = val.id;
             storePlace.name = val.name;
@@ -1425,11 +1423,11 @@ export class AppDataRepository extends AbstractDataRepository {
         const storePlace: StorePlace = (entity) ? entity.item : new StorePlace();
 
         if (!entity) {
-          this.cache.StorePlace.Add(_id, { item: storePlace, expire: Date.now() + CacheProvider.Settings.storeplace.expire });
+          if (CacheProvider.Settings) this.cache.StorePlace.Add(_id, { item: storePlace, expire: Date.now() + CacheProvider.Settings.storeplace.expire });
         }
 
         else
-          entity.expire = Date.now() + CacheProvider.Settings.storeplace.expire;
+        if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.storeplace.expire;
 
         // http request
         const response = await this.http
@@ -1475,7 +1473,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
 
       if (data != null) {
-        data.forEach(val => {
+        if (data) data.forEach(val => {
           let city = new City();
 
           if (this.cache.City.HasNotValidCachedValue(val.id.toString())) {
@@ -1483,11 +1481,11 @@ export class AppDataRepository extends AbstractDataRepository {
             const city: City = (entity) ? entity.item : new City();
 
             if (!entity) {
-              this.cache.City.Add(val.id.toString(), { item: city, expire: Date.now() + CacheProvider.Settings.city.expire });
+              if (CacheProvider.Settings) this.cache.City.Add(val.id.toString(), { item: city, expire: Date.now() + CacheProvider.Settings.city.expire });
             }
 
             else
-              entity.expire = Date.now() + CacheProvider.Settings.city.expire;
+            if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.city.expire;
 
             city.id = val.id;
             city.name = val.name;
@@ -1513,17 +1511,17 @@ export class AppDataRepository extends AbstractDataRepository {
       }
 
       if (data != null) {
-        data.forEach(val => {
+        if (data) data.forEach(val => {
           if (this.cache.Region.HasNotValidCachedValue(val.id.toString())) {
             const entity: Providers.CacheDataContainer<Region> = this.cache.Region.Item(val.id.toString());
             const region: Region = (entity) ? entity.item : new Region();
 
             if (!entity) {
-              this.cache.Region.Add(val.id.toString(), { item: region, expire: Date.now() + CacheProvider.Settings.region.expire });
+              if (CacheProvider.Settings) this.cache.Region.Add(val.id.toString(), { item: region, expire: Date.now() + CacheProvider.Settings.region.expire });
             }
 
             else
-              entity.expire = Date.now() + CacheProvider.Settings.region.expire;
+            if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.region.expire;
 
             region.id = val.id;
             region.name = val.name;
@@ -1548,11 +1546,11 @@ export class AppDataRepository extends AbstractDataRepository {
         const region: Region = (entity) ? entity.item : new Region();
 
         if (!entity) {
-          this.cache.Region.Add(_id, { item: region, expire: Date.now() + CacheProvider.Settings.region.expire });
+          if (CacheProvider.Settings) this.cache.Region.Add(_id, { item: region, expire: Date.now() + CacheProvider.Settings.region.expire });
         }
 
         else
-          entity.expire = Date.now() + CacheProvider.Settings.region.expire;
+        if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.region.expire;
 
         // http request
         const response = await this.http.get(regionsUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
@@ -1588,7 +1586,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const regions = new Array<Region>();
       if (data != null) {
-        data.forEach(val => {
+        if (data) data.forEach(val => {
           const regionItem: Region = new Region(val.id, val.name);
           regions.push(regionItem);
         });
@@ -1608,11 +1606,11 @@ export class AppDataRepository extends AbstractDataRepository {
         const city: City = (entity) ? entity.item : new City();
 
         if (!entity) {
-          this.cache.City.Add(_id, { item: city, expire: Date.now() + CacheProvider.Settings.city.expire });
+          if (CacheProvider.Settings) this.cache.City.Add(_id, { item: city, expire: Date.now() + CacheProvider.Settings.city.expire });
         }
 
         else
-          entity.expire = Date.now() + CacheProvider.Settings.city.expire;
+        if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.city.expire;
         // http request
         const response = await this.http.get(citiesUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
 
@@ -1643,7 +1641,7 @@ export class AppDataRepository extends AbstractDataRepository {
     if (textToSearch && srchVal) {
       let ar = srchVal.toLowerCase().split(" ");
       let i = 0;
-      ar.forEach(str => {
+      if (ar) ar.forEach(str => {
         if (!(textToSearch.toLowerCase().indexOf(str) == -1)) {
           i++;
         }
@@ -1765,7 +1763,7 @@ export class AppDataRepository extends AbstractDataRepository {
         }
         const products = new Array<Product>();
         if (data != null) {
-          data.forEach(val => {
+          if (data) data.forEach(val => {
             let props = new Array<ProductPropValue>();
             if (val.props && val.props.length !== 0) {
               props = this.getPropValuefromProduct(val);
@@ -1794,7 +1792,7 @@ export class AppDataRepository extends AbstractDataRepository {
             products.push(productItem);
 
             // add product to cashe
-            this.cache.Products.Add(productItem.id.toString(), { item: productItem, expire: Date.now() + CacheProvider.Settings.product.expire });
+            if (CacheProvider.Settings) this.cache.Products.Add(productItem.id.toString(), { item: productItem, expire: Date.now() + CacheProvider.Settings.product.expire });
           });
         }
         return products;
@@ -1881,7 +1879,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const qProducts = new Array<QuotationProduct>();
       if (data != null) {
-        data.forEach(val =>
+        if (data) data.forEach(val =>
           qProducts.push(
             new QuotationProduct(
               val.id,
@@ -1947,7 +1945,7 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
 
-      data.forEach(val =>
+      if (data) data.forEach(val =>
         res.push(this.getProductFromResponse(val))
       );
       return res;
@@ -1970,7 +1968,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      data.forEach(val =>
+      if (data) data.forEach(val =>
         res.push(this.getProductFromResponse(val))
       );
       return res;
@@ -1990,12 +1988,12 @@ export class AppDataRepository extends AbstractDataRepository {
         const prod: Product = (entity) ? entity.item : new Product();
 
         if (!entity) {
-          this.cache.Products.Add(id, { item: prod, expire: Date.now() + CacheProvider.Settings.product.expire});
+          if (CacheProvider.Settings) this.cache.Products.Add(id, { item: prod, expire: Date.now() + CacheProvider.Settings.product.expire});
         }
 
         // change current reference
         else
-          entity.expire = Date.now() + CacheProvider.Settings.product.expire;
+        if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.product.expire;
 
         // http request
         const response = await this.http
@@ -2050,11 +2048,11 @@ export class AppDataRepository extends AbstractDataRepository {
         const quotation: Quotation = (entity) ? entity.item : new Quotation();
 
         if (!entity) {
-          this.cache.Quotation.Add(id, { item: quotation, expire: Date.now() + CacheProvider.Settings.quotation.expire });
+          if (CacheProvider.Settings) this.cache.Quotation.Add(id, { item: quotation, expire: Date.now() + CacheProvider.Settings.quotation.expire });
         }
 
         else
-          entity.expire = Date.now() + CacheProvider.Settings.quotation.expire;
+        if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.quotation.expire;
 
         const response = await this.http
           .get(quotationsUrl + `/${quotationId}`, RequestFactory.makeAuthHeader())
@@ -2184,11 +2182,11 @@ export class AppDataRepository extends AbstractDataRepository {
             const supplier: Supplier = (entity) ? entity.item : new Supplier();
 
             if (!entity) {
-              this.cache.Suppliers.Add(val.id.toString(), { item: supplier, expire: Date.now() + CacheProvider.Settings.supplier.expire });
+              if (CacheProvider.Settings) this.cache.Suppliers.Add(val.id.toString(), { item: supplier, expire: Date.now() + CacheProvider.Settings.supplier.expire });
             }
 
             else
-              entity.expire = Date.now() + CacheProvider.Settings.supplier.expire;
+            if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.supplier.expire;
 
             supplier.id = val.id;
             supplier.name = val.name;
@@ -2215,11 +2213,11 @@ export class AppDataRepository extends AbstractDataRepository {
         const supplier: Supplier = (entity) ? entity.item : new Supplier();
 
         if (!entity) {
-          this.cache.Suppliers.Add(id, { item: supplier, expire: Date.now() + CacheProvider.Settings.supplier.expire });
+          if (CacheProvider.Settings) this.cache.Suppliers.Add(id, { item: supplier, expire: Date.now() + CacheProvider.Settings.supplier.expire });
         }
 
         else
-          entity.expire = Date.now() + CacheProvider.Settings.supplier.expire;
+        if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.supplier.expire;
 
         const response = await this.http
           .get(suppliersUrl + `/${id}`, RequestFactory.makeAuthHeader())
@@ -2256,12 +2254,13 @@ export class AppDataRepository extends AbstractDataRepository {
         const currentEntity: Providers.CacheDataContainer<Currency> = this.cache.Currency.Item(id);
         const curr: Currency = (currentEntity) ? currentEntity.item : new Currency();
 
-        if (!currentEntity)
-          this.cache.Currency.Add(id, { item: curr, expire: Date.now() + CacheProvider.Settings.currency.expire });
+        if (!currentEntity) {
+          if (CacheProvider.Settings) this.cache.Currency.Add(id, { item: curr, expire: Date.now() + CacheProvider.Settings.currency.expire });
+        }
 
         // change current reference
         else
-          currentEntity.expire = Date.now() + CacheProvider.Settings.currency.expire;
+          if (CacheProvider.Settings) currentEntity.expire = Date.now() + CacheProvider.Settings.currency.expire;
 
         // request
         const response = await this.http
@@ -2301,7 +2300,7 @@ export class AppDataRepository extends AbstractDataRepository {
         }
         const suppliers = new Array<Supplier>();
         if (data != null) {
-          data.forEach(val => {
+          if (data) data.forEach(val => {
             // create current supplier
             const supplierItem: Supplier = new Supplier(
               val.id,
@@ -2315,7 +2314,7 @@ export class AppDataRepository extends AbstractDataRepository {
             suppliers.push(supplierItem);
 
             // add supplier to cashe
-            this.cache.Suppliers.Add(supplierItem.id.toString(), { item: supplierItem, expire: Date.now() + CacheProvider.Settings.supplier.expire });
+            if (CacheProvider.Settings) this.cache.Suppliers.Add(supplierItem.id.toString(), { item: supplierItem, expire: Date.now() + CacheProvider.Settings.supplier.expire });
           });
         }
         return suppliers;
@@ -2340,13 +2339,13 @@ export class AppDataRepository extends AbstractDataRepository {
         }
         const currencies = new Array<Currency>();
         if (data != null) {
-          data.forEach(val => {
+          if (data) data.forEach(val => {
             // create current currency
             const currencyItem: Currency = new Currency(val.id, val.shortName);
             currencies.push(currencyItem);
 
             // add currency to cashe
-            this.cache.Currency.Add(currencyItem.id.toString(), { item: currencyItem, expire: Date.now() + CacheProvider.Settings.currency.expire });
+            if (CacheProvider.Settings) this.cache.Currency.Add(currencyItem.id.toString(), { item: currencyItem, expire: Date.now() + CacheProvider.Settings.currency.expire });
           });
         }
         return currencies;
@@ -2371,12 +2370,12 @@ export class AppDataRepository extends AbstractDataRepository {
         }
         const languages = new Array<Lang>();
         if (data != null) {
-          data.forEach(val => {
+          if (data) data.forEach(val => {
             const langItem: Lang = new Lang(val.id, val.name);
             languages.push(langItem);
 
             // add currency to cashe
-            this.cache.Lang.Add(langItem.id.toString(), { item: langItem, expire: Date.now() + CacheProvider.Settings.lang.expire });
+            if (CacheProvider.Settings) this.cache.Lang.Add(langItem.id.toString(), { item: langItem, expire: Date.now() + CacheProvider.Settings.lang.expire });
           });
         }
         return languages;
@@ -2398,11 +2397,11 @@ export class AppDataRepository extends AbstractDataRepository {
         const manufacturer: Manufacturer = (entity) ? entity.item : new Manufacturer();
 
         if (!entity) {
-          this.cache.Manufacturer.Add(id, { item: manufacturer, expire: Date.now() + CacheProvider.Settings.manufacturer.expire });
+          if (CacheProvider.Settings) this.cache.Manufacturer.Add(id, { item: manufacturer, expire: Date.now() + CacheProvider.Settings.manufacturer.expire });
         }
 
         else
-          entity.expire = Date.now() + CacheProvider.Settings.manufacturer.expire;
+          if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.manufacturer.expire;
 
         const response = await this.http
           .get(manufacturersUrl + `/${id}`, RequestFactory.makeAuthHeader())
@@ -2440,7 +2439,7 @@ export class AppDataRepository extends AbstractDataRepository {
         }
         const manufacturers = new Array<Manufacturer>();
         if (data != null) {
-          data.forEach(val => {
+          if (data) data.forEach(val => {
             // create current manufacturer
             const manufacturerItem: Manufacturer = new Manufacturer(
               val.id,
@@ -2450,7 +2449,7 @@ export class AppDataRepository extends AbstractDataRepository {
             manufacturers.push(manufacturerItem);
 
             // add manufacturer to cashe
-            this.cache.Manufacturer.Add(
+            if (CacheProvider.Settings) this.cache.Manufacturer.Add(
               manufacturerItem.id.toString(),
               { item: manufacturerItem, expire: Date.now() + CacheProvider.Settings.manufacturer.expire }
             );
@@ -2469,7 +2468,7 @@ export class AppDataRepository extends AbstractDataRepository {
   // <editor-fold desc="error handler"
   public handleError(error?: Error): any {
     if (this.connServ.counter < 1) {
-      this.connServ.checkConnection(error);
+      this.connServ.handleNoConnection(error);
     }
   }
 
@@ -2477,7 +2476,7 @@ export class AppDataRepository extends AbstractDataRepository {
   // <editor-fold desc="url search factory">
   public createSearchParams(params: Array<{ key: string; value: string }>): URLSearchParams {
     const searchParams = new URLSearchParams();
-    params.forEach(val => {
+    if (params) params.forEach(val => {
       searchParams.set(val.key, val.value);
     });
 
@@ -2488,7 +2487,7 @@ export class AppDataRepository extends AbstractDataRepository {
   // <editor-fold desc="get product prop value from product"
   public getPropValuefromProduct(product: any): Array<ProductPropValue> {
     const props = new Array<ProductPropValue>();
-    product.props.forEach(val => {
+    if (product && product.props) product.props.forEach(val => {
       let enumVal =
         val.prop_Value_Enum !== null
           ? new PropEnumList(
@@ -2555,11 +2554,11 @@ export class AppDataRepository extends AbstractDataRepository {
         }
         const cities = new Array<City>();
         if (data != null) {
-          data.forEach(val => {
+          if (data) data.forEach(val => {
             // create current city
             const cityItem: City = new City(val.id, val.name, val.idRegion);
             cities.push(cityItem);
-            this.cache.CityWithStore.Add(val.id.toString(), { item: cityItem, expire: Date.now() + CacheProvider.Settings.city.expire });
+            if (CacheProvider.Settings) this.cache.CityWithStore.Add(val.id.toString(), { item: cityItem, expire: Date.now() + CacheProvider.Settings.city.expire });
           });
         }
         return cities;
@@ -2583,7 +2582,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const cities = new Array<City>();
       if (data != null) {
-        data.forEach(val => {
+        if (data) data.forEach(val => {
           // create current city
           const cityItem: City = new City(val.id, val.name, val.idRegion);
           cities.push(cityItem);
@@ -2608,11 +2607,11 @@ export class AppDataRepository extends AbstractDataRepository {
         }
         const cities = new Array<City>();
         if (data != null) {
-          data.forEach(val => {
+          if (data) data.forEach(val => {
             // create current city
             const cityItem: City = new City(val.id, val.name, val.idRegion);
             cities.push(cityItem);
-            this.cache.City.Add(val.id.toString(), { item: cityItem, expire: Date.now() + CacheProvider.Settings.city.expire });
+            if (CacheProvider.Settings) this.cache.City.Add(val.id.toString(), { item: cityItem, expire: Date.now() + CacheProvider.Settings.city.expire });
           });
         }
         return cities;
@@ -2637,7 +2636,7 @@ export class AppDataRepository extends AbstractDataRepository {
         if (data != null) {
           let storeFiltered = [];
           let cityID: Array<number> = [];
-          data.forEach(dataStore => {
+          if (data) data.forEach(dataStore => {
             if (!(cityID.indexOf(dataStore.idCity) > -1)) {
               cityID.push(dataStore.idCity);
               storeFiltered = data.filter((value: Store): string => {
@@ -2662,14 +2661,14 @@ export class AppDataRepository extends AbstractDataRepository {
                 }
               }
               stores[dataStore.idCity.toString()] = storeArr;
-              this.cache.Store.Add(dataStore.idCity.toString(), { item: { id: dataStore.idCity.toString(), stores: storeArr }, expire: Date.now() + CacheProvider.Settings.store.expire });
+              if (CacheProvider.Settings) this.cache.Store.Add(dataStore.idCity.toString(), { item: { id: dataStore.idCity.toString(), stores: storeArr }, expire: Date.now() + CacheProvider.Settings.store.expire });
             }
           });
         }
         return stores;
       } else {
         let stores: IDictionary<Store[]> = {};
-        this.cache.Store.Values().forEach(val => {
+        if (this.cache && this.cache.Store && this.cache.Store.Values()) this.cache.Store.Values().forEach(val => {
           stores[val.id.toString()] = val.stores;
         });
         return stores;
@@ -2751,7 +2750,7 @@ export class AppDataRepository extends AbstractDataRepository {
             ));
           }
         }
-        data.storeReviews.forEach(val => {
+        if (data && data.storeReviews) data.storeReviews.forEach(val => {
           let date = val.reviewDate.toString();
           if (val.idReview === null) {
             if (answers[val.id.toString()]) {
@@ -2827,7 +2826,7 @@ export class AppDataRepository extends AbstractDataRepository {
             ));
           }
         }
-        data.storeReviews.forEach(val => {
+        if (data && data.storeReviews) data.storeReviews.forEach(val => {
           let date = val.reviewDate.toString();
           if (val.idReview === null) {
             if (answers[val.id.toString()]) {
@@ -2884,7 +2883,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       let stores: Store[] = [];
       if (data != null) {
-        data.forEach(val => {
+        if (data) data.forEach(val => {
           let store = new Store(
             val.id,
             val.idCity,
@@ -2996,7 +2995,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const actions = new Array<Action>();
       if (data != null) {
-        data.forEach(val => {
+        if (data) data.forEach(val => {
           const actionItem: Action = new Action(
             val.id,
             val.name,
@@ -3035,7 +3034,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const products = new Array<Product>();
       if (data != null) {
-        data.forEach(val => {
+        if (data) data.forEach(val => {
           let props = new Array<ProductPropValue>();
           if (val.props && val.props.length !== 0) {
             props = this.getPropValuefromProduct(val);
@@ -3081,7 +3080,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const qProducts = new Array<QuotationProduct>();
       if (data != null) {
-        data.forEach(val =>
+        if (data) data.forEach(val =>
           qProducts.push(
             new QuotationProduct(
               val.id,
@@ -3141,7 +3140,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       let novelties: Array<Novelty> = new Array<Novelty>();
       if (data != null) {
-        data.forEach(val => {
+        if (data) data.forEach(val => {
           const novelty: Novelty = new Novelty(
             val.id,
             val.idProduct,
@@ -3199,7 +3198,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
       const pollQuestions = new Array<PollQuestion>();
       if (data != null) {
-        data.forEach(val =>
+        if (data) data.forEach(val =>
           pollQuestions.push(
             new PollQuestion(val.id, val.idPoll, val.order, val.question, val.answerType)
           )
@@ -3224,7 +3223,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
       let noveltyDetails: NoveltyDetails[] = [];
       if (data != null) {
-        data.forEach(val => {
+        if (data) data.forEach(val => {
           let detail: NoveltyDetails = new NoveltyDetails(
             val.id,
             val.idNovelty,
@@ -3251,7 +3250,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const pollQuestionAnswers: PollQuestionAnswer[] = new Array<PollQuestion>();
       if (data != null) {
-        data.forEach(val =>
+        if (data) data.forEach(val =>
           pollQuestionAnswers.push(
             new PollQuestionAnswer(val.id, val.idPollQuestions, val.answer)
           )
@@ -3294,7 +3293,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const clientPollAnswer: ClientPollAnswer[] = new Array<ClientPollAnswer>();
       if (data != null) {
-        data.forEach(val =>
+        if (data) data.forEach(val =>
           clientPollAnswer.push(
             new ClientPollAnswer(val.id, val.idClient, val.idPoll, val.idPollQuestions, val.clientAnswer)
           )
@@ -3328,7 +3327,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const categories: Category[] = new Array<Category>();
       if (data != null) {
-        data.forEach(val =>
+        if (data) data.forEach(val =>
           categories.push(
             new Category(val.id, val.name, val.parent_id, val.id_product_cat, val.prefix,
               val.icon, val.is_show, val.priority_index, val.priority_show)
@@ -3358,11 +3357,11 @@ export class AppDataRepository extends AbstractDataRepository {
             const measureunit: MeasureUnit = (entity) ? entity.item : new MeasureUnit();
 
             if (!entity) {
-              this.cache.MeasureUnit.Add(val.id.toString(), { item: measureunit, expire: Date.now() + CacheProvider.Settings.measureunit.expire });
+              if (CacheProvider.Settings) this.cache.MeasureUnit.Add(val.id.toString(), { item: measureunit, expire: Date.now() + CacheProvider.Settings.measureunit.expire });
             }
 
             else
-              entity.expire = Date.now() + CacheProvider.Settings.measureunit.expire;
+            if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.measureunit.expire;
 
             measureunit.id = val.id;
             measureunit.name = val.name;
@@ -3387,12 +3386,12 @@ export class AppDataRepository extends AbstractDataRepository {
         const measureUnit: MeasureUnit = (entity) ? entity.item : new MeasureUnit();
 
         if (!entity) {
-          this.cache.MeasureUnit.Add(id, { item: measureUnit, expire: Date.now() + CacheProvider.Settings.measureunit.expire });
+          if (CacheProvider.Settings) this.cache.MeasureUnit.Add(id, { item: measureUnit, expire: Date.now() + CacheProvider.Settings.measureunit.expire });
         }
 
         // change current reference
         else
-          entity.expire = Date.now() + CacheProvider.Settings.measureunit.expire;
+        if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.measureunit.expire;
 
         const response = await this.http
           .get(measureUnitUrl + `/${id}`, RequestFactory.makeAuthHeader())
@@ -3448,7 +3447,7 @@ export class AppDataRepository extends AbstractDataRepository {
           throw new Error("server side status error");
         }
         if (data != null) {
-          data.images.forEach(x => {
+          if (data && data.images) data.images.forEach(x => {
             res.push(x);
           }
           );
@@ -3471,7 +3470,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
       let banners: BannerSlide[] = [];
       if (data !== null) {
-        data.forEach((banner) => {
+        if (data) data.forEach((banner) => {
           banners.push(banner);
         })
       }
@@ -3554,7 +3553,7 @@ export class AppDataRepository extends AbstractDataRepository {
         }
 
         if (data != null) {
-          data.forEach(val => {
+          if (data) data.forEach(val => {
             let param = new AppParam(val.id, val.propName, val.propVal);
 
             if (this.cache.AppParams.HasNotValidCachedValue(val.propName)) {
@@ -3573,7 +3572,13 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async getAppParam(param: string): Promise<string> {
-    return (<IKeyedCollection<Providers.CacheDataContainer<AppParam>>>(await this.getAppParams())).Item(param).item.propVal;
+    let params = await this.getAppParams();
+    if (params) {
+      let paramsCollection = <IKeyedCollection<Providers.CacheDataContainer<AppParam>>>(params);
+      if (paramsCollection && paramsCollection.Item(param) && paramsCollection.Item(param).item) {
+        return paramsCollection.Item(param).item.propVal;
+      }
+    }
   }
 
   public async getClientOrderDatesRanges(): Promise<OrdersFilter[]> {
@@ -3589,7 +3594,7 @@ export class AppDataRepository extends AbstractDataRepository {
       const res = [];
 
       if (data != null) {
-        data.forEach(val => {
+        if (data) data.forEach(val => {
           res.push(new OrdersFilter(val.key, val.displayName, val.isDefault));
         }
         );
@@ -3641,7 +3646,7 @@ export class AppDataRepository extends AbstractDataRepository {
       const res = [];
 
       if (data != null) {
-        data.forEach(val => {
+        if (data) data.forEach(val => {
           res.push({
             orderId: val.orderId, orderDate: val.orderDate, orderSpecId: val.orderSpecId,
             idProduct: val.idProduct, productName: val.productName, productImageUrl: val.productImageUrl,
@@ -3667,7 +3672,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const currencyRates: CurrencyRate[] = new Array<CurrencyRate>();
       if (data !== null) {
-        data.forEach(val =>
+        if (data) data.forEach(val =>
           currencyRates.push(
             new CurrencyRate(val.defaultId, val.targetId, val.rate)
           )
@@ -3690,7 +3695,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const arr: ActionByProduct[] = new Array<ActionByProduct>();
       if (data !== null) {
-        data.forEach(val =>
+        if (data) data.forEach(val =>
           arr.push(
             new ActionByProduct(val.actionId, val.actionType, val.idQuotationProduct, val.idProduct, val.idCur, val.actionPrice,
               val.regularPrice, val.bonusQty, val.productName, val.complect, val.isMain, val.idGroup,
@@ -3706,7 +3711,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public getShipmentItemsFromJson(data: any): ShipmentItems[] {
     let arr = [];
-    data.forEach(
+    if (data) data.forEach(
       x => {
         let si = new ShipmentItems(x.id, x.idShipment, x.idOrderSpecProd, x.qty, x.errorMessage);
         arr.push(si);
@@ -3726,7 +3731,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
       const arr: Shipment[] = [];
       if (data !== null) {
-        data.forEach(val =>
+        if (data) data.forEach(val =>
           arr.push(
             new Shipment(val.id, val.idOrder, val.idSupplier, val.idLoEntity, val.loTrackTicket, val.loDeliveryCost,
               val.loDeliveryCompleted, val.loEstimatedDeliveryDate, val.loDeliveryCompletedDate, val.idStorePlace,
@@ -3807,11 +3812,11 @@ export class AppDataRepository extends AbstractDataRepository {
         const delType: LoDeliveryType = (entity) ? entity.item : new LoDeliveryType();
 
         if (!entity) {
-          this.cache.LoDeliveryType.Add(_id, { item: delType, expire: Date.now() + CacheProvider.Settings.lodeliverytype.expire });
+          if (CacheProvider.Settings) this.cache.LoDeliveryType.Add(_id, { item: delType, expire: Date.now() + CacheProvider.Settings.lodeliverytype.expire });
         }
 
         else
-          entity.expire = Date.now() + CacheProvider.Settings.lodeliverytype.expire;
+        if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.lodeliverytype.expire;
 
         const response = await this.http
           .get(getLoDeliveryTypeUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
@@ -3843,12 +3848,12 @@ export class AppDataRepository extends AbstractDataRepository {
         const entOff: LoEntityOffice = (entity) ? entity.item : new LoEntityOffice();
 
         if (!entity) {
-          this.cache.LoEntityOffice.Add(_id, { item: entOff, expire: Date.now() + CacheProvider.Settings.loentityoffice.expire });
+          if (CacheProvider.Settings) this.cache.LoEntityOffice.Add(_id, { item: entOff, expire: Date.now() + CacheProvider.Settings.loentityoffice.expire });
         }
 
         // change current reference
         else
-          entity.expire = Date.now() + CacheProvider.Settings.loentityoffice.expire;
+        if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.loentityoffice.expire;
 
 
         const response = await this.http
@@ -3886,7 +3891,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const arr: LoDeliveryType[] = new Array<LoDeliveryType>();
       if (data !== null) {
-        data.forEach(val =>
+        if (data) data.forEach(val =>
           arr.push(
             new LoDeliveryType(val.id, val.name)
           )
@@ -3909,7 +3914,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const arr: LoEntityOffice[] = new Array<LoEntityOffice>();
       if (data !== null) {
-        data.forEach(val =>
+        if (data) data.forEach(val =>
           arr.push(
             new LoEntityOffice(val.id, val.idLoEntity, val.name, val.idCity)
           )
@@ -3962,7 +3967,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
       let news: News[] = [];
       if (data !== null) {
-        data.forEach((dataNews) => {
+        if (data) data.forEach((dataNews) => {
           news.push(dataNews);
         })
       }
@@ -3998,7 +4003,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
       let newsCategory: NewsCategory[] = [];
       if (data !== null) {
-        data.forEach((dataNewsCategory) => {
+        if (data) data.forEach((dataNewsCategory) => {
           newsCategory.push(dataNewsCategory);
         })
       }
@@ -4036,7 +4041,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
       const arr: LoDeliveryTypeAttr[] = new Array<LoDeliveryTypeAttr>();
       if (data !== null) {
-        data.forEach(val =>
+        if (data) data.forEach(val =>
           arr.push(
             new LoDeliveryTypeAttr(val.loEntityId, val.deliveryTypeId, val.deliveryDate )
           )
@@ -4060,7 +4065,7 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const products = new Array<Product>();
       if (data != null) {
-        data.forEach(val => {
+        if (data) data.forEach(val => {
           let props = new Array<ProductPropValue>();
           if (val.props && val.props.length !== 0) {
             props = this.getPropValuefromProduct(val);
