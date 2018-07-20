@@ -4060,32 +4060,16 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
       const products = new Array<Product>();
+
+      data.forEach(val =>
+        products.push(this.getProductFromResponse(val))
+      );
       if (data != null) {
         data.forEach(val => {
           let props = new Array<ProductPropValue>();
           if (val.props && val.props.length !== 0) {
             props = this.getPropValuefromProduct(val);
           }
-
-          // create current product
-          const productItem: Product = new Product(
-            val.id,
-            val.name,
-            val.price,
-            val.oldPrice,
-            val.bonuses,
-            val.manufacturerId,
-            props,
-            val.imageUrl,
-            val.rating,
-            val.recall,
-            val.supplOffers,
-            val.description,
-            val.slideImageUrls,
-            val.barcode
-          );
-
-          products.push(productItem);
         });
       }
 
@@ -4106,32 +4090,16 @@ export class AppDataRepository extends AbstractDataRepository {
         throw new Error("server side status error");
       }
       const products = new Array<Product>();
+
+      data.forEach(val =>
+        products.push(this.getProductFromResponse(val))
+      );
       if (data != null) {
         data.forEach(val => {
           let props = new Array<ProductPropValue>();
           if (val.props && val.props.length !== 0) {
             props = this.getPropValuefromProduct(val);
           }
-
-          // create current product
-          const productItem: Product = new Product(
-            val.id,
-            val.name,
-            val.price,
-            val.oldPrice,
-            val.bonuses,
-            val.manufacturerId,
-            props,
-            val.imageUrl,
-            val.rating,
-            val.recall,
-            val.supplOffers,
-            val.description,
-            val.slideImageUrls,
-            val.barcode
-          );
-
-          products.push(productItem);
         });
       }
 
