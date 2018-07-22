@@ -163,7 +163,7 @@
       </ion-row>
     </ion-grid>
 
-    <div style="width: 100%" *ngIf="this.similarProducts.length > 0">
+    <div style="width: 100%" *ngIf="this.similarProducts.length > 1">
       <ion-grid class="f-item-nopadding-tb">
         <ion-row>
           <ion-col class="f-item-section-header"><span loc="Сравнение с похожими товарами" name="CompareSimilarItem">{{locale['CompareSimilarItem']}}</span>
@@ -175,7 +175,7 @@
             [productObjects]=similarProducts
             [productId]=null
             [defaultCategoryId]=null
-            [displayPropCount]="7" 
+            [displayPropCount]="displayPropCount" 
             [showFilter]=false
             [srchService]="srchService">
           </product-compare>

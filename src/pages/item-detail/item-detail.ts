@@ -12,10 +12,10 @@ import {EventService} from '../../app/service/event-service';
 import {ActionByProduct} from '../../app/model/action-by-product';
 import {UserService} from '../../app/service/bll/user-service';
 import {ItemImgPage} from '../item-img/item-img';
-import {ProductCompareService} from '../../app/service/product-compare-service';
+import {ProductCompareService, PropWithIndex} from '../../app/service/product-compare-service';
 import {ProductFavoriteService} from '../../app/service/product-favorite-service';
 import {SearchService} from '../../app/service/search-service';
-import { Product } from '../../app/model';
+import { Product, ProductPropValue } from '../../app/model';
 
 @IonicPage()
 @Component({
@@ -40,6 +40,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   productIsFavorite: boolean;
   similarProducts: Array<Product> = [];
   popularAccessories: Array<Product> = [];
+  displayPropCount: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
@@ -48,6 +49,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
               public prodCompService: ProductCompareService, public prodFavoriteService: ProductFavoriteService,
               public srchService: SearchService,) {
     super(navCtrl, navParams, repo);
+    this.displayPropCount = 7;
     this.cantShow = true;
     this.product = this.navParams.data.prod;
     this.preloadQuotes = this.navParams.data.loadQuotes;
@@ -62,9 +64,9 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   async ngOnInit() {
     super.ngOnInit();
 
-    this.similarProducts = await this.repo.getSimilarProducts(this.product.id);
+    await this.loadSimilarProducts();
     this.popularAccessories = await this.repo.getPopularAccessories(this.product.id);
-
+   
     this.reviewsObj = await this.repo.getProductReviewsByProductId(this.product.id);
     if (this.reviewsObj) {
       this.reviews = this.reviewsObj.reviews;
@@ -255,5 +257,40 @@ export class ItemDetailPage extends ItemBase implements OnInit {
     this.prodFavoriteService.removeFavoriteProduct(this.product.id);
     this.checkProductIsFavorite();
   }
+
+  async loadSimilarProducts() {
+    let loadProducts: Array<Product> = await this.repo.getSimilarProducts(this.product.id);
+  
+    let uniqueProps = new Array<PropWithIndex>();
+    let uniqueSortedProps = new Array<PropWithIndex>();
+
+    loadProducts.forEach(product => {
+      product.props.forEach(i => {
+          if (!uniqueProps.find((x) => {return x.property.id === i.id_Prop.id}))
+            uniqueProps.push(new PropWithIndex(i.id_Prop, i.idx));
+        }
+      );
+      }
+    );
+
+    uniqueSortedProps = uniqueProps.sort( (x,y) => {return x.idx - y.idx || x.property.id - y.property.id});
+
+    loadProducts.forEach(product => { 
+      let findedProp = false;
+      for(var i = 0; i < this.displayPropCount - 2; i++) {
+        if( i < uniqueSortedProps.length) {
+          let propVal: ProductPropValue = product.props.find((x) => { return x.id_Prop.id === uniqueSortedProps[i].property.id });
+
+          if(propVal)
+            if(!(propVal.pVal == null || propVal.pVal == undefined)) {
+              findedProp = true;
+          }
+        }
+      }
+
+      if(findedProp) 
+        this.similarProducts.push(product);
+    });
+   }
 
 }

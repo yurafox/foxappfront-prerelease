@@ -1,9 +1,8 @@
 import {Component, Input, Output, OnInit, EventEmitter, ViewChild, ElementRef} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {Product} from '../../app/model/product';
-import {Prop} from '../../app/model/prop';
 import {SearchService, ProductSearchParams} from '../../app/service/search-service';
-import {ProductCompareService} from '../../app/service/product-compare-service';
+import {ProductCompareService, PropWithIndex} from '../../app/service/product-compare-service';
 
 export class ItemPropsTable {
   constructor(
@@ -187,29 +186,30 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
 
   getUniqueProps() {
     this.propsArr = [];
-    let uniqueProps = new Array<Prop>();
+    let uniqueProps = new Array<PropWithIndex>();
+    let uniqueSortedProps = new Array<PropWithIndex>();
 
     this.products.forEach(product => {
-      let sortedProps = product.props.sort( (x,y) => {return x.idx - y.idx});
-
-      sortedProps.forEach(i => {
-          if (!uniqueProps.find((x) => {return x.id === i.id_Prop.id}))
-            uniqueProps.push(i.id_Prop);
+      product.props.forEach(i => {
+          if (!uniqueProps.find((x) => {return x.property.id === i.id_Prop.id}))
+            uniqueProps.push(new PropWithIndex(i.id_Prop, i.idx));
         }
       );
       }
     );
 
-    uniqueProps.forEach(prop => {
+    uniqueSortedProps = uniqueProps.sort( (x,y) => {return x.idx - y.idx || x.property.id - y.property.id});
+
+    uniqueSortedProps.forEach(prop => {
       let propStr = new  Array<string>();
 
       this.products.forEach(product => {
-        let vals = product.props.filter(x => (x.id_Prop.id === prop.id));
+        let vals = product.props.filter(x => (x.id_Prop.id === prop.property.id));
         propStr.push(vals.map(x => {return x.pVal;}).join('; '))
         }
       );
 
-      this.propsArr.push(new ItemPropsTable(prop.name, propStr));
+      this.propsArr.push(new ItemPropsTable(prop.property.name, propStr));
       }
     );
   }
