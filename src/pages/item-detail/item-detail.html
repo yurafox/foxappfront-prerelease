@@ -163,7 +163,7 @@
       </ion-row>
     </ion-grid>
 
-    <div style="width: 100%" *ngIf="this.similarProducts.length > 1">
+    <div style="width: 100%" *ngIf="this.similarProducts.length > 1 && similarProducstsResolved">
       <ion-grid class="f-item-nopadding-tb">
         <ion-row>
           <ion-col class="f-item-section-header"><span loc="Сравнение с похожими товарами" name="CompareSimilarItem">{{locale['CompareSimilarItem']}}</span>
@@ -204,7 +204,7 @@
 
     </ion-grid>
 
-    <div style="min-height:266px;order:6; width: 100%" *ngIf="this.popularAccessories.length > 0">
+    <div style="min-height:266px;order:6; width: 100%" *ngIf="this.popularAccessories.length > 0 && similarProducstsResolved">
       <ion-grid class="f-item-nopadding-tb">
         <ion-row>
           <ion-col class="f-item-section-header"><span loc="Популярные аксессуары" name="PopularAccessories">{{locale['PopularAccessories']}}</span>

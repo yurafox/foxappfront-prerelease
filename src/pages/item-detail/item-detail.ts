@@ -41,6 +41,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   similarProducts: Array<Product> = [];
   popularAccessories: Array<Product> = [];
   displayPropCount: number;
+  similarProducstsResolved = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
@@ -66,7 +67,8 @@ export class ItemDetailPage extends ItemBase implements OnInit {
 
     await this.loadSimilarProducts();
     this.popularAccessories = await this.repo.getPopularAccessories(this.product.id);
-   
+    this.similarProducstsResolved = true;
+
     this.reviewsObj = await this.repo.getProductReviewsByProductId(this.product.id);
     if (this.reviewsObj) {
       this.reviews = this.reviewsObj.reviews;
