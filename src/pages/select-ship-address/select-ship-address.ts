@@ -27,6 +27,13 @@ export class SelectShipAddressPage extends ComponentBase {
 
   async ngOnInit() {
     super.ngOnInit();
+    let client = await (<any>this.uService).profile.client_p;
+
+    if (client) {
+      this.shippingAddresses = await client.clientaddress_p;
+      if (this.shippingAddresses && this.shippingAddresses.length > 0) 
+        this.dataLoaded = true;
+    }
 
     this.withDelivery = this.navParams.data.fromCart === 1;
 
@@ -35,17 +42,6 @@ export class SelectShipAddressPage extends ComponentBase {
       this.navCtrl.push('ShippingOptionsPage');
       this.navCtrl.remove((this.navCtrl.getActive().index)-1, 1);
     }
-
-    this.getDefaultShipAddress().then(data => {
-        this.shippingAddresses = data;
-        this.dataLoaded = true;
-      }
-    );
-  }
-
-  async getDefaultShipAddress(): Promise<ClientAddress[]> {
-    let client = await (<any>this.uService).profile.client_p;
-    return await client.clientaddress_p;
   }
 
   addNewAddress() {

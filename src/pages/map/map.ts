@@ -143,6 +143,13 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
       this.storeReviews = reviews.reviews;
       this.clientId = reviews.idClient;
 
+      if (this.cities && this.cities.length > 0) {
+        this.cities.sort((a, b) => {
+          if (a.name < b.name) return -1;
+          if (a.name > b.name) return 1;
+          return 0;
+        });
+      }
       await this.loadMap();
     } catch (err) {
       let alert = this.alertCtrl.create({
@@ -357,6 +364,13 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
                   city: this.cities[i]
                 });
               }
+            }
+            if (this.shopList && this.shopList.length > 0) {
+              this.shopList.sort((a, b) => {
+                if (a.label < b.label) return -1;
+                if (a.label > b.label) return 1;
+                return 0;
+              });
             }
           }
         }
