@@ -1,6 +1,14 @@
 import {Injectable} from '@angular/core';
 import {UserService} from './bll/user-service';
 import {SearchService, ProductSearchParams} from '../../app/service/search-service';
+import {Prop} from '../../app/model/prop';
+
+export class PropWithIndex {
+  constructor(
+    public property?: Prop,
+    public idx?: number
+  ) {}
+}
 
 @Injectable()
 export class ProductCompareService {

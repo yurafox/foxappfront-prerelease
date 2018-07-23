@@ -4066,17 +4066,10 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const products = new Array<Product>();
 
-      if (data) data.forEach(val =>
-        products.push(this.getProductFromResponse(val))
-      );
-      if (data != null) {
-        if (data) data.forEach(val => {
-          let props = new Array<ProductPropValue>();
-          if (val.props && val.props.length !== 0) {
-            props = this.getPropValuefromProduct(val);
-          }
-        });
-      }
+      if (data != null)
+        data.forEach(val =>
+          products.push(this.getProductFromResponse(val))
+        );
 
       return products;
     } catch (err) {
@@ -4096,17 +4089,10 @@ export class AppDataRepository extends AbstractDataRepository {
       }
       const products = new Array<Product>();
 
-      if (data) data.forEach(val =>
-        products.push(this.getProductFromResponse(val))
-      );
-      if (data != null) {
-        if (data) data.forEach(val => {
-          let props = new Array<ProductPropValue>();
-          if (val.props && val.props.length !== 0) {
-            props = this.getPropValuefromProduct(val);
-          }
-        });
-      }
+      if (data != null)
+        data.forEach(val =>
+          products.push(this.getProductFromResponse(val))
+        );
 
       return products;
     } catch (err) {
