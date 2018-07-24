@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>431639834815-sg6a6bqs4oor5sls3fh9g1nos0aaohus.apps.googleusercontent.com</string>
+	<string>1095255174515-bjfds94pm85e24s9gl2ltlqmc839n7ft.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.431639834815-sg6a6bqs4oor5sls3fh9g1nos0aaohus</string>
+	<string>com.googleusercontent.apps.1095255174515-bjfds94pm85e24s9gl2ltlqmc839n7ft</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAIJlqalY3-3fyi0likTIW__Q2SfPKri08</string>
+	<string>AIzaSyDiB3eQbJHq-0tT5eoBsoiqjfHtZ77EHNo</string>
 	<key>GCM_SENDER_ID</key>
-	<string>431639834815</string>
+	<string>1095255174515</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.foxtrot.foxshop</string>
+	<string>com.foxtrot.mobile.ecommerce</string>
 	<key>PROJECT_ID</key>
-	<string>foxapp-187308</string>
+	<string>foxtrot-mobile-ecommerce</string>
 	<key>STORAGE_BUCKET</key>
-	<string>foxapp-187308.appspot.com</string>
+	<string>foxtrot-mobile-ecommerce.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true></true>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:431639834815:ios:a93a9b9d01927190</string>
+	<string>1:1095255174515:ios:dfbc97488814c857</string>
 	<key>DATABASE_URL</key>
-	<string>https://foxapp-187308.firebaseio.com</string>
+	<string>https://foxtrot-mobile-ecommerce.firebaseio.com</string>
 </dict>
 </plist>

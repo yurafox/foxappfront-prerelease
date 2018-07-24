@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "431639834815",
-    "firebase_url": "https://foxapp-187308.firebaseio.com",
-    "project_id": "foxapp-187308",
-    "storage_bucket": "foxapp-187308.appspot.com"
+    "project_number": "1095255174515",
+    "firebase_url": "https://foxtrot-mobile-ecommerce.firebaseio.com",
+    "project_id": "foxtrot-mobile-ecommerce",
+    "storage_bucket": "foxtrot-mobile-ecommerce.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:431639834815:android:c4e7b5033263a6c3",
+        "mobilesdk_app_id": "1:1095255174515:android:dfbc97488814c857",
         "android_client_info": {
-          "package_name": "com.foxapp.android"
+          "package_name": "com.foxtrot.mobile.ecommerce"
         }
       },
       "oauth_client": [
         {
-          "client_id": "431639834815-b6d6ueao81hb3teq3hvnjrcgilkvcos7.apps.googleusercontent.com",
+          "client_id": "1095255174515-6ramjb4tk6luel3g3f70t40386a5aq2v.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAKDQzb3RKdVlh0gqZMhY4MEjl53Lh-Dmk"
+          "current_key": "AIzaSyB83ndij1qoGrpidZnaLoL5gNloqiel24E"
         }
       ],
       "services": {

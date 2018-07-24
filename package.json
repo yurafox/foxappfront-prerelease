@@ -124,9 +124,9 @@
         "XWALK_MULTIPLEAPK": "true"
       },
       "cordova-plugin-googlemaps": {
-        "API_KEY_FOR_ANDROID": "AIzaSyAKDQzb3RKdVlh0gqZMhY4MEjl53Lh-Dmk",
-        "API_KEY_FOR_IOS": "AIzaSyAKDQzb3RKdVlh0gqZMhY4MEjl53Lh-Dmk",
-        "PLAY_SERVICES_VERSION": "15.+"
+        "API_KEY_FOR_ANDROID": "AIzaSyB83ndij1qoGrpidZnaLoL5gNloqiel24E",
+        "API_KEY_FOR_IOS": "AIzaSyDiB3eQbJHq-0tT5eoBsoiqjfHtZ77EHNo",
+        "PLAY_SERVICES_VERSION": "15.+",
       }
     },
     "platforms": [
