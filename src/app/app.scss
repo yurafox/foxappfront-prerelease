@@ -16,12 +16,9 @@
 // automatically applied to the <body> element in the app.
 
 // sass variables
-ion-col {
+form ion-row ion-col {
   position: initial !important;
 }
-.col {
-  position : initial !important;
-  }
 
 // small gray square BUG FIX
 .f-statusbar {
