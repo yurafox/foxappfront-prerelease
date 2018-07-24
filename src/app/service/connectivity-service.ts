@@ -1,6 +1,6 @@
 import {ErrorHandler, Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
-import {AlertController, NavController} from "ionic-angular";
+import {AlertController, NavController, Platform} from "ionic-angular";
 import {Device} from '@ionic-native/device';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class ConnectivityService {
     return this.count;
   }
 
-  constructor(public alertCtrl: AlertController, public device: Device) {
+  constructor(public alertCtrl: AlertController, public device: Device, public platform: Platform) {
     this.count = 0;
   }
 
@@ -33,7 +33,7 @@ export class ConnectivityService {
     let activePage = this.navCtrl ? this.navCtrl.getActive() : undefined;
     this.makeCordovaBehavior(activePage,error);
 
-    if (!this.device.cordova) this.makeBrowserBehavior(error);
+    if (!this.device.cordova && !this.platform.is('ios')) this.makeBrowserBehavior(error);
   }
 
   public showNoConnectionPage(error: any) {
