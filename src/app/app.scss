@@ -16,17 +16,14 @@
 // automatically applied to the <body> element in the app.
 
 // sass variables
+ion-col {
+  position: initial !important;
+}
+.col {
+  position : initial !important;
+  }
 
 // small gray square BUG FIX
-.scroll-content{
-  overflow-y:auto !important;
-  padding-bottom: 0!important;
-}
-
-ion-col {
-  position: initial;
-}
-
 .f-statusbar {
   height: 25px;
   background-color: color($colors, clear);
@@ -1036,7 +1033,9 @@ ion-icon {
   max-width: 24px;
 }
 
-.scroll-content
+.scroll-content {
+  overflow-y:auto !important;
+  padding-bottom: 0!important;
   ::-webkit-scrollbar,
   ::-webkit-scrollbar,
   ::-webkit-scrollbar-track,
@@ -1044,7 +1043,9 @@ ion-icon {
     border:none;
     width:0;
     background: rgba(0,0,0,0);
+  }
 }
+  
 
 ion-menu {
   overflow-y: scroll !important;

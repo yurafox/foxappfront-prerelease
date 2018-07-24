@@ -47,11 +47,7 @@ export class CategoryTreePage extends ComponentBase {
   }
 
   buildRootTree():Category[] {
-    const rootIndex = this.groups.findIndex((value:Category):boolean => {
-         return !value.parent_id;
-    });
-
-    const rootId = this.groups[rootIndex].id;
+    const rootId = null;
     const filteredArray=this.groups.filter((value:Category): boolean => {
             return value.parent_id === rootId;
       });
