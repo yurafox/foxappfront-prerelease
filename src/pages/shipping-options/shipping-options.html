@@ -3,15 +3,15 @@
 </ion-header>
 
 <ion-content class="f-size-larger" >
-  <ion-grid>
+  <ion-grid *ngIf="dataLoaded">
     <ion-row>
       <ion-col class="f-section-header"><span loc="Выберите доставку" name="ChooseShippingOptions">{{locale['ChooseShippingOptions']}}</span>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-  <ion-grid>
-    <ion-row padding *ngIf="dataLoaded">
+  <ion-grid *ngIf="dataLoaded">
+    <ion-row padding>
       <ion-col>
         <span><span loc="Посылка" name="Shipment">{{locale['Shipment']}}</span> {{itemIndex+1}} <span loc="из" name="Of">{{locale['Of']}}</span> {{this.cart.loShipments.length}}</span>
         <br>
@@ -24,16 +24,16 @@
     </ion-row>
 
 
-    <ion-row *ngIf="dataLoaded">
+    <ion-row>
       <ion-col class="f-padding-lr-15">
         <b><span><span loc="Выберите вариант доставки" name="ChooseDeliveryOption">{{locale['ChooseDeliveryOption']}}</span>:</span></b>
       </ion-col>
     </ion-row>
 
     <div *ngFor="let opt of cart.loShipmentDeliveryOptions" style="padding-left: 5px; padding-right: 5px;">
-      <ion-row *ngIf="opt.itemIdx === itemIndex">
+      <ion-row *ngIf="opt.itemIdx === itemIndex && ((opt.deliveryType.id == 1 && loOfficesLoaded) || opt.deliveryType.id != 1)">
 
-        <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
+        <ion-grid class="f-border-ligthgray">
 
           <ion-row (click)="onSelectOptionClick(opt)">
             <ion-col col-2 text-center>
@@ -85,7 +85,7 @@
     </div>
 
 
-    <ion-row *ngIf="dataLoaded">
+    <ion-row>
       <ion-col class="f-padding-lr-5">
         <button class="f-btn-action" ion-button block
                 [attr.disabled]="!validatePage()?'':null"

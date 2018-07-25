@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, LoadingController, NavController, NavParams, AlertController} from 'ionic-angular';
 import {CartService, LoShipmentDeliveryOption} from '../../app/service/cart-service';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
@@ -14,9 +14,11 @@ export class ShippingOptionsPage extends ComponentBase {
 
   itemIndex = 0;
   dataLoaded = false;
+  loOfficesLoaded = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
-                public repo: AbstractDataRepository, public loadingCtrl: LoadingController) {
+              public repo: AbstractDataRepository, public loadingCtrl: LoadingController,
+              public alertCtrl: AlertController) {
     super();
     this.initLocalization();
     this.cart.loShipmentDeliveryOptions = [];
@@ -71,17 +73,30 @@ export class ShippingOptionsPage extends ComponentBase {
                     return 0;
                   });
                 needAddToOptionsList = !(item.loEntityOfficesList.length === 0);
+                this.loOfficesLoaded = true;
               }
             }
 
             if (needAddToOptionsList)
               this.cart.loShipmentDeliveryOptions.push(item);
           }
+          this.dataLoaded = true;
+        } else {
+          let alert = this.alertCtrl.create({
+            message: this.locale['AlertNoLOMessage'] ? this.locale['AlertNoLOMessage'] : 'К сожалению, доставка по этому адресу не осуществляется',
+            buttons: [
+              {
+                text: 'OK',
+              }
+            ]
+          });
+          alert.present().then(() => {
+            this.navCtrl.pop().catch((err) => console.error(`Couldn't pop: ${err}`));
+          }).catch((err) => console.error(`Alert error: ${err}`));
         }
         i++;
       }
     } finally {
-      this.dataLoaded = true;
       loading.dismiss();
     }
   }
