@@ -93,7 +93,7 @@
         <ion-col class="f-item-padding-bottom">
           <dropdown-list id="btnQty"
                          [reference]="qty"
-                         [options]="{popupHeader:locale['Quantity'], buttonHeader:locale['Qty']}"
+                         [options]="{popupHeader:locale['Quantity'] ? locale['Quantity'] : 'Кол-во', buttonHeader:locale['Qty'] ? locale['Qty'] : 'Кол-во'}"
                          [isQty]="true">
           </dropdown-list>
         </ion-col>
@@ -118,14 +118,14 @@
       <ion-row>
         <ion-col>
           <button class="f-btn-action" ion-button block [attr.disabled]="!valueQuot?'':null"
-                  (click)="onAddToCart()"><span loc="Добавить в корзину" name="AddToCart">{{locale['AddToCart']}}</span></button>
+                  (click)="onAddToCart()"><span loc="Добавить в корзину" name="AddToCart">{{locale['AddToCart'] ? locale['AddToCart'] : 'Добавить в корзину'}}</span></button>
         </ion-col>
       </ion-row>
       <ion-row *ngIf="valueQuot && (valueQuot.price >= minLoanAmt)
                                 && (valueQuot.price <= maxLoanAmt)">
         <ion-col>
           <button class="f-btn-secondary" ion-button block [attr.disabled]="!valueQuot?'':null"
-                  (click)="onGetForLoan()"><span loc="Взять в кредит" name="GetForLoan">{{locale['GetForLoan']}}</span></button>
+                  (click)="onGetForLoan()"><span loc="Взять в кредит" name="GetForLoan">{{locale['GetForLoan'] ? locale['GetForLoan'] : 'Взять в кредит'}}</span></button>
         </ion-col>
       </ion-row>
       <ion-row *ngIf="actionsArr.length>0">

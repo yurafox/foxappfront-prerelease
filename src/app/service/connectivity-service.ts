@@ -33,7 +33,7 @@ export class ConnectivityService {
     let activePage = this.navCtrl ? this.navCtrl.getActive() : undefined;
     this.makeCordovaBehavior(activePage,error);
 
-    if (!this.device.cordova && !this.platform.is('ios')) this.makeBrowserBehavior(error);
+    //if (!this.device.cordova && !this.platform.is('ios')) this.makeBrowserBehavior(error);
   }
 
   public showNoConnectionPage(error: any) {

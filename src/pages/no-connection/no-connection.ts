@@ -1,7 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
-import {ComponentBase} from '../../components/component-extension/component-base';
-import {ConnectivityService} from '../../app/service/connectivity-service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ComponentBase } from '../../components/component-extension/component-base';
+import { ConnectivityService } from '../../app/service/connectivity-service';
+import { CartService } from '../../app/service/cart-service';
+import { SearchService } from '../../app/service/search-service';
+import { UserService } from '../../app/service/bll/user-service';
 
 @IonicPage()
 @Component({
@@ -11,7 +14,8 @@ import {ConnectivityService} from '../../app/service/connectivity-service';
 export class NoConnectionPage extends ComponentBase implements OnInit, OnDestroy {
 
   constructor(public navCtrl: NavController, public navParam: NavParams,
-              public connServ: ConnectivityService) {
+              public connServ: ConnectivityService, public searchServ: SearchService, 
+              public cartServ: CartService, public userServ: UserService) {
     super();
     this.initLocalization();
     if (this.navParam.data.error) {
@@ -19,8 +23,15 @@ export class NoConnectionPage extends ComponentBase implements OnInit, OnDestroy
     }
   }
 
-  ngOnDestroy() {
+  async ngOnDestroy() {
     this.connServ.counter = 0;
+    this.searchServ.initData();
+    this.cartServ.initCart();
+    if (!this.userService.isAuth && this.userService.token) {
+      this.userService.userMutex = true;
+      await this.userService.shortLogin();
+      this.userService.userMutex = false;
+    }
   }
   ionViewWillLeave() {
     this.connServ.counter = 0;

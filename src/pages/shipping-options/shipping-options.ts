@@ -83,7 +83,7 @@ export class ShippingOptionsPage extends ComponentBase {
           this.dataLoaded = true;
         } else {
           let alert = this.alertCtrl.create({
-            message: this.locale['AlertNoLOMessage'] ? this.locale['AlertNoLOMessage'] : 'К сожалению, доставка по этому адресу не осуществляется',
+            message: this.locale['AlertNoLOMessage'] ? this.locale['AlertNoLOMessage'] : 'К сожалению, доставка по данному адресу не осуществляется',
             buttons: [
               {
                 text: 'OK',

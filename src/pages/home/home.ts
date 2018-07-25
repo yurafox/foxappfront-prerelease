@@ -63,14 +63,18 @@ export class HomePage extends ComponentBase implements DoCheck {
 
       let ar = await this._repo.getProductsOfDay();
       this.productsOfDay = [];
-      for (let i of ar) {
-        this.productsOfDay.push(i);
+      if (ar && ar.length > 0) {
+        for (let i of ar) {
+          this.productsOfDay.push(i);
+        }
       }
 
       let shAr = await this._repo.getProductsSalesHits();
       this.productsSalesHits = [];
-      for (let i of shAr) {
-        this.productsSalesHits.push(i);
+      if (shAr && shAr.length > 0) {
+        for (let i of shAr) {
+          this.productsSalesHits.push(i);
+        }
       }
     } catch(err) {
       console.error(err);
