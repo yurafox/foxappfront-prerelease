@@ -67,7 +67,7 @@ Passport Data
         <ion-grid class="f-border-ligthgray">
           <form #f="ngForm">
             <ion-row>
-              <ion-col style="padding-bottom: 10px;">
+              <ion-col style="padding-bottom: 10px;" class="f-form-ion-col">
                 <label for="lastName"><span loc="Фамилия" name="LastName">{{locale['LastName']}}</span>:*</label>
                 <input type="text" [(ngModel)]="cart.person.lastName" id="lastName" name="lastName"
                        pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,']+"

@@ -15,11 +15,11 @@ export class ProductComparePage extends ComponentBase implements OnInit {
   productId: number;
   defaultCategoryId: number;
 
-  private products: Array<number>;
-  private rerender: boolean = false;
+ products: Array<number>;
+  rerender: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
-    public srchService: SearchService, private changeDet: ChangeDetectorRef, 
+    public srchService: SearchService, public changeDet: ChangeDetectorRef, 
     public prodCompService: ProductCompareService ) {
     super();
     this.productId = this.navParams.data.productId;

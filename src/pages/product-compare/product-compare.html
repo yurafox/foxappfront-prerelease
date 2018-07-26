@@ -17,11 +17,11 @@
           <ion-icon class="f-icon-scale" name="custom-compare"></ion-icon>
       </ion-row>
       <ion-row justify-content-center style="height: 50%">
-            <span class="f-color-secondary f-size-larger" loc="Нет товаров в сравнении" name="NoProductsComparison">{{locale['NoProductsComparison']}}</span>
+            <span class="f-color-secondary f-size-larger" loc="Нет товаров в сравнении" name="NoProductsComparison">{{locale['NoProductsComparison'] ? locale['NoProductsComparison'] : 'Нет товаров в сравнении'}}</span>
       </ion-row>
       <ion-row>
         <ion-col>
-          <button class="f-btn-action" ion-button block (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage']}}</span></button>
+          <button class="f-btn-action" ion-button block (click)="toHomePage()"><span loc="На главную" name="ToHomePage">{{locale['ToHomePage'] ? locale['ToHomePage'] : 'На главную'}}</span></button>
         </ion-col>
       </ion-row>
     </ion-grid>

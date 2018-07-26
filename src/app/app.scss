@@ -16,11 +16,6 @@
 // automatically applied to the <body> element in the app.
 
 // sass variables
-form ion-row ion-col {
-  position: initial;
-  overflow-y: auto;
-  padding-bottom: 0;
-}
 
 // small gray square BUG FIX
 .f-statusbar {
@@ -1045,8 +1040,7 @@ ion-menu {
   }
 }
 
-.scroll-content {
-  ::-webkit-scrollbar,
+::-webkit-scrollbar,
   ::-webkit-scrollbar,
   ::-webkit-scrollbar-track,
   ::-webkit-scrollbar-thumb {
@@ -1054,6 +1048,11 @@ ion-menu {
     width:0;
     background: rgba(0,0,0,0);
   }
+
+.f-form-ion-col {
+  position: initial;
+  overflow-y: auto;
+  padding-bottom: 0;
 }
 
 /* RATING STARS FOR MAP */

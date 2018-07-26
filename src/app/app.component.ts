@@ -151,8 +151,14 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   }
 
   openPage(page: PageInterface) {
+    let firstPage = this.nav.getByIndex(0);
     if (!(this.userService.isAuth) && (page.component === 'AccountMenuPage')) {
-      this.nav.push('LoginPage', {continuePage: null}).catch((err: any) => {
+      this.nav.push('LoginPage', { continuePage: null }).then(() => {
+        if (firstPage.name === 'NoConnectionPage') {
+          this.nav.insert(0, 'HomePage');
+          this.nav.remove(1);
+        }
+      }).catch((err: any) => {
         console.log(`Couldn't navigate to LoginPage: ${err}`);
       });
     } else {
@@ -164,7 +170,12 @@ export class FoxApp extends ComponentBase implements OnDestroy {
           break;
         }
         default: {
-          this.nav.push(page.component).catch((err: any) => {
+          this.nav.push(page.component).then(() => {
+            if (firstPage.name === 'NoConnectionPage') {
+              this.nav.insert(0, 'HomePage');
+              this.nav.remove(1);
+            }
+          }).catch((err: any) => {
             console.log(`Couldn't push this page: ${page.component.toString()}: ${err}`);
           });
           break;
@@ -174,11 +185,23 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   }
 
   register() {
-    this.nav.push('RegisterPage').catch((err)=>console.error(err));
+    let firstPage = this.nav.getByIndex(0);
+    this.nav.push('RegisterPage').then(() => {
+      if (firstPage.name === 'NoConnectionPage') {
+        this.nav.insert(0, 'HomePage');
+        this.nav.remove(1);
+      }
+    }).catch((err)=>console.error(err));
   }
 
   account() {
-    this.nav.push('AccountMenuPage').catch((err)=>console.error(err));
+    let firstPage = this.nav.getByIndex(0);
+    this.nav.push('AccountMenuPage').then(() => {
+      if (firstPage.name === 'NoConnectionPage') {
+        this.nav.insert(0, 'HomePage');
+        this.nav.remove(1);
+      }
+    }).catch((err)=>console.error(err));
   }
 
   signOut() {
@@ -192,12 +215,24 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   }
 
   openBalancePage() {
-    this.nav.push('BalancePage').catch((err)=>console.error(err));
+    let firstPage = this.nav.getByIndex(0);
+    this.nav.push('BalancePage').then(() => {
+      if (firstPage.name === 'NoConnectionPage') {
+        this.nav.insert(0, 'HomePage');
+        this.nav.remove(1);
+      }
+    }).catch((err)=>console.error(err));
   }
 
   toLogIn() {
     if (this.userService.isAuth === false) {
-      this.nav.push('LoginPage').catch((err: any) => {
+      let firstPage = this.nav.getByIndex(0);
+      this.nav.push('LoginPage').then(() => {
+        if (firstPage.name === 'NoConnectionPage') {
+          this.nav.insert(0, 'HomePage');
+          this.nav.remove(1);
+        }
+      }).catch((err: any) => {
         console.log(`Couldn't navigate to LoginPage: ${err}`);
       });
     }
