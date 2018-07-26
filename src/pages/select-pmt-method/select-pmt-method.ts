@@ -15,6 +15,7 @@ export class SelectPmtMethodPage extends ComponentBase {
   @ViewChild('f') personInfoEditForm: NgForm;
   pmtMethods = [];
   dataLoaded = false;
+  passpSeries: string = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
@@ -23,11 +24,14 @@ export class SelectPmtMethodPage extends ComponentBase {
     super();
     this.cart.initBonusData();
     this.getPmtMethods();
+    if (cart.person.passportSeries && cart.person.passportSeries.length > 0) {
+      this.passpSeries = cart.person.passportSeries.toUpperCase();
+    }
   }
 
   async getPmtMethods () {
     let pmt = await this.repo.getPmtMethods();
-    pmt.forEach(i => {
+    if (pmt) pmt.forEach(i => {
         this.pmtMethods.push({isChecked: ((this.cart.order.idPaymentMethod === i.id)), method: i});
       }
     );
