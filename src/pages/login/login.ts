@@ -192,7 +192,7 @@ export class LoginPage extends ComponentBase implements OnInit {
   }
 
   addCodeValidators():void {
-      this.verifyForm.controls['code'].setValidators([Validators.required,Validators.pattern('^\\d{5,6}$')]);
+      this.verifyForm.controls['code'].setValidators([Validators.required,Validators.pattern('^\\d{3,6}$')]);
       this.makeCodeUpdate();
   }
 
