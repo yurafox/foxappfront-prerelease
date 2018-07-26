@@ -70,7 +70,7 @@ Passport Data
               <ion-col style="padding-bottom: 10px;" class="f-form-ion-col">
                 <label for="lastName"><span loc="Фамилия" name="LastName">{{locale['LastName']}}</span>:*</label>
                 <input type="text" [(ngModel)]="cart.person.lastName" id="lastName" name="lastName"
-                       pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,']+"
+                       pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,',-]+"
                        required #lastName="ngModel">
                 <div *ngIf="!lastName.valid && lastName.touched">
                 <span *ngIf="lastName.hasError('required')"
@@ -80,7 +80,7 @@ Passport Data
                 </div>
                 <label for="firstName"><span loc="Имя" name="FirstName">{{locale['FirstName']}}</span>:*</label>
                 <input type="text" [(ngModel)]="cart.person.firstName" id="firstName" name="firstName"
-                       pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,']+"
+                       pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,',-]+"
                        required #firstName="ngModel">
                 <div *ngIf="!firstName.valid && firstName.touched">
                 <span *ngIf="firstName.hasError('required')"
@@ -90,7 +90,7 @@ Passport Data
                 </div>
                 <label for="middleName"><span loc="По отчеству" name="MiddleName">{{locale['MiddleName']}}</span>:*</label>
                 <input type="text" [(ngModel)]="cart.person.middleName" id="middleName" name="middleName"
-                       pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,']+"
+                       pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,',-]+"
                        required #middleName="ngModel">
                 <div *ngIf="!middleName.valid && middleName.touched">
                 <span *ngIf="middleName.hasError('required')"
