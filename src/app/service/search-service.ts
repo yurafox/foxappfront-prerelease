@@ -100,7 +100,7 @@ export class SearchService {
 
   async connect() {
     this.client = new Client({
-      host: AppConstants.ELASTIC_PROD_MODE ? (await this.repo.getAppParam('ELASTIC_ENDPOINT')).split(" ") : AppConstants.DEV_ELASTIC_ENDPOINT
+      host: AppConstants.ELASTIC_PROD_MODE ? (await this.repo.getAppParam('ELASTIC_ENDPOINT')).split(" ") : AppConstants.DEV_ELASTIC_ENDPOINT.split(" ")
     })
   }
 
