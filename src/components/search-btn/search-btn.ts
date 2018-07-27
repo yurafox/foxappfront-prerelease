@@ -152,9 +152,9 @@ export class SearchBtnComponent extends ComponentBase {
       event.stopPropagation();
     this.searchService.lastSearch = '';
     this.incSearch();
-    if ((this.navCtrl.length()-1) > 0) {
-      this.navCtrl.setRoot('HomePage').catch();
-    } else this.hostPage.pageMode = PageMode.HomeMode;
+    if (!((this.navCtrl.length()-1) > 0)) {
+      this.hostPage.pageMode = PageMode.HomeMode;
+    }
     this.inputMode = false;
   }
 
