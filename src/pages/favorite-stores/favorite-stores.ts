@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AlertController, IonicPage, NavController} from 'ionic-angular';
+import {AlertController, IonicPage, NavController, LoadingController} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {City} from '../../app/model/city';
 import {Store} from '../../app/model/store';
@@ -23,31 +23,47 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
 
   stores: Array<IStore>;
   clientId: number = 0;
+  dataLoaded:boolean;
 
-  constructor(public navCtrl: NavController, public repo: AbstractDataRepository, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public repo: AbstractDataRepository, 
+              public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
     super();
+    this.initLocalization();
     this.stores = [];
+    this.dataLoaded = false;
   }
 
   async ngOnInit() {
     super.ngOnInit();
-    let favStores: Store[] = await this.repo.getFavoriteStores();
-    if (favStores && favStores.length > 0) {
-      for (let i = 0; i < favStores.length; i++) {
-        let city = await this.repo.getCityById(favStores[i].idCity);
-        let store: IStore = {city: null, store: null, reviews: null, cantShow: false};
-        store = {city: city, store: favStores[i], reviews: null, cantShow: false, hasReviews: false};
-        let reviews = await this.repo.getStoreReviewsByStoreId(favStores[i].id);
-        let hasClientReviews = await this.repo.getHasClientStoreReview(favStores[i].id);
-        let revs = reviews.reviews;
-        store.reviews = revs;
-        if (!this.clientId) this.clientId = reviews.idClient;
-        if (hasClientReviews && hasClientReviews != null && hasClientReviews.hasReview) {
-          store.cantShow = hasClientReviews.hasReview;
+    let content = this.locale['LoadingContent'] ? this.locale['LoadingContent'] : 'Пожалуйста, подождите...';
+    let loading = this.loadingCtrl.create({
+      content: content
+    });
+    try {
+      loading.present();
+      let favStores: Store[] = await this.repo.getFavoriteStores();
+      if (favStores && favStores.length > 0) {
+        for (let i = 0; i < favStores.length; i++) {
+          let city = await this.repo.getCityById(favStores[i].idCity);
+          let store: IStore = { city: null, store: null, reviews: null, cantShow: false };
+          store = { city: city, store: favStores[i], reviews: null, cantShow: false, hasReviews: false };
+          let reviews = await this.repo.getStoreReviewsByStoreId(favStores[i].id);
+          let hasClientReviews = await this.repo.getHasClientStoreReview(favStores[i].id);
+          let revs = reviews.reviews;
+          store.reviews = revs;
+          if (!this.clientId) this.clientId = reviews.idClient;
+          if (hasClientReviews && hasClientReviews != null && hasClientReviews.hasReview) {
+            store.cantShow = hasClientReviews.hasReview;
+          }
+          store.hasReviews = !!(revs && (revs.length > 0));
+          this.stores.push(store);
         }
-        store.hasReviews = !!(revs && (revs.length > 0));
-        this.stores.push(store);
       }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      this.dataLoaded = true;
+      loading.dismiss();
     }
   }
 
