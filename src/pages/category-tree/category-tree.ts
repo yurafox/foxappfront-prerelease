@@ -53,7 +53,7 @@ export class CategoryTreePage extends ComponentBase {
       });
 
     if(filteredArray && filteredArray.length!=0) {
-      filteredArray.sort((x,y)=>{return y.priority_index-x.priority_index;});
+      filteredArray.sort((x,y)=>{return x.priority_index-y.priority_index;}); // Should be x-y
     }
 
     return filteredArray;

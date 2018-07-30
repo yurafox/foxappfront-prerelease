@@ -6,10 +6,10 @@
 
     <ion-row *ngIf="dataLoaded">
       <ion-col class="f-padding-lr-5">
-          <button class="f-btn-action" ion-button block *ngIf="cart.order.idPaymentMethod !== 2"
+          <button class="f-btn-action" ion-button block *ngIf="cart && cart.order && cart.order.idPaymentMethod && cart.order.idPaymentMethod !== 2"
                   [attr.disabled]="(!continueBtnEnabled)?'':null"
                   (click)="onPlaceOrderClick()"><span loc="Разместить заказ" name="PlaceYourOrder">{{locale['PlaceYourOrder']}}</span></button>
-          <button class="f-btn-action" ion-button block *ngIf="cart.order.idPaymentMethod === 2"
+          <button class="f-btn-action" ion-button block *ngIf="cart && cart.order && cart.order.idPaymentMethod && cart.order.idPaymentMethod === 2"
                   [attr.disabled]="(!continueBtnEnabled)?'':null"
                   (click)="onPlaceOrderClick()"><span loc="Перейти к оплате" name="ToPayment">{{locale['ToPayment']}}</span></button>
       </ion-col>
@@ -35,7 +35,7 @@
       <grid-hr></grid-hr>
 
       <ion-grid class="f-border-ligthgray" *ngIf="dataLoaded">
-        <ion-row *ngIf="cart.order?.clientaddress && !cart.checkIsPickupOnly">
+        <ion-row *ngIf="cart && cart.order && cart.order?.clientaddress && !cart.checkIsPickupOnly">
           <ion-col>
             <span loc="Доставка на" name="ShippingTo">{{locale['ShippingTo']}}</span>:
             <b>{{cart.order?.clientaddress?.recName}}</b>, {{cart.order?.clientaddress?.addressString}}
@@ -127,7 +127,7 @@
             {{ pmtMethodName }}
           </ion-col>
         </ion-row>
-        <div *ngIf="cart.loan && (cart.order.idPaymentMethod === 3)">
+        <div *ngIf="cart.loan && cart.order && (cart.order.idPaymentMethod === 3)">
           <hr>
           <credit-brief [creditAmt]="cart.cartGrandTotal" [credit]="cart.loan"></credit-brief>
         </div>
@@ -166,7 +166,7 @@
           </ion-row>
 
 
-          <ion-row *ngIf="item.idStorePlace">
+          <ion-row *ngIf="item && item.idStorePlace">
             <ion-col>
               <span loc="Получение в" name="PickupAt">{{locale['PickupAt']}}</span> &#45;&#45;
               <span class="f-color-green">{{item?.storeplace?.name}}, {{item?.storeplace?.address_line}}
@@ -267,10 +267,10 @@
 
     <ion-row *ngIf="dataLoaded">
       <ion-col class="f-padding-lr-5">
-        <button class="f-btn-action" ion-button block *ngIf="cart.order.idPaymentMethod !== 2"
+        <button class="f-btn-action" ion-button block *ngIf="cart && cart.order && cart.order.idPaymentMethod && cart.order.idPaymentMethod !== 2"
                 [attr.disabled]="(!continueBtnEnabled)?'':null"
                 (click)="onPlaceOrderClick()"><span loc="Разместить заказ" name="PlaceYourOrder">{{locale['PlaceYourOrder']}}</span></button>
-        <button class="f-btn-action" ion-button block *ngIf="cart.order.idPaymentMethod === 2"
+        <button class="f-btn-action" ion-button block *ngIf="cart && cart.order && cart.order.idPaymentMethod && cart.order.idPaymentMethod === 2"
                 [attr.disabled]="(!continueBtnEnabled)?'':null"
                 (click)="onPlaceOrderClick()"><span loc="Перейти к оплате" name="ToPayment">{{locale['ToPayment']}}</span></button>
       </ion-col>
