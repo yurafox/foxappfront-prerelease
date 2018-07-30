@@ -226,7 +226,7 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
     if(!this.productObjects)
       return {'height': '100%'};
     else
-      return {'height': (this.scrollHeight+32).toString()+'px'};
+      return {'height': (this.scrollHeight+52).toString()+'px'};
   }
   
 }
