@@ -256,7 +256,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async calculateCart(promoCode: string, maxBonusCnt: number, usePromoBonus: boolean, creditProductId: number):
     Promise<{
-      clOrderSpecProdId: number, promoCodeDisc: number, bonusDisc: number, promoBonusDisc: number,
+      clOrderSpecProdId: number, promoCode: string, promoCodeDisc: number, bonusDisc: number, promoBonusDisc: number,
       earnedBonus: number, qty: number
     }[]> {
     try {
@@ -276,7 +276,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (val) {
         val.forEach(i => {
           _res.push({
-            clOrderSpecProdId: i.clOrderSpecProdId, promoCodeDisc: i.promoCodeDisc,
+            clOrderSpecProdId: i.clOrderSpecProdId, promoCode: i.promoCode, promoCodeDisc: i.promoCodeDisc,
             bonusDisc: i.bonusDisc, promoBonusDisc: i.promoBonusDisc, earnedBonus: i.earnedBonus, qty: i.qty
           });
         });
