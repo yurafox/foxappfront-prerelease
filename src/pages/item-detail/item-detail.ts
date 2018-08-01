@@ -266,8 +266,8 @@ export class ItemDetailPage extends ItemBase implements OnInit {
     let uniqueProps = new Array<PropWithIndex>();
     let uniqueSortedProps = new Array<PropWithIndex>();
 
-    loadProducts.forEach(product => {
-      product.props.forEach(i => {
+    if (loadProducts) loadProducts.forEach(product => {
+      if (product && product.props) product.props.forEach(i => {
           if (!uniqueProps.find((x) => {return x.property.id === i.id_Prop.id}))
             uniqueProps.push(new PropWithIndex(i.id_Prop, i.idx));
         }
@@ -277,7 +277,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
 
     uniqueSortedProps = uniqueProps.sort( (x,y) => {return x.idx - y.idx || x.property.id - y.property.id});
 
-    loadProducts.forEach(product => { 
+    if (loadProducts) loadProducts.forEach(product => { 
       let findedProp = false;
       for(var i = 0; i < this.displayPropCount - 2; i++) {
         if( i < uniqueSortedProps.length) {

@@ -8,12 +8,12 @@ import {LoginTemplate} from '../../../model/login-template';
 import {IUserInfo, IUserVerifyAccountData, User} from '../../../model/user';
 import {ChangePassword} from '../../../model/change-password';
 // server url
-const loginUrl = `${AppConstants.BASE_URL}/api/account/login`;
-const accountUrl = `${AppConstants.BASE_URL}/api/account`;
-const verifyAccountUrl = `${AppConstants.BASE_URL}/api/account/verify`;
-const changePasswdAccountUrl = `${AppConstants.BASE_URL}/api/account/changePass`;
-const getBonusesInfoUrl = `${AppConstants.BASE_URL}/api/client/getBonusesInfo`;
-const callMeUrl = `${AppConstants.BASE_URL}/api/client/callMe`;
+const loginUrl = `${AppConstants.BASE_URL}/account/login`;
+const accountUrl = `${AppConstants.BASE_URL}/account`;
+const verifyAccountUrl = `${AppConstants.BASE_URL}/account/verify`;
+const changePasswdAccountUrl = `${AppConstants.BASE_URL}/account/changePass`;
+const getBonusesInfoUrl = `${AppConstants.BASE_URL}/client/getBonusesInfo`;
+const callMeUrl = `${AppConstants.BASE_URL}/client/callMe`;
 // mock url
 // const loginUrl = '/api/mtoken';
 // const accountUrl = '/api/musers';
