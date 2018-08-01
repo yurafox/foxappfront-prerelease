@@ -119,6 +119,7 @@ export abstract class AbstractDataRepository {
                                       creditProductId: number /*,
                                       cartContent: ClientOrderProducts[]*/)
                                                               : Promise<{clOrderSpecProdId: number,
+                                                                          promoCode: string,
                                                                           promoCodeDisc: number, bonusDisc: number,
                                                                           promoBonusDisc: number, earnedBonus: number,
                                                                           qty: number}[]>;

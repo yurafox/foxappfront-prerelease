@@ -182,6 +182,7 @@ export class CartService {
           }
         }
         if (_found) {
+          _prod.payPromoCode = i.promoCode;
           _prod.payBonusCnt = i.bonusDisc;
           _prod.payPromoCodeDiscount = i.promoCodeDisc;
           _prod.payPromoBonusCnt = i.promoBonusDisc;
