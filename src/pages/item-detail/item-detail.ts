@@ -42,6 +42,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   popularAccessories: Array<Product> = [];
   displayPropCount: number;
   similarProducstsResolved = false;
+  viewProducts = new Array<Product>();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
@@ -80,8 +81,14 @@ export class ItemDetailPage extends ItemBase implements OnInit {
       }
     );
 
-    if (this.userService.isAuth)
-      this.repo.postProductView(this.product.id, null);
+    if (this.userService.isAuth) {
+      await this.uService.loadViewProducts();
+
+      if (!this.uService.findViewProduct(this.product))
+        this.repo.postProductView(this.product.id, null);
+    }
+    this.uService.addViewProduct(this.product);
+    this.viewProducts = this.uService.viewProducts;
 
     this.actionsArr = await this.repo.getActionsByProduct(this.product.id);
     this.complectsArr = this.actionsArr.filter(x => ((x.complect) && ((x.actionType === 4) || (x.actionType === 5))));

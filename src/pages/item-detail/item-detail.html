@@ -204,7 +204,7 @@
 
     </ion-grid>
 
-    <div style="min-height:266px;order:6; width: 100%" *ngIf="this.popularAccessories.length > 0 && similarProducstsResolved">
+    <div style="min-height:266px; width: 100%" *ngIf="this.popularAccessories.length > 0 && similarProducstsResolved">
       <ion-grid class="f-item-nopadding-tb">
         <ion-row>
           <ion-col class="f-item-section-header"><span loc="Популярные аксессуары" name="PopularAccessories">{{locale['PopularAccessories']}}</span>
@@ -263,4 +263,26 @@
     </ion-row>
   </ion-grid>
   </div>
+
+  <div style="min-height:266px; width: 100%" *ngIf="resolved && this.viewProducts.length > 1">
+    <hr>
+    <ion-grid class="f-item-nopadding-tb">
+      <ion-row>
+        <ion-col class="f-item-section-header"><span loc="Ранее просмотренные товары" name="ViewProducts">{{locale['ViewProducts']}}</span>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="f-padding-lr-5">
+          <ion-scroll class="f-popular-accessories-scroll" scrollX="true">
+            <ion-row nowrap>
+              <div *ngFor="let prod of viewProducts">
+                <item-tile *ngIf="prod.id!=product.id" [product]="prod"></item-tile>
+              </div>
+            </ion-row>
+          </ion-scroll>
+        </ion-col>
+      </ion-row>
+    </ion-grid> 
+  </div>
+
 </ion-content>

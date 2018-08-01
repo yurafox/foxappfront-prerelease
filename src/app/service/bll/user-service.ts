@@ -8,6 +8,8 @@ import {IUserInfo, IUserVerifyAccountData, User} from '../../model/user';
 import {AbstractAccountRepository} from '../repository/abstract/abstract-account-repository';
 import {ChangePassword} from '../../model/change-password';
 import {LoginTemplate} from '../../model/login-template';
+import {Product} from '../../model/product';
+import {AbstractDataRepository} from '../repository/abstract/abstract-data-repository';
 
 @Injectable()
 export class UserService {
@@ -15,7 +17,7 @@ export class UserService {
   _auth: boolean;
   _token: string;
   shortloginMutex:boolean = false;
-
+  viewProducts = new Array<Product>();
 
   public errorMessages:IDictionary<string> = {  // field for user service error log
     'login':'',
@@ -29,7 +31,8 @@ export class UserService {
               public evServ:EventService,
               public alertCtrl:AlertController,
               public toastCtrl:ToastController,
-              public locRepo: AbstractLocalizationRepository) {
+              public locRepo: AbstractLocalizationRepository,
+              public repo: AbstractDataRepository) {
     this.callDefaultUser();
   }
 
@@ -286,5 +289,21 @@ export class UserService {
 
   public callMe(phone: string) {
     return this._account.callMe(phone);
+  }
+
+  async loadViewProducts() {
+    if(this.isAuth) {
+      this.viewProducts = await this.repo.getViewProducts();
+    }
+  }
+
+  findViewProduct(product: Product): Product {
+    return this.viewProducts.find((x) => {return x.id === product.id});
+  }
+
+  addViewProduct(product: Product) {
+    if (!this.findViewProduct(product)) {
+      this.viewProducts.unshift(product);
+    }
   }
 }
