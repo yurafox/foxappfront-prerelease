@@ -83,9 +83,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
 
     if (this.userService.isAuth) {
       await this.uService.loadViewProducts();
-
-      if (!this.uService.findViewProduct(this.product))
-        this.repo.postProductView(this.product.id, null);
+      this.repo.postProductView(this.product.id, null);
     }
     this.uService.addViewProduct(this.product);
     this.viewProducts = this.uService.viewProducts;

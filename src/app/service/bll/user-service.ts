@@ -292,18 +292,17 @@ export class UserService {
   }
 
   async loadViewProducts() {
-    if(this.isAuth) {
+    if(this.viewProducts.length == 0) {
       this.viewProducts = await this.repo.getViewProducts();
     }
   }
 
-  findViewProduct(product: Product): Product {
-    return this.viewProducts.find((x) => {return x.id === product.id});
-  }
-
   addViewProduct(product: Product) {
-    if (!this.findViewProduct(product)) {
-      this.viewProducts.unshift(product);
-    }
+    let index = this.viewProducts.findIndex((x) => {return x.id === product.id});
+    if(index != -1)
+      this.viewProducts.slice(index, 1);
+
+    this.viewProducts.unshift(product);
   }
+  
 }
