@@ -152,6 +152,7 @@ const pageOptionsUrl = `${AppConstants.BASE_URL}/api/page/GetPageOptions`;
 const getLoDeliveryTypesAttrByLoEntityUrl = `${AppConstants.BASE_URL}/api/lo/LoDeliveryTypesAttrByLoEntity`;
 const similarProductsUrl = `${AppConstants.BASE_URL}/api/ProductCompare/GetSimilarProducts`;
 const popularAccessoriesUrl = `${AppConstants.BASE_URL}/api/ProductCompare/GetPopularAccessories`;
+const viewProductsUrl = `${AppConstants.BASE_URL}/api/Client/GetProductsView`;
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -4100,4 +4101,26 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async getViewProducts(): Promise<Product[]> {
+    try {
+      const response = await this.http
+        .get(viewProductsUrl, RequestFactory.makeAuthHeader())
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const products = new Array<Product>();
+
+      if (data != null)
+        data.forEach(val =>
+          products.push(this.getProductFromResponse(val))
+        );
+
+      return products;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
 }

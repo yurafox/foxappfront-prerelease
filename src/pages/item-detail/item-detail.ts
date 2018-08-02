@@ -43,6 +43,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   popularAccessories: Array<Product> = [];
   displayPropCount: number;
   similarProducstsResolved = false;
+  viewProducts = new Array<Product>();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
@@ -89,8 +90,15 @@ export class ItemDetailPage extends ItemBase implements OnInit {
     }
     this.reviewsResolved = true;
 
-    if (this.userService.isAuth)
-      this.repo.postProductView(this.product.id, null);
+    if (this.userService.isAuth) {
+      await this.repo.postProductView(this.product.id, null);
+      await this.uService.loadViewProducts();
+
+    }
+    else
+      this.uService.addViewProduct(this.product);
+
+    this.viewProducts = this.uService.viewProducts;
   }
 
   async ionViewDidEnter() {
