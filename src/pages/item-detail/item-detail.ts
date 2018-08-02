@@ -28,6 +28,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   selectedStorePlace: StorePlace;
   reviews = new Array<ProductReview>();
   reviewsObj: {reviews: ProductReview[], idClient: number};
+  reviewsResolved = false;
   description: string;
   minLoanAmt = 0;
   maxLoanAmt = 0;
@@ -65,6 +66,18 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   async ngOnInit() {
     super.ngOnInit();
 
+    this.actionsArr = await this.repo.getActionsByProduct(this.product.id);
+    this.complectsArr = this.actionsArr.filter(x => ((x.complect) && ((x.actionType === 4) || (x.actionType === 5))));
+    this.repo.getProductDescription(this.product.id).then( x => {
+        this.description = x;
+      }
+    );
+
+    this.minLoanAmt = parseInt(await this.repo.getAppParam('MIN_LOAN_AMT'));
+    this.maxLoanAmt = parseInt(await this.repo.getAppParam('MAX_LOAN_AMT'));
+
+    this.cantShow = this.hasClientReview();
+
     await this.loadSimilarProducts();
     this.popularAccessories = await this.repo.getPopularAccessories(this.product.id);
     this.similarProducstsResolved = true;
@@ -74,22 +87,10 @@ export class ItemDetailPage extends ItemBase implements OnInit {
       this.reviews = this.reviewsObj.reviews;
       this.clientId = this.reviewsObj.idClient;
     }
-
-    this.repo.getProductDescription(this.product.id).then( x => {
-        this.description = x;
-      }
-    );
+    this.reviewsResolved = true;
 
     if (this.userService.isAuth)
       this.repo.postProductView(this.product.id, null);
-
-    this.actionsArr = await this.repo.getActionsByProduct(this.product.id);
-    this.complectsArr = this.actionsArr.filter(x => ((x.complect) && ((x.actionType === 4) || (x.actionType === 5))));
-
-    this.minLoanAmt = parseInt(await this.repo.getAppParam('MIN_LOAN_AMT'));
-    this.maxLoanAmt = parseInt(await this.repo.getAppParam('MAX_LOAN_AMT'));
-
-    this.cantShow = this.hasClientReview();
   }
 
   async ionViewDidEnter() {
@@ -262,7 +263,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
 
   async loadSimilarProducts() {
     let loadProducts: Array<Product> = await this.repo.getSimilarProducts(this.product.id);
-  
+
     let uniqueProps = new Array<PropWithIndex>();
     let uniqueSortedProps = new Array<PropWithIndex>();
 
@@ -277,7 +278,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
 
     uniqueSortedProps = uniqueProps.sort( (x,y) => {return x.idx - y.idx || x.property.id - y.property.id});
 
-    loadProducts.forEach(product => { 
+    loadProducts.forEach(product => {
       let findedProp = false;
       for(var i = 0; i < this.displayPropCount - 2; i++) {
         if( i < uniqueSortedProps.length) {
@@ -290,7 +291,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
         }
       }
 
-      if(findedProp) 
+      if(findedProp)
         this.similarProducts.push(product);
     });
    }
