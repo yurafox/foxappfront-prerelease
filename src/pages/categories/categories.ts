@@ -63,6 +63,6 @@ export class CategoriesPage extends ComponentBase   {
   }
   public sortDesc():void {
     //this.categoriesArray.sort((x,y)=>{return y.priority_index-x.priority_index;});
-    this.categoryForShow.sort((x,y)=>{return y.priority_show-x.priority_show;});
+    this.categoryForShow.sort((x,y)=>{return y.priority-x.priority;});
   }
 }
