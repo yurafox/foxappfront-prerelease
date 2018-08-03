@@ -18,6 +18,7 @@ export class UserService {
   _token: string;
   shortloginMutex:boolean = false;
   viewProducts = new Array<Product>();
+  isLoadedViewProducts: boolean = false;
 
   public errorMessages:IDictionary<string> = {  // field for user service error log
     'login':'',
@@ -292,15 +293,16 @@ export class UserService {
   }
 
   async loadViewProducts() {
-    //if(this.viewProducts.length == 0) {
+    if(!this.isLoadedViewProducts) {
       this.viewProducts = await this.repo.getViewProducts();
-    //}
+      this.isLoadedViewProducts = true;
+    }
   }
 
   addViewProduct(product: Product) {
     let index = this.viewProducts.findIndex((x) => {return x.id === product.id});
-    if(index != -1)
-      this.viewProducts.slice(index, 1);
+    if(index != -1) 
+      this.viewProducts.splice(index, 1);
 
     this.viewProducts.unshift(product);
   }
