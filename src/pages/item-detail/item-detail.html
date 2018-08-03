@@ -175,20 +175,21 @@
             [productObjects]=similarProducts
             [productId]=null
             [defaultCategoryId]=null
-            [displayPropCount]="displayPropCount" 
+            [displayPropCount]="displayPropCount"
             [showFilter]=false
             [srchService]="srchService">
           </product-compare>
-        </ion-row> 
-      </ion-grid> 
+        </ion-row>
+      </ion-grid>
       <hr>
     </div>
 
-    <ion-grid class="f-item-nopadding-tb">
+    <ion-grid *ngIf="similarProducstsResolved" class="f-item-nopadding-tb">
       <ion-row>
         <ion-col class="f-item-section-header"><span loc="Об этом товаре" name="AboutItem">{{locale['AboutItem']}}</span>
         </ion-col>
       </ion-row>
+
 
       <ion-row *ngIf="description">
         <ion-col>
@@ -204,7 +205,7 @@
 
     </ion-grid>
 
-    <div style="min-height:266px;order:6; width: 100%" *ngIf="this.popularAccessories.length > 0 && similarProducstsResolved">
+    <div style="min-height:266px; width: 100%" *ngIf="this.popularAccessories.length > 0 && similarProducstsResolved">
       <ion-grid class="f-item-nopadding-tb">
         <ion-row>
           <ion-col class="f-item-section-header"><span loc="Популярные аксессуары" name="PopularAccessories">{{locale['PopularAccessories']}}</span>
@@ -221,7 +222,7 @@
             </ion-scroll>
           </ion-col>
         </ion-row>
-      </ion-grid> 
+      </ion-grid>
       <hr>
     </div>
 
@@ -255,12 +256,34 @@
       </ion-row>
     </ion-grid>
 
-  <ion-grid *ngIf="!cantShow">
-    <ion-row>
-      <ion-col>
-        <button text-center class="f-btn-secondary" ion-item block (click)="onWriteReview()"><span loc="Оставить Отзыв" name="WriteReview">{{locale['WriteReview']}}</span></button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+    <ion-grid *ngIf="!cantShow && reviewsResolved">
+      <ion-row>
+        <ion-col>
+          <button text-center class="f-btn-secondary" ion-item block (click)="onWriteReview()"><span loc="Оставить Отзыв" name="WriteReview">{{locale['WriteReview']}}</span></button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
+
+  <div style="min-height:266px; width: 100%" *ngIf="resolved && this.viewProducts.length > 1">
+    <hr>
+    <ion-grid class="f-item-nopadding-tb">
+      <ion-row>
+        <ion-col class="f-item-section-header"><span loc="Ранее просмотренные товары" name="ViewProducts">{{locale['ViewProducts']}}</span>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="f-padding-lr-5">
+          <ion-scroll class="f-popular-accessories-scroll" scrollX="true">
+            <ion-row nowrap>
+              <div *ngFor="let prod of viewProducts">
+                <item-tile *ngIf="prod.id!=product.id" [product]="prod"></item-tile>
+              </div>
+            </ion-row>
+          </ion-scroll>
+        </ion-col>
+      </ion-row>
+    </ion-grid> 
+  </div>
+
 </ion-content>

@@ -152,6 +152,7 @@ const pageOptionsUrl = `${AppConstants.BASE_URL}/page/GetPageOptions`;
 const getLoDeliveryTypesAttrByLoEntityUrl = `${AppConstants.BASE_URL}/lo/LoDeliveryTypesAttrByLoEntity`;
 const similarProductsUrl = `${AppConstants.BASE_URL}/ProductCompare/GetSimilarProducts`;
 const popularAccessoriesUrl = `${AppConstants.BASE_URL}/ProductCompare/GetPopularAccessories`;
+const viewProductsUrl = `${AppConstants.BASE_URL}/Client/GetProductsView`;
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -256,7 +257,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   public async calculateCart(promoCode: string, maxBonusCnt: number, usePromoBonus: boolean, creditProductId: number):
     Promise<{
-      clOrderSpecProdId: number, promoCodeDisc: number, bonusDisc: number, promoBonusDisc: number,
+      clOrderSpecProdId: number, promoCode: string, promoCodeDisc: number, bonusDisc: number, promoBonusDisc: number,
       earnedBonus: number, qty: number
     }[]> {
     try {
@@ -276,7 +277,7 @@ export class AppDataRepository extends AbstractDataRepository {
       if (val) {
         val.forEach(i => {
           _res.push({
-            clOrderSpecProdId: i.clOrderSpecProdId, promoCodeDisc: i.promoCodeDisc,
+            clOrderSpecProdId: i.clOrderSpecProdId, promoCode: i.promoCode, promoCodeDisc: i.promoCodeDisc,
             bonusDisc: i.bonusDisc, promoBonusDisc: i.promoBonusDisc, earnedBonus: i.earnedBonus, qty: i.qty
           });
         });
@@ -4100,4 +4101,26 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
+  public async getViewProducts(): Promise<Product[]> {
+    try {
+      const response = await this.http
+        .get(viewProductsUrl, RequestFactory.makeAuthHeader())
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+      const products = new Array<Product>();
+
+      if (data != null)
+        data.forEach(val =>
+          products.push(this.getProductFromResponse(val))
+        );
+
+      return products;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
 }

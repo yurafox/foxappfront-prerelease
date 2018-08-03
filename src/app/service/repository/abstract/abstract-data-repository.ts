@@ -119,6 +119,7 @@ export abstract class AbstractDataRepository {
                                       creditProductId: number /*,
                                       cartContent: ClientOrderProducts[]*/)
                                                               : Promise<{clOrderSpecProdId: number,
+                                                                          promoCode: string,
                                                                           promoCodeDisc: number, bonusDisc: number,
                                                                           promoBonusDisc: number, earnedBonus: number,
                                                                           qty: number}[]>;
@@ -212,4 +213,5 @@ export abstract class AbstractDataRepository {
   public async abstract getLoEntityDeliveryTypesAttr(shpmt: Shipment, loIdClientAddress: number): Promise<LoDeliveryTypeAttr[]>;
   public async abstract getSimilarProducts(productId: number): Promise<Product[]>;
   public async abstract getPopularAccessories(productId: number): Promise<Product[]>
+  public async abstract getViewProducts(): Promise<Product[]>;
 }
