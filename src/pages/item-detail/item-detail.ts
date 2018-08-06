@@ -97,6 +97,8 @@ export class ItemDetailPage extends ItemBase implements OnInit {
     }
     this.uService.addViewProduct(this.product);
     this.viewProducts = this.uService.viewProducts;
+
+    this.allResolved = true;
   }
 
   async ionViewDidEnter() {
@@ -109,7 +111,6 @@ export class ItemDetailPage extends ItemBase implements OnInit {
         this.cantShow = hasClientReviews.hasReview;
       }
     }
-    this.allResolved = true;
   }
 
   onShowProductDescription(): void {

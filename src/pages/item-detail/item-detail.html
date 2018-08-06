@@ -163,7 +163,6 @@
       </ion-row>
     </ion-grid>
 
-    <section-loading *ngIf="!similarProducstsResolved"></section-loading>
     <div style="width: 100%" *ngIf="this.similarProducts.length > 1 && similarProducstsResolved">
       <ion-grid class="f-item-nopadding-tb">
         <ion-row>
@@ -288,7 +287,6 @@
   </div>
 
   <div *ngIf="!allResolved">
-      <hr>
       <section-loading></section-loading>
   </div>
 
