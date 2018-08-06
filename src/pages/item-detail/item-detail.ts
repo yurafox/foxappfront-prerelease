@@ -44,6 +44,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   displayPropCount: number;
   similarProducstsResolved = false;
   viewProducts = new Array<Product>();
+  allResolved: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
@@ -93,12 +94,11 @@ export class ItemDetailPage extends ItemBase implements OnInit {
     if (this.userService.isAuth) {
       await this.repo.postProductView(this.product.id, null);
       await this.uService.loadViewProducts();
-
     }
-    else
-      this.uService.addViewProduct(this.product);
-
+    this.uService.addViewProduct(this.product);
     this.viewProducts = this.uService.viewProducts;
+
+    this.allResolved = true;
   }
 
   async ionViewDidEnter() {
