@@ -13,6 +13,7 @@ import {Category} from '../../app/model/category';
 export class CategoryTreePage extends ComponentBase {
   groups: Category[] = [];
   currentGroup: Category[] = [];
+  private rootId: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public _sanitizer: DomSanitizer,
               public _repo: AbstractDataRepository) {
@@ -22,6 +23,7 @@ export class CategoryTreePage extends ComponentBase {
   async ngOnInit() {
     super.ngOnInit();
     this.groups = await this._repo.getCategories();
+    this.rootId = parseInt(await this._repo.getAppParam('CATEGORY_ROOT_ID'));
 
     if (this.groups && this.groups.length != 0) {
       this.setCurrentCategoryList();
@@ -31,7 +33,7 @@ export class CategoryTreePage extends ComponentBase {
 
   public toChildCategory(id:number) {
     const recursionGroup = this.groups.filter((value:Category): boolean => {
-      return value.parent_id === id;
+      return value.id_parent_group === id;
     });
     if(recursionGroup && recursionGroup.length!=0)
       this.navCtrl.push('CategoryTreePage', { groups:this.groups,currentGroup:recursionGroup});
@@ -46,14 +48,13 @@ export class CategoryTreePage extends ComponentBase {
                                          : this.navParams.data.currentGroup;
   }
 
-  buildRootTree():Category[] {
-    const rootId = null;
+  buildRootTree():Category[] {    
     const filteredArray=this.groups.filter((value:Category): boolean => {
-            return value.parent_id === rootId;
+            return value.id_parent_group === this.rootId;
       });
 
     if(filteredArray && filteredArray.length!=0) {
-      filteredArray.sort((x,y)=>{return x.priority_index-y.priority_index;}); // Should be x-y
+      filteredArray.sort((x,y)=>{return x.priority-y.priority;}); // Should be x-y
     }
 
     return filteredArray;

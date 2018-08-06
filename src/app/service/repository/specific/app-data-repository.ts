@@ -3331,8 +3331,8 @@ export class AppDataRepository extends AbstractDataRepository {
       if (data != null) {
         if (data) data.forEach(val =>
           categories.push(
-            new Category(val.id, val.name, val.parent_id, val.id_product_cat, val.prefix,
-              val.icon, val.is_show, val.priority_index, val.priority_show)
+            new Category(val.id, val.id_group, val.name, val.id_parent_group, val.id_product_cat, val.prefix,
+              val.icon, val.is_show, val.priority)
           )
         );
       }
