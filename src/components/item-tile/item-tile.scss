@@ -25,4 +25,12 @@ item-tile {
   .f-close-button-scale {
     transform: scale(2.0);
   }
+
+  .f-img-item-tile {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 80px;
+    padding: 3px 4px 2px;
+  }
 }

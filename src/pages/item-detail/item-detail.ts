@@ -44,6 +44,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   displayPropCount: number;
   similarProducstsResolved = false;
   viewProducts = new Array<Product>();
+  allResolved: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
@@ -108,6 +109,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
         this.cantShow = hasClientReviews.hasReview;
       }
     }
+    this.allResolved = true;
   }
 
   onShowProductDescription(): void {
