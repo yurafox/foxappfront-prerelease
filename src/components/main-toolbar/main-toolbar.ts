@@ -51,7 +51,7 @@ export class MainToolbarComponent {
   }
 
   async showSearch() {
-    this.navCtrl.push('HomePage', {pageMode: PageMode.SearchMode, autoFocus:true});
+    this.navCtrl.push('HomePage', {pageMode: PageMode.SearchMode});
   }
 
 }
