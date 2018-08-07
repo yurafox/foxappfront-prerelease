@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component,DoCheck, ElementRef, ViewChild, AfterViewInit} from '@angular/core';
+import {ChangeDetectorRef, Component,DoCheck, ElementRef, ViewChild} from '@angular/core';
 import {App, NavController, IonicPage, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {SearchService} from '../../app/service/search-service';
@@ -20,7 +20,6 @@ export enum PageMode {
 export class HomePage extends ComponentBase implements DoCheck {
 
   _pageMode: PageMode = PageMode.HomeMode;
-  autoFocus:boolean = false; 
 
   @ViewChild('srch') searchButtonControl;
   @ViewChild('cont') cont;
@@ -50,7 +49,6 @@ export class HomePage extends ComponentBase implements DoCheck {
     if (navParams.data.pageMode)
       this._pageMode = navParams.data.pageMode;
     
-    this.autoFocus = navParams.data['autoFocus'];
     this.initData();
   }
 
@@ -85,15 +83,6 @@ export class HomePage extends ComponentBase implements DoCheck {
     this.updateScrollHeight();
   }
   
-  ngAfterViewInit() {
-    this.searchNativeInput = this.searchButtonControl.inputField.nativeElement;
-  }
-
-  ngAfterViewChecked() {
-     if(this.autoFocus && !this.searchNativeInput.value) {
-      this.searchNativeInput.focus();
-     }
-  }
 
   public updateScrollHeight() {
     const hdrH = (this.header) ?  this.header.nativeElement.scrollHeight : 0;
