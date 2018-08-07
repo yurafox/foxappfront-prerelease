@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, IonicPage} from 'ionic-angular';
+import {NavController, IonicPage, LoadingController} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { AlertController } from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
@@ -43,8 +43,10 @@ export class AccountPage extends ComponentBase {
               public alertCtrl: AlertController,
               public repo: AbstractDataRepository,
               public formBuilder: FormBuilder,
-              public cartServ: CartService) {
+              public cartServ: CartService,
+              public loadingCtrl: LoadingController) {
     super();
+    this.initLocalization();
     this.verifyErrorData={errorShow:false,errorMessage:''};
   }
 
@@ -52,18 +54,34 @@ export class AccountPage extends ComponentBase {
     super.ngOnInit();
     this.buildForm();
 
-    [this.currencies,this.langs] = await Promise.all([this.repo.getCurrencies(true),
-                                                      this.repo.getLocale(true)]);
+    let content = this.locale['LoadingContent'] ? this.locale['LoadingContent'] : 'Пожалуйста, подождите...';
+    let loading = this.loadingCtrl.create({
+      content: content
+    });
 
-    this.setDefaultSetting<Currency>(this.currencies,
-      {targetReference:{name:'currentCurrency', ref: Currency},
-            item: {valueName:'id',displayValue:'shortName'},
-            serviceItemName:'currency'});
+    try {
+      loading.present();
+      [this.currencies, this.langs] = await Promise.all([this.repo.getCurrencies(true),
+      this.repo.getLocale(true)]);
 
-    this.setDefaultSetting<Lang>(this.langs,
-      {targetReference:{name:'currentLang', ref: Lang},
-            item: {valueName:'id',displayValue:'name'},
-            serviceItemName:'lang'});
+      this.setDefaultSetting<Currency>(this.currencies,
+        {
+          targetReference: { name: 'currentCurrency', ref: Currency },
+          item: { valueName: 'id', displayValue: 'shortName' },
+          serviceItemName: 'currency'
+        });
+
+      this.setDefaultSetting<Lang>(this.langs,
+        {
+          targetReference: { name: 'currentLang', ref: Lang },
+          item: { valueName: 'id', displayValue: 'name' },
+          serviceItemName: 'lang'
+        });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      loading.dismiss();
+    }
 
     this.previousData = {email: this.editForm.value.email, currency: this.currentCurrency.id, lang: this.currentLang.id, fname: this.editForm.value.fname, lname: this.editForm.value.lname};
     this.currentData = {email: this.editForm.value.email, currency: this.currentCurrency.id, lang: this.currentLang.id, fname: this.editForm.value.fname, lname: this.editForm.value.lname};

@@ -20,7 +20,7 @@ export function getLocString() {
   }
 }
 
-const appLocUrl = `/api/AppLocalization`;
+const appLocUrl = `/AppLocalization`;
 
 @Injectable()
 export class LocalizationRepository extends AbstractLocalizationRepository {

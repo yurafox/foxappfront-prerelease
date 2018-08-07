@@ -5,6 +5,7 @@ import { ConnectivityService } from '../../app/service/connectivity-service';
 import { CartService } from '../../app/service/cart-service';
 import { SearchService } from '../../app/service/search-service';
 import { UserService } from '../../app/service/bll/user-service';
+import { AbstractLocalizationRepository } from '../../app/service/repository/abstract/abstract-localization-repository';
 
 @IonicPage()
 @Component({
@@ -15,7 +16,8 @@ export class NoConnectionPage extends ComponentBase implements OnInit, OnDestroy
 
   constructor(public navCtrl: NavController, public navParam: NavParams,
               public connServ: ConnectivityService, public searchServ: SearchService, 
-              public cartServ: CartService, public userServ: UserService) {
+              public cartServ: CartService, public userServ: UserService,
+              public locRepo: AbstractLocalizationRepository) {
     super();
     this.initLocalization();
     if (this.navParam.data.error) {
@@ -25,6 +27,7 @@ export class NoConnectionPage extends ComponentBase implements OnInit, OnDestroy
 
   async ngOnDestroy() {
     this.connServ.counter = 0;
+    this.locRepo.setLocalization();
     this.searchServ.initData();
     this.cartServ.initCart();
     if (!this.userService.isAuth && this.userService.token) {

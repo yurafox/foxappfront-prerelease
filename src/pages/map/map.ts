@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
-import { Platform, IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { Platform, IonicPage, NavController, NavParams, AlertController, ToastController, LoadingController } from 'ionic-angular';
 import { AbstractDataRepository } from '../../app/service/repository/abstract/abstract-data-repository';
 import {
   GoogleMaps,
@@ -70,7 +70,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
 
   constructor(public nav: NavController, public navParams: NavParams, public platform: Platform,
               public repo: AbstractDataRepository, public alertCtrl: AlertController,
-              public toastCtrl: ToastController) {
+              public toastCtrl: ToastController, public loadingCtrl: LoadingController) {
     super();
     this.initLocalization();
     this.clientId = 0;
@@ -100,7 +100,12 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
     if (this.userService.isAuth) {
       this.isAuthorized = true;
     }
+    let content = this.locale['LoadingContent'] ? this.locale['LoadingContent'] : 'Пожалуйста, подождите...';
+    let loading = this.loadingCtrl.create({
+      content: content
+    });
     try {
+      loading.present();
       this.platform.ready().then(() => {
         this.getLocation().then(res => {
           if (res && res.lat && res.lng) {
@@ -143,32 +148,18 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
       this.storeReviews = reviews.reviews;
       this.clientId = reviews.idClient;
 
-      if (this.cities && this.cities.length > 0) {
-        this.cities.sort((a, b) => {
-          if (a.name < b.name) return -1;
-          if (a.name > b.name) return 1;
-          return 0;
-        });
-      }
+      this.sortCities();
       await this.loadMap();
     } catch (err) {
-      let alert = this.alertCtrl.create({
-        title: this.locale['AlertFailTitle'] ? this.locale['AlertFailTitle'] : 'Что-то пошло не так',
-        message: this.locale['AlertFailMessage'] ? this.locale['AlertFailMessage'] : 'Пожалуйста, проверьте соединение с сетью и попробуйте перезапустить приложение',
-        buttons: [
-          {
-            text: 'OK',
-          }
-        ]
-      });
-      alert.present().then(() => {
-        this.nav.pop().catch((err) => console.log(`Couldn't pop: ${err}`));
-      }).catch((err) => console.log(`Alert error: ${err}`));
-      console.log(err);
+      console.error(err);
+      this.nav.pop().catch((err) => console.log(`Couldn't pop: ${err}`));
+    } finally {
+      loading.dismiss();
     }
   }
+
   ngOnDestroy() {
-    if (this.markerSubscriptions.length > 0) {
+    if (this.markerSubscriptions && this.markerSubscriptions.length > 0) {
       for (let i = 0; i < this.markerSubscriptions.length; i++) {
         this.markerSubscriptions[i].unsubscribe();
       }
@@ -583,5 +574,17 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
       if (reviews[i] && reviews[i].idClient === this.clientId) present = true;
     }
     return present;
+  }
+  
+  sortCities() {
+    if (this.cities && this.cities.length > 0) {
+      this.cities.sort((a, b) => {
+        if (a.name < b.name)
+          return -1;
+        if (a.name > b.name)
+          return 1;
+        return 0;
+      });
+    }
   }
 }
