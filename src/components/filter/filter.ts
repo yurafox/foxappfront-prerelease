@@ -190,7 +190,7 @@ export class FilterComponent extends ComponentBase implements DoCheck {
         const grId = x.key.substring(0, x.key.indexOf('|'));
         const grName = x.key.substring(x.key.indexOf('|')+1, x.key.length);
 
-        const cat = new Category(grId, grName);
+        const cat = new Category(grId, null, grName);
         let catFlt = new GeneralFilterStruct(cat, x.doc_count, false);
         if (grId != 0) // не выводим null-группы
           this.filteredGroups.push(catFlt);
