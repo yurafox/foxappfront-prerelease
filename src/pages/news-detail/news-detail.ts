@@ -11,16 +11,19 @@ import {AbstractDataRepository} from "../../app/service/repository/abstract/abst
 export class NewsDetailPage implements OnInit{
   @Input() news: News;
   description: string;
+  allResolved: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public repo: AbstractDataRepository) {
     this.news = this.navParams.data.news;
   }
 
   async ngOnInit() {
-    this.repo.getNewsDescription(this.news.id).then( description => {
+    await this.repo.getNewsDescription(this.news.id).then( description => {
         this.description = description;
       }
     );
+
+    this.allResolved = true;
   }
 
 }
