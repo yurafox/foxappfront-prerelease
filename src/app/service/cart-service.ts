@@ -322,8 +322,10 @@ export class CartService {
 
   public async initBonusData() {
     let bonusData = await this.userService.bonusInfo;
-    this.availBonus = (bonusData.bonusLimit) ? bonusData.bonusLimit : 0;
-    this.availPromoBonus = (bonusData.actionBonusLimit) ? bonusData.actionBonusLimit : 0;
+    if (bonusData) {
+      this.availBonus = (bonusData.bonusLimit) ? bonusData.bonusLimit : 0;
+      this.availPromoBonus = (bonusData.actionBonusLimit) ? bonusData.actionBonusLimit : 0;
+    }
   }
 
   public get mostExpensiveItem(): ClientOrderProducts {
