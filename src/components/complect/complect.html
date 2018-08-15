@@ -1,4 +1,4 @@
-<ion-slides #slides [attr.pager]="complectAgg.length>1?'':null">
+<ion-slides #slides class="slides-size" [attr.pager]="complectAgg.length>1?'':null">
   <ion-slide *ngFor="let item of complectAgg">
     <div [ngStyle]="{'height.px': complectAgg.length>1? 185 : 150}">
       <ion-grid no-padding>
