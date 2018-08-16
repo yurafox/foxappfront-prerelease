@@ -44,9 +44,13 @@
       </ion-row>
     </ion-grid>
 
-    <ion-infinite-scroll (ionInfinite)="onScroll($event)" threshold="150" *ngIf="fullNews && fullNews.length>0">
+     <ion-infinite-scroll (ionInfinite)="onScroll($event)" threshold="150" *ngIf="fullNews && fullNews.length>0">
       <ion-infinite-scroll-content loadingSpinner="android" style="height:30px; min-height:1px;">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
+
+    <div *ngIf="!allResolved">
+      <section-loading></section-loading>
+    </div>
 </ion-content>
 

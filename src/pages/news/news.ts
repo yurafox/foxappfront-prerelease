@@ -17,6 +17,7 @@ export class NewsPage extends ComponentBase {
   public news: News[] = [];
 
   loadedCount: number = 10;
+  allResolved: boolean = false;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -39,6 +40,7 @@ export class NewsPage extends ComponentBase {
     }
 
     this.loadPackNews();
+    this.allResolved = true;
   }
 
   onOpenOneNews(item: News) {
