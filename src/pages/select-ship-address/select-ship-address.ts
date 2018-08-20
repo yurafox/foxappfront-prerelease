@@ -45,15 +45,10 @@ export class SelectShipAddressPage extends ComponentBase {
   }
 
   addNewAddress() {
-    if (this.withDelivery === true) {
-      this.navCtrl.push('EditShipAddressPage', {data: null, mode: 'create', delivery: 1, page: this}).catch(err => {
-        console.log(`Error navigating to EditShipAddressPage: ${err}`);
-      });
-    } else {
-      this.navCtrl.push('EditShipAddressPage', {data: null, mode: 'create', delivery: 0, page: this}).catch(err => {
-        console.log(`Error navigating to EditShipAddressPage: ${err}`);
-      });
-    }
-
+    const _delivery:number=(this.withDelivery === true) ? 1:0;
+    this.dataLoaded=true;
+    this.navCtrl.push('EditShipAddressPage', {data: null, mode: 'create', delivery: _delivery, page: this}).catch(err => {
+      console.log(`Error navigating to EditShipAddressPage: ${err}`);
+    });
   }
 }

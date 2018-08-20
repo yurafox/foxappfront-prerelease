@@ -10,8 +10,8 @@
     </ion-row>
   </ion-grid>
 
-  <div *ngIf="dataLoaded">
-    <ion-grid no-padding>
+  <div>
+    <ion-grid no-padding *ngIf="dataLoaded">
       <ion-row class="f-padding-lr-5">
         <ion-col>
           <shipping-address [withDelivery]="withDelivery" [addresses]="shippingAddresses"></shipping-address>

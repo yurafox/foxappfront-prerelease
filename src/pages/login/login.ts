@@ -250,6 +250,7 @@ export class LoginPage extends ComponentBase implements OnInit {
   clearAfterRepeatCode():void {
     const smsCodeField:AbstractControl = this.verifyForm.get('code'); 
     smsCodeField.setValue('');
+    this._authError = false;
     this.formErrors.code='';
     smsCodeField.markAsPristine();
     smsCodeField.markAsUntouched();
