@@ -91,7 +91,8 @@
       </ion-row>
       <ion-row>
         <ion-col class="f-item-padding-bottom">
-          <dropdown-list id="btnQty"
+          <dropdown-list class="dropdown-width"
+                         id="btnQty"
                          [reference]="qty"
                          [options]="{popupHeader:locale['Quantity'] ? locale['Quantity'] : 'Кол-во', buttonHeader:locale['Qty'] ? locale['Qty'] : 'Кол-во'}"
                          [isQty]="true">

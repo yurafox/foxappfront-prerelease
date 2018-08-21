@@ -15,7 +15,7 @@
         </div>
         <input type="number" [mask]="'380999999999'" placeholder="380xxxxxxxxx" formControlName="phone"/>
 
-        <ion-item class='alertDanger' *ngIf="formErrors.phone">
+        <ion-item text-wrap class='alertDanger textCenter' *ngIf="formErrors.phone">
           <span>{{formErrors.phone}}</span>
         </ion-item>
         <ion-item class='alertDanger' *ngIf="verifyErrorData.errorShow">
@@ -28,7 +28,7 @@
           </div>
           <input type="number" placeholder="sms code" formControlName="code" />
 
-          <ion-item class='alertDanger' *ngIf="formErrors.code">
+          <ion-item text-wrap class='alertDanger textCenter' *ngIf="formErrors.code">
             <span>{{formErrors.code}}</span>
           </ion-item>
           <ion-item class='repeatCodeWrapper' *ngIf="useCode" (click)="repeatCode()">

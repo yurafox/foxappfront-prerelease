@@ -31,7 +31,7 @@ export class SearchBtnComponent extends ComponentBase {
   srchItemsArr = new Array<SearchSuggestItem>();
   searchValue = null;
   inputMode = false;
-
+  searching = false;
 
   constructor(public searchService: SearchService,
               public navCtrl: NavController,
@@ -57,11 +57,13 @@ export class SearchBtnComponent extends ComponentBase {
   }
 
   async searchByText(searchString: string) {
-    if (searchString) {
+    if (searchString && !this.searching) {
+      this.searching = true;
       this.searchValue = searchString;
       this.srchService.products = [];
       await this.srchService.searchProducts(searchString, this.hostPage);
       (<any>this.hostPage).pageMode = PageMode.SearchResultsMode;
+      this.searching = false;
       this.inputMode = false;
     }
   }

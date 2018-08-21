@@ -143,7 +143,8 @@
 
         <ion-row *ngIf="(!item.orderProduct.complect) || (item.orderProduct.complect && (item.prevComplect === item.orderProduct.complect))">
           <ion-col col-auto class="f-item-padding-bottom" style="padding-bottom: 10px;" >
-            <dropdown-list id="btnQty" [reference]="item.orderProduct"
+            <dropdown-list class="dropdown-width"
+                           id="btnQty" [reference]="item.orderProduct"
                            [map]="{valueName:'qty', displayName:'qty'}"
                            [afterUpdate] = "onAfterQtyUpdate"
                            [options]="{popupHeader:locale['Quantity'], buttonHeader:locale['Qty']}"
