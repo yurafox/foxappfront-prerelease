@@ -4,8 +4,8 @@ export class AppConstants {
   public static readonly BASE_URL = `https://api.foxtrot.com.ua/api/v${AppConstants.BACKEND_VERSION}`;
   public static readonly CART_SERVICE_ENDPOINT = `https://api.foxtrot.com.ua/api/v${AppConstants.BACKEND_VERSION}`;
 
-  //public static readonly BASE_URL = `http://localhost:44374/api/v${AppConstants.BACKEND_VERSION}`;
-  //public static readonly CART_SERVICE_ENDPOINT = `http://localhost:44374/api/v${AppConstants.BACKEND_VERSION}`;
+  //public static readonly BASE_URL = `http://localhost/api/v${AppConstants.BACKEND_VERSION}`;
+  //public static readonly CART_SERVICE_ENDPOINT = `http://localhost/api/v${AppConstants.BACKEND_VERSION}`;
   public static readonly DEV_ELASTIC_ENDPOINT = 'https://es1.foxtrot.com.ua https://es2.foxtrot.com.ua https://es3.foxtrot.com.ua';
   public static readonly BASE_PAYMENT_URL = `https://api.foxtrot.com.ua/api/v${AppConstants.BACKEND_VERSION}/payment`;
   public static readonly USE_PRODUCTION = true;
