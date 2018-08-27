@@ -5,13 +5,19 @@
 <ion-content>
   <ion-list>
 
-    <div *ngFor="let group of currentGroup">
-      <button ion-item detail-push outline (click)="toChildCategory(group.id_group)">
+    <div *ngFor="let group of currentGroupToShow">
+      <button ion-item detail-push outline (click)="toChildCategory(group.category.id_group)"  *ngIf="group.showArrow">
         <ion-label>
-          <img [src]='convertImg(group.icon)' class="cat-icon" *ngIf="group.icon && group.icon!==''">
-          <span padding-left text-center>{{group.name}}</span>
+          <img [src]='convertImg(group.category.icon)' class="cat-icon" *ngIf="group.category.icon && group.category.icon!==''">
+          <span padding-left text-center>{{group.category.name}}</span>
         </ion-label>
       </button>
+      <ion-item outline (click)="toChildCategory(group.category.id_group)"  *ngIf="!group.showArrow">
+        <ion-label>
+          <img [src]='convertImg(group.category.icon)' class="cat-icon" *ngIf="group.category.icon && group.category.icon!==''">
+          <span padding-left text-center>{{group.category.name}}</span>
+        </ion-label>
+      </ion-item>
     </div>
 
   </ion-list>
