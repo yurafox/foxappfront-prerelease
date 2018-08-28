@@ -10,16 +10,19 @@
     </ion-row>
     <ion-row>
       <ion-col class="f-item-nopadding f-padding-l-5">
-        <span class="f-size-default ">{{product.name}}</span>
+        <span class="articulate-txt select-item">{{product.name}}</span>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col class="f-item-nopadding f-padding-l-5">
-        <span class="f-size-small">{{locale['ProductID']}} {{product.id}}</span>
+        <span class="f-size-small">
+          <span>{{locale['ProductID']}}</span> 
+          <b class="select-item">{{product.id}}</b>
+        </span>
       </ion-col>
     </ion-row>
 
-    <ion-row>
+    <ion-row class="top5">
       <ion-col text-center *ngIf="product?.slideImageUrls && product?.slideImageUrls?.length === 0">
         <img *ngIf="product?.imageUrl" class="f-img-item-lg" [src]="product.imageUrl">
         <img *ngIf="!product?.imageUrl" class="f-img-item-lg" src="assets/imgs/nophoto.png">

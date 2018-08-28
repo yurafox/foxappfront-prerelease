@@ -45,4 +45,18 @@ page-item-detail {
   .dropdown-width .f-drop-button-small .button  {
     width: 100%
   }
+
+  .articulate-txt {
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Montserrat Regular',sans-serif;
+  }
+
+  .select-item {
+    user-select: auto !important;
+  }
+
+  .top5 {
+    margin-top: 5px;
+  }
 }
