@@ -22,7 +22,9 @@ export class CategoryTreePage extends ComponentBase {
 
   async ngOnInit() {
     super.ngOnInit();
-    this.groups = await this._repo.getCategories();
+    this.groups = (this.checkPrimaryGroups()) ? this.navParams.data.groups 
+                                              : await this._repo.getCategories();
+                                              
     this.rootId = parseInt(await this._repo.getAppParam('CATEGORY_ROOT_ID'));
 
     if (this.groups && this.groups.length != 0) {
@@ -64,5 +66,10 @@ export class CategoryTreePage extends ComponentBase {
     if (!imgTxt || imgTxt === '') return;
     let header:string = 'data:image/svg+xml;charset=utf-8;base64,';
     return this._sanitizer.bypassSecurityTrustResourceUrl(`${header}${imgTxt}`);
+  }
+
+  public checkPrimaryGroups():boolean {
+    let hasGroupObj:boolean = !!(this.navParams.data && this.navParams.data.groups);
+    return (hasGroupObj && this.navParams.data.groups.length > 0);
   }
 }
