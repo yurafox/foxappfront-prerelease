@@ -3,7 +3,7 @@
 </ion-header>
 
 <ion-content class="f-size-larger">
-  <ion-grid>
+  <ion-grid id="grid">
 
     <ion-row>
       <ion-col class="f-section-header"><span loc="Выберите способ оплаты" name="SelectPmtMethod">{{locale['SelectPmtMethod']}}</span>
@@ -71,7 +71,9 @@ Passport Data
                 <label for="lastName"><span loc="Фамилия" name="LastName">{{locale['LastName']}}</span>:*</label>
                 <input type="text" [(ngModel)]="cart.person.lastName" id="lastName" name="lastName"
                        pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,',-]+"
-                       required #lastName="ngModel">
+                       required #lastName="ngModel"
+                       (focus)="addPaddingBottom()"
+                       (focusout)="removePaddingBottom()">
                 <div *ngIf="!lastName.valid && lastName.touched">
                 <span *ngIf="lastName.hasError('required')"
                       class="f-color-validation-error"><span loc="Пожалуйста, введите свою фамилию" name="EnterLastName">{{locale['EnterLastName']}}</span><br></span>
@@ -81,7 +83,9 @@ Passport Data
                 <label for="firstName"><span loc="Имя" name="FirstName">{{locale['FirstName']}}</span>:*</label>
                 <input type="text" [(ngModel)]="cart.person.firstName" id="firstName" name="firstName"
                        pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,',-]+"
-                       required #firstName="ngModel">
+                       required #firstName="ngModel"
+                       (focus)="addPaddingBottom()"
+                       (focusout)="removePaddingBottom()">
                 <div *ngIf="!firstName.valid && firstName.touched">
                 <span *ngIf="firstName.hasError('required')"
                       class="f-color-validation-error"><span loc="Пожалуйста, введите своё имя" name="EnterFirstName">{{locale['EnterFirstName']}}</span><br></span>
@@ -91,7 +95,9 @@ Passport Data
                 <label for="middleName"><span loc="По отчеству" name="MiddleName">{{locale['MiddleName']}}</span>:*</label>
                 <input type="text" [(ngModel)]="cart.person.middleName" id="middleName" name="middleName"
                        pattern="[А-ЯA-Za-яa-z,і,ї,є,І,Ї,Є,',-]+"
-                       required #middleName="ngModel">
+                       required #middleName="ngModel"
+                       (focus)="addPaddingBottom()"
+                       (focusout)="removePaddingBottom()">
                 <div *ngIf="!middleName.valid && middleName.touched">
                 <span *ngIf="middleName.hasError('required')"
                       class="f-color-validation-error"><span loc="Пожалуйста, введите своё имя по отчеству" name="EnterMiddleName">{{locale['EnterMiddleName']}}</span><br></span>
@@ -108,14 +114,18 @@ Passport Data
                              pattern="[А-Я]{2}"
                              minlength="2"
                              maxlength="2"
-                             required #passportSeries="ngModel">
+                             required #passportSeries="ngModel"
+                             (focus)="addPaddingBottom()"
+                             (focusout)="removePaddingBottom()">
                     </ion-col>
                     <ion-col col-10 no-padding>
                       <input type="text" [(ngModel)]="cart.person.passportNum" id="passportNum" name="passportNum"
                              pattern="[0-9]{6}"
                              minlength="6"
                              maxlength="6"
-                             required #passportNum="ngModel">
+                             required #passportNum="ngModel"
+                             (focus)="addPaddingBottom()"
+                             (focusout)="removePaddingBottom()">
                     </ion-col>
                   </ion-row>
                   <ion-row no-padding>
@@ -137,7 +147,9 @@ Passport Data
                 </ion-grid>
                 <label for="issuedAuthority"><span loc="Выдавший орган" name="IssuedAuthority">{{locale['IssuedAuthority']}}</span>:*</label>
                 <input type="text" [(ngModel)]="cart.person.issuedAuthority" id="issuedAuthority" name="issuedAuthority"
-                       required #issuedAuthority="ngModel">
+                       required #issuedAuthority="ngModel"
+                       (focus)="addPaddingBottom()"
+                       (focusout)="removePaddingBottom()">
                 <div *ngIf="!issuedAuthority.valid && issuedAuthority.touched">
                 <span *ngIf="issuedAuthority.hasError('required')"
                       class="f-color-validation-error"><span loc="Пожалуйста, введите выдавший орган" name="EnterIssuedAuthority">{{locale['EnterIssuedAuthority']}}</span></span>
@@ -147,7 +159,9 @@ Passport Data
                        pattern="[0-9]{10}"
                        minlength="10"
                        maxlength="10"
-                       required #taxNumber="ngModel">
+                       required #taxNumber="ngModel"
+                       (focus)="addPaddingBottom()"
+                       (focusout)="removePaddingBottom()">
                 <div *ngIf="!taxNumber.valid && taxNumber.touched">
                 <span *ngIf="taxNumber.hasError('required')"
                       class="f-color-validation-error"><span loc="Пожалуйста, введите идентификационный номер" name="EnterTaxNumber">{{locale['EnterTaxNumber']}}</span><br></span>
@@ -159,7 +173,9 @@ Passport Data
                 <label for="birthDate"><span loc="Дата рождения" name="BirthDate">{{locale['BirthDate']}}</span>:*</label>
                 <input type="date" [ngModel]="cart.person.birthDate | date: 'yyyy-MM-dd'" (ngModelChange)="birthDateChanged($event)"
                        id="birthDate" name="birthDate" min="{{getMinDate()}}" max="{{getMaxDate()}}"
-                       required #birthDate="ngModel">
+                       required #birthDate="ngModel"
+                       (focus)="addPaddingBottom()"
+                       (focusout)="removePaddingBottom()">
    
                 <div *ngIf="!birthDate.valid && birthDate.touched ">
                 <span *ngIf="birthDate.hasError('required')"

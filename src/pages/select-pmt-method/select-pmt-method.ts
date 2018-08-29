@@ -16,6 +16,8 @@ export class SelectPmtMethodPage extends ComponentBase {
   pmtMethods = [];
   dataLoaded = false;
   passpSeries: string = '';
+  grid: HTMLElement;
+  keyboardHeight = 300;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
@@ -27,6 +29,10 @@ export class SelectPmtMethodPage extends ComponentBase {
     if (cart.person.passportSeries && cart.person.passportSeries.length > 0) {
       this.passpSeries = cart.person.passportSeries.toUpperCase();
     }
+  }
+
+  ionViewDidLoad() {
+    this.grid = document.getElementById("grid");
   }
 
   async getPmtMethods () {
@@ -138,5 +144,13 @@ export class SelectPmtMethodPage extends ComponentBase {
      value += 1;
 
     return (value < 10) ? `0${value}`:`${value}`;
+  }
+
+  addPaddingBottom() {
+    if (this.grid) this.grid.style.paddingBottom = `${(this.grid.parentElement.scrollHeight/2)}px`;
+  }
+
+  removePaddingBottom() {
+    if (this.grid) this.grid.style.paddingBottom = `0px`;
   }
 }
