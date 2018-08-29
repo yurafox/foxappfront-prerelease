@@ -24,6 +24,9 @@ export class MainToolbarComponent {
   @Input()
   disableHeaderClickHandler = false;
 
+  @Input()
+  showToggleButton: boolean = true;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
                 public cart: CartService, public viewCtrl: ViewController) {}
 
