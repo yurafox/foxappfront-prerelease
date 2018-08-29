@@ -12,6 +12,7 @@ import {BackgroundMode} from "@ionic-native/background-mode";
 import {AbstractDataRepository} from './service/repository/abstract/abstract-data-repository';
 import {DeviceData} from './model/device-data';
 import {Push, PushObject, PushOptions} from '@ionic-native/push';
+import {ProductFavoriteService} from './service/product-favorite-service';
 
 export interface PageInterface {
   title: string;
@@ -48,12 +49,14 @@ export class FoxApp extends ComponentBase implements OnDestroy {
 
   noveltyPushEventDescriptor: any;
   actionPushEventDescriptor: any;
+  favoritesProductsEventDescriptor: any;
 
   constructor(public platform: Platform, public alertCtrl: AlertController, public splashScreen: SplashScreen,
               public menuCtrl: MenuController, public repo: AbstractDataRepository,
               public appAvailability: AppAvailability, public device: Device, public cartService: CartService,
               public connService: ConnectivityService, public statusBar: StatusBar,
-              public modalCtrl: ModalController, public backgroundMode: BackgroundMode, public push: Push) {
+              public modalCtrl: ModalController, public backgroundMode: BackgroundMode, public push: Push,
+              public favoriteService: ProductFavoriteService) {
     super();
     this.initLocalization();
 
@@ -83,6 +86,11 @@ export class FoxApp extends ComponentBase implements OnDestroy {
       System.PushContainer.pushStore[`novelty${data.innerId}`] = data;
     });
 
+    this.favoritesProductsEventDescriptor = this.favoriteService.eventChange$.subscribe(data => { 
+      this.setFavoritesIconStatus(data); 
+    });
+    this.favoriteService.changeCountFavorites();
+
     this.platform.ready().then(() => {
       if (this.device.platform) {
         this.splashScreen.hide();
@@ -90,6 +98,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
         this.backgroundMode.enable();
         this.backgroundMode.setDefaults({ silent: true }).catch((err) => console.error('Background mode set defaults error: '+err.message));
 
+  
         /**
          * Getting FCM device token and sending device data to back-end
          */
@@ -148,6 +157,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   ngOnDestroy() {
     this.noveltyPushEventDescriptor.unsubscribe();
     this.actionPushEventDescriptor.unsubscribe();
+    this.favoritesProductsEventDescriptor.unsubscribe();
   }
 
   openPage(page: PageInterface) {
@@ -365,5 +375,13 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     });
     alert.present().catch((err) => console.log(`Alert error: ${err.message}`));
   }
+
+  setFavoritesIconStatus(productCount: number) {
+    let findedItem = this.infoPages.find((x) => {return x.name === 'Favorites'});
+
+    if(findedItem) 
+      findedItem.icon = (productCount === 0) ? 'ios-heart-outline' : 'ios-heart';
+  }
+
 }
 

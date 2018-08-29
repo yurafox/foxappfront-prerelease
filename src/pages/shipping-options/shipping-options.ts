@@ -77,6 +77,9 @@ export class ShippingOptionsPage extends ComponentBase {
               }
             }
 
+            if (item.deliveryCost == -1 && item.loEntityId == 203)
+              needAddToOptionsList = false;
+
             if (needAddToOptionsList)
               this.cart.loShipmentDeliveryOptions.push(item);
           }
