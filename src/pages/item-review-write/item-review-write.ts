@@ -149,7 +149,6 @@ export class ItemReviewWritePage extends ComponentBase {
 
   addPaddingBottom() {
     let height = window.innerHeight/2;
-    console.log(height);
     if (this.grid) this.grid.style.paddingBottom = `${height}px`;
   }
 

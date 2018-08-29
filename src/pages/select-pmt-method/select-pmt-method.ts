@@ -147,7 +147,8 @@ export class SelectPmtMethodPage extends ComponentBase {
   }
 
   addPaddingBottom() {
-    if (this.grid) this.grid.style.paddingBottom = `${(this.grid.parentElement.scrollHeight/2)}px`;
+    let height = window.innerHeight/2;
+    if (this.grid) this.grid.style.paddingBottom = `${height}px`;
   }
 
   removePaddingBottom() {
