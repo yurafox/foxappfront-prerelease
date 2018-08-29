@@ -22,6 +22,8 @@ export class ItemReviewWritePage extends ComponentBase {
   advantages: string;
   disadvantages: string;
   submitted: boolean;
+  grid: HTMLElement;
+  keyboardHeight = 400;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public changeDetector: ChangeDetectorRef,
               public repo: AbstractDataRepository, public toastCtrl: ToastController, public alertCtrl: AlertController) {
@@ -81,29 +83,37 @@ export class ItemReviewWritePage extends ComponentBase {
 
   async onSubmitClick() {
     this.submitted = true;
-    if (this.store && this.reviewText && this.reviewText.length > 0) {
+    let { reviewText, advantages, disadvantages } = this.checkForEmptyStrings();
+    if (this.store && this.reviewText && this.reviewText.trim().length > 0) {
       let storeReview = new StoreReview();
       storeReview.idStore = this.store.id;
       storeReview.reviewDate = new Date(Date.now());
-      storeReview.reviewText = this.reviewText;
+      storeReview.reviewText = reviewText;
       storeReview.rating = this.rating;
-      storeReview.advantages = this.advantages;
-      storeReview.disadvantages = this.disadvantages;
+      storeReview.advantages = advantages;
+      storeReview.disadvantages = disadvantages;
       await this.repo.postStoreReview(storeReview).then(() => {
         this.showToast();
       });
-    } else if (this.product && this.reviewText && this.reviewText.length > 0) {
+    } else if (this.product && this.reviewText && this.reviewText.trim().length > 0) {
       let productReview = new ProductReview();
       productReview.idProduct = this.product.id;
       productReview.reviewDate = new Date(Date.now());
-      productReview.reviewText = this.reviewText;
+      productReview.reviewText = reviewText;
       productReview.rating = this.rating;
-      productReview.advantages = this.advantages;
-      productReview.disadvantages = this.disadvantages;
+      productReview.advantages = advantages;
+      productReview.disadvantages = disadvantages;
       await this.repo.postProductReview(productReview).then(() => {
         this.showToast();
       });
     }
+  }
+
+  checkForEmptyStrings() {
+    let reviewText = (this.reviewText && this.reviewText.length) > 0 ? this.reviewText.trim() : this.reviewText;
+    let advantages = (this.advantages && this.advantages.length) > 0 ? this.advantages.trim() : this.advantages;
+    let disadvantages = (this.disadvantages && this.disadvantages.length) > 0 ? this.disadvantages.trim() : this.disadvantages;
+    return { reviewText, advantages, disadvantages };
   }
 
   showToast() {
@@ -133,6 +143,18 @@ export class ItemReviewWritePage extends ComponentBase {
         });
       }
     }
+    
+    this.grid = document.getElementById("grid");
+  }
+
+  addPaddingBottom() {
+    let height = window.innerHeight/2;
+    console.log(height);
+    if (this.grid) this.grid.style.paddingBottom = `${height}px`;
+  }
+
+  removePaddingBottom() {
+    if (this.grid) this.grid.style.paddingBottom = `0px`;
   }
 
 }
