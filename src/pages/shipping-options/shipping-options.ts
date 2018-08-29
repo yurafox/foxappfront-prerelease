@@ -77,7 +77,6 @@ export class ShippingOptionsPage extends ComponentBase {
               }
             }
 
-            console.log("item.loEntityId=", item.loEntityId);
             if (item.deliveryCost == -1 && item.loEntityId == 203)
               needAddToOptionsList = false;
 
