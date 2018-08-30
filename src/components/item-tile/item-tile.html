@@ -14,18 +14,19 @@
       </ion-col>
     </ion-row>
 
-    <ion-row (click)="openItemDetails(product)">
+    <ion-row (click)="openItemDetails(product)" style="min-height: 50px; margin-bottom: 10px;">
       <ion-col class="f-item-col f-color-info f-item-tile-name">
         {{product?.name | truncate : 40 }}
       </ion-col>
     </ion-row>
-
+        
     <ion-row *ngIf="(product.rating || product.recall>0) && displayRating==true" (click)="openItemDetails(product)">
       <ion-col nowrap class="f-item-col">
         <product-rating [product]=product></product-rating>
       </ion-col>
     </ion-row>
-
+        
+    <div style="position: absolute;bottom: 0;">
     <div class="f-padding-t-5" *ngIf="displayPrice==true" (click)="openItemDetails(product)">
       <ion-row *ngIf="product.oldPrice">
         <ion-col class="f-item-col f-old-price f-size-small" >
@@ -39,5 +40,6 @@
         </ion-col>
       </ion-row>
     </div>
+  </div>
   </ion-grid>
 </div>
