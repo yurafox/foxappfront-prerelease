@@ -36,7 +36,7 @@ class ProductPropsAgg {
 @Injectable()
 export class SearchService {
   cKey = 'searchItems';
-  cMaxSearchItemsCount;
+  cMaxSearchItemsCount = 15;
   _ls: string = '';
   client: Client;
   readonly INDEX = 'product';
@@ -68,9 +68,18 @@ export class SearchService {
   }
 
   async initData() {
-    this.cMaxSearchItemsCount = parseInt(await this.repo.getAppParam('SEARCH_HISTORY_MAX_LIST_LENGTH'));
-    this.MAX_ITEMS_COUNT = parseInt(await this.repo.getAppParam('ELASTIC_PRODUCT_SEARCH_ITEMS_MAX_COUNT'));
-    this.SIZE = parseInt(await this.repo.getAppParam('ELASTIC_PRODUCT_SEARCH_PAGE_SIZE'));
+    await this.setAppParam('SEARCH_HISTORY_MAX_LIST_LENGTH', this.cMaxSearchItemsCount);
+    await this.setAppParam('ELASTIC_PRODUCT_SEARCH_ITEMS_MAX_COUNT', this.MAX_ITEMS_COUNT);
+    await this.setAppParam('ELASTIC_PRODUCT_SEARCH_PAGE_SIZE', this.SIZE);
+  }
+
+  async setAppParam(appParam: string, classVariable: number) {
+    if (appParam && appParam.length > 0) {
+      let tempAppParam = await this.repo.getAppParam(appParam);
+      if (tempAppParam && tempAppParam != null && tempAppParam.length > 0) {
+        classVariable = parseInt(tempAppParam);
+      }
+    }
   }
 
   public get inFilter() : boolean {
