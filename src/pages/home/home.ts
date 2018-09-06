@@ -135,4 +135,10 @@ export class HomePage extends ComponentBase implements DoCheck {
     this.pageOptions = await this._repo.getPageOptionsById(homePageOptIndex);
     this.content = !!(this.pageOptions);
   }
+
+  showSectionLoadingForArr(arr: any[]): boolean {
+    if (!arr || (arr && arr.length == 0))
+      return true;
+    return false;
+  }
 }

@@ -26,22 +26,23 @@
       </div>
       <div class="f-flex-async-container">
         <!--novelty 1-->
-        <div *ngIf="pageOptions.novelty_wilefox.is_block_active"  style="min-height:310px"
+        <div *ngIf="pageOptions.novelty_wilefox.is_block_active"
               [style.order]="pageOptions.novelty_wilefox.block_order" class="f-div-card-margin">
           <novelty-sketch [innerId]=pageOptions.novelty_wilefox.block_content_id></novelty-sketch>
         </div>
         <!--actions 1-->
-        <div *ngIf="pageOptions.action.is_block_active"  style="min-height:176px"
+        <div *ngIf="pageOptions.action.is_block_active"
              [style.order]="pageOptions.action.block_order" class="f-div-card-margin" >
           <action-sketch [innerId]=pageOptions.action.block_content_id [isOnLanding]="true"></action-sketch>
         </div>
         <!--novelty 2-->
-        <div *ngIf="pageOptions.novelty_samsung.is_block_active"  style="min-height:310px" 
+        <div *ngIf="pageOptions.novelty_samsung.is_block_active"
              [style.order]="pageOptions.novelty_samsung.block_order" class="f-div-card-margin">
           <novelty-sketch [innerId]=pageOptions.novelty_samsung.block_content_id></novelty-sketch>
         </div>
 
-        <div *ngIf="pageOptions.deals.is_block_active && productsOfDay && productsOfDay.length>0" style="min-height:168px"
+        <section-loading [style.order]="pageOptions.deals.block_order" *ngIf="pageOptions.deals.is_block_active && showSectionLoadingForArr(productsOfDay)"></section-loading>
+        <div *ngIf="pageOptions.deals.is_block_active && productsOfDay && productsOfDay.length > 0"
             [style.order]="pageOptions.deals.block_order" class="f-div-card-margin">
           <ion-grid>
             <ion-row>
@@ -56,15 +57,15 @@
                   <item [product]="productElement">
                   </item>
                 </div>
-
               </ion-col>
             </ion-row>
           </ion-grid>
         </div>
 
-        <div *ngIf="pageOptions.hits.is_block_active" style="min-height:266px"
+        <section-loading [style.order]="pageOptions.hits.block_order" *ngIf="pageOptions.hits.is_block_active && showSectionLoadingForArr(productsSalesHits)"></section-loading>
+        <div *ngIf="pageOptions.hits.is_block_active && productsSalesHits && productsSalesHits.length > 0"
              [style.order]="pageOptions.hits.block_order" class="f-div-card-margin">
-          <ion-grid *ngIf="productsSalesHits && productsSalesHits.length>0">
+          <ion-grid>
             <ion-row>
               <ion-col class="f-padding-lr-5 f-item-section-header" style="padding-top: 5px;">
                 <span loc="Хиты продаж" name="Hits">{{locale['Hits']}}</span>
@@ -83,7 +84,7 @@
             </ion-row>
           </ion-grid>
         </div>
-      </div>
+        </div>
     </div>
 
     <div class="f-div-card" *ngIf="pageMode === 2">

@@ -1,3 +1,4 @@
+<section-loading *ngIf='!content'></section-loading>
 <div *ngIf='content' (click)="openAction()">
     <div style="padding: 10px 11px;">
         <span loc="Акция" name="Action" style="color: #4e4e4e;font-size:18px" *ngIf="isOnLanding">{{locale['Action'] ? locale['Action'] : 'Акция'}}</span>
