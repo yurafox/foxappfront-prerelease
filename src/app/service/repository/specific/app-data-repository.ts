@@ -153,6 +153,7 @@ const getLoDeliveryTypesAttrByLoEntityUrl = `${AppConstants.BASE_URL}/lo/LoDeliv
 const similarProductsUrl = `${AppConstants.BASE_URL}/ProductCompare/GetSimilarProducts`;
 const popularAccessoriesUrl = `${AppConstants.BASE_URL}/ProductCompare/GetPopularAccessories`;
 const viewProductsUrl = `${AppConstants.BASE_URL}/Client/GetProductsView`;
+const allowTakeOnCreditByStatusUrl = `${AppConstants.BASE_URL}/lo/AllowTakeOnCredit`;
 
 //DEV URLS
 // const productDescriptionsUrl = 'api/mproductDescriptions';
@@ -1684,7 +1685,10 @@ export class AppDataRepository extends AbstractDataRepository {
               val.supplOffers,
               val.description,
               val.slideImageUrls,
-              val.barcode
+              val.barcode,
+              val.valueQP,
+              val.status,
+              val.site_status
             );
 
             let mnf = await (<any>productItem).manufacturer_p;
@@ -1737,7 +1741,10 @@ export class AppDataRepository extends AbstractDataRepository {
               val.supplOffers,
               val.description,
               val.slideImageUrls,
-              val.barcode
+              val.barcode,
+              val.valueQP,
+              val.status,
+              val.site_status
             );
             products.push(productItem);
           }
@@ -1788,7 +1795,8 @@ export class AppDataRepository extends AbstractDataRepository {
               val.slideImageUrls,
               val.barcode,
               val.valueQP,
-              val.status
+              val.status,
+              val.site_status
             );
 
             products.push(productItem);
@@ -1926,6 +1934,7 @@ export class AppDataRepository extends AbstractDataRepository {
       prod.oldPrice = data.oldPrice;
       prod.bonuses = data.bonuses;
       prod.status = data.status;
+      prod.site_status = data.site_status;
       return prod;
     }
     else return null;
@@ -4123,4 +4132,22 @@ export class AppDataRepository extends AbstractDataRepository {
       return await this.handleError(err);
     }
   }
+
+  public async getAllowTakeOnCreditByStatus(status: number): Promise<boolean> {
+    try {
+      const response = await this.http
+        .get(`${allowTakeOnCreditByStatusUrl}/${status}`, RequestFactory.makeAuthHeader())
+        .toPromise();
+
+      const data = response.json();
+      if (response.status !== 200) {
+        throw new Error("server side status error");
+      }
+
+      return data;
+    } catch (err) {
+      return await this.handleError(err);
+    }
+  }
+
 }

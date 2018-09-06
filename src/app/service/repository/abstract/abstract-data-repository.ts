@@ -214,4 +214,5 @@ export abstract class AbstractDataRepository {
   public async abstract getSimilarProducts(productId: number): Promise<Product[]>;
   public async abstract getPopularAccessories(productId: number): Promise<Product[]>
   public async abstract getViewProducts(): Promise<Product[]>;
+  public async abstract getAllowTakeOnCreditByStatus(status: number): Promise<boolean>;
 }
