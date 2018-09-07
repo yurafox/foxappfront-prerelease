@@ -39,12 +39,14 @@ export class HomePage extends ComponentBase implements DoCheck {
   scrOrientationSub: Subscription;
   pageOptions:any;
   searchNativeInput:HTMLInputElement;
+  loadingDone: boolean;
 
   constructor(public app: App, public nav: NavController, public _repo:AbstractDataRepository,
               public srchService: SearchService, public changeDet: ChangeDetectorRef,
               public screenOrientation: ScreenOrientation, public navParams: NavParams) {
     super();
     this.initLocalization();
+    this.loadingDone = false;
     this.srchService.lastSearch = null;
     if (navParams.data.pageMode)
       this._pageMode = navParams.data.pageMode;
@@ -54,6 +56,7 @@ export class HomePage extends ComponentBase implements DoCheck {
 
   async initData() {
     try {
+      this.loadingDone = false; // Revealing section loader
       if (this._pageMode != PageMode.HomeMode)
         return;
 
@@ -76,6 +79,8 @@ export class HomePage extends ComponentBase implements DoCheck {
       }
     } catch(err) {
       console.error(err);
+    } finally {
+      this.loadingDone = true;  // Hiding section loader
     }
   }
 
@@ -134,11 +139,5 @@ export class HomePage extends ComponentBase implements DoCheck {
     const homePageOptIndex:number = 1;
     this.pageOptions = await this._repo.getPageOptionsById(homePageOptIndex);
     this.content = !!(this.pageOptions);
-  }
-
-  showSectionLoadingForArr(arr: any[]): boolean {
-    if (!arr || (arr && arr.length == 0))
-      return true;
-    return false;
   }
 }
