@@ -1,18 +1,20 @@
 <div *ngIf='content && novelty && product' (click)="openNovelty()">
-  <div style="padding:10px 11px;">
-    <span loc="Новинка" name="Novelty" style="color: #4e4e4e;font-size:18px">{{locale['Novelty'] || 'Новинка'}}</span>
-    <div style="width:250px;margin:0px auto;padding:10px;text-align: center;">
-      <img style="margin-top:10px; width: auto; max-width: 100%; height: auto; max-height: 100%" src='{{img_url}}'>
+  <div style="padding: 10px 11px;">
+    <span loc="Новинка" name="Novelty" style="color: #4e4e4e; font-size: 18px">{{locale['Novelty'] || 'Новинка'}}</span>
+    <div style="width: 250px; margin: 0px auto; padding: 10px; text-align: center;">
+      <div *ngIf="img_url" lazy-load-images>
+        <img class="f-novelty-sketch-img" src="assets/imgs/spiner-load.gif" [attr.data-src]="img_url" onError="this.src='assets/imgs/nophoto.png';">
+      </div>
     </div>
     <div>
-      <span style="font-size:14px;">
+      <span style="font-size: 14px;">
         <b>{{name}}</b>
       </span>
       <br>
-      <span style="font-size:14px;color:dimgray;">{{product?.price | localeCurrency:userService.currency}}</span>
+      <span style="font-size: 14px; color: dimgray;">{{product?.price | localeCurrency:userService.currency}}</span>
     </div>
   </div>
 </div>
 <div *ngIf="!content" class="f-novelty-sketch-spiner-loader">
   <img src="assets/imgs/spiner-load.gif">
-</div> 
+</div>
