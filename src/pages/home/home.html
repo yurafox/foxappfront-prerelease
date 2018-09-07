@@ -18,11 +18,11 @@
       <div class="f-flex-async-container">
         <div *ngFor="let section of pageSections" [style.order]="section.block_order">
           <!--action-->
-          <div *ngIf="section.is_block_active && (section.entity_type == 1)" style="min-height:176px" class="f-div-card-margin">
+          <div *ngIf="section.is_block_active && (section.entity_type == 1)" class="f-div-card-margin f-action-min-height">
             <action-sketch [innerId]=section.block_content_id [isOnLanding]="true"></action-sketch>
           </div>
           <!--novelty-->
-          <div *ngIf="section.is_block_active && (section.entity_type == 2)" style="min-height:310px" class="f-div-card-margin">
+          <div *ngIf="section.is_block_active && (section.entity_type == 2)" class="f-div-card-margin f-novelty-min-height">
             <novelty-sketch [innerId]=section.block_content_id></novelty-sketch>
           </div>
           <!-- deals -->
@@ -68,7 +68,8 @@
             </ion-grid>
           </div>
         </div>
-      </div>
+        <section-loading [style.order]="1000" *ngIf="!loadingDone"></section-loading>
+        </div>
     </div>
 
     <div class="f-div-card" *ngIf="pageMode === 2">

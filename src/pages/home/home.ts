@@ -39,6 +39,7 @@ export class HomePage extends ComponentBase implements DoCheck {
   scrOrientationSub: Subscription;
   searchNativeInput: HTMLInputElement;
   pageSections: any;
+  loadingDone: boolean;
 
   constructor(public app: App, public nav: NavController, public _repo:AbstractDataRepository,
               public srchService: SearchService, public changeDet: ChangeDetectorRef,
@@ -54,6 +55,7 @@ export class HomePage extends ComponentBase implements DoCheck {
 
   async initData() {
     try {
+      this.loadingDone = false; // Revealing section loader
       if (this._pageMode != PageMode.HomeMode)
         return;
 
@@ -76,6 +78,8 @@ export class HomePage extends ComponentBase implements DoCheck {
       }
     } catch(err) {
       console.error(err);
+    } finally {
+      this.loadingDone = true;  // Hiding section loader
     }
   }
 
