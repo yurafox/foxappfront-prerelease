@@ -37,8 +37,8 @@ export class HomePage extends ComponentBase implements DoCheck {
   content: boolean;
   scrollHeight: number;
   scrOrientationSub: Subscription;
-  pageOptions:any;
-  searchNativeInput:HTMLInputElement;
+  searchNativeInput: HTMLInputElement;
+  pageSections: any;
 
   constructor(public app: App, public nav: NavController, public _repo:AbstractDataRepository,
               public srchService: SearchService, public changeDet: ChangeDetectorRef,
@@ -132,7 +132,8 @@ export class HomePage extends ComponentBase implements DoCheck {
 
   async doRefresh(refresher) {
     const homePageOptIndex:number = 1;
-    this.pageOptions = await this._repo.getPageOptionsById(homePageOptIndex);
-    this.content = !!(this.pageOptions);
+    let pageOptions = await this._repo.getPageOptionsById(homePageOptIndex);
+    this.pageSections = (<any>Object).values(pageOptions);
+    this.content = !!(pageOptions);
   }
 }
