@@ -45,6 +45,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   similarProducstsResolved = false;
   viewProducts = new Array<Product>();
   allResolved: boolean = false;
+  allowTakeOnCreditButton: boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public repo: AbstractDataRepository, public cart: CartService,
@@ -78,6 +79,8 @@ export class ItemDetailPage extends ItemBase implements OnInit {
     this.minLoanAmt = parseInt(await this.repo.getAppParam('MIN_LOAN_AMT'));
     this.maxLoanAmt = parseInt(await this.repo.getAppParam('MAX_LOAN_AMT'));
 
+    await this.checkAllowTakeOnCredit();
+  
     this.cantShow = this.hasClientReview();
 
     await this.loadSimilarProducts();
@@ -303,5 +306,9 @@ export class ItemDetailPage extends ItemBase implements OnInit {
         this.similarProducts.push(product);
     });
    }
+
+  async checkAllowTakeOnCredit() {
+    this.allowTakeOnCreditButton = await this.repo.getAllowTakeOnCreditByStatus(this.product.site_status);
+  }
 
 }

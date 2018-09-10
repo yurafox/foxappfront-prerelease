@@ -125,8 +125,8 @@
                   (click)="onAddToCart()"><span loc="Добавить в корзину" name="AddToCart">{{locale['AddToCart'] ? locale['AddToCart'] : 'Добавить в корзину'}}</span></button>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="valueQuot && (valueQuot.price >= minLoanAmt)
-                                && (valueQuot.price <= maxLoanAmt)">
+      <ion-row *ngIf="allowTakeOnCreditButton && valueQuot && (valueQuot.price >= minLoanAmt)
+                                                           && (valueQuot.price <= maxLoanAmt)">
         <ion-col>
           <button class="f-btn-secondary" ion-button block [attr.disabled]="!valueQuot?'':null"
                   (click)="onGetForLoan()"><span loc="Взять в кредит" name="GetForLoan">{{locale['GetForLoan'] ? locale['GetForLoan'] : 'Взять в кредит'}}</span></button>
