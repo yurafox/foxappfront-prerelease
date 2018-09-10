@@ -38,7 +38,7 @@ export class HomePage extends ComponentBase implements DoCheck {
   scrollHeight: number;
   scrOrientationSub: Subscription;
   searchNativeInput: HTMLInputElement;
-  pageSections=[];
+  pageSections =[];
   loadingDone: boolean;
 
   constructor(public app: App, public nav: NavController, public _repo:AbstractDataRepository,
@@ -59,7 +59,7 @@ export class HomePage extends ComponentBase implements DoCheck {
       if (this._pageMode != PageMode.HomeMode)
         return;
 
-      await this.doRefresh(0);
+      await this.prepareContent();
 
       let ar = await this._repo.getProductsOfDay();
       this.productsOfDay = [];
@@ -134,12 +134,17 @@ export class HomePage extends ComponentBase implements DoCheck {
     if (this.scrOrientationSub) this.scrOrientationSub.unsubscribe();
   }
 
-  async doRefresh(refresher) {
+  async prepareContent() {
     const homePageOptIndex:number = 1;
     let pageOptions = await this._repo.getPageOptionsById(homePageOptIndex);
-    for (const prop in pageOptions) {
-      this.pageSections.push(pageOptions[prop]);
-    }
+    this.pageSections = (():any[] => {
+      let arrTemp=[];
+      for (const prop in pageOptions) {
+        arrTemp.push(pageOptions[prop]);
+      }
+      return arrTemp;
+    })();
+
     this.content = !!(pageOptions);
   }
 }
