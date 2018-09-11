@@ -2036,6 +2036,7 @@ export class AppDataRepository extends AbstractDataRepository {
           prod.status = _prod.status;
           prod.oldPrice = _prod.oldPrice;
           prod.bonuses = _prod.bonuses;
+          prod.site_status = _prod.site_status;
           return prod;
         }
 

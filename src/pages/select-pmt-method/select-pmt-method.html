@@ -33,7 +33,7 @@
 <!--
 Credit Products
 -->
-    <div *ngIf="dataLoaded && ((pmtMethods[2].isChecked))">
+    <div *ngIf="dataLoaded && allowTakeOnCreditButton && ((pmtMethods[2].isChecked))">
       <ion-row *ngIf="!cart.loan">
         <ion-col>
           <button text-center class="f-btn-secondary" ion-item block
@@ -62,7 +62,7 @@ Credit Products
 <!--
 Passport Data
 -->
-    <div *ngIf="dataLoaded && cart.loan && ((pmtMethods[2].isChecked))">
+    <div *ngIf="dataLoaded && cart.loan && allowTakeOnCreditButton && ((pmtMethods[2].isChecked))">
       <ion-row class="f-padding-lr-5">
         <ion-grid class="f-border-ligthgray">
           <form #f="ngForm">

@@ -18,6 +18,7 @@ import {Shipment} from '../model/shipment';
 import {LoDeliveryType} from '../model/lo-delivery-type';
 import {LoEntityOffice} from '../model/lo-entity-office';
 import {AppConstants} from '../app-constants';
+import { Product } from '../model';
 
 export class LoShipmentDeliveryOption {
   public shipment?: Shipment;
@@ -31,7 +32,7 @@ export class LoShipmentDeliveryOption {
   public deliveryType?: LoDeliveryType;
   public loEntityOfficeId?: number;
   public loEntityOfficesList?: LoEntityOffice[]
-
+ 
   constructor(){};
 }
 
@@ -735,5 +736,25 @@ export class CartService {
     if (loc && (Object.keys(loc).length !== 0)) {
       this.localization = loc;
     }
+  }
+
+  public async checkAllowTakeOnCredit(): Promise<boolean> {
+    let result = true;
+
+    for (let index = 0; index < this.orderProducts.length; index++) {
+      let quotProduct = await (<any> this.orderProducts[index]).quotationproduct_p;
+
+      if(quotProduct) {
+        let product = await (<any>quotProduct).product_p;
+
+        if(quotProduct.price < this.min_loan_amt || quotProduct.price > this.max_loan_amt)
+          result = false; 
+
+        if(product && await !this.repo.getAllowTakeOnCreditByStatus(product.site_status))
+          result = false;
+      }
+    }
+
+    return result;
   }
 }
