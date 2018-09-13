@@ -740,20 +740,22 @@ export class CartService {
 
   public async checkAllowTakeOnCredit(): Promise<boolean> {
     let result = true;
+    let totalSum = 0;
 
     for (let index = 0; index < this.orderProducts.length; index++) {
-      let quotProduct = await (<any> this.orderProducts[index]).quotationproduct_p;
+      let quotation = await (<any>this.orderProducts[index]).quotationproduct_p;
 
-      if(quotProduct) {
-        let product = await (<any>quotProduct).product_p;
-
-        if(quotProduct.price < this.min_loan_amt || quotProduct.price > this.max_loan_amt)
-          result = false; 
+      if(quotation) {
+        totalSum += quotation.price;
+        let product = await (<any>quotation).product_p;
 
         if(product && await !this.repo.getAllowTakeOnCreditByStatus(product.site_status))
           result = false;
       }
     }
+ 
+    if(totalSum < this.min_loan_amt || totalSum > this.max_loan_amt)
+      result = false; 
 
     return result;
   }
