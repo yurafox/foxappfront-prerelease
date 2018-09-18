@@ -203,14 +203,14 @@ export namespace Providers {
 
     static initSettingsIfDataWillBeAbsent() {
       return { 
-        "product": { "maxsize": 50, "expire": 1800000 }, 
+        "product": { "maxsize": 300, "expire": 1800000 }, 
         "supplier": { "maxsize": 10, "expire": 172800000 }, 
         "currency": { "maxsize": 10, "expire": 172800000 }, 
         "lang": { "maxsize": 10, "expire": 172800000 }, 
         "manufacturer": { "maxsize": 50, "expire": 600000 }, 
-        "city": { "maxsize": 50, "expire": 5000000 }, 
+        "city": { "maxsize": 300, "expire": 100000000 },  
         "storeplace": { "maxsize": 50, "expire": 10000000000 }, 
-        "store": { "maxsize": 50, "expire": 100000000 }, 
+        "store": { "maxsize": 300, "expire": 100000000 }, 
         "measureunit": { "maxsize": 50, "expire": 10000000000 }, 
         "quotation": { "maxsize": 50, "expire": 1000000 }, 
         "loentity": { "maxsize": 10, "expire": 100000000 }, 

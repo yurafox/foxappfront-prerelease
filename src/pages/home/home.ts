@@ -38,7 +38,7 @@ export class HomePage extends ComponentBase implements DoCheck {
   scrollHeight: number;
   scrOrientationSub: Subscription;
   searchNativeInput: HTMLInputElement;
-  pageSections =[];
+  pageSections = [];
   loadingDone: boolean;
 
   constructor(public app: App, public nav: NavController, public _repo:AbstractDataRepository,
@@ -49,8 +49,6 @@ export class HomePage extends ComponentBase implements DoCheck {
     this.srchService.lastSearch = null;
     if (navParams.data.pageMode)
       this._pageMode = navParams.data.pageMode;
-    
-    this.initData();
   }
 
   async initData() {
@@ -79,6 +77,8 @@ export class HomePage extends ComponentBase implements DoCheck {
     } catch(err) {
       console.error(err);
     } finally {
+      if (this.productsOfDay && this.productsSalesHits 
+          && this.productsOfDay.length > 0 && this.productsSalesHits.length > 0)
       this.loadingDone = true;  // Hiding section loader
     }
   }
@@ -103,8 +103,8 @@ export class HomePage extends ComponentBase implements DoCheck {
       this.searchButtonControl.incSearch();
     }
     if (val === PageMode.SearchResultsMode)
+    if (this.itemsList && this.itemsList.srchResDiv)
       this.itemsList.srchResDiv.height = 0;
-    this.cont.resize();
   }
 
   public get pageMode(): PageMode {
@@ -125,6 +125,7 @@ export class HomePage extends ComponentBase implements DoCheck {
   }
 
   async ngOnInit() {
+    await this.initData();
     this.scrOrientationSub = this.screenOrientation.onChange().subscribe(() => {
       if (this._pageMode !== 1) this.changeDet.detectChanges();
     });

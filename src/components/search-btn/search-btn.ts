@@ -69,15 +69,23 @@ export class SearchBtnComponent extends ComponentBase {
   }
 
   async searchByBarcode() {
-    this.barcodeScanner.scan().then((barcodeData) => {
-      this.searchValue = barcodeData.text;
-      this.incSearch().then(
-        () => {this.searchByText(this.searchValue);}
-      );
-
-    }, (err) => {
-      console.log('An error while scanning barcode occurred: ' + err);
-    });
+    this.barcodeScanner.scan().then(
+      barcodeData => {
+        if (barcodeData && !barcodeData.cancelled && barcodeData.text) {
+          this.searchValue = barcodeData.text;
+          this.incSearch().then(
+            () => { this.searchByText(this.searchValue); }
+          );
+        }
+        else  {
+          this.clearInput();
+          return;
+        }
+      }, err => {
+        console.log('An error while scanning barcode occurred: ' + err);
+        this.clearInput();
+        return;
+      });
   }
 
   initTmpSearchArray() {
@@ -149,7 +157,7 @@ export class SearchBtnComponent extends ComponentBase {
     this.srchItemsArr.splice(item, 1);
   }
 
-  clearInput(event) {
+  clearInput(event?) {
     if (event)
       event.stopPropagation();
     this.searchService.lastSearch = '';
