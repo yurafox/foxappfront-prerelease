@@ -203,7 +203,7 @@ export namespace Providers {
 
     static initSettingsIfDataWillBeAbsent() {
       return { 
-        "product": { "maxsize": 300, "expire": 1800000 }, 
+        "product": { "maxsize": 500, "expire": 1800000 },
         "supplier": { "maxsize": 10, "expire": 172800000 }, 
         "currency": { "maxsize": 10, "expire": 172800000 }, 
         "lang": { "maxsize": 10, "expire": 172800000 }, 

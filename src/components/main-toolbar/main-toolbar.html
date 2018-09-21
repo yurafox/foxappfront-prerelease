@@ -1,5 +1,5 @@
 <div class="f-statusbar"></div>
-<ion-navbar>
+<ion-navbar #navbar [hideBackButton]="!this.navCtrl.canGoBack()">
   <button ion-button menuToggle *ngIf="!showCloseIcon">
     <ion-icon name="menu"></ion-icon>
   </button>

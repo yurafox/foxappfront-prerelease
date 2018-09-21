@@ -46,12 +46,30 @@ export class HomePage extends ComponentBase implements DoCheck {
               public screenOrientation: ScreenOrientation, public navParams: NavParams) {
     super();
     this.initLocalization();
-    this.srchService.lastSearch = null;
-    if (navParams.data.pageMode)
-      this._pageMode = navParams.data.pageMode;
+  }
+
+  async ngOnInit() {
+    if (!this.loadingDone)
+      await this.initData();
+
+    this.scrOrientationSub = this.screenOrientation.onChange().subscribe(() => {
+      if (this._pageMode !== 1) this.changeDet.detectChanges();
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.scrOrientationSub) this.scrOrientationSub.unsubscribe();
+  }
+
+  ngDoCheck() {
+    this.updateScrollHeight();
   }
 
   async initData() {
+    this.srchService.lastSearch = null;
+    if (this.navParams.data.pageMode)
+      this._pageMode = this.navParams.data.pageMode;
+
     try {
       this.loadingDone = false; // Revealing section loader
       if (this._pageMode != PageMode.HomeMode)
@@ -77,14 +95,10 @@ export class HomePage extends ComponentBase implements DoCheck {
     } catch(err) {
       console.error(err);
     } finally {
-      if (this.productsOfDay && this.productsSalesHits 
-          && this.productsOfDay.length > 0 && this.productsSalesHits.length > 0)
-      this.loadingDone = true;  // Hiding section loader
+      if (this.productsOfDay && this.productsSalesHits
+        && this.productsOfDay.length > 0 && this.productsSalesHits.length > 0)
+        this.loadingDone = true;  // Hiding section loader
     }
-  }
-
-  ngDoCheck() {
-    this.updateScrollHeight();
   }
   
 
@@ -100,7 +114,7 @@ export class HomePage extends ComponentBase implements DoCheck {
     this.changeDet.detectChanges();
     if (val === PageMode.SearchMode) {
       this.searchButtonControl.inputMode = true;
-      this.searchButtonControl.incSearch();
+      this.searchButtonControl.incSearch().catch(console.error);
     }
     if (val === PageMode.SearchResultsMode)
     if (this.itemsList && this.itemsList.srchResDiv)
@@ -121,18 +135,7 @@ export class HomePage extends ComponentBase implements DoCheck {
   }
 
   search(srchString: string) {
-    this.searchButtonControl.searchByText(srchString);
-  }
-
-  async ngOnInit() {
-    await this.initData();
-    this.scrOrientationSub = this.screenOrientation.onChange().subscribe(() => {
-      if (this._pageMode !== 1) this.changeDet.detectChanges();
-    });
-  }
-
-  ngOnDestroy() {
-    if (this.scrOrientationSub) this.scrOrientationSub.unsubscribe();
+    this.searchButtonControl.searchByText(srchString).catch(console.error);
   }
 
   async prepareContent() {
@@ -141,7 +144,9 @@ export class HomePage extends ComponentBase implements DoCheck {
     this.pageSections = (():any[] => {
       let arrTemp=[];
       for (const prop in pageOptions) {
-        arrTemp.push(pageOptions[prop]);
+        if (pageOptions.hasOwnProperty(prop)) {
+          arrTemp.push(pageOptions[prop]);
+        }
       }
       return arrTemp;
     })();

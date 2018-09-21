@@ -80,14 +80,14 @@ export abstract class ComponentBase implements OnDestroy, OnInit {
   protected toEventSubscribe() {
     let subEv: any = this.evServ.events['localeChangeEvent']
       .subscribe(data => {
-        this.setLocaleFromSource({componentName: this._componentName, lang: data});
+        this.setLocaleFromSource({componentName: this._componentName, lang: data}).catch(console.error);
       });
 
     this.listenersObj.push(subEv);
   }
 
   protected initLocalization(): void {
-    this.setLocaleFromSource({componentName: this._componentName, lang: this.userService.lang});
+    this.setLocaleFromSource({componentName: this._componentName, lang: this.userService.lang}).catch(console.error);
   }
 
 }

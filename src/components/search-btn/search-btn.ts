@@ -1,4 +1,4 @@
-import {Component, Input, Renderer, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, Renderer, ViewChild} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {NavController} from 'ionic-angular';
 import {SearchService} from '../../app/service/search-service';
@@ -19,7 +19,7 @@ class SearchSuggestItem {
   selector: 'search-btn',
   templateUrl: 'search-btn.html'
 })
-export class SearchBtnComponent extends ComponentBase {
+export class SearchBtnComponent extends ComponentBase implements OnInit {
   
   @ViewChild('input') inputField;
 
@@ -38,8 +38,10 @@ export class SearchBtnComponent extends ComponentBase {
               public barcodeScanner: BarcodeScanner,
               public srchService: SearchService, public renderer: Renderer) {
     super();
+  }
 
-    searchService.lastSearchStringUpdated.subscribe(
+  ngOnInit() {
+    this.searchService.lastSearchStringUpdated.subscribe(
       (value: string) => {
         this.searchValue = value;
       }
@@ -51,7 +53,7 @@ export class SearchBtnComponent extends ComponentBase {
       .distinctUntilChanged()
       .subscribe(inputValue =>
         {
-          this.incSearch();
+          this.incSearch().catch(console.error);
         }
       );
   }

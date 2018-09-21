@@ -25,12 +25,12 @@ export class ActionSketchComponent extends ComponentBase {
 
   constructor(public navCtrl: NavController, public _repo:AbstractDataRepository) {
     super();
-    this.alive = true;
-    this.expire = {};
   }
 
   async ngOnInit() {
     super.ngOnInit();
+    this.alive = true;
+    this.expire = {};
     await this.InitActionOpt();
   }
 
