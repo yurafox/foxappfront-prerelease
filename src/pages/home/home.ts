@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component,DoCheck, ElementRef, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
 import {App, NavController, IonicPage, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {SearchService} from '../../app/service/search-service';
@@ -17,7 +17,7 @@ export enum PageMode {
   selector: 'page-home',
   templateUrl: 'home.html',
 })
-export class HomePage extends ComponentBase implements DoCheck {
+export class HomePage extends ComponentBase {
 
   _pageMode: PageMode = PageMode.HomeMode;
 
@@ -59,10 +59,6 @@ export class HomePage extends ComponentBase implements DoCheck {
 
   ngOnDestroy() {
     if (this.scrOrientationSub) this.scrOrientationSub.unsubscribe();
-  }
-
-  ngDoCheck() {
-    this.updateScrollHeight();
   }
 
   async initData() {

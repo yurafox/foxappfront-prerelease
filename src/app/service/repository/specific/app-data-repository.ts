@@ -2963,35 +2963,45 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async getAction(id: number): Promise<Action> {
+    if (!id)
+      return null;
+    let stringId = id.toString();
     try {
-      const response = await this.http
-        .get(`${actionDynamicUrl}/${id}`, RequestFactory.makeAuthHeader())
-        .toPromise();
+      if (this.cache.Action.HasNotValidCachedValue(stringId)) {
+        const response = await this.http
+          .get(`${actionDynamicUrl}/${id}`, RequestFactory.makeAuthHeader())
+          .toPromise();
 
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        let action: Action = null;
+        if (data != null) {
+          action = new Action(
+            data.id,
+            data.name,
+            new Date(data.dateStart),
+            new Date(data.dateEnd),
+            data.img_url,
+            data.priority,
+            data.sketch_content,
+            data.action_content,
+            (data.isActive) ? true : false,
+            data.id_type,
+            data.badge_url,
+            data.id_supplier,
+            data.title,
+            (data.is_landing) ? true : false
+          );
+        }
+        if (CacheProvider.Settings && CacheProvider.Settings.action)
+          this.cache.Action.Add(stringId, { item: action, expire: Date.now() + CacheProvider.Settings.action.expire });
+        return action;
       }
-      let action: Action = null;
-      if (data != null) {
-        action = new Action(
-          data.id,
-          data.name,
-          new Date(data.dateStart),
-          new Date(data.dateEnd),
-          data.img_url,
-          data.priority,
-          data.sketch_content,
-          data.action_content,
-          (data.isActive) ? true : false,
-          data.id_type,
-          data.badge_url,
-          data.id_supplier,
-          data.title,
-          (data.is_landing) ? true : false
-        );
+      else {
+        return this.cache.Action.Item(stringId).item;
       }
-      return action;
     } catch (err) {
       return await this.handleError(err);
     }
@@ -3114,28 +3124,38 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async getNovelty(id: number): Promise<Novelty> {
+    if (!id)
+      return null;
+    let stringId = id.toString();
     try {
-      const response = await this.http
-        .get(`${noveltyByIdDynamicUrl}/${id}`, RequestFactory.makeAuthHeader())
-        .toPromise();
+      if (this.cache.Novelty.HasNotValidCachedValue(stringId)) {
+        const response = await this.http
+          .get(`${noveltyByIdDynamicUrl}/${id}`, RequestFactory.makeAuthHeader())
+          .toPromise();
 
-      const data = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
+        const data = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        let novelty: Novelty;
+        if (data != null) {
+          novelty = new Novelty(
+            data.id,
+            data.idProduct,
+            data.name,
+            data.img_url,
+            data.priority,
+            data.sketch_content,
+            data.novelty_content
+          );
+        }
+        if (CacheProvider.Settings && CacheProvider.Settings.novelty)
+          this.cache.Novelty.Add(stringId, { item: novelty, expire: Date.now() + CacheProvider.Settings.novelty.expire });
+        return novelty;
       }
-      let novelty: Novelty;
-      if (data != null) {
-        novelty = new Novelty(
-          data.id,
-          data.idProduct,
-          data.name,
-          data.img_url,
-          data.priority,
-          data.sketch_content,
-          data.novelty_content
-        );
+      else {
+        return this.cache.Novelty.Item(stringId).item;
       }
-      return novelty;
     } catch (err) {
       return await this.handleError(err);
     }
@@ -4024,15 +4044,27 @@ export class AppDataRepository extends AbstractDataRepository {
     }
   }
 
-  public async  getPageOptionsById(id:number):Promise<any> {
+  public async getPageOptionsById(id:number):Promise<any> {
+    if (!id)
+      return null;
+    let stringId = id.toString();
     try {
-      const response = await this.http.get(`${pageOptionsUrl}/${id}`,RequestFactory.makeAuthHeader()).toPromise();
-      let data: any = response.json();
-      if (response.status !== 200) {
-        throw new Error("server side status error");
+      if (this.cache.PageOptions.HasNotValidCachedValue(stringId)) {
+        const response = await this.http.get(`${pageOptionsUrl}/${id}`, RequestFactory.makeAuthHeader()).toPromise();
+        let data: any = response.json();
+        if (response.status !== 200) {
+          throw new Error("server side status error");
+        }
+        if (CacheProvider.Settings && CacheProvider.Settings.pageoptions) {
+            this.cache.PageOptions.Add(stringId, {
+              item: data,
+              expire: Date.now() + CacheProvider.Settings.pageoptions.expire });
+        }
+        return data;
       }
-
-      return data;
+      else {
+        return this.cache.PageOptions.Item(stringId).item;
+      }
     } catch (err) {
       return await this.handleError(err);
     }

@@ -19,6 +19,8 @@ import { LoEntityOffice } from '../model/lo-entity-office';
 import { Product } from '../model/product';
 import { Supplier } from '../model/supplier';
 import { Currency } from '../model/currency';
+import { Action } from "../model/action";
+import { Novelty } from "../model/novelty";
 
 export class EmailValidator {
 
@@ -117,7 +119,7 @@ export namespace Providers {
     }
 
     public Remove(key: string): T {
-      var val = this.items[key];
+      let val = this.items[key];
       delete this.items[key];
       this.count--;
       return val;
@@ -128,9 +130,9 @@ export namespace Providers {
     }
 
     public Keys(): string[] {
-      var keySet: string[] = [];
+      let keySet: string[] = [];
 
-      for (var prop in this.items) {
+      for (let prop in this.items) {
         if (this.items.hasOwnProperty(prop)) {
           keySet.push(prop);
         }
@@ -140,9 +142,9 @@ export namespace Providers {
     }
 
     public Values(): any[] {
-      var values: any[] = [];
+      let values: any[] = [];
 
-      for (var prop in this.items) {
+      for (let prop in this.items) {
         if (this.items.hasOwnProperty(prop) && this.items[prop]) {
           values.push((<any>this.items[prop]).item);
         }
@@ -191,6 +193,8 @@ export namespace Providers {
     _cacheStorePlace: IKeyedCollection<CacheDataContainer<StorePlace>> = null;
     _cacheStore: IKeyedCollection<CacheDataContainer<{ id: number, stores: Store[] }>> = null;
     _cacheMeasureUnit: IKeyedCollection<CacheDataContainer<MeasureUnit>> = null;
+    _cacheNovelty: IKeyedCollection<CacheDataContainer<Novelty>> = null;
+    _cacheAction: IKeyedCollection<CacheDataContainer<Action>> = null;
 
     _cacheQuotation: IKeyedCollection<CacheDataContainer<Quotation>> = null;
     _cacheLoEntity: IKeyedCollection<CacheDataContainer<LoEntity>> = null;
@@ -201,8 +205,10 @@ export namespace Providers {
     _cacheDeliveryType: IKeyedCollection<CacheDataContainer<LoDeliveryType>> = null;
     _cacheLoEntityOffice: IKeyedCollection<CacheDataContainer<LoEntityOffice>> = null;
 
+    _cachePageOptions: IKeyedCollection<CacheDataContainer<any>> = null;
+
     static initSettingsIfDataWillBeAbsent() {
-      return { 
+      return {
         "product": { "maxsize": 500, "expire": 1800000 },
         "supplier": { "maxsize": 10, "expire": 172800000 }, 
         "currency": { "maxsize": 10, "expire": 172800000 }, 
@@ -210,7 +216,9 @@ export namespace Providers {
         "manufacturer": { "maxsize": 50, "expire": 600000 }, 
         "city": { "maxsize": 300, "expire": 10000000000 },  
         "storeplace": { "maxsize": 500, "expire": 10000000000 }, 
-        "store": { "maxsize": 300, "expire": 10000000000 }, 
+        "store": { "maxsize": 300, "expire": 10000000000 },
+        "novelty": { "maxsize": 10, "expire": 600000 },
+        "action": { "maxsize": 10, "expire": 600000 },
         "measureunit": { "maxsize": 50, "expire": 10000000000 }, 
         "quotation": { "maxsize": 50, "expire": 1000000 }, 
         "loentity": { "maxsize": 10, "expire": 100000000 }, 
@@ -219,7 +227,8 @@ export namespace Providers {
         "region": { "maxsize": 29, "expire": 500000000 }, 
         "appparam": { "maxsize": 15, "expire": 1000000 }, 
         "lodeliverytype": { "maxsize": 10, "expire": 120000000 }, 
-        "loentityoffice": { "maxsize": 50, "expire": 120000000 }
+        "loentityoffice": { "maxsize": 50, "expire": 120000000 },
+        "pageoptions": { "maxsize": 10, "expire": 600000 }
       };
     }
 
@@ -295,6 +304,20 @@ export namespace Providers {
       return this._cacheMeasureUnit;
     }
 
+    public get Novelty(): IKeyedCollection<CacheDataContainer<Novelty>> {
+      if (this._cacheNovelty == null)
+        this._cacheNovelty = new CacheItems<CacheDataContainer<Novelty>>();
+
+      return this._cacheNovelty;
+    }
+
+    public get Action(): IKeyedCollection<CacheDataContainer<Action>> {
+      if (this._cacheAction == null)
+        this._cacheAction = new CacheItems<CacheDataContainer<Action>>();
+
+      return this._cacheAction;
+    }
+
     public get Quotation(): IKeyedCollection<CacheDataContainer<Quotation>> {
       if (this._cacheQuotation == null)
         this._cacheQuotation = new CacheItems<CacheDataContainer<Quotation>>();
@@ -333,19 +356,29 @@ export namespace Providers {
     public get AppParams(): IKeyedCollection<CacheDataContainer<AppParam>> {
       if (this._cacheAppParams == null)
         this._cacheAppParams = new CacheItems<CacheDataContainer<AppParam>>();
+
       return this._cacheAppParams;
     }
 
     public get LoDeliveryType(): IKeyedCollection<CacheDataContainer<LoDeliveryType>> {
       if (this._cacheDeliveryType == null)
         this._cacheDeliveryType = new CacheItems<CacheDataContainer<LoDeliveryType>>();
+
       return this._cacheDeliveryType;
     }
 
     public get LoEntityOffice(): IKeyedCollection<CacheDataContainer<LoEntityOffice>> {
       if (this._cacheLoEntityOffice == null)
         this._cacheLoEntityOffice = new CacheItems<CacheDataContainer<LoEntityOffice>>();
+
       return this._cacheLoEntityOffice;
+    }
+
+    public get PageOptions(): IKeyedCollection<CacheDataContainer<any>> {
+      if (this._cachePageOptions == null)
+        this._cachePageOptions = new CacheItems<CacheDataContainer<any>>();
+      
+      return this._cachePageOptions;
     }
 
 

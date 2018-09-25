@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {NavController, NavParams, ViewController, Navbar} from "ionic-angular";
 import {CartService} from '../../app/service/cart-service';
 import {PageMode} from '../../pages/home/home';
@@ -7,7 +7,7 @@ import {PageMode} from '../../pages/home/home';
   selector: 'main-toolbar',
   templateUrl: 'main-toolbar.html'
 })
-export class MainToolbarComponent implements AfterViewInit {
+export class MainToolbarComponent {
   @ViewChild('navbar') navbar: Navbar;
 
   @Input()
@@ -31,25 +31,6 @@ export class MainToolbarComponent implements AfterViewInit {
   goToCart() {
     if (!(this.navCtrl.getActive().name === 'CartPage'))
       this.navCtrl.push('CartPage', {},{animate: false}).catch(console.error);
-  }
-  
-  ngAfterViewInit() {
-    if(this.navbar) {
-      this.navbar.backButtonClick = (ev: Event) => {
-        this.toPreviousPage(ev);
-      }
-    } 
-  }
-  
-  toPreviousPage(event: Event):void {
-    event.stopPropagation();
-    event.preventDefault();
-    if (this.navCtrl.last().index == this.navCtrl.first().index + 1) {
-      this.navCtrl.setRoot('HomePage', {}, {animate: false}).catch(console.error);
-    }
-    else {
-      this.navCtrl.pop().catch(console.error);
-    }
   }
 
   goToHome() {
