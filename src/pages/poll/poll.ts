@@ -77,7 +77,7 @@ export class PollPage extends ComponentBase{
   }
 
   public async sendAnswers() {
-    const clientAnswer:ClientPollAnswer = await this._repo.postClientPoolAnswers(this.pollresults);
+    const clientAnswer:ClientPollAnswer = await this._repo.postClientPollAnswers(this.pollresults);
     if(clientAnswer) {
       let message = this.locale['AlertMessage'];
       let alert = this.alertCtrl.create({

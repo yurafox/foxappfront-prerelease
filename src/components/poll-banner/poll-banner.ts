@@ -27,7 +27,7 @@ export class PollBannerComponent extends ComponentBase{
     super.ngOnInit();
     if (this.userService.isAuth) {
       [this.currentPoll,this.clientAnswers] = await Promise.all([this._repo.getPollById(this.innerId || 1),
-        this._repo.getClientPoolAnswersForUserByPollId(this.innerId)]);
+        this._repo.getClientPollAnswersForUserByPollId(this.innerId)]);
 
       this.canView = new Date() <= this.currentPoll.dateEnd
                         && this.clientAnswers.length===0;
