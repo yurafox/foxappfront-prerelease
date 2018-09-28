@@ -1,4 +1,4 @@
-import {Component, Input, ElementRef, OnChanges} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 
 @Component({
@@ -20,7 +20,7 @@ export class ReadMoreComponent extends ComponentBase implements OnChanges {
 
   isCollapsed: boolean = true;
 
-  constructor(public elementRef: ElementRef) {
+  constructor() {
     super();
   }
 

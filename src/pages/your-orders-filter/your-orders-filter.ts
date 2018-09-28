@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AbstractClientRepository} from '../../app/service/repository/abstract/abstract-client-repository';
 import {OrdersFilter} from '../your-orders/your-orders';
 import {ComponentBase} from '../../components/component-extension/component-base';
 
@@ -15,14 +15,14 @@ export class OrdersFilterPage extends ComponentBase {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public repo: AbstractDataRepository) {
+              public clientRepo: AbstractClientRepository) {
     super();
-    this.InitData();
+    this.InitData().catch(console.error);
   }
 
   async InitData() {
-    const fltrs = await this.repo.getClientOrderDatesRanges();
-    fltrs.forEach(x => {
+    const filters = await this.clientRepo.getClientOrderDatesRanges();
+    filters.forEach(x => {
       this.filterOptions.push({filter: x, isChecked: (this.navParams.data.filter.key === x.key)});
     });
     this.dataLoaded = true;
@@ -41,7 +41,7 @@ export class OrdersFilterPage extends ComponentBase {
 
   async onApplyFilterClick() {
     await this.navCtrl.push('OrdersPage', {filter: this.selectedFilter});
-    this.navCtrl.remove((this.navCtrl.getActive().index)-2, 2);
+    this.navCtrl.remove((this.navCtrl.getActive().index)-2, 2).catch(console.error);
   }
 
 }

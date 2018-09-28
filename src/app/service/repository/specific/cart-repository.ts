@@ -11,7 +11,6 @@ import { ClientOrder } from '../../../model/client-order';
 import { ClientOrderProducts } from '../../../model/client-order-products';
 import { Shipment } from '../../../model/shipment';
 import {AbstractCartRepository} from "../abstract/abstract-cart-repository";
-import {AppDataRepository} from "./app-data-repository";
 
 // <editor-fold desc="url const">
 const clientDraftOrderUrl = `${AppConstants.CART_SERVICE_ENDPOINT}/Cart/ClientDraftOrder`;
@@ -27,7 +26,7 @@ const generateShipmentsUrl = `${AppConstants.CART_SERVICE_ENDPOINT}/cart/Generat
 // </editor-fold
 
 @Injectable()
-export class AppCartRepository extends AbstractCartRepository {
+export class CartRepository extends AbstractCartRepository {
   constructor(public http: Http, public connServ: ConnectivityService) {
     super();
   }

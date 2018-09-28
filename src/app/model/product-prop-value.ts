@@ -1,15 +1,15 @@
 import {MeasureUnit} from './measure-unit';
 import {LazyLoad, RefInjector} from '../core/app-core';
-import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
 import {Prop} from './prop';
 import {PropEnumList} from './prop-enum-list';
+import {AbstractMeasureUnitRepository} from "../service/repository/abstract/abstract-measure-unit-repository";
 
 @LazyLoad([
   { options:{constructor: MeasureUnit}, action: 'getMeasureUnitById', params: ['id_Measure_Unit']}
 ])
 export class ProductPropValue {
 
-  public _repo: AbstractDataRepository;
+  public _measureUnit: AbstractMeasureUnitRepository;
 
   constructor (
     public id: number,
@@ -26,7 +26,7 @@ export class ProductPropValue {
     public out_bmask?: number
   )
   {
-    this._repo = RefInjector.pull(AbstractDataRepository);
+    this._measureUnit = RefInjector.pull(AbstractMeasureUnitRepository);
   }
 
   /*

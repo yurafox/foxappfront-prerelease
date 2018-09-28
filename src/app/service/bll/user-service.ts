@@ -9,7 +9,7 @@ import {AbstractAccountRepository} from '../repository/abstract/abstract-account
 import {ChangePassword} from '../../model/change-password';
 import {LoginTemplate} from '../../model/login-template';
 import {Product} from '../../model/product';
-import {AbstractDataRepository} from '../repository/abstract/abstract-data-repository';
+import {AbstractClientRepository} from "../repository/abstract/abstract-client-repository";
 
 @Injectable()
 export class UserService {
@@ -33,7 +33,7 @@ export class UserService {
               public alertCtrl:AlertController,
               public toastCtrl:ToastController,
               public locRepo: AbstractLocalizationRepository,
-              public repo: AbstractDataRepository) {
+              public clientRepo: AbstractClientRepository) {
     this.callDefaultUser();
   }
 
@@ -294,7 +294,7 @@ export class UserService {
 
   async loadViewProducts() {
     if(!this.isLoadedViewProducts) {
-      this.viewProducts = await this.repo.getViewProducts();
+      this.viewProducts = await this.clientRepo.getViewProducts();
       this.isLoadedViewProducts = true;
     }
   }

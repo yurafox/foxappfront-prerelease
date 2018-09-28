@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {CustomPopupComponent} from '../../components/custom-popup/custom-popup';
 import {City} from '../../app/model/city';
-import {StorePlace} from '../../app/model/store-place';
 import {ProductStorePlace} from '../../app/model/product-store-place';
 import {ComponentBase} from "../../components/component-extension/component-base";
 
@@ -20,7 +19,7 @@ export class CityPopoverPage extends ComponentBase  {
               public viewCtrl: ViewController) {
     super();
     this.caller = navParams.get('caller');
-    this.createCityList();
+    this.createCityList().catch(console.error);
   }
 
   async createCityList () {
@@ -54,7 +53,7 @@ export class CityPopoverPage extends ComponentBase  {
         sp.push(place);
     }
     this.caller.displayLocations = sp;
-    this.viewCtrl.dismiss();
+    this.viewCtrl.dismiss().catch(console.error);
   }
 
 }

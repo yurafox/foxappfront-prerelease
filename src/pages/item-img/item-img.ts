@@ -1,5 +1,5 @@
 import {Component, DoCheck, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams, Slides, ViewController} from 'ionic-angular';
+import {IonicPage, NavParams, Slides, ViewController} from 'ionic-angular';
 import {Product} from '../../app/model/product';
 
 
@@ -14,14 +14,14 @@ export class ItemImgPage implements DoCheck {
   product: Product;
   imgIdx: number = 0;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public navParams: NavParams,
               public viewCtrl: ViewController) {
     this.product = this.navParams.data.product;
     this.imgIdx = this.navParams.data.imgIdx;
   }
 
   close() {
-    this.viewCtrl.dismiss();
+    this.viewCtrl.dismiss().catch(console.error);
   }
 
   ngDoCheck() {

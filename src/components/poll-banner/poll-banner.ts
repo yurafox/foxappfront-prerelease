@@ -4,7 +4,7 @@ import { ComponentBase } from '../component-extension/component-base';
 import {fadeInAnimation} from '../../app/core/animation-core';
 import {Poll} from '../../app/model/poll';
 import {ClientPollAnswer} from '../../app/model/client-poll-answer';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AbstractPollRepository} from "../../app/service/repository/abstract/abstract-poll-repository";
 
 @Component({
   selector: 'poll-banner',
@@ -19,15 +19,15 @@ export class PollBannerComponent extends ComponentBase{
   canView = false;
 
   constructor(public navCtrl: NavController,
-              public _repo:AbstractDataRepository) {
+              public _pollRepo: AbstractPollRepository) {
     super();
   }
 
   async ngOnInit() {
     super.ngOnInit();
     if (this.userService.isAuth) {
-      [this.currentPoll,this.clientAnswers] = await Promise.all([this._repo.getPollById(this.innerId || 1),
-        this._repo.getClientPollAnswersForUserByPollId(this.innerId)]);
+      [this.currentPoll,this.clientAnswers] = await Promise.all([this._pollRepo.getPollById(this.innerId || 1),
+        this._pollRepo.getClientPollAnswersForUserByPollId(this.innerId)]);
 
       this.canView = new Date() <= this.currentPoll.dateEnd
                         && this.clientAnswers.length===0;

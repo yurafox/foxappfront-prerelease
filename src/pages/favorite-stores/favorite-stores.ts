@@ -4,7 +4,9 @@ import {ComponentBase} from '../../components/component-extension/component-base
 import {City} from '../../app/model/city';
 import {Store} from '../../app/model/store';
 import {StoreReview} from '../../app/model/store-review';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AbstractStoreRepository} from '../../app/service/repository/abstract/abstract-store-repository';
+import {AbstractGeoRepository} from "../../app/service/repository/abstract/abstract-geo-repository";
+import {AbstractReviewRepository} from "../../app/service/repository/abstract/abstract-review-repository";
 
 export interface IStore {
   city: City;
@@ -25,7 +27,8 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
   clientId: number = 0;
   dataLoaded:boolean;
 
-  constructor(public navCtrl: NavController, public repo: AbstractDataRepository, 
+  constructor(public navCtrl: NavController, public storeRepo: AbstractStoreRepository,
+              public geoRepo: AbstractGeoRepository, public reviewRepo: AbstractReviewRepository,
               public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
     super();
     this.initLocalization();
@@ -40,15 +43,15 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
       content: content
     });
     try {
-      loading.present();
-      let favStores: Store[] = await this.repo.getFavoriteStores();
+      loading.present().catch(console.error);
+      let favStores: Store[] = await this.storeRepo.getFavoriteStores();
       if (favStores && favStores.length > 0) {
         for (let i = 0; i < favStores.length; i++) {
-          let city = await this.repo.getCityById(favStores[i].idCity);
+          let city = await this.geoRepo.getCityById(favStores[i].idCity);
           let store: IStore = { city: null, store: null, reviews: null, cantShow: false };
           store = { city: city, store: favStores[i], reviews: null, cantShow: false, hasReviews: false };
-          let reviews = await this.repo.getStoreReviewsByStoreId(favStores[i].id);
-          let hasClientReviews = await this.repo.getHasClientStoreReview(favStores[i].id);
+          let reviews = await this.reviewRepo.getStoreReviewsByStoreId(favStores[i].id);
+          let hasClientReviews = await this.reviewRepo.getHasClientStoreReview(favStores[i].id);
           let revs = reviews.reviews;
           store.reviews = revs;
           if (!this.clientId) this.clientId = reviews.idClient;
@@ -63,7 +66,7 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
       console.error(err);
     } finally {
       this.dataLoaded = true;
-      loading.dismiss();
+      loading.dismiss().catch(console.error);
     }
   }
 
@@ -98,7 +101,7 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
         }
       ]
     });
-    alert.present();
+    alert.present().catch(console.error);
   }
 
   navToMap(store: Store, city: City) {
@@ -123,7 +126,7 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
 
   async removeFavoriteStore(idStore:number) {
     if (idStore && (idStore > 0)) {
-      let data = await this.repo.deleteFavoriteStore(idStore);
+      let data = await this.storeRepo.deleteFavoriteStore(idStore);
       if (data && data !== 0 && data !== null) {
         for (let i = 0; i < this.stores.length; i++) {
           let store = this.stores[i];
@@ -133,12 +136,5 @@ export class FavoriteStoresPage extends ComponentBase implements OnInit {
         }
       }
     }
-  }
-  hasClientReview(reviews): boolean {
-    let present = false;
-    for (let i = 0; i < reviews.length; i++) {
-      if (reviews[i].idClient === this.clientId) present = true;
-    }
-    return present;
   }
 }

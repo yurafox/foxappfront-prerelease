@@ -1,13 +1,13 @@
-import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
 import {RefInjector, LazyLoad} from '../core/app-core';
 import {City} from './city';
+import {AbstractGeoRepository} from "../service/repository/abstract/abstract-geo-repository";
 
 @LazyLoad([
   { options: {constructor: City}, action: 'getCityById', params: ['idCity']}
 ])
 
 export class StorePlace {
-  public _repo: AbstractDataRepository;
+  public _geoRepo: AbstractGeoRepository;
 
   constructor (
     public id?: number,
@@ -19,5 +19,5 @@ export class StorePlace {
     public lat?: number,
     public lng?: number,
     public type?: number
-  ){this._repo = RefInjector.pull(AbstractDataRepository);}
+  ){this._geoRepo = RefInjector.pull(AbstractGeoRepository);}
 }

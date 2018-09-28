@@ -1,23 +1,26 @@
 import {Injectable} from '@angular/core';
-import {AlertController, App, LoadingController, Loading} from 'ionic-angular';
+import {AlertController, App, LoadingController} from 'ionic-angular';
 import {ClientOrder} from '../model/client-order';
 import {ClientOrderProducts} from '../model/client-order-products';
 import {QuotationProduct} from '../model/quotation-product';
 import {StorePlace} from '../model/store-place';
 import {UserService} from './bll/user-service';
-import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
 import {EventService} from './event-service';
 import {PersonInfo} from '../model/person';
 import {CreditCalc} from '../model/credit-calc';
 import {AbstractLocalizationRepository} from './repository/abstract/abstract-localization-repository';
 import {IDictionary, SCN} from '../core/app-core';
-import {CurrencyStore} from './repository/specific/currency-store.service';
 import {ComplectItem} from '../../components/complect/complect';
 import {ItemDetailPage} from '../../pages/item-detail/item-detail';
 import {Shipment} from '../model/shipment';
 import {LoDeliveryType} from '../model/lo-delivery-type';
 import {LoEntityOffice} from '../model/lo-entity-office';
 import {AppConstants} from '../app-constants';
+import {AbstractStorePlaceRepository} from "./repository/abstract/abstract-store-place-repository";
+import {AbstractGeoRepository} from "./repository/abstract/abstract-geo-repository";
+import {AbstractCartRepository} from "./repository/abstract/abstract-cart-repository";
+import {AbstractClientRepository} from "./repository/abstract/abstract-client-repository";
+import {AbstractDataRepository} from "./repository/abstract/abstract-data-repository";
 
 export class LoShipmentDeliveryOption {
   public shipment?: Shipment;
@@ -30,7 +33,7 @@ export class LoShipmentDeliveryOption {
   public pickupLocationName?: string;
   public deliveryType?: LoDeliveryType;
   public loEntityOfficeId?: number;
-  public loEntityOfficesList?: LoEntityOffice[]
+  public loEntityOfficesList?: LoEntityOffice[];
 
   constructor(){};
 }
@@ -72,37 +75,38 @@ export class CartService {
 
   public localization: IDictionary<string> = {};
 
-  constructor(public userService: UserService, public repo: AbstractDataRepository,
+  constructor(public userService: UserService, public storePlaceRepo: AbstractStorePlaceRepository,
+              public geoRepo: AbstractGeoRepository, public cartRepo: AbstractCartRepository,
+              public dataRepo: AbstractDataRepository, public clientRepo: AbstractClientRepository,
               public evServ: EventService, public app: App, public locRepo: AbstractLocalizationRepository,
-              public alertCtrl: AlertController, public currStoreService: CurrencyStore,
-              public loadingCtrl: LoadingController) {
+              public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
 
 
     this.evServ.events['logonEvent'].subscribe(() => {
         this.initCart().then (() => {
             //this.initBonusData();
         }
-        );
+        ).catch(console.error);
       }
     );
 
     this.evServ.events['logOffEvent'].subscribe(() => {
       this.orderProducts = [];
-      this.initCart();
+      this.initCart().catch(console.error);
       }
     );
 
     this.evServ.events['cartUpdateEvent'].subscribe(() => {
         this.calculateCart().then(() =>
           this.updateDisplayOrderProducts()
-        );
+        ).catch(console.error);
 
       }
     );
 
     locRepo.setLocalization().then(()=> this.initCart());
-    repo.loadStorePlaceCache();
-    repo.loadCityCache();
+    storePlaceRepo.loadStorePlaceCache().catch(console.error);
+    geoRepo.loadCityCache().catch(console.error);
 
     /*
     repo.loadPmtMethodsCache();
@@ -165,7 +169,7 @@ export class CartService {
 
     try {
       this._httpCallInProgress = true;
-      let calcRes = await this.repo.calculateCart(
+      let calcRes = await this.cartRepo.calculateCart(
         this.promoCode, this.bonus, this.payByPromoBonus,
         ((this.loan) && (this.loan.creditProduct) && (this.order.idPaymentMethod === 3)) ? this.loan.creditProduct.sId : null /*,
                     this.orderProducts*/);
@@ -192,7 +196,7 @@ export class CartService {
 
       }
       this.orderProducts = this.orderProducts.splice(0, this.orderProducts.length);
-      this.calcLoan();
+      this.calcLoan().catch(console.error);
     }
     finally {
       this._httpCallInProgress = false;
@@ -253,14 +257,14 @@ export class CartService {
     try {
       this._httpCallInProgress = true;
       const before_scn = SCN.value;
-      let order = await this.repo.saveClientDraftOrder(this.order);
+      let order = await this.cartRepo.saveClientDraftOrder(this.order);
       const after_scn = SCN.value;
       if ((order) && (before_scn != after_scn)) // check if order has not been submitted from another device
-        this.order = order
+        this.order = order;
       else {
-        this.gotoCartPageIfDataChanged();
+        this.gotoCartPageIfDataChanged().catch(console.error);
         return;
-      };
+      }
 
     }
     finally {
@@ -396,15 +400,15 @@ export class CartService {
       this.availPromoBonus = null;
       this.cartValidationNeeded = false;
 
-      this.min_loan_amt = parseInt(await this.repo.getAppParam('MIN_LOAN_AMT'));
-      this.max_loan_amt = parseInt(await this.repo.getAppParam('MAX_LOAN_AMT'));
+      this.min_loan_amt = parseInt(await this.dataRepo.getAppParam('MIN_LOAN_AMT'));
+      this.max_loan_amt = parseInt(await this.dataRepo.getAppParam('MAX_LOAN_AMT'));
 
 
       if (this.userService.isAuth)
       {
-        this.order = await this.repo.getClientDraftOrder();
+        this.order = await this.cartRepo.getClientDraftOrder();
         if (this.order && this.order.idPerson) {
-          this.person = await this.repo.getPersonById(this.order.idPerson);
+          this.person = await this.clientRepo.getPersonById(this.order.idPerson);
         }
 
         await this.initBonusData();
@@ -412,11 +416,12 @@ export class CartService {
         // Add local storage items
         let lsAr = this.getLocalStorageItems();
         for (let i of lsAr) {
-          let itm = await this.repo.insertCartProduct(i);
+          await this.cartRepo.insertCartProduct(i);
+          //let itm = await this.cartRepo.insertCartProduct(i);
           //op.push(itm);
         }
 
-        let op = await this.repo.getCartProducts();
+        let op = await this.cartRepo.getCartProducts();
 
         //переключаем корзину на результирующую
         this.orderProducts = op;
@@ -492,23 +497,23 @@ export class CartService {
       if (this.userService.isAuth) {
 
         const before_scn = SCN.value;
-        firstItem = await this.repo.insertCartProduct(firstItem);
+        firstItem = await this.cartRepo.insertCartProduct(firstItem);
         const after_scn = SCN.value;
 
         if (before_scn === after_scn) {
-          this.gotoCartPageIfDataChanged();
+          this.gotoCartPageIfDataChanged().catch(console.error);
           return;
-        };
+        }
 
 
         const before_scn1 = SCN.value;
-        secondItem = await this.repo.insertCartProduct(secondItem);
+        secondItem = await this.cartRepo.insertCartProduct(secondItem);
         const after_scn1 = SCN.value;
 
         if (before_scn1 === after_scn1) {
-          this.gotoCartPageIfDataChanged();
+          this.gotoCartPageIfDataChanged().catch(console.error);
           return;
-        };
+        }
 
         this.showAddedItemToast(page);
         this.orderProducts = [];
@@ -539,7 +544,7 @@ export class CartService {
       position: 'bottom',
       cssClass: 'toast-message'
     });
-    toast.present();
+    toast.present().catch(console.error);
   }
 
   async addItem(item: QuotationProduct, qty: number, price: number, storePlace: StorePlace, page: any, showLoading: boolean) {
@@ -577,11 +582,11 @@ export class CartService {
           if (this.userService.isAuth) {
 
             const before_scn = SCN.value;
-            orderItem = await this.repo.insertCartProduct(orderItem);
+            orderItem = await this.cartRepo.insertCartProduct(orderItem);
             const after_scn = SCN.value;
 
             if (before_scn === after_scn) {
-              this.gotoCartPageIfDataChanged();
+              this.gotoCartPageIfDataChanged().catch(console.error);
               return;
             }
 
@@ -603,7 +608,7 @@ export class CartService {
   saveToLocalStorage() {
     if (!this.userService.isAuth) {
 
-      let saveArr = new Array<any>();
+      let saveArr = [];
       this.orderProducts.forEach(i => {
           saveArr.push(i.dto);
         }
@@ -633,7 +638,7 @@ export class CartService {
         }
       ]
     });
-    alert.present();
+    alert.present().catch(console.error);
   }
 
 
@@ -652,16 +657,16 @@ export class CartService {
 
         for (let i of cmplArr) {
           i.qty = item.qty;
-          i = await this.repo.saveCartProduct(i);
+          i = await this.cartRepo.saveCartProduct(i);
         }
       }
 
       if (this.userService.isAuth) {
         const before_scn = SCN.value;
-        item = await this.repo.saveCartProduct(item);
+        item = await this.cartRepo.saveCartProduct(item);
         const after_scn = SCN.value;
           if ((!item) || (before_scn === after_scn)) {
-            this.gotoCartPageIfDataChanged();
+            this.gotoCartPageIfDataChanged().catch(console.error);
             return;
           }
       }
@@ -687,10 +692,10 @@ export class CartService {
 
       if (this.userService.isAuth) {
         const before_scn = SCN.value;
-        await this.repo.deleteCartProduct(this.orderProducts[itemIndex]);
+        await this.cartRepo.deleteCartProduct(this.orderProducts[itemIndex]);
         const after_scn = SCN.value;
         if ((before_scn === after_scn)) {
-          this.gotoCartPageIfDataChanged();
+          this.gotoCartPageIfDataChanged().catch(console.error);
           return;
         }
 
@@ -714,7 +719,7 @@ export class CartService {
   }
 
   public get cartErrors(): Array<{idQuotProduct: number, errorMessage: string}> {
-    let arr = new Array<any>();
+    let arr = [];
     for (let i of this.orderProducts) {
       if (i.errorMessage) {
         arr.push({idQuotProduct: i.idQuotationProduct, errorMessage: i.errorMessage});

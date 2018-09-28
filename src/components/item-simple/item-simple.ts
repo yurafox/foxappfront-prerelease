@@ -1,8 +1,9 @@
 import {Component, Input} from '@angular/core';
 import {ItemBase} from "../component-extension/item-base";
-import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
 import {NavController, NavParams} from "ionic-angular";
 import {Product} from "../../app/model/product";
+import {AbstractQuotationProductRepository} from "../../app/service/repository/abstract/abstract-quotation-product-repository";
+import {AbstractStorePlaceRepository} from "../../app/service/repository/abstract/abstract-store-place-repository";
 
 @Component({
   selector: 'item-simple',
@@ -20,16 +21,17 @@ export class ItemSimpleComponent extends ItemBase {
   @Input() public simplicity: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public repo: AbstractDataRepository) {
-    super(navCtrl, navParams, repo);
+              public quotProductRepo: AbstractQuotationProductRepository,
+              public storePlaceRepo: AbstractStorePlaceRepository) {
+    super(navCtrl, navParams, quotProductRepo, storePlaceRepo);
   }
 
   async ngOnInit() {
-    super.ngOnInit();
+    super.ngOnInit().catch(console.error);
   }
 
   openItemDetails(data: Product): void {
-    this.navCtrl.push('ItemDetailPage', this.product);
+    this.navCtrl.push('ItemDetailPage', this.product).catch(console.error);
   }
 
 }

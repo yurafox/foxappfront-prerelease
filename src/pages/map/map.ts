@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Platform, IonicPage, NavController, NavParams, AlertController, ToastController, LoadingController } from 'ionic-angular';
-import { AbstractDataRepository } from '../../app/service/repository/abstract/abstract-data-repository';
 import {
   GoogleMaps,
   GoogleMap,
@@ -18,6 +17,9 @@ import { IDictionary } from '../../app/core/app-core';
 import { Subscription } from 'rxjs/Subscription';
 import { City } from '../../app/model/city';
 import { Store } from '../../app/model/store';
+import {AbstractStoreRepository} from "../../app/service/repository/abstract/abstract-store-repository";
+import {AbstractGeoRepository} from "../../app/service/repository/abstract/abstract-geo-repository";
+import {AbstractReviewRepository} from "../../app/service/repository/abstract/abstract-review-repository";
 
 interface SelectItem {
   label: string;
@@ -71,7 +73,8 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
   markerSubscriptions: Subscription[];
 
   constructor(public nav: NavController, public navParams: NavParams, public platform: Platform,
-              public repo: AbstractDataRepository, public alertCtrl: AlertController,
+              public _storeRepo: AbstractStoreRepository, public _geoRepo: AbstractGeoRepository,
+              public _reviewRepo: AbstractReviewRepository, public alertCtrl: AlertController,
               public toastCtrl: ToastController, public loadingCtrl: LoadingController) {
     super();
     this.initLocalization();
@@ -107,7 +110,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
       content: content
     });
     try {
-      loading.present();
+      loading.present().catch(console.error);
       this.platform.ready().then(() => {
         this.getLocation().then(res => {
           if (res && res.lat && res.lng) {
@@ -122,9 +125,9 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
 
       this.setButtonsAndInfoWindowLocale();
 
-      this.markersArr = await this.repo.getStores();
-      this.cities = await this.repo.getCitiesWithStores();
-      let reviews = await this.repo.getStoreReviews();
+      this.markersArr = await this._storeRepo.getStores();
+      this.cities = await this._geoRepo.getCitiesWithStores();
+      let reviews = await this._reviewRepo.getStoreReviews();
       this.storeReviews = reviews.reviews;
       this.clientId = reviews.idClient;
 
@@ -134,7 +137,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
       console.error(err);
       this.nav.pop().catch((err) => console.log(`Couldn't pop: ${err}`));
     } finally {
-      loading.dismiss();
+      loading.dismiss().catch(console.error);
     }
   }
 
@@ -455,26 +458,6 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
   }
 
   /**
-   * Actions on favorite list select
-   */
-  handleFavoriteListSelect() {
-    if (this.selectedFavStore && this.selectedFavStore.value !== null && this.selectedFavStore.city && this.selectedFavStore.city !== null) {
-      let city = this.selectedFavStore.city;
-      this.selectedMarker = {label: this.selectedFavStore.label, value: this.selectedFavStore.value, city: city};
-      this.selectedCity.id = city.id;
-      this.selectedCity.name = city.name;
-      this.selectedCity.idRegion = city.idRegion;
-      this.makeShopList();
-      this.map.moveCamera({
-        target: this.selectedFavStore.value,
-        zoom: 17
-      }).catch((err) => console.error(err));
-    } else {
-      return;
-    }
-  }
-
-  /**
    * Adding shop address to favorite
    */
   addToFavorite() {
@@ -576,7 +559,7 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
   }
 
   public async addFavoriteStore(store: Store) {
-    let addedId = await this.repo.addFavoriteStore(store.id);
+    let addedId = await this._storeRepo.addFavoriteStore(store.id);
 
     if (!addedId || addedId === null || addedId === 0) {
       let title = this.locale['AlertTitle'] ? this.locale['AlertTitle'] : 'Ошибка';
@@ -602,13 +585,5 @@ export class MapPage extends ComponentBase implements OnInit, OnDestroy {
       toast.present().catch((err) => console.log(`Toast error: ${err}`));
       return addedId;
     }
-  }
-
-  hasClientReview(reviews): boolean {
-    let present = false;
-    for (let i = 0; i < reviews.length; i++) {
-      if (reviews[i] && reviews[i].idClient === this.clientId) present = true;
-    }
-    return present;
   }
 }

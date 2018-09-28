@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { AlertController, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { ComponentBase } from '../../components/component-extension/component-base';
 import { CartService } from '../../app/service/cart-service';
-import { AbstractDataRepository } from '../../app/service/repository/abstract/abstract-data-repository';
 import { Shipment } from '../../app/model/shipment';
 import { AppConstants } from '../../app/app-constants';
+import {AbstractLoRepository} from "../../app/service/repository/abstract/abstract-lo-repository";
+import {AbstractFinRepository} from "../../app/service/repository/abstract/abstract-fin-repository";
 
 @IonicPage()
 @Component({
@@ -18,15 +19,17 @@ export class CheckoutPage extends ComponentBase {
   mPlaceFeaturesEnabled = AppConstants.ENABLE_MARKETPLACE_FEATURES;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
-              public repo: AbstractDataRepository, public alertCtrl: AlertController,
-              public loadingCtrl: LoadingController)
+              public paymentRepo: AbstractFinRepository, public loRepo: AbstractLoRepository,
+              public alertCtrl: AlertController, public loadingCtrl: LoadingController)
   {
     super();
-    this.repo.getPmtMethodById(cart.order.idPaymentMethod).then(x => {this.pmtMethodName = x.name});
   }
   
   async ngOnInit() {
     super.ngOnInit();
+    let pmt = await this.paymentRepo.getPmtMethodById(this.cart.order.idPaymentMethod);
+    if (pmt)
+      this.pmtMethodName = pmt.name;
   }
 
   get continueBtnEnabled(): boolean {
@@ -43,7 +46,7 @@ export class CheckoutPage extends ComponentBase {
         if(i.errorMessage)
           err.push(i.errorMessage);
       });
-    };
+    }
     return {isValid: !(err.length>0), errors: err};
   }
 
@@ -56,7 +59,7 @@ export class CheckoutPage extends ComponentBase {
       this.cart._httpCallInProgress = true;
       //Save cart items
       for (let i of this.cart.orderProducts) {
-        await this.repo.saveCartProduct(i);
+        await this.cart.cartRepo.saveCartProduct(i);
       }
 
       if (this.cart.order.idPaymentMethod === 2) {
@@ -64,7 +67,7 @@ export class CheckoutPage extends ComponentBase {
       }
       else
        {
-        let res = await this.repo.postOrder(this.cart.order);
+        let res = await this.cart.cartRepo.postOrder(this.cart.order);
 
         if ((res) && (res.isSuccess))
         {
@@ -81,14 +84,13 @@ export class CheckoutPage extends ComponentBase {
               {
                 text: btnText,
                 handler: () => {
-                  this.navCtrl.setRoot('HomePage');
-                  //this.cart.emptyCart();
-                  this.cart.initCart();
+                  this.navCtrl.setRoot('HomePage').catch(console.error);
+                  this.cart.initCart().catch(console.error);
                 }
               }
             ]
           });
-          alert.present();
+          alert.present().catch(console.error);
         }
         else
         {
@@ -105,16 +107,16 @@ export class CheckoutPage extends ComponentBase {
                 handler: () => {
                   //this.cart.emptyCart();
                   this.cart.initCart().then(() => {
-                      this.navCtrl.setRoot('CartPage');
+                      this.navCtrl.setRoot('CartPage').catch(console.error);
                     }
                   );
                 }
               }
             ]
           });
-          alert.present();
-        };
-      };
+          alert.present().catch(console.error);
+        }
+      }
     }
     finally
     {
@@ -130,7 +132,7 @@ export class CheckoutPage extends ComponentBase {
       let loading = this.loadingCtrl.create({
         content: content
       });
-      loading.present();
+      loading.present().catch(console.error);
 
       //сохраняем кол-во
       await this.cart.updateItem(objRef, false);
@@ -148,18 +150,18 @@ export class CheckoutPage extends ComponentBase {
       }
 
       if (!spmt.idStorePlace) {
-        spmt.loDeliveryCost = await this.repo.getDeliveryCostByShipment(spmt, spmt.idLoEntity, this.cart.order.loIdClientAddress, spmt.idLoDeliveryType);
-        spmt.loEstimatedDeliveryDate = await this.repo.getDeliveryDateByShipment(spmt, spmt.idLoEntity, this.cart.order.loIdClientAddress, spmt.idLoDeliveryType);
-        spmt = await this.repo.saveShipment(spmt);
+        spmt.loDeliveryCost = await this.loRepo.getDeliveryCostByShipment(spmt, spmt.idLoEntity, this.cart.order.loIdClientAddress, spmt.idLoDeliveryType);
+        spmt.loEstimatedDeliveryDate = await this.loRepo.getDeliveryDateByShipment(spmt, spmt.idLoEntity, this.cart.order.loIdClientAddress, spmt.idLoDeliveryType);
+        spmt = await this.cart.cartRepo.saveShipment(spmt);
       }
       await this.cart.saveOrder(false);
 
       this.evServ.events['cartUpdateEvent'].emit();
-      loading.dismiss();
+      loading.dismiss().catch(console.error);
     }
     finally {
       this.cart._httpCallInProgress = false;
-    };
+    }
 
   }
 

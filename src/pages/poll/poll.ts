@@ -5,7 +5,7 @@ import { ComponentBase } from '../../components/component-extension/component-ba
 import {AnswerType, PollQuestion} from '../../app/model/poll-question';
 import {PollQuestionAnswer} from '../../app/model/poll-question-answer';
 import {ClientPollAnswer} from '../../app/model/client-poll-answer';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AbstractPollRepository} from '../../app/service/repository/abstract/abstract-poll-repository';
 
 interface IPollResult {
   questionId:number,
@@ -33,7 +33,7 @@ export class PollPage extends ComponentBase{
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public _repo:AbstractDataRepository,
+              public _pollRepo: AbstractPollRepository,
               public alertCtrl:AlertController) {
     super();
     this.pollId = this.navParams.data.id;
@@ -42,11 +42,11 @@ export class PollPage extends ComponentBase{
 
   async ngOnInit(){
     super.ngOnInit();
-    this.pollQuestions = await this._repo.getPollQuestionsByPollId(this.pollId);
+    this.pollQuestions = await this._pollRepo.getPollQuestionsByPollId(this.pollId);
 
     for(let question of this.pollQuestions) {
-      let answers: PollQuestionAnswer[] = await this._repo.getPollAnswersByQuestionId(question.id);
-      this.pollQuestAns.push({questionObj:question,answers:answers,showOpt:false,usrOptVal:''});
+      let answers: PollQuestionAnswer[] = await this._pollRepo.getPollAnswersByQuestionId(question.id);
+      this.pollQuestAns.push({questionObj:question, answers:answers, showOpt:false, usrOptVal:''});
     }
     this.displayContentResult=true;
   }
@@ -77,7 +77,7 @@ export class PollPage extends ComponentBase{
   }
 
   public async sendAnswers() {
-    const clientAnswer:ClientPollAnswer = await this._repo.postClientPollAnswers(this.pollresults);
+    const clientAnswer:ClientPollAnswer = await this._pollRepo.postClientPollAnswers(this.pollresults);
     if(clientAnswer) {
       let message = this.locale['AlertMessage'];
       let alert = this.alertCtrl.create({
@@ -88,14 +88,13 @@ export class PollPage extends ComponentBase{
             handler: () => {
               this.navCtrl.setRoot('HomePage').then(() => {
                 const startIndex = this.navCtrl.getActive().index - 1;
-                this.navCtrl.remove(startIndex, 2);
+                this.navCtrl.remove(startIndex, 2).catch(console.error);
               });
             }
           }
         ]
       });
-
-      alert.present();
+      alert.present().catch(console.error);
     }
   }
 
@@ -107,7 +106,7 @@ export class PollPage extends ComponentBase{
     return answersCount===this.pollQuestions.length;
   }
 
-  setUsrOptConfig(qAnswer:IQuestionContainer,answerValue:string,isShowOpt:boolean):void {
+  setUsrOptConfig(qAnswer:IQuestionContainer, answerValue:string, isShowOpt:boolean):void {
     qAnswer.showOpt = isShowOpt;
     if(answerValue) {
       this.pollresults.pollResult[`${qAnswer.questionObj.id}`] = {questionId:qAnswer.questionObj.id,answerValue:`${answerValue}`};

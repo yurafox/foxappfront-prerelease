@@ -1,7 +1,7 @@
 import {Component, ChangeDetectorRef} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
-import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
+import {AbstractReviewRepository} from "../../app/service/repository/abstract/abstract-review-repository";
 import {Product} from '../../app/model/product';
 import {Store} from '../../app/model/store';
 import {StoreReview} from '../../app/model/store-review';
@@ -23,10 +23,9 @@ export class ItemReviewWritePage extends ComponentBase {
   disadvantages: string;
   submitted: boolean;
   grid: HTMLElement;
-  keyboardHeight = 400;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public changeDetector: ChangeDetectorRef,
-              public repo: AbstractDataRepository, public toastCtrl: ToastController, public alertCtrl: AlertController) {
+              public reviewRepo: AbstractReviewRepository, public toastCtrl: ToastController, public alertCtrl: AlertController) {
     super();
     this.initLocalization();
     this.rating = 0;
@@ -45,10 +44,10 @@ export class ItemReviewWritePage extends ComponentBase {
   async ngOnInit() {
     super.ngOnInit();
     if (this.product) {
-      let hasClientReviews = await this.repo.getHasClientProductReview(this.product.id);
+      let hasClientReviews = await this.reviewRepo.getHasClientProductReview(this.product.id);
       this.showAlertAndPop(hasClientReviews);
     } else if (this.store) {
-      let hasClientReviews = await this.repo.getHasClientStoreReview(this.store.id);
+      let hasClientReviews = await this.reviewRepo.getHasClientStoreReview(this.store.id);
       this.showAlertAndPop(hasClientReviews);
     }
   }
@@ -70,7 +69,7 @@ export class ItemReviewWritePage extends ComponentBase {
 
   /**
    * function to adjust the height of the message textarea
-   * @param {any} event - the event, which is provided by the textarea input
+   * @param event - the event, which is provided by the textarea input
    * @return {void}
    */
   protected adjustTextarea(event: any): void {
@@ -92,7 +91,7 @@ export class ItemReviewWritePage extends ComponentBase {
       storeReview.rating = this.rating;
       storeReview.advantages = advantages;
       storeReview.disadvantages = disadvantages;
-      await this.repo.postStoreReview(storeReview).then(() => {
+      await this.reviewRepo.postStoreReview(storeReview).then(() => {
         this.showToast();
       });
     } else if (this.product && this.reviewText && this.reviewText.trim().length > 0) {
@@ -103,7 +102,7 @@ export class ItemReviewWritePage extends ComponentBase {
       productReview.rating = this.rating;
       productReview.advantages = advantages;
       productReview.disadvantages = disadvantages;
-      await this.repo.postProductReview(productReview).then(() => {
+      await this.reviewRepo.postProductReview(productReview).then(() => {
         this.showToast();
       });
     }

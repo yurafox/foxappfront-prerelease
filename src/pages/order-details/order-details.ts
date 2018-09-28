@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import { IonicPage, NavParams } from 'ionic-angular';
 import {ClientOrder} from '../../app/model/client-order';
-import {UserService} from '../../app/service/bll/user-service';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {AppConstants} from '../../app/app-constants';
 
@@ -18,8 +16,7 @@ export class OrderDetailsPage extends ComponentBase {
   dataLoaded: boolean = true;
   mPlaceFeaturesEnabled = AppConstants.ENABLE_MARKETPLACE_FEATURES;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              public repo: AbstractDataRepository, public userService: UserService) {
+  constructor(public navParams: NavParams) {
     super();
     this.order = this.navParams.data.order;
   }

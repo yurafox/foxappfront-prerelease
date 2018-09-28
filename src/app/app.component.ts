@@ -2,17 +2,16 @@ import {Component, ViewChild, OnDestroy} from '@angular/core';
 import {Nav, Platform, MenuController, AlertController, ModalController} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {ComponentBase} from "../components/component-extension/component-base";
-import {AppAvailability} from "@ionic-native/app-availability";
 import {Device} from '@ionic-native/device';
 import {System} from "./core/app-core";
 import {CartService} from "./service/cart-service";
 import {ConnectivityService} from "./service/connectivity-service";
 import {StatusBar} from '@ionic-native/status-bar';
 import {BackgroundMode} from "@ionic-native/background-mode";
-import {AbstractDataRepository} from './service/repository/abstract/abstract-data-repository';
 import {DeviceData} from './model/device-data';
 import {Push, PushObject, PushOptions} from '@ionic-native/push';
 import {ProductFavoriteService} from './service/product-favorite-service';
+import {AbstractDeviceDataRepository} from "./service/repository/abstract/abstract-device-data-repository";
 
 export interface PageInterface {
   title: string;
@@ -35,7 +34,6 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   appPages: PageInterface[] = [
     {title: 'Главная', name: 'Home', component: 'HomePage', index: 0, icon: 'ios-home-outline'},
     {title: 'Категории', name: 'Categories', component: 'CategoryTreePage', index: 1, icon: 'ios-list-outline'},
-//    {title: 'Профиль', name: 'Account', component: 'AccountMenuPage', index: 2, icon: 'ios-person-outline'},
   ];
   infoPages: PageInterface[] = [
     {title: 'Магазины', name: 'Map', component: 'MapPage', index: 0, icon: 'ios-map-outline'},
@@ -44,7 +42,6 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     {title: 'Избранное', name: 'Favorites', component: 'ProductFavoritesPage', index: 3, icon: 'ios-heart-outline'},
     {title: 'Новости', name: 'News', component: 'ManageNewsMenuPage', index: 4, icon: 'ios-book-outline'},
     {title: 'Контакты', name: 'Contacts', component: 'ContactsPage', index: 5, icon: 'ios-information-circle-outline'},
-    //{title: 'Поддержка', name: 'Support', component: 'SupportPage', index: 3, icon: 'ios-text-outline'},
   ];
 
   noveltyPushEventDescriptor: any;
@@ -52,8 +49,8 @@ export class FoxApp extends ComponentBase implements OnDestroy {
   favoritesProductsEventDescriptor: any;
 
   constructor(public platform: Platform, public alertCtrl: AlertController, public splashScreen: SplashScreen,
-              public menuCtrl: MenuController, public repo: AbstractDataRepository,
-              public appAvailability: AppAvailability, public device: Device, public cartService: CartService,
+              public menuCtrl: MenuController, public deviceDataRepo: AbstractDeviceDataRepository,
+              public device: Device, public cartService: CartService,
               public connService: ConnectivityService, public statusBar: StatusBar,
               public modalCtrl: ModalController, public backgroundMode: BackgroundMode, public push: Push,
               public favoriteService: ProductFavoriteService) {
@@ -239,8 +236,8 @@ export class FoxApp extends ComponentBase implements OnDestroy {
       let firstPage = this.nav.getByIndex(0);
       this.nav.push('LoginPage', {},{animate: false}).then(() => {
         if (firstPage.name === 'NoConnectionPage') {
-          this.nav.insert(0, 'HomePage');
-          this.nav.remove(1);
+          this.nav.insert(0, 'HomePage').catch(console.error);
+          this.nav.remove(1).catch(console.error);
         }
       }).catch((err: any) => {
         console.log(`Couldn't navigate to LoginPage: ${err}`);
@@ -270,7 +267,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
     let height = this.platform.height();
     let width = this.platform.width();
     let deviceData = new DeviceData(model, os, height, width, pushDeviceToken);
-    this.repo.postDeviceData(deviceData).catch(err => {
+    this.deviceDataRepo.postDeviceData(deviceData).catch(err => {
       console.log(`Couldn't send device data: ${err.message}`);
     });
   }
@@ -314,7 +311,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
         {
           text: 'OK',
           handler: () => {
-            System.PushContainer.pushStore[`novelty${additionalData.id}`].openNovelty();
+            System.PushContainer.pushStore[`novelty${additionalData.id}`].openNovelty().catch(console.error);
           }
         },
         {
@@ -334,7 +331,7 @@ export class FoxApp extends ComponentBase implements OnDestroy {
         {
           text: 'OK',
           handler: () => {
-            System.PushContainer.pushStore[`action${additionalData.id}`].openAction();
+            System.PushContainer.pushStore[`action${additionalData.id}`].openAction().catch(console.error);
           }
         },
         {

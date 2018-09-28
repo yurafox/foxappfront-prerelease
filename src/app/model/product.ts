@@ -1,14 +1,14 @@
 import { ProductPropValue } from './product-prop-value';
 import {RefInjector, LazyLoad} from '../core/app-core';
 import {Manufacturer} from './manufacturer';
-import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
+import {AbstractManufacturerRepository} from "../service/repository/abstract/abstract-manufacturer-repository";
 
 @LazyLoad([
   { options:{constructor: Manufacturer}, action: 'getManufacturerById', params: ['manufacturerId']}
 ])
 
 export class Product {
-  public _repo: AbstractDataRepository;
+  public _manufacturerRepo: AbstractManufacturerRepository;
   constructor(public id?: number,
               public name?: string,
               public price?: number,
@@ -26,5 +26,5 @@ export class Product {
               public valueQP?: number,
               public status?: number,
               public site_status?: number
-  )  { this._repo = RefInjector.pull(AbstractDataRepository);}
+  )  { this._manufacturerRepo = RefInjector.pull(AbstractManufacturerRepository);}
 }

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Nav, Platform, MenuController, IonicPage} from 'ionic-angular';
+import {Nav, Platform, IonicPage} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 
 export interface PageInterface {
@@ -33,16 +33,12 @@ export class ManagePlacesMenuPage extends ComponentBase {
     }
   ];
 
-  constructor(public platform: Platform, public nav: Nav,
-              public menuCtrl: MenuController) {
+  constructor(public platform: Platform, public nav: Nav) {
     super();
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
     });
-  }
-
-  ionViewDidLoad() {
   }
 
   async ngOnInit() {

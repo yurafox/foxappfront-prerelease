@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
-import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
+import {AbstractNewsRepository} from "../../app/service/repository/abstract/abstract-news-repository";
 import {News} from "../../app/model/news";
 
 @IonicPage()
@@ -21,15 +21,15 @@ export class NewsPage extends ComponentBase {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public _repo: AbstractDataRepository ) {
+              public _newsRepo: AbstractNewsRepository ) {
     super();
     this.news = [];
   }
 
   async ngOnInit() {
     super.ngOnInit();
-;
-    this.fullNews = await this._repo.getNewsByCategory(this.navParams.data.indexNews);
+
+    this.fullNews = await this._newsRepo.getNewsByCategory(this.navParams.data.indexNews);
 
     if (this.fullNews && this.fullNews.length > 0) {
       this.fullNews.sort((a, b) => {
@@ -44,7 +44,7 @@ export class NewsPage extends ComponentBase {
   }
 
   onOpenOneNews(item: News) {
-    this.navCtrl.push('NewsDetailPage', {news: item});
+    this.navCtrl.push('NewsDetailPage', {news: item}).catch(console.error);
   }
 
   onScroll(event) {

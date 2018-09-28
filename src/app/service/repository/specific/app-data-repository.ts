@@ -22,7 +22,7 @@ export class AppDataRepository extends AbstractDataRepository {
 
   constructor(public http: Http, public connServ: ConnectivityService) {
     super();
-    this.CacheProviderOptInit();
+    this.CacheProviderOptInit().catch(console.error);
   }
 
   public async CacheProviderOptInit() {

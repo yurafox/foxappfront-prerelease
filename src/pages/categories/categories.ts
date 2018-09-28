@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {Category} from '../../app/model/category';
+import {AbstractCatalogRepository} from "../../app/service/repository/abstract/abstract-catalog-repository";
 
 @IonicPage({name: 'CategoriesPage', segment: 'categories'})
 @Component({
@@ -19,7 +19,7 @@ export class CategoriesPage extends ComponentBase   {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public _repo: AbstractDataRepository,
+              public _catalogRepo: AbstractCatalogRepository,
               public _sanitizer: DomSanitizer) {
     super();
 
@@ -27,7 +27,7 @@ export class CategoriesPage extends ComponentBase   {
 
   async ngOnInit(){
     super.ngOnInit();
-    this.categoriesArray = await this._repo.getCategories();
+    this.categoriesArray = await this._catalogRepo.getCategories();
     if(this.categoriesArray && this.categoriesArray.length!=0) {
       this.categoryForShow = this.categoriesArray.filter((value:Category): boolean => {
         return value.is_show;
@@ -40,7 +40,7 @@ export class CategoriesPage extends ComponentBase   {
 
   onCategoryClick(categoryId: number) {
     if (categoryId)
-      this.navCtrl.push('CategoryPage', categoryId); // {animate: true, direction: 'forward', duration: 500});
+      this.navCtrl.push('CategoryPage', categoryId).catch(console.error); // {animate: true, direction: 'forward', duration: 500});
   }
 
   public convertImg(imgTxt:string):any {
@@ -49,7 +49,7 @@ export class CategoriesPage extends ComponentBase   {
   }
 
   public toCategoryTree(){
-    this.navCtrl.push('CategoryTreePage',{groups:this.categoriesArray});
+    this.navCtrl.push('CategoryTreePage',{groups:this.categoriesArray}).catch(console.error);
   }
   public sortDesc():void {
     //this.categoriesArray.sort((x,y)=>{return y.priority_index-x.priority_index;});

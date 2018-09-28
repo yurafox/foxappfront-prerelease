@@ -2,8 +2,9 @@ import {Component, ViewChild} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {NgForm} from '@angular/forms';
 import {ComponentBase} from '../../components/component-extension/component-base';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {CartService} from '../../app/service/cart-service';
+import {AbstractFinRepository} from "../../app/service/repository/abstract/abstract-fin-repository";
+import {AbstractClientRepository} from "../../app/service/repository/abstract/abstract-client-repository";
 
 @IonicPage()
 @Component({
@@ -20,12 +21,12 @@ export class SelectPmtMethodPage extends ComponentBase {
   keyboardHeight = 300;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public repo: AbstractDataRepository, public cart: CartService,
-              public modalCtrl: ModalController)
+              public clientRepo: AbstractClientRepository, public cart: CartService,
+              public finRepo: AbstractFinRepository, public modalCtrl: ModalController)
   {
     super();
-    this.cart.initBonusData();
-    this.getPmtMethods();
+    this.cart.initBonusData().catch(console.error);
+    this.getPmtMethods().catch(console.error);
     if (cart.person.passportSeries && cart.person.passportSeries.length > 0) {
       this.passpSeries = cart.person.passportSeries.toUpperCase();
     }
@@ -36,7 +37,7 @@ export class SelectPmtMethodPage extends ComponentBase {
   }
 
   async getPmtMethods () {
-    let pmt = await this.repo.getPmtMethods();
+    let pmt = await this.finRepo.getPmtMethods();
     if (pmt) pmt.forEach(i => {
         this.pmtMethods.push({isChecked: ((this.cart.order.idPaymentMethod === i.id)), method: i});
       }
@@ -93,28 +94,28 @@ export class SelectPmtMethodPage extends ComponentBase {
 
   onShowCreditCalculatorClick() {
     let calcModal = this.modalCtrl.create('CreditCalcPage', {quotProduct: null});
-    calcModal.present();
+    calcModal.present().catch(console.error);
   }
 
   async onContinueClick() {
 
     if ((this.cart.person) && (this.cart.order.idPaymentMethod === 3)) {
       if (this.cart.order.idPerson)
-        this.cart.person = await this.repo.updatePerson(this.cart.person)
+        this.cart.person = await this.clientRepo.updatePerson(this.cart.person);
       else
-        this.cart.person = await this.repo.insertPerson(this.cart.person);
+        this.cart.person = await this.clientRepo.insertPerson(this.cart.person);
 
       this.cart.order.idPerson = this.cart.person.id;
-    };
+    }
 
     await this.cart.saveOrder(true);
 
     if ((this.cart.availBonus > 0) || (this.cart.availPromoBonus > 0)) {
-      this.navCtrl.push('BalancePage', {checkoutMode: true});
+      this.navCtrl.push('BalancePage', {checkoutMode: true}).catch(console.error);
     }
     else {
-      this.navCtrl.push('CheckoutPage');
-    };
+      this.navCtrl.push('CheckoutPage').catch(console.error);
+    }
   }
 
   birthDateChanged(newDate: Date) // <-- angular date input handling workaround

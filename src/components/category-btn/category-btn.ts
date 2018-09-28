@@ -11,13 +11,13 @@ export class CategoryBtnComponent extends ComponentBase {
   public countStr:string;
   public productCountInOneCatalog:string;
 
-  constructor(public navCtrl: NavController, public _repo:AbstractDataRepository) {
+  constructor(public navCtrl: NavController, public _dataRepo: AbstractDataRepository) {
         super();
   }
 
   async ngOnInit() {
     super.ngOnInit();
-    this.countStr = await this._repo.getAppParam('CATEGORY_COUNT');
+    this.countStr = await this._dataRepo.getAppParam('CATEGORY_COUNT');
     this.productCountInOneCatalog = (this.locale['CategoryCount'] && this.countStr) 
                               ? this.locale['CategoryCount'].replace('${countStr}',this.countStr)
                               : this.callDisplayBlank();

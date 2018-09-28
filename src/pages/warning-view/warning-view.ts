@@ -15,7 +15,7 @@ export class WarningViewPage extends ComponentBase {
   constructor(public navCtrl: NavController, public navParams: NavParams,
                 public cart: CartService) {
     super();
-    this.initData();
+    this.initData().catch(console.error);
   }
 
 async initData() {
@@ -25,9 +25,9 @@ async initData() {
       let prod = await (await (<any>i).quotationproduct_p).product_p;
       this.warnArr.push({product: prod, warningMessage: i.warningMessage});
       i.warningRead = true;
-      this.cart.repo.saveCartProduct(i);
+      this.cart.cartRepo.saveCartProduct(i).catch(console.error);
     }
-  };
+  }
   this.dataLoaded = true;
 
 }

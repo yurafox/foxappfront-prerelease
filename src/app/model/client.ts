@@ -1,13 +1,13 @@
 import {LazyLoad, RefInjector} from '../core/app-core';
 import {ClientAddress} from './client-address';
-import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
+import {AbstractClientRepository} from "../service/repository/abstract/abstract-client-repository";
 
 @LazyLoad([
   {options:{constructor: ClientAddress}, action: 'getClientAddressesByClientId', params: ['id']}
 ])
 
 export class Client {
-  public _repo: AbstractDataRepository;
+  public _clientRepo: AbstractClientRepository;
   constructor (
     public id?: number,
     public userId?: number,
@@ -22,5 +22,5 @@ export class Client {
     public bonusBalance?: number,
     public actionBonusBalance?: number
     */
-  ){this._repo = RefInjector.pull(AbstractDataRepository);}
+  ){this._clientRepo = RefInjector.pull(AbstractClientRepository);}
 }

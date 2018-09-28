@@ -1,6 +1,3 @@
-import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
-import {RefInjector} from '../core/app-core';
-
 export class ShipmentItems {
 
   constructor(

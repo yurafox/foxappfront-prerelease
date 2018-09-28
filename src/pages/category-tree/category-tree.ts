@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {DomSanitizer} from '@angular/platform-browser';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AbstractCatalogRepository} from '../../app/service/repository/abstract/abstract-catalog-repository';
 import { ComponentBase } from '../../components/component-extension/component-base';
 import {Category} from '../../app/model/category';
+import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
 
 @IonicPage()
 @Component({
@@ -17,16 +18,16 @@ export class CategoryTreePage extends ComponentBase {
   private rootId: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public _sanitizer: DomSanitizer,
-              public _repo: AbstractDataRepository) {
+              public _catalogRepo: AbstractCatalogRepository, public _dataRepo: AbstractDataRepository) {
     super();
   }
 
   async ngOnInit() {
     super.ngOnInit();
     this.groups = (this.checkPrimaryGroups()) ? this.navParams.data.groups 
-                                              : await this._repo.getCategories();
+                                              : await this._catalogRepo.getCategories();
                                               
-    this.rootId = parseInt(await this._repo.getAppParam('CATEGORY_ROOT_ID'));
+    this.rootId = parseInt(await this._dataRepo.getAppParam('CATEGORY_ROOT_ID'));
 
     if (this.groups && this.groups.length != 0) {
       this.setCurrentCategoryList();
@@ -41,12 +42,13 @@ export class CategoryTreePage extends ComponentBase {
     if(recursionGroup && recursionGroup.length!=0) {
       // If there is only one category to show, this 'if-else' statement moves user directly to it
       if (recursionGroup.length === 1) {
-        this.navCtrl.push('CategoryPage', recursionGroup[0].id_group);
+        this.navCtrl.push('CategoryPage', recursionGroup[0].id_group).catch(console.error);
       }
-      else this.navCtrl.push('CategoryTreePage', { groups:this.groups,currentGroup:recursionGroup});
+      else this.navCtrl.push('CategoryTreePage', { groups:this.groups,currentGroup:recursionGroup})
+        .catch(console.error);
     }
     else {
-      this.navCtrl.push('CategoryPage',id);
+      this.navCtrl.push('CategoryPage',id).catch(console.error);
     }
   }
 

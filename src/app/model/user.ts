@@ -1,14 +1,13 @@
 import {Client} from './client';
-import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
 import {IDictionary, LazyLoad, RefInjector} from '../core/app-core';
-import {Store} from "./store";
+import {AbstractClientRepository} from "../service/repository/abstract/abstract-client-repository";
 
 
 @LazyLoad([
   { options:{constructor: Client}, action: 'getClientByPhone', params: ['phone']}
 ])
 export class User {
-  public _repo: AbstractDataRepository;
+  public _clientRepo: AbstractClientRepository;
   constructor(public name?: string,
               public email?: string,
               public password?: string,
@@ -18,7 +17,7 @@ export class User {
               public phone?: string,
               public fname?: string,
               public lname?: string) {
-    this._repo = RefInjector.pull(AbstractDataRepository);
+    this._clientRepo = RefInjector.pull(AbstractClientRepository);
   }
 }
 

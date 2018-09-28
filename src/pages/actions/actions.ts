@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage } from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {Action} from '../../app/model/action';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AbstractActionRepository} from '../../app/service/repository/abstract/abstract-action-repository';
 
 @IonicPage()
 @Component({
@@ -12,15 +12,13 @@ import {AbstractDataRepository} from '../../app/service/repository/abstract/abst
 export class ActionsPage extends ComponentBase {
   public actions:Action[];
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public _repo: AbstractDataRepository ) {
+  constructor(public _actionRepo: AbstractActionRepository ) {
     super();
   }
 
   async ngOnInit() {
     super.ngOnInit();
-    this.actions = await this._repo.getActions();
+    this.actions = await this._actionRepo.getActions();
   }
 
 }

@@ -22,7 +22,7 @@ export class SearchPage extends ComponentBase {
   }
 
   search(srchString: string): void {
-    this.searchButtonControl.searchByText(srchString);
+    this.searchButtonControl.searchByText(srchString).catch(console.error);
   }
 
 }

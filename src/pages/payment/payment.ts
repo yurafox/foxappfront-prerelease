@@ -1,10 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { ComponentBase } from "../../components/component-extension/component-base";
 import { CartService } from "../../app/service/cart-service";
 import { DomSanitizer } from "@angular/platform-browser";
 import { AppConstants } from "../../app/app-constants";
-import { AbstractDataRepository } from '../../app/service/repository/abstract/abstract-data-repository';
 import { UserService } from '../../app/service/bll/user-service';
 
 @IonicPage()
@@ -22,7 +21,7 @@ export class PaymentPage extends ComponentBase implements OnInit {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
               public sanitizer: DomSanitizer, public changeDetector: ChangeDetectorRef,
-              public repo: AbstractDataRepository, public alertCtrl: AlertController, public userService: UserService,
+              public alertCtrl: AlertController, public userService: UserService,
               public loadingCtrl: LoadingController) {
     super();
     this.initLocalization();
@@ -34,7 +33,7 @@ export class PaymentPage extends ComponentBase implements OnInit {
         this.total = this.cart.cartGrandTotal;
       }
     } else {
-      this.navCtrl.pop();
+      this.navCtrl.pop().catch(console.error);
     }
   }
 
@@ -43,9 +42,9 @@ export class PaymentPage extends ComponentBase implements OnInit {
     if (this.navParams.data.result === 0) {
       this.success = true;
       this.formInput = null;
-      let res = await this.repo.postOrder(this.cart.order);
+      let res = await this.cart.cartRepo.postOrder(this.cart.order);
       if ((res) && (res.isSuccess)) {
-        this.cart.initCart();
+        this.cart.initCart().catch(console.error);
       }
       else {
         let title = this.locale['AlertErrorTitle'];
@@ -59,15 +58,15 @@ export class PaymentPage extends ComponentBase implements OnInit {
               text: btnText,
               handler: () => {
                 this.cart.initCart().then(() => {
-                  this.navCtrl.setRoot('CartPage');
+                  this.navCtrl.setRoot('CartPage').catch(console.error);
                 }
                 );
               }
             }
           ]
         });
-        alert.present();
-      };
+        alert.present().catch(console.error);
+      }
       this.changeDetector.detectChanges();
     } else if (this.navParams.data.result === 1) {
       this.fail = true;
@@ -76,9 +75,9 @@ export class PaymentPage extends ComponentBase implements OnInit {
     } else if (this.navParams.data.result === 2) {
       this.error = true;
       this.formInput = null;
-      let res = await this.repo.postOrder(this.cart.order);
+      let res = await this.cart.cartRepo.postOrder(this.cart.order);
       if ((res) && (res.isSuccess)) {
-        this.cart.initCart();
+        this.cart.initCart().catch(console.error);
       }
       else {
         let title = this.locale['AlertErrorTitle'];
@@ -92,33 +91,33 @@ export class PaymentPage extends ComponentBase implements OnInit {
               text: btnText,
               handler: () => {
                 this.cart.initCart().then(() => {
-                  this.navCtrl.setRoot('CartPage');
+                  this.navCtrl.setRoot('CartPage').catch(console.error);
                 }
                 );
               }
             }
           ]
         });
-        alert.present();
-      };
+        alert.present().catch(console.error);
+      }
       this.changeDetector.detectChanges();
     } else {
       let content = this.locale['LoadingContent'];
       let loading = this.loadingCtrl.create({
         content: content
       });
-      loading.present();
+      loading.present().catch(console.error);
 
       this.formInput = this.sanitizer.bypassSecurityTrustResourceUrl(`${AppConstants.BASE_PAYMENT_URL}/?id=${this.id}&total=${this.total}`);
 
-      loading.dismiss();
+      loading.dismiss().catch(console.error);
 
       window.addEventListener('message', this.receiveMessage);
     }
   }
 
   toHomePage() {
-    this.navCtrl.setRoot('HomePage',{pageMode: 1}).catch(err => console.error(err));
+    this.navCtrl.setRoot('HomePage',{pageMode: 1}).catch(console.error);
   }
 
   receiveMessage(event) {

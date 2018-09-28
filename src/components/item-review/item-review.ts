@@ -2,8 +2,8 @@ import {ChangeDetectorRef, Component, Input} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {ProductReview} from '../../app/model/product-review';
 import {StoreReview} from "../../app/model/store-review";
-import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
 import {ToastController, NavController} from "ionic-angular";
+import {AbstractReviewRepository} from "../../app/service/repository/abstract/abstract-review-repository";
 
 @Component({
   selector: 'item-review',
@@ -20,7 +20,7 @@ export class ItemReviewComponent extends ComponentBase {
   answerClicked: boolean = false;
   isAuth: boolean;
 
-  constructor(public changeDetector: ChangeDetectorRef, public repo: AbstractDataRepository,
+  constructor(public changeDetector: ChangeDetectorRef, public reviewRepo: AbstractReviewRepository,
               public toastCtrl: ToastController, public navCtrl: NavController) {
     super();
     this.isAuth = this.userService.isAuth;
@@ -48,11 +48,11 @@ export class ItemReviewComponent extends ComponentBase {
     this.helpfulClicked = true;
     if (this.review && (<any>this.review).idStore) {
       let storeReview = this.review;
-      let rev = await this.repo.updateStoreReview(storeReview);
+      let rev = await this.reviewRepo.updateStoreReview(storeReview);
       this.updateCurrentReview(rev);
     } else if (this.review && (<any>this.review).idProduct) {
       let productReview = this.review;
-      let rev = await this.repo.updateProductReview(productReview);
+      let rev = await this.reviewRepo.updateProductReview(productReview);
       this.updateCurrentReview(rev);
     }
     this.changeDetector.detectChanges();
@@ -64,11 +64,11 @@ export class ItemReviewComponent extends ComponentBase {
     this.helpfulClicked = true;
     if (this.review && (<any>this.review).idStore) {
       let storeReview = this.review;
-      let rev = await this.repo.updateStoreReview(storeReview);
+      let rev = await this.reviewRepo.updateStoreReview(storeReview);
       this.updateCurrentReview(rev);
     } else if (this.review && (<any>this.review).idProduct) {
       let productReview = this.review;
-      let rev = await this.repo.updateProductReview(productReview);
+      let rev = await this.reviewRepo.updateProductReview(productReview);
       this.updateCurrentReview(rev);
     }
     this.changeDetector.detectChanges();
@@ -82,7 +82,7 @@ export class ItemReviewComponent extends ComponentBase {
       storeReview.reviewDate = new Date(Date.now());
       storeReview.reviewText = this.answerText;
       storeReview.idReview = this.review.id;
-      await this.repo.postStoreReview(storeReview).then(() => {
+      await this.reviewRepo.postStoreReview(storeReview).then(() => {
         this.showToast();
       });
     } else if (this.review && (<any>this.review).idProduct && this.answerText && this.answerText.length > 0) {
@@ -91,7 +91,7 @@ export class ItemReviewComponent extends ComponentBase {
       productReview.reviewDate = new Date(Date.now());
       productReview.reviewText = this.answerText;
       productReview.idReview = this.review.id;
-      await this.repo.postProductReview(productReview).then(() => {
+      await this.reviewRepo.postProductReview(productReview).then(() => {
         this.showToast();
       });
     }
@@ -106,7 +106,7 @@ export class ItemReviewComponent extends ComponentBase {
       message: message,
       duration: 3000
     });
-    toast.present();
+    toast.present().catch(console.error);
   }
 
   onShowReviewClick(data: any): void {

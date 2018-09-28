@@ -1,7 +1,6 @@
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
-import {ChangeDetectorRef, Component,DoCheck, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import {ComponentBase} from '../../components/component-extension/component-base';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {SearchService} from '../../app/service/search-service';
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {Subscription} from 'rxjs/Subscription';
@@ -13,17 +12,15 @@ import {ProductCompareService} from '../../app/service/product-compare-service';
   templateUrl: 'category.html',
 })
 
-export class CategoryPage extends ComponentBase implements DoCheck {
+export class CategoryPage extends ComponentBase {
 
   @ViewChild('cont') cont;
   @ViewChild('header') header;
   scrollHeight: number;
   scrOrientationSub: Subscription;
   countCompareProducts: number;
-  private rerender: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              public repo: AbstractDataRepository, public srch: SearchService,
+  constructor(public navCtrl: NavController, public navParams: NavParams, public srch: SearchService,
               public screenOrientation: ScreenOrientation, public changeDet: ChangeDetectorRef,
               public prodCompService: ProductCompareService) {
     super();
@@ -32,10 +29,6 @@ export class CategoryPage extends ComponentBase implements DoCheck {
   public updateScrollHeight() {
     const hdrH = (this.header) ?  this.header.nativeElement.scrollHeight : 0;
     this.scrollHeight = (window.screen.height) - hdrH;
-  }
-
-  ngDoCheck() {
-    //this.updateScrollHeight();
   }
 
   async ngOnInit() {
@@ -55,7 +48,7 @@ export class CategoryPage extends ComponentBase implements DoCheck {
 
   async ionViewDidEnter() {
     if(this.prodCompService)
-      this.getCountCompareProducts();
+      this.getCountCompareProducts().catch(console.error);
    }
 
   async getCountCompareProducts() {
@@ -64,7 +57,7 @@ export class CategoryPage extends ComponentBase implements DoCheck {
 
   clearCompareProducts()
   {
-    this.prodCompService.clearProductsByCategory(this.navParams.data);
+    this.prodCompService.clearProductsByCategory(this.navParams.data).catch(console.error);
     this.countCompareProducts = 0;
  
     this.updateScrollHeight();
@@ -72,7 +65,7 @@ export class CategoryPage extends ComponentBase implements DoCheck {
 
   openCompareProducts()
   {
-    this.navCtrl.push('ProductComparePage', {categorytId: this.navParams.data});
+    this.navCtrl.push('ProductComparePage', {categorytId: this.navParams.data}).catch(console.error);
   }
 
 }

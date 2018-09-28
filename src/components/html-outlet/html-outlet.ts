@@ -1,7 +1,5 @@
-import { HomePage } from './../../pages/home/home';
 import { ComponentsModule } from './../components.module';
 import {PipesModule} from '../../app/pipe/pipes.module';
-//import { AppModule } from './../../app/app.module';
 import {
   Component,
   Directive,
@@ -9,7 +7,6 @@ import {
   Input,
   ViewContainerRef,
   Compiler,
-  ComponentFactory,
   ModuleWithComponentFactories,
   ComponentRef,
   ReflectiveInjector
@@ -44,7 +41,7 @@ export function createComponentFactory(
 @Directive({selector:"html-outlet"})
 export class HtmlOutlet {
   @Input() html: string;
-  @Input() context:any
+  @Input() context:any;
   cmpRef: ComponentRef<any>;
 
   constructor(public vcRef: ViewContainerRef, public compiler: Compiler) {}

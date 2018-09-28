@@ -419,7 +419,8 @@ export function LazyLoad(options: Array<{
             if (!this[navProp] && !this[loadingProp]) {
               this[loadingProp] = true;
               (async () => {
-                const repo = this['_repo'];
+                console.log(this);
+                const repo = this[`${/[A-Za-z]Repo/}`];
 
                 let paramsConvertedList = lazyParamToValue(this, value.params);
                 if (paramsConvertedList.length !== 0) {
@@ -435,8 +436,8 @@ export function LazyLoad(options: Array<{
         Object.defineProperty(this, baseName + '_p', {
           configurable: false,
           get: () => {
-            const repo = this['_repo'];
-            var paramsConvertedList = lazyParamToValue(this, value.params);
+            const repo = this[`${/[A-Za-z]Repo/}`];
+            let paramsConvertedList = lazyParamToValue(this, value.params);
             if (paramsConvertedList.length !== 0) {
               this[navProp + '_p'] = repo[fnName].apply(repo, paramsConvertedList);
 

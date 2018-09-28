@@ -9,6 +9,7 @@ import {Currency} from '../../app/model/currency';
 import {IUserInfo, User} from '../../app/model/user';
 import {Lang} from '../../app/model/lang';
 import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AbstractCurrencyRepository} from "../../app/service/repository/abstract/abstract-currency-repository";
 
 @IonicPage({name: 'AccountPage', segment: 'account'})
 @Component({
@@ -41,7 +42,8 @@ export class AccountPage extends ComponentBase {
 
   constructor(public nav: NavController,
               public alertCtrl: AlertController,
-              public repo: AbstractDataRepository,
+              public dataRepo: AbstractDataRepository,
+              public currencyRepo: AbstractCurrencyRepository,
               public formBuilder: FormBuilder,
               public cartServ: CartService,
               public loadingCtrl: LoadingController) {
@@ -60,9 +62,11 @@ export class AccountPage extends ComponentBase {
     });
 
     try {
-      loading.present();
-      [this.currencies, this.langs] = await Promise.all([this.repo.getCurrencies(true),
-      this.repo.getLocale(true)]);
+      loading.present().catch(console.error);
+      [this.currencies, this.langs] = await Promise.all([
+        this.currencyRepo.getCurrencies(true),
+        this.dataRepo.getLocale(true)
+      ]);
 
       this.setDefaultSetting<Currency>(this.currencies,
         {
@@ -80,7 +84,7 @@ export class AccountPage extends ComponentBase {
     } catch (err) {
       console.error(err);
     } finally {
-      loading.dismiss();
+      loading.dismiss().catch(console.error);
     }
 
     this.previousData = {email: this.editForm.value.email, currency: this.currentCurrency.id, lang: this.currentLang.id, fname: this.editForm.value.fname, lname: this.editForm.value.lname};
@@ -157,7 +161,7 @@ export class AccountPage extends ComponentBase {
           cssClass: 'alertCustomCss'
         });
 
-        alert.present();
+        alert.present().catch(console.error);
 
         this.previousData = {email: this.editForm.value.email, currency: this.currentCurrency.id, lang: this.currentLang.id, fname: this.editForm.value.fname, lname: this.editForm.value.lname};
       } else {
@@ -171,7 +175,7 @@ export class AccountPage extends ComponentBase {
 
   logout() {
     this.userService.logOut();
-    this.nav.setRoot('HomePage');
+    this.nav.setRoot('HomePage').catch(console.error);
 
   }
 

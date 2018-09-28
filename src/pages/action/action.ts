@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, OnInit, DoCheck, OnDestroy, ViewChild, NgZone} from '@angular/core';
-import {Content, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {Content, IonicPage, NavParams} from 'ionic-angular';
 import 'rxjs/add/operator/takeWhile';
 import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
 import {ComponentBase} from '../../components/component-extension/component-base';
@@ -7,9 +7,7 @@ import {SearchService} from '../../app/service/search-service';
 import {ScreenOrientation} from '@ionic-native/screen-orientation';
 import {Subscription} from 'rxjs/Subscription';
 import {Action} from '../../app/model/action';
-import {Product} from '../../app/model/product';
-import {QuotationProduct} from '../../app/model/quotation-product';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AbstractActionRepository} from '../../app/service/repository/abstract/abstract-action-repository';
 
 @IonicPage()
 @Component({
@@ -27,23 +25,17 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
   public actionId:number;
   public content:boolean;
   public action:Action;
-  public actionProducts:Array<Product>=[];
-  public quotationProduct:Array<QuotationProduct>=[];
   public expire:{days?:number,hours?:number,minutes?:number,seconds?:number};
   alive:boolean;
-  monitor:{};
   me:any;
   divsHeight:number;
 
   public position;
   public top;
-  public offsetTop;
   public scrolledEnough: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              public _repo:AbstractDataRepository, public srch: SearchService,
-              public screenOrientation: ScreenOrientation,public changeDet: ChangeDetectorRef,
-              public zone: NgZone) {
+  constructor(public navParams: NavParams, public _actionRepo: AbstractActionRepository, public srch: SearchService,
+              public screenOrientation: ScreenOrientation,public changeDet: ChangeDetectorRef, public zone: NgZone) {
     super();
     this.actionId = this.navParams.data.id;
     this.action = this.navParams.data.action;
@@ -59,7 +51,7 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
   async ngOnInit() {
     super.ngOnInit();
     if(!this.action)
-     this.action = await this._repo.getAction(this.actionId);
+     this.action = await this._actionRepo.getAction(this.actionId);
 
     // get dynamic content
     this.content = !!(this.action);
@@ -83,8 +75,6 @@ export class ActionPage extends ComponentBase implements OnInit,OnDestroy,DoChec
 
     this.updateScrollHeight();
   }
-
-  ionViewDidEnter() {}
 
   ngOnDestroy():void {
     super.ngOnDestroy();

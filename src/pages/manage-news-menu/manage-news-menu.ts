@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
-import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
+import {AbstractNewsCategoryRepository} from "../../app/service/repository/abstract/abstract-news-category-repository";
 import {NewsCategory} from "../../app/model/news-category";
 
 @IonicPage()
@@ -13,7 +13,7 @@ export class ManageNewsMenuPage extends ComponentBase{
   public newsCategory: NewsCategory[];
 
   constructor(public navCtrl: NavController,
-              public _repo: AbstractDataRepository ) {
+              public _newsCategoryRepo: AbstractNewsCategoryRepository ) {
     super();
     this.newsCategory = [];
   }
@@ -21,7 +21,7 @@ export class ManageNewsMenuPage extends ComponentBase{
   async ngOnInit() {
     super.ngOnInit();
 
-    this.newsCategory = await this._repo.getNewsCategory();
+    this.newsCategory = await this._newsCategoryRepo.getNewsCategory();
 
     if (this.newsCategory && this.newsCategory.length > 0) {
       this.newsCategory.sort((a,b) => {

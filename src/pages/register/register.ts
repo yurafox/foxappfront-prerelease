@@ -7,6 +7,7 @@ import { ComponentBase } from '../../components/component-extension/component-ba
 import {Currency} from '../../app/model/currency';
 import {Lang} from '../../app/model/lang';
 import {IUserInfo, User} from '../../app/model/user';
+import {AbstractCurrencyRepository} from "../../app/service/repository/abstract/abstract-currency-repository";
 
 
 @IonicPage()
@@ -39,10 +40,11 @@ export class RegisterPage extends ComponentBase {
 
   constructor(public nav: NavController,
     public navParams: NavParams,
-    private repo: AbstractDataRepository,
+    private currencyRepo: AbstractCurrencyRepository,
+    private dataRepo: AbstractDataRepository,
     private formBuilder: FormBuilder,
     private alertCtrl: AlertController,
-    private account: UserService) {
+    public account: UserService) {
     super();
     this.initLocalization();
     const navData = this.navParams.data;
@@ -72,7 +74,10 @@ export class RegisterPage extends ComponentBase {
     };
 
     this.buildForm();
-    [this.currencies, this.langs] = await Promise.all([this.repo.getCurrencies(true), this.repo.getLocale(true)]);
+    [this.currencies, this.langs] = await Promise.all([
+      this.currencyRepo.getCurrencies(true),
+      this.dataRepo.getLocale(true)
+    ]);
     this.onLoad = true;
   }
 
@@ -84,7 +89,7 @@ export class RegisterPage extends ComponentBase {
 
     this.nav.push('LoginPage', tData).then(()=>{
       const startIndex = this.nav.getActive().index - 2;
-      this.nav.remove(startIndex, 2);
+      this.nav.remove(startIndex, 2).catch(console.error);
     });
   }
 
@@ -176,7 +181,6 @@ export class RegisterPage extends ComponentBase {
         }
       ]
     });
-
-    alert.present();
+    alert.present().catch(console.error);
   }
 }

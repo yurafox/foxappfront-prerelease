@@ -3,7 +3,6 @@ import { IonicPage, NavController,AlertController } from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { ComponentBase } from '../../components/component-extension/component-base';
 import {CustomValidators} from '../../app/core/app-core';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {ChangePassword} from '../../app/model/change-password';
 import {IUserVerifyAccountData} from '../../app/model/user';
 
@@ -27,7 +26,6 @@ export class ChangePasswordPage extends ComponentBase {
 
   constructor(public navCtrl: NavController,
               public alertCtrl: AlertController,
-              public repo: AbstractDataRepository,
               public formBuilder: FormBuilder) {
     super();
     this.verifyErrorData={errorShow:false,errorMessage:''};
@@ -136,13 +134,13 @@ export class ChangePasswordPage extends ComponentBase {
       ]
     });
 
-    alert.present();
+    alert.present().catch(console.error);
   }
 
   public logout() {
     //this.userService.logOut();
     //this.userService.removeToken();
 
-    this.navCtrl.setRoot('HomePage');
+    this.navCtrl.setRoot('HomePage').catch(console.error);
   }
 }

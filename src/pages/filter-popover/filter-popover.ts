@@ -1,5 +1,5 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams, ViewController,Loading} from 'ionic-angular';
+import { Component } from '@angular/core';
+import {IonicPage, LoadingController, NavParams, ViewController} from 'ionic-angular';
 import {CategoryType, FilterComponent} from '../../components/filter/filter';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {SortOrderEnum} from '../../app/service/search-service';
@@ -15,7 +15,7 @@ export class FilterPopoverPage extends ComponentBase {
   public filter: FilterComponent;
   brandsSectionOpened = false;
   
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
+  constructor(public navParams: NavParams, public viewCtrl: ViewController,
               public loadingCtrl: LoadingController) {
     super();
     
@@ -43,7 +43,7 @@ export class FilterPopoverPage extends ComponentBase {
     });
 
     try {
-      loading.present();
+      loading.present().catch(console.error);
 
       if (item.type === CategoryType.Property) {
         item.item.isChecked = item.isChecked;
@@ -93,13 +93,13 @@ export class FilterPopoverPage extends ComponentBase {
 
     }
     finally {
-      loading.dismiss();
+      loading.dismiss().catch(console.error);
       this.close();
     }
 
   }
 
   close() {
-    this.viewCtrl.dismiss();
+    this.viewCtrl.dismiss().catch(console.error);
   }
 }

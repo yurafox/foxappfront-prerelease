@@ -107,7 +107,7 @@ export class StarBtnComponent extends ComponentBase implements OnChanges {
   }
   public openView(event: any) {
     const popUp = this.popoverCtrl.create(StarBtnViewComponent, { parent: this }, { cssClass: 'f-backdrop-opacity-popover' });
-    if (popUp) popUp.present();
+    if (popUp) popUp.present().catch(console.error);
   }
 
   // <editor-fold desc="methods for check input fields">

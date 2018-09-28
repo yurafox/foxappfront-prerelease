@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import {NavController, Slides} from "ionic-angular";
-import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
 import {BannerSlide} from "../../app/model/banner-slide";
+import {AbstractProductRepository} from "../../app/service/repository/abstract/abstract-product-repository";
+import {AbstractBannerSlideRepository} from "../../app/service/repository/abstract/abstract-banner-slide-repository";
 
 @Component({
   selector: 'sliding-banner',
@@ -12,10 +13,11 @@ export class SlidingBannerComponent {
   public slides: BannerSlide[] = [];
   @ViewChild(Slides) _slides: Slides;
 
-  constructor(public nav: NavController, public _repo: AbstractDataRepository) {}
+  constructor(public nav: NavController, public _productRepo: AbstractProductRepository,
+              public _bannerSlidesRepo: AbstractBannerSlideRepository) {}
 
   async ngOnInit() {
-    this.slides = await this._repo.getBannerSlides();
+    this.slides = await this._bannerSlidesRepo.getBannerSlides();
   }
 
   handleClick() {
@@ -27,9 +29,9 @@ export class SlidingBannerComponent {
         if (this.slides[slideIndx] && this.slides[slideIndx].actionType >= 0) {
           switch (this.slides[slideIndx].actionType) {
             case 1: {
-              this._repo.getProductById(this.slides[slideIndx].paramNum).then((product) => {
+              this._productRepo.getProductById(this.slides[slideIndx].paramNum).then((product) => {
                 if (product && product !== null) {
-                  this.nav.push('ItemDetailPage', {prod: product, loadQuotes: true});
+                  this.nav.push('ItemDetailPage', {prod: product, loadQuotes: true}).catch(console.error);
                 }
               });
               break;

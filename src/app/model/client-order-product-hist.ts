@@ -1,9 +1,11 @@
 import {ClientOrderProductBase} from './client-order-product-base';
-import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
 import {LazyLoad, RefInjector} from '../core/app-core';
 import {QuotationProduct} from './quotation-product';
 import {StorePlace} from './store-place';
 import {LoEntity} from './lo-entity';
+import {AbstractQuotationProductRepository} from "../service/repository/abstract/abstract-quotation-product-repository";
+import {AbstractStorePlaceRepository} from "../service/repository/abstract/abstract-store-place-repository";
+import {AbstractLoRepository} from "../service/repository/abstract/abstract-lo-repository";
 
 
 @LazyLoad([
@@ -13,7 +15,9 @@ import {LoEntity} from './lo-entity';
 ])
 
 export class ClientOrderProductHist extends ClientOrderProductBase {
-  public _repo: AbstractDataRepository;
+  public _quotProdRepo: AbstractQuotationProductRepository;
+  public _storePlaceRepo: AbstractStorePlaceRepository;
+  public _loRepo: AbstractLoRepository;
 
   constructor(
     public id?: number,
@@ -32,6 +36,8 @@ export class ClientOrderProductHist extends ClientOrderProductBase {
     public loDeliveryCompletedDate?: Date
   ){
     super(id, idOrder, idQuotationProduct, price, qty, idStorePlace, earnedBonusCnt);
-    this._repo = RefInjector.pull(AbstractDataRepository);
+    this._quotProdRepo = RefInjector.pull(AbstractQuotationProductRepository);
+    this._storePlaceRepo = RefInjector.pull(AbstractStorePlaceRepository);
+    this._loRepo = RefInjector.pull(AbstractLoRepository);
   }
 }

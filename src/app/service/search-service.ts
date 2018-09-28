@@ -1,9 +1,10 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {Product} from '../model/product';
-import {AbstractDataRepository} from './repository/abstract/abstract-data-repository';
+import {AbstractProductRepository} from './repository/abstract/abstract-product-repository';
 import { Client } from 'elasticsearch';
 import {PropFilterCondition} from '../../components/filter/filter';
 import {AppConstants} from '../app-constants';
+import {AbstractDataRepository} from "./repository/abstract/abstract-data-repository";
 
 export enum SortOrderEnum {
   Relevance = 1,
@@ -57,8 +58,8 @@ export class SearchService {
   aggs: any;
   connected: boolean = false;
 
-  constructor(public repo: AbstractDataRepository) {
-    this.initData();
+  constructor(public productRepo: AbstractProductRepository, public dataRepo: AbstractDataRepository) {
+    this.initData().catch(console.error);
     const stor = JSON.parse(localStorage.getItem(this.cKey));
     if (stor) {
       stor.forEach((val) => {
@@ -75,7 +76,7 @@ export class SearchService {
 
   async setAppParam(appParam: string, classVariable: number) {
     if (appParam && appParam.length > 0) {
-      let tempAppParam = await this.repo.getAppParam(appParam);
+      let tempAppParam = await this.dataRepo.getAppParam(appParam);
       if (tempAppParam && tempAppParam != null && tempAppParam.length > 0) {
         classVariable = parseInt(tempAppParam);
       }
@@ -109,7 +110,7 @@ export class SearchService {
 
   async connect() {
     this.client = new Client({
-      host: AppConstants.ELASTIC_PROD_MODE ? (await this.repo.getAppParam('ELASTIC_ENDPOINT')).split(" ") : AppConstants.DEV_ELASTIC_ENDPOINT.split(" ")
+      host: AppConstants.ELASTIC_PROD_MODE ? (await this.dataRepo.getAppParam('ELASTIC_ENDPOINT')).split(" ") : AppConstants.DEV_ELASTIC_ENDPOINT.split(" ")
     })
   }
 
@@ -165,7 +166,7 @@ export class SearchService {
       if (response.hits.hits)
       {
         let _chunk = response.hits.hits.map(
-          x => this.repo.getProductFromResponse(x._source)
+          x => this.productRepo.getProductFromResponse(x._source)
         );
 
         if (_chunk)
@@ -214,7 +215,7 @@ export class SearchService {
         else
         {
           fnd.propVals.push(x.propVal);
-        };
+        }
       }
     );
     return res;
@@ -262,19 +263,19 @@ export class SearchService {
 
     if (this.prodSrchParams.sortOrder === SortOrderEnum.Relevance) {
       sort = [{"status": {'order' : 'asc'}}];
-    };
+    }
     if (this.prodSrchParams.sortOrder === SortOrderEnum.Rating) {
       sort = [{"status": {'order' : 'asc'}},{'rating': {'order' : 'desc'}}];
-    };
+    }
     if (this.prodSrchParams.sortOrder === SortOrderEnum.Popularity) {
       sort = [{"status": {'order' : 'asc'}}, {'popularity': {'order' : 'desc'}}];
-    };
+    }
     if (this.prodSrchParams.sortOrder === SortOrderEnum.PriceLowToHigh) {
       sort = [{"status": {'order' : 'asc'}}, {'price': {'order' : 'asc'}}];
-    };
+    }
     if (this.prodSrchParams.sortOrder === SortOrderEnum.PriceHighToLow) {
       sort = [{"status": {'order' : 'asc'}}, {'price': {'order' : 'desc'}}];
-    };
+    }
 
     if ((this.prodSrchParams.supplier) && (this.prodSrchParams.supplier.length != 0)) {
       let terms = [];
@@ -283,7 +284,7 @@ export class SearchService {
       );
       let mnf = {'bool': {'should': terms}};
       postFilterArr.push(mnf);
-    };
+    }
     
     if ((this.prodSrchParams.ProductId) && (this.prodSrchParams.ProductId.length != 0)) {
       let terms = [];
@@ -292,7 +293,7 @@ export class SearchService {
       );
       let prod = {'bool': {'should': terms}};
       mustArr.push(prod);
-    };
+    }
 
     if ((this.prodSrchParams.category) && (this.prodSrchParams.category.length != 0)) {
       let terms = [];
@@ -310,7 +311,7 @@ export class SearchService {
       let cats = {'bool': {'should': terms}};
       mustArr.push(cats);
       //postFilterArr.push(cats);
-    };
+    }
 
 
     if ((this.prodSrchParams.productProps) && (this.prodSrchParams.productProps.length != 0)) {
@@ -358,7 +359,7 @@ export class SearchService {
 
       let prop = {'bool': {'must': terms}};
       mustArr.push(prop);
-    };
+    }
 
     if (this.prodSrchParams.srchText) {
       mustArr.push({'simple_query_string': {
@@ -367,7 +368,7 @@ export class SearchService {
                                       'default_operator': 'and'
                                     }
             });
-    };
+    }
 
     if (this.prodSrchParams.categoryId) {
       mustArr.push({
@@ -382,13 +383,13 @@ export class SearchService {
                       }
                     }
       });
-    };
+    }
 
     if (this.prodSrchParams.actionId) {
       mustArr.push({
         "match": { "actions":`${this.prodSrchParams.actionId}`}
       });
-    };
+    }
 
     if (!this.client)
       await this.connect();

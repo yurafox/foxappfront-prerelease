@@ -2,7 +2,8 @@ import {ClientOrderProductBase} from './client-order-product-base';
 import {RefInjector, LazyLoad, IDTO} from '../core/app-core';
 import {QuotationProduct} from './quotation-product';
 import {StorePlace} from './store-place';
-import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
+import {AbstractQuotationProductRepository} from "../service/repository/abstract/abstract-quotation-product-repository";
+import {AbstractStorePlaceRepository} from "../service/repository/abstract/abstract-store-place-repository";
 
 
 @LazyLoad([
@@ -11,7 +12,8 @@ import {AbstractDataRepository} from '../service/repository/abstract/abstract-da
 ])
 
 export class ClientOrderProducts extends ClientOrderProductBase implements IDTO {
-  public _repo: AbstractDataRepository;
+  public _quotProdRepo: AbstractQuotationProductRepository;
+  public _storePlaceRepo: AbstractStorePlaceRepository;
 
   get dto(): any {
     return  {id: this.id, idOrder: this.idOrder, idQuotationProduct: this.idQuotationProduct, qty: this.qty, price: this.price,
@@ -47,7 +49,8 @@ export class ClientOrderProducts extends ClientOrderProductBase implements IDTO 
   )
   {
     super(id, idOrder, idQuotationProduct, price, qty, idStorePlace, earnedBonusCnt);
-    this._repo = RefInjector.pull(AbstractDataRepository)
+    this._quotProdRepo = RefInjector.pull(AbstractQuotationProductRepository);
+    this._storePlaceRepo = RefInjector.pull(AbstractStorePlaceRepository);
   }
 
 

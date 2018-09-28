@@ -1,8 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController, ViewController} from 'ionic-angular';
+import {IonicPage, ToastController, ViewController} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {NgForm} from '@angular/forms';
-import {UserService} from '../../app/service/bll/user-service';
 
 
 @IonicPage()
@@ -16,8 +15,7 @@ export class CallMePage  extends ComponentBase {
   callPhone: string;
   btnDisabled = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
-              public toastCtrl: ToastController) {
+  constructor(public toastCtrl: ToastController, public viewCtrl: ViewController) {
     super();
   }
 
@@ -27,14 +25,14 @@ export class CallMePage  extends ComponentBase {
 
   async callMe() {
     this.btnDisabled = true;
-    this.userService.callMe(this.callPhone);
+    this.userService.callMe(this.callPhone).catch(console.error);
     let toast = this.toastCtrl.create({
       message: this.locale['WaitForCall'],
       duration: 3000,
       position: 'bottom'
     });
-    toast.present();
-    this.viewCtrl.dismiss();
+    toast.present().catch(console.error);
+    this.viewCtrl.dismiss().catch(console.error);
   }
 
 }

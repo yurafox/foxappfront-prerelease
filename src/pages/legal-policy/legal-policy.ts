@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage } from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AbstractLegalPolicyRepository} from '../../app/service/repository/abstract/abstract-legal-policy-repository';
 
 @IonicPage()
 @Component({
@@ -11,13 +11,13 @@ import {AbstractDataRepository} from '../../app/service/repository/abstract/abst
 export class LegalPolicyPage extends ComponentBase {
   legalPolicyText: string;
 
-  constructor(public navCtrl: NavController,
-              public repo: AbstractDataRepository) {
+  constructor(public legalPolicyRepo: AbstractLegalPolicyRepository) {
     super();
   }
 
   async ngOnInit() {
-    this.repo.getLegalPolicy(this.userService.profile.userSetting['lang']).then( legalPolicyText => {
+    this.legalPolicyRepo.getLegalPolicy(this.userService.profile.userSetting['lang'])
+      .then( legalPolicyText => {
         this.legalPolicyText = legalPolicyText;
       }
     );

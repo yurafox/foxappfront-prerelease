@@ -220,7 +220,7 @@ export class DropdownListComponent extends ComponentBase implements OnChanges {
   }
   public openView(event: any) {
     const popUp = this.popoverCtrl.create(DropdownViewComponent, { parent: this }, { cssClass: 'f-backdrop-opacity-popover',enableBackdropDismiss:false });
-    if (popUp) popUp.present();
+    if (popUp) popUp.present().catch(console.error);
   }
 
   // <editor-fold desc="methods for check input fields">

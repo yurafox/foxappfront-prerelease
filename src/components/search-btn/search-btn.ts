@@ -76,7 +76,7 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
         if (barcodeData && !barcodeData.cancelled && barcodeData.text) {
           this.searchValue = barcodeData.text;
           this.incSearch().then(
-            () => { this.searchByText(this.searchValue); }
+            () => { this.searchByText(this.searchValue).catch(console.error); }
           );
         }
         else  {
@@ -115,7 +115,7 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
       ar = this.searchService.searchItems.filter((value) => {
         return value.toLowerCase().startsWith(this.searchValue.toLowerCase(),0);
         //return !(value.toLowerCase().indexOf(this.searchValue.toLowerCase()) === -1);
-      }).slice()
+      }).slice();
     else
       ar = this.searchService.searchItems;
 
@@ -132,7 +132,7 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
           const txt = x.text;
           const opts = x.options;
           if (opts.length>0)
-            opts.forEach(y => varArr.push(y.text))
+            opts.forEach(y => varArr.push(y.text));
           else
             varArr.push(txt);
         }
@@ -163,7 +163,7 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
     if (event)
       event.stopPropagation();
     this.searchService.lastSearch = '';
-    this.incSearch();
+    this.incSearch().catch(console.error);
     if (!((this.navCtrl.length()-1) > 0)) {
       this.hostPage.pageMode = PageMode.HomeMode;
     }

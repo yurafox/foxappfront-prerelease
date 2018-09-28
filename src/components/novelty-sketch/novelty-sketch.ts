@@ -2,9 +2,10 @@ import { Component, Input} from '@angular/core';
 import {NavController} from "ionic-angular";
 import {fadeInAnimation} from '../../app/core/animation-core';
 import {ComponentBase} from "../component-extension/component-base";
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {Product} from '../../app/model/product';
 import {Novelty} from '../../app/model/novelty';
+import {AbstractProductRepository} from "../../app/service/repository/abstract/abstract-product-repository";
+import {AbstractNoveltyRepository} from "../../app/service/repository/abstract/abstract-novelty-repository";
 
 @Component({
   selector: 'novelty-sketch',
@@ -18,23 +19,24 @@ export class NoveltySketchComponent extends ComponentBase{
   public content:boolean;
   productId: number;
 
-  constructor(public navCtrl: NavController, public _repo:AbstractDataRepository) {
+  constructor(public navCtrl: NavController, public _productRepo: AbstractProductRepository,
+              public _noveltyRepo: AbstractNoveltyRepository) {
     super();
   }
 
   async ngOnInit() {
     super.ngOnInit();
     if (!this.novelty || !this.novelty.id) {
-      this.novelty = await this._repo.getNovelty(this.innerId);
+      this.novelty = await this._noveltyRepo.getNovelty(this.innerId);
       if (this.novelty) {
         this.productId = this.novelty.idProduct;
-        this.product = await this._repo.getProductById(this.novelty.idProduct);
+        this.product = await this._productRepo.getProductById(this.novelty.idProduct);
       }
     }
     else {
       if (this.novelty.idProduct) {
         this.productId = this.novelty.idProduct;
-        this.product = await this._repo.getProductById(this.novelty.idProduct);
+        this.product = await this._productRepo.getProductById(this.novelty.idProduct);
       }
     }
     this.content = !!(this.novelty && this.novelty.sketch_content);
@@ -43,17 +45,17 @@ export class NoveltySketchComponent extends ComponentBase{
 
   public async openNovelty() {
     if (!this.novelty || !this.novelty.id) {
-      this.novelty = await this._repo.getNovelty(this.innerId);
+      this.novelty = await this._noveltyRepo.getNovelty(this.innerId);
       if (this.novelty) {
         this.productId = this.novelty.idProduct;
-        if (!this.product) this.product = await this._repo.getProductById(this.novelty.idProduct);
+        if (!this.product) this.product = await this._productRepo.getProductById(this.novelty.idProduct);
         await this.pushNoveltyPage();
       }
     }
     else {
       if (this.novelty.idProduct) {
         this.productId = this.novelty.idProduct;
-        if (!this.product) this.product = await this._repo.getProductById(this.novelty.idProduct);
+        if (!this.product) this.product = await this._productRepo.getProductById(this.novelty.idProduct);
         await this.pushNoveltyPage();
       }
     }

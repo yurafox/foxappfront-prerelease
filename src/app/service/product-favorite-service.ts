@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AbstractDataRepository } from '../../app/service/repository/abstract/abstract-data-repository';
+import { AbstractProductRepository } from '../../app/service/repository/abstract/abstract-product-repository';
 import { Product } from './../../app/model/index';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
@@ -14,7 +14,7 @@ export class ProductFavoriteService {
   eventChange$: Observable<number>;
   private _observer: Observer<number>;
 
-  constructor(private _repo: AbstractDataRepository) {
+  constructor(private _productRepo: AbstractProductRepository) {
     this.eventChange$ = new Observable<number>(observer =>
       this._observer = observer).share();
 
@@ -51,7 +51,7 @@ export class ProductFavoriteService {
   }
 
   saveToLocalStorage() {
-    let saveArr = new Array<any>();
+    let saveArr = [];
     this.favoriteProductsId.forEach(i => {
       saveArr.push(i);
     }
@@ -74,7 +74,7 @@ export class ProductFavoriteService {
     let resultArr = new Array<Product>();
 
     for (let productId of this.favoriteProductsId) {
-      let product = await this._repo.getProductById(productId);
+      let product = await this._productRepo.getProductById(productId);
       resultArr.push(product);
     }
 

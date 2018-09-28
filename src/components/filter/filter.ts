@@ -1,8 +1,7 @@
 import {Component, DoCheck, Input, ViewChild} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
-import {LoadingController, PopoverController,Loading, Popover} from 'ionic-angular';
+import {LoadingController, PopoverController, Popover} from 'ionic-angular';
 import {FilterPopoverPage} from '../../pages/filter-popover/filter-popover';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {SearchService, SortOrderEnum} from '../../app/service/search-service';
 import {Category} from '../../app/model/category';
 import {Manufacturer} from '../../app/model/manufacturer';
@@ -91,7 +90,7 @@ export class FilterComponent extends ComponentBase implements DoCheck {
   filteredGroups: GeneralFilterStruct[];
   currentPopover:Popover;
 
-  constructor(public popoverCtrl: PopoverController, public repo: AbstractDataRepository,
+  constructor(public popoverCtrl: PopoverController,
               public loadingCtrl: LoadingController) {
     super();
   }
@@ -125,7 +124,7 @@ export class FilterComponent extends ComponentBase implements DoCheck {
       this.initData();
 
       if(this.currentPopover)
-        this.currentPopover.dismiss();
+        this.currentPopover.dismiss().catch(console.error);
       
     }
     finally {
@@ -147,7 +146,7 @@ export class FilterComponent extends ComponentBase implements DoCheck {
     let filteredPropCatId = null;
     if ((this.lastFilteredCat) && (this.lastFilteredCat.type === CategoryType.Property)) {
       filteredPropCatId = this.lastFilteredCat.tag;
-    };
+    }
 
 
     let fPropItems = [];
@@ -167,7 +166,7 @@ export class FilterComponent extends ComponentBase implements DoCheck {
         fPropsCat.items = fPropItems;
         fPropsCat.sortOrder = 10;
         this.fCategories.push(fPropsCat);
-      };
+      }
     });
 
     ///////// Sort ////////
@@ -268,7 +267,7 @@ export class FilterComponent extends ComponentBase implements DoCheck {
     for (let i = 0; i < this.filteredProps.length; i++) {
       this.filteredProps[i].prevPropName = prevName;
       prevName = this.filteredProps[i].prop.name;
-    };
+    }
   }
 
   onPropsClick(filterItem, filterCat: FilterCategory) {
@@ -281,7 +280,7 @@ export class FilterComponent extends ComponentBase implements DoCheck {
     if ((i == -1) && (!data.isChecked))
       this.propFilterCondition.push(cond);
     this.srch.prodSrchParams.productProps = this.propFilterCondition;
-    this.applyFilter(filterCat);
+    this.applyFilter(filterCat).catch(console.error);
   }
 
   onMnfClick(filterItem: FilterItem, filterCat: FilterCategory) {
@@ -292,7 +291,7 @@ export class FilterComponent extends ComponentBase implements DoCheck {
     if ((i == -1) && (!mnf.isChecked))
       this.mnfFilterCondition.push(mnf.obj.id);
     this.srch.prodSrchParams.supplier = this.mnfFilterCondition;
-    this.applyFilter(filterCat);
+    this.applyFilter(filterCat).catch(console.error);
   }
 
   onGroupsClick(filterItem: FilterItem, filterCat: FilterCategory) {
@@ -303,7 +302,7 @@ export class FilterComponent extends ComponentBase implements DoCheck {
     if ((i == -1) && (!gr.isChecked))
       this.groupsFilterCondition.push(gr.obj.id);
     this.srch.prodSrchParams.category = this.groupsFilterCondition;
-    this.applyFilter(filterCat);
+    this.applyFilter(filterCat).catch(console.error);
   }
 
 
@@ -326,7 +325,7 @@ export class FilterComponent extends ComponentBase implements DoCheck {
     let popover = this.popoverCtrl.create(FilterPopoverPage, {filterControl: this});
     popover.present({
       ev: event
-    });
+    }).catch(console.error);
     
     // save reference on current popover for aot fix
     this.currentPopover= popover;
@@ -334,7 +333,7 @@ export class FilterComponent extends ComponentBase implements DoCheck {
 
   sort(order: SortOrderEnum) {
     this.srch.prodSrchParams.sortOrder = order;
-    this.srch.search();
+    this.srch.search().catch(console.error);
   }
 
 }

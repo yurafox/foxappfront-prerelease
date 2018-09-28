@@ -9,9 +9,10 @@ import {ClientAddress} from '../../app/model/client-address';
 import {SelectShipAddressPage} from '../select-ship-address/select-ship-address';
 import {NgForm} from '@angular/forms';
 import {Country} from '../../app/model/country';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {CartService} from '../../app/service/cart-service';
 import {City} from '../../app/model/city';
+import {AbstractGeoRepository} from "../../app/service/repository/abstract/abstract-geo-repository";
+import {AbstractClientRepository} from "../../app/service/repository/abstract/abstract-client-repository";
 
 @IonicPage()
 @Component({
@@ -33,17 +34,17 @@ export class EditShipAddressPage extends ComponentBase  {
   delivery: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public alertCtrl: AlertController, public repo: AbstractDataRepository,
-              public cart: CartService) {
+              public alertCtrl: AlertController, public geoRepo: AbstractGeoRepository,
+              public clientRepo: AbstractClientRepository, public cart: CartService) {
     super();
-    this.initPage();
+    this.initPage().catch(console.error);
 
     this.cityInputStream$.debounceTime(300)
       .distinctUntilChanged()
       .subscribe(inputValue =>
         {
           this.showCityPopup = true;
-          this.repo.searchCities(inputValue).then(
+          this.geoRepo.searchCities(inputValue).then(
             x => {this.cities = x;}
           );
         }
@@ -57,7 +58,7 @@ export class EditShipAddressPage extends ComponentBase  {
   }
 
   async initPage() {
-    this.countries = await this.repo.getCountries();
+    this.countries = await this.geoRepo.getCountries();
     this.mode = this.navParams.data.mode;
     this.delivery = this.navParams.data.delivery;
     this.addressSelectorPage = this.navParams.data.page;
@@ -92,18 +93,18 @@ export class EditShipAddressPage extends ComponentBase  {
           }
         ]
       });
-      alert.present();
+      alert.present().catch(console.error);
       return null;
     }
 
     if (this.mode === 'create') {
       this.addressSelectorPage.shippingAddresses.forEach(i => i.isPrimary = false);
       this.shippingAddress.isPrimary = true;
-      let addr = await this.repo.createClientAddress(this.shippingAddress);
+      let addr = await this.clientRepo.createClientAddress(this.shippingAddress);
       this.addressSelectorPage.shippingAddresses.push(addr);
       return addr;
     } else if (this.mode === 'edit') {
-      const addr: ClientAddress = await this.repo.saveClientAddress(this.shippingAddress);
+      const addr: ClientAddress = await this.clientRepo.saveClientAddress(this.shippingAddress);
       Object.assign(this.originalAddr, addr);
       return addr;
     }
@@ -115,7 +116,7 @@ export class EditShipAddressPage extends ComponentBase  {
     if(this.delivery === 1) {
       this.cart.order.loIdClientAddress = addr.id;
     }
-    this.navCtrl.pop();
+    this.navCtrl.pop().catch(console.error);
   }
 
   validatePage(): boolean {

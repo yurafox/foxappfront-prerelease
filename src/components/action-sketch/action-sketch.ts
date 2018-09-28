@@ -4,7 +4,7 @@ import {fadeInAnimation} from '../../app/core/animation-core';
 import {ComponentBase} from '../component-extension/component-base';
 import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
 import {Action} from '../../app/model/action';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AbstractActionRepository} from '../../app/service/repository/abstract/abstract-action-repository';
 
 @Component({
   selector: 'action-sketch',
@@ -23,7 +23,7 @@ export class ActionSketchComponent extends ComponentBase {
   public alive:boolean;
   public expire:{days?:number,hours?:number,minutes?:number,seconds?:number};
 
-  constructor(public navCtrl: NavController, public _repo:AbstractDataRepository) {
+  constructor(public navCtrl: NavController, public _actionRepo: AbstractActionRepository) {
     super();
   }
 
@@ -41,7 +41,7 @@ export class ActionSketchComponent extends ComponentBase {
 
   public async openAction() {
     if (!this.action) {
-      this.action = await this._repo.getAction(this.innerId);
+      this.action = await this._actionRepo.getAction(this.innerId);
       if (this.action) {
         this.pushActionPage();
       }
@@ -57,7 +57,7 @@ export class ActionSketchComponent extends ComponentBase {
   }
 
   private async InitActionOpt() {
-    this.action = this.action || await this._repo.getAction(this.innerId);
+    this.action = this.action || await this._actionRepo.getAction(this.innerId);
     this.content = this.action && this.dateEnd > new Date();
    
     this.evServ.events['actionPushEvent'].emit(this);

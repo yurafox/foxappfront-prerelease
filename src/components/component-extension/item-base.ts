@@ -1,11 +1,12 @@
 import {Input, OnInit} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {ComponentBase} from './component-base';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {AppConstants} from '../../app/app-constants';
 import {Product} from '../../app/model/product';
 import {QuotationProduct} from '../../app/model/quotation-product';
 import {ProductStorePlace} from '../../app/model/product-store-place';
+import {AbstractQuotationProductRepository} from "../../app/service/repository/abstract/abstract-quotation-product-repository";
+import {AbstractStorePlaceRepository} from "../../app/service/repository/abstract/abstract-store-place-repository";
 
 
 export class ItemBase extends ComponentBase implements OnInit {
@@ -29,13 +30,14 @@ export class ItemBase extends ComponentBase implements OnInit {
 
   public get OnStock(): boolean {
     if (this.preloadQuotes)
-      return !(this.valueQuot == null)
+      return !(this.valueQuot == null);
     else
       return !(this.product.valueQP == null);
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public repo: AbstractDataRepository) {
+              public quotProductRepo: AbstractQuotationProductRepository,
+              public storePlaceRepo: AbstractStorePlaceRepository) {
     super();
 
   }
@@ -52,7 +54,7 @@ export class ItemBase extends ComponentBase implements OnInit {
     super.ngOnInit();
     if (this.preloadQuotes) {
       if (this.product && this.product.id) {
-        this.quotes = await this.repo.getQuotationProductsByProductId(this.product.id);
+        this.quotes = await this.quotProductRepo.getQuotationProductsByProductId(this.product.id);
         this._noOfQuotes = this.quotes.filter(i => {
           return (i.stockQuant > 0);
         }).length;
@@ -61,7 +63,7 @@ export class ItemBase extends ComponentBase implements OnInit {
       }
     }
     if (this.valueQuot) {
-      this.productStorePlaces = await this.repo.getProductStorePlacesByQuotId(this.valueQuot.id);
+      this.productStorePlaces = await this.storePlaceRepo.getProductStorePlacesByQuotId(this.valueQuot.id);
     }
 
     this.resolved = true;

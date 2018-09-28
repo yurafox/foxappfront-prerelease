@@ -35,7 +35,7 @@ export class CreditComponent extends ComponentBase implements OnChanges {
   initData() {
     for (let i = this.cProduct.creditProduct.minTerm; i <= this.cProduct.creditProduct.maxTerm; i++) {
       this.partsPmtArray.push({clMonths: i, displayValue: i.toString()});
-    };
+    }
   }
 
   onAfterCreditSelect(item: any, objRef:any): void {

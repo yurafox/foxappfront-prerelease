@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {UserService} from './bll/user-service';
 import {SearchService, ProductSearchParams} from '../../app/service/search-service';
 import {Prop} from '../../app/model/prop';
 
@@ -16,7 +15,7 @@ export class ProductCompareService {
   compareProductsId = new Array<number>();
   products : any;
 
-  constructor(private userService: UserService, private srchService: SearchService) {
+  constructor(private srchService: SearchService) {
     this.compareProductsId = this.getLocalStorageItems();
   }
 
@@ -46,7 +45,7 @@ export class ProductCompareService {
   }   
 
   saveToLocalStorage() {
-    let saveArr = new Array<any>();
+    let saveArr = [];
     this.compareProductsId.forEach(i => {
       saveArr.push(i);
       }

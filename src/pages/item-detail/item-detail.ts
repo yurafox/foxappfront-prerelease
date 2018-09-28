@@ -16,6 +16,14 @@ import {ProductCompareService, PropWithIndex} from '../../app/service/product-co
 import {ProductFavoriteService} from '../../app/service/product-favorite-service';
 import {SearchService} from '../../app/service/search-service';
 import { Product, ProductPropValue } from '../../app/model';
+import {AbstractClientRepository} from "../../app/service/repository/abstract/abstract-client-repository";
+import {AbstractReviewRepository} from "../../app/service/repository/abstract/abstract-review-repository";
+import {AbstractQuotationProductRepository} from "../../app/service/repository/abstract/abstract-quotation-product-repository";
+import {AbstractStorePlaceRepository} from "../../app/service/repository/abstract/abstract-store-place-repository";
+import {AbstractActionRepository} from "../../app/service/repository/abstract/abstract-action-repository";
+import {AbstractProductRepository} from "../../app/service/repository/abstract/abstract-product-repository";
+import {AbstractProductCompareRepository} from "../../app/service/repository/abstract/abstract-product-compare-repository";
+import {AbstractLoRepository} from "../../app/service/repository/abstract/abstract-lo-repository";
 
 @IonicPage()
 @Component({
@@ -47,47 +55,48 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   allResolved: boolean = false;
   allowTakeOnCreditButton: boolean = true;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              public repo: AbstractDataRepository, public cart: CartService,
-              public modalCtrl: ModalController, public toastCtrl: ToastController,
+  constructor(public navCtrl: NavController, public navParams: NavParams, public dataRepo: AbstractDataRepository,
+              public productRepo: AbstractProductRepository, public productCompareRepo: AbstractProductCompareRepository,
+              public cart: CartService, public modalCtrl: ModalController, public toastCtrl: ToastController,
               public evServ: EventService, public alertCtrl: AlertController, public uService: UserService,
               public prodCompService: ProductCompareService, public prodFavoriteService: ProductFavoriteService,
-              public srchService: SearchService,) {
-    super(navCtrl, navParams, repo);
+              public srchService: SearchService, public clientRepo: AbstractClientRepository,
+              public reviewRepo: AbstractReviewRepository, public quotProductRepo: AbstractQuotationProductRepository,
+              public storePlaceRepo: AbstractStorePlaceRepository, public actionRepo: AbstractActionRepository,
+              public loRepo: AbstractLoRepository) {
+    super(navCtrl, navParams, quotProductRepo, storePlaceRepo);
     this.displayPropCount = 7;
     this.cantShow = true;
     this.product = this.navParams.data.prod;
     this.preloadQuotes = this.navParams.data.loadQuotes;
     this.hideProductCompare = this.navParams.data.hideProductCompare;
     this.qty.value = 1;
-    repo.getProductImages(this.product.id).then(
-        x =>
-          this.product.slideImageUrls = x
-    );
   }
 
   async ngOnInit() {
-    super.ngOnInit();
+    super.ngOnInit().catch(console.error);
 
-    this.actionsArr = await this.repo.getActionsByProduct(this.product.id);
+    if (this.product)
+      this.product.slideImageUrls = await this.productRepo.getProductImages(this.product.id);
+    this.actionsArr = await this.actionRepo.getActionsByProduct(this.product.id);
     this.complectsArr = this.actionsArr.filter(x => ((x.complect) && ((x.actionType === 4) || (x.actionType === 5))));
-    this.repo.getProductDescription(this.product.id).then( x => {
+    this.productRepo.getProductDescription(this.product.id).then( x => {
         this.description = x;
       }
     );
 
-    this.minLoanAmt = parseInt(await this.repo.getAppParam('MIN_LOAN_AMT'));
-    this.maxLoanAmt = parseInt(await this.repo.getAppParam('MAX_LOAN_AMT'));
+    this.minLoanAmt = parseInt(await this.dataRepo.getAppParam('MIN_LOAN_AMT'));
+    this.maxLoanAmt = parseInt(await this.dataRepo.getAppParam('MAX_LOAN_AMT'));
 
     await this.checkAllowTakeOnCredit();
   
     this.cantShow = this.hasClientReview();
 
     await this.loadSimilarProducts();
-    this.popularAccessories = await this.repo.getPopularAccessories(this.product.id);
+    this.popularAccessories = await this.productCompareRepo.getPopularAccessories(this.product.id);
     this.similarProducstsResolved = true;
 
-    this.reviewsObj = await this.repo.getProductReviewsByProductId(this.product.id);
+    this.reviewsObj = await this.reviewRepo.getProductReviewsByProductId(this.product.id);
     if (this.reviewsObj) {
       this.reviews = this.reviewsObj.reviews;
       this.clientId = this.reviewsObj.idClient;
@@ -95,7 +104,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
     this.reviewsResolved = true;
 
     if (this.userService.isAuth) {
-      await this.repo.postProductView(this.product.id, null);
+      await this.clientRepo.postProductView(this.product.id, null);
       await this.uService.loadViewProducts();
     }
     this.uService.addViewProduct(this.product);
@@ -109,7 +118,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
       this.checkProductIsCompare();
       this.checkProductIsFavorite();
 
-      let hasClientReviews = await this.repo.getHasClientProductReview(this.product.id);
+      let hasClientReviews = await this.reviewRepo.getHasClientProductReview(this.product.id);
       if (hasClientReviews && hasClientReviews != null && hasClientReviews.hasReview) {
         this.cantShow = hasClientReviews.hasReview;
       }
@@ -117,19 +126,19 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   }
 
   onShowProductDescription(): void {
-    this.navCtrl.push('ItemDescriptionPage', this.description);
+    this.navCtrl.push('ItemDescriptionPage', this.description).catch(console.error);
   }
 
   onShowProductProps(): void {
-    this.navCtrl.push('ItemPropsPage', this.product);
+    this.navCtrl.push('ItemPropsPage', this.product).catch(console.error);
   }
 
   onShowReviewClick(review: any): void {
-    this.navCtrl.push('ItemReviewPage', review);
+    this.navCtrl.push('ItemReviewPage', review).catch(console.error);
   }
 
   onShowReviewsClick(): void {
-    this.navCtrl.push('ItemReviewsPage', {page: this, product: this.product});
+    this.navCtrl.push('ItemReviewsPage', {page: this, product: this.product}).catch(console.error);
   }
 
   onWriteReview(): void {
@@ -145,7 +154,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   }
 
   onShowMoreQuotesClick(): void {
-    this.navCtrl.push('ItemQuotesPage', {prod: this.product, quotesArr: this.quotes});
+    this.navCtrl.push('ItemQuotesPage', {prod: this.product, quotesArr: this.quotes}).catch(console.error);
   }
 
   async onAddToCart() {
@@ -161,20 +170,20 @@ export class ItemDetailPage extends ItemBase implements OnInit {
             itemPage: this});
     calcModal.onDidDismiss(data => {
       if (data)
-        this.navCtrl.push(data.nextPage, data.params);
+        this.navCtrl.push(data.nextPage, data.params).catch(console.error);
     });
-    calcModal.present();
+    calcModal.present().catch(console.error);
   }
 
   onShowItemImg(imgIdx: number) {
     let itemImgModal = this.modalCtrl.create(ItemImgPage,
       {product: this.product, imgIdx: imgIdx});
-    itemImgModal.present();
+    itemImgModal.present().catch(console.error);
   }
 
   showLocationPopover() {
     let modal = this.modalCtrl.create(CustomPopupComponent, {itemPage: this}, {showBackdrop:true, enableBackdropDismiss:true});
-    modal.present({});
+    modal.present({}).catch(console.error);
   }
 
   hasClientReview(): boolean {
@@ -187,7 +196,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
 
   notifyOnArrivalResult(email: string): boolean {
     if (EmailValidator.isValid(email)) {
-      this.repo.notifyOnProductArrival(email, this.product.id).then(() => {
+      this.productRepo.notifyOnProductArrival(email, this.product.id).then(() => {
           this.showToast(this.locale['InformUponArrivalConfirmation']);
           return true;
         }
@@ -230,7 +239,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
           }
         ]
       });
-      alert.present();
+      alert.present().catch(console.error);
     }
   }
 
@@ -241,7 +250,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
       position: 'bottom'
     });
 
-    toast.present();
+    toast.present().catch(console.error);
   }
 
   checkProductIsCompare() {
@@ -251,11 +260,11 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   onAddProductToCompare() {
     this.prodCompService.addCompareProducts(this.product.id);
     this.checkProductIsCompare();
-    this.showToast(this.locale['ProductAddСompare']);
+    this.showToast(this.locale['ProductAddCompare']);
   }
 
   onOpenProductComparePage() {
-    this.navCtrl.push('ProductComparePage', {productId: this.product.id});
+    this.navCtrl.push('ProductComparePage', {productId: this.product.id}).catch(console.error);
   }
 
   checkProductIsFavorite() {
@@ -273,7 +282,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
   }
 
   async loadSimilarProducts() {
-    let loadProducts: Array<Product> = await this.repo.getSimilarProducts(this.product.id);
+    let loadProducts: Array<Product> = await this.productCompareRepo.getSimilarProducts(this.product.id);
 
     let uniqueProps = new Array<PropWithIndex>();
     let uniqueSortedProps = new Array<PropWithIndex>();
@@ -291,7 +300,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
 
     if (loadProducts) loadProducts.forEach(product => { 
       let findedProp = false;
-      for(var i = 0; i < this.displayPropCount - 2; i++) {
+      for(let i = 0; i < this.displayPropCount - 2; i++) {
         if( i < uniqueSortedProps.length) {
           let propVal: ProductPropValue = product.props.find((x) => { return x.id_Prop.id === uniqueSortedProps[i].property.id });
 
@@ -308,7 +317,7 @@ export class ItemDetailPage extends ItemBase implements OnInit {
    }
 
   async checkAllowTakeOnCredit() {
-    this.allowTakeOnCreditButton = await this.repo.getAllowTakeOnCreditByStatus(this.product.site_status);
+    this.allowTakeOnCreditButton = await this.loRepo.getAllowTakeOnCreditByStatus(this.product.site_status);
   }
 
 }

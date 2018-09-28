@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams, ViewController} from 'ionic-angular';
+import {IonicPage, LoadingController, NavParams, ViewController} from 'ionic-angular';
 import {CartService} from '../../app/service/cart-service';
 import {QuotationProduct} from '../../app/model/quotation-product';
 import {UserService} from '../../app/service/bll/user-service';
 import {CreditProduct} from '../../app/model/credit-product';
 import {CreditCalc} from '../../app/model/credit-calc';
-import {EnumPaymentMethod} from '../../app/model/enum-payment-method';
 import {ComponentBase} from "../../components/component-extension/component-base";
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AbstractCreditRepository} from '../../app/service/repository/abstract/abstract-credit-repository';
+import {AbstractQuotationProductRepository} from "../../app/service/repository/abstract/abstract-quotation-product-repository";
+import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
 
 @IonicPage()
 @Component({
@@ -24,17 +25,17 @@ export class CreditCalcPage extends ComponentBase {
   public dArray: Array<{value: number, displayValue: string}> = [];
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              public viewCtrl: ViewController, public cart: CartService,
+  constructor(public navParams: NavParams, public viewCtrl: ViewController, public cart: CartService,
               public userService: UserService, public loadingCtrl: LoadingController,
-              public repo: AbstractDataRepository) {
+              public creditRepo: AbstractCreditRepository, public quotProductRepo: AbstractQuotationProductRepository,
+              public dataRepo: AbstractDataRepository) {
     super();
     this.initLocalization();
     this.quotProduct = this.navParams.data.quotProduct;
   }
 
   async ngOnInit() {
-    this.initCreditCalcData();
+    this.initCreditCalcData().catch(console.error);
   }
 
   async initCreditCalcData() {
@@ -48,27 +49,27 @@ export class CreditCalcPage extends ComponentBase {
     let loading = this.loadingCtrl.create({
       content:  content
     });
-    loading.present();
+    loading.present().catch(console.error);
     try {
       this.creditsLoaded = false;
-      let qp: QuotationProduct = (this.quotProduct ? this.quotProduct : await this.cart.repo.getQuotationProductById(_qp));
+      let qp: QuotationProduct = (this.quotProduct ? this.quotProduct : await this.quotProductRepo.getQuotationProductById(_qp));
       const quot = await (<any>qp).quotation_p;
       const suppl = await (<any>quot).supplier_p;
-      let pInfo = await this.cart.repo.getProductCreditSize(qp.idProduct, suppl.id);
+      let pInfo = await this.creditRepo.getProductCreditSize(qp.idProduct, suppl.id);
 
       if (!pInfo)
         pInfo = {partsPmtCnt: 0, creditSize: 0};
 
-      const arr: CreditProduct[] = await this.cart.repo.getCreditProducts();
+      const arr: CreditProduct[] = await this.creditRepo.getCreditProducts();
       this.credits = [];
       let _cpOplataChastyami = new CreditProduct();
       _cpOplataChastyami.sId = -2;
       _cpOplataChastyami.sName = await this.locale['PrivatInstallments'];
       _cpOplataChastyami.firstPay = 0;
-      _cpOplataChastyami.maxTerm = (pInfo.partsPmtCnt) ? pInfo.partsPmtCnt : parseInt(await this.repo.getAppParam('MIN_LOAN_TERM'));
+      _cpOplataChastyami.maxTerm = (pInfo.partsPmtCnt) ? pInfo.partsPmtCnt : parseInt(await this.dataRepo.getAppParam('MIN_LOAN_TERM'));
       _cpOplataChastyami.monthCommissionPct = 0;
       _cpOplataChastyami.maxAmt = null;
-      _cpOplataChastyami.minAmt = parseInt(await this.repo.getAppParam('MIN_LOAN_AMT'));
+      _cpOplataChastyami.minAmt = parseInt(await this.dataRepo.getAppParam('MIN_LOAN_AMT'));
       _cpOplataChastyami.minTerm = 2;
       this.credits.push(new CreditCalc(false, _cpOplataChastyami));
 
@@ -77,9 +78,9 @@ export class CreditCalcPage extends ComponentBase {
       _cpMgnovCredit.sName = await this.locale['PrivatInstant'];
       _cpMgnovCredit.firstPay = 0;
       _cpMgnovCredit.maxTerm = pInfo.creditSize;
-      _cpMgnovCredit.monthCommissionPct = parseInt(await this.repo.getAppParam('PRIVAT_MGNOV_CREDIT_PCT*10'))/10;
+      _cpMgnovCredit.monthCommissionPct = parseInt(await this.dataRepo.getAppParam('PRIVAT_MGNOV_CREDIT_PCT*10'))/10;
       _cpMgnovCredit.maxAmt = null;
-      _cpOplataChastyami.minAmt = parseInt(await this.repo.getAppParam('MIN_LOAN_AMT'));
+      _cpOplataChastyami.minAmt = parseInt(await this.dataRepo.getAppParam('MIN_LOAN_AMT'));
       _cpMgnovCredit.minTerm = 2;
       if (_cpMgnovCredit.maxTerm>0)
         this.credits.push(new CreditCalc(false, _cpMgnovCredit));
@@ -100,7 +101,7 @@ export class CreditCalcPage extends ComponentBase {
     }
     finally {
       this.creditsLoaded = true;
-      loading.dismiss();
+      loading.dismiss().catch(console.error);
     }
   }
 
@@ -147,7 +148,7 @@ export class CreditCalcPage extends ComponentBase {
       }
 */
 
-      this.navParams.data.itemPage.onAddToCart();
+      this.navParams.data.itemPage.onAddToCart().catch(console.error);
 
       if (!this.userService.isAuth) {
         data = {nextPage: 'LoginPage', params: {continuePage: 'SelectShipAddressPage'}};
@@ -156,7 +157,7 @@ export class CreditCalcPage extends ComponentBase {
         data = {nextPage: 'SelectShipAddressPage', params: {fromCart: 1}};
       }
     }
-    this.viewCtrl.dismiss(data);
+    this.viewCtrl.dismiss(data).catch(console.error);
 
   }
 

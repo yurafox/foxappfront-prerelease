@@ -285,8 +285,6 @@ export class GeoRepository extends AbstractGeoRepository {
 
       if (data != null) {
         if (data) data.forEach(val => {
-            let city = new City();
-
             if (this.dataRepo.cache.City.HasNotValidCachedValue(val.id.toString())) {
               const entity: Providers.CacheDataContainer<City> = this.dataRepo.cache.City.Item(val.id.toString());
               const city: City = (entity) ? entity.item : new City();

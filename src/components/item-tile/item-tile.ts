@@ -1,8 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import {ItemBase} from '../component-extension/item-base';
 import {NavController, NavParams} from 'ionic-angular';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {Product} from '../../app/model/product';
+import {AbstractQuotationProductRepository} from "../../app/service/repository/abstract/abstract-quotation-product-repository";
+import {AbstractStorePlaceRepository} from "../../app/service/repository/abstract/abstract-store-place-repository";
 
 @Component({
   selector: 'item-tile',
@@ -21,12 +22,14 @@ export class ItemTileComponent extends ItemBase {
   closeButtonEvent = new EventEmitter<Product>();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public repo: AbstractDataRepository) {
-    super(navCtrl, navParams, repo);
+              public quotProductRepo: AbstractQuotationProductRepository,
+              public storePlaceRepo: AbstractStorePlaceRepository) {
+    super(navCtrl, navParams, quotProductRepo, storePlaceRepo);
   }
 
   openItemDetails(data: Product): void {
-    this.navCtrl.push('ItemDetailPage', {prod: this.product, loadQuotes: true, hideProductCompare: this.hideProductCompare});
+    this.navCtrl.push('ItemDetailPage',
+      {prod: this.product, loadQuotes: true, hideProductCompare: this.hideProductCompare}).catch(console.error);
   }
 
   closeButtonClick(data: Product): void {

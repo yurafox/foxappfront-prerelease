@@ -1,13 +1,14 @@
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, AbstractControl} from '@angular/forms';
-import {NavController,NavParams, IonicPage, AlertController, Alert} from 'ionic-angular';
+import {NavController,NavParams, IonicPage, AlertController} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import {CartService} from '../../app/service/cart-service';
-import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
+import {AbstractCurrencyRepository} from "../../app/service/repository/abstract/abstract-currency-repository";
 import {UserService} from '../../app/service/bll/user-service';
 import {Currency} from '../../app/model/currency';
 import {Lang} from '../../app/model/lang';
 import {IUserVerifyAccountData} from '../../app/model/user';
+import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
 
 @IonicPage({name: 'LoginPage', segment: 'login'})
 @Component({
@@ -42,11 +43,11 @@ export class LoginPage extends ComponentBase implements OnInit {
 
   constructor(public nav: NavController,
               public navParams: NavParams,
-              public repo: AbstractDataRepository,
+              public currencyRepo: AbstractCurrencyRepository,
+              public dataRepo: AbstractDataRepository,
               public formBuilder: FormBuilder,
               public alertCtrl:AlertController,
               public cart: CartService,
-              public cd:ChangeDetectorRef,
               public account:UserService) {
     super();
     this.initLocalization();
@@ -68,7 +69,10 @@ export class LoginPage extends ComponentBase implements OnInit {
       },
     };
     this.buildForm();
-    [this.currencies,this.langs] = await Promise.all([this.repo.getCurrencies(true),this.repo.getLocale(true)]);
+    [this.currencies,this.langs] = await Promise.all([
+      this.currencyRepo.getCurrencies(true),
+      this.dataRepo.getLocale(true)
+    ]);
     this.checkUserBehavior();
     this.onLoad=true;
   }
@@ -108,9 +112,9 @@ export class LoginPage extends ComponentBase implements OnInit {
         }
       }
       else
-        this.nav.setRoot('HomePage');
+        this.nav.setRoot('HomePage').catch(console.error);
     }
-    else {this.changeUseCode(true); this._authError = true};
+    else {this.changeUseCode(true); this._authError = true}
   }
 
   buildForm(): void {
@@ -121,7 +125,7 @@ export class LoginPage extends ComponentBase implements OnInit {
     });
 
     this.verifyForm.valueChanges
-      .subscribe(data => this.onVerifyChanged());
+      .subscribe(() => this.onVerifyChanged());
 
     this.onVerifyChanged();
   }
@@ -155,7 +159,7 @@ export class LoginPage extends ComponentBase implements OnInit {
                                && this.navParams.data.continuePage
                               ) ? this.navParams.data.continuePage : null;
 
-      this.nav.push('RegisterPage',{phone: phone,continuePage:contPage});
+      this.nav.push('RegisterPage',{phone: phone,continuePage:contPage}).catch(console.error);
     }
 
     else {
@@ -169,7 +173,7 @@ export class LoginPage extends ComponentBase implements OnInit {
     this.verifyErrorData.errorMessage = '';
   }
 
-  showSmsPopUp(message:string,phone:string){
+  showSmsPopUp(message:string, phone:string){
     let alert = this.alertCtrl.create({
       message: message,
       enableBackdropDismiss:false,
@@ -182,8 +186,7 @@ export class LoginPage extends ComponentBase implements OnInit {
         }
       ]
     });
-
-    alert.present();
+    alert.present().catch(console.error);
   }
 
   changeUseCode(codePredicate:boolean):void {
@@ -208,7 +211,7 @@ export class LoginPage extends ComponentBase implements OnInit {
   toContinuePage(params:any) {
     this.nav.remove(0).then(() => this.nav.insert(0, 'HomePage'));
     this.nav.push(this.navParams.data.continuePage,params).then(() => {
-      this.nav.remove(this.nav.getActive().index);
+      this.nav.remove(this.nav.getActive().index).catch(console.error);
     });
   }
 

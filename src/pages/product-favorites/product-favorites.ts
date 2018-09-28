@@ -21,7 +21,7 @@ export class ProductFavoritesPage extends ComponentBase implements OnInit {
 
   async ngOnInit() {
     super.ngOnInit();
-    this.refreshProducs();
+    this.refreshProducs().catch(console.error);
   }
   
   private async refreshProducs(){
@@ -30,11 +30,11 @@ export class ProductFavoritesPage extends ComponentBase implements OnInit {
 
   closeButtonClick(data: Product): void {
     this.prodFavoriteService.removeFavoriteProduct(data.id);
-    this.refreshProducs();
+    this.refreshProducs().catch(console.error);
   }
 
   toHomePage() {
-    this.navCtrl.setRoot('HomePage').catch(err => console.error(err));
+    this.navCtrl.setRoot('HomePage').catch(console.error);
   }
 
 }

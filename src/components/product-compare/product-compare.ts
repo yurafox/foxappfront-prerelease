@@ -60,7 +60,7 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
 
     if(!this.productObjects) {
       await this.loadCategorys();
-      this.loadProducts();
+      this.loadProducts().catch(console.error);
     }
     else {
       this.loadProductObjects();
@@ -74,7 +74,7 @@ export class ProductCompareComponent extends ComponentBase implements OnInit {
   categoryUpdate(item: any): void {
     this.defaultCategoryId = this.selectedCategory.id;
     this.productId=null;
-    this.loadProducts();
+    this.loadProducts().catch(console.error);
   }
 
   async loadCategorys() {

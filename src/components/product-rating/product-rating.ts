@@ -16,7 +16,7 @@ export class ProductRatingComponent {
 
   openReviews(event: Event, data: Product): void {
     event.stopPropagation();
-    this.navCtrl.push(ItemReviewsPage, {product:this.product});
+    this.navCtrl.push(ItemReviewsPage, {product:this.product}).catch(console.error);
   }
 
 

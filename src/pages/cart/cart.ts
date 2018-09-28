@@ -2,9 +2,7 @@ import {Component} from '@angular/core';
 import {NavController, IonicPage, AlertController} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {CartService} from '../../app/service/cart-service';
-import {SelectShipAddressPage} from '../select-ship-address/select-ship-address';
 import {UserService} from '../../app/service/bll/user-service';
-import {LoginPage} from '../login/login';
 import {fadeInAnimation500} from '../../app/core/animation-core';
 import {AppConstants} from '../../app/app-constants';
 
@@ -30,7 +28,7 @@ export class CartPage extends ComponentBase {
   }
 
   public async onShowWarningsClick() {
-    this.navCtrl.push('WarningViewPage');
+    this.navCtrl.push('WarningViewPage').catch(console.error);
   }
 
   public get containsWarnings(): boolean {
@@ -57,7 +55,7 @@ export class CartPage extends ComponentBase {
           }
         ]
       });
-      alert.present();
+      alert.present().catch(console.error);
       return false;
     }
     else
@@ -69,16 +67,16 @@ export class CartPage extends ComponentBase {
       return;
 
     if (!this.uService.isAuth) {
-      this.navCtrl.push('LoginPage', {continuePage: 'SelectShipAddressPage'});
+      this.navCtrl.push('LoginPage', {continuePage: 'SelectShipAddressPage'}).catch(console.error);
     }
     else {
       if (this.cart.checkIsPickupOnly) {
-        this.cart.loShipments = await this.cart.repo.generateShipments();
-        this.navCtrl.push('ShippingOptionsPage');
+        this.cart.loShipments = await this.cart.cartRepo.generateShipments();
+        this.navCtrl.push('ShippingOptionsPage').catch(console.error);
       }
       else
-        this.navCtrl.push('SelectShipAddressPage', {fromCart: 1});
-    };
+        this.navCtrl.push('SelectShipAddressPage', {fromCart: 1}).catch(console.error);
+    }
   }
 
   public async onAfterQtyUpdate(item: any, objRef: any) {

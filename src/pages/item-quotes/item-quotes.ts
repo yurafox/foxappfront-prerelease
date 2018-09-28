@@ -1,9 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {IonicPage, NavParams} from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {Product} from '../../app/model/product';
 import {QuotationProduct} from '../../app/model/quotation-product';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AbstractQuotationProductRepository} from '../../app/service/repository/abstract/abstract-quotation-product-repository';
 import {CartService} from '../../app/service/cart-service';
 
 @IonicPage()
@@ -18,8 +18,9 @@ export class ItemQuotesPage extends ComponentBase {
 
   quotes: QuotationProduct[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-                public repo: AbstractDataRepository, public cart: CartService, public toastCtrl: ToastController) {
+  constructor(public navParams: NavParams,
+              public quotProductRepo: AbstractQuotationProductRepository,
+              public cart: CartService) {
     super();
     this.product = this.navParams.data.prod;
     this.quotes = this.navParams.data.quotesArr;
@@ -27,7 +28,7 @@ export class ItemQuotesPage extends ComponentBase {
 
   async ngOnInit() {
     super.ngOnInit();
-    this.quotes = (await this.repo.getQuotationProductsByProductId(this.product.id))
+    this.quotes = (await this.quotProductRepo.getQuotationProductsByProductId(this.product.id))
                     .filter((i) => {return (i.stockQuant>0);});
   }
 

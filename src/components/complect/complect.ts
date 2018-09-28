@@ -3,7 +3,7 @@ import {NavController} from 'ionic-angular';
 import { Slides } from 'ionic-angular';
 import {ComponentBase} from '../component-extension/component-base';
 import {ActionByProduct} from '../../app/model/action-by-product';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AbstractProductRepository} from '../../app/service/repository/abstract/abstract-product-repository';
 import {CartService} from '../../app/service/cart-service';
 
 export class ComplectOptionItem {
@@ -95,7 +95,7 @@ export class ComplectComponent extends ComponentBase {
 
   get mainProductId(): number {return this._mainProductId};
 
-  constructor(public repo: AbstractDataRepository, public navCtrl: NavController, public cart: CartService) {
+  constructor(public productRepo: AbstractProductRepository, public navCtrl: NavController, public cart: CartService) {
     super();
   }
 
@@ -159,8 +159,8 @@ export class ComplectComponent extends ComponentBase {
   }
 
   async onOpenItemDetail(item: ComplectItem) {
-    let prod = await this.repo.getProductById(item.variants[item.selIndex].secondProductId);
-    this.navCtrl.push('ItemDetailPage', {prod: prod, loadQuotes: true});
+    let prod = await this.productRepo.getProductById(item.variants[item.selIndex].secondProductId);
+    this.navCtrl.push('ItemDetailPage', {prod: prod, loadQuotes: true}).catch(console.error);
   }
 
   async onAddToCart(item: ComplectItem) {

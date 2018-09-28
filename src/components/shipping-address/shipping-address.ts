@@ -8,11 +8,10 @@
 import {Component, Input} from '@angular/core';
 import {ClientAddress} from "../../app/model/client-address";
 import {AlertController, NavController, NavParams} from "ionic-angular";
-import {UserService} from "../../app/service/bll/user-service";
 import {ComponentBase} from "../component-extension/component-base";
 import {CartService} from '../../app/service/cart-service';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {System} from '../../app/core/app-core';
+import {AbstractClientRepository} from "../../app/service/repository/abstract/abstract-client-repository";
 
 @Component({
   selector: 'shipping-address',
@@ -23,9 +22,8 @@ export class ShippingAddressComponent extends ComponentBase {
   @Input() withDelivery?: boolean;
   @Input() addresses?: ClientAddress[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              public uService: UserService, public alertCtrl: AlertController,
-              public cart: CartService, public repo: AbstractDataRepository) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController,
+              public cart: CartService, public clientRepo: AbstractClientRepository) {
     super();
   }
 
@@ -58,10 +56,10 @@ export class ShippingAddressComponent extends ComponentBase {
     System.BlockControl.blockButtonControl(event.target);
     this.cart.order.loIdClientAddress = item.id;
     item.isPrimary = true;
-    await this.repo.saveClientAddress(item);
+    await this.clientRepo.saveClientAddress(item);
     System.BlockControl.unblockButtonControl(event.target);
 
-    this.navCtrl.push('ShippingOptionsPage', {data: item});
+    this.navCtrl.push('ShippingOptionsPage', {data: item}).catch(console.error);
   }
 
   editAddress(item: ClientAddress) {
@@ -87,7 +85,7 @@ export class ShippingAddressComponent extends ComponentBase {
         {
           text: 'OK',
           handler: () => {
-            this.repo.deleteClientAddress(item).then(i => {
+            this.clientRepo.deleteClientAddress(item).then(() => {
                 this.addresses.splice(this.addresses.indexOf(item), 1);
               }
             );
@@ -103,6 +101,6 @@ export class ShippingAddressComponent extends ComponentBase {
         }
       ]
     });
-    alert.present();
+    alert.present().catch(console.error);
   }
 }

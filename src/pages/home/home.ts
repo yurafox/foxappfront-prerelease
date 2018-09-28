@@ -4,7 +4,8 @@ import {ComponentBase} from '../../components/component-extension/component-base
 import {SearchService} from '../../app/service/search-service';
 import {ScreenOrientation} from '@ionic-native/screen-orientation';
 import {Subscription} from 'rxjs/Subscription';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AbstractActionRepository} from "../../app/service/repository/abstract/abstract-action-repository";
+import {AbstractPageRepository} from "../../app/service/repository/abstract/abstract-page-repository";
 
 export enum PageMode {
   HomeMode = 1,
@@ -35,15 +36,14 @@ export class HomePage extends ComponentBase {
   productsOfDay = [];
   productsSalesHits = [];
   content: boolean;
-  scrollHeight: number;
   scrOrientationSub: Subscription;
-  searchNativeInput: HTMLInputElement;
   pageSections = [];
   loadingDone: boolean;
 
-  constructor(public app: App, public nav: NavController, public _repo:AbstractDataRepository,
-              public srchService: SearchService, public changeDet: ChangeDetectorRef,
-              public screenOrientation: ScreenOrientation, public navParams: NavParams) {
+  constructor(public app: App, public nav: NavController, public _actionRepo: AbstractActionRepository,
+              public _pageRepo: AbstractPageRepository, public srchService: SearchService,
+              public changeDet: ChangeDetectorRef, public screenOrientation: ScreenOrientation,
+              public navParams: NavParams) {
     super();
     this.initLocalization();
   }
@@ -73,7 +73,7 @@ export class HomePage extends ComponentBase {
 
       await this.prepareContent();
 
-      let ar = await this._repo.getProductsOfDay();
+      let ar = await this._actionRepo.getProductsOfDay();
       this.productsOfDay = [];
       if (ar && ar.length > 0) {
         for (let i of ar) {
@@ -81,7 +81,7 @@ export class HomePage extends ComponentBase {
         }
       }
 
-      let shAr = await this._repo.getProductsSalesHits();
+      let shAr = await this._actionRepo.getProductsSalesHits();
       this.productsSalesHits = [];
       if (shAr && shAr.length > 0) {
         for (let i of shAr) {
@@ -95,12 +95,6 @@ export class HomePage extends ComponentBase {
         && this.productsOfDay.length > 0 && this.productsSalesHits.length > 0)
         this.loadingDone = true;  // Hiding section loader
     }
-  }
-  
-
-  public updateScrollHeight() {
-    const hdrH = (this.header) ?  this.header.nativeElement.scrollHeight : 0;
-    this.scrollHeight = window.screen.height - hdrH;
   }
 
   public set pageMode(val: PageMode) {
@@ -136,7 +130,7 @@ export class HomePage extends ComponentBase {
 
   async prepareContent() {
     const homePageOptIndex:number = 1;
-    let pageOptions = await this._repo.getPageOptionsById(homePageOptIndex);
+    let pageOptions = await this._pageRepo.getPageOptionsById(homePageOptIndex);
     this.pageSections = (():any[] => {
       let arrTemp=[];
       for (const prop in pageOptions) {

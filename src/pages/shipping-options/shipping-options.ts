@@ -2,8 +2,11 @@ import { Component } from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams, AlertController} from 'ionic-angular';
 import {CartService, LoShipmentDeliveryOption} from '../../app/service/cart-service';
 import {ComponentBase} from '../../components/component-extension/component-base';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
 import {LoDeliveryType} from '../../app/model/lo-delivery-type';
+import {AbstractLoRepository} from "../../app/service/repository/abstract/abstract-lo-repository";
+import {AbstractClientRepository} from "../../app/service/repository/abstract/abstract-client-repository";
+import {AbstractCartRepository} from "../../app/service/repository/abstract/abstract-cart-repository";
+import {AbstractStorePlaceRepository} from "../../app/service/repository/abstract/abstract-store-place-repository";
 
 @IonicPage()
 @Component({
@@ -17,15 +20,16 @@ export class ShippingOptionsPage extends ComponentBase {
   loOfficesLoaded = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
-              public repo: AbstractDataRepository, public loadingCtrl: LoadingController,
-              public alertCtrl: AlertController) {
+              public loRepo: AbstractLoRepository, public clientRepo: AbstractClientRepository,
+              public loadingCtrl: LoadingController, public cartRepo: AbstractCartRepository,
+              public storePlaceRepo: AbstractStorePlaceRepository, public alertCtrl: AlertController) {
     super();
     this.initLocalization();
     this.cart.loShipmentDeliveryOptions = [];
   }
 
   async ngOnInit() {
-    this.cart.loShipments = await this.repo.generateShipments();
+    this.cart.loShipments = await this.cartRepo.generateShipments();
     await this.getDeliveryOptions();
   }
 
@@ -37,15 +41,15 @@ export class ShippingOptionsPage extends ComponentBase {
     });
 
     try {
-      loading.present();
+      loading.present().catch(console.error);
 
       let i = 0;
 
-      const addr = this.cart.order.loIdClientAddress ? await this.repo.getClientAddressById(this.cart.order.loIdClientAddress) : null;
+      const addr = this.cart.order.loIdClientAddress ? await this.clientRepo.getClientAddressById(this.cart.order.loIdClientAddress) : null;
       const cityId = addr ? addr.idCity : null;
 
       for (let ship of this.cart.loShipments) {
-        let loDeliveryTypes = await this.repo.getLoEntityDeliveryTypesAttr(ship, this.cart.order.loIdClientAddress);
+        let loDeliveryTypes = await this.loRepo.getLoEntityDeliveryTypesAttr(ship, this.cart.order.loIdClientAddress);
 
         if (loDeliveryTypes && loDeliveryTypes.length > 0) {
           for (let loEnt of loDeliveryTypes) {
@@ -54,18 +58,18 @@ export class ShippingOptionsPage extends ComponentBase {
             item.shipment = ship;
             item.loEntityId = ship.idStorePlace ? null : loEnt.loEntityId;
             item.itemIdx = i;
-            item.deliveryCost = ship.idStorePlace ? 0 : await this.repo.getDeliveryCostByShipment(ship, loEnt.loEntityId, this.cart.order.loIdClientAddress, loEnt.deliveryTypeId);
+            item.deliveryCost = ship.idStorePlace ? 0 : await this.loRepo.getDeliveryCostByShipment(ship, loEnt.loEntityId, this.cart.order.loIdClientAddress, loEnt.deliveryTypeId);
             item.deliveryDate = loEnt.deliveryDate;
-            item.loName = ship.idStorePlace ? null : (await this.repo.getLoEntitiyById(item.loEntityId)).name;
-            item.pickupLocationName = ship.idStorePlace ? (await this.repo.getStorePlaceById(ship.idStorePlace)).name : null;
+            item.loName = ship.idStorePlace ? null : (await this.loRepo.getLoEntitiyById(item.loEntityId)).name;
+            item.pickupLocationName = ship.idStorePlace ? (await this.storePlaceRepo.getStorePlaceById(ship.idStorePlace)).name : null;
             item.isChecked = ship.idStorePlace ? true : (loDeliveryTypes.length === 1);
-            let delivName = ship.idStorePlace ? null : (await this.repo.getLoDeliveryTypeById(loEnt.deliveryTypeId)).name;
+            let delivName = ship.idStorePlace ? null : (await this.loRepo.getLoDeliveryTypeById(loEnt.deliveryTypeId)).name;
             item.deliveryType = new LoDeliveryType(loEnt.deliveryTypeId, delivName);
 
             let needAddToOptionsList = true;
 
             if (item.deliveryType.id === 1) {
-              let loOffices = await this.repo.getLoOfficesByLoEntityAndCity(loEnt.loEntityId, cityId);
+              let loOffices = await this.loRepo.getLoOfficesByLoEntityAndCity(loEnt.loEntityId, cityId);
               if (loOffices && loOffices.length > 0) {
                 item.loEntityOfficesList = loOffices.sort((a, b) => {
                     if (a.name < b.name) return -1;
@@ -100,7 +104,7 @@ export class ShippingOptionsPage extends ComponentBase {
         i++;
       }
     } finally {
-      loading.dismiss();
+      loading.dismiss().catch(console.error);
     }
   }
 
@@ -126,7 +130,7 @@ export class ShippingOptionsPage extends ComponentBase {
     }
 
     if ((res) && (res.deliveryType.id === 1))
-      return (typeof res.loEntityOfficeId !== 'undefined')
+      return (typeof res.loEntityOfficeId !== 'undefined');
     else
       return (res !== null);
  }
@@ -145,13 +149,12 @@ export class ShippingOptionsPage extends ComponentBase {
             ship.loDeliveryCost = i.deliveryCost;
             ship.idLoDeliveryType = i.deliveryType.id;
             ship.idLoEntityOffice = i.loEntityOfficeId;
-            ship = await this.repo.saveShipment(ship);
+            ship = await this.cartRepo.saveShipment(ship);
           }
-        };
+        }
         this.evServ.events['cartUpdateEvent'].emit();
-        //console.log(this.cart.loShipments);
         await this.navCtrl.push('SelectPmtMethodPage');
-        this.navCtrl.remove((this.navCtrl.getActive().index) - 1, 1)
+        this.navCtrl.remove((this.navCtrl.getActive().index) - 1, 1).catch(console.error)
       }
     }
   }

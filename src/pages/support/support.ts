@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
-import {NgForm} from '@angular/forms';
 import {IonicPage, ViewController} from "ionic-angular";
-import {NavController, ToastController} from 'ionic-angular';
+import {ToastController} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
-import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
 import {ClientMessage} from "../../app/model/client-message";
+import {AbstractClientMessageRepository} from "../../app/service/repository/abstract/abstract-client-message-repository";
 
 @IonicPage({name: 'SupportPage', segment: 'support'})
 @Component({
@@ -18,7 +17,7 @@ export class SupportPage extends ComponentBase {
   minMsgLength = 10;
 
   constructor(public toastCtrl: ToastController,
-              public repo: AbstractDataRepository,
+              public clientMessageRepo: AbstractClientMessageRepository,
               public viewCtrl: ViewController) {
     super();
   }
@@ -39,7 +38,7 @@ export class SupportPage extends ComponentBase {
       m.messageDate = new Date(Date.now());
       m.messageText = this.supportMessage;
       if (m && m !== null && m.messageText) {
-        await this.repo.postClientMessage(m);
+        await this.clientMessageRepo.postClientMessage(m);
         this.supportMessage = '';
         this.submitted = false;
         let message = this.locale['ToastMessage'];
@@ -48,7 +47,7 @@ export class SupportPage extends ComponentBase {
           duration: 3000
         });
         toast.present().then(() => {
-          this.viewCtrl.dismiss()
+          this.viewCtrl.dismiss().catch(console.error)
         });
       }
     }

@@ -7,8 +7,11 @@ import {StorePlace} from '../../app/model/store-place';
 import {EventService} from '../../app/service/event-service';
 import {NoveltyDetails} from '../../app/model/novelty-det';
 import {Novelty} from '../../app/model/novelty';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AbstractNoveltyRepository} from '../../app/service/repository/abstract/abstract-novelty-repository';
 import {CartService} from '../../app/service/cart-service';
+import {AbstractQuotationProductRepository} from "../../app/service/repository/abstract/abstract-quotation-product-repository";
+import {AbstractStorePlaceRepository} from "../../app/service/repository/abstract/abstract-store-place-repository";
+import {AbstractProductRepository} from "../../app/service/repository/abstract/abstract-product-repository";
 
 @IonicPage()
 @Component({
@@ -27,8 +30,11 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
   selectedStorePlace: StorePlace;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public cart: CartService,
-              public _repo:AbstractDataRepository, public toastCtrl: ToastController, public evServ: EventService) {
-    super(navCtrl, navParams, _repo);
+              public _noveltyRepo: AbstractNoveltyRepository, public toastCtrl: ToastController,
+              public evServ: EventService, public _productRepo: AbstractProductRepository,
+              public quotProductRepo: AbstractQuotationProductRepository,
+              public storePlaceRepo: AbstractStorePlaceRepository) {
+    super(navCtrl, navParams, quotProductRepo, storePlaceRepo);
     if (this.navParams.data.id) this.noveltyId = this.navParams.data.id;
     if (this.navParams.data.productId) this.productId = this.navParams.data.productId;
     if (this.navParams.data.novelty) this.novelty = this.navParams.data.novelty;
@@ -38,22 +44,22 @@ export class NoveltyPage extends ItemBase implements OnInit,OnDestroy {
   }
 
   async ngOnInit() {
-    super.ngOnInit();
+    super.ngOnInit().catch(console.error);
     if(!this.novelty) {
-      this.novelty = await this._repo.getNovelty(this.noveltyId);
+      this.novelty = await this._noveltyRepo.getNovelty(this.noveltyId);
     }
     if(!this.product) {
       if (this.novelty && this.novelty.idProduct) {
-        this.product = await this._repo.getProductById(this.novelty.idProduct);
+        this.product = await this._productRepo.getProductById(this.novelty.idProduct);
       } else {
-        this.product = await this._repo.getProductById(this.productId);
+        this.product = await this._productRepo.getProductById(this.productId);
       }
     }
     if (this.novelty && this.novelty.novelty_content) {
       this.content = this.novelty.novelty_content;
     }
     if (this.novelty && this.novelty.id) {
-      this.noveltyDetails = await this.repo.getNoveltyDetailsByNoveltyId(this.novelty.id);
+      this.noveltyDetails = await this._noveltyRepo.getNoveltyDetailsByNoveltyId(this.novelty.id);
     }
   }
 

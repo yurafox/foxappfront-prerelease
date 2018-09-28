@@ -76,7 +76,7 @@ export class DropdownViewComponent{
   }
 
   close() {
-    this.viewCtrl.dismiss();
+    this.viewCtrl.dismiss().catch(console.error);
   }
 
   public get valueName(): string {

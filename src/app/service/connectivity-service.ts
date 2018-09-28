@@ -1,4 +1,4 @@
-import {ErrorHandler, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
 import {AlertController, NavController, Platform} from "ionic-angular";
 import {Device} from '@ionic-native/device';
@@ -44,8 +44,7 @@ export class ConnectivityService {
   }
 
   public checkActivePage(activePage:any):boolean {
-    let verifyActPage = activePage && activePage.name !== 'NoConnectionPage';
-    return verifyActPage;
+    return activePage && activePage.name !== 'NoConnectionPage';
   }
 
   public makeBrowserBehavior(error?: Error):void {

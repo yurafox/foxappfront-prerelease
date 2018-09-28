@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {News} from "../../app/model/news";
-import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
+import {AbstractNewsRepository} from "../../app/service/repository/abstract/abstract-news-repository";
 
 @IonicPage()
 @Component({
@@ -13,12 +13,12 @@ export class NewsDetailPage implements OnInit{
   description: string;
   allResolved: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public repo: AbstractDataRepository) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public newsRepo: AbstractNewsRepository) {
     this.news = this.navParams.data.news;
   }
 
   async ngOnInit() {
-    await this.repo.getNewsDescription(this.news.id).then( description => {
+    await this.newsRepo.getNewsDescription(this.news.id).then( description => {
         this.description = description;
       }
     );

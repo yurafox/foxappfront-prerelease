@@ -1,4 +1,3 @@
-import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
 import {LazyLoad, RefInjector} from '../core/app-core';
 import {ShipmentItems} from './shipment-items';
 import {Supplier} from './supplier';
@@ -6,6 +5,9 @@ import {LoEntity} from './lo-entity';
 import {StorePlace} from './store-place';
 import {LoEntityOffice} from './lo-entity-office';
 import {LoDeliveryType} from './lo-delivery-type';
+import {AbstractSupplierRepository} from "../service/repository/abstract/abstract-supplier-repository";
+import {AbstractLoRepository} from "../service/repository/abstract/abstract-lo-repository";
+import {AbstractStorePlaceRepository} from "../service/repository/abstract/abstract-store-place-repository";
 
 @LazyLoad([
   {options: { constructor: Supplier}, action: 'getSupplierById', params: ['idSupplier']},
@@ -18,7 +20,9 @@ import {LoDeliveryType} from './lo-delivery-type';
 
 export class Shipment {
 
-  public _repo: AbstractDataRepository;
+  public _supplierRepo: AbstractSupplierRepository;
+  public _loRepo: AbstractLoRepository;
+  public _storePlaceRepo: AbstractStorePlaceRepository;
 
   get dto(): any {
     return  {id: this.id, idOrder: this.idOrder, idSupplier: this.idSupplier, idLoEntity: this.idLoEntity,
@@ -48,5 +52,9 @@ export class Shipment {
     public idLoEntityOffice?: number,
     public idLoDeliveryType?: number,
     public shipmentItems?: ShipmentItems[]
-  ){this._repo = RefInjector.pull(AbstractDataRepository);}
+  ){
+    this._supplierRepo = RefInjector.pull(AbstractSupplierRepository);
+    this._loRepo = RefInjector.pull(AbstractLoRepository);
+    this._storePlaceRepo = RefInjector.pull(AbstractStorePlaceRepository);
+  }
 }

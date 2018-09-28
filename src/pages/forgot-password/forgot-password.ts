@@ -15,6 +15,6 @@ export class ForgotPasswordPage  extends ComponentBase {
 
   // submit email
   send() {
-    this.nav.setRoot('LoginPage');
+    this.nav.setRoot('LoginPage').catch(console.error);
   }
 }

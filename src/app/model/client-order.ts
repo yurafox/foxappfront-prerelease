@@ -1,10 +1,13 @@
 import {ClientOrderProducts} from './client-order-products';
 import {LazyLoad, RefInjector} from '../core/app-core';
 import {ClientAddress} from './client-address';
-import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
 import {EnumPaymentMethod} from './enum-payment-method';
 import {PersonInfo} from './person';
 import {LoEntity} from './lo-entity';
+import {AbstractClientRepository} from "../service/repository/abstract/abstract-client-repository";
+import {AbstractCartRepository} from "../service/repository/abstract/abstract-cart-repository";
+import {AbstractFinRepository} from "../service/repository/abstract/abstract-fin-repository";
+import {AbstractLoRepository} from "../service/repository/abstract/abstract-lo-repository";
 
 @LazyLoad([
   { options: {constructor: ClientAddress}, action: 'getClientAddressById', params: ['loIdClientAddress']},
@@ -17,7 +20,10 @@ import {LoEntity} from './lo-entity';
 
 export class ClientOrder {
 
-  public _repo: AbstractDataRepository;
+  public _clientRepo: AbstractClientRepository;
+  public _cartRepo: AbstractCartRepository;
+  public _finRepo: AbstractFinRepository;
+  public _loRepo: AbstractLoRepository;
 
   get dto(): any {
     return  {id: this.id, orderDate: this.orderDate, idCur: this.idCur, idClient: this.idClient, total: this.total,
@@ -55,5 +61,10 @@ export class ClientOrder {
     public creditMonthlyPmt?: number,
     public idApp?: number,
     public scn?: number
-  ){this._repo = RefInjector.pull(AbstractDataRepository);}
+  ){
+    this._clientRepo = RefInjector.pull(AbstractClientRepository);
+    this._cartRepo = RefInjector.pull(AbstractCartRepository);
+    this._finRepo = RefInjector.pull(AbstractFinRepository);
+    this._loRepo = RefInjector.pull(AbstractLoRepository);
+  }
 }

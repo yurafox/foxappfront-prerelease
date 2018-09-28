@@ -47,7 +47,7 @@ export class ProductComparePage extends ComponentBase implements OnInit {
   }
 
   toHomePage() {
-    this.navCtrl.setRoot('HomePage').catch(err => console.error(err));
+    this.navCtrl.setRoot('HomePage').catch(console.error);
   }
 
 }

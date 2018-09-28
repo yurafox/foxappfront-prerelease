@@ -1,4 +1,4 @@
-import {Component, Renderer, Renderer2} from '@angular/core';
+import {Component, Renderer} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {AlertController, NavController, NavParams, PopoverController, ViewController} from 'ionic-angular';
 import {ProductStorePlace} from '../../app/model/product-store-place';
@@ -33,20 +33,19 @@ export class CustomPopupComponent extends ComponentBase {
   }
 
   close() {
-    this.viewCtrl.dismiss();
+    this.viewCtrl.dismiss().catch(console.error);
   }
 
   showCitySelector(event) {
     let popover = this.popoverCtrl.create(CityPopoverPage, {caller: this});
     popover.present({
       ev: event
-    });
+    }).catch(console.error);
   }
 
   async selectPickupStorePlace(sPlace: ProductStorePlace) {
     let sp = await (<any>sPlace).storeplace;
     let title = this.locale['AlertTitle'];
-    const param1 = sp.name;
     let message = eval('`'+ this.locale['AlertMessage'] +'`');
     let cancel = this.locale['Cancel'];
     let alert = this.alertCtrl.create({
@@ -58,23 +57,20 @@ export class CustomPopupComponent extends ComponentBase {
           handler: () => {
             const ipage = <any>this.itemPage;
             ipage.selectedStorePlace = sp;
-            ipage.onAddToCart();
-            this.viewCtrl.dismiss();
+            ipage.onAddToCart().catch(console.error);
+            this.viewCtrl.dismiss().catch(console.error);
           }
         },
         {
           text: cancel,
           handler: () => {
-            this.viewCtrl.dismiss();
+            this.viewCtrl.dismiss().catch(console.error);
           }
         }
       ]
     });
 
-    alert.present();
-
-
-
+    alert.present().catch(console.error);
   }
 
 }

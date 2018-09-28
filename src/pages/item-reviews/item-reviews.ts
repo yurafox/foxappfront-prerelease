@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-an
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {ProductReview} from '../../app/model/product-review';
 import {Product} from '../../app/model/product';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AbstractReviewRepository} from '../../app/service/repository/abstract/abstract-review-repository';
 import {StoreReview} from "../../app/model/store-review";
 import {Store} from '../../app/model/store';
 
@@ -26,7 +26,7 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
   slicingIndx = 20;
   infiniteScroll: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public repo: AbstractDataRepository,
+  constructor(public navCtrl: NavController, public navParams: NavParams, public reviewRepo: AbstractReviewRepository,
               public loadingCtrl: LoadingController) {
     super();
     this.initLocalization();
@@ -74,9 +74,9 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
 
     if (!this.reviews && (this.navParams.data.product || this.navParams.data.store)) {
       if (this.navParams.data.product) {
-        this.reviewsObj = await this.repo.getProductReviewsByProductId(this.product.id);
+        this.reviewsObj = await this.reviewRepo.getProductReviewsByProductId(this.product.id);
       } else if (this.navParams.data.store) {
-        this.reviewsObj = await this.repo.getStoreReviewsByStoreId(this.store.id);
+        this.reviewsObj = await this.reviewRepo.getStoreReviewsByStoreId(this.store.id);
       }
     }
     if (this.reviewsObj) {
@@ -93,13 +93,13 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
 
   async ionViewDidEnter() {
     if (this.product) {
-      let hasClientReviews = await this.repo.getHasClientProductReview(this.product.id);
+      let hasClientReviews = await this.reviewRepo.getHasClientProductReview(this.product.id);
       if (hasClientReviews && hasClientReviews != null && hasClientReviews.hasReview) {
         this.cantShow = hasClientReviews.hasReview;
       }
     }
     if (this.store) {
-      let hasClientReviews = await this.repo.getHasClientStoreReview(this.store.id);
+      let hasClientReviews = await this.reviewRepo.getHasClientStoreReview(this.store.id);
       if (hasClientReviews && hasClientReviews != null && hasClientReviews.hasReview) {
         this.cantShow = hasClientReviews.hasReview;
       }
@@ -161,6 +161,6 @@ export class ItemReviewsPage extends ComponentBase implements OnInit {
   }
 
   scroll():boolean {
-    return (this.reviews.length !== this.reviewsToShow.length) ? true : false;
+    return (this.reviews.length !== this.reviewsToShow.length);
   }
 }

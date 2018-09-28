@@ -1,9 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component, Input} from '@angular/core';
+import { IonicPage, NavParams } from 'ionic-angular';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {ProductReview} from '../../app/model/product-review';
 import {StoreReview} from "../../app/model/store-review";
-import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
 
 @IonicPage()
 @Component({
@@ -11,22 +10,18 @@ import {AbstractDataRepository} from "../../app/service/repository/abstract/abst
   templateUrl: 'item-review.html',
 })
 
-export class ItemReviewPage extends ComponentBase implements OnInit {
+export class ItemReviewPage extends ComponentBase {
 
   @Input() rev: ProductReview | StoreReview;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public repo: AbstractDataRepository) {
+  constructor(public navParams: NavParams) {
     super();
     if (this.navParams.data) {
       this.rev = navParams.data;
     } else if (this.navParams.data.reviews) {
       this.rev = navParams.data.reviews;
     }
-  }
-
-  ngOnInit() {
-
   }
 
 }

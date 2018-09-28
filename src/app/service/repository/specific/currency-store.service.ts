@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {CurrencyRate} from '../../../model/currency-rate';
-import { AbstractDataRepository } from '../abstract/abstract-data-repository';
+import { AbstractCurrencyRepository } from '../abstract/abstract-currency-repository';
 
 const ticksInDay:number = 86400000;
 
@@ -10,7 +10,7 @@ export class CurrencyStore {
   currentTicks:number;
   lock:boolean;
 
-  constructor(public _repo:AbstractDataRepository) {
+  constructor(public _currencyRepo: AbstractCurrencyRepository) {
     this.lock=false;
   }
 
@@ -38,7 +38,7 @@ export class CurrencyStore {
   }
 
   public async initCurrencyRate():Promise<void> {
-    this.curStore = await this._repo.getCurrencyRate();
+    this.curStore = await this._currencyRepo.getCurrencyRate();
     this.currentTicks = new Date().getTime();
   }
 

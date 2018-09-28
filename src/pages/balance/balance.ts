@@ -4,7 +4,7 @@ import {UserService} from '../../app/service/bll/user-service';
 import {ComponentBase} from '../../components/component-extension/component-base';
 import {CartService} from '../../app/service/cart-service';
 import {ClientBonus} from '../../app/model/client-bonus';
-import {AbstractDataRepository} from '../../app/service/repository/abstract/abstract-data-repository';
+import {AbstractClientRepository} from '../../app/service/repository/abstract/abstract-client-repository';
 
 @IonicPage()
 @Component({
@@ -20,12 +20,12 @@ export class BalancePage extends ComponentBase {
   clientBonusArr = new Array<ClientBonus>();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public uService: UserService, public cart: CartService,
-              public repo: AbstractDataRepository) {
+              public userService: UserService, public cart: CartService,
+              public clientRepo: AbstractClientRepository) {
     super();
 
     this.checkoutMode = this.navParams.data.checkoutMode;
-    this.initData();
+    this.initData().catch(console.error);
   }
 
   _getTime(date?: Date): number {
@@ -46,7 +46,7 @@ export class BalancePage extends ComponentBase {
 
   async initData() {
     await this.cart.initBonusData();
-    this.clientBonusArr = (await this.repo.getClientBonusesExpireInfo()).filter(x => {return x.type === 'regular';});
+    this.clientBonusArr = (await this.clientRepo.getClientBonusesExpireInfo()).filter(x => {return x.type === 'regular';});
     this.clientBonusArr.sort((x,y) => {
       return +new Date(x.dueDate) - +new Date(y.dueDate);
     });
@@ -54,7 +54,7 @@ export class BalancePage extends ComponentBase {
   }
 
   onContinueClick() {
-    this.navCtrl.push('CheckoutPage');
+    this.navCtrl.push('CheckoutPage').catch(console.error);
   }
 
   validatePage() {

@@ -1,13 +1,13 @@
 import {Country} from './country';
-import {LazyLoad, RefInjector, System} from '../core/app-core';
-import {AbstractDataRepository} from '../service/repository/abstract/abstract-data-repository';
+import {LazyLoad, RefInjector} from '../core/app-core';
+import {AbstractGeoRepository} from "../service/repository/abstract/abstract-geo-repository";
 
 @LazyLoad([
   { options: {constructor: Country}, action: 'getCountryById', params: ['idCountry']}
 ])
 export class ClientAddress {
 
-  public _repo: AbstractDataRepository;
+  public _geoRepo: AbstractGeoRepository;
 
   get dto(): any {
     return  {id: this.id, idClient: this.idClient, idCity: this.idCity, zip: this.zip, street: this.street,
@@ -40,7 +40,7 @@ export class ClientAddress {
     public bldApp?: string,
     public recName?: string,
     public phone?: string
-  ) {this._repo = RefInjector.pull(AbstractDataRepository);}
+  ) {this._geoRepo = RefInjector.pull(AbstractGeoRepository);}
 
 
 }

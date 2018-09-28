@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {IonicPage} from 'ionic-angular';
 import {ComponentBase} from "../../components/component-extension/component-base";
 import * as JsBarcode from "jsbarcode";
-import {AbstractDataRepository} from "../../app/service/repository/abstract/abstract-data-repository";
+import {AbstractClientRepository} from "../../app/service/repository/abstract/abstract-client-repository";
 
 @IonicPage({name: 'BarcodePage'})
 @Component({
@@ -15,13 +15,13 @@ export class BarcodePage extends ComponentBase implements OnInit {
 
   clientBarcode: string;
 
-  constructor(public repo: AbstractDataRepository) {
+  constructor(public clientRepo: AbstractClientRepository) {
     super();
     this.initLocalization();
   }
 
   async ngOnInit() {
-    let client = await this.repo.getClientByPhone(this.userService.profile.phone);
+    let client = await this.clientRepo.getClientByPhone(this.userService.profile.phone);
     if (client) {
       if (!client.barcode) {
         return false;
