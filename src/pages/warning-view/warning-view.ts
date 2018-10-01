@@ -22,14 +22,20 @@ async initData() {
   this.warnArr = [];
   for (let i of this.cart.orderProducts) {
     if ((!(i.warningRead) && !(i.warningMessage == null))) {
-      let prod = await (await (<any>i).quotationproduct_p).product_p;
-      this.warnArr.push({product: prod, warningMessage: i.warningMessage});
-      i.warningRead = true;
-      this.cart.cartRepo.saveCartProduct(i).catch(console.error);
+      let quotProduct = await (<any>i).quotationproduct_p;
+      if (quotProduct && quotProduct != null) {
+        let prod = await quotProduct.product_p;
+        this.warnArr.push({product: prod, warningMessage: i.warningMessage});
+        i.warningRead = true;
+        this.cart.cartRepo.saveCartProduct(i).catch(console.error);
+      }
     }
   }
   this.dataLoaded = true;
 
+  if (this.warnArr.length == 0) {
+    this.navCtrl.pop().catch(console.error);
+  }
 }
 
 }

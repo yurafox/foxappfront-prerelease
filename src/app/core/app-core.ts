@@ -419,15 +419,17 @@ export function LazyLoad(options: Array<{
             if (!this[navProp] && !this[loadingProp]) {
               this[loadingProp] = true;
               (async () => {
-                console.log(this);
-                const repo = this[`${/[A-Za-z]Repo/}`];
-
-                let paramsConvertedList = lazyParamToValue(this, value.params);
-                if (paramsConvertedList.length !== 0) {
-                  this[navProp] = await repo[fnName].apply(repo, paramsConvertedList);
+                // running through all repositories defined in model
+                for (let key of Object.keys(this)) {
+                  if (key.includes('Repo') || key === '_repo') {
+                    const repo = this[key];
+                    let paramsConvertedList = lazyParamToValue(this, value.params);
+                    if (paramsConvertedList.length !== 0 && repo[fnName]) {
+                      this[navProp] = await repo[fnName].apply(repo, paramsConvertedList);
+                    }
+                    this[loadingProp] = false;
+                  }
                 }
-
-                this[loadingProp] = false;
               })();
             }
             return this[navProp];
@@ -436,15 +438,20 @@ export function LazyLoad(options: Array<{
         Object.defineProperty(this, baseName + '_p', {
           configurable: false,
           get: () => {
-            const repo = this[`${/[A-Za-z]Repo/}`];
-            let paramsConvertedList = lazyParamToValue(this, value.params);
-            if (paramsConvertedList.length !== 0) {
-              this[navProp + '_p'] = repo[fnName].apply(repo, paramsConvertedList);
-
-            } else {
-              this[navProp + '_p'] = Promise.resolve(null);
+            // running through all repositories defined in model
+            for (let key of Object.keys(this)) {
+              if (key.includes('Repo') || key === '_repo') {
+                const repo = this[key];
+                let paramsConvertedList = lazyParamToValue(this, value.params);
+                if (paramsConvertedList.length !== 0) {
+                  if (repo[fnName]) {
+                    this[navProp + '_p'] = repo[fnName].apply(repo, paramsConvertedList);
+                  }
+                } else {
+                  this[navProp + '_p'] = Promise.resolve(null);
+                }
+              }
             }
-
             return this[navProp + '_p'];
           }
         });

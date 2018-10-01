@@ -14,9 +14,6 @@ const verifyAccountUrl = `${AppConstants.BASE_URL}/account/verify`;
 const changePasswdAccountUrl = `${AppConstants.BASE_URL}/account/changePass`;
 const getBonusesInfoUrl = `${AppConstants.BASE_URL}/client/getBonusesInfo`;
 const callMeUrl = `${AppConstants.BASE_URL}/client/callMe`;
-// mock url
-// const loginUrl = '/api/mtoken';
-// const accountUrl = '/api/musers';
 
 @Injectable()
 export class AccountRepository extends AbstractAccountRepository {

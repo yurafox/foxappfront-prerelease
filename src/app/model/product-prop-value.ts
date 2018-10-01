@@ -9,7 +9,7 @@ import {AbstractMeasureUnitRepository} from "../service/repository/abstract/abst
 ])
 export class ProductPropValue {
 
-  public _measureUnit: AbstractMeasureUnitRepository;
+  public _measureUnitRepo: AbstractMeasureUnitRepository;
 
   constructor (
     public id: number,
@@ -26,7 +26,7 @@ export class ProductPropValue {
     public out_bmask?: number
   )
   {
-    this._measureUnit = RefInjector.pull(AbstractMeasureUnitRepository);
+    this._measureUnitRepo = RefInjector.pull(AbstractMeasureUnitRepository);
   }
 
   /*

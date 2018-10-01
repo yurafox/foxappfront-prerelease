@@ -250,6 +250,7 @@ import {AbstractProductRepository} from "./service/repository/abstract/abstract-
     //{provide: Compiler, useExisting: RuntimeCompiler },
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
+    AppDataRepository,
     {provide: AbstractAccountRepository, useClass: AccountRepository},
     {provide: AbstractLocalizationRepository, useClass: LocalizationRepository},
     {provide: AbstractNewsSubscribeService, useClass: MockNewsSubscribeService},
