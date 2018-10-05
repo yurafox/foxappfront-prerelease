@@ -4135,6 +4135,9 @@ export class AppDataRepository extends AbstractDataRepository {
   }
 
   public async getAllowTakeOnCreditByStatus(status: number): Promise<boolean> {
+    if(status == null)
+      return false;
+
     try {
       const response = await this.http
         .get(`${allowTakeOnCreditByStatusUrl}/${status}`, RequestFactory.makeAuthHeader())
