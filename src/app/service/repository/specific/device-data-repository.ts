@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import { ConnectivityService } from '../../connectivity-service';
@@ -13,13 +14,13 @@ const deviceDataUrl = `${AppConstants.BASE_URL}/DeviceData`;
 
 @Injectable()
 export class DeviceDataRepository extends AbstractDeviceDataRepository {
-  constructor(public http: Http, public connServ: ConnectivityService) {
+  constructor(public http: HttpClient, public connServ: ConnectivityService) {
     super();
   }
 
   public async postDeviceData(deviceData: DeviceData) {
     try {
-      const response = await this.http.post(deviceDataUrl, deviceData, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http.post(deviceDataUrl, deviceData, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
       if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
         throw new Error("server side status error");

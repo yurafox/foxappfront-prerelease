@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import { ConnectivityService } from '../../connectivity-service';
@@ -14,14 +15,16 @@ const newsByCategoryUrl = `${AppConstants.BASE_URL}/news/getNewsByCategory`;
 
 @Injectable()
 export class NewsRepository extends AbstractNewsRepository {
-  constructor(public http: Http, public connServ: ConnectivityService) {
+  constructor(public http: HttpClient, public connServ: ConnectivityService) {
     super();
   }
 
   public async getNewsByCategory(categoryId: number): Promise<News[]> {
     try {
-      const response = await this.http.get(newsByCategoryUrl + `/${categoryId}`,RequestFactory.makeAuthHeader()).toPromise();
-      let data: any = response.json();
+      const response: any = await this.http.get(newsByCategoryUrl + `/${categoryId}`,RequestFactory.makeAuthHeader())
+        .pipe(retry(3)).toPromise();
+      let data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
@@ -41,11 +44,14 @@ export class NewsRepository extends AbstractNewsRepository {
   public async getNewsDescription(id: number): Promise<string> {
     try {
       const _id = id.toString();
-      const response = await this.http.get(newsDescriptionsUrl + `/${_id}`,RequestFactory.makeAuthHeader()).toPromise();
-      let data: any = response.json();
+      const response: any = await this.http.get(newsDescriptionsUrl + `/${_id}`, RequestFactory.makeAuthHeader())
+        .pipe(retry(3)).toPromise();
+      let data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       if (data != null) {
         return data.description;
       }

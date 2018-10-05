@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import { IDictionary } from '../../../core/app-core';
@@ -24,19 +25,21 @@ const updateStoreReviewUrl = `${AppConstants.BASE_URL}/UpdateReview/Store`;
 
 @Injectable()
 export class ReviewRepository extends AbstractReviewRepository {
-  constructor(public http: Http, public connServ: ConnectivityService) {
+  constructor(public http: HttpClient, public connServ: ConnectivityService) {
     super();
   }
 
   public async getProductReviewsByProductId(productId: number): Promise<{ reviews: ProductReview[], idClient: number }> {
     try {
-      const response = await this.http
-        .get(`${productReviewsUrl}/${productId}`, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http
+        .get(`${productReviewsUrl}/${productId}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const qProductsRevs = new Array<ProductReview>();
       let answers: IDictionary<ReviewAnswer[]> = {};
       if (data.productReviews != null) {
@@ -107,12 +110,14 @@ export class ReviewRepository extends AbstractReviewRepository {
 
   public async getHasClientProductReview(productId: number): Promise<{hasReview: boolean, idClient:number}> {
     try {
-      const response = await this.http.get(`${clientProductReviewsUrl}/${productId}`, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http.get(`${clientProductReviewsUrl}/${productId}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       return data;
     } catch (err) {
       await this.handleError(err);
@@ -121,12 +126,14 @@ export class ReviewRepository extends AbstractReviewRepository {
 
   public async getHasClientStoreReview(storeId: number): Promise<{hasReview: boolean, idClient:number}> {
     try {
-      const response = await this.http.get(`${clientStoreReviewsByStoreIdUrl}/${storeId}`, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http.get(`${clientStoreReviewsByStoreIdUrl}/${storeId}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       return data;
     } catch (err) {
       await this.handleError(err);
@@ -135,13 +142,15 @@ export class ReviewRepository extends AbstractReviewRepository {
 
   public async getStoreReviewsByStoreId(storeId: number): Promise<{ reviews: StoreReview[], idClient: number }> {
     try {
-      const response = await this.http
-        .get(`${storeReviewsByStoreIdUrl}/${storeId}`, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http
+        .get(`${storeReviewsByStoreIdUrl}/${storeId}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const storesRevs = new Array<StoreReview>();
       let answers: IDictionary<ReviewAnswer[]> = {};
       if (data.storeReviews != null) {
@@ -211,13 +220,15 @@ export class ReviewRepository extends AbstractReviewRepository {
 
   public async getStoreReviews(): Promise<{ reviews: StoreReview[], idClient: number }> {
     try {
-      const response = await this.http
-        .get(`${storeReviewsUrl}`, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http
+        .get(`${storeReviewsUrl}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       let storesRevs = new Array<StoreReview>();
       if (data.storeReviews != null) {
         let answers: IDictionary<ReviewAnswer[]> = {};
@@ -287,11 +298,13 @@ export class ReviewRepository extends AbstractReviewRepository {
 
   public async postProductReview(productReview: ProductReview): Promise<ProductReview> {
     try {
-      const response = await this.http.post(postProductReviewUrl, productReview, RequestFactory.makeAuthHeader())
-        .toPromise();
+      const response: any = await this.http.post(postProductReviewUrl, productReview, RequestFactory.makeAuthHeader())
+        .pipe(retry(3)).toPromise();
+
       if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
         throw new Error("server side status error");
       }
+
     } catch (err) {
       return await this.handleError(err);
     }
@@ -299,11 +312,13 @@ export class ReviewRepository extends AbstractReviewRepository {
 
   public async postStoreReview(storeReview: StoreReview): Promise<StoreReview> {
     try {
-      const response = await this.http.post(postStoreReviewUrl, storeReview, RequestFactory.makeAuthHeader())
-        .toPromise();
+      const response: any = await this.http.post(postStoreReviewUrl, storeReview, RequestFactory.makeAuthHeader())
+        .pipe(retry(3)).toPromise();
+
       if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
         throw new Error("server side status error");
       }
+
     } catch (err) {
       return await this.handleError(err);
     }
@@ -311,11 +326,13 @@ export class ReviewRepository extends AbstractReviewRepository {
 
   public async updateProductReview(productReview: ProductReview): Promise<ProductReview> {
     try {
-      const response = await this.http.post(updateProductReviewUrl, productReview, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http.post(updateProductReviewUrl, productReview, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
+
       if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
         throw new Error("server side status error");
       }
-      let data = response.json();
+
+      let data = response.body;
       return data;
     } catch (err) {
       return await this.handleError(err);
@@ -324,11 +341,13 @@ export class ReviewRepository extends AbstractReviewRepository {
 
   public async updateStoreReview(storeReview: StoreReview): Promise<StoreReview> {
     try {
-      const response = await this.http.post(updateStoreReviewUrl, storeReview, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http.post(updateStoreReviewUrl, storeReview, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
+
       if (response.status !== 201 && response.status !== 200 && response.status !== 204) {
         throw new Error("server side status error");
       }
-      let data = response.json();
+
+      let data = response.body;
       return data;
     } catch (err) {
       return await this.handleError(err);

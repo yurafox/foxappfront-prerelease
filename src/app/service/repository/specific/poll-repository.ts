@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import { ConnectivityService } from '../../connectivity-service';
@@ -19,20 +20,22 @@ const pollQuestionAnswerUrl = `${AppConstants.BASE_URL}/poll/pollAnswers`;
 
 @Injectable()
 export class PollRepository extends AbstractPollRepository {
-  constructor(public http: Http, public connServ: ConnectivityService) {
+  constructor(public http: HttpClient, public connServ: ConnectivityService) {
     super();
   }
 
   public async getPollById(id: number): Promise<Poll> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(`${pollsUrl}/${id}`, RequestFactory.makeAuthHeader())
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       let poll: Poll = null;
       if (data != null) {
         poll = new Poll(
@@ -51,11 +54,12 @@ export class PollRepository extends AbstractPollRepository {
 
   public async getPollQuestionsByPollId(pollId: number): Promise<PollQuestion[]> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(`${pollQuestionUrl}/${pollId}`, RequestFactory.makeAuthHeader())
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
@@ -78,14 +82,16 @@ export class PollRepository extends AbstractPollRepository {
 
   public async getPollAnswersByQuestionId(idPollQuestion: number): Promise<PollQuestionAnswer[]> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(`${pollQuestionAnswerUrl}/${idPollQuestion}`, RequestFactory.makeAuthHeader())
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const pollQuestionAnswers: PollQuestionAnswer[] = new Array<PollQuestion>();
       if (data != null) {
         if (data) data.forEach(val =>
@@ -102,14 +108,15 @@ export class PollRepository extends AbstractPollRepository {
 
   public async postClientPollAnswers(pollAnswers: any): Promise<ClientPollAnswer> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .post(pollsUrl/*clientPollAnswersUrl*/, pollAnswers, RequestFactory.makeAuthHeader())
-        .toPromise();
-      const data = response.json();
+        .pipe(retry(3)).toPromise();
+      const data = response.body;
 
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const clientPollLast: ClientPollAnswer = new ClientPollAnswer
       (data.id, data.idClient, data.idPoll, data.idPollQuestions, data.clientAnswer);
 
@@ -121,14 +128,16 @@ export class PollRepository extends AbstractPollRepository {
 
   public async getClientPollAnswersForUserByPollId(pollId: number): Promise<ClientPollAnswer[]> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(`${clientPollAnswersUrl}/${pollId}`, RequestFactory.makeAuthHeader())
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const clientPollAnswer: ClientPollAnswer[] = new Array<ClientPollAnswer>();
       if (data != null) {
         if (data) data.forEach(val =>

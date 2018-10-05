@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
@@ -18,22 +19,23 @@ const storePlacesUrl = `${AppConstants.BASE_URL}/storeplace/storeplace`;
 
 @Injectable()
 export class StorePlaceRepository extends AbstractStorePlaceRepository {
-  constructor(public http: Http, public connServ: ConnectivityService,
+  constructor(public http: HttpClient, public connServ: ConnectivityService,
               public dataRepo: AppDataRepository) {
     super();
   }
 
   public async getProductStorePlacesByQuotId(quotId: number): Promise<ProductStorePlace[]> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(productStorePlacesUrl, RequestFactory.makeSearch([
           { key: "idQuotationProduct", value: quotId.toString() }
-        ])).toPromise();
+        ])).pipe(retry(3)).toPromise();
+      const data = response.body;
 
-      const data = response.json();
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const qProductsStorePlaces = new Array<ProductStorePlace>();
       if (data != null) {
         for (let val of data) {
@@ -60,10 +62,11 @@ export class StorePlaceRepository extends AbstractStorePlaceRepository {
 
   public async loadStorePlaceCache() {
     try {
-      const response = await this.http
-        .get(storePlacesUrl, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http
+        .get(storePlacesUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      let data: any = response.json();
+      let data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
@@ -115,12 +118,13 @@ export class StorePlaceRepository extends AbstractStorePlaceRepository {
         if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.storeplace.expire;
 
         // http request
-        const response = await this.http
+        const response: any = await this.http
           .get(storePlacesUrl + `/${_id}`, RequestFactory.makeAuthHeader())
-          .toPromise();
+          .pipe(retry(3)).toPromise();
 
         // response data binding
-        let data: any = response.json();
+        let data: any = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }

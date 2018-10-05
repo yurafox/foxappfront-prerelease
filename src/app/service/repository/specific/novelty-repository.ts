@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
@@ -19,7 +20,7 @@ const noveltyDetailsDynamicUrl = `${AppConstants.BASE_URL}/novelty/GetNoveltyDet
 
 @Injectable()
 export class NoveltyRepository extends AbstractNoveltyRepository {
-  constructor(public http: Http, public connServ: ConnectivityService,
+  constructor(public http: HttpClient, public connServ: ConnectivityService,
               public dataRepo: AppDataRepository) {
     super();
   }
@@ -30,14 +31,16 @@ export class NoveltyRepository extends AbstractNoveltyRepository {
     let stringId = id.toString();
     try {
       if (this.dataRepo.cache.Novelty.HasNotValidCachedValue(stringId)) {
-        const response = await this.http
+        const response: any = await this.http
           .get(`${noveltyByIdDynamicUrl}/${id}`, RequestFactory.makeAuthHeader())
-          .toPromise();
+          .pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+
         let novelty: Novelty;
         if (data != null) {
           novelty = new Novelty(
@@ -64,12 +67,14 @@ export class NoveltyRepository extends AbstractNoveltyRepository {
 
   public async getNovelties(): Promise<Novelty[]> {
     try {
-      const response = await this.http.get(noveltiesDynamicUrl, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http.get(noveltiesDynamicUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       let novelties: Array<Novelty> = new Array<Novelty>();
       if (data != null) {
         if (data) data.forEach(val => {
@@ -93,9 +98,10 @@ export class NoveltyRepository extends AbstractNoveltyRepository {
 
   public async getNoveltyDetailsByNoveltyId(id: number): Promise<NoveltyDetails[]> {
     try {
-      const response = await this.http.get(`${noveltyDetailsDynamicUrl}/${id}`, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http.get(`${noveltyDetailsDynamicUrl}/${id}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
@@ -20,7 +21,7 @@ const appParamsUrl = `${AppConstants.BASE_URL}/appparams`;
 export class AppDataRepository extends AbstractDataRepository {
   public cache: CacheProvider = new CacheProvider();
 
-  constructor(public http: Http, public connServ: ConnectivityService) {
+  constructor(public http: HttpClient, public connServ: ConnectivityService) {
     super();
     this.CacheProviderOptInit().catch(console.error);
   }
@@ -53,12 +54,15 @@ export class AppDataRepository extends AbstractDataRepository {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
       if (this.cache.Lang.HasNotValidCachedRange() || cacheForce === true) {
-        const response = await this.http.get(LangUrl, RequestFactory.makeAuthHeader()).toPromise();
+        const response: any = await this.http.get(LangUrl, RequestFactory.makeAuthHeader())
+          .pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+        
         const languages = new Array<Lang>();
         if (data != null) {
           if (data) data.forEach(val => {
@@ -96,10 +100,10 @@ export class AppDataRepository extends AbstractDataRepository {
   public async getAppParams(): Promise<IKeyedCollection<Providers.CacheDataContainer<AppParam>>> {
     try {
       if (this.cache.AppParams.HasNotValidCachedRange()) {
-        const response = await this.http
-          .get(appParamsUrl).toPromise();
+        const response: any = await this.http
+          .get(appParamsUrl, {observe: "response"}).pipe(retry(3)).toPromise();
+        let data: any = response.body;
 
-        let data: any = response.json();
         if (response.status !== 200) {
           throw new Error("server side status error");
         }

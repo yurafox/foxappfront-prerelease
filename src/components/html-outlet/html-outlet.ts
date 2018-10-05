@@ -9,7 +9,7 @@ import {
   Compiler,
   ModuleWithComponentFactories,
   ComponentRef,
-  ReflectiveInjector
+  Injector
 } from "@angular/core";
 
 import {IonicModule} from 'ionic-angular';
@@ -60,7 +60,7 @@ export class HtmlOutlet {
     });
 
     createComponentFactory(this.compiler, compMetadata, this.context).then(factory => {
-      const injector = ReflectiveInjector.fromResolvedProviders(
+      const injector = Injector.create(
         [],
         this.vcRef.parentInjector
       );

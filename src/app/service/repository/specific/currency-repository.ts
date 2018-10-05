@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
@@ -18,7 +19,7 @@ const getCurrencyRate = `${AppConstants.BASE_URL}/currency/rate`;
 
 @Injectable()
 export class CurrencyRepository extends AbstractCurrencyRepository {
-  constructor(public http: Http, public connServ: ConnectivityService,
+  constructor(public http: HttpClient, public connServ: ConnectivityService,
               public dataRepo: AppDataRepository) {
     super();
   }
@@ -27,12 +28,14 @@ export class CurrencyRepository extends AbstractCurrencyRepository {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
       if (this.dataRepo.cache.Currency.HasNotValidCachedRange() || cacheForce === true) {
-        const response = await this.http.get(currenciesUrl, RequestFactory.makeAuthHeader()).toPromise();
+        const response: any = await this.http.get(currenciesUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+
         const currencies = new Array<Currency>();
         if (data != null) {
           if (data) data.forEach(val => {
@@ -71,11 +74,12 @@ export class CurrencyRepository extends AbstractCurrencyRepository {
         if (CacheProvider.Settings) currentEntity.expire = Date.now() + CacheProvider.Settings.currency.expire;
 
         // request
-        const response = await this.http
+        const response: any = await this.http
           .get(currenciesUrl + `/${id}`, RequestFactory.makeAuthHeader())
-          .toPromise();
+          .pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
@@ -98,12 +102,14 @@ export class CurrencyRepository extends AbstractCurrencyRepository {
 
   public async getCurrencyRate(): Promise<CurrencyRate[]> {
     try {
-      const response = await this.http
-        .get(getCurrencyRate, RequestFactory.makeAuthHeader()).toPromise();
-      const data = response.json();
+      const response: any = await this.http
+        .get(getCurrencyRate, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const currencyRates: CurrencyRate[] = new Array<CurrencyRate>();
       if (data !== null) {
         if (data) data.forEach(val =>

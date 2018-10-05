@@ -300,11 +300,13 @@ export class UserService {
   }
 
   addViewProduct(product: Product) {
-    let index = this.viewProducts.findIndex((x) => {return x.id === product.id});
-    if(index != -1) 
-      this.viewProducts.splice(index, 1);
+    if (this.viewProducts) {
+      let index = this.viewProducts.findIndex((x) => {return x.id === product.id});
+      if(index != -1) 
+        this.viewProducts.splice(index, 1);
 
-    this.viewProducts.unshift(product);
+      this.viewProducts.unshift(product);
+    }
   }
 
 }

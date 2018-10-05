@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import { ConnectivityService } from '../../connectivity-service';
@@ -15,7 +16,7 @@ const popularAccessoriesUrl = `${AppConstants.BASE_URL}/ProductCompare/GetPopula
 
 @Injectable()
 export class ProductCompareRepository extends AbstractProductCompareRepository {
-  constructor(public http: Http, public connServ: ConnectivityService,
+  constructor(public http: HttpClient, public connServ: ConnectivityService,
               public productRepo: AbstractProductRepository) {
     super();
   }
@@ -36,14 +37,16 @@ export class ProductCompareRepository extends AbstractProductCompareRepository {
 
   public async getSimilarProducts(productId: number): Promise<Product[]> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(`${similarProductsUrl}/${productId}`, RequestFactory.makeAuthHeader())
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const products = new Array<Product>();
 
       if (data != null)
@@ -59,14 +62,16 @@ export class ProductCompareRepository extends AbstractProductCompareRepository {
 
   public async getPopularAccessories(productId: number): Promise<Product[]> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(`${popularAccessoriesUrl}/${productId}`, RequestFactory.makeAuthHeader())
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const products = new Array<Product>();
 
       if (data != null)

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
@@ -32,7 +33,7 @@ const allowTakeOnCreditByStatusUrl = `${AppConstants.BASE_URL}/lo/AllowTakeOnCre
 
 @Injectable()
 export class LoRepository extends AbstractLoRepository {
-  constructor(public http: Http, public connServ: ConnectivityService,
+  constructor(public http: HttpClient, public connServ: ConnectivityService,
               public dataRepo: AppDataRepository) {
     super();
   }
@@ -53,11 +54,12 @@ export class LoRepository extends AbstractLoRepository {
         if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.loentity.expire;
 
 
-        const response = await this.http
+        const response: any = await this.http
           .get(loEntitiesUrl + `/${entityId}`, RequestFactory.makeAuthHeader())
-          .toPromise();
+          .pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
@@ -81,14 +83,16 @@ export class LoRepository extends AbstractLoRepository {
 
   public async getLoTrackLogByOrderSpecId(id: number): Promise<LoTrackLog[]> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(specLOTrackingLogUrl, RequestFactory.makeSearch([{ key: "idOrderSpecProd", value: id.toString() }]))
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const arr = new Array<LoTrackLog>();
       if (data != null) {
         if (data) data.forEach(val =>
@@ -117,15 +121,17 @@ export class LoRepository extends AbstractLoRepository {
 
   public async getLoEntitiesForSupplier(supplierId: number): Promise<LoSupplEntity[]> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(loSupplEntitiesUrl, RequestFactory.makeSearch([
           { key: "idSupplier", value: supplierId.toString() }
-        ])).toPromise();
+        ])).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const cloSupplEntArr = new Array<LoSupplEntity>();
       if (data != null) {
         if (data) data.forEach(val =>
@@ -147,15 +153,16 @@ export class LoRepository extends AbstractLoRepository {
 
   public async getDeliveryDateByShipment(shpmt: Shipment, loEntityId: number, loIdClientAddress: number, delivTypeId: number): Promise<Date> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .post(getDeliveryDateByShipmentUrl, { shpmt: shpmt.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress, delivTypeId: delivTypeId },
           RequestFactory.makeAuthHeader())
-        .toPromise();
-      const val = response.json();
+        .pipe(retry(3)).toPromise();
+      const val = response.body;
 
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       return val.deliveryDate;
     } catch (err) {
       return await this.handleError(err);
@@ -164,15 +171,16 @@ export class LoRepository extends AbstractLoRepository {
 
   public async getDeliveryCostByShipment(shpmt: Shipment, loEntityId: number, loIdClientAddress: number, delivTypeId: number): Promise<number> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .post(getDeliveryCostByShipmentUrl, { shpmt: shpmt.dto, loEntity: loEntityId, loIdClientAddress: loIdClientAddress, delivTypeId: delivTypeId },
           RequestFactory.makeAuthHeader())
-        .toPromise();
-      const val = response.json();
+        .pipe(retry(3)).toPromise();
+      const val = response.body;
 
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       return val.assessedCost;
     } catch (err) {
       return await this.handleError(err);
@@ -194,13 +202,15 @@ export class LoRepository extends AbstractLoRepository {
         else
         if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.lodeliverytype.expire;
 
-        const response = await this.http
-          .get(getLoDeliveryTypeUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
+        const response: any = await this.http
+          .get(getLoDeliveryTypeUrl + `/${_id}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+
         if (data) {
           delType.name = data.name;
           return delType;
@@ -232,13 +242,15 @@ export class LoRepository extends AbstractLoRepository {
         if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.loentityoffice.expire;
 
 
-        const response = await this.http
-          .get(getLoEntityOfficeUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
+        const response: any = await this.http
+          .get(getLoEntityOfficeUrl + `/${_id}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+
         if (data) {
           entOff.name = data.name;
           entOff.idLoEntity = data.idLoEntity;
@@ -249,7 +261,7 @@ export class LoRepository extends AbstractLoRepository {
       }
       else {
         return this.dataRepo.cache.LoEntityOffice.Item(_id).item;
-      };
+      }
     }
     catch (err) {
       return await this.handleError(err);
@@ -259,12 +271,14 @@ export class LoRepository extends AbstractLoRepository {
   public async getLoEntityDeliveryTypes(idLoEntity: number): Promise<LoDeliveryType[]> {
     try {
       const _id = idLoEntity.toString();
-      const response = await this.http
-        .get(getLoDeliveryTypesByLoEntityUrl + `/${_id}`).toPromise();
-      const data = response.json();
+      const response: any = await this.http
+        .get(getLoDeliveryTypesByLoEntityUrl + `/${_id}`, {observe: "response"}).pipe(retry(3)).toPromise();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const arr: LoDeliveryType[] = new Array<LoDeliveryType>();
       if (data !== null) {
         if (data) data.forEach(val =>
@@ -282,12 +296,15 @@ export class LoRepository extends AbstractLoRepository {
 
   public async getLoOfficesByLoEntityAndCity(idLoEntity: number, idCity: number): Promise<LoEntityOffice[]> {
     try {
-      const response = await this.http
-        .post(getLoOfficesByLoEntityAndCityUrl, { idLoEntity: idLoEntity, idCity: idCity }).toPromise();
-      const data = response.json();
+      const response: any = await this.http
+        .post(getLoOfficesByLoEntityAndCityUrl, { idLoEntity: idLoEntity, idCity: idCity }, {observe: "response"})
+        .pipe(retry(3)).toPromise();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const arr: LoEntityOffice[] = new Array<LoEntityOffice>();
       if (data !== null) {
         if (data) data.forEach(val =>
@@ -306,11 +323,11 @@ export class LoRepository extends AbstractLoRepository {
 
   public async getLoEntityDeliveryTypesAttr(shpmt: Shipment, loIdClientAddress: number): Promise<LoDeliveryTypeAttr[]> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .post(getLoDeliveryTypesAttrByLoEntityUrl, { shpmt: shpmt.dto, loIdClientAddress: loIdClientAddress },
           RequestFactory.makeAuthHeader())
-        .toPromise();
-      const data = response.json();
+        .pipe(retry(3)).toPromise();
+      const data = response.body;
 
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -332,11 +349,11 @@ export class LoRepository extends AbstractLoRepository {
 
   public async getAllowTakeOnCreditByStatus(status: number): Promise<boolean> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(`${allowTakeOnCreditByStatusUrl}/${status}`, RequestFactory.makeAuthHeader())
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
       if (response.status !== 200) {
         throw new Error("server side status error");
       }

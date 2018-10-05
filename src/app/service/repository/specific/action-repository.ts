@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
@@ -23,7 +24,7 @@ const getActionsByProductUrl = `${AppConstants.BASE_URL}/action/GetProductAction
 export class ActionRepository extends AbstractActionRepository {
   public cache: CacheProvider = new CacheProvider();
 
-  constructor(public http: Http, public connServ: ConnectivityService,
+  constructor(public http: HttpClient, public connServ: ConnectivityService,
               public productRepo: AbstractProductRepository) {
     super();
   }
@@ -34,14 +35,16 @@ export class ActionRepository extends AbstractActionRepository {
     let stringId = id.toString();
     try {
       if (this.cache.Action.HasNotValidCachedValue(stringId)) {
-        const response = await this.http
+        const response: any = await this.http
           .get(`${actionDynamicUrl}/${id}`, RequestFactory.makeAuthHeader())
-          .toPromise();
+          .pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+        
         let action: Action = null;
         if (data != null) {
           action = new Action(
@@ -53,12 +56,12 @@ export class ActionRepository extends AbstractActionRepository {
             data.priority,
             data.sketch_content,
             data.action_content,
-            (data.isActive) ? true : false,
+            !!(data.isActive),
             data.id_type,
             data.badge_url,
             data.id_supplier,
             data.title,
-            (data.is_landing) ? true : false
+            (data.is_landing)
           );
         }
         if (CacheProvider.Settings && CacheProvider.Settings.action)
@@ -75,11 +78,13 @@ export class ActionRepository extends AbstractActionRepository {
 
   public async getActions(): Promise<Action[]> {
     try {
-      const response = await this.http.get(actionDynamicUrl, RequestFactory.makeAuthHeader()).toPromise();
-      const data = response.json();
+      const response: any = await this.http.get(actionDynamicUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+      
       const actions = new Array<Action>();
       if (data != null) {
         if (data) data.forEach(val => {
@@ -92,12 +97,12 @@ export class ActionRepository extends AbstractActionRepository {
             val.priority,
             val.sketch_content,
             val.action_content,
-            (data.isActive) ? true : false,
+            !!(data.isActive),
             data.id_type,
             data.badge_url,
             data.id_supplier,
             data.title,
-            (data.is_landing) ? true : false
+            (data.is_landing)
           );
 
           actions.push(actionItem);
@@ -112,12 +117,15 @@ export class ActionRepository extends AbstractActionRepository {
   public async getActionsByProduct(idProduct: number): Promise<ActionByProduct[]> {
     try {
       const _id = idProduct.toString();
-      const response = await this.http
-        .get(getActionsByProductUrl + `/${_id}`).toPromise();
-      const data = response.json();
+      const response: any = await this.http
+        .get(getActionsByProductUrl + `/${_id}`, {observe: "response"})
+        .pipe(retry(3)).toPromise();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+      
       const arr: ActionByProduct[] = new Array<ActionByProduct>();
       if (data !== null) {
         if (data) data.forEach(val =>
@@ -138,12 +146,12 @@ export class ActionRepository extends AbstractActionRepository {
     try {
       const res = [];
       // http request
-      const response = await this.http
+      const response: any = await this.http
         .get(productsOfDayUrl, RequestFactory.makeAuthHeader())
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
       // response data binding
-      let data: any = response.json();
+      let data: any = response.body;
 
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -162,16 +170,17 @@ export class ActionRepository extends AbstractActionRepository {
     try {
       const res = [];
       // http request
-      const response = await this.http
+      const response: any = await this.http
         .get(productsSalesHitsUrl, RequestFactory.makeAuthHeader())
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
       // response data binding
-      let data: any = response.json();
+      let data: any = response.body;
 
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       if (data) data.forEach(val =>
         res.push(this.productRepo.getProductFromResponse(val))
       );

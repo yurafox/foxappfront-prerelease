@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
@@ -16,7 +17,7 @@ const quotationsUrl = `${AppConstants.BASE_URL}/quotation`;
 
 @Injectable()
 export class QuotationRepository extends AbstractQuotationRepository {
-  constructor(public http: Http, public connServ: ConnectivityService,
+  constructor(public http: HttpClient, public connServ: ConnectivityService,
               public dataRepo: AppDataRepository) {
     super();
   }
@@ -36,11 +37,12 @@ export class QuotationRepository extends AbstractQuotationRepository {
         else
         if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.quotation.expire;
 
-        const response = await this.http
+        const response: any = await this.http
           .get(quotationsUrl + `/${quotationId}`, RequestFactory.makeAuthHeader())
-          .toPromise();
+          .pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }

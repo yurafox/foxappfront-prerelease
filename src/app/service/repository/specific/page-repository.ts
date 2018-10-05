@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
@@ -16,21 +17,23 @@ const pageOptionsUrl = `${AppConstants.BASE_URL}/page/GetPageOptions`;
 
 @Injectable()
 export class PageRepository extends AbstractPageRepository {
-  constructor(public http: Http, public connServ: ConnectivityService,
+  constructor(public http: HttpClient, public connServ: ConnectivityService,
               public dataRepo: AppDataRepository) {
     super();
   }
 
   public async getPageContent(id: number): Promise<string> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(`${pagesDynamicUrl}/${id}`, RequestFactory.makeAuthHeader())
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       return data["content"];
     } catch (err) {
       return await this.handleError(err);
@@ -43,11 +46,14 @@ export class PageRepository extends AbstractPageRepository {
     let stringId = id.toString();
     try {
       if (this.dataRepo.cache.PageOptions.HasNotValidCachedValue(stringId)) {
-        const response = await this.http.get(`${pageOptionsUrl}/${id}`, RequestFactory.makeAuthHeader()).toPromise();
-        let data: any = response.json();
+        const response: any = await this.http.get(`${pageOptionsUrl}/${id}`, RequestFactory.makeAuthHeader())
+          .pipe(retry(3)).toPromise();
+        let data: any = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+
         if (CacheProvider.Settings && CacheProvider.Settings.pageoptions) {
           this.dataRepo.cache.PageOptions.Add(stringId, {
             item: data,

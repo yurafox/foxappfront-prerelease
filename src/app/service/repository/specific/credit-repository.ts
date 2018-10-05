@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import { ConnectivityService } from '../../connectivity-service';
@@ -15,16 +16,17 @@ const productSupplCreditGradesUrl = `${AppConstants.BASE_URL}/credit/GetProductC
 
 @Injectable()
 export class CreditRepository extends AbstractCreditRepository {
-  constructor(public http: Http, public connServ: ConnectivityService,
+  constructor(public http: HttpClient, public connServ: ConnectivityService,
               public dataRepo: AbstractDataRepository) {
     super();
   }
 
   public async getCreditProducts(): Promise<CreditProduct[]> {
     try {
-      const response = await this.http.get(creditProductsUrl, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any =  await this.http.get(creditProductsUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
@@ -61,19 +63,21 @@ export class CreditRepository extends AbstractCreditRepository {
 
   public async getProductCreditSize(idProduct: number, isSupplier: number): Promise<any> {
     try {
-      const response = await this.http
+      const response: any =  await this.http
         .get(productSupplCreditGradesUrl, RequestFactory.makeSearch([
           { key: "idProduct", value: idProduct.toString() },
           { key: "idSupplier", value: isSupplier.toString() }
         ]))
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       if (data[0])
-        return { partsPmtCnt: data[0].partsPmtCnt, creditSize: data[0].creditSize }
+        return { partsPmtCnt: data[0].partsPmtCnt, creditSize: data[0].creditSize };
       else
         return null;
 

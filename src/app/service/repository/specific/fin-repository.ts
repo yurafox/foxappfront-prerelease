@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
@@ -16,16 +17,17 @@ const getPaymentMethodsUrl = `${AppConstants.BASE_URL}/fin/pmtmethod`;
 
 @Injectable()
 export class FinRepository extends AbstractFinRepository {
-  constructor(public http: Http, public connServ: ConnectivityService,
+  constructor(public http: HttpClient, public connServ: ConnectivityService,
               public dataRepo: AppDataRepository) {
     super();
   }
 
   public async loadPmtMethodsCache() {
     try {
-      const response = await this.http.get(getPaymentMethodsUrl, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http.get(getPaymentMethodsUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      let data: any = response.json();
+      let data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
@@ -60,11 +62,13 @@ export class FinRepository extends AbstractFinRepository {
     try {
       if (this.dataRepo.cache.EnumPaymentMethod.HasNotValidCachedRange()) {
 
-        const response = await this.http.get(getPaymentMethodsUrl, RequestFactory.makeAuthHeader()).toPromise();
-        const data = response.json();
+        const response: any = await this.http.get(getPaymentMethodsUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+
         const cItems = new Array<EnumPaymentMethod>();
         if (data != null) {
           if (data) data.forEach(val => {
@@ -99,13 +103,15 @@ export class FinRepository extends AbstractFinRepository {
         else
         if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.enumpaymentmethod.expire;
 
-        const response = await this.http
-          .get(getPaymentMethodsUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
+        const response: any = await this.http
+          .get(getPaymentMethodsUrl + `/${_id}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+
         if (data != null) {
           pmtMethod.id = data.id;
           pmtMethod.name = data.name;

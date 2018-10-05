@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import { SCN } from '../../../core/app-core';
@@ -27,18 +28,20 @@ const generateShipmentsUrl = `${AppConstants.CART_SERVICE_ENDPOINT}/cart/Generat
 
 @Injectable()
 export class CartRepository extends AbstractCartRepository {
-  constructor(public http: Http, public connServ: ConnectivityService) {
+  constructor(public http: HttpClient, public connServ: ConnectivityService) {
     super();
   }
 
   public async getCartProducts(): Promise<ClientOrderProducts[]> {
     try {
-      const response = await this.http.get(cartProductsUrl, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http.get(cartProductsUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const cClientOrderProducts = new Array<ClientOrderProducts>();
       if (data != null) {
         if (data) data.forEach(val => {
@@ -80,18 +83,20 @@ export class CartRepository extends AbstractCartRepository {
   }
 
   public async insertCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
-    let response = null;
+    let response: any = null;
     try {
       // Attention!: if http method returns status others than 2xx, exception raised
       // handle responses of such methods in catch block via analyzing err.status & headers & body content
       response = await this.http
         .post(cartProductsUrl, prod.dto, RequestFactory.makeAuthHeader())
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
-      const val = response.json();
+      const val = response.body;
+
       if (response.status !== 201) {
         throw new Error("server side status error");
       }
+
       let p = new ClientOrderProducts();
       p.id = val.id;
       p.idOrder = val.idOrder;
@@ -128,10 +133,10 @@ export class CartRepository extends AbstractCartRepository {
 
   public async saveCartProduct(prod: ClientOrderProducts): Promise<ClientOrderProducts> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .put(cartProductsUrl, prod.dto, RequestFactory.makeAuthHeader())
-        .toPromise();
-      const val = response.json();
+        .pipe(retry(3)).toPromise();
+      const val = response.body;
 
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -174,9 +179,9 @@ export class CartRepository extends AbstractCartRepository {
 
   public async deleteCartProduct(prod: ClientOrderProducts) {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .delete(cartProductsUrl + `/${prod.id}`, RequestFactory.makeAuthHeader())
-        .toPromise();
+        .pipe(retry(3)).toPromise();
       SCN.value = parseInt(response.headers.get('X-SCN'));
       if (response.status !== 204) {
         throw new Error("server side status error");
@@ -188,9 +193,9 @@ export class CartRepository extends AbstractCartRepository {
 
   public async postOrder(order: ClientOrder): Promise<{ isSuccess: boolean, errorMessage: string }> {
     try {
-      const response = await this.http
-        .put(postOrderUrl, order.dto, RequestFactory.makeAuthHeader()).toPromise();
-      const val = response.json();
+      const response: any = await this.http
+        .put(postOrderUrl, order.dto, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
+      const val = response.body;
 
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -209,13 +214,15 @@ export class CartRepository extends AbstractCartRepository {
   // Если чернового заказа в базе нет - то создавать и возвращать его
   public async getClientDraftOrder(): Promise<ClientOrder> {
     try {
-      const response = await this.http
-        .get(clientDraftOrderUrl, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http
+        .get(clientDraftOrderUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+      
       if (data != null) {
         let cClientOrder = new ClientOrder(
           data.id,
@@ -253,11 +260,12 @@ export class CartRepository extends AbstractCartRepository {
   public async getClientHistOrderById(orderId: number): Promise<ClientOrder> {
     try {
 
-      const response = await this.http
+      const response: any = await this.http
         .get(clientHistOrdersUrl + `/${orderId}`, RequestFactory.makeAuthHeader())
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
@@ -293,10 +301,10 @@ export class CartRepository extends AbstractCartRepository {
 
   public async saveClientDraftOrder(order: ClientOrder): Promise<ClientOrder> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .put(clientDraftOrderUrl, order.dto, RequestFactory.makeAuthHeader())
-        .toPromise();
-      const data = response.json();
+        .pipe(retry(3)).toPromise();
+      const data = response.body;
 
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -343,16 +351,18 @@ export class CartRepository extends AbstractCartRepository {
 
   public async getClientOrderProductsByOrderId(orderId: number): Promise<ClientOrderProducts[]> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(clientOrderSpecProductsUrl, RequestFactory.makeSearch([
           { key: "idOrder", value: orderId.toString() }
-        ])).toPromise();
+        ])).pipe(retry(3)).toPromise();
 
       let orderProducts = [];
-      const val = response.json();
+      const val = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       if (val) val.forEach(i => {
         let p = new ClientOrderProducts();
         p.id = i.id;
@@ -391,16 +401,18 @@ export class CartRepository extends AbstractCartRepository {
 
   public async getClientHistOrderProductsByOrderId(orderId: number): Promise<ClientOrderProductHist[]> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(clientOrderHistSpecProductsUrl, RequestFactory.makeSearch([
           { key: "idOrder", value: orderId.toString() }
-        ])).toPromise();
+        ])).pipe(retry(3)).toPromise();
 
       let orderProducts = [];
-      const val = response.json();
+      const val = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       if (val) val.forEach(i => {
         let p = new ClientOrderProductHist();
         p.id = i.id;
@@ -442,11 +454,12 @@ export class CartRepository extends AbstractCartRepository {
       productName: string, productImageUrl: string, loTrackTicket: string, idQuotation: number
     }[]> {
     try {
-      const response = await this.http.get(clientOrderProductsByDateUrl, RequestFactory.makeSearch([
+      const response: any = await this.http.get(clientOrderProductsByDateUrl, RequestFactory.makeSearch([
         { key: "datesRange", value: datesRange }
-      ])).toPromise();
+      ])).pipe(retry(3)).toPromise();
 
-      const data: any = response.json();
+      const data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
@@ -476,14 +489,14 @@ export class CartRepository extends AbstractCartRepository {
       earnedBonus: number, qty: number
     }[]> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .post(calculateCartUrl, {
             promoCode: promoCode, maxBonusCnt: maxBonusCnt,
             usePromoBonus: usePromoBonus, creditProductId: creditProductId /*,
                                       cartContent: _dtoContent*/}
           , RequestFactory.makeAuthHeader())
-        .toPromise();
-      const val = response.json();
+        .pipe(retry(3)).toPromise();
+      const val = response.body;
 
       if (response.status !== 201 && response.status !== 200) {
         throw new Error("server side status error");
@@ -505,9 +518,10 @@ export class CartRepository extends AbstractCartRepository {
 
   public async generateShipments(): Promise<Shipment[]> {
     try {
-      const response = await this.http.post(generateShipmentsUrl, null, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http.post(generateShipmentsUrl, null, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
@@ -531,10 +545,10 @@ export class CartRepository extends AbstractCartRepository {
 
   public async saveShipment(value: Shipment): Promise<Shipment> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .put(shipmentUrl, value.dto, RequestFactory.makeAuthHeader())
-        .toPromise();
-      const data = response.json();
+        .pipe(retry(3)).toPromise();
+      const data = response.body;
 
       if (response.status !== 200) {
         throw new Error("server side status error");

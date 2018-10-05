@@ -21,6 +21,9 @@ import {AbstractGeoRepository} from "./repository/abstract/abstract-geo-reposito
 import {AbstractCartRepository} from "./repository/abstract/abstract-cart-repository";
 import {AbstractClientRepository} from "./repository/abstract/abstract-client-repository";
 import {AbstractDataRepository} from "./repository/abstract/abstract-data-repository";
+import {CurrencyPipe} from "@angular/common";
+import {AbstractCurrencyRepository} from "./repository/abstract/abstract-currency-repository";
+import {Currency} from "../model";
 
 export class LoShipmentDeliveryOption {
   public shipment?: Shipment;
@@ -70,17 +73,25 @@ export class CartService {
   public availBonus: number;
   public availPromoBonus: number;
 
+  public availBonusLocaled: string;
+
   public cartValidationNeeded = false;
   public person = new PersonInfo();
 
   public localization: IDictionary<string> = {};
 
+  private currencies: Currency[];
+
   constructor(public userService: UserService, public storePlaceRepo: AbstractStorePlaceRepository,
               public geoRepo: AbstractGeoRepository, public cartRepo: AbstractCartRepository,
               public dataRepo: AbstractDataRepository, public clientRepo: AbstractClientRepository,
               public evServ: EventService, public app: App, public locRepo: AbstractLocalizationRepository,
-              public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
+              public alertCtrl: AlertController, public loadingCtrl: LoadingController,
+              public currRepo: AbstractCurrencyRepository) {
 
+    this.currRepo.getCurrencies(false).then(currencies => {
+      this.currencies = currencies;
+    }).catch(console.error);
 
     this.evServ.events['logonEvent'].subscribe(() => {
         this.initCart().then (() => {
@@ -101,6 +112,18 @@ export class CartService {
           this.updateDisplayOrderProducts()
         ).catch(console.error);
 
+      }
+    );
+
+    this.evServ.events['localeChangeEvent'].subscribe(() => {
+      let pipe = new CurrencyPipe(this.locRepo.getLocString());
+      if (this.currencies) {
+        this.currencies.forEach(currency => {
+          if (currency.id == this.userService.currency) {
+            this.availBonusLocaled = pipe.transform(this.availBonus, currency.shortName, "symbol-narrow");
+          }
+        });
+      }
       }
     );
 
@@ -329,6 +352,14 @@ export class CartService {
     if (bonusData) {
       this.availBonus = (bonusData.bonusLimit) ? bonusData.bonusLimit : 0;
       this.availPromoBonus = (bonusData.actionBonusLimit) ? bonusData.actionBonusLimit : 0;
+      let pipe = new CurrencyPipe(this.locRepo.getLocString());
+      if (this.currencies) {
+        this.currencies.forEach(currency => {
+          if (currency.id == this.userService.currency) {
+            this.availBonusLocaled = pipe.transform(this.availBonus, currency.shortName, "symbol-narrow");
+          }
+        });
+      }
     }
   }
 

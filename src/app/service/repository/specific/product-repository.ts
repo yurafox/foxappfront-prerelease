@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http, URLSearchParams } from '@angular/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
@@ -23,18 +24,20 @@ const notifyOnProductArrivalUrl = `${AppConstants.BASE_URL}/product/NotifyOnProd
 
 @Injectable()
 export class ProductRepository extends AbstractProductRepository {
-  constructor(public http: Http, public connServ: ConnectivityService, private dataRepo: AppDataRepository) {
+  constructor(public http: HttpClient, public connServ: ConnectivityService, private dataRepo: AppDataRepository) {
     super();
   }
 
   public async searchProducts(srchString: string): Promise<Product[]> {
     try {
       if (!AppConstants.USE_PRODUCTION) {
-        const response = await this.http.get(productsUrl, RequestFactory.makeAuthHeader()).toPromise();
-        const data = response.json();
+        const response: any = await this.http.get(productsUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+
         const products = new Array<Product>();
 
         if (data != null) {
@@ -79,14 +82,11 @@ export class ProductRepository extends AbstractProductRepository {
         return products;
       }
       else {
-        const response = await this.http
-          .get(productsUrl, {
-            search: this.createSearchParams([
-              { key: "srch", value: srchString }
-            ])
-          })
-          .toPromise();
-        const data = response.json();
+        const response: any = await this.http
+          .get(productsUrl, {params: this.createSearchParams([{ key: "srch", value: srchString }]), observe: "response"})
+          .pipe(retry(3)).toPromise();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
@@ -178,16 +178,17 @@ export class ProductRepository extends AbstractProductRepository {
         if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.product.expire;
 
         // http request
-        const response = await this.http
+        const response: any = await this.http
           .get(productsUrl + `/${id}`, RequestFactory.makeAuthHeader())
-          .toPromise();
+          .pipe(retry(3)).toPromise();
 
         // response data binding
-        let data: any = response.json();
+        let data: any = response.body;
 
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+
         const _prod = this.getProductFromResponse(data);
 
         if (_prod != null) {
@@ -224,11 +225,13 @@ export class ProductRepository extends AbstractProductRepository {
   public async getProductDescription(id: number): Promise<string> {
     try {
       const _id = id.toString();
-      const response = await this.http.get(productDescriptionsUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
-      let data: any = response.json();
+      const response: any = await this.http.get(productDescriptionsUrl + `/${_id}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
+      let data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       if (data != null) {
         return data.description;
       }
@@ -242,12 +245,14 @@ export class ProductRepository extends AbstractProductRepository {
       let res = [];
       let data: any = null;
       const _id = id.toString();
-      const response = await this.http.get(productImagesUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http.get(productImagesUrl + `/${_id}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
       if (response) {
-        data = response.json();
+        data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+
         if (data != null) {
           if (data && data.images) data.images.forEach(x => {
               res.push(x);
@@ -264,14 +269,16 @@ export class ProductRepository extends AbstractProductRepository {
 
   public async getProductsByActionId(actionId: number): Promise<Product[]> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(`${getProductsByActionUrl}/${actionId}`, RequestFactory.makeAuthHeader())
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const products = new Array<Product>();
       if (data != null) {
         if (data) data.forEach(val => {
@@ -309,13 +316,14 @@ export class ProductRepository extends AbstractProductRepository {
 
   public async notifyOnProductArrival(email: string, productId: number) {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .post(notifyOnProductArrivalUrl, { email: email, productId: productId },
-          RequestFactory.makeAuthHeader()).toPromise();
+          RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
       if (response.status !== 201) {
         throw new Error("server side status error");
       }
+
     } catch (err) {
       return await this.handleError(err);
     }
@@ -326,14 +334,16 @@ export class ProductRepository extends AbstractProductRepository {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
       if (this.dataRepo.cache.Products.HasNotValidCachedRange() || cacheForce === true) {
-        const response = await this.http
+        const response: any = await this.http
           .get(productsUrl, RequestFactory.makeSearch([{ key: "url", value: urlQuery }]))
-          .toPromise();
+          .pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+
         const products = new Array<Product>();
         if (data != null) {
           if (data) data.forEach(val => {
@@ -388,10 +398,10 @@ export class ProductRepository extends AbstractProductRepository {
   // </editor-fold>
 
   // <editor-fold desc="url search factory">
-  public createSearchParams(params: Array<{ key: string; value: string }>): URLSearchParams {
-    const searchParams = new URLSearchParams();
+  public createSearchParams(params: Array<{ key: string; value: string }>): HttpParams {
+    let searchParams = new HttpParams();
     if (params) params.forEach(val => {
-      searchParams.set(val.key, val.value);
+      searchParams = searchParams.set(val.key, val.value);
     });
 
     return searchParams;

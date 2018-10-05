@@ -1,4 +1,4 @@
-import {Component, Renderer} from '@angular/core';
+import {Component, Renderer2} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {AlertController, NavController, NavParams, PopoverController, ViewController} from 'ionic-angular';
 import {ProductStorePlace} from '../../app/model/product-store-place';
@@ -14,11 +14,11 @@ export class CustomPopupComponent extends ComponentBase {
   public displayLocations: ProductStorePlace[] = new Array<ProductStorePlace>();
   public originalLocations: ProductStorePlace[] = new Array<ProductStorePlace>();
 
-  constructor(public renderer: Renderer, public viewCtrl: ViewController, public navCtrl: NavController,
+  constructor(public renderer: Renderer2, public viewCtrl: ViewController, public navCtrl: NavController,
               public navParams: NavParams, public popoverCtrl: PopoverController,
               public alertCtrl: AlertController) {
     super();
-    this.renderer.setElementClass(viewCtrl.pageRef().nativeElement, 'custom-popup', true);
+    this.renderer.addClass(viewCtrl.pageRef().nativeElement, 'custom-popup');
     this.itemPage = navParams.get('itemPage');
 
     this.itemPage.productStorePlaces.forEach(i => {

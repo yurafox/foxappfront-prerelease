@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Renderer, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ComponentBase} from '../component-extension/component-base';
 import {NavController} from 'ionic-angular';
 import {SearchService} from '../../app/service/search-service';
@@ -36,7 +36,7 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
   constructor(public searchService: SearchService,
               public navCtrl: NavController,
               public barcodeScanner: BarcodeScanner,
-              public srchService: SearchService, public renderer: Renderer) {
+              public srchService: SearchService) {
     super();
   }
 
@@ -151,7 +151,7 @@ export class SearchBtnComponent extends ComponentBase implements OnInit {
     if (!(event.keyCode === 13))
       this.srchTextInputStream$.next(event.target.value);
     else
-      this.renderer.invokeElementMethod(event.target, 'blur');
+      event.target.blur().catch(console.error);
   }
 
   removeSearchItem(item: number) {

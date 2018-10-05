@@ -5,6 +5,7 @@ import {IonicApp, IonicErrorHandler, IonicModule, IonicPageModule} from 'ionic-a
 import {ReactiveFormsModule} from '@angular/forms';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {StatusBar} from '@ionic-native/status-bar';
+import {HttpClientModule} from '@angular/common/http';
 import {HttpModule} from '@angular/http';
 import {FormsModule} from '@angular/forms';
 import {InAppBrowser} from '@ionic-native/in-app-browser';
@@ -14,6 +15,13 @@ import {Ionic2Rating, Ionic2RatingModule} from 'ionic2-rating';
 import { LazyLoadImagesModule } from 'ngx-lazy-load-images';
 import {BarcodeScanner} from '@ionic-native/barcode-scanner';
 import {getLocString} from './service/repository/specific/localization-repository';
+import {registerLocaleData} from '@angular/common';
+import localeRuUa from '@angular/common/locales/ru-UA';
+import localeRuUaExtra from '@angular/common/locales/extra/ru-UA';
+import localeUkUa from '@angular/common/locales/uk';
+import localeUkUaExtra from '@angular/common/locales/extra/uk';
+import localeRoMd from '@angular/common/locales/ro-MD';
+import localeRoMdExtra from '@angular/common/locales/extra/ro-MD';
 
 import {FoxApp} from './app.component';
 import {HomePage} from '../pages/home/home';
@@ -164,6 +172,7 @@ import {AbstractProductRepository} from "./service/repository/abstract/abstract-
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     HttpModule,
     IonicModule.forRoot(FoxApp),
     IonicPageModule.forChild(HomePage),
@@ -229,8 +238,7 @@ import {AbstractProductRepository} from "./service/repository/abstract/abstract-
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    FoxApp,
-    HomePage
+    FoxApp
   ],
   providers: [
     StatusBar,
@@ -247,7 +255,6 @@ import {AbstractProductRepository} from "./service/repository/abstract/abstract-
     CallNumber,
     BackgroundMode,
     Push,
-    //{provide: Compiler, useExisting: RuntimeCompiler },
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventService,
     AppDataRepository,
@@ -303,6 +310,9 @@ import {AbstractProductRepository} from "./service/repository/abstract/abstract-
 })
 export class AppModule {
   constructor(public injector: Injector) {
+    registerLocaleData(localeRuUa, localeRuUaExtra);
+    registerLocaleData(localeUkUa, localeUkUaExtra);
+    registerLocaleData(localeRoMd, localeRoMdExtra);
     RefInjector.push(this.injector);
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import { ConnectivityService } from '../../connectivity-service';
@@ -13,20 +14,22 @@ const quotationProductsUrl = `${AppConstants.BASE_URL}/quotationproduct`;
 
 @Injectable()
 export class QuotationProductRepository extends AbstractQuotationProductRepository {
-  constructor(public http: Http, public connServ: ConnectivityService) {
+  constructor(public http: HttpClient, public connServ: ConnectivityService) {
     super();
   }
 
   public async getQuotationProductById(qpId: number): Promise<QuotationProduct> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(quotationProductsUrl + `/${qpId}`, RequestFactory.makeAuthHeader())
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       let quotationProduct: QuotationProduct = null;
       if (data != null) {
         quotationProduct = new QuotationProduct(
@@ -80,15 +83,17 @@ export class QuotationProductRepository extends AbstractQuotationProductReposito
 
   public async getQuotationProductsByProductId(productId: number): Promise<QuotationProduct[]> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(quotationProductsUrl, RequestFactory.makeSearch([
           { key: "idProduct", value: productId.toString() }
-        ])).toPromise();
+        ])).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const qProducts = new Array<QuotationProduct>();
       if (data != null) {
         if (data) data.forEach(val =>
@@ -115,15 +120,17 @@ export class QuotationProductRepository extends AbstractQuotationProductReposito
 
   public async getQuotationProductsByQuotationId(quotationId: number): Promise<QuotationProduct[]> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(quotationProductsUrl, RequestFactory.makeSearch([
           { key: "idQuotation", value: quotationId.toString() }
-        ])).toPromise();
+        ])).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const qProducts = new Array<QuotationProduct>();
       if (data != null) {
         if (data) data.forEach(val =>

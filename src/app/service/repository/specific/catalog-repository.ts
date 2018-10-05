@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import { ConnectivityService } from '../../connectivity-service';
@@ -13,18 +14,20 @@ const categoriesUrl = `${AppConstants.BASE_URL}/catalog`;
 
 @Injectable()
 export class CatalogRepository extends AbstractCatalogRepository {
-  constructor(public http: Http, public connServ: ConnectivityService) {
+  constructor(public http: HttpClient, public connServ: ConnectivityService) {
     super();
   }
 
   public async getCategories(): Promise<Category[]> {
     try {
-      const response = await this.http
-        .get(categoriesUrl, RequestFactory.makeAuthHeader()).toPromise();
-      const data = response.json();
+      const response: any = await this.http
+        .get(categoriesUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+      
       const categories: Category[] = new Array<Category>();
       if (data != null) {
         if (data) data.forEach(val =>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
@@ -16,17 +17,18 @@ const suppliersUrl = `${AppConstants.BASE_URL}/supplier`;
 
 @Injectable()
 export class SupplierRepository extends AbstractSupplierRepository {
-  constructor(public http: Http, public connServ: ConnectivityService,
+  constructor(public http: HttpClient, public connServ: ConnectivityService,
               public dataRepo: AppDataRepository) {
     super();
   }
 
   public async loadSuppliersCache() {
     try {
-      const response = await this.http
-        .get(suppliersUrl, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http
+        .get(suppliersUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      let data: any = response.json();
+      let data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
@@ -75,11 +77,12 @@ export class SupplierRepository extends AbstractSupplierRepository {
         else
         if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.supplier.expire;
 
-        const response = await this.http
+        const response: any = await this.http
           .get(suppliersUrl + `/${id}`, RequestFactory.makeAuthHeader())
-          .toPromise();
+          .pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
@@ -106,12 +109,14 @@ export class SupplierRepository extends AbstractSupplierRepository {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
       if (this.dataRepo.cache.Suppliers.HasNotValidCachedRange() || cacheForce === true) {
-        const response = await this.http.get(suppliersUrl, RequestFactory.makeAuthHeader()).toPromise();
+        const response: any = await this.http.get(suppliersUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+
         const suppliers = new Array<Supplier>();
         if (data != null) {
           if (data) data.forEach(val => {

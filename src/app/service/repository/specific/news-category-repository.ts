@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import { ConnectivityService } from '../../connectivity-service';
@@ -13,14 +14,15 @@ const newsCategoryUrl = `${AppConstants.BASE_URL}/NewsCategory`;
 
 @Injectable()
 export class NewsCategoryRepository extends AbstractNewsCategoryRepository {
-  constructor(public http: Http, public connServ: ConnectivityService) {
+  constructor(public http: HttpClient, public connServ: ConnectivityService) {
     super();
   }
 
   public async getNewsCategory(): Promise<NewsCategory[]> {
     try {
-      const response = await this.http.get(newsCategoryUrl,RequestFactory.makeAuthHeader()).toPromise();
-      let data: any = response.json();
+      const response: any = await this.http.get(newsCategoryUrl,RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
+      let data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }

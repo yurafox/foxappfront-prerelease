@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
@@ -21,7 +22,7 @@ const regionsUrl = `${AppConstants.BASE_URL}/geo/region`;
 
 @Injectable()
 export class GeoRepository extends AbstractGeoRepository {
-  constructor(public http: Http, public connServ: ConnectivityService,
+  constructor(public http: HttpClient, public connServ: ConnectivityService,
               public dataRepo: AppDataRepository) {
     super();
   }
@@ -29,12 +30,14 @@ export class GeoRepository extends AbstractGeoRepository {
   public async getCitiesWithStores(): Promise<City[]> {
     try {
       if (this.dataRepo.cache.CityWithStore.HasNotValidCachedRange()) {
-        const response = await this.http.get(citiesWithStoresUrl, RequestFactory.makeAuthHeader()).toPromise();
+        const response: any = await this.http.get(citiesWithStoresUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+
         const cities = new Array<City>();
         if (data != null) {
           if (data) data.forEach(val => {
@@ -55,14 +58,16 @@ export class GeoRepository extends AbstractGeoRepository {
 
   public async searchCities(srchString: string): Promise<City[]> {
     try {
-      const response = await this.http.get(citiesUrl, RequestFactory.makeSearch([
+      const response: any = await this.http.get(citiesUrl, RequestFactory.makeSearch([
         { key: "srch", value: srchString }
-      ])).toPromise();
+      ])).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const cities = new Array<City>();
       if (data != null) {
         if (data) data.forEach(val => {
@@ -81,12 +86,14 @@ export class GeoRepository extends AbstractGeoRepository {
   public async getCities(): Promise<City[]> {
     try {
       if (this.dataRepo.cache.City.HasNotValidCachedRange()) {
-        const response = await this.http.get(citiesUrl, RequestFactory.makeAuthHeader()).toPromise();
+        const response: any = await this.http.get(citiesUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+
         const cities = new Array<City>();
         if (data != null) {
           if (data) data.forEach(val => {
@@ -120,10 +127,11 @@ export class GeoRepository extends AbstractGeoRepository {
         else
         if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.city.expire;
         // http request
-        const response = await this.http.get(citiesUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
+        const response: any = await this.http.get(citiesUrl + `/${_id}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
         // response data binding
-        let data: any = response.json();
+        let data: any = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
@@ -162,10 +170,11 @@ export class GeoRepository extends AbstractGeoRepository {
         if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.region.expire;
 
         // http request
-        const response = await this.http.get(regionsUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
+        const response: any = await this.http.get(regionsUrl + `/${_id}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
         // response data binding
-        let data: any = response.json();
+        let data: any = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
@@ -187,12 +196,14 @@ export class GeoRepository extends AbstractGeoRepository {
 
   public async getRegions(): Promise<Region[]> {
     try {
-      const response = await this.http.get(regionsUrl, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http.get(regionsUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const regions = new Array<Region>();
       if (data != null) {
         if (data) data.forEach(val => {
@@ -209,12 +220,14 @@ export class GeoRepository extends AbstractGeoRepository {
   public async getCountries(): Promise<Country[]> {
     try {
       if (this.dataRepo.cache.Country.HasNotValidCachedRange()) {
-        const response = await this.http.get(countriesUrl, RequestFactory.makeAuthHeader()).toPromise();
+        const response: any = await this.http.get(countriesUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+
         const cCountries = new Array<Country>();
         if (data != null) {
           if (data) data.forEach(val => {
@@ -250,9 +263,10 @@ export class GeoRepository extends AbstractGeoRepository {
         else
         if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.country.expire;
 
-        const response = await this.http
-          .get(countriesUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
-        let data: any = response.json();
+        const response: any = await this.http
+          .get(countriesUrl + `/${_id}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
+        let data: any = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
@@ -275,10 +289,11 @@ export class GeoRepository extends AbstractGeoRepository {
 
   public async loadCityCache() {
     try {
-      const response = await this.http
-        .get(citiesWithStoresUrl, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http
+        .get(citiesWithStoresUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      let data: any = response.json();
+      let data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
@@ -311,10 +326,11 @@ export class GeoRepository extends AbstractGeoRepository {
 
   public async loadRegionsCache() {
     try {
-      const response = await this.http
-        .get(regionsUrl, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http
+        .get(regionsUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      let data: any = response.json();
+      let data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }

@@ -1,6 +1,5 @@
 import { AbstractControl } from '@angular/forms';
 import { Injector } from '@angular/core';
-import { RequestOptionsArgs, Headers, URLSearchParams } from '@angular/http';
 import { Manufacturer } from "../model/manufacturer";
 import { City } from '../model/city';
 import { StorePlace } from '../model/store-place';
@@ -21,6 +20,7 @@ import { Supplier } from '../model/supplier';
 import { Currency } from '../model/currency';
 import { Action } from "../model/action";
 import { Novelty } from "../model/novelty";
+import {HttpHeaders, HttpParams} from "@angular/common/http";
 
 export class EmailValidator {
 
@@ -507,38 +507,42 @@ export class RequestFactory {
    *                     RequestFactory.makeSearch([{ key: "idAction", value: idAction.toString()}]))
    *                    ).toPromise();
   **/
-  public static makeSearch(params: Array<{ key: string; value: string }>): RequestOptionsArgs {
+  public static makeSearch(params: Array<{ key: string; value: string }>): { params: HttpParams, headers: HttpHeaders, observe: "response" } {
 
-    let searchParams = new URLSearchParams();
-    params.forEach(val => { searchParams.set(val.key, val.value); });
+    let searchParams = new HttpParams();
+    params.forEach(val => {
+      // With HttpParams methods like 'set' and 'append' return new HttpParams object
+      searchParams = searchParams.append(val.key, val.value);
+    });
 
     // add user headers
     const headers = RequestFactory.makeAuthHeader().headers;
-    return { search: searchParams, headers: headers };
+    return { params: searchParams, headers: headers, observe: "response" };
   }
   /** only auth headers (token,uid)
   * example in http.get(apiUrl, RequestFactory.makeAuthHeader()).toPromise();
   **/
-  public static makeAuthHeader(): RequestOptionsArgs {
-    const h = new Headers();
-    h.set('Authorization', `Bearer ${localStorage.getItem('token') || ''}`);
-    h.set('X-Currency', localStorage.getItem('currency') || `${AppConstants.CURRENCY_DEFAULT_VALUE}`);
-    h.set('X-Lang', localStorage.getItem('lang') || `${AppConstants.LOCALE_DEFAULT_VALUE}`);
-    h.set('X-APP', `${AppConstants.ID_APP}`);
-    h.set('X-SCN', SCN.value.toString());
+  public static makeAuthHeader(): {headers: HttpHeaders, observe: "response"} {
+    let h = new HttpHeaders();
+    // With HttpHeaders methods like 'set' and 'append' return new HttpHeaders object
+    h = h.append('Authorization', `Bearer ${localStorage.getItem('token') || ''}`);
+    h = h.append('X-Currency', localStorage.getItem('currency') || `${AppConstants.CURRENCY_DEFAULT_VALUE}`);
+    h = h.append('X-Lang', localStorage.getItem('lang') || `${AppConstants.LOCALE_DEFAULT_VALUE}`);
+    h = h.append('X-APP', `${AppConstants.ID_APP}`);
+    h = h.append('X-SCN', SCN.value.toString());
 
-    return { headers: h }
+    return {headers: h, observe: "response"};
   }
   /** both search and auth param
    * example in http.get(apiUrl,
    *                      RequestFactory.makeSearchAndAuth([{ key: "idAction", value: idAction.toString()}]
                          ).toPromise();
  **/
-  public static makeSearchAndAuth(params: Array<{ key: string; value: string }>): RequestOptionsArgs {
-    const search = RequestFactory.makeSearch(params).search;
+  public static makeSearchAndAuth(params: Array<{ key: string; value: string }>) {
+    const search = RequestFactory.makeSearch(params).params;
     const headers = RequestFactory.makeAuthHeader().headers;
 
-    return { search: search, headers: headers };
+    return { params: search, headers: headers, observe: "response" };
   }
 }
 // #endregion

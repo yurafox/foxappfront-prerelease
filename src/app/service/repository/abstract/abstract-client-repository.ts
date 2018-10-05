@@ -10,7 +10,7 @@ export abstract class AbstractClientRepository {
 
   //public async abstract getBonusesInfo(): Promise<{bonusLimit: number, actionBonusLimit: number}>;
 
-  public abstract async getClientByUserId(id: number): Promise<Client>;
+  //public abstract async getClientByUserId(id: number): Promise<Client>;
 
   public abstract async getClientByPhone(phonenum: string): Promise<Client>;
 

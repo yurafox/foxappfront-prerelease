@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
@@ -16,7 +17,7 @@ const manufacturersUrl = `${AppConstants.BASE_URL}/manufacturer`;
 
 @Injectable()
 export class ManufacturerRepository extends AbstractManufacturerRepository {
-  constructor(public http: Http, public connServ: ConnectivityService,
+  constructor(public http: HttpClient, public connServ: ConnectivityService,
               public dataRepo: AppDataRepository) {
     super();
   }
@@ -36,10 +37,11 @@ export class ManufacturerRepository extends AbstractManufacturerRepository {
         else
         if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.manufacturer.expire;
 
-        const response = await this.http
+        const response: any = await this.http
           .get(manufacturersUrl + `/${id}`, RequestFactory.makeAuthHeader())
-          .toPromise();
-        const data = response.json();
+          .pipe(retry(3)).toPromise();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
@@ -64,12 +66,14 @@ export class ManufacturerRepository extends AbstractManufacturerRepository {
     try {
       // <editor-fold desc = "cashe is empty or cache force active">
       if (this.dataRepo.cache.Manufacturer.HasNotValidCachedRange() || cacheForce === true) {
-        const response = await this.http.get(manufacturersUrl, RequestFactory.makeAuthHeader()).toPromise();
+        const response: any = await this.http.get(manufacturersUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+
         const manufacturers = new Array<Manufacturer>();
         if (data != null) {
           if (data) data.forEach(val => {

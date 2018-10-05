@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
@@ -16,17 +17,18 @@ const measureUnitUrl = `${AppConstants.BASE_URL}/measureUnit`;
 
 @Injectable()
 export class MeasureUnitRepository extends AbstractMeasureUnitRepository {
-  constructor(public http: Http, public connServ: ConnectivityService,
+  constructor(public http: HttpClient, public connServ: ConnectivityService,
               public dataRepo: AppDataRepository) {
     super();
   }
 
   public async loadMeasureUnitCache() {
     try {
-      const response = await this.http
-        .get(measureUnitUrl, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http
+        .get(measureUnitUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      let data: any = response.json();
+      let data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
@@ -73,11 +75,12 @@ export class MeasureUnitRepository extends AbstractMeasureUnitRepository {
         else
         if (CacheProvider.Settings) entity.expire = Date.now() + CacheProvider.Settings.measureunit.expire;
 
-        const response = await this.http
+        const response: any = await this.http
           .get(measureUnitUrl + `/${id}`, RequestFactory.makeAuthHeader())
-          .toPromise();
+          .pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/toPromise';
+import { HttpClient } from '@angular/common/http';
 import { AppConstants } from '../../../app-constants';
 import { RequestFactory } from '../../../core/app-core';
 import { ConnectivityService } from '../../connectivity-service';
@@ -12,34 +11,38 @@ import { ClientAddress } from '../../../model/client-address';
 import { PersonInfo } from '../../../model/person';
 import {AbstractClientRepository} from "../abstract/abstract-client-repository";
 import {AbstractProductRepository} from "../abstract/abstract-product-repository";
+import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 
 // <editor-fold desc="url const">
-const personsUrl = `${AppConstants.CART_SERVICE_ENDPOINT}/client/person`;
-const clientsUrl = `${AppConstants.BASE_URL}/client`;
-const getClientBonusesExpireInfoUrl = `${AppConstants.BASE_URL}/client/GetBonusesExpireInfo`;
-const postProductViewUrl = `${AppConstants.BASE_URL}/client/LogProductView`;
-const clientAddressesUrl = `${AppConstants.BASE_URL}/client/clientAddress`;
-const clientOrderDatesRangeUrl = `${AppConstants.BASE_URL}/client/OrderDatesRanges`;
-const viewProductsUrl = `${AppConstants.BASE_URL}/Client/GetProductsView`;
+const personsUrl = `${AppConstants.CRM_SERVICE_ENDPOINT}/client/person`;
+const clientsUrl = `${AppConstants.CRM_SERVICE_ENDPOINT}/client`;
+const getClientBonusesExpireInfoUrl = `${AppConstants.CRM_SERVICE_ENDPOINT}/client/GetBonusesExpireInfo`;
+const postProductViewUrl = `${AppConstants.CRM_SERVICE_ENDPOINT}/client/LogProductView`;
+const clientAddressesUrl = `${AppConstants.CRM_SERVICE_ENDPOINT}/client/clientAddress`;
+const clientOrderDatesRangeUrl = `${AppConstants.CRM_SERVICE_ENDPOINT}/client/OrderDatesRanges`;
+const viewProductsUrl = `${AppConstants.CRM_SERVICE_ENDPOINT}/client/GetProductsView`;
 // </editor-fold
 
 @Injectable()
 export class ClientRepository extends AbstractClientRepository {
-  constructor(public http: Http, public connServ: ConnectivityService,
+  constructor(public http: HttpClient, public connServ: ConnectivityService,
               public productRepo: AbstractProductRepository) {
     super();
   }
 
   public async getClientBonusesExpireInfo(): Promise<ClientBonus[]> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(getClientBonusesExpireInfoUrl, RequestFactory.makeAuthHeader())
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const arr = new Array<ClientBonus>();
       if (data != null) {
         if (data) data.forEach(val =>
@@ -52,20 +55,23 @@ export class ClientRepository extends AbstractClientRepository {
     }
   }
 
-  public async getClientByUserId(id: number): Promise<Client> {
+  /*public async getClientByUserId(id: number): Promise<Client> {
     try {
       const _id = id.toString();
       let client = new Client();
-      const response = await this.http
+      const response: any = await this.http
         .get(clientsUrl, RequestFactory.makeSearch([{ key: "userId", value: _id }]))
-        .toPromise();
-      let data: any = response.json();
+        .pipe(retry(3)).toPromise();
+      let data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
 
       if (data != null) {
-        data = data[0];
+        if (data[0]) {
+          data = data[0];
+        }
         client.id = data.id;
         client.name = data.name;
         client.phone = data.phone;
@@ -81,21 +87,24 @@ export class ClientRepository extends AbstractClientRepository {
     } catch (err) {
       return await this.handleError(err);
     }
-  }
+  }*/
 
   public async getClientByPhone(phonenum: string): Promise<Client> {
     try {
       let client = new Client();
-      const response = await this.http
+      const response: any = await this.http
         .get(clientsUrl, RequestFactory.makeSearch([{ key: "phone", value: phonenum }]))
-        .toPromise();
-      let data: any = response.json();
+        .pipe(retry(3)).toPromise();
+      let data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
 
       if (data != null) {
-        data = data[0];
+        if (data[0]) {
+          data = data[0];
+        }
         client.id = data.id;
         client.barcode = data.barcode;
         client.name = data.name;
@@ -114,10 +123,10 @@ export class ClientRepository extends AbstractClientRepository {
 
   public async createClientAddress(address: ClientAddress): Promise<ClientAddress> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .post(clientAddressesUrl, address.dto, RequestFactory.makeAuthHeader())
-        .toPromise();
-      const data = response.json();
+        .pipe(retry(3)).pipe(retry(3)).toPromise();
+      const data = response.body;
 
       if (response.status !== 201) {
         throw new Error("server side status error");
@@ -147,9 +156,8 @@ export class ClientRepository extends AbstractClientRepository {
 
   public async deleteClientAddress(address: ClientAddress) {
     try {
-      const response = await this.http
-        .delete(clientAddressesUrl + `/${address.id}`, RequestFactory.makeAuthHeader())
-        .toPromise();
+      const response: any = await this.http.delete(clientAddressesUrl + `/${address.id}`, RequestFactory.makeAuthHeader())
+        .pipe(retry(3)).pipe(retry(3)).toPromise();
       if (response.status !== 204) {
         throw new Error("server side status error");
       }
@@ -160,10 +168,10 @@ export class ClientRepository extends AbstractClientRepository {
 
   public async saveClientAddress(address: ClientAddress): Promise<ClientAddress> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .put(clientAddressesUrl, address.dto, RequestFactory.makeAuthHeader())
-        .toPromise();
-      const data = response.json();
+        .pipe(retry(3)).toPromise();
+      const data = response.body;
 
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -197,13 +205,15 @@ export class ClientRepository extends AbstractClientRepository {
     try {
       let _id = id.toString();
 
-      const response = await this.http
-        .get(clientAddressesUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http
+        .get(clientAddressesUrl + `/${_id}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      let data: any = response.json();
+      let data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       if (data != null) {
         let clientAddress = new ClientAddress();
         clientAddress.id = data.id;
@@ -231,14 +241,16 @@ export class ClientRepository extends AbstractClientRepository {
       let _id = id.toString();
       let clientAdresses = new Array<ClientAddress>();
 
-      const response = await this.http
+      const response: any = await this.http
         .get(clientAddressesUrl, RequestFactory.makeSearch([{ key: "idClient", value: _id }]))
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
-      let data: any = response.json();
+      let data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       if (data != null) {
         for (let i of data) {
           let clientAddress = new ClientAddress();
@@ -266,10 +278,11 @@ export class ClientRepository extends AbstractClientRepository {
 
   public async getClientOrderDatesRanges(): Promise<OrdersFilter[]> {
     try {
-      const response = await this.http
-        .get(clientOrderDatesRangeUrl, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http
+        .get(clientOrderDatesRangeUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      const data: any = response.json();
+      const data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
@@ -291,12 +304,13 @@ export class ClientRepository extends AbstractClientRepository {
 
   public async getDefaultClientOrderDatesRanges(isDefault: boolean): Promise<OrdersFilter> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(clientOrderDatesRangeUrl, RequestFactory.makeSearch([
           { key: "isDefault", value: String(isDefault) }
-        ])).toPromise();
+        ])).pipe(retry(3)).toPromise();
 
-      const data: any = response.json();
+      const data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
@@ -314,9 +328,9 @@ export class ClientRepository extends AbstractClientRepository {
     try {
       let p = new PersonInfo();
 
-      const response = await this.http
-        .post(personsUrl, person, RequestFactory.makeAuthHeader()).toPromise();
-      const data = response.json();
+      const response: any = await this.http
+        .post(personsUrl, person, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
+      const data = response.body;
 
       if (response.status !== 201) {
         throw new Error("server side status error");
@@ -342,9 +356,9 @@ export class ClientRepository extends AbstractClientRepository {
     try {
       let p = new PersonInfo();
 
-      const response = await this.http
-        .put(personsUrl, person, RequestFactory.makeAuthHeader()).toPromise();
-      const data = response.json();
+      const response: any = await this.http
+        .put(personsUrl, person, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
+      const data = response.body;
 
       if (response.status !== 200) {
         throw new Error("server side status error");
@@ -370,11 +384,13 @@ export class ClientRepository extends AbstractClientRepository {
     try {
       const _id = personId.toString();
       let p = new PersonInfo();
-      const response = await this.http.get(personsUrl + `/${_id}`, RequestFactory.makeAuthHeader()).toPromise();
-      let data: any = response.json();
+      const response: any = await this.http.get(personsUrl + `/${_id}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
+      let data: any = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       if (data != null) {
         p.id = data.id;
         p.firstName = data.firstName;
@@ -394,14 +410,16 @@ export class ClientRepository extends AbstractClientRepository {
 
   public async getViewProducts(): Promise<Product[]> {
     try {
-      const response = await this.http
+      const response: any = await this.http
         .get(viewProductsUrl, RequestFactory.makeAuthHeader())
-        .toPromise();
+        .pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       const products = new Array<Product>();
 
       if (data != null)
@@ -417,9 +435,9 @@ export class ClientRepository extends AbstractClientRepository {
 
   public async postProductView(idProduct: number, params: string) {
     try {
-      const response = await this.http
-        .post(postProductViewUrl, { idProduct: idProduct.toString(), params: params, },
-          RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http
+        .post(postProductViewUrl, { idProduct: idProduct.toString(), viewParams: params },
+          RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
       if (response.status !== 201) {
         throw new Error("server side status error");

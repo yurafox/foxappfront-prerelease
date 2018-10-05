@@ -1,9 +1,11 @@
 import {IDictionary} from '../../../core/app-core';
 import {AbstractLocalizationRepository} from '../abstract/abstract-localization-repository';
 import {Injectable} from '@angular/core';
-import {Http} from "@angular/http";
+import {HttpClient} from "@angular/common/http";
 import {AppConstants} from "../../../app-constants";
 import {ConnectivityService} from "../../connectivity-service";
+import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 
 export function getLocString() {
   switch (localStorage.getItem('lang')) {
@@ -13,8 +15,8 @@ export function getLocString() {
       return "ru-UA";
     case '2':
       return "uk-UA";
-    // case '3':
-    //   return "ro-MD";
+    case '3':
+      return "ro-MD";
     default:
       return "ru-UA";
   }
@@ -26,17 +28,20 @@ const appLocUrl = `/AppLocalization`;
 export class LocalizationRepository extends AbstractLocalizationRepository {
   _localizationStore: IDictionary<Array<ILocalization>> = {};
 
-  constructor(public http: Http, public connServ: ConnectivityService) {
+  constructor(public http: HttpClient, public connServ: ConnectivityService) {
     super();
   }
 
   public async setLocalization() {
     try {
-      let response = await this.http.get(`${AppConstants.BASE_URL}${appLocUrl}`).toPromise();
-      const data = response.json();
+      let response: any = await this.http.get(`${AppConstants.BASE_URL}${appLocUrl}`, {observe: "response"})
+        .pipe(retry(3)).toPromise();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       let localization: IDictionary<Array<ILocalization>> = {};
       if (data != null) {
         let componentNames: string[] = [];

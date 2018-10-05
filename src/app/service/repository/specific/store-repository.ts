@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+import {retry} from "rxjs/operators";
 import { AppConstants } from './../../../app-constants';
 import { RequestFactory } from './../../../core/app-core';
 import CacheProvider = Providers.CacheProvider;
@@ -17,7 +18,7 @@ const favoriteStoresUrl = `${AppConstants.BASE_URL}/storeplace/FavoriteStores`;
 
 @Injectable()
 export class StoreRepository extends AbstractStoreRepository {
-  constructor(public http: Http, public connServ: ConnectivityService,
+  constructor(public http: HttpClient, public connServ: ConnectivityService,
               public dataRepo: AppDataRepository) {
     super();
   }
@@ -25,12 +26,14 @@ export class StoreRepository extends AbstractStoreRepository {
   public async getStores(): Promise<IDictionary<Store[]>> {
     try {
       if (this.dataRepo.cache.Store.HasNotValidCachedRange()) {
-        const response = await this.http.get(storesUrl, RequestFactory.makeAuthHeader()).toPromise();
+        const response: any = await this.http.get(storesUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-        const data = response.json();
+        const data = response.body;
+
         if (response.status !== 200) {
           throw new Error("server side status error");
         }
+
         let stores: IDictionary<Store[]> = {};
         if (data != null) {
           let storeFiltered = [];
@@ -45,19 +48,7 @@ export class StoreRepository extends AbstractStoreRepository {
               for (let i = 0; i < storeFiltered.length; i++) {
                 let store = storeFiltered[i];
                 let position = { lat: store.lat, lng: store.lng };
-                if (store.openTime !== null && store.closeTime !== null && store.rating === null && store.idFeedbacks === null) {
-                  let s = new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime);
-                  storeArr.push(s);
-                } else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.idFeedbacks === null) {
-                  let s = new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime, store.rating);
-                  storeArr.push(s);
-                } else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.idFeedbacks !== null) {
-                  let s = new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime, store.rating, store.idFeedbacks);
-                  storeArr.push(s);
-                } else {
-                  let s = new Store(store.id, store.idCity, store.address, position);
-                  storeArr.push(s);
-                }
+                this.makeNewStores(store, position, storeArr);
               }
               stores[dataStore.idCity.toString()] = storeArr;
               if (CacheProvider.Settings) this.dataRepo.cache.Store.Add(dataStore.idCity.toString(), { item: { id: dataStore.idCity.toString(), stores: storeArr }, expire: Date.now() + CacheProvider.Settings.store.expire });
@@ -77,27 +68,37 @@ export class StoreRepository extends AbstractStoreRepository {
     }
   }
 
+  private makeNewStores(store, position, storeArr: Store[]) {
+    if (store.openTime !== null && store.closeTime !== null && store.rating === null && store.idFeedbacks === null) {
+      let s = new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime);
+      storeArr.push(s);
+    } else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.idFeedbacks === null) {
+      let s = new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime, store.rating);
+      storeArr.push(s);
+    } else if (store.openTime !== null && store.closeTime !== null && store.rating !== null && store.idFeedbacks !== null) {
+      let s = new Store(store.id, store.idCity, store.address, position, store.openTime, store.closeTime, store.rating, store.idFeedbacks);
+      storeArr.push(s);
+    } else {
+      let s = new Store(store.id, store.idCity, store.address, position);
+      storeArr.push(s);
+    }
+  }
+
   public async getStoreById(id: number): Promise<Store> {
     try {
-      const response = await this.http.get(`${storesUrl}/${id}`, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http.get(`${storesUrl}/${id}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
-      let resultStore: Store;
+
+      let resultStore: Store = null;
       if (data != null) {
         let position = { lat: data.lat, lng: data.lng };
         if (data.id === id) {
-          if (data.openTime !== null && data.closeTime !== null && data.rating === null && data.idFeedbacks === null) {
-            resultStore = new Store(data.id, data.idCity, data.address, position, data.openTime, data.closeTime);
-          } else if (data.openTime !== null && data.closeTime !== null && data.rating !== null && data.idFeedbacks === null) {
-            resultStore = new Store(data.id, data.idCity, data.address, position, data.openTime, data.closeTime, data.rating);
-          } else if (data.openTime !== null && data.closeTime !== null && data.rating !== null && data.idFeedbacks !== null) {
-            resultStore = new Store(data.id, data.idCity, data.address, position, data.openTime, data.closeTime, data.rating, data.idFeedbacks);
-          } else {
-            resultStore = new Store(data.id, data.idCity, data.address, position);
-          }
+          resultStore = this.makeNewStore(data, resultStore, position);
         }
       }
       return resultStore;
@@ -106,14 +107,29 @@ export class StoreRepository extends AbstractStoreRepository {
     }
   }
 
+  private makeNewStore(data, resultStore: Store, position) {
+    if (data.openTime !== null && data.closeTime !== null && data.rating === null && data.idFeedbacks === null) {
+      resultStore = new Store(data.id, data.idCity, data.address, position, data.openTime, data.closeTime);
+    } else if (data.openTime !== null && data.closeTime !== null && data.rating !== null && data.idFeedbacks === null) {
+      resultStore = new Store(data.id, data.idCity, data.address, position, data.openTime, data.closeTime, data.rating);
+    } else if (data.openTime !== null && data.closeTime !== null && data.rating !== null && data.idFeedbacks !== null) {
+      resultStore = new Store(data.id, data.idCity, data.address, position, data.openTime, data.closeTime, data.rating, data.idFeedbacks);
+    } else {
+      resultStore = new Store(data.id, data.idCity, data.address, position);
+    }
+    return resultStore;
+  }
+
   public async getFavoriteStores(): Promise<Store[]> {
     try {
-      const response = await this.http.get(favoriteStoresUrl, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http.get(favoriteStoresUrl, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       let stores: Store[] = [];
       if (data != null) {
         if (data) data.forEach(val => {
@@ -138,12 +154,14 @@ export class StoreRepository extends AbstractStoreRepository {
 
   public async addFavoriteStore(idStore: number): Promise<number> {
     try {
-      const response = await this.http.post(`${favoriteStoresUrl}/${idStore}`, idStore, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http.post(`${favoriteStoresUrl}/${idStore}`, idStore, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200 && response.status !== 201 && response.status !== 204) {
         throw new Error("server side status error");
       }
+
       if (data !== null) {
         return data;
       } else return 0;
@@ -154,12 +172,14 @@ export class StoreRepository extends AbstractStoreRepository {
 
   public async deleteFavoriteStore(idStore: number): Promise<number> {
     try {
-      const response = await this.http.delete(`${favoriteStoresUrl}/${idStore}`, RequestFactory.makeAuthHeader()).toPromise();
+      const response: any = await this.http.delete(`${favoriteStoresUrl}/${idStore}`, RequestFactory.makeAuthHeader()).pipe(retry(3)).toPromise();
 
-      const data = response.json();
+      const data = response.body;
+
       if (response.status !== 200) {
         throw new Error("server side status error");
       }
+
       if (data !== null) {
         return data;
       } else return 0;
