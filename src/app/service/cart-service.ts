@@ -24,6 +24,8 @@ import {AbstractDataRepository} from "./repository/abstract/abstract-data-reposi
 import {CurrencyPipe} from "@angular/common";
 import {AbstractCurrencyRepository} from "./repository/abstract/abstract-currency-repository";
 import {Currency} from "../model";
+import { Product } from '../model';
+import { AbstractLoRepository } from './repository/abstract/abstract-lo-repository';
 
 export class LoShipmentDeliveryOption {
   public shipment?: Shipment;
@@ -36,8 +38,8 @@ export class LoShipmentDeliveryOption {
   public pickupLocationName?: string;
   public deliveryType?: LoDeliveryType;
   public loEntityOfficeId?: number;
-  public loEntityOfficesList?: LoEntityOffice[];
-
+  public loEntityOfficesList?: LoEntityOffice[]
+ 
   constructor(){};
 }
 
@@ -87,7 +89,7 @@ export class CartService {
               public dataRepo: AbstractDataRepository, public clientRepo: AbstractClientRepository,
               public evServ: EventService, public app: App, public locRepo: AbstractLocalizationRepository,
               public alertCtrl: AlertController, public loadingCtrl: LoadingController,
-              public currRepo: AbstractCurrencyRepository) {
+              public currRepo: AbstractCurrencyRepository, public loRepo: AbstractLoRepository) {
 
     this.currRepo.getCurrencies(false).then(currencies => {
       this.currencies = currencies;
@@ -771,5 +773,27 @@ export class CartService {
     if (loc && (Object.keys(loc).length !== 0)) {
       this.localization = loc;
     }
+  }
+
+  public async checkAllowTakeOnCredit(): Promise<boolean> {
+    let result = true;
+    let totalSum = 0;
+
+    for (let index = 0; index < this.orderProducts.length; index++) {
+      let quotation = await (<any>this.orderProducts[index]).quotationproduct_p;
+
+      if(quotation) {
+        totalSum += quotation.price;
+        let product = await (<any>quotation).product_p;
+
+        if(product && await !this.loRepo.getAllowTakeOnCreditByStatus(product.site_status))
+          result = false;
+      }
+    }
+ 
+    if(totalSum < this.min_loan_amt || totalSum > this.max_loan_amt)
+      result = false; 
+
+    return result;
   }
 }

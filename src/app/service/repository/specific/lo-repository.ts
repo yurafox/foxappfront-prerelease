@@ -349,6 +349,9 @@ export class LoRepository extends AbstractLoRepository {
 
   public async getAllowTakeOnCreditByStatus(status: number): Promise<boolean> {
     try {
+      if(status == null)
+      return false;
+      
       const response: any = await this.http
         .get(`${allowTakeOnCreditByStatusUrl}/${status}`, RequestFactory.makeAuthHeader())
         .pipe(retry(3)).toPromise();

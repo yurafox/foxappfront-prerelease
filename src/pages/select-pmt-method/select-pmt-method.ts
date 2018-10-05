@@ -19,16 +19,23 @@ export class SelectPmtMethodPage extends ComponentBase {
   passpSeries: string = '';
   grid: HTMLElement;
   keyboardHeight = 300;
+  allowTakeOnCreditButton = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public clientRepo: AbstractClientRepository, public cart: CartService,
               public finRepo: AbstractFinRepository, public modalCtrl: ModalController)
   {
     super();
-    this.cart.initBonusData().catch(console.error);
-    this.getPmtMethods().catch(console.error);
-    if (cart.person.passportSeries && cart.person.passportSeries.length > 0) {
-      this.passpSeries = cart.person.passportSeries.toUpperCase();
+  }
+
+  async ngOnInit() {
+    super.ngOnInit();
+
+    await this.cart.initBonusData();
+    this.allowTakeOnCreditButton = await this.cart.checkAllowTakeOnCredit();
+    await this.getPmtMethods();
+    if (this.cart.person.passportSeries && this.cart.person.passportSeries.length > 0) {
+      this.passpSeries = this.cart.person.passportSeries.toUpperCase();
     }
   }
 
@@ -39,7 +46,8 @@ export class SelectPmtMethodPage extends ComponentBase {
   async getPmtMethods () {
     let pmt = await this.finRepo.getPmtMethods();
     if (pmt) pmt.forEach(i => {
-        this.pmtMethods.push({isChecked: ((this.cart.order.idPaymentMethod === i.id)), method: i});
+      if( (i.id === 3 && this.allowTakeOnCreditButton) || i.id !==3 )
+          this.pmtMethods.push({isChecked: ((this.cart.order.idPaymentMethod === i.id)), method: i});
       }
     );
     this.dataLoaded = true;
