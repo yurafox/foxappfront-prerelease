@@ -1,9 +1,5 @@
-<!--
-<b class="f-size-larger">Description</b>
-<p></p>
--->
-
-<div class="f-padding-tb-10" [innerHTML]="description | safeHtml : 'html' " *ngIf="displayTextLength === -1; else elseBlock"></div>
+<div class="f-padding-tb-10" [innerHTML]="description | safeHtml : 'html' "
+     *ngIf="displayTextLength === -1; else elseBlock"></div>
 <ng-template #elseBlock>
   <div class="f-padding-tb-10" [innerHTML]="description | truncate : displayTextLength | safeHtml : 'html'"></div>
 </ng-template>
